@@ -1,0 +1,1218 @@
+{
+  "task_id": "legal_contracts-079",
+  "answer": [
+    {
+      "document_id": "01_Bosch-Automotive-Service-Solutions-Mutual-Non-Disclosure-Agreement-7-12-17.pdf",
+      "governing_law": "the laws of the State of Michigan",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "064-19 Non Disclosure Agreement 2019.pdf",
+      "governing_law": "the laws of the State of Florida",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "1020416_0001193125-16-701566_d250247dex99d2.htm",
+      "governing_law": "the laws of the State of New York",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "1041550_0001104659-19-001346_a18-42231_6ex10d8.htm",
+      "governing_law": "the laws of the State of Indiana",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "1041550_0001193125-19-004977_d663808dex106.htm",
+      "governing_law": "the laws of the State of Indiana",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "1046880_0001193125-11-323050_d262064dex992.htm",
+      "governing_law": "the laws of the State of New York, without regard to the laws of conflict of laws",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "1049210_0001047469-13-009461_a2216846zex-99_d3.htm",
+      "governing_law": "the laws of the State of California without regard to its conflict of laws principles",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "1053374_0001144204-18-062970_tv508217_ex-d2.htm",
+      "governing_law": "the laws of the State of New York, United States of America",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "1094348_0001144204-18-026846_tv493416_exd2.htm",
+      "governing_law": "the internal laws of the State of New York, without giving effect to the principles of conflicts of laws thereof",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "1094814_0001140361-18-017998_s002178x1_ex99d7.htm",
+      "governing_law": "the laws of the State of Delaware without regard to the principles of conflicts of law that would cause the laws of any other jurisdiction to be applicable",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "1142512_0001193125-14-269726_d757168dex99e3.htm",
+      "governing_law": "the internal laws of the State of California",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "1163932_0001193125-13-394191_d606730dex99d2.htm",
+      "governing_law": "the laws of the State of Delaware applicable to agreements made and to be performed entirely within such state",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "1167294_0001193125-15-218134_d933068dex99d3.htm",
+      "governing_law": "the laws of the State of Delaware applicable to agreements made and to be performed entirely within that state, and without regard to conflicts of laws principles of that state",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "1177845_0001193125-18-219243_d519554dex99d3.htm",
+      "governing_law": "the law of the State of Delaware",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "1253176_0001193125-18-317778_d567323dex1024.htm",
+      "governing_law": "laws of the State of Delaware",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "1274644_0001193125-17-338759_d485523dex99d2.htm",
+      "governing_law": "the laws of the State of New York, without regard to its conflict of laws provisions within",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "1277141_0001193125-15-184193_d923647dex99d2.htm",
+      "governing_law": "the laws of the State of Delaware applicable to contracts between residents of that State and executed in and to be performed entirely within that State",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "130806ca141.pdf",
+      "governing_law": "the laws of the Province of Nova Scotia and the laws of Canada applicable therein",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "1316898_0001047469-18-005618_a2236490zex-99_d2.htm",
+      "governing_law": "the laws of the State of Delaware applicable to agreements made and to be performed entirely within such state",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "1329919_0001193125-14-149149_d701401dex99d6.htm",
+      "governing_law": "the internal procedural and substantive laws of the State of Delaware, without reference to the conflict of law principles of that state",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "1332602_0001193125-12-512465_d454990dex99d2.htm",
+      "governing_law": "the laws of the State of Minnesota",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "1366649_0001193125-14-380778_d808213dex99d2.htm",
+      "governing_law": "the laws of the Province of Québec and the laws of Canada applicable to agreements made in or to be performed within such province",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "1372664_0001193125-12-159071_d333885dex99d9.htm",
+      "governing_law": "the laws of the State of Georgia",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "1402305_0001193125-11-343865_d268167dex99d2.htm",
+      "governing_law": "the laws of the State of New York, United States of America, without giving effect to its principles or rules regarding conflicts of laws, other than such principles directing application of New York law",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "1413447_0001193125-16-771498_d295023dex99d5.htm",
+      "governing_law": "the laws of New York, USA",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "1424657_0001213900-16-016691_f8k082516ex99iii_nextgroup.htm",
+      "governing_law": "not specified",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "1438076025NDA_28072015%20-%20AHPL.pdf",
+      "governing_law": "laws of the Republic of Singapore",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "1452751_0001193125-17-086167_d334994dex99e3.htm",
+      "governing_law": "the laws of the State of Delaware applicable to agreements made and to be performed within that state",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "1457829_0000898822-13-000086_exhibit-ndaexecutionversion.htm",
+      "governing_law": "laws of the State of New York",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "1475274_0001567619-17-000751_s001644x1_exd-2.htm",
+      "governing_law": "the laws of the State of Delaware and of the United States applicable in Delaware, as applied to contracts made and to be performed entirely within Delaware, without giving effect to principles of conflict of law requiring the application of the laws of another jurisdiction",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "1485469_0001193125-19-222469_d760929dex99d3.htm",
+      "governing_law": "the laws of the State of New York applicable to contracts executed in and to be performed entirely within that state, without reference to conflicts of laws provisions",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "1574111_0001193125-14-440569_d826999dex99d5.htm",
+      "governing_law": "the laws of the State of California",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "1592288_0001193125-17-306543_d469659dex99e2.htm",
+      "governing_law": "the laws of the State of Delaware",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "17.04.01%20BPS%20Non-Disclosure%20and%20Data%20Sharing%20Agreement%20-%20Transportation%20Challenge%20vF.pdf",
+      "governing_law": "State of Massachusetts",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "20150916-model-sharing-non-disclosure-agreement.pdf",
+      "governing_law": "Laws of the State of Delaware exclusive of the conflicts of laws provisions",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "426-2017_Appendix_C-Sample_Non-Disclosure_Agreement.pdf",
+      "governing_law": "the laws of Manitoba and the applicable laws of Canada",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "5-NSK-Confidentiality-Agreement-for-Suppliers.pdf",
+      "governing_law": "laws of England and Wales",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "703339_0001387308-13-000090_ex101.htm",
+      "governing_law": "the laws of the State of California",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "714562_0001104659-19-001345_a18-42231_6ex10d8.htm",
+      "governing_law": "the laws of the State of Indiana",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "802724_0001193125-15-331613_d96542dex99d5.htm",
+      "governing_law": "the laws of the State of Delaware applicable to agreements made and to be performed entirely within the State of Delaware, without regard to the conflict of law provisions that would result in the application of the laws of any other jurisdiction",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "865415_0001047469-15-007494_a2226057zex-99_d4.htm",
+      "governing_law": "the internal laws of the State of California, U.S.A. without reference to conflict of law principles",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "880562_0001193125-15-346821_d93800dex3.htm",
+      "governing_law": "Texas law",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "888953_0001193125-13-044630_d480503dex99e6.htm",
+      "governing_law": "the applicable laws of the State of Delaware without regard to that state's principles regarding conflict of laws or choice of laws",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "912263_0001047469-12-006662_a2209873zex-99_d2.htm",
+      "governing_law": "the laws of the State of New York, without regard to the laws of conflict of laws",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "912263_0001104659-12-004811_a12-3671_1ex2.htm",
+      "governing_law": "the laws of the State of New York, without regard to the laws of conflict of laws",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "912263_0001193125-12-285724_d371520dex99e4.htm",
+      "governing_law": "the laws of the State of New York, without regard to the laws of conflict of laws",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "915191_0001047469-17-003155_a2231967zex-99_8.htm",
+      "governing_law": "the laws of the State of New York",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "916457_0000916457-14-000028_exhibit104-confidentiality.htm",
+      "governing_law": "the laws of the State of New York, without giving effect to its principles or rules regarding conflicts of laws",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "918541_0001193125-14-328980_d785003dex105.htm",
+      "governing_law": "the substantive laws of the state of Delaware, without regard to the choice or conflict of law rules of such state",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Acme%20Corporation%20Inc%20NDA%20template.pdf",
+      "governing_law": "the substantive laws in force in the State of California",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Annex E_Non-Disclosure and Confidentiality Agreement.pdf",
+      "governing_law": "not specified",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Annexure-3_Confidentiality-Agreement.pdf",
+      "governing_law": "the laws of the Republic of South Africa",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Attachment 9 -  Non Disclosure Agreement (Version 1).pdf",
+      "governing_law": "English law",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Business-Sale-Non-Disclosure-Agreement.pdf",
+      "governing_law": "the law of England and Wales",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "CNDA1218Draft3.pdf",
+      "governing_law": "the laws of the State of California",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "C_TERMS_NDA_EN.pdf",
+      "governing_law": "Austrian law, to the exclusion of the UN Convention on the International Sale of Goods and the IPRG [law on international private law]",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Clause-de-non-divulgation.pdf",
+      "governing_law": "Buyer country laws and its appropriate courts of Paris",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Confidentiality%20Agreement.pdf",
+      "governing_law": "the laws in force in the Province of Alberta",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "Confidentiality%20ND%20Agreement%209.pdf",
+      "governing_law": "the laws of the State of Illinois applicable to agreements made and to be performed within such State",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Confidentiality-and-Non-Disclosure-Agreement-LSI-ABC.pdf",
+      "governing_law": "The internal laws of the State of Florida, without regard to principles of conflicts of laws",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "CopAcc_NDA-and-ToP-Mentors_2.0_2017.pdf",
+      "governing_law": "the material laws of the Federal Republic of Germany",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Cyber Mutual Assistance NDA.pdf",
+      "governing_law": "the laws of the State of New York without giving effect to any choice or conflicts of law provision or rule that would cause the application of laws of any other jurisdiction",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "Eskom%20Template%20Confidentiality%20and%20Non-disclosure%20Agreement%20Rev%204%20Effective%20August%202017_11.pdf",
+      "governing_law": "the laws of South Africa",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "HNBA-2017-18-Confidentiality-Agreement.pdf",
+      "governing_law": "the laws of the District of Columbia",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "IPTK-CO-MutualNon-DisclosureAgreement.pdf",
+      "governing_law": "the laws of the State of [state]",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "Kenway-NDA-Form-Blank.pdf",
+      "governing_law": "laws of the state of Delaware, of the United States of America",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "LiiON%20NDA%202-27-2015%20v1.0.pdf",
+      "governing_law": "the laws of the State of Illinois",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "MR_NON-DISCLOSURE-AGREEMENT.pdf",
+      "governing_law": "Austrian law excluding its conflict of law rules",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "Mutual-Non-Disclosure-Agreement-EN.pdf",
+      "governing_law": "not specified",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "NDA%20Form%20WEB_WITH%20Instructions%20%28RECIPROCAL%29%20%28v%202016-03-18_EN%29.pdf",
+      "governing_law": "laws of Spain, except its provision on conflicts of law",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "NDA%20for%20Tender%20Ref%202201000050.pdf",
+      "governing_law": "the laws of Singapore",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "NDA-2016-DAB.pdf",
+      "governing_law": "English Law",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "NDA-Fintricity-Blank.pdf",
+      "governing_law": "the laws of England",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "NDA-ONSemi_IndustryAnalystConf-2011.pdf",
+      "governing_law": "The law of the state of New York, U.S.A. except for its choice of laws rules",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "NDA_6.pdf",
+      "governing_law": "the laws of the United States and the State of California",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "NDA_Street_Stream_Franchise.pdf",
+      "governing_law": "laws of England and Wales",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "NDA_eng.pdf",
+      "governing_law": "Singapore legislation",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "NON-Disclosure_Agreement_2.pdf",
+      "governing_law": "the substantive and procedural laws of India",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "NON_DISCLOSURE_AGREEMENT_5.pdf",
+      "governing_law": "laws of India",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "NRSC_2015_NDAForm.pdf",
+      "governing_law": "the laws of the State of New York without regard to its choice of law principles. With respect to the participation of any governmental ENTITY, employee or officer in this AGREEMENT, federal law shall apply.",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "New_York_City_Bar_Association_Model_Form_of_Non-Disclosure_Agreement_2015.pdf",
+      "governing_law": "the laws of the State of [New York]",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "Non Disclosure Agreement - CP Specific NDA (CreativeNDA-CPS121.1014).pdf",
+      "governing_law": "laws of the state of Delaware, of the United States of America",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Non-Disclosure-Agreement_4.pdf",
+      "governing_law": "the laws of the State of Idaho",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Non-Disclosure-Agreement_ALL_englisch.pdf",
+      "governing_law": "Swiss substantive law",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Non-Disclosure-SmartCMS.pdf",
+      "governing_law": "laws of the Republic of Singapore",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Non-disclosure%20Agreement_1.pdf",
+      "governing_law": "the laws of the Province of Alberta and the federal laws of Canada applicable in the Province of Alberta",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "Non-disclosure-Agreement_9.pdf",
+      "governing_law": "German law",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "NondisclosureAgreement_2.pdf",
+      "governing_law": "the substantive and procedural laws of India",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Project%20LAS%20RFI%20Non-Disclosure%20Agreement.pdf",
+      "governing_law": "the laws of Malaysia",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "QEP-Williston-Form-of-Confidentiality-Agreement-BMO.pdf",
+      "governing_law": "the laws of the State of Texas, excluding any choice of law rules that may direct application of laws of another jurisdiction",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "RROI_Confidentiality_Agreement_Final.pdf",
+      "governing_law": "the laws of Alberta",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "SE_NDCA_and_PRE-QUAL_PACKAGE_March-2016.pdf",
+      "governing_law": "the laws of the State of Tennessee without regard to its conflict of laws provisions",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "SINTEC-UK-LTD-Non-disclosure-agreement-2017.pdf",
+      "governing_law": "laws of England and Wales",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "SONGS%20RFP%20Confidentiality%20Agreement_201705051754392249.pdf",
+      "governing_law": "the substantive laws of the State of California, without regard to the conflict of laws provisions",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Standard%20NDA%20by%20Axial.pdf",
+      "governing_law": "the internal laws of the State of Delaware without giving effect to any choice or conflict of law provision or rule that would cause the application of Laws of any jurisdiction other than those of the State of Delaware",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "TabunKitchenInvestments-NDA.pdf",
+      "governing_law": "laws of England & Wales",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "Third-Party Non-Disclosure Agreement.pdf",
+      "governing_law": "the laws of the State of Indiana",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "US_Non-Disclosure_Agreement_v2_2015.pdf",
+      "governing_law": "the laws of the State of New Hampshire",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "VELCO%20NDA%20rev0%20Dec%2014%202015.pdf",
+      "governing_law": "the laws of the State of Vermont without regard to its conflicts of laws principles",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "a03312024ex101.htm",
+      "governing_law": "the laws of the state of Rhode Island excluding its choice of law rules or principles that might otherwise refer construction or interpretation of this Agreement to the substantive law of another jurisdiction",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "a03312025ex101.htm",
+      "governing_law": "the laws of the state of Rhode Island excluding its choice of law rules or principles that might otherwise refer construction or interpretation of this Agreement to the substantive law of another jurisdiction",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "a03312025ex103.htm",
+      "governing_law": "the laws of the state of Rhode Island excluding its choice of law rules or principles that might otherwise refer construction or interpretation of this Agreement to the substantive law of another jurisdiction",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "a1028trv2025mcmoptionagree.htm",
+      "governing_law": "the laws of the Participant's Employment Jurisdiction",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "a1029trv2025restrictedstoc.htm",
+      "governing_law": "the laws of the Participant's Employment Jurisdiction",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "a1033trv2025mcmperfsharesa.htm",
+      "governing_law": "the laws of the Participant's Employment Jurisdiction",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "a18-42231_6ex10d8.htm",
+      "governing_law": "the laws of the State of Indiana",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "a2024ex1070thirdamendedand.htm",
+      "governing_law": "the laws of the State of California",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "a8212025ex101.htm",
+      "governing_law": "the law of the State of California",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "amc-general-mutual-non-disclosure-agreement-en-gb.pdf",
+      "governing_law": "the laws of Denmark",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "casino-nondisclosure-agmt.pdf",
+      "governing_law": "not specified",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "catx-ex10_1.htm",
+      "governing_law": "the laws of the State of Washington",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "cfoconfidentialityandnon-c.htm",
+      "governing_law": "THE LAWS OF THE STATE OF TEXAS EXCEPT FOR CONFLICT OF LAWS PRINCIPLES, WITHOUT REGARD TO THE PLACE OF EXECUTION OR THE PLACE OF PERFORMANCE THEREOF",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "cmu_non-disclosure_agreement_sample.pdf",
+      "governing_law": "the laws of the Commonwealth of Pennsylvania",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "cvco-2025329exhibit14.htm",
+      "governing_law": "not specified",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "d822701dex103.htm",
+      "governing_law": "the laws of the State in which I last rendered services to the Company",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "d828431dex101.htm",
+      "governing_law": "the laws of the State of Delaware",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "d854072dex105.htm",
+      "governing_law": "not specified",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "d864562dex103.htm",
+      "governing_law": "the laws of the State in which I last rendered services to the Company",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "dal9302024ex101.htm",
+      "governing_law": "the laws of the State of Georgia",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "document_viewer.pdf",
+      "governing_law": "all applicable laws and by-laws of the Town, Province of Ontario and any applicable Canadian federal laws",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "dv-20250721xex10d1.htm",
+      "governing_law": "the laws of the State of New York",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "dyn-ex10_1.htm",
+      "governing_law": "Massachusetts law",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "dyn-ex10_2.htm",
+      "governing_law": "the laws of the Commonwealth of Massachusetts without giving effect to any choice or conflict of law provision or rule that would cause the application of laws of any other jurisdiction",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "dyn-ex10_3.htm",
+      "governing_law": "the laws of the Commonwealth of Massachusetts",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "e5407_ex10-29.htm",
+      "governing_law": "the laws of the State of Florida",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ea020170101ex10-21_onconetix.htm",
+      "governing_law": "Swiss law",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ea020170101ex10-24_onconetix.htm",
+      "governing_law": "Swiss law",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ea020224801ex10-23_gryphon.htm",
+      "governing_law": "the laws of the state of New York",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ea020224801ex10-24_gryphon.htm",
+      "governing_law": "the laws of the State of Delaware",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ea020245801ex14-1_cuentas.htm",
+      "governing_law": "not specified",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ea020415301ex99-2_nordstrom.htm",
+      "governing_law": "THE LAWS OF THE STATE OF WASHINGTON APPLICABLE TO CONTRACTS EXECUTED IN AND TO BE PERFORMED IN THAT STATE",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "ea021499501ex10-37_foxxdev.htm",
+      "governing_law": "THE LAWS OF THE STATE OF TEXAS",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ea021502401ex10-10_sbcmed.htm",
+      "governing_law": "the internal laws of the State of Delaware",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ea021502401ex10-11_sbcmed.htm",
+      "governing_law": "the internal laws of the State of Delaware",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ea021502401ex10-8_sbcmed.htm",
+      "governing_law": "the internal laws of the State of Delaware",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ea021502401ex10-9_sbcmed.htm",
+      "governing_law": "the internal laws of the State of Delaware",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ea023134401ex10-3_bgc.htm",
+      "governing_law": "Swiss law",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ea023134401ex10-4_bgc.htm",
+      "governing_law": "the laws of England and Wales",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ea026206601ex10-13_cuentas.htm",
+      "governing_law": "the laws of the State of Florida",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ea026206601ex10-18_cuentas.htm",
+      "governing_law": "the laws of the State of Florida",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ea120926ex10-4_uppercut.htm",
+      "governing_law": "the laws of the State of New York",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ea120926ex10-5_uppercut.htm",
+      "governing_law": "the laws of the State of New York",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ef20034554_ex10-45.htm",
+      "governing_law": "the laws of the State of New York, United States",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "eras-ex10_2.htm",
+      "governing_law": "the laws of the State of New York",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "ex-106executiveemploymenta.htm",
+      "governing_law": "the laws of the Commonwealth of Virginia",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ex10-1.htm",
+      "governing_law": "the substantive laws of the State of Texas",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ex10-1_1.htm",
+      "governing_law": "the substantive laws of the State of Texas",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ex10-1_2.htm",
+      "governing_law": "the substantive laws of the State of Texas",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ex10-26.htm",
+      "governing_law": "the laws of the State of Pennsylvania",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ex10-33.htm",
+      "governing_law": "the laws of the State of Texas",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ex10-3_1.htm",
+      "governing_law": "the substantive laws of the State of Texas without reference to the principles of conflicts of law of the State of Texas or any other jurisdiction that would result in application of the laws of a jurisdiction other than the State of Texas, and where applicable, the laws of the United States",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ex10-4_2.htm",
+      "governing_law": "the laws of the State of New York",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ex1010dormanproducts-execu.htm",
+      "governing_law": "the laws of the Commonwealth of Pennsylvania",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ex1015-brownsteincxzenta.htm",
+      "governing_law": "the laws of the United States of America and the State of New York",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ex1020_agle-aegleaconsulti.htm",
+      "governing_law": "the internal laws of the State of Delaware",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ex103-confidentialseveranc.htm",
+      "governing_law": "the laws of the State of Nebraska",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ex1039-boardadviseragreeme.htm",
+      "governing_law": "the laws of Delaware",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ex103consultingservicesagr.htm",
+      "governing_law": "the laws of the State of Texas, United States of America",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ex105ciia.htm",
+      "governing_law": "the laws of the State in which I last rendered services to the Company",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ex108_confidentialinformat.htm",
+      "governing_law": "the laws of the State in which I last rendered services to the Company",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ex_684280.htm",
+      "governing_law": "the laws of the State of Florida",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ex_684281.htm",
+      "governing_law": "the laws of the State of North Carolina, without regard to conflict of law principles",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "ex_740997.htm",
+      "governing_law": "the laws of the State of Texas without giving effect to a choice or conflict of law provision or rule of such state",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ex_845701.htm",
+      "governing_law": "the laws of the State of Texas",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "exhibit10-4.htm",
+      "governing_law": "the internal laws of the State of Minnesota",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "exhibit10-6.htm",
+      "governing_law": "the internal laws of the State of Minnesota",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "exhibit1012-consultingagre.htm",
+      "governing_law": "the laws of the State of California",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "exhibit1012.htm",
+      "governing_law": "the laws of the State of Texas, excluding the choice of law rules thereof",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "exhibit101393025.htm",
+      "governing_law": "the laws of the state of Delaware",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "exhibit101letteragreementd.htm",
+      "governing_law": "the laws of the State of Arizona",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "exhibit102-confidentiality.htm",
+      "governing_law": "the laws of the State of Georgia",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "exhibit1020-dadamsxsprinkl.htm",
+      "governing_law": "the laws of North Carolina",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "exhibit1021-cardinalheal.htm",
+      "governing_law": "the laws of Delaware",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "exhibit1022.htm",
+      "governing_law": "the laws of the State of Texas",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "exhibit1025-amisraemployme.htm",
+      "governing_law": "Laws of India",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "exhibit1027-jcorsoemployme.htm",
+      "governing_law": "laws of the State of Texas",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "exhibit102consultingagreem.htm",
+      "governing_law": "the laws of the United States of America and by the laws of the State of California",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "exhibit102psutsraward.htm",
+      "governing_law": "not specified",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "exhibit104-boardobserverag.htm",
+      "governing_law": "the laws of Delaware",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "exhibit104letteragreementd.htm",
+      "governing_law": "the laws of the State of California without regard to conflict of laws principles",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "exhibit105consultingagreem.htm",
+      "governing_law": "the laws of the United States of America and by the laws of the State of California",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "fdic_non-disclosure-agreement.pdf",
+      "governing_law": "not specified",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "finalpapaexecutiveemploy.htm",
+      "governing_law": "the laws of the State of Maryland",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "fult033124-ex103performanc.htm",
+      "governing_law": "not specified",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "gatesconsultantagreementfi.htm",
+      "governing_law": "the laws of the State of Washington",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "gbio-20241231xex10d29.htm",
+      "governing_law": "the internal law of the Commonwealth of Massachusetts",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "gbio-20241231xex10d30.htm",
+      "governing_law": "the internal law of the Commonwealth of Massachusetts",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "glp-20231231xex10d27.htm",
+      "governing_law": "the laws of the State of Delaware",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "glp-20231231xex10d28.htm",
+      "governing_law": "the laws of the State of Delaware",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "helpjuice_production%2Fuploads%2Fupload%2Fimage%2F2329%2Fdirect%2F1526996160411-FullStory+Mutual+Non-Disclosure+Agreement+2018.pdf",
+      "governing_law": "the laws of Delaware",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "icc-court-non-disclosure-agreement-english.pdf",
+      "governing_law": "laws of France",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "idxx2024q210-qexhibit104.htm",
+      "governing_law": "the laws of the State of Maine",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "idxx2024q310-qexhibit101.htm",
+      "governing_law": "the laws of the State of Maine",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "idya-ex10_4.htm",
+      "governing_law": "the laws of the State of New York",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "irtc-projectvoyagertechnol.htm",
+      "governing_law": "the laws of the State of Delaware",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "isca-nda.pdf",
+      "governing_law": "Singapore law",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "krus-ex10_17.htm",
+      "governing_law": "the laws of California",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "krus-ex10_18.htm",
+      "governing_law": "the laws of California",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "mnda-1110.pdf",
+      "governing_law": "the laws of the State of Georgia",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "nda-format-approved-by-legal-section.pdf",
+      "governing_law": "laws of India",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "nda_1.pdf",
+      "governing_law": "the laws of the State of California",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "nda_11.pdf",
+      "governing_law": "laws of England",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "nda_template_final.pdf",
+      "governing_law": "German law",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "non-disclosure-agreement-en.pdf",
+      "governing_law": "laws of Brazil; laws of the State of New York",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "non-disclosure-agreement_1.pdf",
+      "governing_law": "English law",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "non-disclosure-agreement_5.pdf",
+      "governing_law": "laws of the State of Minnesota",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "non-disclosure_201302814_english_.pdf",
+      "governing_law": "the laws of the Province of Ontario",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "non-disclosure_confidentiality_agreement.pdf",
+      "governing_law": "the substantive laws of the Republic of Austria",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "nue-ex10_xx.htm",
+      "governing_law": "the laws of, the State of North Carolina",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "nue-ex10_xxii.htm",
+      "governing_law": "the laws of, the State of North Carolina",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "nue-ex10_xxiv.htm",
+      "governing_law": "the laws of, the State of North Carolina",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "nue-ex10_xxxi.htm",
+      "governing_law": "the laws of, the State of North Carolina",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "nue-ex10_xxxiii.htm",
+      "governing_law": "the laws of, the State of North Carolina",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "nue-ex10_xxxv.htm",
+      "governing_law": "the laws of, the State of North Carolina",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "nue-ex10_xxxvii.htm",
+      "governing_law": "the laws of, the State of North Carolina",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "nydol_appendix-nda.pdf",
+      "governing_law": "not specified",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "partner_nda_en.pdf",
+      "governing_law": "the laws of Singapore",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "phat-ex10_1.htm",
+      "governing_law": "the laws of the United States of America and the State of Illinois",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "phat-ex10_2.htm",
+      "governing_law": "the laws of the United States of America and the State of New Jersey",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "phat-ex10_3.htm",
+      "governing_law": "the laws of the Commonwealth of Massachusetts",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "podd-exx1056_20231231x10k.htm",
+      "governing_law": "the laws of the State of Delaware",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "silk-20231231xex10_9.htm",
+      "governing_law": "if Your primary work location is Minnesota or any state other than California, this Agreement shall be governed by the laws of the State of Minnesota... If Your primary work location is California, this Agreement shall be governed by the law s of the State of California",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "sm-fm-14-01-rev-1-reciprocal-non-disclosure-agreement.pdf",
+      "governing_law": "the laws of the Commonwealth of Pennsylvania",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "standard_nda.pdf",
+      "governing_law": "the laws of India",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "tamu_tees_nda_template.pdf",
+      "governing_law": "the laws of the State of Texas",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "tm254711d1_ex10-1.htm",
+      "governing_law": "the laws of the State of Colorado",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "tm254711d1_ex10-2.htm",
+      "governing_law": "the laws of the State of Colorado",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "tm254711d1_ex10-3.htm",
+      "governing_law": "the laws of the State of Colorado",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "tpst-ex10_2.htm",
+      "governing_law": "the laws of California",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "tpst-ex10_3.htm",
+      "governing_law": "the laws of the State of California",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "tpst-ex10_4.htm",
+      "governing_law": "the laws of the State of California",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "tpst-ex10_5.htm",
+      "governing_law": "the laws of the State of California",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "tsn2025q4exh108.htm",
+      "governing_law": "applicable federal law and in the event reference shall be made to state law, the internal laws of the State of Arkansas",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "uconn_confidentiality_agreement.pdf",
+      "governing_law": "not specified",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "usac202410-kex1020.htm",
+      "governing_law": "THE VALIDITY, CONSTRUCTION, INTERPRETATION AND EFFECT OF THIS INSTRUMENT SHALL BE GOVERNED EXCLUSIVELY BY, AND DETERMINED IN ACCORDANCE WITH, THE LAW OF THE STATE OF DELAWARE (WITHOUT GIVING EFFECT TO THE CONFLICTS OF LAW PRINCIPLES THEREOF), EXCEPT TO THE EXTENT PRE-EMPTED BY FEDERAL LAW, WHICH SHALL GOVERN.",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "usac202410-kex1024.htm",
+      "governing_law": "THE VALIDITY, CONSTRUCTION, INTERPRETATION AND EFFECT OF THIS INSTRUMENT SHALL BE GOVERNED EXCLUSIVELY BY, AND DETERMINED IN ACCORDANCE WITH, THE LAW OF THE STATE OF DELAWARE (WITHOUT GIVING EFFECT TO THE CONFLICTS OF LAW PRINCIPLES THEREOF), EXCEPT TO THE EXTENT PRE-EMPTED BY FEDERAL LAW, WHICH SHALL GOVERN.",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "usac202410-kex106.htm",
+      "governing_law": "the laws of the State of Texas",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "usac202410-kex107.htm",
+      "governing_law": "the laws of the State of Texas",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "usac202410-kex108.htm",
+      "governing_law": "the laws of the State of Texas",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "uwsp_confidentiality_agreement.pdf",
+      "governing_law": "not specified",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "wu-ex10_36.htm",
+      "governing_law": "the laws of Italy",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "wu-ex10_37.htm",
+      "governing_law": "regulations of DDA and laws of the UAE as applied in the Emirate of Dubai",
+      "allows_single_archival_copy": false
+    }
+  ],
+  "elapsed_seconds": 1015.367,
+  "cost_usd": 9.3855309,
+  "total_tokens": 23304550
+}

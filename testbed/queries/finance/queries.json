@@ -1,0 +1,213 @@
+[
+  {
+    "task_id": "finance-001",
+    "operator_complexity": "easy",
+    "query": "Which three companies reporting in 2024 10-K filings have the largest employee counts among companies operating in a retail industry? Return each company's name, employee count, and specific retail subsector, ordered by employee count descending; break a tie at the cutoff by company name in alphabetical order and return exactly three companies."
+  },
+  {
+    "task_id": "finance-002",
+    "operator_complexity": "easy",
+    "query": "How are 2024 10-K filings distributed across fiscal year-end dates other than December 31? For each fiscal year-end date, report the date in MM-DD format and the number of filings, ordered by count descending and then by date ascending when counts are tied."
+  },
+  {
+    "task_id": "finance-003",
+    "operator_complexity": "easy",
+    "query": "Which five industry sectors have the highest average number of distinct risk factors in 2023 10-K filings? Considering only sectors with at least 10 filings whose risk-factor counts can be determined. Return each industry sector, its average risk-factor count rounded to one decimal, and its qualifying filing count. Order by the rounded average descending and then by industry sector alphabetically when averages are tied."
+  },
+  {
+    "task_id": "finance-004",
+    "operator_complexity": "easy",
+    "query": "For 2023 10-K filings exceeding 100,000 words, what is the distribution of primary revenue models? Return each revenue model category and its filing count."
+  },
+  {
+    "task_id": "finance-005",
+    "operator_complexity": "easy",
+    "query": "Among 2022 10-K filings, which three industry sectors with at least 20 filings have the highest proportion of filings expressing going-concern doubt? Treat case, separator, and synonymous naming variants of the same sector—such as blank-check/SPAC variants—as one sector. Rank by the unrounded proportion, break exact ties alphabetically by sector, and provide the sector, percentage rounded to one decimal place, and total filing count."
+  },
+  {
+    "task_id": "finance-006",
+    "operator_complexity": "easy",
+    "query": "In a standardized review of 2022 10-K filings that records at most eight distinct competitive-advantage themes and at most ten named subsidiaries per filing, which ten companies have at least six recorded advantages and at least eight recorded subsidiaries and rank highest by the sum of those capped counts? Rank by the combined count descending and break ties alphabetically by company name. If a company has multiple qualifying filings, use the one with the highest combined count, then the longest filing. Provide the company name, both recorded counts, and industry sector."
+  },
+  {
+    "task_id": "finance-007",
+    "operator_complexity": "easy",
+    "query": "What percentage of SEC 10-K filings mentioned artificial intelligence or machine learning in the context of the company's business, products, or strategy in each year from 2019 through 2024? Report the percentages to one decimal place in chronological order."
+  },
+  {
+    "task_id": "finance-008",
+    "operator_complexity": "easy",
+    "query": "What percentage of SEC 10-K filings expressed going-concern doubt in each year from 2019 through 2023? Report the percentages to one decimal place in chronological order."
+  },
+  {
+    "task_id": "finance-009",
+    "operator_complexity": "easy",
+    "query": "In a standardized review of 2023 10-K filings that records at most eight distinct competitive-advantage themes per filing, what percentage of filings described the company as a market leader among those with eight recorded advantages and among those with fewer than eight? Provide each group's filing count and percentage, rounded to one decimal place."
+  },
+  {
+    "task_id": "finance-010",
+    "operator_complexity": "easy",
+    "query": "How many 2023 10-K filings fell into each of four categories based on whether they mentioned ESG or sustainability topics and whether they mentioned AI/ML technologies: both, ESG or sustainability only, AI/ML only, or neither? Return the filing count for each category."
+  },
+  {
+    "task_id": "finance-011",
+    "operator_complexity": "easy",
+    "query": "How did 2023 10-K filings differ across the domestic-only, limited-international, and globally diversified geographic groups in their rates of foreign-currency risk, international operations, and litigation? For each group, provide its filing count and all three percentages rounded to one decimal place; exclude filings that cannot be assigned to one of the three groups."
+  },
+  {
+    "task_id": "finance-012",
+    "operator_complexity": "easy",
+    "query": "Which ten industry sectors had the largest increases in AI/ML-mentioning 10-K filings from 2022 to 2023, among sectors with at least 20 total filings in 2023 and a positive increase? For each sector, report its AI/ML-mentioning filing counts for both years and its total 2023 filing count. Rank by the increase descending and break ties alphabetically by industry sector."
+  },
+  {
+    "task_id": "finance-013",
+    "operator_complexity": "easy",
+    "query": "Across 2019 through 2023 10-K filings longer than 95,000 words, how many report having exactly zero employees?"
+  },
+  {
+    "task_id": "finance-014",
+    "operator_complexity": "easy",
+    "query": "Across 2020 through 2023 10-K filings longer than 90,000 words, how many are for companies whose fiscal year ends on a date other than December 31?"
+  },
+  {
+    "task_id": "finance-015",
+    "operator_complexity": "medium",
+    "query": "Which 10 companies have the longest 2024 10-K filings among those exceeding 50,000 words that describe operational use of artificial intelligence or machine learning and do not report substantial doubt about continuing as a going concern? Return each company's name, industry sector, and filing word count; break a tie at the cutoff by company name in alphabetical order."
+  },
+  {
+    "task_id": "finance-016",
+    "operator_complexity": "medium",
+    "query": "Which 10 industry sectors contain the most companies whose 2019 10-K filing mention neither 'artificial intelligence' nor 'machine learning', but whose 2023 filing mentions at least one? Count each company once, return the industry sector and company count, and order by count descending; break a tie at the cutoff by industry sector alphabetically."
+  },
+  {
+    "task_id": "finance-017",
+    "operator_complexity": "medium",
+    "query": "Which five companies have the longest 2022 10-K filings among companies that discuss environmental, social, or governance topics and do not describe substantive business operations outside the United States? Return each company's name, filing word count, and industry sector, ordered by word count descending; break a tie at the cutoff by company name in alphabetical order and return exactly five companies."
+  },
+  {
+    "task_id": "finance-018",
+    "operator_complexity": "medium",
+    "query": "For each primary revenue-model category represented in the 2023 10-K filings, what are the total filing count and the average reported employee count? Exclude filings whose revenue model cannot be determined, compute each average only from filings that disclose an employee count, and round it to the nearest whole employee."
+  },
+  {
+    "task_id": "finance-019",
+    "operator_complexity": "medium",
+    "query": "Which companies have at least one 10-K filing that describes them as a market leader in every year from 2019 through 2024? Provide each company's name and industry sector from its non-amended 2024 filing, sorted alphabetically by company name."
+  },
+  {
+    "task_id": "finance-020",
+    "operator_complexity": "medium",
+    "query": "How did Pharmaceutical and Software 10-K filings compare in 2023 in their rates of AI/ML mentions, going-concern doubt, international operations, and litigation? For each industry, provide its filing count and all four percentages rounded to one decimal place."
+  },
+  {
+    "task_id": "finance-021",
+    "operator_complexity": "medium",
+    "query": "Among companies with 10-K filings in both 2019 and 2023, what were the ten most common changes in primary revenue model between the two years? For duplicate CIK-year records, use the longest filing, and exclude companies whose model is undetermined in either year or unchanged. Rank transitions by company count descending, break ties alphabetically by transition, and provide the count for each."
+  },
+  {
+    "task_id": "finance-022",
+    "operator_complexity": "medium",
+    "query": "Across 2021 through 2023, how many 10-K filings longer than 90,000 words were filed by companies incorporated in one of the 50 U.S. states or the District of Columbia but headquartered outside the United States?"
+  },
+  {
+    "task_id": "finance-023",
+    "operator_complexity": "medium",
+    "query": "Across 2022 and 2023 10-K filings longer than 80,000 words, how many describe the company using artificial intelligence or machine learning in its business yet do not mention any environmental, social, or governance (ESG) topics?"
+  },
+  {
+    "task_id": "finance-024",
+    "operator_complexity": "medium",
+    "query": "Across 2019 through 2021 10-K filings longer than 80,000 words, how many state that the company has international operations but do not disclose any foreign currency risk?"
+  },
+  {
+    "task_id": "finance-025",
+    "operator_complexity": "hard",
+    "query": "Among 2019 10-K filings longer than 45,000 words, which ten companies describe international operations and dependence on a major customer but do not disclose foreign-currency risk, and report the largest employee counts? If the same company name appears more than once, keep the filing with the larger employee count, then the longer filing, then the higher CIK. Return company name, industry sector, and employee count; rank by employee count descending and break ties alphabetically by company name."
+  },
+  {
+    "task_id": "finance-026",
+    "operator_complexity": "hard",
+    "query": "Among 2020 10-K filings longer than 50,000 words that both report litigation or legal proceedings and express substantial doubt about continuing as a going concern, how do workforce size and risk-factor burden differ by stated growth strategy? For each growth-strategy category represented by at least ten filings, report the filing count, median reported employee count, and median total risk-factor count, rounding both medians to one decimal place and ignoring missing values separately. Order by filing count descending and then growth strategy alphabetically."
+  },
+  {
+    "task_id": "finance-027",
+    "operator_complexity": "hard",
+    "query": "Among 2021 10-K filings longer than 60,000 words that mention artificial intelligence or machine learning, which five combinations of primary revenue model and competitive position are most common when both categories can be determined? For each combination represented by at least ten filings, report the filing count, percentage mentioning environmental, social, or governance topics, and median total risk-factor count, rounding both numeric summaries to one decimal place. Rank by filing count descending, then revenue model and competitive position alphabetically."
+  },
+  {
+    "task_id": "finance-028",
+    "operator_complexity": "hard",
+    "query": "Which 10 industry sectors contain the most companies whose 2021 10-K filings report all three of the following conditions: a single customer accounting for at least 10% of revenue, pending litigation, and substantial doubt about continuing as a going concern? Count each company once, return the industry sector and company count, and order by count descending; break a tie at the cutoff by industry sector alphabetically."
+  },
+  {
+    "task_id": "finance-029",
+    "operator_complexity": "hard",
+    "query": "Which companies filed 10-K reports in both 2019 and 2023 and moved from a challenger position in 2019 to being described as a recognized industry leader in 2023? For each company, provide its name and 2023 industry sector."
+  },
+  {
+    "task_id": "finance-030",
+    "operator_complexity": "hard",
+    "query": "Among 2022 10-K filings longer than 60,000 words, which ten companies disclose both foreign-currency risk and major-customer concentration, describe an acquisition-driven or hybrid growth strategy, and report the broadest foreign operating footprints? Count distinct foreign countries after normalizing names and excluding the United States, and count distinct named subsidiaries. If the same company name appears more than once, keep the filing with the larger foreign-country count, then more subsidiaries, then greater word count, then the higher CIK. Return company name, industry sector, growth strategy, foreign-country count, and subsidiary count; rank by foreign-country count descending, then subsidiary count descending, then company name alphabetically."
+  },
+  {
+    "task_id": "finance-031",
+    "operator_complexity": "hard",
+    "query": "Among companies with 10-K filings in both 2019 and 2020, which ten 2020 industry sectors had the most companies whose filing newly included a pandemic or public-health risk factor that was absent in 2019? Select sectors by adopter count, breaking count ties alphabetically. Return each selected sector's adopter count and the adopters' signed mean change in total risk-factor count from 2019 to 2020, rounded to one decimal place; omit companies missing either annual count from the mean."
+  },
+  {
+    "task_id": "finance-032",
+    "operator_complexity": "hard",
+    "query": "Which companies filed 10-K reports in both 2019 and 2023 and moved from being described as an early-stage or emerging competitor in 2019 to a recognized industry leader in 2023? For each company, provide its 2023 industry sector and its reported employee counts for both years."
+  },
+  {
+    "task_id": "finance-033",
+    "operator_complexity": "hard",
+    "query": "Among companies with 10-K filings in both 2019 and 2023 and at least 1,000 employees in 2019, which five had the largest positive percentage change in employees and which five had the steepest percentage decline by 2023? Use explicitly disclosed company-wide headcounts rather than partial workforce figures or other numbers; for duplicate CIK-year records, treat the longest filing as primary. Calculate the change from the 2019 baseline, round it to one decimal place, and break percentage ties alphabetically by company name. For each selected company, provide both employee counts and the percentage change."
+  },
+  {
+    "task_id": "finance-034",
+    "operator_complexity": "hard",
+    "query": "Among 2023 10-K filings longer than 60,000 words, which ten companies report the largest number of risk factors while both disclosing foreign-currency or exchange-rate risk and describing their operations as exclusively domestic? Report the company name, industry sector, and risk-factor count. Rank by risk-factor count descending and break ties alphabetically by company name."
+  },
+  {
+    "task_id": "finance-035",
+    "operator_complexity": "hard",
+    "query": "Among 2023 10-K filings longer than 60,000 words that report litigation or legal proceedings and identify acquisition-integration risk, which ten companies with at least three merger or acquisition transactions have the largest reported workforces? Classify each company by competitive position. If the same company name appears more than once, keep the filing with the larger employee count, then more transactions, then greater word count, then the higher CIK. Return company name, industry sector, competitive position, employee count, and transaction count; rank by employee count descending and break ties alphabetically by company name."
+  },
+  {
+    "task_id": "finance-036",
+    "operator_complexity": "hard",
+    "query": "Among 2020 10-K filings longer than 55,000 words that identify climate-change risk, which ten companies report the largest total number of risk factors? For each company, provide its name, industry sector, entity type, stated growth strategy, and risk-factor count. If the same company name appears more than once, keep the filing with the larger risk-factor count, then greater word count, then the higher CIK. Rank by risk-factor count descending and break ties alphabetically by company name."
+  },
+  {
+    "task_id": "finance-037",
+    "operator_complexity": "hard",
+    "query": "Which ten companies moved from a domestic-only operating footprint with no foreign-currency-risk disclosure in a 2021 10-K to a globally diversified footprint with foreign-currency risk disclosed in 2023, considering filings longer than 60,000 words in both years? For each company, report its 2023 name, industry sector, growth strategy, and number of distinct foreign countries of operation after excluding the United States. If a CIK has multiple qualifying filings in a year, use the longest. Rank by foreign-country count descending and break ties alphabetically by company name."
+  },
+  {
+    "task_id": "finance-038",
+    "operator_complexity": "hard",
+    "query": "Among 2022 10-K filings longer than 65,000 words that both express substantial doubt about continuing as a going concern and describe international operations, how do workforce size and the dominant risk theme vary by determinable competitive position? For each position represented by at least ten filings, report the filing count, median reported employee count rounded to one decimal place, and most prevalent theme chosen from debt financing, regulatory compliance, litigation/legal, key personnel, customer concentration, intellectual property, and cybersecurity. Ignore missing employee counts, break theme ties alphabetically, and order positions by filing count descending and then alphabetically."
+  },
+  {
+    "task_id": "finance-039",
+    "operator_complexity": "hard",
+    "query": "Which software or technology-platform companies with a 2020 10-K longer than 50,000 words acquired, or agreed to acquire, a whole company in a different industry sector that can be identified, despite abbreviations or legal-name variants, as a different registrant with a 2019 10-K longer than 50,000 words? Exclude asset purchases, minority-stake investments, spin-offs, and SPAC or blank-check combinations. Report each acquirer, matched target, the target's 2019 industry sector, and its risk-factor count, with each acquirer-target pair appearing once."
+  },
+  {
+    "task_id": "finance-040",
+    "operator_complexity": "hard",
+    "query": "Which unordered pairs of distinct software-sector companies with 10-K filings were named as the two counterparties to the same whole-company merger or acquisition? Exclude asset purchases, minority-stake investments, spin-offs, going-private recapitalizations involving only one operating company, and SPAC or blank-check business combinations. Return each qualifying pair once, placing the two company names in case-insensitive alphabetical order within the pair."
+  },
+  {
+    "task_id": "finance-041",
+    "operator_complexity": "hard",
+    "query": "Which software or technology-platform companies with 10-K filings acquired, or agreed to acquire, a whole company in a different industry sector that also has a 10-K on file? Exclude asset purchases, minority-stake investments, spin-offs, and SPAC or blank-check business combinations. Report each acquirer, target, and the target's sector from its earliest available filing in the corpus, using the longest filing if that year contains duplicates. Return each acquirer-target pair once."
+  },
+  {
+    "task_id": "finance-042",
+    "operator_complexity": "hard",
+    "query": "Which companies with 10-K filings were named as a counterparty to a whole-company merger or acquisition with another 10-K filer and also disclosed a wholly-owned finance or funding subsidiary that files a separate 10-K? Exclude asset purchases, minority-stake investments, spin-offs, and SPAC or blank-check combinations. For each company, report the merger or acquisition counterparty and finance subsidiary; all three companies must be distinct. Return each qualifying triple once."
+  }
+]
+

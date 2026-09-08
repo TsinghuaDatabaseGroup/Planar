@@ -1,0 +1,50 @@
+{
+  "task_id": "vehicle_safety-035",
+  "answer": [
+    {
+      "campaign_number": "15V467000",
+      "matched_complaint_count": 9,
+      "related_report_ids": [
+        "txt_investigation_3bdfcfb782a215e2.txt",
+        "txt_investigation_47fd41935c989692.txt",
+        "txt_investigation_729d0ee36f89db3b.txt"
+      ],
+      "root_cause_phrase": "Overly sensitive side impact sensor calibration",
+      "odi_safety_conclusion": "Answer: Investigation closed due to lack of validated serious injuries and the implementation of an extended warranty program."
+    },
+    {
+      "campaign_number": "19V018000",
+      "matched_complaint_count": 1,
+      "related_report_ids": [
+        "txt_investigation_47fd41935c989692.txt"
+      ],
+      "root_cause_phrase": "Data mismatch between VIN-specific recall status and model-level recall listing",
+      "odi_safety_conclusion": "ODI closed the investigation after confirming recalls addressed all vehicles with demonstrated unreasonable risk, finding no defects in non-recalled models."
+    },
+    {
+      "campaign_number": "21V280000",
+      "matched_complaint_count": 7,
+      "related_report_ids": [
+        "txt_investigation_47fd41935c989692.txt"
+      ],
+      "root_cause_phrase": "Air bag deployment failure",
+      "odi_safety_conclusion": "Answer: Investigation closed as all vehicles with demonstrated unreasonable risk have been recalled."
+    },
+    {
+      "campaign_number": "24V198000",
+      "matched_complaint_count": 12,
+      "related_report_ids": [
+        "txt_investigation_1b079ec22d532228.txt",
+        "txt_investigation_47fd41935c989692.txt",
+        "txt_investigation_729d0ee36f89db3b.txt",
+        "txt_investigation_a6af87cc65c4685e.txt",
+        "txt_investigation_ef12d2cfbf020527.txt"
+      ],
+      "root_cause_phrase": "manufacturing defect",
+      "odi_safety_conclusion": "Answer: All vehicles with demonstrated unreasonable risk have been recalled, warranting closure of the investigation."
+    }
+  ],
+  "elapsed_seconds": 1056.09,
+  "cost_usd": 4.157648,
+  "total_tokens": 10329291
+}

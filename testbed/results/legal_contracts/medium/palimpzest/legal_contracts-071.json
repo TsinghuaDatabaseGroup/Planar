@@ -1,0 +1,312 @@
+{
+  "task_id": "legal_contracts-071",
+  "answer": [
+    {
+      "document_id": "1363033_0001144204-06-024852_v045245_ex10-8.htm",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 10,
+      "noncompete_duration_years": 10,
+      "governing_law": "Pennsylvania",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "1094814_0001140361-18-017998_s002178x1_ex99d7.htm",
+      "nda_direction": "mutual",
+      "confidentiality_term_years": 1,
+      "noncompete_duration_years": 1,
+      "governing_law": "Delaware",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "1335239_0001019687-14-003760_epazz_ex1034.htm",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 1,
+      "noncompete_duration_years": 1,
+      "governing_law": "State of Illinois",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "BaconNon-Disclosure.pdf",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 3,
+      "noncompete_duration_years": 3,
+      "governing_law": "Tennessee",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "814457_0000950137-04-009790_c89545exv99wxdyx6y.htm",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 2,
+      "noncompete_duration_years": 2,
+      "governing_law": "State of Illinois",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "GreenStorm%20NDCSC.pdf",
+      "nda_direction": "mutual",
+      "confidentiality_term_years": 7,
+      "noncompete_duration_years": 7,
+      "governing_law": "laws of the jurisdiction under which the respective companies are located",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "14803_0001047469-04-012846_a2134202zex-99_e3.htm",
+      "nda_direction": "mutual",
+      "confidentiality_term_years": 1.5,
+      "noncompete_duration_years": 1.5,
+      "governing_law": "State of Colorado",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "88190_0000950144-96-003474_document_2.txt",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 3,
+      "noncompete_duration_years": 3,
+      "governing_law": "State of New York",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "24104_0000024104-96-000010_document_3.txt",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 10,
+      "noncompete_duration_years": 10,
+      "governing_law": "State of Colorado",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "1689602_0001144204-16-140940_v455386_ex10-3.htm",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 2,
+      "noncompete_duration_years": 2,
+      "governing_law": "Commonwealth of Virginia",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "897730_0000950136-98-001457_document_7.txt",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 2,
+      "noncompete_duration_years": 1,
+      "governing_law": "Pennsylvania",
+      "duration_comparison": "confidentiality_term_longer"
+    },
+    {
+      "document_id": "25895_0000950134-07-023464_d51356exv10w1.htm",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 4,
+      "noncompete_duration_years": 4,
+      "governing_law": "Delaware",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "817516_0001014909-05-000102_exh99_4sept2005.txt",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 4,
+      "noncompete_duration_years": 4,
+      "governing_law": "Delaware",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "26820_0000936392-03-001111_a92217exv10w5.txt",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 2,
+      "noncompete_duration_years": 2,
+      "governing_law": "Delaware",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "918541_0001193125-14-328980_d785003dex105.htm",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 3,
+      "noncompete_duration_years": 3,
+      "governing_law": "Delaware",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "1043431_0000950133-00-000090_document_15.txt",
+      "nda_direction": "mutual",
+      "confidentiality_term_years": 2,
+      "noncompete_duration_years": 1,
+      "governing_law": "Commonwealth of Virginia",
+      "duration_comparison": "confidentiality_term_longer"
+    },
+    {
+      "document_id": "930796_0000950123-05-001407_y05539exv99w5.txt",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 1.5,
+      "noncompete_duration_years": 1.5,
+      "governing_law": "New York State",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "931784_0001104659-07-068716_a07-23871_1ex2.htm",
+      "nda_direction": "mutual",
+      "confidentiality_term_years": 2,
+      "noncompete_duration_years": 1,
+      "governing_law": "New York",
+      "duration_comparison": "confidentiality_term_longer"
+    },
+    {
+      "document_id": "935703_0001047469-98-030238_document_4.txt",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 5,
+      "noncompete_duration_years": 5,
+      "governing_law": "California",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "703361_0001193125-12-242586_d356019dex9910.htm",
+      "nda_direction": "mutual",
+      "confidentiality_term_years": 1,
+      "noncompete_duration_years": 1,
+      "governing_law": "State of California",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "1068874_0001068874-07-000012_ex10_2.htm",
+      "nda_direction": "mutual",
+      "confidentiality_term_years": 5,
+      "noncompete_duration_years": 5,
+      "governing_law": "Massachusetts",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "770461_0001144204-05-023830_v022988_ex10-6.txt",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 2,
+      "noncompete_duration_years": 2,
+      "governing_law": "New York",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "799485_0000950136-00-001643_0013.txt",
+      "nda_direction": "mutual",
+      "confidentiality_term_years": 2,
+      "noncompete_duration_years": 2,
+      "governing_law": "Maryland",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "JB-Machine-LLC-NDA-1.pdf",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 2,
+      "noncompete_duration_years": 2,
+      "governing_law": "US State of Florida Law",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "dal9302024ex101.htm",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 5,
+      "noncompete_duration_years": 1,
+      "governing_law": "Georgia",
+      "duration_comparison": "confidentiality_term_longer"
+    },
+    {
+      "document_id": "ea023506301_ex10-3.htm",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 2,
+      "noncompete_duration_years": 1,
+      "governing_law": "Arizona",
+      "duration_comparison": "confidentiality_term_longer"
+    },
+    {
+      "document_id": "ea023506301_ex10-1.htm",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 2,
+      "noncompete_duration_years": 1,
+      "governing_law": "Arizona",
+      "duration_comparison": "confidentiality_term_longer"
+    },
+    {
+      "document_id": "ea023506301_ex10-4.htm",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 2,
+      "noncompete_duration_years": 1,
+      "governing_law": "Arizona",
+      "duration_comparison": "confidentiality_term_longer"
+    },
+    {
+      "document_id": "ea023506301_ex10-2.htm",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 2,
+      "noncompete_duration_years": 1,
+      "governing_law": "Arizona",
+      "duration_comparison": "confidentiality_term_longer"
+    },
+    {
+      "document_id": "e6756_ex10-6.htm",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 3,
+      "noncompete_duration_years": 2,
+      "governing_law": "the State of Georgio",
+      "duration_comparison": "confidentiality_term_longer"
+    },
+    {
+      "document_id": "nue-ex10_xxxiii.htm",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 3.5,
+      "noncompete_duration_years": 3.5,
+      "governing_law": "State of North Carolina",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "voorheesemploymentagreement.htm",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 3,
+      "noncompete_duration_years": 1,
+      "governing_law": "State of Washington",
+      "duration_comparison": "confidentiality_term_longer"
+    },
+    {
+      "document_id": "stra-20231231xex1013.htm",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 3,
+      "noncompete_duration_years": 1,
+      "governing_law": "State of Maryland",
+      "duration_comparison": "confidentiality_term_longer"
+    },
+    {
+      "document_id": "idxx2024q310-qexhibit101.htm",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 2,
+      "noncompete_duration_years": 2,
+      "governing_law": "State of Maine",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "exhibit1022.htm",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 2,
+      "noncompete_duration_years": 1,
+      "governing_law": "State of Texas",
+      "duration_comparison": "confidentiality_term_longer"
+    },
+    {
+      "document_id": "exhibit1012-consultingagre.htm",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 7,
+      "noncompete_duration_years": 0.5,
+      "governing_law": "State of California",
+      "duration_comparison": "confidentiality_term_longer"
+    },
+    {
+      "document_id": "trin-ex10_7.htm",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 2,
+      "noncompete_duration_years": 1,
+      "governing_law": "Arizona",
+      "duration_comparison": "confidentiality_term_longer"
+    },
+    {
+      "document_id": "v71961toex99-d3.txt",
+      "nda_direction": "mutual",
+      "confidentiality_term_years": 1.25,
+      "noncompete_duration_years": 2,
+      "governing_law": "State of Texas",
+      "duration_comparison": "noncompete_duration_longer"
+    }
+  ],
+  "elapsed_seconds": 2717.0,
+  "cost_usd": 4.519628,
+  "total_tokens": 8585955
+}

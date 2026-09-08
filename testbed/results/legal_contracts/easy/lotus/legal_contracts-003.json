@@ -1,0 +1,43 @@
+{
+  "task_id": "legal_contracts-003",
+  "answer": [
+    {
+      "document_id": "cdna-20250630x10qxexx311.htm",
+      "certifying_officers": [
+        "John W. Hanna"
+      ],
+      "reporting_period_type": "quarterly"
+    },
+    {
+      "document_id": "ef20050389_ex31-1.htm",
+      "certifying_officers": [
+        "George Magrath"
+      ],
+      "reporting_period_type": "quarterly"
+    },
+    {
+      "document_id": "ef20050389_ex31-2.htm",
+      "certifying_officers": [
+        "Amy Rabourn"
+      ],
+      "reporting_period_type": "quarterly"
+    },
+    {
+      "document_id": "exhibit31-1q22025.htm",
+      "certifying_officers": [
+        "Eric Risser"
+      ],
+      "reporting_period_type": "quarterly"
+    },
+    {
+      "document_id": "exhibit31-2q22025.htm",
+      "certifying_officers": [
+        "James Karrels"
+      ],
+      "reporting_period_type": "quarterly"
+    }
+  ],
+  "elapsed_seconds": 483.77,
+  "cost_usd": 4.117279,
+  "total_tokens": 7725350
+}

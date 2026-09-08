@@ -1,0 +1,44 @@
+{
+  "task_id": "legal_contracts-034",
+  "answer": [
+    {
+      "document_name": "1068874_0001068874-07-000012_ex10_2.htm",
+      "governing_law": "Massachusetts"
+    },
+    {
+      "document_name": "1473637_0001432093-12-000764_ex10-34.htm",
+      "governing_law": "Province of Ontario"
+    },
+    {
+      "document_name": "917253_0000917253-00-000008_document_8.txt",
+      "governing_law": "South Carolina"
+    },
+    {
+      "document_name": "Dealer-Pay-NDA-4.pdf",
+      "governing_law": "Missouri"
+    },
+    {
+      "document_name": "NDA-Dollar-General-Portfolio.pdf",
+      "governing_law": "California"
+    },
+    {
+      "document_name": "O00216-000899A.pdf",
+      "governing_law": "California"
+    },
+    {
+      "document_name": "Proctor_Agreement.pdf",
+      "governing_law": "England and Wales"
+    },
+    {
+      "document_name": "e6756_ex10-6.htm",
+      "governing_law": "Georgia"
+    },
+    {
+      "document_name": "resolution-2012-03-014r.pdf",
+      "governing_law": "Illinois"
+    }
+  ],
+  "elapsed_seconds": 652.278,
+  "cost_usd": 3.93743574,
+  "total_tokens": 9432606
+}

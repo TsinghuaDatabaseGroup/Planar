@@ -1,0 +1,32 @@
+{
+  "task_id": "aviation_safety-020",
+  "answer": [
+    {
+      "disruption_reason": "predeparture_component_discrepancy",
+      "incident_count": 108
+    },
+    {
+      "disruption_reason": "mel_or_deferred_item",
+      "incident_count": 69
+    },
+    {
+      "disruption_reason": "maintenance_documentation_or_release",
+      "incident_count": 66
+    },
+    {
+      "disruption_reason": "inflight_component_or_system_problem",
+      "incident_count": 770
+    },
+    {
+      "disruption_reason": "postflight_inspection_or_repair",
+      "incident_count": 16
+    },
+    {
+      "disruption_reason": "not_target",
+      "incident_count": 21
+    }
+  ],
+  "elapsed_seconds": 990.99,
+  "cost_usd": 2.675078,
+  "total_tokens": 4422130
+}

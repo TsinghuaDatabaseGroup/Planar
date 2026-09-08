@@ -1,0 +1,151 @@
+datasets:
+  nhtsa_investigation_reports:
+    type: file
+    path: data/nhtsa_vehicle_safety/investigation_reports/*.txt
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: classify_closed_investigation_status
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether this NHTSA report indicates that the investigation itself
+      is closed, concluded, ended, completed, denied with no further investigation,
+      or otherwise formally terminated.
+
+      A word such as "closed" referring only to a road, dealership, component,
+      comment period, or another unrelated object does not qualify. Base the answer
+      on the investigation-status language in the report.
+
+      Investigation report:
+      {{ input.body }}
+    output:
+      mode: structured_output
+      schema:
+        investigation_is_closed: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: extract_normalized_recall_numbers
+    type: map
+    optimize: true
+    prompt: |
+      Extract every NHTSA recall campaign number explicitly cited in this
+      investigation report. Do not extract investigation numbers, complaint
+      numbers, dates, statutory citations, service campaign identifiers, or other
+      numbers.
+
+      Normalize each recall number to the long form YYV######:
+      - remove spaces and hyphens and use an uppercase V;
+      - when the numeric part after V has three digits, append 000;
+      - when it already has six digits, retain all six digits.
+
+      Examples of normalization:
+      - 12V-491 becomes 12V491000
+      - 23V085 becomes 23V085000
+      - 23V085000 remains 23V085000
+
+      Return each normalized recall number at most once, preserving first-mention
+      order. Return an empty list when no NHTSA recall number is cited.
+
+      Investigation report:
+      {{ input.body }}
+    output:
+      mode: structured_output
+      schema:
+        cited_recall_numbers: list[string]
+    validate:
+      - len(output["cited_recall_numbers"]) == len(set(output["cited_recall_numbers"]))
+      - all([len(value) == 9 and value[:2].isdigit() and value[2] == "V" and value[3:].isdigit() for value in output["cited_recall_numbers"]])
+    num_retries_on_validate_failure: 2
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: keep_reports_with_cited_recalls
+    type: code_filter
+    code: |
+      def transform(doc):
+          return len(doc.get("cited_recall_numbers") or []) >= 1
+
+  - name: classify_primary_defect_topic
+    type: map
+    optimize: true
+    prompt: |
+      Classify the primary defect topic of this NHTSA investigation report using
+      exactly one label:
+
+      - steering: steering control, steering linkage, steering assist, or direction;
+      - braking: service brakes, parking brakes, brake control, or stopping ability;
+      - airbag: airbags, inflators, deployment, or occupant-restraint airbag systems;
+      - electrical: wiring, battery electrical systems, circuits, or electrical faults;
+      - powertrain: engine, transmission, drivetrain, propulsion, or motive power;
+      - other: none of the preceding topics is the report's primary defect topic.
+
+      Choose the report's main investigated defect, not a secondary consequence,
+      remedy, or briefly mentioned component.
+
+      Investigation report:
+      {{ input.body }}
+    output:
+      mode: structured_output
+      schema:
+        defect_topic: enum[steering, braking, airbag, electrical, powertrain, other]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: project_closed_report_columns
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "file_id": doc.get("file_id"),
+              "primary_topic": doc.get("defect_topic"),
+              "cited_recall_numbers": doc.get("cited_recall_numbers") or [],
+          }
+
+pipeline:
+  steps:
+    - name: closed_investigation_topics
+      input: nhtsa_investigation_reports
+      operations:
+        - classify_closed_investigation_status
+        - extract_normalized_recall_numbers
+        - keep_reports_with_cited_recalls
+        - classify_primary_defect_topic
+        - project_closed_report_columns
+  output:
+    type: file
+    path: raw_outputs/vehicle_safety/output_vehicle_safety-019.json

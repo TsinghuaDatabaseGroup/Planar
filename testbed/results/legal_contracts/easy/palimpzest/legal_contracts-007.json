@@ -1,0 +1,14 @@
+{
+  "task_id": "legal_contracts-007",
+  "answer": [
+    {"document_id": "a2023q4voyaex191voyafinanc.htm", "company_name": "Voya Financial"},
+    {"document_id": "a2024q4voyaex191tradingpol.htm", "company_name": "Voya Financial"},
+    {"document_id": "annx-ex19_1.htm", "company_name": "ANNEXON, Inc."},
+    {"document_id": "avah-ex19_1.htm", "company_name": "Aveanna Healthcare Holdings Inc."},
+    {"document_id": "cuz-exhibit194q24.htm", "company_name": "Cousins Properties Incorporated"},
+    {"document_id": "d917002dex19.htm", "company_name": "Marblegate Acquisition Corp."}
+  ],
+  "elapsed_seconds": 543.84,
+  "cost_usd": 0.660797,
+  "total_tokens": 1250565
+}

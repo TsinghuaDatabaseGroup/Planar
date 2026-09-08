@@ -1,0 +1,18 @@
+{
+  "task_id": "finance-036",
+  "answer": [
+    {"company_name": "South State Corporation", "industry_sector": "Financial Services", "entity_type": "Corporation", "growth_strategy": "Hybrid", "risk_factor_count": 73},
+    {"company_name": "Yum China Holdings, Inc.", "industry_sector": "Restaurants", "entity_type": "Corporation", "growth_strategy": "Hybrid", "risk_factor_count": 63},
+    {"company_name": "Goldman Sachs BDC, Inc.", "industry_sector": "Specialty Finance", "entity_type": "Business Development Company", "growth_strategy": "Hybrid", "risk_factor_count": 58},
+    {"company_name": "Anworth Mortgage Asset Corporation", "industry_sector": "Real Estate Investment Trust", "entity_type": "Corporation", "growth_strategy": "Hybrid", "risk_factor_count": 54},
+    {"company_name": "HC2 Holdings, Inc.", "industry_sector": "Diversified Holding Company", "entity_type": "Corporation", "growth_strategy": "Hybrid", "risk_factor_count": 54},
+    {"company_name": "EnLink Midstream, LLC", "industry_sector": "Energy", "entity_type": "Limited Liability Company", "growth_strategy": "acquisition_driven", "risk_factor_count": 52},
+    {"company_name": "ViewRay, Inc.", "industry_sector": "Medical Devices", "entity_type": "Corporation", "growth_strategy": "market_expansion", "risk_factor_count": 48},
+    {"company_name": "Cowen Inc.", "industry_sector": "Financial Services", "entity_type": "Corporation", "growth_strategy": "acquisition_driven", "risk_factor_count": 46},
+    {"company_name": "New Mountain Finance Corporation", "industry_sector": "Financial Services", "entity_type": "Corporation", "growth_strategy": "Hybrid", "risk_factor_count": 46},
+    {"company_name": "Boston Properties, Inc.", "industry_sector": "Real Estate", "entity_type": "Corporation", "growth_strategy": "Hybrid", "risk_factor_count": 45}
+  ],
+  "elapsed_seconds": 3068.59,
+  "cost_usd": 35.178027,
+  "total_tokens": 88899467
+}

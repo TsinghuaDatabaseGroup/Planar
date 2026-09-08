@@ -1,0 +1,76 @@
+{
+  "task_id": "finance-019",
+  "answer": [
+    {
+      "company_name": "Cavco Industries, Inc.",
+      "industry": "Manufactured Housing"
+    },
+    {
+      "company_name": "Cirrus Logic, Inc.",
+      "industry": "Semiconductors"
+    },
+    {
+      "company_name": "Daktronics, Inc.",
+      "industry": "Electronic Display Systems"
+    },
+    {
+      "company_name": "Dycom Industries, Inc.",
+      "industry": "Specialty Contracting Services"
+    },
+    {
+      "company_name": "Eagle Materials Inc.",
+      "industry": "Construction Materials"
+    },
+    {
+      "company_name": "Electronic Arts Inc.",
+      "industry": "Digital Interactive Entertainment"
+    },
+    {
+      "company_name": "HealthEquity, Inc.",
+      "industry": "Financial Services"
+    },
+    {
+      "company_name": "Helen of Troy Limited",
+      "industry": "Consumer Products"
+    },
+    {
+      "company_name": "L Brands, Inc.",
+      "industry": "Specialty Retail"
+    },
+    {
+      "company_name": "Lands' End, Inc.",
+      "industry": "Retail"
+    },
+    {
+      "company_name": "Ross Stores, Inc.",
+      "industry": "Retail"
+    },
+    {
+      "company_name": "Science Applications International Corporation",
+      "industry": "Technical, Engineering and Enterprise Information Technology Services"
+    },
+    {
+      "company_name": "Sonoma Pharmaceuticals, Inc.",
+      "industry": "Pharmaceuticals"
+    },
+    {
+      "company_name": "Tel-Instrument Electronics Corp.",
+      "industry": "Aerospace and Defense"
+    },
+    {
+      "company_name": "The Company",
+      "industry": "Small-loan consumer finance"
+    },
+    {
+      "company_name": "Titan Machinery Inc.",
+      "industry": "Agricultural and Construction Equipment"
+    },
+    {
+      "company_name": "Zumiez Inc.",
+      "industry": "Specialty Retail"
+    }
+  ],
+  "elapsed_seconds": 459.859,
+  "cost_usd": 1.80739359,
+  "total_tokens": 4470499
+}

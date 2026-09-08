@@ -1,0 +1,212 @@
+{
+  "task_id": "vehicle_safety-033",
+  "answer": [
+    {
+      "complaint_id": "complaint_10918622",
+      "campaign_number": "21V504000",
+      "days_between": 1536,
+      "defect_root_cause": "Roof-rail air bag inflator end cap detachment or rupture"
+    },
+    {
+      "complaint_id": "complaint_11112485",
+      "campaign_number": "22V413000",
+      "days_between": 1540,
+      "defect_root_cause": "Shifter cable bushing may degrade or detach"
+    },
+    {
+      "complaint_id": "complaint_11424739",
+      "campaign_number": "26V378000",
+      "days_between": 1880,
+      "defect_root_cause": "Incorrectly repaired transmission output shaft speed sensor signal loss"
+    },
+    {
+      "complaint_id": "complaint_11421240",
+      "campaign_number": "26V378000",
+      "days_between": 1907,
+      "defect_root_cause": "Incorrectly repaired transmission output shaft speed sensor signal loss"
+    },
+    {
+      "complaint_id": "complaint_11001403",
+      "campaign_number": "22V150000",
+      "days_between": 1956,
+      "defect_root_cause": "Brake master cylinder fluid leak into brake booster"
+    },
+    {
+      "complaint_id": "complaint_10970121",
+      "campaign_number": "22V150000",
+      "days_between": 2040,
+      "defect_root_cause": "Brake master cylinder fluid leak into brake booster"
+    },
+    {
+      "complaint_id": "complaint_11109618",
+      "campaign_number": "22V150000",
+      "days_between": 1582,
+      "defect_root_cause": "Brake master cylinder fluid leak into brake booster"
+    },
+    {
+      "complaint_id": "complaint_11109618",
+      "campaign_number": "25V236000",
+      "days_between": 2679,
+      "defect_root_cause": "Brake master cylinder fluid leak into brake booster"
+    },
+    {
+      "complaint_id": "complaint_10882742",
+      "campaign_number": "26V307000",
+      "days_between": 3601,
+      "defect_root_cause": "Driver's air bag inflator may rupture during deployment"
+    },
+    {
+      "complaint_id": "complaint_10946816",
+      "campaign_number": "26V307000",
+      "days_between": 3402,
+      "defect_root_cause": "Driver's air bag inflator may rupture during deployment"
+    },
+    {
+      "complaint_id": "complaint_11339784",
+      "campaign_number": "25V236000",
+      "days_between": 1937,
+      "defect_root_cause": "Brake master cylinder fluid leak into brake booster"
+    },
+    {
+      "complaint_id": "complaint_11208389",
+      "campaign_number": "25V236000",
+      "days_between": 2362,
+      "defect_root_cause": "Brake master cylinder fluid leak into brake booster"
+    },
+    {
+      "complaint_id": "complaint_11163228",
+      "campaign_number": "25V236000",
+      "days_between": 2508,
+      "defect_root_cause": "Brake master cylinder fluid leak into brake booster"
+    },
+    {
+      "complaint_id": "complaint_11365925",
+      "campaign_number": "25V442000",
+      "days_between": 1708,
+      "defect_root_cause": "Software error causes rearview camera display failure"
+    },
+    {
+      "complaint_id": "complaint_10906014",
+      "campaign_number": "26V307000",
+      "days_between": 3531,
+      "defect_root_cause": "Driver's air bag inflator may rupture during deployment"
+    },
+    {
+      "complaint_id": "complaint_11426742",
+      "campaign_number": "25V467000",
+      "days_between": 1564,
+      "defect_root_cause": "Fuel injector may crack and leak fuel"
+    },
+    {
+      "complaint_id": "complaint_11114328",
+      "campaign_number": "23V734000",
+      "days_between": 1628,
+      "defect_root_cause": "Improperly fitting replacement 12-volt batteries causing short circuits"
+    },
+    {
+      "complaint_id": "complaint_11103656",
+      "campaign_number": "23V010000",
+      "days_between": 1668,
+      "defect_root_cause": "Internal transmission wiring connector short circuit"
+    },
+    {
+      "complaint_id": "complaint_10928584",
+      "campaign_number": "24V196000",
+      "days_between": 2662,
+      "defect_root_cause": "Debris contamination causing clockspring failure"
+    },
+    {
+      "complaint_id": "complaint_11192444",
+      "campaign_number": "23V411000",
+      "days_between": 1591,
+      "defect_root_cause": "Crankshaft position sensor tone wheel delamination"
+    },
+    {
+      "complaint_id": "complaint_11279814",
+      "campaign_number": "25V298000",
+      "days_between": 2092,
+      "defect_root_cause": "Improperly connected driver's side air bag"
+    },
+    {
+      "complaint_id": "complaint_11340731",
+      "campaign_number": "25V298000",
+      "days_between": 1841,
+      "defect_root_cause": "Improperly connected driver's side air bag"
+    },
+    {
+      "complaint_id": "complaint_11394876",
+      "campaign_number": "25V298000",
+      "days_between": 1642,
+      "defect_root_cause": "Improperly connected driver's side air bag"
+    },
+    {
+      "complaint_id": "complaint_11329424",
+      "campaign_number": "25V298000",
+      "days_between": 1875,
+      "defect_root_cause": "Improperly connected driver's side air bag"
+    },
+    {
+      "complaint_id": "complaint_11331097",
+      "campaign_number": "25V298000",
+      "days_between": 1866,
+      "defect_root_cause": "Improperly connected driver's side air bag"
+    },
+    {
+      "complaint_id": "complaint_11255177",
+      "campaign_number": "25V298000",
+      "days_between": 2154,
+      "defect_root_cause": "Improperly connected driver's side air bag"
+    },
+    {
+      "complaint_id": "complaint_11319766",
+      "campaign_number": "25V298000",
+      "days_between": 1954,
+      "defect_root_cause": "Improperly connected driver's side air bag"
+    },
+    {
+      "complaint_id": "complaint_11337818",
+      "campaign_number": "25V298000",
+      "days_between": 1855,
+      "defect_root_cause": "Improperly connected driver's side air bag"
+    },
+    {
+      "complaint_id": "complaint_11130318",
+      "campaign_number": "23V010000",
+      "days_between": 1580,
+      "defect_root_cause": "Internal transmission wiring connector short circuit"
+    },
+    {
+      "complaint_id": "complaint_10818332",
+      "campaign_number": "22V612000",
+      "days_between": 2467,
+      "defect_root_cause": "Faulty shift lever assembly prevents locking"
+    },
+    {
+      "complaint_id": "complaint_11396939",
+      "campaign_number": "25V274000",
+      "days_between": 1525,
+      "defect_root_cause": "Manufacturing defects in connecting rod and/or crankshaft components"
+    },
+    {
+      "complaint_id": "complaint_10896135",
+      "campaign_number": "24V196000",
+      "days_between": 2768,
+      "defect_root_cause": "Debris contamination causing clockspring failure"
+    },
+    {
+      "complaint_id": "complaint_11376005",
+      "campaign_number": "25V741000",
+      "days_between": 1802,
+      "defect_root_cause": "High voltage battery internal failure causing fire"
+    },
+    {
+      "complaint_id": "complaint_11403621",
+      "campaign_number": "25V741000",
+      "days_between": 1687,
+      "defect_root_cause": "High voltage battery internal failure causing fire"
+    }
+  ],
+  "elapsed_seconds": 313.164,
+  "cost_usd": 0.41012091,
+  "total_tokens": 518730
+}

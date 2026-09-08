@@ -1,0 +1,352 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: https://llm-endpoint.example/v1
+default_embedding_api_base: https://llm-endpoint.example/v1
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: https://llm-endpoint.example/v1
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types:
+    - chunk
+    - proj_synthesis
+    - glean
+  equijoin:
+    target_recall: 0.95
+operations:
+- name: filter_aircraft_primary_incidents
+  type: code_filter
+  code: "def transform(doc):\n    return doc.get(\"primary_problem\") == \"Aircraft\"\n"
+- name: load_asrs_narrative
+  type: code_map
+  code: "def transform(doc):\n    import os\n\n    base_dir = os.path.abspath(os.path.join(\"data\", \"\
+    asrs\"))\n    text_path = os.path.abspath(\n        os.path.join(base_dir, str(doc.get(\"text_file\"\
+    , \"\")))\n    )\n    if os.path.commonpath([base_dir, text_path]) != base_dir:\n        raise ValueError(\"\
+    ASRS text path escapes data/asrs\")\n    with open(text_path, \"r\", encoding=\"utf-8\", errors=\"\
+    replace\") as handle:\n        text = handle.read()\n    return {\"text\": text}\n"
+- name: filter_maintenance_decision_causal_chain
+  type: filter
+  optimize: true
+  prompt: 'Keep this NASA ASRS report only when its narrative explicitly connects an
+
+    earlier maintenance deferral or release-to-service decision to a later
+
+    component discrepancy.
+
+
+    The report must identify both the earlier maintenance decision and the later
+
+    discrepancy, with a clear temporal and causal connection. Exclude reports
+
+    where maintenance and a discrepancy merely co-occur, the maintenance action
+
+    happened only after discovery, or the connection is speculative.
+
+
+    Narrative:
+
+    {{ input.text }}
+
+    '
+  output:
+    mode: structured_output
+    schema:
+      is_match: boolean
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 64
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: filter_clear_discovery_phase
+  type: filter
+  optimize: true
+  prompt: "This report has already been found to contain a maintenance-decision causal\nchain. Keep it\
+    \ only when the narrative clearly places discovery of the later\ncomponent discrepancy in exactly\
+    \ one of these phases:\n\n- before_departure: before takeoff, including preflight, gate, startup,\
+    \ or\n  taxi before departure;\n- after_takeoff: after becoming airborne and before landing;\n- after_landing:\
+    \ after touchdown, during shutdown, or in postflight activity.\n\nExclude reports whose discovery\
+    \ time is absent, ambiguous between phases, or\nrefers only to discovery of the earlier maintenance\
+    \ issue.\n\nNarrative:\n{{ input.text }}\n"
+  output:
+    mode: structured_output
+    schema:
+      is_match: boolean
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 64
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: extract_maintenance_chain
+  type: map
+  optimize: true
+  prompt: "Extract the explicitly connected maintenance causal chain from this NASA ASRS\nreport. Return:\n\
+    \n- earlier_decision: the earlier deferral or release-to-service decision;\n- affected_item: the component\
+    \ or item governed by that decision;\n- later_discrepancy: the later component discrepancy;\n- operational_effect:\
+    \ the resulting operational consequence;\n- discovery_phase: exactly before_departure, after_takeoff,\
+    \ or after_landing,\n  based on when the later discrepancy was discovered.\n\nKeep each free-text\
+    \ field to a concise phrase of at most eight words. Extract\nthe causal sequence stated in the narrative\
+    \ without assigning a chain category\nin this step.\n\nIncident ID: {{ input.incident_id }}\nNarrative:\n\
+    {{ input.text }}\n"
+  output:
+    mode: structured_output
+    schema:
+      earlier_decision: string
+      affected_item: string
+      later_discrepancy: string
+      operational_effect: string
+      discovery_phase: enum[before_departure, after_takeoff, after_landing]
+  validate:
+  - 1 <= len(output["earlier_decision"].split()) <= 8
+  - 1 <= len(output["affected_item"].split()) <= 8
+  - 1 <= len(output["later_discrepancy"].split()) <= 8
+  - 1 <= len(output["operational_effect"].split()) <= 8
+  num_retries_on_validate_failure: 2
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 256
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: classify_maintenance_chain
+  type: map
+  optimize: true
+  prompt: "Assign exactly one chain_category to this maintenance causal chain:\n\n- deferred_item_recurred:\
+    \ a known item or discrepancy was deferred and the\n  same item/discrepancy later recurred;\n- released_item_failed:\
+    \ the item was returned or released to service as\n  acceptable or repaired and then failed or showed\
+    \ a later discrepancy;\n- incomplete_repair_or_signoff: incomplete, incorrect, or omitted repair,\n\
+    \  inspection, documentation, or signoff directly led to the discrepancy;\n- maintenance_limitation_escalated:\
+    \ a known maintenance limitation,\n  restriction, temporary condition, or degraded capability was\
+    \ accepted and\n  later escalated into a more consequential discrepancy.\n\nClassify the primary causal\
+    \ chain rather than the later operational response.\nUse the narrative to distinguish a simple recurrence\
+    \ or post-release failure\nfrom an incomplete repair/signoff or an escalating accepted limitation.\n\
+    \nEARLIER DECISION: {{ input.earlier_decision }}\nAFFECTED ITEM: {{ input.affected_item }}\nLATER\
+    \ DISCREPANCY: {{ input.later_discrepancy }}\nOPERATIONAL EFFECT: {{ input.operational_effect }}\n\
+    NARRATIVE:\n{{ input.text }}\n"
+  output:
+    mode: structured_output
+    schema:
+      chain_category: enum[deferred_item_recurred, released_item_failed, incomplete_repair_or_signoff,
+        maintenance_limitation_escalated]
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 64
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: attach_maintenance_status
+  type: code_map
+  code: "import csv\nimport os\nimport threading\n\n_maintenance_status_index = None\n_maintenance_status_lock\
+    \ = threading.Lock()\n_deferred_flag = \"maintenance_status_maintenance_deferred\"\n_released_flag\
+    \ = \"maintenance_status_released_for_service\"\n\ndef load_maintenance_status_index():\n    global\
+    \ _maintenance_status_index\n    if _maintenance_status_index is None:\n        with _maintenance_status_lock:\n\
+    \            if _maintenance_status_index is None:\n                flags = {}\n                path\
+    \ = os.path.abspath(\n                    os.path.join(\"data\", \"asrs\", \"aircraft_attributes.csv\"\
+    )\n                )\n                with open(\n                    path, \"r\", encoding=\"utf-8\"\
+    , errors=\"replace\", newline=\"\"\n                ) as handle:\n                    for row in csv.DictReader(handle):\n\
+    \                        attribute = row.get(\"attribute\")\n                        if (\n      \
+    \                      attribute not in {_deferred_flag, _released_flag}\n                       \
+    \     or row.get(\"value\") != \"Y\"\n                        ):\n                            continue\n\
+    \                        incident_id = str(row.get(\"incident_id\", \"\"))\n                     \
+    \   if incident_id:\n                            flags.setdefault(incident_id, set()).add(attribute)\n\
+    \n                index = {}\n                for incident_id, values in flags.items():\n        \
+    \            if _deferred_flag in values and _released_flag in values:\n                        status\
+    \ = \"both\"\n                    elif _deferred_flag in values:\n                        status =\
+    \ \"deferred\"\n                    else:\n                        status = \"released_to_service\"\
+    \n                    index[incident_id] = status\n                _maintenance_status_index = index\n\
+    \    return _maintenance_status_index\n\ndef transform(doc):\n    return {\n        \"maintenance_status\"\
+    : load_maintenance_status_index().get(\n            str(doc.get(\"incident_id\", \"\"))\n        )\n\
+    \    }\n"
+- name: inner_join_maintenance_status
+  type: code_filter
+  code: "def transform(doc):\n    return doc.get(\"maintenance_status\") in {\n        \"deferred\",\n\
+    \        \"released_to_service\",\n        \"both\",\n    }\n"
+- name: attach_structured_component_records
+  type: code_map
+  code: "import csv\nimport os\nimport threading\n\n_structured_component_index = None\n_structured_component_lock\
+    \ = threading.Lock()\n\ndef load_structured_component_index():\n    global _structured_component_index\n\
+    \    if _structured_component_index is None:\n        with _structured_component_lock:\n         \
+    \   if _structured_component_index is None:\n                index = {}\n                path = os.path.abspath(\n\
+    \                    os.path.join(\"data\", \"asrs\", \"components.csv\")\n                )\n   \
+    \             with open(\n                    path, \"r\", encoding=\"utf-8\", errors=\"replace\"\
+    , newline=\"\"\n                ) as handle:\n                    for row in csv.DictReader(handle):\n\
+    \                        attribute = row.get(\"attribute\")\n                        if attribute\
+    \ not in {\"aircraft_component\", \"problem\"}:\n                            continue\n          \
+    \              incident_id = str(row.get(\"incident_id\", \"\"))\n                        value =\
+    \ str(row.get(\"value\", \"\")).strip()\n                        if not incident_id or not value:\n\
+    \                            continue\n                        record = index.setdefault(\n      \
+    \                      incident_id,\n                            {\n                             \
+    \   \"structured_components\": [],\n                                \"structured_problems\": [],\n\
+    \                            },\n                        )\n                        if attribute ==\
+    \ \"aircraft_component\":\n                            record[\"structured_components\"].append(value)\n\
+    \                        else:\n                            record[\"structured_problems\"].append(value)\n\
+    \                _structured_component_index = index\n    return _structured_component_index\n\ndef\
+    \ transform(doc):\n    values = load_structured_component_index().get(\n        str(doc.get(\"incident_id\"\
+    , \"\"))\n    )\n    if values is None:\n        return {\n            \"has_component_record\": False,\n\
+    \            \"structured_components\": [],\n            \"structured_problems\": [],\n        }\n\
+    \    return {\"has_component_record\": True, **values}\n"
+- name: inner_join_structured_component_records
+  type: code_filter
+  code: "def transform(doc):\n    return doc.get(\"has_component_record\") is True\n"
+- name: collect_chain_records_by_group
+  type: code_reduce
+  reduce_key:
+  - maintenance_status
+  - discovery_phase
+  - chain_category
+  code: "def transform(items):\n    incident_ids = set()\n    records = []\n    for item in items:\n \
+    \       incident_id = str(item.get(\"incident_id\", \"\"))\n        if not incident_id or incident_id\
+    \ in incident_ids:\n            continue\n        incident_ids.add(incident_id)\n        records.append(\n\
+    \            {\n                \"incident_id\": incident_id,\n                \"affected_item\":\
+    \ item.get(\"affected_item\"),\n                \"later_discrepancy\": item.get(\"later_discrepancy\"\
+    ),\n                \"structured_components\": item.get(\"structured_components\") or [],\n      \
+    \          \"structured_problems\": item.get(\"structured_problems\") or [],\n            }\n    \
+    \    )\n    return {\n        \"incident_count\": len(incident_ids),\n        \"chain_records\": records,\n\
+    \    }\n"
+- name: summarize_maintenance_chain_group
+  type: reduce
+  optimize: true
+  recursively_optimize: false
+  synthesize_resolve: false
+  synthesize_merge: true
+  reduce_key:
+  - maintenance_status
+  - discovery_phase
+  - chain_category
+  pass_through: true
+  prompt: 'Summarize the following NASA ASRS maintenance-chain records for this group:
+
+    maintenance_status={{ inputs[0].maintenance_status }},
+
+    discovery_phase={{ inputs[0].discovery_phase }},
+
+    chain_category={{ inputs[0].chain_category }}.
+
+
+    Produce one canonical_affected_item and one recurring_discrepancy that best
+
+    represent the records. Each must be a nonempty phrase of at most six words.
+
+    Normalize synonymous wording using both the narrative-extracted fields and
+
+    the structured component/problem records. Do not change the group labels or
+
+    incident count, and do not introduce an item or discrepancy absent from the
+
+    evidence.
+
+
+    DISTINCT INCIDENT COUNT: {{ inputs[0].incident_count }}
+
+    {% for record in inputs[0].chain_records %}
+
+    INCIDENT: {{ record.incident_id }}
+
+    AFFECTED ITEM: {{ record.affected_item }}
+
+    LATER DISCREPANCY: {{ record.later_discrepancy }}
+
+    STRUCTURED COMPONENTS: {{ record.structured_components }}
+
+    STRUCTURED PROBLEMS: {{ record.structured_problems }}
+
+    ---
+
+    {% endfor %}
+
+    '
+  output:
+    mode: structured_output
+    schema:
+      canonical_affected_item: string
+      recurring_discrepancy: string
+  validate:
+  - 1 <= len(output["canonical_affected_item"].split()) <= 6
+  - 1 <= len(output["recurring_discrepancy"].split()) <= 6
+  num_retries_on_validate_failure: 2
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 128
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: rank_maintenance_chain_groups
+  type: code_reduce
+  reduce_key: _all
+  code: "def transform(items):\n    rows = [\n        {\n            \"maintenance_status\": item.get(\"\
+    maintenance_status\"),\n            \"discovery_phase\": item.get(\"discovery_phase\"),\n        \
+    \    \"chain_category\": item.get(\"chain_category\"),\n            \"incident_count\": item.get(\"\
+    incident_count\"),\n            \"canonical_affected_item\": item.get(\"canonical_affected_item\"\
+    ),\n            \"recurring_discrepancy\": item.get(\"recurring_discrepancy\"),\n        }\n     \
+    \   for item in items\n    ]\n    rows.sort(\n        key=lambda row: (\n            -row[\"incident_count\"\
+    ],\n            row[\"maintenance_status\"],\n            row[\"discovery_phase\"],\n            row[\"\
+    chain_category\"],\n        )\n    )\n    for rank, row in enumerate(rows[:12], start=1):\n      \
+    \  row[\"rank\"] = rank\n    return {\"rows\": rows[:12]}\n"
+- name: unnest_answer_rows
+  type: unnest
+  unnest_key: rows
+  recursive: true
+  depth: 2
+  expand_fields:
+  - rank
+  - maintenance_status
+  - discovery_phase
+  - chain_category
+  - incident_count
+  - canonical_affected_item
+  - recurring_discrepancy
+pipeline:
+  steps:
+  - name: semantic_chains
+    input: asrs_incidents
+    operations:
+    - filter_aircraft_primary_incidents
+    - load_asrs_narrative
+    - filter_maintenance_decision_causal_chain
+    - filter_clear_discovery_phase
+    - extract_maintenance_chain
+    - classify_maintenance_chain
+  - name: chains_with_status
+    input: semantic_chains
+    operations:
+    - attach_maintenance_status
+    - inner_join_maintenance_status
+  - name: joined_chain_records
+    input: chains_with_status
+    operations:
+    - attach_structured_component_records
+    - inner_join_structured_component_records
+  - name: grouped_chain_records
+    input: joined_chain_records
+    operations:
+    - collect_chain_records_by_group
+  - name: summarized_chain_groups
+    input: grouped_chain_records
+    operations:
+    - summarize_maintenance_chain_group
+  - name: ranked_chain_groups
+    input: summarized_chain_groups
+    operations:
+    - rank_maintenance_chain_groups
+    - unnest_answer_rows
+  output:
+    type: file
+    path: /home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-045/outputs/output_aviation_safety-045.json
+    intermediate_dir: /home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-045/intermediates
+bypass_cache: true

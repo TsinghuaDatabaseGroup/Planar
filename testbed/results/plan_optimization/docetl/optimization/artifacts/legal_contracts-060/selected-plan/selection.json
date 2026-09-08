@@ -1,0 +1,138 @@
+{
+  "node_id": 12,
+  "sample_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-060/moar-search/pipeline_legal_contracts-060_input_sample_openai_Qwen3.5-397B-A17B.yaml",
+  "sample_output_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-060/moar-search/pipeline_legal_contracts-060_input_sample_openai_Qwen3.5-397B-A17B.json",
+  "semantic_fidelity": 0.7615384615384616,
+  "sample_execution_cost_usd": 0.3693448200000001,
+  "fidelity_threshold": 0.9,
+  "selection_reason": "highest_fidelity_no_candidate_met_threshold",
+  "optimization_path": "ROOT → change to Qwen3.5-397B-A17B(filter_nda_or_confidentiality_agreement)",
+  "sample_execution_metrics_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-060/moar-search/candidate-metrics/execution_0001_node-12.json",
+  "full_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-060/selected-plan/pipeline_legal_contracts-060_optimized_full.yaml",
+  "input_plan_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/pipeline-all/pipeline_legal_contracts-060.yaml",
+  "input_plan_kind": "reference-plan translation used as the MOAR input plan",
+  "operator_execution_policy": {
+    "policy": "structural_rewrite_fixed_operator_execution",
+    "nested_v1_optimizer_invoked": false,
+    "fixed_default_model": "Qwen3.5-397B-A17B",
+    "unchanged_operations": [
+      "filter_nda_or_confidentiality_agreement",
+      "filter_residual_information_and_governing_law",
+      "extract_direction_and_governing_law",
+      "project_answer_fields"
+    ],
+    "new_or_replaced_operations": [],
+    "restored_fields": {},
+    "unchanged_operation_count": 4,
+    "new_or_replaced_operation_count": 0
+  },
+  "input_plan_signature": {
+    "definitions": {
+      "filter_nda_or_confidentiality_agreement": "filter",
+      "filter_residual_information_and_governing_law": "filter",
+      "extract_direction_and_governing_law": "map",
+      "project_answer_fields": "code_map"
+    },
+    "logical_operations": [
+      {
+        "name": "filter_nda_or_confidentiality_agreement",
+        "type": "filter",
+        "logical_config_sha256": "f59e811ec2e17d82afef904bf719cf527c30236cecb898cdcb77ba1456bd467d"
+      },
+      {
+        "name": "filter_residual_information_and_governing_law",
+        "type": "filter",
+        "logical_config_sha256": "3f9e0af15f00ebd7ec0e75c118c52748e82a6c8d17c4138a20aff03e6c093f40"
+      },
+      {
+        "name": "extract_direction_and_governing_law",
+        "type": "map",
+        "logical_config_sha256": "e2d0492b03f80a143f3d33d475089436aee1f904ca39303beedcb9ddbcfc398d"
+      },
+      {
+        "name": "project_answer_fields",
+        "type": "code_map",
+        "logical_config_sha256": "d85fad6ece3a0d8842bf4f6da753922969992b31dc1bfe71f13c3733bdb0213d"
+      }
+    ],
+    "steps": [
+      {
+        "name": "answer_rows",
+        "input": "contract_exhibits",
+        "operations": [
+          {
+            "name": "filter_nda_or_confidentiality_agreement",
+            "type": "filter"
+          },
+          {
+            "name": "filter_residual_information_and_governing_law",
+            "type": "filter"
+          },
+          {
+            "name": "extract_direction_and_governing_law",
+            "type": "map"
+          },
+          {
+            "name": "project_answer_fields",
+            "type": "code_map"
+          }
+        ]
+      }
+    ]
+  },
+  "selected_plan_signature": {
+    "definitions": {
+      "filter_nda_or_confidentiality_agreement": "filter",
+      "filter_residual_information_and_governing_law": "filter",
+      "extract_direction_and_governing_law": "map",
+      "project_answer_fields": "code_map"
+    },
+    "logical_operations": [
+      {
+        "name": "filter_nda_or_confidentiality_agreement",
+        "type": "filter",
+        "logical_config_sha256": "f59e811ec2e17d82afef904bf719cf527c30236cecb898cdcb77ba1456bd467d"
+      },
+      {
+        "name": "filter_residual_information_and_governing_law",
+        "type": "filter",
+        "logical_config_sha256": "3f9e0af15f00ebd7ec0e75c118c52748e82a6c8d17c4138a20aff03e6c093f40"
+      },
+      {
+        "name": "extract_direction_and_governing_law",
+        "type": "map",
+        "logical_config_sha256": "e2d0492b03f80a143f3d33d475089436aee1f904ca39303beedcb9ddbcfc398d"
+      },
+      {
+        "name": "project_answer_fields",
+        "type": "code_map",
+        "logical_config_sha256": "d85fad6ece3a0d8842bf4f6da753922969992b31dc1bfe71f13c3733bdb0213d"
+      }
+    ],
+    "steps": [
+      {
+        "name": "answer_rows",
+        "input": "contract_exhibits",
+        "operations": [
+          {
+            "name": "filter_nda_or_confidentiality_agreement",
+            "type": "filter"
+          },
+          {
+            "name": "filter_residual_information_and_governing_law",
+            "type": "filter"
+          },
+          {
+            "name": "extract_direction_and_governing_law",
+            "type": "map"
+          },
+          {
+            "name": "project_answer_fields",
+            "type": "code_map"
+          }
+        ]
+      }
+    ]
+  },
+  "plan_changed": false
+}

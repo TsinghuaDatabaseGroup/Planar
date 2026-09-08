@@ -1,0 +1,48 @@
+{
+  "task_id": "finance-016",
+  "answer": [
+    {
+      "industry_sector": "Financial Services",
+      "company_count": 122
+    },
+    {
+      "industry_sector": "Utilities",
+      "company_count": 62
+    },
+    {
+      "industry_sector": "Biopharmaceuticals",
+      "company_count": 36
+    },
+    {
+      "industry_sector": "Insurance",
+      "company_count": 36
+    },
+    {
+      "industry_sector": "Real Estate",
+      "company_count": 36
+    },
+    {
+      "industry_sector": "Biotechnology",
+      "company_count": 34
+    },
+    {
+      "industry_sector": "Technology",
+      "company_count": 33
+    },
+    {
+      "industry_sector": "Banking",
+      "company_count": 30
+    },
+    {
+      "industry_sector": "Healthcare",
+      "company_count": 23
+    },
+    {
+      "industry_sector": "Medical Devices",
+      "company_count": 17
+    }
+  ],
+  "elapsed_seconds": 3670.9,
+  "cost_usd": 49.365898,
+  "total_tokens": 127616504
+}

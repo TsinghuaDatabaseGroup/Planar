@@ -1,0 +1,108 @@
+{
+  "task_id": "legal_contracts-034",
+  "answer": [
+    {
+      "document_name": "859792_0001005477-96-000681_document_3.txt",
+      "governing_law": "Delaware"
+    },
+    {
+      "document_name": "917253_0000917253-00-000008_document_8.txt",
+      "governing_law": "State of South Carolina"
+    },
+    {
+      "document_name": "1102301_0001094328-04-000141_freesarex23052004.txt",
+      "governing_law": "New York"
+    },
+    {
+      "document_name": "Dealer-Pay-NDA-4.pdf",
+      "governing_law": "State of Missouri"
+    },
+    {
+      "document_name": "NDD.pdf",
+      "governing_law": "Union law, complemented, where necessary, by the law of Slovenia"
+    },
+    {
+      "document_name": "1473637_0001432093-12-000764_ex10-34.htm",
+      "governing_law": "Province of Ontario"
+    },
+    {
+      "document_name": "NDA-Dollar-General-Portfolio.pdf",
+      "governing_law": "State of California"
+    },
+    {
+      "document_name": "IMOA%20Molybdenum%20Consortium%20NDA%20Agreement%20amended%20Jan%2008,%20valid%20March%2009%20onwards.pdf",
+      "governing_law": "England and Wales"
+    },
+    {
+      "document_name": "817516_0001014909-05-000102_exh99_4sept2005.txt",
+      "governing_law": "Delaware"
+    },
+    {
+      "document_name": "Proctor_Agreement.pdf",
+      "governing_law": "England and Wales"
+    },
+    {
+      "document_name": "1094007_0001193125-10-258977_dex101.htm",
+      "governing_law": "State of Washington"
+    },
+    {
+      "document_name": "e6756_ex10-6.htm",
+      "governing_law": "State of Georgia"
+    },
+    {
+      "document_name": "BCG-Mutual-NDA.pdf",
+      "governing_law": "Florida"
+    },
+    {
+      "document_name": "1392091_0000950123-11-021325_c13551exv99w7.htm",
+      "governing_law": "State of New York"
+    },
+    {
+      "document_name": "resolution-2012-03-014r.pdf",
+      "governing_law": "Illinois"
+    },
+    {
+      "document_name": "1113303_0000892917-12-000026_stilffnw13d120112am2ex3.htm",
+      "governing_law": "State of Washington"
+    },
+    {
+      "document_name": "O00216-000899A.pdf",
+      "governing_law": "State of California"
+    },
+    {
+      "document_name": "1021086_0000950162-99-000581_document_3.txt",
+      "governing_law": "Delaware"
+    },
+    {
+      "document_name": "1012459_0000912057-97-027209_document_4.txt",
+      "governing_law": "Tennessee"
+    },
+    {
+      "document_name": "26820_0000936392-03-001111_a92217exv10w5.txt",
+      "governing_law": "Delaware"
+    },
+    {
+      "document_name": "Agency-Lending-Disclosure_A-Z-Guide_Appendix_Sample-Confidentiality-Agreements.pdf",
+      "governing_law": "State of New York"
+    },
+    {
+      "document_name": "1068874_0001068874-07-000012_ex10_2.htm",
+      "governing_law": "State of Massachusetts"
+    },
+    {
+      "document_name": "Non-Disclosure-Agreement-1.pdf",
+      "governing_law": "Belgian law"
+    },
+    {
+      "document_name": "1062760_0001015402-05-001930_doc17.txt",
+      "governing_law": "Nevada"
+    },
+    {
+      "document_name": "nda_16.pdf",
+      "governing_law": "Danish law"
+    }
+  ],
+  "elapsed_seconds": 2729.98,
+  "cost_usd": 5.009311,
+  "total_tokens": 9516207
+}

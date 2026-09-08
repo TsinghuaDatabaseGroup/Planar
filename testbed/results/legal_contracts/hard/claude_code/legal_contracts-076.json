@@ -1,0 +1,853 @@
+{
+  "task_id": "legal_contracts-076",
+  "answer": [
+    {
+      "company_name": "ANI Pharmaceuticals, Inc.",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2024-12-31",
+      "section_302_document_ids": [
+        "anip-20241231xexx311.htm",
+        "anip-20241231xexx312.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Nikhil Lalwani",
+        "Stephen P. Carey"
+      ],
+      "section_906_document_ids": [
+        "anip-20241231xexx321.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Nikhil Lalwani"
+      ]
+    },
+    {
+      "company_name": "APPlife Digital Solutions, Inc.",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2024-06-30",
+      "section_302_document_ids": [
+        "alds_ex31z1.htm",
+        "alds_ex31z2.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Matt Reid"
+      ],
+      "section_906_document_ids": [
+        "alds_ex32z1.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Matt Reid"
+      ]
+    },
+    {
+      "company_name": "Adagio Medical Holdings, Inc.",
+      "reporting_period_type": "quarterly",
+      "reporting_period_end_date": "2024-06-30",
+      "section_302_document_ids": [
+        "tmb-20240630xex31d1.htm",
+        "tmb-20240630xex31d2.htm"
+      ],
+      "section_302_certifying_officers": [
+        "John Dahldorf",
+        "Olav Bergheim"
+      ],
+      "section_906_document_ids": [
+        "tmb-20240630xex32d1.htm",
+        "tmb-20240630xex32d2.htm"
+      ],
+      "section_906_certifying_officers": [
+        "John Dahldorf",
+        "Olav Bergheim"
+      ]
+    },
+    {
+      "company_name": "Alpha Star Acquisition Corp.",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2024-12-31",
+      "section_302_document_ids": [
+        "ex31-2_10.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Guojian Chen"
+      ],
+      "section_906_document_ids": [
+        "ex32-1_10.htm",
+        "ex32-2_9.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Guojian Chen",
+        "Zhe Zhang Ming"
+      ]
+    },
+    {
+      "company_name": "Aveanna Healthcare Holdings Inc.",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2024-12-28",
+      "section_302_document_ids": [
+        "avah-ex31_1.htm",
+        "avah-ex31_2.htm",
+        "avah-ex31_3.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Deborah Stewart",
+        "Jeff Shaner",
+        "Matthew Buckhalter"
+      ],
+      "section_906_document_ids": [
+        "avah-ex32_1.htm",
+        "avah-ex32_2.htm",
+        "avah-ex32_3.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Deborah Stewart",
+        "Jeff Shaner",
+        "Matthew Buckhalter"
+      ]
+    },
+    {
+      "company_name": "Bimergen Energy Corporation",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2024-12-31",
+      "section_302_document_ids": [
+        "ex31-1_19.htm",
+        "ex31-2_18.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Benjamin B. Tran",
+        "Robert J. Brilon"
+      ],
+      "section_906_document_ids": [
+        "ex32-1_19.htm",
+        "ex32-2_14.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Benjamin B. Tran",
+        "Robert J. Brilon"
+      ]
+    },
+    {
+      "company_name": "CareDx, Inc.",
+      "reporting_period_type": "quarterly",
+      "reporting_period_end_date": "2024-09-30",
+      "section_302_document_ids": [
+        "cdna-20240930x10qxexx311.htm",
+        "cdna-20240930x10qxexx312.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Abhishek Jain",
+        "John W. Hanna"
+      ],
+      "section_906_document_ids": [
+        "cdna-20240930x10qxexx321.htm"
+      ],
+      "section_906_certifying_officers": [
+        "John W. Hanna"
+      ]
+    },
+    {
+      "company_name": "CareDx, Inc.",
+      "reporting_period_type": "quarterly",
+      "reporting_period_end_date": "2025-06-30",
+      "section_302_document_ids": [
+        "cdna-20250630x10qxexx311.htm",
+        "cdna-20250630x10qxexx312.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Abhishek Jain",
+        "John W. Hanna"
+      ],
+      "section_906_document_ids": [
+        "cdna-20250630x10qxexx321.htm"
+      ],
+      "section_906_certifying_officers": [
+        "John W. Hanna"
+      ]
+    },
+    {
+      "company_name": "CompoSecure, Inc.",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2024-12-31",
+      "section_302_document_ids": [
+        "exhibit311-sox302certifica.htm",
+        "exhibit312-sox302certifica.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Jonathan Wilk",
+        "Timothy Fitzsimmons"
+      ],
+      "section_906_document_ids": [
+        "exhibit321-section1350cert.htm",
+        "exhibit322-section1350cert.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Jonathan Wilk",
+        "Timothy Fitzsimmons"
+      ]
+    },
+    {
+      "company_name": "Generation Bio Co.",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2024-12-31",
+      "section_302_document_ids": [
+        "gbio-20241231xex31d1.htm",
+        "gbio-20241231xex31d2.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Geoff McDonough",
+        "Kevin Conway"
+      ],
+      "section_906_document_ids": [
+        "gbio-20241231xex32d1.htm",
+        "gbio-20241231xex32d2.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Geoff McDonough",
+        "Kevin Conway"
+      ]
+    },
+    {
+      "company_name": "Globalstar, Inc.",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2024-12-31",
+      "section_302_document_ids": [
+        "gsat-20241231xexx311.htm",
+        "gsat-20241231xexx312.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Dr. Paul E. Jacobs",
+        "Rebecca S. Clary"
+      ],
+      "section_906_document_ids": [
+        "gsat-20241231xexx321.htm",
+        "gsat-20241231xexx322.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Dr. Paul E. Jacobs",
+        "Rebecca S. Clary"
+      ]
+    },
+    {
+      "company_name": "GlucoTrack, Inc.",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2023-12-31",
+      "section_302_document_ids": [
+        "ex31-1_1.htm",
+        "ex31-2_1.htm"
+      ],
+      "section_302_certifying_officers": [
+        "James Cardwell",
+        "Paul Goode"
+      ],
+      "section_906_document_ids": [
+        "ex32-2.htm"
+      ],
+      "section_906_certifying_officers": [
+        "James Cardwell"
+      ]
+    },
+    {
+      "company_name": "Gryphon Digital Mining, Inc.",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2023-12-31",
+      "section_302_document_ids": [
+        "ea020224801ex31-1_gryphon.htm",
+        "ea020224801ex31-2_gryphon.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Rob Chang",
+        "Simeon Salzman"
+      ],
+      "section_906_document_ids": [
+        "ea020224801ex32-1_gryphon.htm",
+        "ea020224801ex32-2_gryphon.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Rob Chang",
+        "Simeon Salzman"
+      ]
+    },
+    {
+      "company_name": "Haymaker Acquisition Corp. 4",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2023-12-31",
+      "section_302_document_ids": [
+        "hyac-20231231xex31d1.htm",
+        "hyac-20231231xex31d2.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Andrew R. Heyer",
+        "Christopher Bradley"
+      ],
+      "section_906_document_ids": [
+        "hyac-20231231xex32d1.htm",
+        "hyac-20231231xex32d2.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Andrew R. Heyer",
+        "Christopher Bradley"
+      ]
+    },
+    {
+      "company_name": "Hertz Global Holdings, Inc.",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2024-12-31",
+      "section_302_document_ids": [
+        "hghq42024exhibit311.htm",
+        "hghq42024exhibit312.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Scott M. Haralson",
+        "W. Gil West"
+      ],
+      "section_906_document_ids": [
+        "hghq42024exhibit321.htm",
+        "hghq42024exhibit322.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Scott M. Haralson",
+        "W. Gil West"
+      ]
+    },
+    {
+      "company_name": "IDEXX Laboratories, Inc.",
+      "reporting_period_type": "quarterly",
+      "reporting_period_end_date": "2024-06-30",
+      "section_302_document_ids": [
+        "idxx2024q210-qexhibit311.htm",
+        "idxx2024q210-qexhibit312.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Brian P. McKeon",
+        "Jonathan J. Mazelsky"
+      ],
+      "section_906_document_ids": [
+        "idxx2024q210-qexhibit321.htm",
+        "idxx2024q210-qexhibit322.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Brian P. McKeon",
+        "Jonathan J. Mazelsky"
+      ]
+    },
+    {
+      "company_name": "IDEXX Laboratories, Inc.",
+      "reporting_period_type": "quarterly",
+      "reporting_period_end_date": "2024-09-30",
+      "section_302_document_ids": [
+        "idxx2024q310-qexhibit311.htm",
+        "idxx2024q310-qexhibit312.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Brian P. McKeon",
+        "Jonathan J. Mazelsky"
+      ],
+      "section_906_document_ids": [
+        "idxx2024q310-qexhibit321.htm",
+        "idxx2024q310-qexhibit322.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Brian P. McKeon",
+        "Jonathan J. Mazelsky"
+      ]
+    },
+    {
+      "company_name": "Integrated Wellness Acquisition Corp",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2024-12-31",
+      "section_302_document_ids": [
+        "wel-20241231xex31d1.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Matthew Malriat"
+      ],
+      "section_906_document_ids": [
+        "wel-20241231xex32d1.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Matthew Malriat"
+      ]
+    },
+    {
+      "company_name": "Leafly Holdings, Inc.",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2024-12-31",
+      "section_302_document_ids": [
+        "lfly-ex31_1.htm",
+        "lfly-ex31_2.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Suresh Krishnaswamy",
+        "Yoko Miyashita"
+      ],
+      "section_906_document_ids": [
+        "lfly-ex32_1.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Yoko Miyashita"
+      ]
+    },
+    {
+      "company_name": "Lodging Fund REIT III, Inc.",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2024-12-31",
+      "section_302_document_ids": [
+        "lfr-20241231xex31d1.htm",
+        "lfr-20241231xex31d2.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Norman H. Leslie",
+        "Samuel C. Montgomery"
+      ],
+      "section_906_document_ids": [
+        "lfr-20241231xex32d1.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Norman H. Leslie"
+      ]
+    },
+    {
+      "company_name": "Melar Acquisition Corp. I",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2024-12-31",
+      "section_302_document_ids": [
+        "tmb-20241231xex31d1.htm",
+        "tmb-20241231xex31d2.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Edward Lifshitz",
+        "Gautam Ivatury"
+      ],
+      "section_906_document_ids": [
+        "tmb-20241231xex32d1.htm",
+        "tmb-20241231xex32d2.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Edward Lifshitz",
+        "Gautam Ivatury"
+      ]
+    },
+    {
+      "company_name": "Metal Sky Star Acquisition Corporation",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2024-12-31",
+      "section_302_document_ids": [
+        "ex31-1_12.htm",
+        "ex31-2_12.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Kin Sze",
+        "Wenxi He"
+      ],
+      "section_906_document_ids": [
+        "ex32-1_12.htm",
+        "ex32-2_11.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Kin Sze Kin",
+        "Wenxi He"
+      ]
+    },
+    {
+      "company_name": "Monroe Capital Corporation",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2024-12-31",
+      "section_302_document_ids": [
+        "mrcc20241231ex311.htm",
+        "mrcc20241231ex312.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Lewis W. Solimene, Jr.",
+        "Theodore L. Koenig"
+      ],
+      "section_906_document_ids": [
+        "mrcc20241231ex321.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Theodore L. Koenig"
+      ]
+    },
+    {
+      "company_name": "Newbury Street Acquisition Corporation",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2023-12-31",
+      "section_302_document_ids": [
+        "tmb-20231231xex31d1.htm",
+        "tmb-20231231xex31d2.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Kenneth King",
+        "Thomas Bushey"
+      ],
+      "section_906_document_ids": [
+        "tmb-20231231xex32d1.htm",
+        "tmb-20231231xex32d2.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Kenneth King",
+        "Thomas Bushey"
+      ]
+    },
+    {
+      "company_name": "Opus Genetics, Inc.",
+      "reporting_period_type": "quarterly",
+      "reporting_period_end_date": "2025-06-30",
+      "section_302_document_ids": [
+        "ef20050389_ex31-1.htm"
+      ],
+      "section_302_certifying_officers": [
+        "George Magrath"
+      ],
+      "section_906_document_ids": [
+        "ef20050389_ex32-1.htm"
+      ],
+      "section_906_certifying_officers": [
+        "George Magrath"
+      ]
+    },
+    {
+      "company_name": "PFS Bancorp, Inc.",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2024-12-31",
+      "section_302_document_ids": [
+        "pfsb-20241231xex31d1.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Eric J. Heagy"
+      ],
+      "section_906_document_ids": [
+        "pfsb-20241231xex32d1.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Eric J. Heagy"
+      ]
+    },
+    {
+      "company_name": "RH",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2025-02-01",
+      "section_302_document_ids": [
+        "rh-20250201xex31d1.htm",
+        "rh-20250201xex31d2.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Gary Friedman",
+        "Jack Preston"
+      ],
+      "section_906_document_ids": [
+        "rh-20250201xex32d1.htm",
+        "rh-20250201xex32d2.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Gary Friedman",
+        "Jack Preston"
+      ]
+    },
+    {
+      "company_name": "RYVYL Inc.",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2023-12-31",
+      "section_302_document_ids": [
+        "ex_642849.htm",
+        "ex_642850.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Fredi Nisan",
+        "George Oliva"
+      ],
+      "section_906_document_ids": [
+        "ex_642851.htm",
+        "ex_642852.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Fredi Nisan",
+        "George Oliva"
+      ]
+    },
+    {
+      "company_name": "Roman DBDR Acquisition Corp. II",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2024-12-31",
+      "section_302_document_ids": [
+        "drdb-20241231xex31d1.htm",
+        "drdb-20241231xex31d2.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Dixon Doll, Jr.",
+        "John C. Small"
+      ],
+      "section_906_document_ids": [
+        "drdb-20241231xex32d1.htm",
+        "drdb-20241231xex32d2.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Dixon Doll, Jr.",
+        "John C. Small"
+      ]
+    },
+    {
+      "company_name": "Sanmina Corporation",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2024-09-28",
+      "section_302_document_ids": [
+        "sanm_09282024xex311x10k.htm",
+        "sanm_09282024xex312x10k.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Jonathan Faust",
+        "Jure Sola"
+      ],
+      "section_906_document_ids": [
+        "sanm_09282024xex321x10k.htm",
+        "sanm_09282024xex322x10k.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Jonathan Faust",
+        "Jure Sola"
+      ]
+    },
+    {
+      "company_name": "Scorpius Holdings, Inc.",
+      "reporting_period_type": "quarterly",
+      "reporting_period_end_date": "2025-03-31",
+      "section_302_document_ids": [
+        "scpx-20250331xex31d1.htm",
+        "scpx-20250331xex31d2.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Jeffrey Wolf",
+        "William Ostrander"
+      ],
+      "section_906_document_ids": [
+        "scpx-20250331xex32d1.htm",
+        "scpx-20250331xex32d2.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Jeffrey Wolf",
+        "William Ostrander"
+      ]
+    },
+    {
+      "company_name": "Silk Road Medical, Inc.",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2023-12-31",
+      "section_302_document_ids": [
+        "silk-20231231xex31_1.htm",
+        "silk-20231231xex31_2.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Charles S. McKhann",
+        "Lucas W. Buchanan"
+      ],
+      "section_906_document_ids": [
+        "silk-20231231xex32_1.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Charles S. McKhann"
+      ]
+    },
+    {
+      "company_name": "Silver Point Specialty Lending Fund",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2023-12-31",
+      "section_302_document_ids": [
+        "ck0001646614-ex31_1.htm",
+        "ck0001646614-ex31_2.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Edward Mulé",
+        "Jesse Dorigo"
+      ],
+      "section_906_document_ids": [
+        "ck0001646614-ex32_1.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Edward Mulé"
+      ]
+    },
+    {
+      "company_name": "Spyre Therapeutics, Inc.",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2023-12-31",
+      "section_302_document_ids": [
+        "ex311_spyre-20231231.htm",
+        "ex312_spyre-20231231.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Cameron Turtle",
+        "Scott Burrows"
+      ],
+      "section_906_document_ids": [
+        "ex321_spyre-20231231.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Cameron Turtle, D.Phil"
+      ]
+    },
+    {
+      "company_name": "SunOpta Inc.",
+      "reporting_period_type": "quarterly",
+      "reporting_period_end_date": "2024-03-30",
+      "section_302_document_ids": [
+        "exhibit31-1.htm",
+        "exhibit31-2.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Brian Kocher",
+        "Greg Gaba"
+      ],
+      "section_906_document_ids": [
+        "exhibit32.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Brian Kocher"
+      ]
+    },
+    {
+      "company_name": "TaskUs, Inc.",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2024-12-31",
+      "section_302_document_ids": [
+        "exhibit3112024.htm",
+        "exhibit3122024.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Balaji Sekar",
+        "Bryce Maddock"
+      ],
+      "section_906_document_ids": [
+        "exhibit3212024.htm",
+        "exhibit3222024.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Balaji Sekar",
+        "Bryce Maddock"
+      ]
+    },
+    {
+      "company_name": "The Hertz Corporation",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2024-12-31",
+      "section_302_document_ids": [
+        "thcq42024exhibit313.htm",
+        "thcq42024exhibit314.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Scott M. Haralson",
+        "W. Gil West"
+      ],
+      "section_906_document_ids": [
+        "thcq42024exhibit323.htm",
+        "thcq42024exhibit324.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Scott M. Haralson",
+        "W. Gil West"
+      ]
+    },
+    {
+      "company_name": "Tigo Energy, Inc.",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2024-12-31",
+      "section_302_document_ids": [
+        "tygo-ex31_1.htm",
+        "tygo-ex31_2.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Bill Roeschlein",
+        "Zvi Alon"
+      ],
+      "section_906_document_ids": [
+        "tygo-ex32_1.htm",
+        "tygo-ex32_2.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Bill Roeschlein",
+        "Zvi Alon"
+      ]
+    },
+    {
+      "company_name": "Trinity Capital Inc.",
+      "reporting_period_type": "quarterly",
+      "reporting_period_end_date": "2025-03-31",
+      "section_302_document_ids": [
+        "trin-ex31_1.htm",
+        "trin-ex31_2.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Kyle Brown",
+        "Michael Testa"
+      ],
+      "section_906_document_ids": [
+        "trin-ex32_1.htm",
+        "trin-ex32_2.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Kyle Brown",
+        "Michael Testa"
+      ]
+    },
+    {
+      "company_name": "Wetouch Technology Inc.",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2023-12-31",
+      "section_302_document_ids": [
+        "ex31-1_4.htm",
+        "ex31-2_4.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Yuhua Huang",
+        "Zongyi Lian"
+      ],
+      "section_906_document_ids": [
+        "ex32-1_4.htm",
+        "ex32-2_3.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Yuhua Huang",
+        "Zongyi Lian"
+      ]
+    },
+    {
+      "company_name": "Xencor, Inc.",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2023-12-31",
+      "section_302_document_ids": [
+        "xncr-20231231xexx311.htm",
+        "xncr-20231231xexx312.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Bassil I. Dahiyat, Ph.D.",
+        "John J. Kuch"
+      ],
+      "section_906_document_ids": [
+        "xncr-20231231xexx321.htm",
+        "xncr-20231231xexx322.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Bassil I. Dahiyat, Ph.D.",
+        "John J. Kuch"
+      ]
+    },
+    {
+      "company_name": "iRhythm Technologies, Inc.",
+      "reporting_period_type": "quarterly",
+      "reporting_period_end_date": "2024-09-30",
+      "section_302_document_ids": [
+        "irtc-20240930xex311.htm",
+        "irtc-20240930xex312.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Daniel Wilson",
+        "Quentin S. Blackford"
+      ],
+      "section_906_document_ids": [
+        "irtc-20240930xex321.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Quentin S. Blackford"
+      ]
+    }
+  ],
+  "elapsed_seconds": 202.723,
+  "cost_usd": 0.43103058,
+  "total_tokens": 646422
+}

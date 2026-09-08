@@ -1,0 +1,58 @@
+{
+  "task_id": "finance-025",
+  "answer": [
+    {
+      "company_name": "Booz Allen Hamilton Holding Corporation",
+      "industry_sector": "Management and technology consulting",
+      "employee_count": 26100.0
+    },
+    {
+      "company_name": "Realogy Holdings Corp.",
+      "industry_sector": "Residential real estate services",
+      "employee_count": 10150.0
+    },
+    {
+      "company_name": "Bluegreen Vacations Corporation",
+      "industry_sector": "Vacation ownership and resort management",
+      "employee_count": 5873.0
+    },
+    {
+      "company_name": "Air Transport Services Group, Inc.",
+      "industry_sector": "Aircraft leasing and air cargo transportation",
+      "employee_count": 4380.0
+    },
+    {
+      "company_name": "Genesis Energy, L.P.",
+      "industry_sector": "Midstream energy and natural soda ash",
+      "employee_count": 2200.0
+    },
+    {
+      "company_name": "Gogo Inc.",
+      "industry_sector": "In-flight connectivity and entertainment",
+      "employee_count": 1115.0
+    },
+    {
+      "company_name": "Ionis Pharmaceuticals, Inc.",
+      "industry_sector": "RNA-targeted therapeutics",
+      "employee_count": 817.0
+    },
+    {
+      "company_name": "James River Group Holdings, Ltd.",
+      "industry_sector": "Specialty insurance and reinsurance",
+      "employee_count": 800.0
+    },
+    {
+      "company_name": "Overseas Shipholding Group, Inc.",
+      "industry_sector": "Crude oil and petroleum transportation",
+      "employee_count": 713.0
+    },
+    {
+      "company_name": "Agios Pharmaceuticals, Inc.",
+      "industry_sector": "Biopharmaceutical company",
+      "employee_count": 536.0
+    }
+  ],
+  "elapsed_seconds": 12596.192,
+  "cost_usd": 131.06548515,
+  "total_tokens": 335661694
+}

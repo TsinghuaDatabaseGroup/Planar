@@ -1,0 +1,139 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_complete_ex19_restrictions
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is an EX-19 insider-trading policy that
+      expressly prohibits hedging, short sales, and pledging.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_complete_ex19_policy: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_ex19_company_key
+    type: map
+    optimize: true
+    prompt: |
+      Return the canonical policy-company key.
+
+      Policy:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {company_key: string}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+
+  - name: filter_ex21_parent_lists
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is an EX-21 subsidiary list that explicitly
+      identifies its parent company.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_ex21_parent_list: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_ex21_company_and_count
+    type: map
+    optimize: true
+    prompt: |
+      Return the canonical parent-company key and listed subsidiary count.
+
+      Filing:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema: {company_key: string, subsidiary_count: integer}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+
+  - name: filter_ex97_clawback_policies
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is an EX-97 clawback policy.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_ex97_clawback_policy: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: filter_restatement_and_misconduct_recovery
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this policy only if it provides financial-restatement recovery and
+      also permits misconduct-based recovery.
+
+      Policy:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {has_restatement_and_misconduct_recovery: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_ex97_company_and_category
+    type: map
+    optimize: true
+    prompt: |
+      Return the canonical policy-company key, stated company name, and
+      normalized covered-person category.
+
+      Policy:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema: {company_key: string, company: string, covered_person_category: string}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+
+  - name: join_ex19_and_ex21
+    type: equijoin
+    deterministic: true
+    blocking_conditions:
+      - left["company_key"] == right["company_key"]
+  - name: project_ex19_ex21_match
+    type: code_map
+    code: |
+      def transform(doc):
+          return {"company_key": doc.get("company_key_left"), "subsidiary_count": int(doc.get("subsidiary_count") or 0)}
+  - name: join_company_to_ex97
+    type: equijoin
+    deterministic: true
+    blocking_conditions:
+      - left["company_key"] == right["company_key"]
+  - name: aggregate_company_clawback_results
+    type: code_reduce
+    reduce_key: [company, covered_person_category]
+    code: |
+      def transform(items):
+          return {"subsidiary_count": max(int(item.get("subsidiary_count") or 0) for item in items)}
+pipeline:
+  steps:
+    - name: policy19_records
+      input: contract_exhibits
+      operations: [filter_complete_ex19_restrictions, extract_ex19_company_key]
+    - name: subs21_records
+      input: contract_exhibits
+      operations: [filter_ex21_parent_lists, extract_ex21_company_and_count]
+    - name: claw97_records
+      input: contract_exhibits
+      operations: [filter_ex97_clawback_policies, filter_restatement_and_misconduct_recovery, extract_ex97_company_and_category]
+    - name: policy19_subs21_matches
+      operations:
+        - join_ex19_and_ex21: {left: policy19_records, right: subs21_records}
+    - name: projected_policy19_subs21_matches
+      input: policy19_subs21_matches
+      operations: [project_ex19_ex21_match]
+    - name: complete_company_matches
+      operations:
+        - join_company_to_ex97: {left: projected_policy19_subs21_matches, right: claw97_records}
+    - name: answer
+      input: complete_company_matches
+      operations: [aggregate_company_clawback_results]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-095.json

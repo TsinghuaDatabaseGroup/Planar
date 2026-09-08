@@ -1,0 +1,221 @@
+datasets:
+  sec_csv_scan_seed:
+    type: file
+    path: data/SEC/CSV/2024.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: scan_all_sec_csv_tables
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          import csv
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          csv_dir = os.path.abspath(os.path.join(base_dir, "CSV"))
+          if os.path.commonpath([base_dir, csv_dir]) != base_dir:
+              raise ValueError("SEC CSV path escapes data/SEC")
+
+          rows = []
+          for year in range(2019, 2025):
+              csv_path = os.path.join(csv_dir, f"{year}.csv")
+              with open(
+                  csv_path,
+                  "r",
+                  encoding="utf-8-sig",
+                  newline="",
+              ) as handle:
+                  for row in csv.DictReader(handle):
+                      try:
+                          word_count = int(row.get("word_count", 0))
+                      except (TypeError, ValueError):
+                          word_count = 0
+                      rows.append(
+                          {
+                              "cik": row.get("cik"),
+                              "year": year,
+                              "text": row.get("text"),
+                              "word_count": word_count,
+                          }
+                      )
+          return {"rows": rows}
+
+  - name: unnest_all_sec_filings
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - cik
+      - year
+      - text
+      - word_count
+
+  - name: load_filing_document
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("SEC text path escapes data/SEC")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              document = handle.read()
+          return {"document": document}
+
+  - name: classify_competitive_position
+    type: map
+    optimize: true
+    prompt: |
+      Assign this SEC 10-K filing to exactly one competitive-position category
+      for the reporting company:
+
+      - market_leader: a recognized leader in its primary market;
+      - major_player: a major established competitor that is not the market leader;
+      - challenger: a challenger to larger or leading competitors;
+      - niche_player: a competitor focused on a specialized market niche;
+      - emerging: an early-stage or emerging competitor.
+
+      Base the category on the filing's description of the reporting company's
+      current competitive position.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        competitive_position: enum[market_leader, major_player, challenger, niche_player, emerging]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 256
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: summarize_leader_years_and_2024_filing
+    type: code_reduce
+    reduce_key: cik
+    code: |
+      def transform(items):
+          leader_years = {
+              int(item.get("year"))
+              for item in items
+              if item.get("competitive_position") == "market_leader"
+          }
+          primary_candidates = [
+              item
+              for item in items
+              if int(item.get("year", 0)) == 2024
+              and "form 10-k/a"
+              not in str(item.get("document", "")).casefold()
+          ]
+          primary_2024 = (
+              max(
+                  primary_candidates,
+                  key=lambda item: int(item.get("word_count", 0)),
+              ).get("document")
+              if primary_candidates
+              else None
+          )
+          return {
+              "leader_years": len(leader_years),
+              "primary_2024_filing": primary_2024,
+          }
+
+  - name: filter_leaders_in_all_six_years
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              int(doc.get("leader_years", 0)) == 6
+              and bool(doc.get("primary_2024_filing"))
+          )
+
+  - name: extract_2024_company_and_industry
+    type: map
+    optimize: true
+    prompt: |
+      Extract the reporting company's legal name and industry sector from this
+      retained non-amended 2024 SEC 10-K filing.
+      Use the legal registrant name stated in the filing. Return a concise,
+      conventional industry-sector name grounded in the filing rather than a
+      business description or explanation.
+
+      2024 filing:
+      {{ input.primary_2024_filing }}
+    output:
+      mode: structured_output
+      schema:
+        company_name: string
+        industry: string
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 256
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: order_by_company_name
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          rows = sorted(
+              items,
+              key=lambda item: str(item.get("company_name", "")),
+          )
+          return {"rows": rows}
+
+  - name: unnest_ordered_companies
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - company_name
+      - industry
+
+pipeline:
+  steps:
+    - name: process
+      input: sec_csv_scan_seed
+      operations:
+        - scan_all_sec_csv_tables
+        - unnest_all_sec_filings
+        - load_filing_document
+        - classify_competitive_position
+        - summarize_leader_years_and_2024_filing
+        - filter_leaders_in_all_six_years
+        - extract_2024_company_and_industry
+        - order_by_company_name
+        - unnest_ordered_companies
+  output:
+    type: file
+    path: raw_outputs/finance/output_finance-019.json

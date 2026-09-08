@@ -1,0 +1,186 @@
+datasets:
+  sec_2022_filings:
+    type: file
+    path: data/SEC/CSV/2022.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: load_filing_document
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("SEC text path escapes data/SEC")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              document = handle.read()
+          return {"document": document}
+
+  - name: filter_without_substantive_foreign_operations
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this SEC 10-K filing only if it does not describe substantive business
+      operations outside the United States by the reporting company.
+      Distinguish the company's operating footprint from incidental international
+      references that do not describe such operations.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_esg_topics
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this SEC 10-K filing only if it discusses an environmental, social, or
+      governance topic involving the reporting company.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: extract_company_name_and_industry
+    type: map
+    optimize: true
+    prompt: |
+      Extract and normalize the reporting company's legal name and industry
+      sector from this SEC 10-K filing.
+      Use the legal registrant name stated in the filing. Return a concise,
+      conventional industry-sector name grounded in the filing rather than a
+      detailed business description or product category.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        company_name: string
+        industry_sector: string
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 256
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: deduplicate_company_names
+    type: code_reduce
+    reduce_key: company_name
+    code: |
+      def transform(items):
+          def word_count(item):
+              try:
+                  return int(item.get("word_count", 0))
+              except (TypeError, ValueError):
+                  return 0
+
+          selected = max(items, key=word_count)
+          return {
+              "word_count": word_count(selected),
+              "industry_sector": selected.get("industry_sector"),
+          }
+
+  - name: order_by_word_count_and_company_name
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          rows = sorted(
+              items,
+              key=lambda item: (
+                  -int(item.get("word_count", 0)),
+                  str(item.get("company_name", "")),
+              ),
+          )
+          return {"rows": rows}
+
+  - name: unnest_ordered_companies
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - company_name
+      - word_count
+      - industry_sector
+
+  - name: limit_to_5_companies
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {"rows": items[:5]}
+
+  - name: unnest_limited_companies
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - company_name
+      - word_count
+      - industry_sector
+
+pipeline:
+  steps:
+    - name: process
+      input: sec_2022_filings
+      operations:
+        - load_filing_document
+        - filter_without_substantive_foreign_operations
+        - filter_esg_topics
+        - extract_company_name_and_industry
+        - deduplicate_company_names
+        - order_by_word_count_and_company_name
+        - unnest_ordered_companies
+        - limit_to_5_companies
+        - unnest_limited_companies
+  output:
+    type: file
+    path: raw_outputs/finance/output_finance-017.json

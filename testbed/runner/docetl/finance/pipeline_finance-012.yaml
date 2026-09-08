@@ -1,0 +1,257 @@
+datasets:
+  sec_csv_scan_seed:
+    type: file
+    path: data/SEC/CSV/2024.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: scan_all_sec_csv_tables
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          import csv
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          csv_dir = os.path.abspath(os.path.join(base_dir, "CSV"))
+          if os.path.commonpath([base_dir, csv_dir]) != base_dir:
+              raise ValueError("SEC CSV path escapes data/SEC")
+
+          rows = []
+          for year in range(2019, 2025):
+              csv_path = os.path.join(csv_dir, f"{year}.csv")
+              with open(
+                  csv_path,
+                  "r",
+                  encoding="utf-8-sig",
+                  newline="",
+              ) as handle:
+                  for row in csv.DictReader(handle):
+                      rows.append(
+                          {
+                              "year": year,
+                              "text": row.get("text"),
+                          }
+                      )
+          return {"rows": rows}
+
+  - name: unnest_all_sec_filings
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - year
+      - text
+
+  - name: filter_years_2022_and_2023
+    type: code_filter
+    code: |
+      def transform(doc):
+          try:
+              return int(doc.get("year", 0)) in {2022, 2023}
+          except (TypeError, ValueError):
+              return False
+
+  - name: load_filing_document
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("SEC text path escapes data/SEC")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              document = handle.read()
+          return {"document": document}
+
+  - name: extract_industry_and_ai_ml_mention
+    type: map
+    optimize: true
+    prompt: |
+      From this SEC 10-K filing, determine:
+
+      1. The reporting company's broad industry sector. Return a concise,
+         conventional sector name and use the same label consistently for the
+         same broad industry.
+      2. Whether the filing mentions artificial intelligence or machine-learning
+         technology.
+
+      Do not infer an AI/ML mention when the filing does not identify such
+      technology.
+
+      If the industry sector cannot be determined, return "Undetermined".
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        industry_sector: string
+        ai_ml_mentioned: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 256
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: normalize_industry_sector
+    type: code_map
+    code: |
+      def transform(doc):
+          industry_sector = " ".join(
+              str(doc.get("industry_sector", "Undetermined")).split()
+          )
+          return {
+              "industry_sector": industry_sector or "Undetermined",
+          }
+
+  - name: aggregate_ai_ml_counts_by_industry
+    type: code_reduce
+    reduce_key: industry_sector
+    code: |
+      def transform(items):
+          ai_ml_filings_2022 = sum(
+              1
+              for item in items
+              if int(item.get("year", 0)) == 2022
+              and item.get("ai_ml_mentioned") is True
+          )
+          ai_ml_filings_2023 = sum(
+              1
+              for item in items
+              if int(item.get("year", 0)) == 2023
+              and item.get("ai_ml_mentioned") is True
+          )
+          total_filings_2023 = sum(
+              1 for item in items if int(item.get("year", 0)) == 2023
+          )
+          return {
+              "industry_sector": items[0].get(
+                  "industry_sector",
+                  "Undetermined",
+              ),
+              "ai_ml_filings_2022": ai_ml_filings_2022,
+              "ai_ml_filings_2023": ai_ml_filings_2023,
+              "total_filings_2023": total_filings_2023,
+          }
+
+  - name: filter_qualifying_industry_increases
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              int(doc.get("total_filings_2023", 0)) >= 20
+              and int(doc.get("ai_ml_filings_2023", 0))
+              > int(doc.get("ai_ml_filings_2022", 0))
+          )
+
+  - name: order_industries_by_ai_ml_increase
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          rows = [
+              {
+                  "industry_sector": item.get(
+                      "industry_sector",
+                      "Undetermined",
+                  ),
+                  "ai_ml_filings_2022": int(
+                      item.get("ai_ml_filings_2022", 0)
+                  ),
+                  "ai_ml_filings_2023": int(
+                      item.get("ai_ml_filings_2023", 0)
+                  ),
+                  "total_filings_2023": int(
+                      item.get("total_filings_2023", 0)
+                  ),
+              }
+              for item in items
+          ]
+          rows.sort(
+              key=lambda item: (
+                  -(
+                      item["ai_ml_filings_2023"]
+                      - item["ai_ml_filings_2022"]
+                  ),
+                  item["industry_sector"].casefold(),
+              )
+          )
+          return {"rows": rows}
+
+  - name: unnest_ordered_industries
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - industry_sector
+      - ai_ml_filings_2022
+      - ai_ml_filings_2023
+      - total_filings_2023
+
+  - name: limit_to_10_industries
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {"rows": items[:10]}
+
+  - name: unnest_limited_industries
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - industry_sector
+      - ai_ml_filings_2022
+      - ai_ml_filings_2023
+      - total_filings_2023
+
+pipeline:
+  steps:
+    - name: process
+      input: sec_csv_scan_seed
+      operations:
+        - scan_all_sec_csv_tables
+        - unnest_all_sec_filings
+        - filter_years_2022_and_2023
+        - load_filing_document
+        - extract_industry_and_ai_ml_mention
+        - normalize_industry_sector
+        - aggregate_ai_ml_counts_by_industry
+        - filter_qualifying_industry_increases
+        - order_industries_by_ai_ml_increase
+        - unnest_ordered_industries
+        - limit_to_10_industries
+        - unnest_limited_industries
+  output:
+    type: file
+    path: raw_outputs/finance/output_finance-012.json

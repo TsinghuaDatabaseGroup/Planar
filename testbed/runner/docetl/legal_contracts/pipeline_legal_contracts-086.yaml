@@ -1,0 +1,194 @@
+datasets:
+  contract_exhibits:
+    type: file
+    path: contract_exhibit_full.json
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_post_2010_nda_documents
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether this document is classified as a non-disclosure agreement,
+      including a dual-labelled NDA exhibit, with an effective date strictly after
+      2010-01-01.
+
+      Document:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        is_post_2010_nda: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_computer_readable_confidential_information
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether the agreement's definition of confidential information
+      explicitly includes electronic data or records, email, software or code,
+      metadata, or other computer-readable material.
+
+      Document:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        includes_computer_readable_material: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_required_destruction
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether the agreement requires destruction of at least some
+      confidential materials or copies. Return false when it requires only return
+      or merely permits an unrestricted choice between return and destruction.
+
+      Document:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        requires_destruction: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_surviving_confidentiality_duties
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether confidentiality or non-use obligations expressly survive
+      termination or expiry, or otherwise continue beyond the agreement's stated
+      term.
+
+      Document:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        duties_survive_termination: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: extract_governing_law_jurisdiction
+    type: map
+    optimize: true
+    prompt: |
+      Extract and canonicalize the governing-law jurisdiction expressly stated in
+      this agreement. Return an empty string when no governing-law jurisdiction is
+      stated.
+
+      Document:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        governing_law: string
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_stated_governing_law
+    type: code_filter
+    code: |
+      def transform(doc):
+          return bool(str(doc.get("governing_law") or "").strip())
+
+  - name: count_matching_ndas_by_jurisdiction
+    type: code_reduce
+    reduce_key: governing_law
+    code: |
+      def transform(items):
+          return {"matching_count": len(items)}
+
+  - name: order_jurisdiction_counts
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          rows = [
+              {
+                  "governing_law": item.get("governing_law"),
+                  "matching_count": int(item.get("matching_count") or 0),
+              }
+              for item in items
+          ]
+          rows.sort(
+              key=lambda row: (
+                  -row["matching_count"],
+                  str(row["governing_law"] or "").casefold(),
+              )
+          )
+          return {"rows": rows}
+
+  - name: unnest_jurisdiction_counts
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - governing_law
+      - matching_count
+
+pipeline:
+  steps:
+    - name: matching_ndas
+      input: contract_exhibits
+      operations:
+        - filter_post_2010_nda_documents
+        - filter_computer_readable_confidential_information
+        - filter_required_destruction
+        - filter_surviving_confidentiality_duties
+        - extract_governing_law_jurisdiction
+        - filter_stated_governing_law
+        - count_matching_ndas_by_jurisdiction
+        - order_jurisdiction_counts
+        - unnest_jurisdiction_counts
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-086.json

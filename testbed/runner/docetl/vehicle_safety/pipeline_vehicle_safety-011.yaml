@@ -1,0 +1,155 @@
+datasets:
+  nhtsa_recalls:
+    type: file
+    path: data/nhtsa_vehicle_safety/recalls.jsonl
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_recalls_reported_2022_through_2025
+    type: code_filter
+    code: |
+      def transform(doc):
+          campaign = doc.get("campaign") or {}
+          report_date = str(campaign.get("report_received_date") or "")
+          return "2022-01-01" <= report_date <= "2025-12-31"
+
+  - name: flatten_recall_action_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          campaign = doc.get("campaign") or {}
+          component = doc.get("component") or {}
+          remedy = doc.get("remedy") or {}
+          return {
+              "campaign_number": campaign.get("number"),
+              "manufacturer": campaign.get("manufacturer"),
+              "component_id": component.get("component_id"),
+              "corrective_action": remedy.get("corrective_action") or "",
+          }
+
+  - name: deduplicate_recall_campaigns
+    type: code_reduce
+    reduce_key: campaign_number
+    code: |
+      def transform(items):
+          first = items[0]
+          return {
+              "manufacturer": first.get("manufacturer"),
+              "component_id": first.get("component_id"),
+              "corrective_action": first.get("corrective_action") or "",
+          }
+
+  - name: classify_corrective_action_style
+    type: map
+    optimize: true
+    prompt: |
+      Classify the dominant corrective-action style stated in this NHTSA recall
+      remedy using exactly one label:
+
+      - software_update: updating, reprogramming, reflashing, or otherwise changing
+        vehicle software or firmware is the principal corrective action;
+      - part_replacement: replacing a physical part or assembly is the principal
+        corrective action;
+      - dealer_inspection_only: the stated corrective action consists only of a
+        dealer inspection, check, or test, without a prescribed software update or
+        physical-part replacement;
+      - other: the dominant corrective action does not fit the preceding labels.
+
+      Classify the remedy itself. Ignore owner-notification timing, hotline details,
+      interim warnings, and reimbursement or contact information.
+
+      Corrective action:
+      {{ input.corrective_action }}
+    output:
+      mode: structured_output
+      schema:
+        action_style: enum[software_update, part_replacement, dealer_inspection_only, other]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: aggregate_recall_actions_by_manufacturer
+    type: code_reduce
+    reduce_key: manufacturer
+    code: |
+      def transform(items):
+          from collections import Counter
+
+          campaign_numbers = {
+              item.get("campaign_number")
+              for item in items
+              if item.get("campaign_number")
+          }
+          component_ids = {
+              item.get("component_id")
+              for item in items
+              if item.get("component_id")
+          }
+          style_counts = Counter(
+              item.get("action_style")
+              for item in items
+              if item.get("action_style")
+          )
+          dominant_style = (
+              sorted(
+                  style_counts,
+                  key=lambda label: (-style_counts[label], label),
+              )[0]
+              if style_counts
+              else None
+          )
+          return {
+              "recall_count": len(campaign_numbers),
+              "dominant_action_style": dominant_style,
+              "distinct_components_recalled": len(component_ids),
+          }
+
+  - name: project_manufacturer_action_summary
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "manufacturer": doc.get("manufacturer"),
+              "recall_count": doc.get("recall_count"),
+              "dominant_action_style": doc.get("dominant_action_style"),
+              "distinct_components_recalled": doc.get(
+                  "distinct_components_recalled"
+              ),
+          }
+
+pipeline:
+  steps:
+    - name: manufacturer_corrective_action_summary
+      input: nhtsa_recalls
+      operations:
+        - filter_recalls_reported_2022_through_2025
+        - flatten_recall_action_fields
+        - deduplicate_recall_campaigns
+        - classify_corrective_action_style
+        - aggregate_recall_actions_by_manufacturer
+        - project_manufacturer_action_summary
+  output:
+    type: file
+    path: raw_outputs/vehicle_safety/output_vehicle_safety-011.json

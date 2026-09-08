@@ -1,0 +1,104 @@
+{
+  "task_id": "finance-002",
+  "answer": [
+    {
+      "fiscal_year_end": "03-31",
+      "count": 142
+    },
+    {
+      "fiscal_year_end": "01-31",
+      "count": 67
+    },
+    {
+      "fiscal_year_end": "02-03",
+      "count": 44
+    },
+    {
+      "fiscal_year_end": "02-29",
+      "count": 42
+    },
+    {
+      "fiscal_year_end": "04-30",
+      "count": 16
+    },
+    {
+      "fiscal_year_end": "03-30",
+      "count": 12
+    },
+    {
+      "fiscal_year_end": "01-28",
+      "count": 8
+    },
+    {
+      "fiscal_year_end": "02-02",
+      "count": 6
+    },
+    {
+      "fiscal_year_end": "04-27",
+      "count": 6
+    },
+    {
+      "fiscal_year_end": "02-04",
+      "count": 4
+    },
+    {
+      "fiscal_year_end": "01-02",
+      "count": 3
+    },
+    {
+      "fiscal_year_end": "03-02",
+      "count": 2
+    },
+    {
+      "fiscal_year_end": "03-29",
+      "count": 2
+    },
+    {
+      "fiscal_year_end": "04-26",
+      "count": 2
+    },
+    {
+      "fiscal_year_end": "02-24",
+      "count": 1
+    },
+    {
+      "fiscal_year_end": "02-23",
+      "count": 1
+    },
+    {
+      "fiscal_year_end": "04-28",
+      "count": 1
+    },
+    {
+      "fiscal_year_end": "05-26",
+      "count": 1
+    },
+    {
+      "fiscal_year_end": "05-31",
+      "count": 1
+    },
+    {
+      "fiscal_year_end": "03-03",
+      "count": 1
+    },
+    {
+      "fiscal_year_end": "02-28",
+      "count": 1
+    },
+    {
+      "fiscal_year_end": "01-27",
+      "count": 1
+    },
+    {
+      "fiscal_year_end": "01-01",
+      "count": 1
+    },
+    {
+      "fiscal_year_end": "01-06",
+      "count": 1
+    }
+  ],
+  "elapsed_seconds": 138.095,
+  "cost_usd": 0.26760588,
+  "total_tokens": 487999
+}

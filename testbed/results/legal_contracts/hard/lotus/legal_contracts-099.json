@@ -1,0 +1,18 @@
+{
+  "task_id": "legal_contracts-099",
+  "answer": [
+    {
+      "nda_category": "mutual_nda",
+      "total_agreement_count": 351,
+      "audit_linked_agreement_count": 119,
+      "matched_audit_client_companies": [
+        "Boeing",
+        "Microsoft",
+        "Walmart"
+      ]
+    }
+  ],
+  "elapsed_seconds": 530.21,
+  "cost_usd": 4.839537,
+  "total_tokens": 9080540
+}

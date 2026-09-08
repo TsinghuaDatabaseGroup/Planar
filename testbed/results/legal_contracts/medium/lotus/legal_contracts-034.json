@@ -1,0 +1,80 @@
+{
+  "task_id": "legal_contracts-034",
+  "answer": [
+    {
+      "document_name": "1012459_0000912057-97-027209_document_4.txt",
+      "governing_law": "Tennessee"
+    },
+    {
+      "document_name": "1068874_0001068874-07-000012_ex10_2.htm",
+      "governing_law": "Massachusetts"
+    },
+    {
+      "document_name": "1094007_0001193125-10-258977_dex101.htm",
+      "governing_law": "State of Washington"
+    },
+    {
+      "document_name": "1113303_0000892917-12-000026_stilffnw13d120112am2ex3.htm",
+      "governing_law": "State of Washington"
+    },
+    {
+      "document_name": "12032018_NDA_The%20Munt_EN.pdf",
+      "governing_law": "Belgian law"
+    },
+    {
+      "document_name": "1473637_0001432093-12-000764_ex10-34.htm",
+      "governing_law": "Province of Ontario"
+    },
+    {
+      "document_name": "817516_0001014909-05-000102_exh99_4sept2005.txt",
+      "governing_law": "Delaware"
+    },
+    {
+      "document_name": "917253_0000917253-00-000008_document_8.txt",
+      "governing_law": "South Carolina"
+    },
+    {
+      "document_name": "BCG-Mutual-NDA.pdf",
+      "governing_law": "Florida"
+    },
+    {
+      "document_name": "Dealer-Pay-NDA-4.pdf",
+      "governing_law": "Missouri"
+    },
+    {
+      "document_name": "IMOA%20Molybdenum%20Consortium%20NDA%20Agreement%20amended%20Jan%2008,%20valid%20March%2009%20onwards.pdf",
+      "governing_law": "England and Wales"
+    },
+    {
+      "document_name": "NDA-Dollar-General-Portfolio.pdf",
+      "governing_law": "California"
+    },
+    {
+      "document_name": "NDD.pdf",
+      "governing_law": "Union law, complemented by the law of Slovenia"
+    },
+    {
+      "document_name": "Non-Disclosure-Agreement-1.pdf",
+      "governing_law": "Belgian law"
+    },
+    {
+      "document_name": "O00216-000899A.pdf",
+      "governing_law": "California"
+    },
+    {
+      "document_name": "Proctor_Agreement.pdf",
+      "governing_law": "England and Wales"
+    },
+    {
+      "document_name": "e6756_ex10-6.htm",
+      "governing_law": "State of Georgio"
+    },
+    {
+      "document_name": "resolution-2012-03-014r.pdf",
+      "governing_law": "Illinois"
+    }
+  ],
+  "elapsed_seconds": 483.83,
+  "cost_usd": 4.81197,
+  "total_tokens": 9028815
+}

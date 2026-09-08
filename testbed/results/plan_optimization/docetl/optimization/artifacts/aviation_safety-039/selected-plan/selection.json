@@ -1,0 +1,285 @@
+{
+  "node_id": 68,
+  "sample_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-039/moar-search/pipeline_aviation_safety-039_input_sample_openai_Qwen3.5-397B-A17B.yaml",
+  "sample_output_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-039/moar-search/pipeline_aviation_safety-039_input_sample_openai_Qwen3.5-397B-A17B.json",
+  "semantic_fidelity": 1.0,
+  "sample_execution_cost_usd": 0.07942622999999999,
+  "fidelity_threshold": 0.9,
+  "selection_reason": "lowest_cost_meeting_fidelity_threshold",
+  "optimization_path": "ROOT → change to Qwen3.5-397B-A17B(filter_aircraft_primary_problem)",
+  "sample_execution_metrics_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-039/moar-search/candidate-metrics/execution_0001_node-68.json",
+  "full_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-039/selected-plan/pipeline_aviation_safety-039_optimized_full.yaml",
+  "input_plan_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/pipeline-all/pipeline_aviation_safety-039.yaml",
+  "input_plan_kind": "reference-plan translation used as the MOAR input plan",
+  "operator_execution_policy": {
+    "policy": "structural_rewrite_fixed_operator_execution",
+    "nested_v1_optimizer_invoked": false,
+    "fixed_default_model": "Qwen3.5-397B-A17B",
+    "unchanged_operations": [
+      "filter_aircraft_primary_problem",
+      "load_asrs_narrative",
+      "filter_actual_maintenance_documentation_problem",
+      "extract_documentation_issue",
+      "normalize_affected_item",
+      "attach_documentation_status",
+      "inner_join_documentation_status",
+      "attach_component_records",
+      "inner_join_component_records",
+      "aggregate_ranked_documentation_combinations",
+      "unnest_answer_rows"
+    ],
+    "new_or_replaced_operations": [],
+    "restored_fields": {},
+    "unchanged_operation_count": 11,
+    "new_or_replaced_operation_count": 0
+  },
+  "input_plan_signature": {
+    "definitions": {
+      "filter_aircraft_primary_problem": "code_filter",
+      "load_asrs_narrative": "code_map",
+      "filter_actual_maintenance_documentation_problem": "filter",
+      "extract_documentation_issue": "map",
+      "normalize_affected_item": "code_map",
+      "attach_documentation_status": "code_map",
+      "inner_join_documentation_status": "code_filter",
+      "attach_component_records": "code_map",
+      "inner_join_component_records": "code_filter",
+      "aggregate_ranked_documentation_combinations": "code_reduce",
+      "unnest_answer_rows": "unnest"
+    },
+    "logical_operations": [
+      {
+        "name": "filter_aircraft_primary_problem",
+        "type": "code_filter",
+        "logical_config_sha256": "13d451ef5a78e15ff20568d9fd9eddb6e3c0b948dcbbd026ec01df21a7405291"
+      },
+      {
+        "name": "load_asrs_narrative",
+        "type": "code_map",
+        "logical_config_sha256": "22704ad225c76497658f97dc72d7fd2e6af23d702a4068895817ea53c0f3aa87"
+      },
+      {
+        "name": "filter_actual_maintenance_documentation_problem",
+        "type": "filter",
+        "logical_config_sha256": "4b087ae0a7c0640b414e6799a9fef7b1441aba9d7e01d7bd166dd23ee26c2ea5"
+      },
+      {
+        "name": "extract_documentation_issue",
+        "type": "map",
+        "logical_config_sha256": "861d0071881f15b2181f6efe4ed5f717c12db7ff004024b89ee4840798f95a6f"
+      },
+      {
+        "name": "normalize_affected_item",
+        "type": "code_map",
+        "logical_config_sha256": "fc7146d5566c3f115270a218e062ffba33475c434c6439e4f306c156fb8ef974"
+      },
+      {
+        "name": "attach_documentation_status",
+        "type": "code_map",
+        "logical_config_sha256": "53997fbd4f401827d2241022c12c4ed9ecba2d1978485f599f3969c96ef2a7e2"
+      },
+      {
+        "name": "inner_join_documentation_status",
+        "type": "code_filter",
+        "logical_config_sha256": "f334d260b43a33fe50b72f854519795e12f26d86d6429baf1f88d64ed66f5ff6"
+      },
+      {
+        "name": "attach_component_records",
+        "type": "code_map",
+        "logical_config_sha256": "0bdab32145779fd613a77bb898a7fd051b90ee976087b371a890f617f2adb5d9"
+      },
+      {
+        "name": "inner_join_component_records",
+        "type": "code_filter",
+        "logical_config_sha256": "669f5a616cbc958577e24ce5c8e59ee522127e4400b4990af43b4afe924a3ef6"
+      },
+      {
+        "name": "aggregate_ranked_documentation_combinations",
+        "type": "code_reduce",
+        "logical_config_sha256": "8c3dbbaf085f6c18ee953e9c00bf232d660333f3dc8e1d0b04a1c0c8a5ba3c5c"
+      },
+      {
+        "name": "unnest_answer_rows",
+        "type": "unnest",
+        "logical_config_sha256": "8adb99c830b11363b9f2bd6b138522c2699f210a47cfbbb96b8a1fcb729af87d"
+      }
+    ],
+    "steps": [
+      {
+        "name": "process",
+        "input": "asrs_incidents",
+        "operations": [
+          {
+            "name": "filter_aircraft_primary_problem",
+            "type": "code_filter"
+          },
+          {
+            "name": "load_asrs_narrative",
+            "type": "code_map"
+          },
+          {
+            "name": "filter_actual_maintenance_documentation_problem",
+            "type": "filter"
+          },
+          {
+            "name": "extract_documentation_issue",
+            "type": "map"
+          },
+          {
+            "name": "normalize_affected_item",
+            "type": "code_map"
+          },
+          {
+            "name": "attach_documentation_status",
+            "type": "code_map"
+          },
+          {
+            "name": "inner_join_documentation_status",
+            "type": "code_filter"
+          },
+          {
+            "name": "attach_component_records",
+            "type": "code_map"
+          },
+          {
+            "name": "inner_join_component_records",
+            "type": "code_filter"
+          },
+          {
+            "name": "aggregate_ranked_documentation_combinations",
+            "type": "code_reduce"
+          },
+          {
+            "name": "unnest_answer_rows",
+            "type": "unnest"
+          }
+        ]
+      }
+    ]
+  },
+  "selected_plan_signature": {
+    "definitions": {
+      "filter_aircraft_primary_problem": "code_filter",
+      "load_asrs_narrative": "code_map",
+      "filter_actual_maintenance_documentation_problem": "filter",
+      "extract_documentation_issue": "map",
+      "normalize_affected_item": "code_map",
+      "attach_documentation_status": "code_map",
+      "inner_join_documentation_status": "code_filter",
+      "attach_component_records": "code_map",
+      "inner_join_component_records": "code_filter",
+      "aggregate_ranked_documentation_combinations": "code_reduce",
+      "unnest_answer_rows": "unnest"
+    },
+    "logical_operations": [
+      {
+        "name": "filter_aircraft_primary_problem",
+        "type": "code_filter",
+        "logical_config_sha256": "13d451ef5a78e15ff20568d9fd9eddb6e3c0b948dcbbd026ec01df21a7405291"
+      },
+      {
+        "name": "load_asrs_narrative",
+        "type": "code_map",
+        "logical_config_sha256": "22704ad225c76497658f97dc72d7fd2e6af23d702a4068895817ea53c0f3aa87"
+      },
+      {
+        "name": "filter_actual_maintenance_documentation_problem",
+        "type": "filter",
+        "logical_config_sha256": "4b087ae0a7c0640b414e6799a9fef7b1441aba9d7e01d7bd166dd23ee26c2ea5"
+      },
+      {
+        "name": "extract_documentation_issue",
+        "type": "map",
+        "logical_config_sha256": "861d0071881f15b2181f6efe4ed5f717c12db7ff004024b89ee4840798f95a6f"
+      },
+      {
+        "name": "normalize_affected_item",
+        "type": "code_map",
+        "logical_config_sha256": "fc7146d5566c3f115270a218e062ffba33475c434c6439e4f306c156fb8ef974"
+      },
+      {
+        "name": "attach_documentation_status",
+        "type": "code_map",
+        "logical_config_sha256": "53997fbd4f401827d2241022c12c4ed9ecba2d1978485f599f3969c96ef2a7e2"
+      },
+      {
+        "name": "inner_join_documentation_status",
+        "type": "code_filter",
+        "logical_config_sha256": "f334d260b43a33fe50b72f854519795e12f26d86d6429baf1f88d64ed66f5ff6"
+      },
+      {
+        "name": "attach_component_records",
+        "type": "code_map",
+        "logical_config_sha256": "0bdab32145779fd613a77bb898a7fd051b90ee976087b371a890f617f2adb5d9"
+      },
+      {
+        "name": "inner_join_component_records",
+        "type": "code_filter",
+        "logical_config_sha256": "669f5a616cbc958577e24ce5c8e59ee522127e4400b4990af43b4afe924a3ef6"
+      },
+      {
+        "name": "aggregate_ranked_documentation_combinations",
+        "type": "code_reduce",
+        "logical_config_sha256": "8c3dbbaf085f6c18ee953e9c00bf232d660333f3dc8e1d0b04a1c0c8a5ba3c5c"
+      },
+      {
+        "name": "unnest_answer_rows",
+        "type": "unnest",
+        "logical_config_sha256": "8adb99c830b11363b9f2bd6b138522c2699f210a47cfbbb96b8a1fcb729af87d"
+      }
+    ],
+    "steps": [
+      {
+        "name": "process",
+        "input": "asrs_incidents",
+        "operations": [
+          {
+            "name": "filter_aircraft_primary_problem",
+            "type": "code_filter"
+          },
+          {
+            "name": "load_asrs_narrative",
+            "type": "code_map"
+          },
+          {
+            "name": "filter_actual_maintenance_documentation_problem",
+            "type": "filter"
+          },
+          {
+            "name": "extract_documentation_issue",
+            "type": "map"
+          },
+          {
+            "name": "normalize_affected_item",
+            "type": "code_map"
+          },
+          {
+            "name": "attach_documentation_status",
+            "type": "code_map"
+          },
+          {
+            "name": "inner_join_documentation_status",
+            "type": "code_filter"
+          },
+          {
+            "name": "attach_component_records",
+            "type": "code_map"
+          },
+          {
+            "name": "inner_join_component_records",
+            "type": "code_filter"
+          },
+          {
+            "name": "aggregate_ranked_documentation_combinations",
+            "type": "code_reduce"
+          },
+          {
+            "name": "unnest_answer_rows",
+            "type": "unnest"
+          }
+        ]
+      }
+    ]
+  },
+  "plan_changed": false
+}

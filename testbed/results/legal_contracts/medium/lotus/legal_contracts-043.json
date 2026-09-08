@@ -1,0 +1,1534 @@
+{
+  "task_id": "legal_contracts-043",
+  "answer": [
+    {
+      "document_name": "883905_0001095811-01-000469_f68556ex99-d12.txt",
+      "parties": [
+        "Intel Corporation",
+        "XIRCOM"
+      ],
+      "agreement_type": null,
+      "effective_date": "1991-08-01"
+    },
+    {
+      "document_name": "1074663_0001090002-01-500104_ex102.txt",
+      "parties": [
+        "Perma-Tune Electronics Inc.",
+        "Linda Decker"
+      ],
+      "agreement_type": null,
+      "effective_date": "1993-06-01"
+    },
+    {
+      "document_name": "1018761_0000950130-96-004285_document_6.txt",
+      "parties": [
+        "TeleService Resources",
+        "Computer Generated Solutions, Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "1996-03-01"
+    },
+    {
+      "document_name": "920729_0000891618-96-000819_document_6.txt",
+      "parties": [
+        "HNC Software Inc.",
+        "Infoseek"
+      ],
+      "agreement_type": null,
+      "effective_date": "1996-04-02"
+    },
+    {
+      "document_name": "1029445_0000940180-97-000212_document_12.txt",
+      "parties": [
+        "Assessment Systems, Inc.",
+        "Telesector Resources Group"
+      ],
+      "agreement_type": null,
+      "effective_date": "1996-04-15"
+    },
+    {
+      "document_name": "71297_0000071297-97-000059_document_6.txt",
+      "parties": [
+        "Granite State Energy, Inc.",
+        "New England Power Company"
+      ],
+      "agreement_type": null,
+      "effective_date": "1996-05-21"
+    },
+    {
+      "document_name": "1017545_0001012870-97-001500_document_2.txt",
+      "parties": [
+        "SoloPoint, Inc.",
+        "Pacific Bell Information Services"
+      ],
+      "agreement_type": null,
+      "effective_date": "1996-08-21"
+    },
+    {
+      "document_name": "24104_0000024104-96-000010_document_3.txt",
+      "parties": [
+        "Valco Inc.",
+        "Thomas E. Brubaker",
+        "Continental Materials Corporation"
+      ],
+      "agreement_type": null,
+      "effective_date": "1996-10-21"
+    },
+    {
+      "document_name": "859119_0000950123-98-001418_document_15.txt",
+      "parties": [
+        "CANADIAN NATIONAL RAILWAY COMPANY",
+        "ILLINOIS CENTRAL CORP."
+      ],
+      "agreement_type": null,
+      "effective_date": "1997-03-13"
+    },
+    {
+      "document_name": "804151_0000950144-97-007563_document_14.txt",
+      "parties": [
+        "lmo Industries Inc.",
+        "United Dominion Industries",
+        "Credit Suisse First Boston Corporation"
+      ],
+      "agreement_type": null,
+      "effective_date": "1997-04-25"
+    },
+    {
+      "document_name": "1044777_0000950124-98-000388_document_7.txt",
+      "parties": [
+        "VASCO DATA SECURITY, INC.",
+        "HUCOM"
+      ],
+      "agreement_type": null,
+      "effective_date": "1997-06-03"
+    },
+    {
+      "document_name": "1010471_0000950134-97-006281_document_5.txt",
+      "parties": [
+        "Roland W. Samples",
+        "Wyndham Hotel Corporation",
+        "ClubHouse Hotels, Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "1997-07-31"
+    },
+    {
+      "document_name": "816955_0000899243-97-001962_document_4.txt",
+      "parties": [
+        "Melamine Chemicals, Inc.",
+        "Borden Chemical"
+      ],
+      "agreement_type": null,
+      "effective_date": "1997-07-31"
+    },
+    {
+      "document_name": "96238_0000950103-97-000583_document_4.txt",
+      "parties": [
+        "Carpenter Technology Corporation",
+        "Talley Industries, Inc.",
+        "J.P. Morgan Securities Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "1997-08-11"
+    },
+    {
+      "document_name": "96238_0000950116-97-001823_document_13.txt",
+      "parties": [
+        "Carpenter Technology Corporation",
+        "Talley Industries, Inc.",
+        "J.P. Morgan Securities Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "1997-08-11"
+    },
+    {
+      "document_name": "1061148_0001047469-98-018914_document_17.txt",
+      "parties": [
+        "Kevin Bennis",
+        "Pathnet, Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "1998-02-02"
+    },
+    {
+      "document_name": "828957_0000950109-98-001266_document_19.txt",
+      "parties": [
+        "Meridian Point Realty Trust VIII",
+        "EastGroup Properties Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "1998-02-10"
+    },
+    {
+      "document_name": "1095563_0000950168-99-002585_document_2.txt",
+      "parties": [
+        "Microsoft Corporation",
+        "Sylvan Learning Systems, Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "1998-02-16"
+    },
+    {
+      "document_name": "1095558_0000944209-00-000518_document_3.txt",
+      "parties": [
+        "TWENTIETH CENTURY FOX HOME ENTERTAINMENT, INC.",
+        "ARTISAN HOME ENTERTAINMENT"
+      ],
+      "agreement_type": null,
+      "effective_date": "1998-03-01"
+    },
+    {
+      "document_name": "925942_0001047469-98-029396_document_13.txt",
+      "parties": [
+        "Zeigler Coal Holding Company",
+        "Addington Enterprises, Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "1998-03-06"
+    },
+    {
+      "document_name": "897730_0000950136-98-001457_document_7.txt",
+      "parties": [
+        "Crane Co.",
+        "Liberty Technologies, Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "1998-03-18"
+    },
+    {
+      "document_name": "912592_0000929624-98-000842_document_20.txt",
+      "parties": [
+        "Renaissance Golf Products, Inc.",
+        "World Golf Federation",
+        "Joseph P. Connors",
+        "William Petmecky",
+        "Kip Gundry",
+        "Troy Horton"
+      ],
+      "agreement_type": null,
+      "effective_date": "1998-04-02"
+    },
+    {
+      "document_name": "1105503_0000950123-00-006736_ex10-14.txt",
+      "parties": [
+        "NATIONAL NETWORK TECHNOLOGIES, LLC",
+        "LEVEL 3 COMMUNICATIONS"
+      ],
+      "agreement_type": null,
+      "effective_date": "1998-10-14"
+    },
+    {
+      "document_name": "1011671_0000936392-99-000246_document_46.txt",
+      "parties": [
+        "Oacis Healthcare Systems Corp.",
+        "Science Applications International Corporation"
+      ],
+      "agreement_type": null,
+      "effective_date": "1998-11-04"
+    },
+    {
+      "document_name": "1094017_0000921895-00-000237_document_5.txt",
+      "parties": [
+        "Sulzer Orthopedics Biologics Inc.",
+        "BIOSYNTECH LTD."
+      ],
+      "agreement_type": null,
+      "effective_date": "1999-02-23"
+    },
+    {
+      "document_name": "1002276_0001036050-99-002047_document_13.txt",
+      "parties": [
+        "COMBICHEM, INC.",
+        "DUPONT PHARMACEUTICALS COMPANY"
+      ],
+      "agreement_type": null,
+      "effective_date": "1999-03-10"
+    },
+    {
+      "document_name": "934545_0000891618-99-004640_document_2.txt",
+      "parties": [
+        "Intel Corporation",
+        "DSP Communications Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "1999-06-02"
+    },
+    {
+      "document_name": "354452_0000950123-99-011178_document_13.txt",
+      "parties": [
+        "Plasma-Therm, Inc.",
+        "Balzers Limited"
+      ],
+      "agreement_type": null,
+      "effective_date": "1999-09-01"
+    },
+    {
+      "document_name": "938733_0000912057-99-002412_document_3.txt",
+      "parties": [
+        "Premisys Communications, Inc.",
+        "Zhone Corporation"
+      ],
+      "agreement_type": null,
+      "effective_date": "1999-09-20"
+    },
+    {
+      "document_name": "768384_0000912057-00-018619_document_8.txt",
+      "parties": [
+        "Ben & Jerry's Homemade, Inc.",
+        "Conopco"
+      ],
+      "agreement_type": null,
+      "effective_date": "1999-09-27"
+    },
+    {
+      "document_name": "1043431_0000950133-00-000090_document_15.txt",
+      "parties": [
+        "Best Software, Inc.",
+        "Sage Software"
+      ],
+      "agreement_type": null,
+      "effective_date": "1999-10-14"
+    },
+    {
+      "document_name": "32251_0000950133-99-003991_document_17.txt",
+      "parties": [
+        "SER Systeme AG",
+        "EIS International, Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "1999-10-15"
+    },
+    {
+      "document_name": "1175638_0000912057-02-024619_a2082526zex-10_3.htm",
+      "parties": [
+        "NPS Ltd.",
+        "Accu-Tech Systems"
+      ],
+      "agreement_type": null,
+      "effective_date": "1999-11-16"
+    },
+    {
+      "document_name": "69067_0000927016-00-002123_0010.txt",
+      "parties": [
+        "New England Business Service, Inc.",
+        "Premium Wear"
+      ],
+      "agreement_type": null,
+      "effective_date": "2000-02-10"
+    },
+    {
+      "document_name": "1173495_0001047469-03-033872_a2118144zex-10_12.txt",
+      "parties": [
+        "DUNC, LLC",
+        "NORTHWEST AIRLINES, INC."
+      ],
+      "agreement_type": null,
+      "effective_date": "2000-03-06"
+    },
+    {
+      "document_name": "925544_0000950144-00-010739_ex99-d4.txt",
+      "parties": [
+        "Piercing Pagoda, Inc.",
+        "Zale Corporation"
+      ],
+      "agreement_type": null,
+      "effective_date": "2000-03-28"
+    },
+    {
+      "document_name": "922913_0000943440-00-000122_document_2.txt",
+      "parties": [
+        "INFe.com, Inc.",
+        "ClubComputer"
+      ],
+      "agreement_type": null,
+      "effective_date": "2000-04-10"
+    },
+    {
+      "document_name": "799485_0000950136-00-001643_0013.txt",
+      "parties": [
+        "Cangene Corporation",
+        "CHESAPEAKE BIOLOGICAL LABORATORIES, INC."
+      ],
+      "agreement_type": null,
+      "effective_date": "2000-05-05"
+    },
+    {
+      "document_name": "1016503_0000929624-00-000894_0010.txt",
+      "parties": [
+        "Kaplan, Inc.",
+        "Quest Education Corporation"
+      ],
+      "agreement_type": null,
+      "effective_date": "2000-06-05"
+    },
+    {
+      "document_name": "1065748_0000950131-00-004465_0016.txt",
+      "parties": [
+        "Tribune Company",
+        "Knight-Ridder, Inc.",
+        "CareerBuilder"
+      ],
+      "agreement_type": null,
+      "effective_date": "2000-06-20"
+    },
+    {
+      "document_name": "1089786_0000912057-00-052660_a2032473zex-99_e2.txt",
+      "parties": [
+        "Lanier Worldwide, Inc.",
+        "Ricoh Company, Ltd."
+      ],
+      "agreement_type": null,
+      "effective_date": "2000-06-22"
+    },
+    {
+      "document_name": "65781_0000950123-00-009565_y41542ex99-d_3.txt",
+      "parties": [
+        "MPD Technologies, Inc.",
+        "Telefonaktiebolaget LM Ericsson"
+      ],
+      "agreement_type": null,
+      "effective_date": "2000-07-06"
+    },
+    {
+      "document_name": "832995_0000912057-00-054331_a2033550zex-99_d13.htm",
+      "parties": [
+        "Best Buy Co., Inc.",
+        "Musicland Stores Corporation"
+      ],
+      "agreement_type": null,
+      "effective_date": "2000-08-31"
+    },
+    {
+      "document_name": "1125892_0000950133-00-004441_w41075a1ex10-7.txt",
+      "parties": [
+        "MICROSOFT CORPORATION",
+        "STARBAND COMMUNICATIONS INC."
+      ],
+      "agreement_type": null,
+      "effective_date": "2000-11-11"
+    },
+    {
+      "document_name": "899240_0000912057-01-007226_a2040095zex-99_9d1.txt",
+      "parties": [
+        "Sunglass Hut International, Inc.",
+        "Luxottica Group S.p.A"
+      ],
+      "agreement_type": null,
+      "effective_date": "2001-01-31"
+    },
+    {
+      "document_name": "1070052_0000950130-01-501801_dex99d2.txt",
+      "parties": [
+        "Proxicom, Inc.",
+        "Dimension Data"
+      ],
+      "agreement_type": null,
+      "effective_date": "2001-02-09"
+    },
+    {
+      "document_name": "1014552_0000950148-01-500497_v71961toex99-d3.txt",
+      "parties": [
+        "DTM Corporation",
+        "3D Systems Corporation"
+      ],
+      "agreement_type": null,
+      "effective_date": "2001-03-17"
+    },
+    {
+      "document_name": "v71961toex99-d3.txt",
+      "parties": [
+        "DTM Corporation",
+        "3D Systems Corporation"
+      ],
+      "agreement_type": null,
+      "effective_date": "2001-03-17"
+    },
+    {
+      "document_name": "1082797_0000950131-01-501837_dex99d2.txt",
+      "parties": [
+        "MyPoints.com, Inc.",
+        "United NewVentures"
+      ],
+      "agreement_type": null,
+      "effective_date": "2001-03-30"
+    },
+    {
+      "document_name": "880458_0001021408-01-510269_dex1087.txt",
+      "parties": [
+        "Hai-Perng, aka Alex Kuo",
+        "Vertel Corporation"
+      ],
+      "agreement_type": null,
+      "effective_date": "2001-05-30"
+    },
+    {
+      "document_name": "1031896_0000950147-01-501725_ex10-8.txt",
+      "parties": [
+        "American Soil Technologies Inc. Agriblend Division",
+        "BioPlusNutrients"
+      ],
+      "agreement_type": null,
+      "effective_date": "2001-07-25"
+    },
+    {
+      "document_name": "917639_0000912057-01-537118_a2062042zex-99_d7.htm",
+      "parties": [
+        "EarthLink, Inc.",
+        "CIDCO, Incorporated"
+      ],
+      "agreement_type": null,
+      "effective_date": "2001-09-06"
+    },
+    {
+      "document_name": "1109551_0000912057-02-024714_a2082535zex-99_d3.htm",
+      "parties": [
+        "EarthLink, Inc.",
+        "PeoplePC"
+      ],
+      "agreement_type": null,
+      "effective_date": "2001-09-17"
+    },
+    {
+      "document_name": "1042282_0000893220-02-000791_e61414toexv99wxdywx1y.txt",
+      "parties": [
+        "Novell, Inc.",
+        "Silver Stream Software"
+      ],
+      "agreement_type": null,
+      "effective_date": "2002-01-30"
+    },
+    {
+      "document_name": "1045080_0001047469-02-004620_a2094681zex-99_d5.htm",
+      "parties": [
+        "MDI Entertainment, Inc.",
+        "Scientific Games Corporation"
+      ],
+      "agreement_type": null,
+      "effective_date": "2002-02-26"
+    },
+    {
+      "document_name": "1125576_0000928385-02-000738_dex991d2.txt",
+      "parties": [
+        "Hawker Pacific Aerospace",
+        "Lufthansa Technik AG"
+      ],
+      "agreement_type": null,
+      "effective_date": "2002-02-28"
+    },
+    {
+      "document_name": "769592_0000950133-02-003341_w64132exv10w4.txt",
+      "parties": [
+        "NeoReach, Inc.",
+        "Prime Circuits"
+      ],
+      "agreement_type": null,
+      "effective_date": "2002-04-09"
+    },
+    {
+      "document_name": "731947_0000950123-02-007159_y62132e3exv99wdw21.txt",
+      "parties": [
+        "Swiss Army Brands, Inc.",
+        "Victorinox A.G."
+      ],
+      "agreement_type": null,
+      "effective_date": "2002-07-15"
+    },
+    {
+      "document_name": "1288379_0000950123-07-003101_y31044exv99wdw5.htm",
+      "parties": [
+        "Shire US Inc.",
+        "New River Pharmaceuticals Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "2002-07-16"
+    },
+    {
+      "document_name": "313522_0000912057-02-040085_a2091647zex-99_d3.htm",
+      "parties": [
+        "Big Sky Transportation Company",
+        "Mesaba Holdings, Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "2002-07-26"
+    },
+    {
+      "document_name": "109261_0000950172-02-002217_los283194.txt",
+      "parties": [
+        "Meritage Corporation",
+        "MTH-Homes Nevada, Inc.",
+        "Zenith National Insurance Corp.",
+        "Perma-Bilt"
+      ],
+      "agreement_type": null,
+      "effective_date": "2002-10-07"
+    },
+    {
+      "document_name": "1119985_0001047469-04-035924_a2147858zex-2_5.htm",
+      "parties": [
+        "STUART ENERGY SYSTEMS CORPORATION",
+        "HYDROGENICS CORPORATION"
+      ],
+      "agreement_type": null,
+      "effective_date": "2002-11-12"
+    },
+    {
+      "document_name": "1021096_0000914317-03-001205_ex2-2.txt",
+      "parties": [
+        "BELCAN CORPORATION",
+        "ARC COMMUNICATIONS, INC."
+      ],
+      "agreement_type": null,
+      "effective_date": "2003-04-01"
+    },
+    {
+      "document_name": "913610_0001047469-03-027395_a2116567zex-99_e3.htm",
+      "parties": [
+        "Genzyme Corporation",
+        "SangStat Medical Corporation"
+      ],
+      "agreement_type": null,
+      "effective_date": "2003-06-12"
+    },
+    {
+      "document_name": "1085220_0001014909-04-000090_exh6_3.txt",
+      "parties": [
+        "ULTIMATTE CORPORATION",
+        "SBS INTERACTIVE, CO."
+      ],
+      "agreement_type": null,
+      "effective_date": "2003-06-19"
+    },
+    {
+      "document_name": "1240722_0001161697-03-000454_exhibit_10-12.txt",
+      "parties": [
+        "Solomon Technologies, Inc.",
+        "Pinetree (Barbados) Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "2003-07-31"
+    },
+    {
+      "document_name": "14803_0001047469-04-012846_a2134202zex-99_e3.htm",
+      "parties": [
+        "Tom Brown, Inc.",
+        "EnCana Oil & Gas (USA) Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "2003-11-25"
+    },
+    {
+      "document_name": "1089029_0000950123-07-007908_y31303a1exv10w13.htm",
+      "parties": [
+        "Flow Capital Advisors, Inc.",
+        "JAG Media Holdings"
+      ],
+      "agreement_type": null,
+      "effective_date": "2004-01-01"
+    },
+    {
+      "document_name": "1013240_0001047469-04-010350_a2132633zex-10_22.htm",
+      "parties": [
+        "Level 3 Communications, LLC",
+        "ICG Communications, Inc.",
+        "ICG Telecom Group"
+      ],
+      "agreement_type": null,
+      "effective_date": "2004-04-01"
+    },
+    {
+      "document_name": "814457_0000950137-04-009790_c89545exv99wxdyx6y.htm",
+      "parties": [
+        "Home Products International, Inc.",
+        "Mesirow Financial",
+        "Triyar Companies"
+      ],
+      "agreement_type": null,
+      "effective_date": "2004-04-29"
+    },
+    {
+      "document_name": "1102301_0001094328-04-000141_freesarex23052004.txt",
+      "parties": [
+        "FREESTAR TECHNOLOGY CORPORATION",
+        "UNICOMP, INC."
+      ],
+      "agreement_type": null,
+      "effective_date": "2004-05-04"
+    },
+    {
+      "document_name": "75448_0001193125-05-158309_dex99d4.htm",
+      "parties": [
+        "nStor Corporation, Inc.",
+        "Xyratex Technology Limited"
+      ],
+      "agreement_type": null,
+      "effective_date": "2004-09-02"
+    },
+    {
+      "document_name": "930796_0000950123-05-001407_y05539exv99w5.txt",
+      "parties": [
+        "JD Holdings, LLC",
+        "GIC Real Estate, Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "2004-09-24"
+    },
+    {
+      "document_name": "1120792_0001019687-05-001599_morgan_sb2a1-ex1408.txt",
+      "parties": [
+        "Morgan Beaumont, Inc.",
+        "Mtel Communications Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "2005-02-01"
+    },
+    {
+      "document_name": "1120792_0001019687-05-002206_morgan_10qex5-2.txt",
+      "parties": [
+        "Symmetrex Inc.",
+        "MORGAN BEAUMONT INC."
+      ],
+      "agreement_type": null,
+      "effective_date": "2005-03-22"
+    },
+    {
+      "document_name": "1285543_0001013762-05-000550_may52005sb2ex1019.txt",
+      "parties": [
+        "StrikeForce Technologies, Inc.",
+        "Company"
+      ],
+      "agreement_type": null,
+      "effective_date": "2005-04-05"
+    },
+    {
+      "document_name": "1277090_0001104659-05-057084_a05-20673_1ex10.htm",
+      "parties": [
+        "SERENA Software, Inc.",
+        "Silver Lake Management Company, L.L.C."
+      ],
+      "agreement_type": null,
+      "effective_date": "2005-06-24"
+    },
+    {
+      "document_name": "874265_0001193125-05-138436_dex99d1.htm",
+      "parties": [
+        "NeighborCare, Inc.",
+        "Omnicare",
+        "Nectarine Acquisition Corp."
+      ],
+      "agreement_type": null,
+      "effective_date": "2005-07-01"
+    },
+    {
+      "document_name": "817516_0001014909-05-000102_exh99_4sept2005.txt",
+      "parties": [
+        "Hittite Microwave Corporation",
+        "HMC Acquisition Corporation",
+        "Simtek Corporation",
+        "Q-Dot, Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "2005-08-30"
+    },
+    {
+      "document_name": "1012887_0001193125-07-165503_dex99d6.htm",
+      "parties": [
+        "XIUS",
+        "Megasoft Limited",
+        "Boston Communications Group, Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "2005-11-22"
+    },
+    {
+      "document_name": "1367408_0001367408-06-000002_risb2ex106.htm",
+      "parties": [
+        "Raphael Industries Ltd.",
+        "ListFusion"
+      ],
+      "agreement_type": null,
+      "effective_date": "2005-11-28"
+    },
+    {
+      "document_name": "1363033_0001144204-06-024852_v045245_ex10-8.htm",
+      "parties": [
+        "Yann Mellet",
+        "Sweetskinz, Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "2006-04-06"
+    },
+    {
+      "document_name": "850313_0000950149-07-000090_f28028toexv99wxdyx2y.htm",
+      "parties": [
+        "SafeNet, Inc.",
+        "Vector Capital Corporation"
+      ],
+      "agreement_type": null,
+      "effective_date": "2006-09-28"
+    },
+    {
+      "document_name": "1288379_0000950123-07-003101_y31044exv99wdw6.htm",
+      "parties": [
+        "Shire Pharmaceuticals, Inc.",
+        "L.E.K. Consulting LLC",
+        "New River Pharmaceuticals Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "2006-11-28"
+    },
+    {
+      "document_name": "1112422_0000950153-08-001257_p75864exv99wxeyx4y.htm",
+      "parties": [
+        "Motive, Inc.",
+        "Alcatel-Lucent"
+      ],
+      "agreement_type": null,
+      "effective_date": "2007-03-28"
+    },
+    {
+      "document_name": "1068874_0001068874-07-000012_ex10_2.htm",
+      "parties": [
+        "Accurel Systems International Corporation",
+        "Implant Sciences Corporation",
+        "Evans Analytical Group LLC"
+      ],
+      "agreement_type": null,
+      "effective_date": "2007-04-30"
+    },
+    {
+      "document_name": "931784_0001104659-07-068716_a07-23871_1ex2.htm",
+      "parties": [
+        "Vector Capital Corporation",
+        "Captaris, Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "2007-09-12"
+    },
+    {
+      "document_name": "1373467_0001096350-07-000140_ex99threea.htm",
+      "parties": [
+        "Swansi Holdings Corp.",
+        "Zulu Energy Corp."
+      ],
+      "agreement_type": null,
+      "effective_date": "2007-09-26"
+    },
+    {
+      "document_name": "1011344_0001193125-08-097987_dex99d5.htm",
+      "parties": [
+        "Packeteer, Inc.",
+        "Blue Coat Systems"
+      ],
+      "agreement_type": null,
+      "effective_date": "2007-10-28"
+    },
+    {
+      "document_name": "25895_0000950134-07-023464_d51356exv10w1.htm",
+      "parties": [
+        "SPRINGS GLOBAL US, INC.",
+        "CROWN CRAFTS INFANT PRODUCTS"
+      ],
+      "agreement_type": null,
+      "effective_date": "2007-11-05"
+    },
+    {
+      "document_name": "1001917_0000950123-08-007542_y61533exv99wdw3.htm",
+      "parties": [
+        "Magic Hat Brewing Company & Performing Arts Center, Inc.",
+        "PYRAMID BREWERIES INC."
+      ],
+      "agreement_type": null,
+      "effective_date": "2008-04-03"
+    },
+    {
+      "document_name": "1094007_0001193125-10-258977_dex101.htm",
+      "parties": [
+        "Rainmaker Systems",
+        "Microsoft Corporation"
+      ],
+      "agreement_type": null,
+      "effective_date": "2008-05-19"
+    },
+    {
+      "document_name": "1096147_0001193125-08-206038_dex4.htm",
+      "parties": [
+        "Financial Investments Corporation",
+        "Taylor Capital Group, Inc.",
+        "Cole Taylor Bank"
+      ],
+      "agreement_type": null,
+      "effective_date": "2008-07-22"
+    },
+    {
+      "document_name": "55805_0001145443-10-001028_d26631_ex99-d3.htm",
+      "parties": [
+        "North American Galvanizing & Coating, Inc.",
+        "AZZ incorporated"
+      ],
+      "agreement_type": null,
+      "effective_date": "2008-07-22"
+    },
+    {
+      "document_name": "1289434_0001047469-10-008010_a2200117zex-99_d3.htm",
+      "parties": [
+        "3M Company",
+        "Cogent, Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "2008-07-31"
+    },
+    {
+      "document_name": "1063085_0000950134-09-011390_f52580exv99wxeyx3y.htm",
+      "parties": [
+        "IXIA",
+        "CATAPULT COMMUNICATIONS CORPORATION"
+      ],
+      "agreement_type": null,
+      "effective_date": "2009-03-25"
+    },
+    {
+      "document_name": "948850_0000950123-10-020820_p17071exv99wew4.htm",
+      "parties": [
+        "Manpower Inc.",
+        "Comsys IT Partners, Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "2009-11-19"
+    },
+    {
+      "document_name": "1334303_0001193125-10-204560_dex99e5.htm",
+      "parties": [
+        "ICx Technologies, Inc.",
+        "FLIR Systems"
+      ],
+      "agreement_type": null,
+      "effective_date": "2010-03-17"
+    },
+    {
+      "document_name": "768262_0001193125-10-128597_dex99d2.htm",
+      "parties": [
+        "Sybase, Inc.",
+        "SAP AG"
+      ],
+      "agreement_type": null,
+      "effective_date": "2010-04-02"
+    },
+    {
+      "document_name": "1323115_0000950123-10-098499_c60911exv99wdw3.htm",
+      "parties": [
+        "Cardiac Science Corporation",
+        "Criticare Systems/Opto"
+      ],
+      "agreement_type": null,
+      "effective_date": "2010-06-25"
+    },
+    {
+      "document_name": "1373671_0001193125-10-265249_dex99d3.htm",
+      "parties": [
+        "Isilon Systems, Inc.",
+        "EMC Corporation"
+      ],
+      "agreement_type": null,
+      "effective_date": "2010-08-29"
+    },
+    {
+      "document_name": "741696_0001193125-10-290887_dex99d9.htm",
+      "parties": [
+        "Raytheon Company",
+        "Applied Signal Technology, Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "2010-10-19"
+    },
+    {
+      "document_name": "1021097_0001047469-11-001653_a2202345zex-99_d10.htm",
+      "parties": [
+        "Universal Hospital Services, Inc.",
+        "Emergent Group"
+      ],
+      "agreement_type": null,
+      "effective_date": "2010-10-26"
+    },
+    {
+      "document_name": "912890_0001193125-11-030842_dex99d5.htm",
+      "parties": [
+        "Verizon Communications Inc.",
+        "Terremark Worldwide, Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "2010-12-15"
+    },
+    {
+      "document_name": "1392091_0000950123-11-021325_c13551exv99w7.htm",
+      "parties": [
+        "Blueknight Energy Partners, L.P.",
+        "Blueknight Energy Partners G.P., L.L.C.",
+        "MSD Torchlight"
+      ],
+      "agreement_type": null,
+      "effective_date": "2011-03-01"
+    },
+    {
+      "document_name": "845818_0001193125-11-195725_dex99d8.htm",
+      "parties": [
+        "Radiant Systems, Inc.",
+        "NCR Corporation"
+      ],
+      "agreement_type": null,
+      "effective_date": "2011-05-27"
+    },
+    {
+      "document_name": "858452_0001193125-12-123549_d317599dex99d3.htm",
+      "parties": [
+        "Nuance Communications, Inc.",
+        "Transcend Services"
+      ],
+      "agreement_type": null,
+      "effective_date": "2011-07-15"
+    },
+    {
+      "document_name": "1046880_0001193125-11-323050_d262064dex992.htm",
+      "parties": [
+        "Russian Standard Vodka",
+        "Central European Distribution Corporation"
+      ],
+      "agreement_type": null,
+      "effective_date": "2011-10-07"
+    },
+    {
+      "document_name": "1402305_0001193125-11-343865_d268167dex99d2.htm",
+      "parties": [
+        "SuccessFactors, Inc.",
+        "SAP AG"
+      ],
+      "agreement_type": null,
+      "effective_date": "2011-10-20"
+    },
+    {
+      "document_name": "1280058_0001193125-12-023311_d287213dex99d3.htm",
+      "parties": [
+        "Convio, Inc.",
+        "Blackbaud"
+      ],
+      "agreement_type": null,
+      "effective_date": "2011-11-07"
+    },
+    {
+      "document_name": "1372664_0001193125-12-159071_d333885dex99d9.htm",
+      "parties": [
+        "COMVERGE, Inc.",
+        "H.I.G. Middle Market, LLC"
+      ],
+      "agreement_type": null,
+      "effective_date": "2011-11-15"
+    },
+    {
+      "document_name": "1113303_0000892917-12-000026_stilffnw13d120112am2ex3.htm",
+      "parties": [
+        "First Financial Northwest, Inc.",
+        "Stilwell Associates, L.P.",
+        "Stilwell Partners",
+        "Stilwell Value Partners II",
+        "Stilwell Value Partners VI",
+        "Stilwell Value Partners VII",
+        "Stilwell Value LLC",
+        "Stilwell Associates Insurance Fund of The S.A.L.I. Multi-Series Fund L.P.",
+        "Stilwell Advisers LLC",
+        "Joseph Stilwell",
+        "Spencer L. Schneider"
+      ],
+      "agreement_type": null,
+      "effective_date": "2012-01-11"
+    },
+    {
+      "document_name": "912263_0001047469-12-006662_a2209873zex-99_d2.htm",
+      "parties": [
+        "Sycamore Partners Management, L.L.C.",
+        "The Talbots, Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "2012-01-27"
+    },
+    {
+      "document_name": "912263_0001104659-12-004811_a12-3671_1ex2.htm",
+      "parties": [
+        "Sycamore Partners Management, L.L.C.",
+        "The Talbots, Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "2012-01-27"
+    },
+    {
+      "document_name": "912263_0001193125-12-285724_d371520dex99e4.htm",
+      "parties": [
+        "Sycamore Partners Management, L.L.C.",
+        "The Talbots, Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "2012-01-27"
+    },
+    {
+      "document_name": "703361_0001193125-12-242586_d356019dex9910.htm",
+      "parties": [
+        "Integrated Device Technology, Inc.",
+        "PLX Technology"
+      ],
+      "agreement_type": null,
+      "effective_date": "2012-03-31"
+    },
+    {
+      "document_name": "103884_0001193125-12-338104_d390544dex99d3.htm",
+      "parties": [
+        "American Blue Ribbon Holdings, LLC",
+        "J. Alexander's Corporation"
+      ],
+      "agreement_type": null,
+      "effective_date": "2012-04-09"
+    },
+    {
+      "document_name": "881790_0001104659-12-052730_a12-17284_1ex99d1.htm",
+      "parties": [
+        "HF Financial Corp.",
+        "Jacobs Asset Management, L.L.C."
+      ],
+      "agreement_type": null,
+      "effective_date": "2012-07-30"
+    },
+    {
+      "document_name": "1561604_0001193125-12-472390_d438799dex99d3.htm",
+      "parties": [
+        "JDA Software Group, Inc.",
+        "RedPrairie Holding",
+        "New Mountain Capital, LLC"
+      ],
+      "agreement_type": null,
+      "effective_date": "2012-09-04"
+    },
+    {
+      "document_name": "888953_0001193125-13-044630_d480503dex99e6.htm",
+      "parties": [
+        "Online Resources Corporation",
+        "ACI Worldwide, Inc.",
+        "PricewaterhouseCoopers"
+      ],
+      "agreement_type": null,
+      "effective_date": "2012-11-15"
+    },
+    {
+      "document_name": "1332602_0001193125-12-512465_d454990dex99d2.htm",
+      "parties": [
+        "JAB Beech Inc.",
+        "Caribou Coffee Company, Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "2012-12-07"
+    },
+    {
+      "document_name": "1457829_0000898822-13-000086_exhibit-ndaexecutionversion.htm",
+      "parties": [
+        "Central European Distribution Corporation",
+        "W&L Enterprises Ltd."
+      ],
+      "agreement_type": null,
+      "effective_date": "2013-02-18"
+    },
+    {
+      "document_name": "1049210_0001047469-13-009461_a2216846zex-99_d3.htm",
+      "parties": [
+        "Verenium Corporation",
+        "BASF Corporation"
+      ],
+      "agreement_type": null,
+      "effective_date": "2013-05-01"
+    },
+    {
+      "document_name": "1163932_0001193125-13-394191_d606730dex99d2.htm",
+      "parties": [
+        "The Active Network, Inc.",
+        "Vista Equity Partners III, LLC"
+      ],
+      "agreement_type": null,
+      "effective_date": "2013-08-06"
+    },
+    {
+      "document_name": "1366649_0001193125-14-380778_d808213dex99d2.htm",
+      "parties": [
+        "Tennenbaum Capital",
+        "Dialogic Inc.",
+        "Novacap Technologies III, L.P."
+      ],
+      "agreement_type": null,
+      "effective_date": "2013-12-05"
+    },
+    {
+      "document_name": "1329919_0001193125-14-149149_d701401dex99d6.htm",
+      "parties": [
+        "Vocus, Inc.",
+        "GTCR LLC"
+      ],
+      "agreement_type": null,
+      "effective_date": "2013-12-20"
+    },
+    {
+      "document_name": "1253176_0001193125-18-317778_d567323dex1024.htm",
+      "parties": [
+        "Vapotherm, Inc.",
+        "John Coolidge"
+      ],
+      "agreement_type": null,
+      "effective_date": "2014-01-28"
+    },
+    {
+      "document_name": "802724_0001193125-15-331613_d96542dex99d5.htm",
+      "parties": [
+        "InSite Vision Incorporation",
+        "SUN PHARMACEUTICAL INDUSTRIES LTD."
+      ],
+      "agreement_type": null,
+      "effective_date": "2014-01-31"
+    },
+    {
+      "document_name": "916457_0000916457-14-000028_exhibit104-confidentiality.htm",
+      "parties": [
+        "Calpine Corporation",
+        "LS Power Equity Advisors, LLC"
+      ],
+      "agreement_type": null,
+      "effective_date": "2014-02-19"
+    },
+    {
+      "document_name": "1335239_0001019687-14-003760_epazz_ex1034.htm",
+      "parties": [
+        "TROY HOLDINGS INTERNATIONAL, INC.",
+        "EPAZZ",
+        "TELECORP PRODUCTS",
+        "Troy Inc.",
+        "ANA MISRA",
+        "SCOTT MacCANNELL"
+      ],
+      "agreement_type": null,
+      "effective_date": "2014-02-28"
+    },
+    {
+      "document_name": "1142512_0001193125-14-269726_d757168dex99e3.htm",
+      "parties": [
+        "ZipRealty, Inc.",
+        "Realogy Holdings Corp."
+      ],
+      "agreement_type": null,
+      "effective_date": "2014-04-25"
+    },
+    {
+      "document_name": "918541_0001193125-14-328980_d785003dex105.htm",
+      "parties": [
+        "NN, Inc.",
+        "John C. Kennedy"
+      ],
+      "agreement_type": null,
+      "effective_date": "2014-07-18"
+    },
+    {
+      "document_name": "1062478_0001193125-14-442753_d838170dex3.htm",
+      "parties": [
+        "Actuate Corporation",
+        "Open Text Corporation"
+      ],
+      "agreement_type": null,
+      "effective_date": "2014-07-24"
+    },
+    {
+      "document_name": "1574111_0001193125-14-440569_d826999dex99d5.htm",
+      "parties": [
+        "BioMarin Pharmaceutical Inc.",
+        "Prosensa Holding N.V."
+      ],
+      "agreement_type": null,
+      "effective_date": "2014-07-31"
+    },
+    {
+      "document_name": "1167294_0001193125-15-218134_d933068dex99d3.htm",
+      "parties": [
+        "Meru Networks, Inc.",
+        "Fortinet"
+      ],
+      "agreement_type": null,
+      "effective_date": "2014-10-29"
+    },
+    {
+      "document_name": "865415_0001047469-15-007494_a2226057zex-99_d4.htm",
+      "parties": [
+        "Adept Technology, Inc.",
+        "Omron Electronics LLC"
+      ],
+      "agreement_type": null,
+      "effective_date": "2014-11-07"
+    },
+    {
+      "document_name": "1277141_0001193125-15-184193_d923647dex99d2.htm",
+      "parties": [
+        "Pitney Bowes Inc.",
+        "Borderfree, Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "2015-01-12"
+    },
+    {
+      "document_name": "880562_0001193125-15-346821_d93800dex3.htm",
+      "parties": [
+        "DAEGIS, INC.",
+        "Open Text Corporation"
+      ],
+      "agreement_type": null,
+      "effective_date": "2015-08-10"
+    },
+    {
+      "document_name": "1020416_0001193125-16-701566_d250247dex99d2.htm",
+      "parties": [
+        "Randstad Holding NV",
+        "Monster Worldwide, Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "2016-06-20"
+    },
+    {
+      "document_name": "1413447_0001193125-16-771498_d295023dex99d5.htm",
+      "parties": [
+        "NXP B.V.",
+        "QUALCOMM Incorporated"
+      ],
+      "agreement_type": null,
+      "effective_date": "2016-07-04"
+    },
+    {
+      "document_name": "915191_0001047469-17-003155_a2231967zex-99_8.htm",
+      "parties": [
+        "Fairfax Financial Holdings Limited",
+        "Allied World Assurance Company Holdings, AG"
+      ],
+      "agreement_type": null,
+      "effective_date": "2016-10-17"
+    },
+    {
+      "document_name": "1452751_0001193125-17-086167_d334994dex99e3.htm",
+      "parties": [
+        "Nimble Storage, Inc.",
+        "Hewlett Packard Enterprise Company"
+      ],
+      "agreement_type": null,
+      "effective_date": "2016-11-17"
+    },
+    {
+      "document_name": "1475274_0001567619-17-000751_s001644x1_exd-2.htm",
+      "parties": [
+        "RetailMeNot, Inc.",
+        "Valassis Communications"
+      ],
+      "agreement_type": null,
+      "effective_date": "2017-01-10"
+    },
+    {
+      "document_name": "1274644_0001193125-17-338759_d485523dex99d2.htm",
+      "parties": [
+        "Ocera Therapeutics, Inc.",
+        "Mallinckrodt LLC"
+      ],
+      "agreement_type": null,
+      "effective_date": "2017-01-20"
+    },
+    {
+      "document_name": "803647_0001047469-17-006266_a2233487zex-99_d2.htm",
+      "parties": [
+        "Versar, Inc.",
+        "Kingswood Capital Management, LLC"
+      ],
+      "agreement_type": null,
+      "effective_date": "2017-03-01"
+    },
+    {
+      "document_name": "1592288_0001193125-17-306543_d469659dex99e2.htm",
+      "parties": [
+        "Dimension Therapeutics, Inc.",
+        "Ultragenyx Pharmaceutical Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "2017-09-19"
+    },
+    {
+      "document_name": "1094814_0001140361-18-017998_s002178x1_ex99d7.htm",
+      "parties": [
+        "Blackstreet Capital Holdings, LLC",
+        "Cartesian, Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "2017-11-28"
+    },
+    {
+      "document_name": "1053374_0001144204-18-062970_tv508217_ex-d2.htm",
+      "parties": [
+        "Pareteum Corporation",
+        "iPass Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "2017-12-18"
+    },
+    {
+      "document_name": "1177845_0001193125-18-219243_d519554dex99d3.htm",
+      "parties": [
+        "ZEBRA TECHNOLOGIES CORPORATION",
+        "XPLORE TECHNOLOGIES CORP."
+      ],
+      "agreement_type": null,
+      "effective_date": "2018-01-31"
+    },
+    {
+      "document_name": "1094348_0001144204-18-026846_tv493416_exd2.htm",
+      "parties": [
+        "NICE Ltd.",
+        "Mattersight Corporation"
+      ],
+      "agreement_type": null,
+      "effective_date": "2018-02-08"
+    },
+    {
+      "document_name": "1693664_0001193125-18-171470_d426098dex99d3.htm",
+      "parties": [
+        "ARMO Biosciences, Inc.",
+        "Eli Lilly and Company"
+      ],
+      "agreement_type": null,
+      "effective_date": "2018-03-19"
+    },
+    {
+      "document_name": "1316898_0001047469-18-005618_a2236490zex-99_d2.htm",
+      "parties": [
+        "Jamba, Inc.",
+        "FOCUS Brands Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "2018-03-30"
+    },
+    {
+      "document_name": "792130_0001193125-18-326077_d601641dex99d3.htm",
+      "parties": [
+        "ALTAIR ENGINEERING INC.",
+        "DATAWATCH CORPORATION"
+      ],
+      "agreement_type": null,
+      "effective_date": "2018-05-14"
+    },
+    {
+      "document_name": "non-disclosure-agreement_1.pdf",
+      "parties": [
+        "Jardine Lloyd Thompson Group plc",
+        "Marsh & McLennan Companies, Inc"
+      ],
+      "agreement_type": null,
+      "effective_date": "2018-09-13"
+    },
+    {
+      "document_name": "1485469_0001193125-19-222469_d760929dex99d3.htm",
+      "parties": [
+        "Tower International, Inc.",
+        "Autokiniton Global Group"
+      ],
+      "agreement_type": null,
+      "effective_date": "2018-09-19"
+    },
+    {
+      "document_name": "1609351_0001193125-19-066373_d642137dex99d2.htm",
+      "parties": [
+        "Spark Therapeutics, Inc.",
+        "Roche Holdings Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "2018-10-09"
+    },
+    {
+      "document_name": "1041550_0001104659-19-001346_a18-42231_6ex10d8.htm",
+      "parties": [
+        "First Financial Corporation",
+        "First Financial Bank, N.A.",
+        "HopFed Bancorp, Inc.",
+        "Heritage Bank USA",
+        "Billy C. Duvall"
+      ],
+      "agreement_type": null,
+      "effective_date": "2019-01-07"
+    },
+    {
+      "document_name": "1041550_0001193125-19-004977_d663808dex106.htm",
+      "parties": [
+        "First Financial Corporation",
+        "First Financial Bank, N.A.",
+        "HopFed Bancorp, Inc.",
+        "Heritage Bank USA",
+        "John E. Peck"
+      ],
+      "agreement_type": null,
+      "effective_date": "2019-01-07"
+    },
+    {
+      "document_name": "714562_0001104659-19-001345_a18-42231_6ex10d8.htm",
+      "parties": [
+        "First Financial Corporation",
+        "First Financial Bank, N.A.",
+        "HopFed Bancorp, Inc.",
+        "Heritage Bank USA",
+        "Billy C. Duvall"
+      ],
+      "agreement_type": null,
+      "effective_date": "2019-01-07"
+    },
+    {
+      "document_name": "a18-42231_6ex10d8.htm",
+      "parties": [
+        "First Financial Corporation",
+        "First Financial Bank, N.A.",
+        "HopFed Bancorp, Inc.",
+        "Heritage Bank USA",
+        "Billy C. Duvall"
+      ],
+      "agreement_type": null,
+      "effective_date": "2019-01-07"
+    },
+    {
+      "document_name": "1487101_0001140361-19-008970_nc10001202x4_ex-d2.htm",
+      "parties": [
+        "The KeyW Holding Corporation",
+        "Jacobs Engineering Group Inc."
+      ],
+      "agreement_type": null,
+      "effective_date": "2019-02-14"
+    },
+    {
+      "document_name": "ea020415301ex99-2_nordstrom.htm",
+      "parties": [
+        "Nordstrom, Inc.",
+        "Erik B. Nordstrom",
+        "Peter E. Nordstrom",
+        "Pete and Brandy Nordstrom 2012 Children's Trust",
+        "Pete and Brandy MFN 2010 Trust",
+        "Pete and Brandy CFN 2012 Trust",
+        "Erik and Julie Nordstrom 2012 SDN Trust",
+        "Bruce & Jeannie Nordstrom 2010 MFN Trust",
+        "Bruce & Jeannie Nordstrom 2012 CFN Trust",
+        "1976 Bruce A. Nordstrom Trust",
+        "Frances W. Nordstrom Trust FBO BAN"
+      ],
+      "agreement_type": null,
+      "effective_date": "2024-04-17"
+    },
+    {
+      "document_name": "d828431dex101.htm",
+      "parties": [
+        "CVS Health Corporation",
+        "Glenview Capital Management, LLC"
+      ],
+      "agreement_type": null,
+      "effective_date": "2024-11-17"
+    }
+  ],
+  "elapsed_seconds": 625.93,
+  "cost_usd": 6.219628,
+  "total_tokens": 11670038
+}

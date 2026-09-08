@@ -1,0 +1,38 @@
+{
+  "task_id": "aviation_safety-018",
+  "answer": [
+    {
+      "symptom_category": "other_engine_indication",
+      "incident_count": 85,
+      "most_common_outcome": "return"
+    },
+    {
+      "symptom_category": "flameout",
+      "incident_count": 52,
+      "most_common_outcome": "return"
+    },
+    {
+      "symptom_category": "thrust_loss",
+      "incident_count": 50,
+      "most_common_outcome": "return"
+    },
+    {
+      "symptom_category": "oil_indication",
+      "incident_count": 46,
+      "most_common_outcome": "diversion"
+    },
+    {
+      "symptom_category": "vibration",
+      "incident_count": 43,
+      "most_common_outcome": "diversion"
+    },
+    {
+      "symptom_category": "temperature",
+      "incident_count": 25,
+      "most_common_outcome": "return"
+    }
+  ],
+  "elapsed_seconds": 96.2,
+  "cost_usd": 0.783477,
+  "total_tokens": 1867100
+}

@@ -1,0 +1,50 @@
+{
+  "task_id": "legal_contracts-047",
+  "answer": [
+    {
+      "document_id": "1013322_0000912057-00-023405_document_2.txt",
+      "governing_law": "California",
+      "term_bucket": "perpetual",
+      "allows_one_copy_retention": false
+    },
+    {
+      "document_id": "1094007_0001193125-10-258977_dex101.htm",
+      "governing_law": "Washington",
+      "term_bucket": "fixed",
+      "allows_one_copy_retention": false
+    },
+    {
+      "document_id": "1095563_0000950168-99-002585_document_2.txt",
+      "governing_law": "Washington",
+      "term_bucket": "fixed",
+      "allows_one_copy_retention": false
+    },
+    {
+      "document_id": "1420529_0001145549-08-000077_h00839a1exv10w4.txt",
+      "governing_law": "People's Republic of China",
+      "term_bucket": "fixed",
+      "allows_one_copy_retention": false
+    },
+    {
+      "document_id": "934545_0000891618-99-004640_document_2.txt",
+      "governing_law": "Delaware",
+      "term_bucket": "fixed",
+      "allows_one_copy_retention": false
+    },
+    {
+      "document_id": "Acme%20Corporation%20Inc%20NDA%20template.pdf",
+      "governing_law": "California",
+      "term_bucket": "perpetual",
+      "allows_one_copy_retention": false
+    },
+    {
+      "document_id": "O00216-000899A.pdf",
+      "governing_law": "California",
+      "term_bucket": "fixed",
+      "allows_one_copy_retention": false
+    }
+  ],
+  "elapsed_seconds": 317.15,
+  "cost_usd": 1.57129806,
+  "total_tokens": 3496245
+}

@@ -1,0 +1,64 @@
+{
+  "task_id": "aviation_safety-015",
+  "answer": [
+    {
+      "rank": 1,
+      "incident_id": "asrs_015075",
+      "fuel_values_normalized": [
+        "30000"
+      ],
+      "time_values_normalized": [],
+      "operational_consequence": "emergency_declaration"
+    },
+    {
+      "rank": 2,
+      "incident_id": "asrs_027451",
+      "fuel_values_normalized": [],
+      "time_values_normalized": [
+        "20"
+      ],
+      "operational_consequence": "emergency_declaration"
+    },
+    {
+      "rank": 3,
+      "incident_id": "asrs_028082",
+      "fuel_values_normalized": [],
+      "time_values_normalized": [
+        "3"
+      ],
+      "operational_consequence": "emergency_declaration"
+    },
+    {
+      "rank": 4,
+      "incident_id": "asrs_034863",
+      "fuel_values_normalized": [
+        "17800"
+      ],
+      "time_values_normalized": [
+        "3"
+      ],
+      "operational_consequence": "emergency_declaration"
+    },
+    {
+      "rank": 5,
+      "incident_id": "asrs_045270",
+      "fuel_values_normalized": [
+        "4000",
+        "700",
+        "200"
+      ],
+      "time_values_normalized": [
+        "5",
+        "10",
+        "15",
+        "10",
+        "30",
+        "10"
+      ],
+      "operational_consequence": "emergency_declaration"
+    }
+  ],
+  "elapsed_seconds": 67.539,
+  "cost_usd": 0.09915735,
+  "total_tokens": 118863
+}

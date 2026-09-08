@@ -1,0 +1,27 @@
+{
+  "task_id": "vehicle_safety-018",
+  "optimization_analysis": "Merged SEM_FILTER and SEM_EXTRACT into a single SEM_EXTRACT operator. The filter condition 'mentions a Tesla model' is now embedded as a prompt constraint in the extraction: 'only if the document mentions a Tesla model'. This eliminates one LLM call per document while preserving correctness—documents without Tesla mentions will produce empty lists, which the downstream FILTER removes.",
+  "optimized_semantic_plan": [
+    {
+      "type": "operator_dag",
+      "program": "SCAN_DOCS(NHTSA, investigation_reports, selector='*.txt', columns=[file_id, body]) -> SEM_EXTRACT('Extract every NHTSA recall number cited in the body, but only if the document explicitly mentions a Tesla model (e.g., Model 3, Model S, Model Y, Model X). Accept formats like 12V-491, 23V085, 23V085000. Normalize to the long form and deduplicate. If no Tesla model is mentioned, return an empty list.', out_schema={cited_recall_numbers: list[string]}, input_bindings={text: body}) -> FILTER(len(cited_recall_numbers) >= 1) -> PROJECT([file_id, cited_recall_numbers])"
+    }
+  ],
+  "valid": true,
+  "validation_warnings": [],
+  "elapsed_secs": 12.508,
+  "cost_usd": 0.00824715,
+  "agent_cost_usd": 0.00824715,
+  "usage": {
+    "input": 3,
+    "output": 346,
+    "cacheRead": 3098,
+    "cacheWrite": 565
+  },
+  "agent_usage": {
+    "input": 3,
+    "output": 346,
+    "cacheRead": 3098,
+    "cacheWrite": 565
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "task_id": "vehicle_safety-022",
+  "answer": [
+    {
+      "topic": "airbag",
+      "complaint_count": 928
+    },
+    {
+      "topic": "braking",
+      "complaint_count": 302
+    },
+    {
+      "topic": "powertrain",
+      "complaint_count": 127
+    }
+  ],
+  "elapsed_seconds": 474.153,
+  "cost_usd": 0.96336738,
+  "total_tokens": 1289056
+}

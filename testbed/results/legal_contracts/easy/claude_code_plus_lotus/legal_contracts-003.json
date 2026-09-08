@@ -1,0 +1,22 @@
+{
+  "task_id": "legal_contracts-003",
+  "answer": [
+    {
+      "document_id": "ef20050389_ex31-1.htm",
+      "certifying_officers": [
+        "['George Magrath']"
+      ],
+      "reporting_period_type": "quarterly"
+    },
+    {
+      "document_id": "ef20050389_ex31-2.htm",
+      "certifying_officers": [
+        "['Amy Rabourn']"
+      ],
+      "reporting_period_type": "quarterly"
+    }
+  ],
+  "elapsed_seconds": 138.68,
+  "cost_usd": 0.1942173,
+  "total_tokens": 5320
+}

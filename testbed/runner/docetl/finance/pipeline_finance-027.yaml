@@ -1,0 +1,325 @@
+datasets:
+  sec_2021_filings:
+    type: file
+    path: data/SEC/CSV/2021.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_filings_over_60000_words
+    type: code_filter
+    code: |
+      def transform(doc):
+          try:
+              return int(doc.get("word_count", 0)) > 60000
+          except (TypeError, ValueError):
+              return False
+
+  - name: load_filing_document
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("SEC text path escapes data/SEC")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              document = handle.read()
+          return {"document": document}
+
+  - name: filter_ai_or_ml_mentions
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this SEC 10-K filing only if it mentions artificial intelligence or
+      machine learning in the filing.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: classify_primary_revenue_model
+    type: map
+    optimize: true
+    prompt: |
+      Assign the reporting company to exactly one primary revenue-model category
+      based on this SEC 10-K filing:
+
+      - advertising: revenue primarily from advertising;
+      - commission: revenue primarily from commissions;
+      - interest_income: revenue primarily from interest income;
+      - investment_returns: revenue primarily from investment returns;
+      - licensing_royalties: revenue primarily from licensing or royalties;
+      - mixed: multiple listed models are material with no single primary model;
+      - product_sales: revenue primarily from product sales;
+      - rental_income: revenue primarily from rentals or leases;
+      - service_fees: revenue primarily from non-subscription service fees;
+      - subscription: revenue primarily from subscriptions or memberships;
+      - undetermined: the filing does not support a reliable assignment.
+
+      Base the category on how the reporting company earns revenue.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        revenue_model: enum[advertising, commission, interest_income, investment_returns, licensing_royalties, mixed, product_sales, rental_income, service_fees, subscription, undetermined]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 256
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: classify_competitive_position
+    type: map
+    optimize: true
+    prompt: |
+      Assign the reporting company to exactly one competitive-position category
+      using evidence in this SEC 10-K filing:
+
+      - emerging: an early-stage or emerging competitor;
+      - niche_player: a competitor focused on a specialized market niche;
+      - challenger: a challenger to larger or leading competitors;
+      - major_player: a major established competitor that is not the market leader;
+      - market_leader: a recognized leader in its primary market;
+      - undetermined: the filing does not support a reliable assignment.
+
+      Base the category on the reporting company's described current position.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        competitive_position: enum[emerging, niche_player, challenger, major_player, market_leader, undetermined]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 256
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_determined_categories
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("revenue_model") != "undetermined"
+              and doc.get("competitive_position") != "undetermined"
+          )
+
+  - name: extract_esg_mention_and_risk_factor_count
+    type: map
+    optimize: true
+    prompt: |
+      Analyze this SEC 10-K filing and return:
+
+      - esg_mentioned: whether the filing mentions environmental, social,
+        governance, ESG, or sustainability topics;
+      - risk_factor_count: the total number of distinct risk factors in the
+        filing's risk-factor section.
+
+      Count individually presented risk factors rather than pages, paragraphs,
+      cross-references, or broad category headings.
+
+      Set risk_factor_count_available=true only when the distinct total can be
+      determined. Otherwise set it to false and return 0 as the required
+      placeholder; the following deterministic operation converts it to null.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        esg_mentioned: boolean
+        risk_factor_count_available: boolean
+        risk_factor_count_value: integer
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 512
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: normalize_nullable_risk_factor_count
+    type: code_map
+    code: |
+      def transform(doc):
+          if doc.get("risk_factor_count_available") is not True:
+              return {"risk_factor_count": None}
+          try:
+              return {"risk_factor_count": int(doc.get("risk_factor_count_value"))}
+          except (TypeError, ValueError):
+              return {"risk_factor_count": None}
+
+  - name: aggregate_category_combinations
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          from collections import defaultdict
+          from decimal import Decimal, ROUND_HALF_UP
+          from statistics import median
+
+          groups = defaultdict(list)
+          for item in items:
+              key = (
+                  str(item.get("revenue_model", "")),
+                  str(item.get("competitive_position", "")),
+              )
+              groups[key].append(item)
+
+          rows = []
+          for (revenue_model, competitive_position), group in groups.items():
+              risk_factor_counts = [
+                  int(item["risk_factor_count"])
+                  for item in group
+                  if item.get("risk_factor_count") is not None
+              ]
+              esg_mentions = sum(
+                  1 for item in group if item.get("esg_mentioned") is True
+              )
+              rows.append(
+                  {
+                      "revenue_model": revenue_model,
+                      "competitive_position": competitive_position,
+                      "filing_count": len(group),
+                      "esg_mention_rate_percent": float(
+                          (
+                              Decimal(100 * esg_mentions)
+                              / Decimal(len(group))
+                          ).quantize(Decimal("0.1"), rounding=ROUND_HALF_UP)
+                      ),
+                      "median_risk_factor_count": (
+                          round(float(median(risk_factor_counts)), 1)
+                          if risk_factor_counts
+                          else None
+                      ),
+                  }
+              )
+          return {"rows": rows}
+
+  - name: unnest_category_combinations
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - revenue_model
+      - competitive_position
+      - filing_count
+      - esg_mention_rate_percent
+      - median_risk_factor_count
+
+  - name: filter_combinations_with_at_least_10_filings
+    type: code_filter
+    code: |
+      def transform(doc):
+          return int(doc.get("filing_count", 0)) >= 10
+
+  - name: order_category_combinations
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          rows = sorted(
+              items,
+              key=lambda item: (
+                  -int(item.get("filing_count", 0)),
+                  str(item.get("revenue_model", "")),
+                  str(item.get("competitive_position", "")),
+              ),
+          )
+          return {"rows": rows}
+
+  - name: unnest_ordered_combinations
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - revenue_model
+      - competitive_position
+      - filing_count
+      - esg_mention_rate_percent
+      - median_risk_factor_count
+
+  - name: limit_to_5_combinations
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {"rows": items[:5]}
+
+  - name: unnest_limited_combinations
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - revenue_model
+      - competitive_position
+      - filing_count
+      - esg_mention_rate_percent
+      - median_risk_factor_count
+
+pipeline:
+  steps:
+    - name: process
+      input: sec_2021_filings
+      operations:
+        - filter_filings_over_60000_words
+        - load_filing_document
+        - filter_ai_or_ml_mentions
+        - classify_primary_revenue_model
+        - classify_competitive_position
+        - filter_determined_categories
+        - extract_esg_mention_and_risk_factor_count
+        - normalize_nullable_risk_factor_count
+        - aggregate_category_combinations
+        - unnest_category_combinations
+        - filter_combinations_with_at_least_10_filings
+        - order_category_combinations
+        - unnest_ordered_combinations
+        - limit_to_5_combinations
+        - unnest_limited_combinations
+  output:
+    type: file
+    path: raw_outputs/finance/output_finance-027.json

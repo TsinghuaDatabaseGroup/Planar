@@ -1,0 +1,55 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_ndas_with_finite_term
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is a mutual NDA, unilateral NDA, or
+      confidentiality-and-standstill agreement with a specified finite
+      confidentiality term. Exclude perpetual, indefinite, and unspecified terms.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_nda_with_finite_term: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_term_years
+    type: map
+    optimize: true
+    prompt: |
+      Extract the specified finite confidentiality term normalized to years.
+
+      Agreement:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {term_duration_years: float}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: select_longest_term
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          rows = [{"document_id": str(item.get("doc_id") or ""), "term_duration_years": float(item.get("term_duration_years") or 0)} for item in items]
+          rows.sort(key=lambda row: (-row["term_duration_years"], row["document_id"]))
+          return {"rows": rows[:1]}
+  - name: unnest_selected_agreement
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields: [document_id, term_duration_years]
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations: [filter_ndas_with_finite_term, extract_term_years, select_longest_term, unnest_selected_agreement]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-049.json

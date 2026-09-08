@@ -1,0 +1,26 @@
+{
+  "task_id": "aviation_safety-047",
+  "answer": [
+    {
+      "attribution_category": "mainly_equipment_driven",
+      "incident_count": 209,
+      "dominant_initiating_factor": "System failures and malfunctions",
+      "dominant_intervention": "Diversion and emergency checklist execution"
+    },
+    {
+      "attribution_category": "mainly_human_factor_driven",
+      "incident_count": 505,
+      "dominant_initiating_factor": null,
+      "dominant_intervention": null
+    },
+    {
+      "attribution_category": "mixed_equipment_human_factor",
+      "incident_count": 180,
+      "dominant_initiating_factor": null,
+      "dominant_intervention": null
+    }
+  ],
+  "elapsed_seconds": 2205.0,
+  "cost_usd": 7.057483,
+  "total_tokens": 8109496
+}

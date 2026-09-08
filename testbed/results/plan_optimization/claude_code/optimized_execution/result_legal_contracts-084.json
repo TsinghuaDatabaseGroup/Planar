@@ -1,0 +1,27 @@
+{
+  "task_id": "legal_contracts-084",
+  "answer": [
+    {
+      "company": "Voya Financial, Inc.",
+      "certifying_officers": [
+        "Donald C. Templin, Chief Financial Officer",
+        "Heather H. Lavallee, Chief Executive Officer",
+        "Michael R. Katz, Chief Financial Officer"
+      ],
+      "covered_person_category": "Executive Officers, Employees, and Directors",
+      "largest_subsidiary_count": 118
+    },
+    {
+      "company": "H.B. Fuller Company",
+      "certifying_officers": [
+        "Celeste B. Mastin, President and Chief Executive Officer",
+        "John J. Corkrean, Executive Vice President, Chief Financial Officer"
+      ],
+      "covered_person_category": "Executive Officers and Key Managers",
+      "largest_subsidiary_count": 104
+    }
+  ],
+  "elapsed_seconds": 1009.016,
+  "cost_usd": 1.70758899,
+  "total_tokens": 2465273
+}

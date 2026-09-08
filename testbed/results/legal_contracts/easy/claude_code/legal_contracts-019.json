@@ -1,0 +1,33 @@
+{
+  "task_id": "legal_contracts-019",
+  "answer": [
+    {
+      "rank": 1,
+      "agreement_or_filing_type": "sox_certification",
+      "document_count": 812
+    },
+    {
+      "rank": 2,
+      "agreement_or_filing_type": "other",
+      "document_count": 581
+    },
+    {
+      "rank": 3,
+      "agreement_or_filing_type": "employment_agreement",
+      "document_count": 238
+    },
+    {
+      "rank": 4,
+      "agreement_or_filing_type": "insider_trading_policy",
+      "document_count": 144
+    },
+    {
+      "rank": 5,
+      "agreement_or_filing_type": "auditor_consent",
+      "document_count": 137
+    }
+  ],
+  "elapsed_seconds": 324.319,
+  "cost_usd": 0.87377961,
+  "total_tokens": 2121529
+}

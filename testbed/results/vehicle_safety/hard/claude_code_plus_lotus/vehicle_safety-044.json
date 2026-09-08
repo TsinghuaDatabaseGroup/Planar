@@ -1,0 +1,29 @@
+{
+  "task_id": "vehicle_safety-044",
+  "answer": [
+    {
+      "campaign_number": "25V391000",
+      "matched_complaint_count": 5,
+      "severe_complaint_rate": 0.0,
+      "dominant_braking_failure_mode": "sudden loss of braking",
+      "dominant_recall_severity": "critical"
+    },
+    {
+      "campaign_number": "18V777000",
+      "matched_complaint_count": 1,
+      "severe_complaint_rate": 1.0,
+      "dominant_braking_failure_mode": "sudden loss of braking",
+      "dominant_recall_severity": "severe"
+    },
+    {
+      "campaign_number": "23V458000",
+      "matched_complaint_count": 1,
+      "severe_complaint_rate": 0.0,
+      "dominant_braking_failure_mode": "soft or spongy pedal",
+      "dominant_recall_severity": "critical"
+    }
+  ],
+  "elapsed_seconds": 404.342,
+  "cost_usd": 0.88968834,
+  "total_tokens": 517402
+}

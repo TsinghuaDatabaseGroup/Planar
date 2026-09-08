@@ -1,0 +1,122 @@
+{
+  "task_id": "vehicle_safety-011",
+  "answer": [
+    {
+      "manufacturer": "Kia America, Inc.",
+      "recall_count": 10,
+      "dominant_action_style": "part_replacement",
+      "distinct_components_recalled": 5
+    },
+    {
+      "manufacturer": "Hyundai Motor America",
+      "recall_count": 8,
+      "dominant_action_style": "part_replacement",
+      "distinct_components_recalled": 7
+    },
+    {
+      "manufacturer": "Chrysler (FCA US, LLC)",
+      "recall_count": 88,
+      "dominant_action_style": "part_replacement",
+      "distinct_components_recalled": 12
+    },
+    {
+      "manufacturer": "Toyota Motor Engineering & Manufacturing",
+      "recall_count": 8,
+      "dominant_action_style": "part_replacement",
+      "distinct_components_recalled": 6
+    },
+    {
+      "manufacturer": "Ford Motor Company",
+      "recall_count": 99,
+      "dominant_action_style": "part_replacement",
+      "distinct_components_recalled": 12
+    },
+    {
+      "manufacturer": "Honda (American Honda Motor Co.)",
+      "recall_count": 14,
+      "dominant_action_style": "part_replacement",
+      "distinct_components_recalled": 8
+    },
+    {
+      "manufacturer": "Tesla, Inc.",
+      "recall_count": 22,
+      "dominant_action_style": "software_update",
+      "distinct_components_recalled": 8
+    },
+    {
+      "manufacturer": "General Motors, LLC",
+      "recall_count": 13,
+      "dominant_action_style": "part_replacement",
+      "distinct_components_recalled": 8
+    },
+    {
+      "manufacturer": "Nissan North America, Inc.",
+      "recall_count": 9,
+      "dominant_action_style": "part_replacement",
+      "distinct_components_recalled": 5
+    },
+    {
+      "manufacturer": "Volkswagen Group of America, Inc.",
+      "recall_count": 4,
+      "dominant_action_style": "part_replacement",
+      "distinct_components_recalled": 3
+    },
+    {
+      "manufacturer": "Chrysler (FCA US, LLC) (Stellantis)",
+      "recall_count": 5,
+      "dominant_action_style": "part_replacement",
+      "distinct_components_recalled": 3
+    },
+    {
+      "manufacturer": "Subaru of America, Inc.",
+      "recall_count": 6,
+      "dominant_action_style": "part_replacement",
+      "distinct_components_recalled": 4
+    },
+    {
+      "manufacturer": "Vantage Mobility",
+      "recall_count": 1,
+      "dominant_action_style": "part_replacement",
+      "distinct_components_recalled": 1
+    },
+    {
+      "manufacturer": "Gulf States Toyota, Inc.",
+      "recall_count": 1,
+      "dominant_action_style": "part_replacement",
+      "distinct_components_recalled": 1
+    },
+    {
+      "manufacturer": "Rollx Vans",
+      "recall_count": 1,
+      "dominant_action_style": "part_replacement",
+      "distinct_components_recalled": 1
+    },
+    {
+      "manufacturer": "Braun Corporation",
+      "recall_count": 1,
+      "dominant_action_style": "part_replacement",
+      "distinct_components_recalled": 1
+    },
+    {
+      "manufacturer": "OEM Systems, LLC",
+      "recall_count": 1,
+      "dominant_action_style": "part_replacement",
+      "distinct_components_recalled": 1
+    },
+    {
+      "manufacturer": "Kia Motors America",
+      "recall_count": 1,
+      "dominant_action_style": "part_replacement",
+      "distinct_components_recalled": 1
+    },
+    {
+      "manufacturer": "BMW of North America, LLC",
+      "recall_count": 1,
+      "dominant_action_style": "part_replacement",
+      "distinct_components_recalled": 1
+    }
+  ],
+  "elapsed_seconds": 13.83,
+  "cost_usd": 0.048754,
+  "total_tokens": 103394
+}

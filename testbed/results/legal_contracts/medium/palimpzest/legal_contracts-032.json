@@ -1,0 +1,13 @@
+{
+  "task_id": "legal_contracts-032",
+  "answer": [
+    {"document_id": "1588052992CCTV%20Non%20Disclosure%20Agreement.pdf", "governing_law": "India"},
+    {"document_id": "Agency-Lending-Disclosure_A-Z-Guide_Appendix_Sample-Confidentiality-Agreements.pdf", "governing_law": "State of New York"},
+    {"document_id": "QSA_NDA.pdf", "governing_law": "Commonwealth of Australia and the State of Victoria"},
+    {"document_id": "cornell_non-disclosure_agreement.pdf", "governing_law": "State of New York"},
+    {"document_id": "non-disclosure_201302814_english_.pdf", "governing_law": "Province of Ontario"}
+  ],
+  "elapsed_seconds": 1052.02,
+  "cost_usd": 1.477937,
+  "total_tokens": 2797011
+}

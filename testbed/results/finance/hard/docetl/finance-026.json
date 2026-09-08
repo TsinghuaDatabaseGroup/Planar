@@ -1,0 +1,10 @@
+{
+  "task_id": "finance-026",
+  "answer": [
+    {"growth_strategy": "hybrid", "filing_count": 53, "median_employee_count": 64.0, "median_risk_factor_count": 34.0},
+    {"growth_strategy": "organic", "filing_count": 27, "median_employee_count": 38.0, "median_risk_factor_count": 34.0}
+  ],
+  "elapsed_seconds": 9617.6,
+  "cost_usd": 94.6343,
+  "total_tokens": 243246692
+}

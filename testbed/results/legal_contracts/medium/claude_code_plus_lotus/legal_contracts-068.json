@@ -1,0 +1,57 @@
+{
+  "task_id": "legal_contracts-068",
+  "answer": [
+    {
+      "normalized_agreement_title": "non disclosure agreement",
+      "family_size": 127,
+      "avg_exception_count": 4.93,
+      "return_and_injunctive_share": 0.6614,
+      "all_six_exceptions_share": 0.4961
+    },
+    {
+      "normalized_agreement_title": "mutual non disclosure agreement",
+      "family_size": 88,
+      "avg_exception_count": 5.38,
+      "return_and_injunctive_share": 0.7955,
+      "all_six_exceptions_share": 0.5114
+    },
+    {
+      "normalized_agreement_title": "confidentiality agreement",
+      "family_size": 38,
+      "avg_exception_count": 5.32,
+      "return_and_injunctive_share": 0.7895,
+      "all_six_exceptions_share": 0.6579
+    },
+    {
+      "normalized_agreement_title": "confidentiality and non disclosure agreement",
+      "family_size": 28,
+      "avg_exception_count": 4.57,
+      "return_and_injunctive_share": 0.6429,
+      "all_six_exceptions_share": 0.4286
+    },
+    {
+      "normalized_agreement_title": "mutual confidentiality and non disclosure agreement",
+      "family_size": 8,
+      "avg_exception_count": 5.38,
+      "return_and_injunctive_share": 0.875,
+      "all_six_exceptions_share": 0.5
+    },
+    {
+      "normalized_agreement_title": "mutual nondisclosure agreement",
+      "family_size": 8,
+      "avg_exception_count": 4.88,
+      "return_and_injunctive_share": 0.5,
+      "all_six_exceptions_share": 0.5
+    },
+    {
+      "normalized_agreement_title": "non disclosure and confidentiality agreement",
+      "family_size": 8,
+      "avg_exception_count": 4.0,
+      "return_and_injunctive_share": 0.625,
+      "all_six_exceptions_share": 0.25
+    }
+  ],
+  "elapsed_seconds": 702.485,
+  "cost_usd": 5.25086742,
+  "total_tokens": 12384768
+}

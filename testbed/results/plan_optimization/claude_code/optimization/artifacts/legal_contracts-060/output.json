@@ -1,0 +1,27 @@
+{
+  "task_id": "legal_contracts-060",
+  "optimization_analysis": "The original plan runs three sequential LLM calls per document: two SEM_FILTERs then a SEM_EXTRACT. The second SEM_FILTER (checking for residual clause and governing law) and the SEM_EXTRACT (pulling those exact fields) both read the same document sections and are semantically redundant — any document passing the second filter would immediately yield the extract. Fusing these two into a single SEM_EXTRACT that conditionally returns results only when both criteria are met eliminates one full LLM pass per candidate document while preserving correctness. The first SEM_FILTER is kept as a cheap, broad pre-filter to avoid running expensive extraction on clearly non-NDA documents.",
+  "optimized_semantic_plan": [
+    {
+      "type": "operator_dag",
+      "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('Keep non-disclosure or confidentiality agreements', input_bindings={document: text})\n-> SEM_EXTRACT('For agreements that contain a residual-information clause permitting use of information retained in unaided memory AND expressly state a governing law, return document_id, non_disclosure_direction, and governing_law; skip documents that do not satisfy both conditions', out_schema={document_id: string, non_disclosure_direction: string, governing_law: string}, input_bindings={document: text})"
+    }
+  ],
+  "valid": true,
+  "validation_warnings": [],
+  "elapsed_secs": 38.024,
+  "cost_usd": 0.0494925,
+  "agent_cost_usd": 0.0494925,
+  "usage": {
+    "input": 3,
+    "output": 2049,
+    "cacheRead": 2320,
+    "cacheWrite": 4814
+  },
+  "agent_usage": {
+    "input": 3,
+    "output": 2049,
+    "cacheRead": 2320,
+    "cacheWrite": 4814
+  }
+}

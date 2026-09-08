@@ -1,0 +1,80 @@
+{
+  "task_id": "legal_contracts-086",
+  "answer": [
+    {
+      "governing_law": "State of New York",
+      "matching_count": 8
+    },
+    {
+      "governing_law": "State of California",
+      "matching_count": 4
+    },
+    {
+      "governing_law": "State of Texas",
+      "matching_count": 4
+    },
+    {
+      "governing_law": "State of Delaware",
+      "matching_count": 3
+    },
+    {
+      "governing_law": "Delaware",
+      "matching_count": 2
+    },
+    {
+      "governing_law": "England and Wales",
+      "matching_count": 2
+    },
+    {
+      "governing_law": "State of Florida",
+      "matching_count": 2
+    },
+    {
+      "governing_law": "English law",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "Federal Republic of Germany",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "New Hampshire",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "New York, USA",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "Province of Alberta",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "Province of Alberta and the federal laws of Canada applicable in the Province of Alberta",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "State of Illinois",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "State of Minnesota",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "State of Washington",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "Switzerland",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "Texas",
+      "matching_count": 1
+    }
+  ],
+  "elapsed_seconds": 345.9,
+  "cost_usd": 4.24184,
+  "total_tokens": 10617608
+}

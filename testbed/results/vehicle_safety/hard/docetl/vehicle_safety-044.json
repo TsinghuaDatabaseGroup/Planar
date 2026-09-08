@@ -1,0 +1,29 @@
+{
+  "task_id": "vehicle_safety-044",
+  "answer": [
+    {
+      "campaign_number": "18V777000",
+      "matched_complaint_count": 1,
+      "severe_complaint_rate": 0.0,
+      "dominant_braking_failure_mode": "Rear brakes hang up and release",
+      "dominant_recall_severity": "moderate"
+    },
+    {
+      "campaign_number": "23V458000",
+      "matched_complaint_count": 1,
+      "severe_complaint_rate": 1.0,
+      "dominant_braking_failure_mode": "Master cylinder separation from booster",
+      "dominant_recall_severity": "critical"
+    },
+    {
+      "campaign_number": "25V391000",
+      "matched_complaint_count": 1,
+      "severe_complaint_rate": 1.0,
+      "dominant_braking_failure_mode": "Brake pedal pivot pin unsecured",
+      "dominant_recall_severity": "severe"
+    }
+  ],
+  "elapsed_seconds": 92.93,
+  "cost_usd": 0.325447,
+  "total_tokens": 718189
+}

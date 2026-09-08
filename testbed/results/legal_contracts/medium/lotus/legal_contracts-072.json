@@ -1,0 +1,53 @@
+{
+  "task_id": "legal_contracts-072",
+  "answer": [
+    {
+      "document_name": "exhibit191-insidertradin.htm",
+      "policy_title": "INSIDER TRADING AND WINDOW PERIOD POLICY",
+      "policy_date": "2020-10-16"
+    },
+    {
+      "document_name": "ex191securitiesandinsidert.htm",
+      "policy_title": "SECURITIES AND INSIDER TRADING POLICY",
+      "policy_date": "2023-02-16"
+    },
+    {
+      "document_name": "hlit-20241231xex191.htm",
+      "policy_title": "INSIDER TRADING COMPLIANCE PROGRAM",
+      "policy_date": "2023-05-03"
+    },
+    {
+      "document_name": "exhibit191aniinsidertradin.htm",
+      "policy_title": "INSIDER TRADING AND CONFIDENTIALITY NOTICE",
+      "policy_date": "2023-05-07"
+    },
+    {
+      "document_name": "a123124ex191insidertrading.htm",
+      "policy_title": "INSIDER TRADING COMPLIANCE POLICY",
+      "policy_date": "2023-05-12"
+    },
+    {
+      "document_name": "ino-12312024x10kex191.htm",
+      "policy_title": "Insider Trading Policy",
+      "policy_date": "2023-05-16"
+    },
+    {
+      "document_name": "wms-20240331xex191.htm",
+      "policy_title": "POLICY REGARDING INSIDER TRADING, TIPPING AND OTHER WRONGFUL DISCLOSURES and GUIDELINES WITH RESPECT TO CERTAIN TRANSACTIONS IN SECURITIES OF ADVANCED DRAINAGE SYSTEMS, INC.",
+      "policy_date": "2023-05-17"
+    },
+    {
+      "document_name": "EX-19.1",
+      "policy_title": "INSIDER TRADING POLICY",
+      "policy_date": "2023-05-24"
+    },
+    {
+      "document_name": "hii-ex19202410xk.htm",
+      "policy_title": "Insider Trading",
+      "policy_date": "2023-08-24"
+    }
+  ],
+  "elapsed_seconds": 486.47,
+  "cost_usd": 4.425710,
+  "total_tokens": 11226090
+}

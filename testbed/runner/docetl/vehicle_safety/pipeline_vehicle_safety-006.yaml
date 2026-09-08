@@ -1,0 +1,90 @@
+datasets:
+  nhtsa_complaints:
+    type: file
+    path: data/nhtsa_vehicle_safety/complaints.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_recent_outback_complaints_without_crash
+    type: code_filter
+    code: |
+      def transform(doc):
+          try:
+              model_year = int(doc.get("model_year", 0))
+          except (TypeError, ValueError):
+              model_year = 0
+          return (
+              doc.get("make") == "SUBARU"
+              and doc.get("model") == "OUTBACK"
+              and model_year >= 2024
+              and str(doc.get("crash_flag", "")).lower() == "false"
+          )
+
+  - name: classify_unintended_brake_activation
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether this NHTSA complaint describes the subject vehicle actually
+      activating or holding its brakes unintentionally.
+
+      Qualifying events include unexpected automatic braking, braking without a valid
+      obstacle or driver command, or a sudden brake-hold condition that the driver did
+      not request. Do not qualify ordinary commanded braking, expected safety-system
+      operation in response to a real hazard, hypothetical concerns, or events
+      explicitly ruled out.
+
+      Complaint:
+      {{ input.summary_text }}
+    output:
+      mode: structured_output
+      schema:
+        matches_semantic_condition: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: count_distinct_model_years
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          years = {
+              str(item.get("model_year", "")).strip()
+              for item in items
+              if str(item.get("model_year", "")).strip()
+          }
+          return {"count": len(years)}
+
+pipeline:
+  steps:
+    - name: qualifying_model_years
+      input: nhtsa_complaints
+      operations:
+        - filter_recent_outback_complaints_without_crash
+        - classify_unintended_brake_activation
+        - count_distinct_model_years
+  output:
+    type: file
+    path: raw_outputs/vehicle_safety/output_vehicle_safety-006.json

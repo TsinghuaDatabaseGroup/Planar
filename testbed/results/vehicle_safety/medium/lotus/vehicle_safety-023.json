@@ -1,0 +1,28 @@
+{
+  "task_id": "vehicle_safety-023",
+  "answer": [
+    {
+      "state": "CA",
+      "complaint_count": 93
+    },
+    {
+      "state": "TX",
+      "complaint_count": 93
+    },
+    {
+      "state": "FL",
+      "complaint_count": 83
+    },
+    {
+      "state": "NY",
+      "complaint_count": 44
+    },
+    {
+      "state": "GA",
+      "complaint_count": 42
+    }
+  ],
+  "elapsed_seconds": 341.86,
+  "cost_usd": 0.345412,
+  "total_tokens": 842037
+}

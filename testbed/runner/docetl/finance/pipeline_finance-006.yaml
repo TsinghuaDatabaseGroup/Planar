@@ -1,0 +1,282 @@
+datasets:
+  sec_2022_filings:
+    type: file
+    path: data/SEC/CSV/2022.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: load_filing_document
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("SEC text path escapes data/SEC")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              document = handle.read()
+          return {"document": document}
+
+  - name: extract_company_subsidiaries_and_advantages
+    type: map
+    optimize: true
+    prompt: |
+      Perform a standardized review of this 2022 SEC 10-K filing and extract:
+
+      - company_name: the legal registrant name stated in the filing;
+      - industry_sector: a concise, broad industry sector grounded in the filing;
+      - subsidiary_names: up to ten distinct specifically named legal
+        subsidiaries disclosed in the filing;
+      - competitive_advantage_themes: up to eight distinct concise themes that
+      the filing supports as sources of the company's competitive advantage.
+
+      Return named legal subsidiaries rather than brands or unnamed entities.
+      Each competitive-advantage theme must be supported by the filing as a source
+      of favorable competitive position. Consolidate duplicate wording into one
+      concise theme.
+
+      If more qualifying items exist, stop after ten subsidiaries and eight
+      advantage themes. Return each distinct item once and use empty lists when
+      none qualify.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        company_name: string
+        industry_sector: string
+        subsidiary_names: list[string]
+        competitive_advantage_themes: list[string]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 2048
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: compute_capped_recorded_counts
+    type: code_map
+    code: |
+      def transform(doc):
+          import re
+          import unicodedata
+
+          entity_suffixes = {
+              "ag",
+              "bv",
+              "co",
+              "company",
+              "corp",
+              "corporation",
+              "gmbh",
+              "inc",
+              "incorporated",
+              "limited",
+              "llc",
+              "lp",
+              "ltd",
+              "nv",
+              "plc",
+              "pte",
+              "sa",
+              "sarl",
+          }
+
+          def normalized_words(value):
+              text = unicodedata.normalize("NFKD", str(value or ""))
+              text = text.encode("ascii", "ignore").decode("ascii").casefold()
+              text = text.replace("&", " and ")
+              return re.sub(r"[^a-z0-9]+", " ", text).strip()
+
+          def normalize_entity(value):
+              tokens = normalized_words(value).split()
+              if tokens and tokens[0] == "the":
+                  tokens = tokens[1:]
+              while tokens and tokens[-1] in entity_suffixes:
+                  tokens.pop()
+              return " ".join(tokens)
+
+          subsidiaries = []
+          seen_subsidiaries = set()
+          for value in doc.get("subsidiary_names") or []:
+              normalized = normalize_entity(value)
+              if normalized and normalized not in seen_subsidiaries:
+                  seen_subsidiaries.add(normalized)
+                  subsidiaries.append(normalized)
+              if len(subsidiaries) == 10:
+                  break
+
+          advantages = []
+          seen_advantages = set()
+          for value in doc.get("competitive_advantage_themes") or []:
+              normalized = normalized_words(value)
+              if normalized and normalized not in seen_advantages:
+                  seen_advantages.add(normalized)
+                  advantages.append(normalized)
+              if len(advantages) == 8:
+                  break
+
+          return {
+              "subsidiary_count": len(subsidiaries),
+              "competitive_advantages_count": len(advantages),
+          }
+
+  - name: filter_minimum_recorded_counts
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              int(doc.get("subsidiary_count", 0)) >= 8
+              and int(doc.get("competitive_advantages_count", 0)) >= 6
+          )
+
+  - name: select_best_filing_by_cik
+    type: code_reduce
+    reduce_key: cik
+    code: |
+      def transform(items):
+          def selection_key(item):
+              combined_count = (
+                  int(item.get("competitive_advantages_count", 0))
+                  + int(item.get("subsidiary_count", 0))
+              )
+              try:
+                  word_count = int(item.get("word_count", 0))
+              except (TypeError, ValueError):
+                  word_count = 0
+              return combined_count, word_count
+
+          selected = max(items, key=selection_key)
+          combined_count, word_count = selection_key(selected)
+          return {
+              "company_name": selected.get("company_name"),
+              "industry_sector": selected.get("industry_sector"),
+              "competitive_advantages_count": selected.get(
+                  "competitive_advantages_count"
+              ),
+              "subsidiary_count": selected.get("subsidiary_count"),
+              "combined_count": combined_count,
+              "word_count": word_count,
+          }
+
+  - name: order_by_combined_count_and_company
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          rows = sorted(
+              items,
+              key=lambda item: (
+                  -int(item.get("combined_count", 0)),
+                  str(item.get("company_name", "")),
+              ),
+          )
+          return {"rows": rows}
+
+  - name: unnest_ordered_companies
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - company_name
+      - industry_sector
+      - competitive_advantages_count
+      - subsidiary_count
+      - combined_count
+      - word_count
+
+  - name: limit_to_10_companies
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {"rows": items[:10]}
+
+  - name: unnest_limited_companies
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - company_name
+      - industry_sector
+      - competitive_advantages_count
+      - subsidiary_count
+      - combined_count
+      - word_count
+
+  - name: project_answer_fields
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {
+              "rows": [
+                  {
+                      "company_name": item.get("company_name"),
+                      "competitive_advantages_count": item.get(
+                          "competitive_advantages_count"
+                      ),
+                      "subsidiary_count": item.get("subsidiary_count"),
+                      "industry_sector": item.get("industry_sector"),
+                  }
+                  for item in items
+              ]
+          }
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - company_name
+      - competitive_advantages_count
+      - subsidiary_count
+      - industry_sector
+
+pipeline:
+  steps:
+    - name: process
+      input: sec_2022_filings
+      operations:
+        - load_filing_document
+        - extract_company_subsidiaries_and_advantages
+        - compute_capped_recorded_counts
+        - filter_minimum_recorded_counts
+        - select_best_filing_by_cik
+        - order_by_combined_count_and_company
+        - unnest_ordered_companies
+        - limit_to_10_companies
+        - unnest_limited_companies
+        - project_answer_fields
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/finance/output_finance-006.json

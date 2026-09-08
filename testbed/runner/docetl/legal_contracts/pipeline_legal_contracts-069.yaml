@@ -1,0 +1,97 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_titled_nda_agreements
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is a mutual NDA, unilateral NDA, or
+      confidentiality-and-standstill agreement with an identifiable agreement
+      title.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_titled_in_scope_agreement: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_title_term_and_law
+    type: map
+    optimize: true
+    prompt: |
+      Return the agreement title, classify the confidentiality term as finite,
+      perpetual, or unspecified, return the finite duration normalized to years
+      when present, and return the expressly stated governing-law value. Set the
+      corresponding availability flag to false for an absent finite duration or
+      governing law, using 0 or an empty string only as a placeholder.
+
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        agreement_title: string
+        term_type: "enum[finite, perpetual, unspecified]"
+        finite_term_available: boolean
+        finite_term_years_value: float
+        governing_law_available: boolean
+        governing_law_value: string
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: project_normalized_title_terms
+    type: code_map
+    code: |
+      def transform(doc):
+          import re
+          normalized_title = re.sub(r"[\W_]+", " ", str(doc.get("agreement_title") or "").casefold(), flags=re.UNICODE)
+          normalized_title = " ".join(normalized_title.split())
+          finite_term = round(float(doc.get("finite_term_years_value") or 0), 4) if doc.get("term_type") == "finite" and doc.get("finite_term_available") is True else None
+          return {
+              "normalized_agreement_title": normalized_title,
+              "finite_term_years": finite_term,
+              "is_perpetual": int(doc.get("term_type") == "perpetual"),
+              "governing_law": str(doc.get("governing_law_value") or "") if doc.get("governing_law_available") is True else None,
+          }
+  - name: aggregate_title_term_families
+    type: code_reduce
+    reduce_key: normalized_agreement_title
+    code: |
+      def transform(items):
+          return {
+              "family_size": len(items),
+              "distinct_finite_term_years": sorted({float(item["finite_term_years"]) for item in items if item.get("finite_term_years") is not None}),
+              "perpetual_member_count": sum(int(item.get("is_perpetual") or 0) for item in items),
+              "distinct_stated_governing_law_count": len({str(item["governing_law"]) for item in items if item.get("governing_law") is not None}),
+          }
+  - name: filter_large_title_families
+    type: code_filter
+    code: |
+      def transform(doc):
+          return int(doc.get("family_size") or 0) >= 5
+  - name: order_title_term_families
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          ordered = sorted(items, key=lambda item: (-int(item.get("family_size") or 0), str(item.get("normalized_agreement_title") or "")))
+          fields = ["normalized_agreement_title", "family_size", "distinct_finite_term_years", "perpetual_member_count", "distinct_stated_governing_law_count"]
+          return {"rows": [{field: item.get(field) for field in fields} for item in ordered]}
+  - name: unnest_title_term_families
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields: [normalized_agreement_title, family_size, distinct_finite_term_years, perpetual_member_count, distinct_stated_governing_law_count]
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations: [filter_titled_nda_agreements, extract_title_term_and_law, project_normalized_title_terms, aggregate_title_term_families, filter_large_title_families, order_title_term_families, unnest_title_term_families]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-069.json

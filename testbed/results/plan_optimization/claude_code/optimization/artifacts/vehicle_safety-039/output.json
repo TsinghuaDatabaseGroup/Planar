@@ -1,0 +1,27 @@
+{
+  "task_id": "vehicle_safety-039",
+  "optimization_analysis": "Deferred the investigation citation check until after LIMIT(5). Original plan extracts all cited recalls from all investigation reports upfront via SEM_EXTRACT, then checks every recall for membership. Optimized plan first identifies the top 5 campaigns, then for each performs a targeted SEM_FILTER on investigation reports checking only for that specific campaign number. This reduces semantic operator cost from one large extraction across all reports to five focused filters that can short-circuit on first match. SEM_FILTER is cheaper than SEM_EXTRACT when looking for a specific value, and processing 5 targeted checks after limiting is more efficient than extracting all citations and checking all recalls.",
+  "optimized_semantic_plan": [
+    {
+      "type": "operator_dag",
+      "program": "SCAN_DOCS(NHTSA, recalls, [campaign.number, vehicle.make, component.component_id AS component_id, risk.defect_summary AS defect_summary]) -> FILTER(vehicle.make='FORD') -> DEDUP([campaign.number]) -> SEM_JOIN('Within the same component_id block, match a Ford recall campaign to a Ford complaint only when the complaint narrative describes the same underlying defect as the recall defect summary.', input_bindings_left={component_id: component_id, defect_summary: defect_summary}, input_bindings_right={component_id: c.component_id, complaint_summary: c.summary_text}, right=( SCAN_TABLE(NHTSA, complaints AS c, [complaint_id, make, component_id, summary_text]) -> FILTER(make='FORD') )) -> GROUP_BY([campaign.number], aggs={component_id: any(component_id), corroborating_complaint_count: count_distinct(complaint_id)}) -> ORDER_BY([corroborating_complaint_count DESC, campaign.number ASC]) -> LIMIT(5) -> PROJECT([rank: row_number(), campaign_number: campaign.number, component_id, corroborating_complaint_count]) -> LEFT_JOIN(lateral, right=( SCAN_DOCS(NHTSA, investigation_reports, selector='*.txt', [file_id, body]) -> SEM_FILTER('Does the text cite the recall campaign number {{campaign_number}}? Match NHTSA canonical recall formats (YY-VVV core format).', input_bindings={text: body, campaign_number: campaign_number}) -> LIMIT(1) -> PROJECT([match_found: 1]) ), on=true) -> PROJECT([rank, campaign_number, component_id, corroborating_complaint_count, cited_by_investigation: (match_found IS NOT NULL ? 'true' : 'false')])"
+    }
+  ],
+  "valid": true,
+  "validation_warnings": [],
+  "elapsed_secs": 252.141,
+  "cost_usd": 0.0808095,
+  "agent_cost_usd": 0.0808095,
+  "usage": {
+    "input": 3,
+    "output": 5304,
+    "cacheRead": 4135,
+    "cacheWrite": 0
+  },
+  "agent_usage": {
+    "input": 3,
+    "output": 5304,
+    "cacheRead": 4135,
+    "cacheWrite": 0
+  }
+}

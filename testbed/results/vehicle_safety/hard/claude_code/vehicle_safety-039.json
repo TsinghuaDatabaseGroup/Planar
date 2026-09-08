@@ -1,0 +1,43 @@
+{
+  "task_id": "vehicle_safety-039",
+  "answer": [
+    {
+      "rank": 1,
+      "campaign_number": "22V413000",
+      "component_id": "POWERTRAIN",
+      "corroborating_complaint_count": 30,
+      "cited_by_investigation": "no"
+    },
+    {
+      "rank": 2,
+      "campaign_number": "22V413000",
+      "component_id": "POWERTRAIN",
+      "corroborating_complaint_count": 30,
+      "cited_by_investigation": "no"
+    },
+    {
+      "rank": 3,
+      "campaign_number": "22V413000",
+      "component_id": "POWERTRAIN",
+      "corroborating_complaint_count": 30,
+      "cited_by_investigation": "no"
+    },
+    {
+      "rank": 4,
+      "campaign_number": "22V413000",
+      "component_id": "POWERTRAIN",
+      "corroborating_complaint_count": 30,
+      "cited_by_investigation": "no"
+    },
+    {
+      "rank": 5,
+      "campaign_number": "22V413000",
+      "component_id": "POWERTRAIN",
+      "corroborating_complaint_count": 29,
+      "cited_by_investigation": "no"
+    }
+  ],
+  "elapsed_seconds": 3371.295,
+  "cost_usd": 2.96219226,
+  "total_tokens": 7241819
+}

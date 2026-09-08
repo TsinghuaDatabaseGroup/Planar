@@ -1,0 +1,183 @@
+{
+  "task_id": "legal_contracts-067",
+  "answer": [
+    {
+      "company": "1st Source Corporation",
+      "trigger_pattern": "None",
+      "coverage_extends_beyond_executive_officers": false
+    },
+    {
+      "company": "Acuity Inc.",
+      "trigger_pattern": "restatement only",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "Applied Digital Corporation",
+      "trigger_pattern": "None",
+      "coverage_extends_beyond_executive_officers": false
+    },
+    {
+      "company": "CTO Realty Growth, Inc.",
+      "trigger_pattern": "None",
+      "coverage_extends_beyond_executive_officers": false
+    },
+    {
+      "company": "Cavco Industries, Inc.",
+      "trigger_pattern": "restatement and misconduct",
+      "coverage_extends_beyond_executive_officers": false
+    },
+    {
+      "company": "El Pollo Loco Holdings, Inc.",
+      "trigger_pattern": "restatement and misconduct",
+      "coverage_extends_beyond_executive_officers": false
+    },
+    {
+      "company": "Franklin Resources, Inc.",
+      "trigger_pattern": "restatement and misconduct",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "Fulton Financial Corporation",
+      "trigger_pattern": "None",
+      "coverage_extends_beyond_executive_officers": false
+    },
+    {
+      "company": "Globalstar, Inc.",
+      "trigger_pattern": "restatement and misconduct",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "H.B. Fuller Company",
+      "trigger_pattern": "restatement and misconduct",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "Ingevity Corporation",
+      "trigger_pattern": "None",
+      "coverage_extends_beyond_executive_officers": false
+    },
+    {
+      "company": "International Paper Company",
+      "trigger_pattern": "restatement only",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "Key Tronic Corporation",
+      "trigger_pattern": "None",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "New Horizon Aircraft Ltd.",
+      "trigger_pattern": "None",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "None",
+      "trigger_pattern": "None",
+      "coverage_extends_beyond_executive_officers": false
+    },
+    {
+      "company": "Peakstone Realty Trust",
+      "trigger_pattern": "None",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "Pentair plc",
+      "trigger_pattern": "None",
+      "coverage_extends_beyond_executive_officers": false
+    },
+    {
+      "company": "Playtika Holding Corp.",
+      "trigger_pattern": "None",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "Resolute Holdings Management, Inc.",
+      "trigger_pattern": "None",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "Sealed Air Corporation",
+      "trigger_pattern": "None",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "Skyworks Solutions, Inc.",
+      "trigger_pattern": "restatement only",
+      "coverage_extends_beyond_executive_officers": false
+    },
+    {
+      "company": "Solidion Technology, Inc.",
+      "trigger_pattern": "None",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "Sprinklr, Inc.",
+      "trigger_pattern": "None",
+      "coverage_extends_beyond_executive_officers": false
+    },
+    {
+      "company": "Strategic Education, Inc.",
+      "trigger_pattern": "restatement only",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "TPG Inc.",
+      "trigger_pattern": "None",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "TaskUs, Inc.",
+      "trigger_pattern": "None",
+      "coverage_extends_beyond_executive_officers": false
+    },
+    {
+      "company": "Tevogen Bio Holdings Inc.",
+      "trigger_pattern": "None",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "Tevogen Bio Inc.",
+      "trigger_pattern": "None",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "The Travelers Companies, Inc.",
+      "trigger_pattern": "None",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "The Western Union Company",
+      "trigger_pattern": "restatement and misconduct",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "Trinity Capital Inc.",
+      "trigger_pattern": "restatement and misconduct",
+      "coverage_extends_beyond_executive_officers": false
+    },
+    {
+      "company": "Voya Financial",
+      "trigger_pattern": "restatement and misconduct",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "Voya Financial, Inc.",
+      "trigger_pattern": "None",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "Zimmer Biomet",
+      "trigger_pattern": "None",
+      "coverage_extends_beyond_executive_officers": false
+    },
+    {
+      "company": "zSpace, Inc.",
+      "trigger_pattern": "restatement only",
+      "coverage_extends_beyond_executive_officers": false
+    }
+  ],
+  "elapsed_seconds": 298.652,
+  "cost_usd": 1.93295325,
+  "total_tokens": 4354725
+}

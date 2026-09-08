@@ -1,0 +1,62 @@
+{
+  "task_id": "vehicle_safety-021",
+  "answer": [
+    {
+      "complaint_id": "complaint_11097236",
+      "vehicle_id": "NISSAN__ALTIMA__2014",
+      "campaign_number": "16V244000",
+      "airbag_failure_mode": "Ejected metal fragments"
+    },
+    {
+      "complaint_id": "complaint_11097236",
+      "vehicle_id": "NISSAN__ALTIMA__2014",
+      "campaign_number": "15V681000",
+      "airbag_failure_mode": "Ejected metal fragments"
+    },
+    {
+      "complaint_id": "complaint_11097236",
+      "vehicle_id": "NISSAN__ALTIMA__2014",
+      "campaign_number": "16V911000",
+      "airbag_failure_mode": "Ejected metal fragments"
+    },
+    {
+      "complaint_id": "complaint_11092321",
+      "vehicle_id": "NISSAN__ALTIMA__2014",
+      "campaign_number": "16V244000",
+      "airbag_failure_mode": "Explosion with metal debris"
+    },
+    {
+      "complaint_id": "complaint_11092321",
+      "vehicle_id": "NISSAN__ALTIMA__2014",
+      "campaign_number": "15V681000",
+      "airbag_failure_mode": "Explosion with metal debris"
+    },
+    {
+      "complaint_id": "complaint_11092321",
+      "vehicle_id": "NISSAN__ALTIMA__2014",
+      "campaign_number": "16V911000",
+      "airbag_failure_mode": "Explosion with metal debris"
+    },
+    {
+      "complaint_id": "complaint_11083508",
+      "vehicle_id": "NISSAN__ALTIMA__2014",
+      "campaign_number": "16V244000",
+      "airbag_failure_mode": "Explosion with metal debris ejection"
+    },
+    {
+      "complaint_id": "complaint_11083508",
+      "vehicle_id": "NISSAN__ALTIMA__2014",
+      "campaign_number": "15V681000",
+      "airbag_failure_mode": "Explosion with metal debris ejection"
+    },
+    {
+      "complaint_id": "complaint_11083508",
+      "vehicle_id": "NISSAN__ALTIMA__2014",
+      "campaign_number": "16V911000",
+      "airbag_failure_mode": "Explosion with metal debris ejection"
+    }
+  ],
+  "elapsed_seconds": 10.95,
+  "cost_usd": 0.008582,
+  "total_tokens": 20621
+}

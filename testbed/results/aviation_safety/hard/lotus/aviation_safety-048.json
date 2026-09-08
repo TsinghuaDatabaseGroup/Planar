@@ -1,0 +1,171 @@
+{
+  "task_id": "aviation_safety-048",
+  "answer": [
+    {
+      "rank": 1,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "Nacelle/Pylon",
+      "incident_count": 11,
+      "recorded_result_labels": [
+        "Flight Crew Returned To Departure Airport",
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    },
+    {
+      "rank": 2,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "Airframe",
+      "incident_count": 10,
+      "recorded_result_labels": [
+        "Flight Crew Returned To Departure Airport",
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    },
+    {
+      "rank": 3,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "Indicating and Warning - Flight & Navigation Systems",
+      "incident_count": 10,
+      "recorded_result_labels": [
+        "Flight Crew Returned To Departure Airport",
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    },
+    {
+      "rank": 4,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "Cowling/Nacelle Fasteners; Latches",
+      "incident_count": 9,
+      "recorded_result_labels": [
+        "Flight Crew Returned To Departure Airport",
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    },
+    {
+      "rank": 5,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "Engine Air Anti-Ice",
+      "incident_count": 9,
+      "recorded_result_labels": [
+        "Flight Crew Returned To Departure Airport",
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    },
+    {
+      "rank": 6,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "FCC (Flight Control Computer)",
+      "incident_count": 9,
+      "recorded_result_labels": [
+        "Flight Crew Returned To Departure Airport",
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    },
+    {
+      "rank": 7,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "Turbine Assembly",
+      "incident_count": 9,
+      "recorded_result_labels": [
+        "Flight Crew Returned To Departure Airport",
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    },
+    {
+      "rank": 8,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "Turbine Engine",
+      "incident_count": 9,
+      "recorded_result_labels": [
+        "Flight Crew Returned To Departure Airport",
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    },
+    {
+      "rank": 9,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "Valve/Oil System",
+      "incident_count": 9,
+      "recorded_result_labels": [
+        "Flight Crew Returned To Departure Airport",
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    },
+    {
+      "rank": 10,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "Air Conditioning Distribution Ducting; Clamps; Connectors",
+      "incident_count": 8,
+      "recorded_result_labels": [
+        "Flight Crew Returned To Departure Airport",
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    },
+    {
+      "rank": 11,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "Helicopter Control Systems",
+      "incident_count": 8,
+      "recorded_result_labels": [
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    },
+    {
+      "rank": 12,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "Hydraulic Lines; Connectors; Fittings",
+      "incident_count": 8,
+      "recorded_result_labels": [
+        "Flight Crew Returned To Departure Airport",
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    },
+    {
+      "rank": 13,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "Intake Assembly",
+      "incident_count": 8,
+      "recorded_result_labels": [
+        "Flight Crew Returned To Departure Airport",
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    },
+    {
+      "rank": 14,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "APU Pneumatic System & Ducting",
+      "incident_count": 7,
+      "recorded_result_labels": [
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    },
+    {
+      "rank": 15,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "Aeroplane Flight Control",
+      "incident_count": 7,
+      "recorded_result_labels": [
+        "Flight Crew Returned To Departure Airport",
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    }
+  ],
+  "elapsed_seconds": 563.39,
+  "cost_usd": 2.048468,
+  "total_tokens": 5058091
+}

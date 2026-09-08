@@ -1,0 +1,117 @@
+{
+  "node_id": 84,
+  "sample_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-012/moar-search/pipeline_legal_contracts-012_input_sample_openai_Qwen3.5-397B-A17B.yaml",
+  "sample_output_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-012/moar-search/pipeline_legal_contracts-012_input_sample_openai_Qwen3.5-397B-A17B.json",
+  "semantic_fidelity": 1.0,
+  "sample_execution_cost_usd": 0.15585804000000006,
+  "fidelity_threshold": 0.9,
+  "selection_reason": "lowest_cost_meeting_fidelity_threshold",
+  "optimization_path": "ROOT → change to Qwen3.5-397B-A17B(filter_sox_302_material_changes_clause)",
+  "sample_execution_metrics_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-012/moar-search/candidate-metrics/execution_0001_node-84.json",
+  "full_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-012/selected-plan/pipeline_legal_contracts-012_optimized_full.yaml",
+  "input_plan_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/pipeline-all/pipeline_legal_contracts-012.yaml",
+  "input_plan_kind": "reference-plan translation used as the MOAR input plan",
+  "operator_execution_policy": {
+    "policy": "structural_rewrite_fixed_operator_execution",
+    "nested_v1_optimizer_invoked": false,
+    "fixed_default_model": "Qwen3.5-397B-A17B",
+    "unchanged_operations": [
+      "filter_sox_302_material_changes_clause",
+      "filter_no_specific_control_change",
+      "count_matching_certifications"
+    ],
+    "new_or_replaced_operations": [],
+    "restored_fields": {},
+    "unchanged_operation_count": 3,
+    "new_or_replaced_operation_count": 0
+  },
+  "input_plan_signature": {
+    "definitions": {
+      "filter_sox_302_material_changes_clause": "filter",
+      "filter_no_specific_control_change": "filter",
+      "count_matching_certifications": "code_reduce"
+    },
+    "logical_operations": [
+      {
+        "name": "filter_sox_302_material_changes_clause",
+        "type": "filter",
+        "logical_config_sha256": "01e878effe07762693d4e3e3f88c5b437a27dbaedba623ebb7e4c2c50cd8cece"
+      },
+      {
+        "name": "filter_no_specific_control_change",
+        "type": "filter",
+        "logical_config_sha256": "b58b8fcf6b8ab9d71027342148ac5ba8b6cb80767001f67624fceeef1e9c04a7"
+      },
+      {
+        "name": "count_matching_certifications",
+        "type": "code_reduce",
+        "logical_config_sha256": "f72622791a546d6f128428d35f188ae64f91fb5bc5c382a029f34121057d200d"
+      }
+    ],
+    "steps": [
+      {
+        "name": "matching_certifications",
+        "input": "contract_exhibits",
+        "operations": [
+          {
+            "name": "filter_sox_302_material_changes_clause",
+            "type": "filter"
+          },
+          {
+            "name": "filter_no_specific_control_change",
+            "type": "filter"
+          },
+          {
+            "name": "count_matching_certifications",
+            "type": "code_reduce"
+          }
+        ]
+      }
+    ]
+  },
+  "selected_plan_signature": {
+    "definitions": {
+      "filter_sox_302_material_changes_clause": "filter",
+      "filter_no_specific_control_change": "filter",
+      "count_matching_certifications": "code_reduce"
+    },
+    "logical_operations": [
+      {
+        "name": "filter_sox_302_material_changes_clause",
+        "type": "filter",
+        "logical_config_sha256": "01e878effe07762693d4e3e3f88c5b437a27dbaedba623ebb7e4c2c50cd8cece"
+      },
+      {
+        "name": "filter_no_specific_control_change",
+        "type": "filter",
+        "logical_config_sha256": "b58b8fcf6b8ab9d71027342148ac5ba8b6cb80767001f67624fceeef1e9c04a7"
+      },
+      {
+        "name": "count_matching_certifications",
+        "type": "code_reduce",
+        "logical_config_sha256": "f72622791a546d6f128428d35f188ae64f91fb5bc5c382a029f34121057d200d"
+      }
+    ],
+    "steps": [
+      {
+        "name": "matching_certifications",
+        "input": "contract_exhibits",
+        "operations": [
+          {
+            "name": "filter_sox_302_material_changes_clause",
+            "type": "filter"
+          },
+          {
+            "name": "filter_no_specific_control_change",
+            "type": "filter"
+          },
+          {
+            "name": "count_matching_certifications",
+            "type": "code_reduce"
+          }
+        ]
+      }
+    ]
+  },
+  "plan_changed": false
+}

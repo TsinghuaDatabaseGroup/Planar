@@ -1,0 +1,44 @@
+{
+  "task_id": "legal_contracts-026",
+  "answer": [
+    {
+      "document_id": "1050277_0001047469-99-000663_document_7.txt",
+      "governing_law": "State of California"
+    },
+    {
+      "document_id": "1285543_0001013762-05-000550_may52005sb2ex1019.txt",
+      "governing_law": "United States of America and the State of New Jersey"
+    },
+    {
+      "document_id": "2_waycda.pdf",
+      "governing_law": "English Law"
+    },
+    {
+      "document_id": "Inaturals_NDA.pdf",
+      "governing_law": "French Law"
+    },
+    {
+      "document_id": "MutualNonDisclosureAgreement0104.pdf",
+      "governing_law": "State of California"
+    },
+    {
+      "document_id": "NDA_7.pdf",
+      "governing_law": "Spain"
+    },
+    {
+      "document_id": "NDA_ResConnect.pdf",
+      "governing_law": "South African law"
+    },
+    {
+      "document_id": "Proctor_Agreement.pdf",
+      "governing_law": "England and Wales"
+    },
+    {
+      "document_id": "nda_gtl_inria.pdf",
+      "governing_law": "France"
+    }
+  ],
+  "elapsed_seconds": 165.755,
+  "cost_usd": 0.32479242,
+  "total_tokens": 722105
+}

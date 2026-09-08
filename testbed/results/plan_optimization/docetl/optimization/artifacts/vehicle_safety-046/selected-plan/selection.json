@@ -1,0 +1,371 @@
+{
+  "node_id": 60,
+  "sample_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-046/moar-search/pipeline_input_sample_openai_60.yaml",
+  "sample_output_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-046/moar-search/pipeline_input_sample_openai_60.json",
+  "semantic_fidelity": 1.0,
+  "sample_execution_cost_usd": 0.0,
+  "fidelity_threshold": 0.9,
+  "selection_reason": "lowest_cost_meeting_fidelity_threshold",
+  "optimization_path": "ROOT → change to Qwen3.5-397B-A17B(filter_chrysler_airbag_complaints) → arbitrary_rewrite(classify_chrysler_airbag_failure_mode)",
+  "sample_execution_metrics_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-046/moar-search/candidate-metrics/execution_0003_node-60.json",
+  "full_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-046/selected-plan/pipeline_vehicle_safety-046_optimized_full.yaml",
+  "input_plan_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/pipeline-all/pipeline_vehicle_safety-046.yaml",
+  "input_plan_kind": "reference-plan translation used as the MOAR input plan",
+  "operator_execution_policy": {
+    "policy": "structural_rewrite_fixed_operator_execution",
+    "nested_v1_optimizer_invoked": false,
+    "fixed_default_model": "Qwen3.5-397B-A17B",
+    "unchanged_operations": [
+      "match_chrysler_airbag_complaints_to_recalls",
+      "classify_chrysler_airbag_safety_risk",
+      "classify_chrysler_airbag_failure_mode",
+      "filter_candidate_chrysler_airbag_reports",
+      "match_chrysler_airbag_issues_to_reports",
+      "aggregate_chrysler_airbag_campaigns",
+      "summarize_chrysler_remedy_and_odi_evidence",
+      "project_chrysler_airbag_campaign_summary"
+    ],
+    "new_or_replaced_operations": [
+      {
+        "name": "filter_and_flatten_chrysler_airbag_data",
+        "type": "code_map",
+        "runtime_template_operation": "flatten_chrysler_airbag_recall_fields",
+        "inherited_execution_fields": []
+      },
+      {
+        "name": "filter_valid_chrysler_airbag_docs",
+        "type": "code_filter",
+        "runtime_template_operation": "filter_chrysler_airbag_complaints",
+        "inherited_execution_fields": []
+      }
+    ],
+    "restored_fields": {},
+    "unchanged_operation_count": 8,
+    "new_or_replaced_operation_count": 2
+  },
+  "input_plan_signature": {
+    "definitions": {
+      "filter_chrysler_airbag_complaints": "code_filter",
+      "filter_chrysler_airbag_recalls": "code_filter",
+      "flatten_chrysler_airbag_recall_fields": "code_map",
+      "match_chrysler_airbag_complaints_to_recalls": "equijoin",
+      "classify_chrysler_airbag_safety_risk": "filter",
+      "classify_chrysler_airbag_failure_mode": "map",
+      "filter_candidate_chrysler_airbag_reports": "code_filter",
+      "match_chrysler_airbag_issues_to_reports": "equijoin",
+      "aggregate_chrysler_airbag_campaigns": "code_reduce",
+      "summarize_chrysler_remedy_and_odi_evidence": "map",
+      "project_chrysler_airbag_campaign_summary": "code_map"
+    },
+    "logical_operations": [
+      {
+        "name": "filter_chrysler_airbag_complaints",
+        "type": "code_filter",
+        "logical_config_sha256": "aa3d227c2b47edd68df7faa1c54b140e251bafe3dd135d41429599546ef182ac"
+      },
+      {
+        "name": "filter_chrysler_airbag_recalls",
+        "type": "code_filter",
+        "logical_config_sha256": "6ad3e33004e9c0da0f1c550fb42513c8c222c88067e7fe7c55c95fcaad446eed"
+      },
+      {
+        "name": "flatten_chrysler_airbag_recall_fields",
+        "type": "code_map",
+        "logical_config_sha256": "55a6812f4ad8b649afa563bad5c9f30ed89b435b04bfaed32d89581372c17854"
+      },
+      {
+        "name": "match_chrysler_airbag_complaints_to_recalls",
+        "type": "equijoin",
+        "logical_config_sha256": "8d89834d21d07c59731c502489abe127c3772840f2d5ab431dd1d0970acf6d94"
+      },
+      {
+        "name": "classify_chrysler_airbag_safety_risk",
+        "type": "filter",
+        "logical_config_sha256": "ae29292687a8ea04fe32e70ac2f1130b13178e94d447db801b940d455e2e5d72"
+      },
+      {
+        "name": "classify_chrysler_airbag_failure_mode",
+        "type": "map",
+        "logical_config_sha256": "dd8d6ff7e3cf4507d9ba89027e77d63b7979c44d6a4f1f1fb1d07bd81ec69ac7"
+      },
+      {
+        "name": "filter_candidate_chrysler_airbag_reports",
+        "type": "code_filter",
+        "logical_config_sha256": "a525b7239a917a0f295458b44dd10615f990d775a4c6a33949407f712b531681"
+      },
+      {
+        "name": "match_chrysler_airbag_issues_to_reports",
+        "type": "equijoin",
+        "logical_config_sha256": "162da0c557017ea892ff26581d71517e8a93c055932fb6a1b0fb6282833a9296"
+      },
+      {
+        "name": "aggregate_chrysler_airbag_campaigns",
+        "type": "code_reduce",
+        "logical_config_sha256": "7255d0b4cb0e2952cf1036b3dc556a86c48cc192f34138c3c0b9e53b40888aa9"
+      },
+      {
+        "name": "summarize_chrysler_remedy_and_odi_evidence",
+        "type": "map",
+        "logical_config_sha256": "c613cf96ef614b3fcfbde2814daa0e7f88992c7c4217b4f06cc615ac027b1d2f"
+      },
+      {
+        "name": "project_chrysler_airbag_campaign_summary",
+        "type": "code_map",
+        "logical_config_sha256": "c2279e961355c316a21f81b73c435c0c347fa8d9bef1f5b2c0684aedcd9e743c"
+      }
+    ],
+    "steps": [
+      {
+        "name": "chrysler_airbag_complaints",
+        "input": "nhtsa_complaints",
+        "operations": [
+          {
+            "name": "filter_chrysler_airbag_complaints",
+            "type": "code_filter"
+          }
+        ]
+      },
+      {
+        "name": "chrysler_airbag_recalls",
+        "input": "nhtsa_recalls",
+        "operations": [
+          {
+            "name": "filter_chrysler_airbag_recalls",
+            "type": "code_filter"
+          },
+          {
+            "name": "flatten_chrysler_airbag_recall_fields",
+            "type": "code_map"
+          }
+        ]
+      },
+      {
+        "name": "matched_chrysler_airbag_pairs",
+        "input": null,
+        "operations": [
+          {
+            "name": "match_chrysler_airbag_complaints_to_recalls",
+            "type": "equijoin",
+            "inputs": {
+              "left": "chrysler_airbag_complaints",
+              "right": "chrysler_airbag_recalls"
+            }
+          }
+        ]
+      },
+      {
+        "name": "qualified_chrysler_airbag_pairs",
+        "input": "matched_chrysler_airbag_pairs",
+        "operations": [
+          {
+            "name": "classify_chrysler_airbag_safety_risk",
+            "type": "filter"
+          },
+          {
+            "name": "classify_chrysler_airbag_failure_mode",
+            "type": "map"
+          }
+        ]
+      },
+      {
+        "name": "candidate_chrysler_airbag_reports",
+        "input": "nhtsa_investigation_reports",
+        "operations": [
+          {
+            "name": "filter_candidate_chrysler_airbag_reports",
+            "type": "code_filter"
+          }
+        ]
+      },
+      {
+        "name": "matched_chrysler_airbag_reports",
+        "input": null,
+        "operations": [
+          {
+            "name": "match_chrysler_airbag_issues_to_reports",
+            "type": "equijoin",
+            "inputs": {
+              "left": "qualified_chrysler_airbag_pairs",
+              "right": "candidate_chrysler_airbag_reports"
+            }
+          }
+        ]
+      },
+      {
+        "name": "chrysler_airbag_campaign_summaries",
+        "input": "matched_chrysler_airbag_reports",
+        "operations": [
+          {
+            "name": "aggregate_chrysler_airbag_campaigns",
+            "type": "code_reduce"
+          },
+          {
+            "name": "summarize_chrysler_remedy_and_odi_evidence",
+            "type": "map"
+          },
+          {
+            "name": "project_chrysler_airbag_campaign_summary",
+            "type": "code_map"
+          }
+        ]
+      }
+    ]
+  },
+  "selected_plan_signature": {
+    "definitions": {
+      "filter_and_flatten_chrysler_airbag_data": "code_map",
+      "filter_valid_chrysler_airbag_docs": "code_filter",
+      "match_chrysler_airbag_complaints_to_recalls": "equijoin",
+      "classify_chrysler_airbag_safety_risk": "filter",
+      "classify_chrysler_airbag_failure_mode": "map",
+      "filter_candidate_chrysler_airbag_reports": "code_filter",
+      "match_chrysler_airbag_issues_to_reports": "equijoin",
+      "aggregate_chrysler_airbag_campaigns": "code_reduce",
+      "summarize_chrysler_remedy_and_odi_evidence": "map",
+      "project_chrysler_airbag_campaign_summary": "code_map"
+    },
+    "logical_operations": [
+      {
+        "name": "filter_and_flatten_chrysler_airbag_data",
+        "type": "code_map",
+        "logical_config_sha256": "260153546dd49de4211c7f6c674b73fcf0bbb17f0044bf77761b952568d4dd54"
+      },
+      {
+        "name": "filter_valid_chrysler_airbag_docs",
+        "type": "code_filter",
+        "logical_config_sha256": "37f474bfa2e51b7fef1c0ca263109c87f08a5b16b3dd7819179954c70763f615"
+      },
+      {
+        "name": "match_chrysler_airbag_complaints_to_recalls",
+        "type": "equijoin",
+        "logical_config_sha256": "8d89834d21d07c59731c502489abe127c3772840f2d5ab431dd1d0970acf6d94"
+      },
+      {
+        "name": "classify_chrysler_airbag_safety_risk",
+        "type": "filter",
+        "logical_config_sha256": "ae29292687a8ea04fe32e70ac2f1130b13178e94d447db801b940d455e2e5d72"
+      },
+      {
+        "name": "classify_chrysler_airbag_failure_mode",
+        "type": "map",
+        "logical_config_sha256": "dd8d6ff7e3cf4507d9ba89027e77d63b7979c44d6a4f1f1fb1d07bd81ec69ac7"
+      },
+      {
+        "name": "filter_candidate_chrysler_airbag_reports",
+        "type": "code_filter",
+        "logical_config_sha256": "a525b7239a917a0f295458b44dd10615f990d775a4c6a33949407f712b531681"
+      },
+      {
+        "name": "match_chrysler_airbag_issues_to_reports",
+        "type": "equijoin",
+        "logical_config_sha256": "162da0c557017ea892ff26581d71517e8a93c055932fb6a1b0fb6282833a9296"
+      },
+      {
+        "name": "aggregate_chrysler_airbag_campaigns",
+        "type": "code_reduce",
+        "logical_config_sha256": "7255d0b4cb0e2952cf1036b3dc556a86c48cc192f34138c3c0b9e53b40888aa9"
+      },
+      {
+        "name": "summarize_chrysler_remedy_and_odi_evidence",
+        "type": "map",
+        "logical_config_sha256": "c613cf96ef614b3fcfbde2814daa0e7f88992c7c4217b4f06cc615ac027b1d2f"
+      },
+      {
+        "name": "project_chrysler_airbag_campaign_summary",
+        "type": "code_map",
+        "logical_config_sha256": "c2279e961355c316a21f81b73c435c0c347fa8d9bef1f5b2c0684aedcd9e743c"
+      }
+    ],
+    "steps": [
+      {
+        "name": "chrysler_airbag_complaints",
+        "input": "nhtsa_complaints",
+        "operations": []
+      },
+      {
+        "name": "chrysler_airbag_recalls",
+        "input": "nhtsa_recalls",
+        "operations": []
+      },
+      {
+        "name": "matched_chrysler_airbag_pairs",
+        "input": null,
+        "operations": [
+          {
+            "name": "match_chrysler_airbag_complaints_to_recalls",
+            "type": "equijoin",
+            "inputs": {
+              "left": "chrysler_airbag_complaints",
+              "right": "chrysler_airbag_recalls"
+            }
+          }
+        ]
+      },
+      {
+        "name": "qualified_chrysler_airbag_pairs",
+        "input": "matched_chrysler_airbag_pairs",
+        "operations": [
+          {
+            "name": "filter_and_flatten_chrysler_airbag_data",
+            "type": "code_map"
+          },
+          {
+            "name": "filter_valid_chrysler_airbag_docs",
+            "type": "code_filter"
+          },
+          {
+            "name": "classify_chrysler_airbag_safety_risk",
+            "type": "filter"
+          },
+          {
+            "name": "classify_chrysler_airbag_failure_mode",
+            "type": "map"
+          }
+        ]
+      },
+      {
+        "name": "candidate_chrysler_airbag_reports",
+        "input": "nhtsa_investigation_reports",
+        "operations": [
+          {
+            "name": "filter_candidate_chrysler_airbag_reports",
+            "type": "code_filter"
+          }
+        ]
+      },
+      {
+        "name": "matched_chrysler_airbag_reports",
+        "input": null,
+        "operations": [
+          {
+            "name": "match_chrysler_airbag_issues_to_reports",
+            "type": "equijoin",
+            "inputs": {
+              "left": "qualified_chrysler_airbag_pairs",
+              "right": "candidate_chrysler_airbag_reports"
+            }
+          }
+        ]
+      },
+      {
+        "name": "chrysler_airbag_campaign_summaries",
+        "input": "matched_chrysler_airbag_reports",
+        "operations": [
+          {
+            "name": "aggregate_chrysler_airbag_campaigns",
+            "type": "code_reduce"
+          },
+          {
+            "name": "summarize_chrysler_remedy_and_odi_evidence",
+            "type": "map"
+          },
+          {
+            "name": "project_chrysler_airbag_campaign_summary",
+            "type": "code_map"
+          }
+        ]
+      }
+    ]
+  },
+  "plan_changed": true
+}

@@ -1,0 +1,36 @@
+{
+  "task_id": "legal_contracts-031",
+  "answer": [
+    {
+      "document_id": "cvco-2025329xexhibit97.htm",
+      "company_name": "Cavco Industries, Inc."
+    },
+    {
+      "document_id": "ex19-2.htm",
+      "company_name": "Evofem Biosciences, Inc."
+    },
+    {
+      "document_id": "ex19-2_1.htm",
+      "company_name": "Evofem Biosciences, Inc."
+    },
+    {
+      "document_id": "ex971globalstarincclawback.htm",
+      "company_name": "Globalstar, Inc."
+    },
+    {
+      "document_id": "exhibit971-clawbackpolicy.htm",
+      "company_name": "Skyworks Solutions, Inc."
+    },
+    {
+      "document_id": "ip-2024123exhibit1043.htm",
+      "company_name": "International Paper Company"
+    },
+    {
+      "document_id": "loco-20231227xex97d1.htm",
+      "company_name": "El Pollo Loco Holdings, Inc."
+    }
+  ],
+  "elapsed_seconds": 157.223,
+  "cost_usd": 0.4549713,
+  "total_tokens": 772395
+}

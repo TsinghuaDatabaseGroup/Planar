@@ -1,0 +1,243 @@
+{
+  "node_id": 18,
+  "sample_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-090/moar-search/pipeline_legal_contracts-090_input_sample_openai_Qwen3.5-397B-A17B.yaml",
+  "sample_output_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-090/moar-search/pipeline_legal_contracts-090_input_sample_openai_Qwen3.5-397B-A17B.json",
+  "semantic_fidelity": 1.0,
+  "sample_execution_cost_usd": 0.15068898000000003,
+  "fidelity_threshold": 0.9,
+  "selection_reason": "lowest_cost_meeting_fidelity_threshold",
+  "optimization_path": "ROOT → change to Qwen3.5-397B-A17B(filter_nda_documents)",
+  "sample_execution_metrics_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-090/moar-search/candidate-metrics/execution_0001_node-18.json",
+  "full_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-090/selected-plan/pipeline_legal_contracts-090_optimized_full.yaml",
+  "input_plan_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/pipeline-all/pipeline_legal_contracts-090.yaml",
+  "input_plan_kind": "reference-plan translation used as the MOAR input plan",
+  "operator_execution_policy": {
+    "policy": "structural_rewrite_fixed_operator_execution",
+    "nested_v1_optimizer_invoked": false,
+    "fixed_default_model": "Qwen3.5-397B-A17B",
+    "unchanged_operations": [
+      "filter_nda_documents",
+      "filter_standstill_and_employee_non_solicit",
+      "extract_durations_and_exceptions",
+      "normalize_restriction_durations",
+      "filter_stated_durations",
+      "project_duration_class",
+      "aggregate_duration_classes",
+      "order_duration_classes",
+      "unnest_duration_classes"
+    ],
+    "new_or_replaced_operations": [],
+    "restored_fields": {},
+    "unchanged_operation_count": 9,
+    "new_or_replaced_operation_count": 0
+  },
+  "input_plan_signature": {
+    "definitions": {
+      "filter_nda_documents": "filter",
+      "filter_standstill_and_employee_non_solicit": "filter",
+      "extract_durations_and_exceptions": "map",
+      "normalize_restriction_durations": "code_map",
+      "filter_stated_durations": "code_filter",
+      "project_duration_class": "code_map",
+      "aggregate_duration_classes": "code_reduce",
+      "order_duration_classes": "code_reduce",
+      "unnest_duration_classes": "unnest"
+    },
+    "logical_operations": [
+      {
+        "name": "filter_nda_documents",
+        "type": "filter",
+        "logical_config_sha256": "bb07c7d13e409e098d3838dd3e2ce1aa18be795193dd3148224c1861e0147862"
+      },
+      {
+        "name": "filter_standstill_and_employee_non_solicit",
+        "type": "filter",
+        "logical_config_sha256": "9c6ccbb054d4ead0ed89c53eb7af034cf851a560d0525d1f11b8c954d188baa6"
+      },
+      {
+        "name": "extract_durations_and_exceptions",
+        "type": "map",
+        "logical_config_sha256": "25667e54b792905d84e10a8e752c76a3bd8d4575865896ccc7ffde7b255e20ef"
+      },
+      {
+        "name": "normalize_restriction_durations",
+        "type": "code_map",
+        "logical_config_sha256": "6f183cb00447966bc4407d900c1f6660aa00399e12189a5ba32c690fe6cd683a"
+      },
+      {
+        "name": "filter_stated_durations",
+        "type": "code_filter",
+        "logical_config_sha256": "b847b6aa1748b803eda45ddcc12e1d83c68a2df661782149e205932a403fc7da"
+      },
+      {
+        "name": "project_duration_class",
+        "type": "code_map",
+        "logical_config_sha256": "e53a8a7802325af4128ff5445122b44633d15b1475e9eeafbbda5b00e742b121"
+      },
+      {
+        "name": "aggregate_duration_classes",
+        "type": "code_reduce",
+        "logical_config_sha256": "a59f4b03078604894c996875adfb2568ae85869464038014db7e082e491fe749"
+      },
+      {
+        "name": "order_duration_classes",
+        "type": "code_reduce",
+        "logical_config_sha256": "46f7a0effdd93e29cd2757b1ee33942c0e397855c36e9c78dbf17ac151cc2723"
+      },
+      {
+        "name": "unnest_duration_classes",
+        "type": "unnest",
+        "logical_config_sha256": "8849bd3c87575ef89309b3d835a6259bc51ac5a0ae1c7acf0c50d40581dc5e51"
+      }
+    ],
+    "steps": [
+      {
+        "name": "process",
+        "input": "contract_exhibits",
+        "operations": [
+          {
+            "name": "filter_nda_documents",
+            "type": "filter"
+          },
+          {
+            "name": "filter_standstill_and_employee_non_solicit",
+            "type": "filter"
+          },
+          {
+            "name": "extract_durations_and_exceptions",
+            "type": "map"
+          },
+          {
+            "name": "normalize_restriction_durations",
+            "type": "code_map"
+          },
+          {
+            "name": "filter_stated_durations",
+            "type": "code_filter"
+          },
+          {
+            "name": "project_duration_class",
+            "type": "code_map"
+          },
+          {
+            "name": "aggregate_duration_classes",
+            "type": "code_reduce"
+          },
+          {
+            "name": "order_duration_classes",
+            "type": "code_reduce"
+          },
+          {
+            "name": "unnest_duration_classes",
+            "type": "unnest"
+          }
+        ]
+      }
+    ]
+  },
+  "selected_plan_signature": {
+    "definitions": {
+      "filter_nda_documents": "filter",
+      "filter_standstill_and_employee_non_solicit": "filter",
+      "extract_durations_and_exceptions": "map",
+      "normalize_restriction_durations": "code_map",
+      "filter_stated_durations": "code_filter",
+      "project_duration_class": "code_map",
+      "aggregate_duration_classes": "code_reduce",
+      "order_duration_classes": "code_reduce",
+      "unnest_duration_classes": "unnest"
+    },
+    "logical_operations": [
+      {
+        "name": "filter_nda_documents",
+        "type": "filter",
+        "logical_config_sha256": "bb07c7d13e409e098d3838dd3e2ce1aa18be795193dd3148224c1861e0147862"
+      },
+      {
+        "name": "filter_standstill_and_employee_non_solicit",
+        "type": "filter",
+        "logical_config_sha256": "9c6ccbb054d4ead0ed89c53eb7af034cf851a560d0525d1f11b8c954d188baa6"
+      },
+      {
+        "name": "extract_durations_and_exceptions",
+        "type": "map",
+        "logical_config_sha256": "25667e54b792905d84e10a8e752c76a3bd8d4575865896ccc7ffde7b255e20ef"
+      },
+      {
+        "name": "normalize_restriction_durations",
+        "type": "code_map",
+        "logical_config_sha256": "6f183cb00447966bc4407d900c1f6660aa00399e12189a5ba32c690fe6cd683a"
+      },
+      {
+        "name": "filter_stated_durations",
+        "type": "code_filter",
+        "logical_config_sha256": "b847b6aa1748b803eda45ddcc12e1d83c68a2df661782149e205932a403fc7da"
+      },
+      {
+        "name": "project_duration_class",
+        "type": "code_map",
+        "logical_config_sha256": "e53a8a7802325af4128ff5445122b44633d15b1475e9eeafbbda5b00e742b121"
+      },
+      {
+        "name": "aggregate_duration_classes",
+        "type": "code_reduce",
+        "logical_config_sha256": "a59f4b03078604894c996875adfb2568ae85869464038014db7e082e491fe749"
+      },
+      {
+        "name": "order_duration_classes",
+        "type": "code_reduce",
+        "logical_config_sha256": "46f7a0effdd93e29cd2757b1ee33942c0e397855c36e9c78dbf17ac151cc2723"
+      },
+      {
+        "name": "unnest_duration_classes",
+        "type": "unnest",
+        "logical_config_sha256": "8849bd3c87575ef89309b3d835a6259bc51ac5a0ae1c7acf0c50d40581dc5e51"
+      }
+    ],
+    "steps": [
+      {
+        "name": "process",
+        "input": "contract_exhibits",
+        "operations": [
+          {
+            "name": "filter_nda_documents",
+            "type": "filter"
+          },
+          {
+            "name": "filter_standstill_and_employee_non_solicit",
+            "type": "filter"
+          },
+          {
+            "name": "extract_durations_and_exceptions",
+            "type": "map"
+          },
+          {
+            "name": "normalize_restriction_durations",
+            "type": "code_map"
+          },
+          {
+            "name": "filter_stated_durations",
+            "type": "code_filter"
+          },
+          {
+            "name": "project_duration_class",
+            "type": "code_map"
+          },
+          {
+            "name": "aggregate_duration_classes",
+            "type": "code_reduce"
+          },
+          {
+            "name": "order_duration_classes",
+            "type": "code_reduce"
+          },
+          {
+            "name": "unnest_duration_classes",
+            "type": "unnest"
+          }
+        ]
+      }
+    ]
+  },
+  "plan_changed": false
+}

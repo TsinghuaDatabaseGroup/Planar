@@ -1,0 +1,9 @@
+{
+  "task_id": "legal_contracts-062",
+  "answer": [
+    {"restriction_category": "Customers Only", "agreement_count": 13, "avg_effective_duration_years": 2.83, "most_common_governing_law": "Indiana"}
+  ],
+  "elapsed_seconds": 1497.75,
+  "cost_usd": 1.973688,
+  "total_tokens": 3735224
+}

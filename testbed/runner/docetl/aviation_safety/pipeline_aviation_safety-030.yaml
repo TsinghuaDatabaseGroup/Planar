@@ -1,0 +1,279 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+  asrs_events:
+    type: file
+    path: data/asrs/events.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_us_reference
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("state_reference") == "US"
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: extract_narrative_conflict_distances
+    type: map
+    optimize: true
+    prompt: |
+      Identify the parties involved in the closest conflict described by this NASA
+      ASRS narrative. Return parties_involved as a concise phrase of at most six
+      words, such as the reporting aircraft and the conflicting aircraft, vehicle,
+      person, or object. Describe the actual parties rather than the cause or
+      outcome. Use "parties not clearly stated" if they cannot be identified.
+
+      Extract an explicitly stated narrative closest-separation value for each
+      dimension:
+      - narrative_horizontal_ft: horizontal separation in feet;
+      - narrative_vertical_ft: vertical separation in feet.
+
+      Each value must refer to the closest conflict involving those parties. Do not
+      use an altitude, assigned spacing, runway length, or unrelated distance. When
+      a closest-separation value is explicit in another unit, convert it to feet
+      only when the unit and conversion are unambiguous, rounding to the nearest
+      integer. Do not infer a missing dimension.
+
+      For each dimension, set its stated flag to true only when the corresponding
+      narrative value is explicit. When it is unstated, set the flag to false and
+      return 0 only as the required placeholder; the placeholder will be converted
+      to null by the next deterministic projection.
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        parties_involved: string
+        narrative_horizontal_stated: boolean
+        narrative_horizontal_ft: integer
+        narrative_vertical_stated: boolean
+        narrative_vertical_ft: integer
+    validate:
+      - 1 <= len(output["parties_involved"].split()) <= 6
+      - output["narrative_horizontal_ft"] >= 0
+      - output["narrative_vertical_ft"] >= 0
+    num_retries_on_validate_failure: 2
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: attach_structured_miss_distances
+    type: code_map
+    code: |
+      import csv
+      import os
+      import re
+      import threading
+
+      _distance_index = None
+      _distance_lock = threading.Lock()
+
+      def load_distance_index():
+          global _distance_index
+          if _distance_index is None:
+              with _distance_lock:
+                  if _distance_index is None:
+                      grouped = {}
+                      path = os.path.abspath(
+                          os.path.join("data", "asrs", "events.csv")
+                      )
+                      with open(
+                          path, "r", encoding="utf-8", errors="replace", newline=""
+                      ) as handle:
+                          for row in csv.DictReader(handle):
+                              if row.get("event_type") != "miss_distance":
+                                  continue
+                              label = str(row.get("label", ""))
+                              match = re.fullmatch(r"(Horizontal|Vertical)\s+(\d+)", label)
+                              if not match:
+                                  continue
+                              incident_id = str(row.get("incident_id", ""))
+                              dimension = match.group(1).lower()
+                              value = int(match.group(2))
+                              record = grouped.setdefault(
+                                  incident_id,
+                                  {"horizontal": None, "vertical": None},
+                              )
+                              current = record[dimension]
+                              record[dimension] = (
+                                  value if current is None else min(current, value)
+                              )
+                      _distance_index = {
+                          incident_id: values
+                          for incident_id, values in grouped.items()
+                          if values["horizontal"] is not None
+                          and values["vertical"] is not None
+                      }
+          return _distance_index
+
+      def transform(doc):
+          values = load_distance_index().get(str(doc.get("incident_id", "")))
+          if values is None:
+              return {
+                  "structured_horizontal_ft": None,
+                  "structured_vertical_ft": None,
+              }
+          return {
+              "structured_horizontal_ft": values["horizontal"],
+              "structured_vertical_ft": values["vertical"],
+          }
+
+  - name: inner_join_complete_structured_distances
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("structured_horizontal_ft") is not None
+              and doc.get("structured_vertical_ft") is not None
+          )
+
+  - name: project_distance_comparisons
+    type: code_map
+    code: |
+      def transform(doc):
+          horizontal = (
+              doc.get("narrative_horizontal_ft")
+              if doc.get("narrative_horizontal_stated") is True
+              else None
+          )
+          vertical = (
+              doc.get("narrative_vertical_ft")
+              if doc.get("narrative_vertical_stated") is True
+              else None
+          )
+
+          def compare(narrative_value, structured_value):
+              if narrative_value is None:
+                  return "not_stated"
+              if narrative_value == structured_value:
+                  return "matches"
+              return "differs"
+
+          return {
+              "narrative_horizontal_ft": horizontal,
+              "narrative_vertical_ft": vertical,
+              "horizontal_comparison": compare(
+                  horizontal, doc.get("structured_horizontal_ft")
+              ),
+              "vertical_comparison": compare(
+                  vertical, doc.get("structured_vertical_ft")
+              ),
+          }
+
+  - name: order_limit_and_rank_distances
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          ordered = sorted(
+              items,
+              key=lambda item: (
+                  item.get("structured_horizontal_ft"),
+                  item.get("structured_vertical_ft"),
+                  str(item.get("incident_id", "")),
+              ),
+          )
+
+          rows = []
+          seen_incidents = set()
+          for item in ordered:
+              incident_id = str(item.get("incident_id", ""))
+              if not incident_id or incident_id in seen_incidents:
+                  continue
+              seen_incidents.add(incident_id)
+              rows.append(
+                  {
+                      "rank": len(rows) + 1,
+                      "incident_id": item.get("incident_id"),
+                      "parties_involved": item.get("parties_involved"),
+                      "structured_horizontal_ft": item.get(
+                          "structured_horizontal_ft"
+                      ),
+                      "structured_vertical_ft": item.get(
+                          "structured_vertical_ft"
+                      ),
+                      "narrative_horizontal_ft": item.get(
+                          "narrative_horizontal_ft"
+                      ),
+                      "narrative_vertical_ft": item.get("narrative_vertical_ft"),
+                      "horizontal_comparison": item.get("horizontal_comparison"),
+                      "vertical_comparison": item.get("vertical_comparison"),
+                  }
+              )
+              if len(rows) == 20:
+                  break
+          return {"rows": rows}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - rank
+      - incident_id
+      - parties_involved
+      - structured_horizontal_ft
+      - structured_vertical_ft
+      - narrative_horizontal_ft
+      - narrative_vertical_ft
+      - horizontal_comparison
+      - vertical_comparison
+
+pipeline:
+  steps:
+    - name: process
+      input: asrs_incidents
+      operations:
+        - filter_us_reference
+        - load_asrs_narrative
+        - extract_narrative_conflict_distances
+        - attach_structured_miss_distances
+        - inner_join_complete_structured_distances
+        - project_distance_comparisons
+        - order_limit_and_rank_distances
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-030.json

@@ -1,0 +1,18 @@
+{
+  "task_id": "vehicle_safety-037",
+  "answer": [
+    {
+      "root_cause_theme": "Connecting rod bearing wear and seizure",
+      "matched_complaint_count": 25,
+      "distinct_campaign_count": 1,
+      "related_report_ids": [
+        "txt_investigation_638ded8941573dd0.txt",
+        "txt_investigation_b1b8105af73ec4fe.txt"
+      ],
+      "odi_evidence_summary": "Similar connecting rod bearing failures in out-of-scope vehicles warrant new investigation"
+    }
+  ],
+  "elapsed_seconds": 1511.585,
+  "cost_usd": 2.439618,
+  "total_tokens": 3519750
+}

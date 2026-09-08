@@ -1,0 +1,48 @@
+{
+  "task_id": "aviation_safety-039",
+  "answer": [
+    {
+      "rank": 1,
+      "documentation_issue_type": "incorrect_or_incomplete_mel_procedure",
+      "records_complete": "Y",
+      "correct_document_on_board": "Y",
+      "incident_count": 7,
+      "canonical_affected_item": "landing gear lever lock solenoid deferral"
+    },
+    {
+      "rank": 2,
+      "documentation_issue_type": "incomplete_or_inaccurate_logbook",
+      "records_complete": "Y",
+      "correct_document_on_board": "Y",
+      "incident_count": 3,
+      "canonical_affected_item": "AML write-up for FADEC alert"
+    },
+    {
+      "rank": 3,
+      "documentation_issue_type": "incomplete_or_inaccurate_logbook",
+      "records_complete": null,
+      "correct_document_on_board": "Y",
+      "incident_count": 1,
+      "canonical_affected_item": "aircraft logbook write-ups"
+    },
+    {
+      "rank": 4,
+      "documentation_issue_type": "incomplete_or_inaccurate_logbook",
+      "records_complete": "N",
+      "correct_document_on_board": "N",
+      "incident_count": 1,
+      "canonical_affected_item": "passenger door maintenance record"
+    },
+    {
+      "rank": 5,
+      "documentation_issue_type": "incorrect_or_incomplete_mel_procedure",
+      "records_complete": "N",
+      "correct_document_on_board": "N",
+      "incident_count": 1,
+      "canonical_affected_item": "maintenance ferry flight approval"
+    }
+  ],
+  "elapsed_seconds": 344.3,
+  "cost_usd": 0.60144672,
+  "total_tokens": 575699
+}

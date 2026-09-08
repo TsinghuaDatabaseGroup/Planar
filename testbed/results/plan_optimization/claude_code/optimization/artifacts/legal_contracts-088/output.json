@@ -1,0 +1,27 @@
+{
+  "task_id": "legal_contracts-088",
+  "optimization_analysis": "Three reductions: (1) SOX branch collapses the SEM_FILTER + SEM_EXTRACT into one conditional SEM_EXTRACT that returns null for non-EX-31 documents, followed by a cheap deterministic FILTER(IS NOT NULL). This eliminates the second LLM pass over all EX-31 documents (saves M1 calls). (2) CLAWBACK branch collapses two SEM_FILTERs + SEM_EXTRACT into one conditional SEM_EXTRACT whose prompt embeds both the exhibit-type check and the misconduct-recovery check, again followed by deterministic FILTER(IS NOT NULL). This eliminates one full-corpus LLM scan and the secondary extraction pass (saves M2 + P calls). (3) Both extraction prompts explicitly request canonical company-name normalization, which allows the expensive SEM_JOIN to be replaced by a deterministic EQUI_JOIN with zero additional LLM cost (saves K join-comparison calls). Correctness is preserved: the combined prompts express exactly the same logical conditions as the original sequential operators, and consistent normalization ensures the deterministic join produces the same matches the SEM_JOIN would have found.",
+  "optimized_semantic_plan": [
+    {
+      "type": "operator_dag",
+      "program": "SOX = SCAN_DOCS(CONTRACTEXHIBIT, all) -> SEM_EXTRACT('If and only if this document is an EX-31 SOX officer certification, extract (a) the certified company entity in canonical normalized form (full legal name, standardized corporate suffix, no punctuation variation) and (b) the certifying officer full name with title. If the document is not an EX-31 certification return null for both fields.', {company: str, certifying_officer: str}) -> FILTER(company IS NOT NULL) -> GROUP_BY(company, certifying_officers = SORT_ASC(DISTINCT(certifying_officer))); CLAWBACK = SCAN_DOCS(CONTRACTEXHIBIT, all) -> SEM_EXTRACT('If and only if this document is an EX-97 clawback policy that (1) provides financial-restatement recovery AND (2) also explicitly permits recovery for misconduct beyond financial restatements, extract (a) the company entity in canonical normalized form (full legal name, standardized corporate suffix, no punctuation variation) and (b) the normalized covered-person category stated by the policy. If either condition is not met return null for both fields.', {company: str, covered_person_category: str}) -> FILTER(company IS NOT NULL) -> DEDUP(company, covered_person_category); EQUI_JOIN(SOX, CLAWBACK, on=company) -> PROJECT(company, certifying_officers, covered_person_category)"
+    }
+  ],
+  "valid": true,
+  "validation_warnings": [],
+  "elapsed_secs": 108.567,
+  "cost_usd": 0.11986875,
+  "agent_cost_usd": 0.11986875,
+  "usage": {
+    "input": 3,
+    "output": 6706,
+    "cacheRead": 2320,
+    "cacheWrite": 4953
+  },
+  "agent_usage": {
+    "input": 3,
+    "output": 6706,
+    "cacheRead": 2320,
+    "cacheWrite": 4953
+  }
+}

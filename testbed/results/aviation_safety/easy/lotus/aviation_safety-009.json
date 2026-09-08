@@ -1,0 +1,28 @@
+{
+  "task_id": "aviation_safety-009",
+  "answer": [
+    {
+      "correcting_actor": "atc",
+      "prevention_action": "stop_or_hold",
+      "incident_count": 5
+    },
+    {
+      "correcting_actor": "atc",
+      "prevention_action": "reroute_or_turnoff",
+      "incident_count": 1
+    },
+    {
+      "correcting_actor": "flight_crew",
+      "prevention_action": "stop_or_hold",
+      "incident_count": 5
+    },
+    {
+      "correcting_actor": "flight_crew",
+      "prevention_action": "reroute_or_turnoff",
+      "incident_count": 1
+    }
+  ],
+  "elapsed_seconds": 183.19,
+  "cost_usd": 1.190599,
+  "total_tokens": 2771213
+}

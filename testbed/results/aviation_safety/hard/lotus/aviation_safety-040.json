@@ -1,0 +1,88 @@
+{
+  "task_id": "aviation_safety-040",
+  "answer": [
+    {
+      "rank": 1,
+      "left_incident_id": "asrs_012561",
+      "right_incident_id": "asrs_069247",
+      "alert_or_advisory": "Takeoff warning horn sounded",
+      "left_response": "override_advisory",
+      "right_response": "follow_advisory"
+    },
+    {
+      "rank": 2,
+      "left_incident_id": "asrs_024554",
+      "right_incident_id": "asrs_039128",
+      "alert_or_advisory": "Auto Fail light and cabin altitude warning horn",
+      "left_response": "override_advisory",
+      "right_response": "follow_advisory"
+    },
+    {
+      "rank": 3,
+      "left_incident_id": "asrs_024554",
+      "right_incident_id": "asrs_045417",
+      "alert_or_advisory": "Auto Fail light and cabin altitude warning horn",
+      "left_response": "override_advisory",
+      "right_response": "follow_advisory"
+    },
+    {
+      "rank": 4,
+      "left_incident_id": "asrs_024554",
+      "right_incident_id": "asrs_060204",
+      "alert_or_advisory": "Auto Fail light and cabin altitude warning horn",
+      "left_response": "override_advisory",
+      "right_response": "follow_advisory"
+    },
+    {
+      "rank": 5,
+      "left_incident_id": "asrs_024554",
+      "right_incident_id": "asrs_064906",
+      "alert_or_advisory": "Auto Fail light and cabin altitude warning horn",
+      "left_response": "override_advisory",
+      "right_response": "follow_advisory"
+    },
+    {
+      "rank": 6,
+      "left_incident_id": "asrs_024554",
+      "right_incident_id": "asrs_067159",
+      "alert_or_advisory": "Auto Fail light and cabin altitude warning horn",
+      "left_response": "override_advisory",
+      "right_response": "follow_advisory"
+    },
+    {
+      "rank": 7,
+      "left_incident_id": "asrs_024554",
+      "right_incident_id": "asrs_090017",
+      "alert_or_advisory": "Auto Fail light and cabin altitude warning horn",
+      "left_response": "override_advisory",
+      "right_response": "follow_advisory"
+    },
+    {
+      "rank": 8,
+      "left_incident_id": "asrs_029527",
+      "right_incident_id": "asrs_124805",
+      "alert_or_advisory": "Takeoff warning horn sounded",
+      "left_response": "follow_advisory",
+      "right_response": "override_advisory"
+    },
+    {
+      "rank": 9,
+      "left_incident_id": "asrs_035355",
+      "right_incident_id": "asrs_041598",
+      "alert_or_advisory": "Reactive windshear red performance decreasing warning",
+      "left_response": "follow_advisory",
+      "right_response": "override_advisory"
+    },
+    {
+      "rank": 10,
+      "left_incident_id": "asrs_037233",
+      "right_incident_id": "asrs_099287",
+      "alert_or_advisory": "L 14TH DUCT bleed air duct warning",
+      "left_response": "follow_advisory",
+      "right_response": "override_advisory"
+    }
+  ],
+  "elapsed_seconds": 851.69,
+  "cost_usd": 2.336841,
+  "total_tokens": 5172915
+}

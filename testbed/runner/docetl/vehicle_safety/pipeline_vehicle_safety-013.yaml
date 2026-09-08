@@ -1,0 +1,147 @@
+datasets:
+  nhtsa_complaints:
+    type: file
+    path: data/nhtsa_vehicle_safety/complaints.csv
+  nhtsa_recalls:
+    type: file
+    path: data/nhtsa_vehicle_safety/recalls.jsonl
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+
+operations:
+  - name: filter_dated_complaints
+    type: code_filter
+    code: |
+      def transform(doc):
+          return str(doc.get("received_date") or "").strip() != ""
+
+  - name: compute_minimum_recall_date
+    type: code_map
+    code: |
+      def transform(doc):
+          from datetime import date, timedelta
+
+          received_date = date.fromisoformat(str(doc.get("received_date")))
+          return {
+              "minimum_recall_date": (
+                  received_date + timedelta(days=90)
+              ).isoformat()
+          }
+
+  - name: filter_dated_recalls
+    type: code_filter
+    code: |
+      def transform(doc):
+          campaign = doc.get("campaign") or {}
+          return str(campaign.get("report_received_date") or "").strip() != ""
+
+  - name: flatten_recall_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          campaign = doc.get("campaign") or {}
+          vehicle = doc.get("vehicle") or {}
+          component = doc.get("component") or {}
+          risk = doc.get("risk") or {}
+          return {
+              "campaign_number": campaign.get("number"),
+              "vehicle_id": vehicle.get("vehicle_id"),
+              "component_id": component.get("component_id"),
+              "report_received_date": campaign.get("report_received_date"),
+              "defect_summary": risk.get("defect_summary") or "",
+          }
+
+  - name: match_complaints_to_later_recalls
+    type: equijoin
+    comparison_prompt: |
+      Keep this complaint-recall pair only if all conditions hold:
+      1. vehicle_id is exactly the same on both records;
+      2. component_id is exactly the same on both records;
+      3. the recall report date is at least 90 days after the complaint received
+         date; and
+      4. the complaint summary and recall defect summary describe the same concrete
+         underlying defect mechanism, not merely the same broad component or
+         symptom.
+
+      COMPLAINT VEHICLE_ID: {{ left.vehicle_id }}
+      COMPLAINT COMPONENT_ID: {{ left.component_id }}
+      COMPLAINT RECEIVED_DATE: {{ left.received_date }}
+      COMPLAINT SUMMARY:
+      {{ left.summary_text }}
+
+      RECALL VEHICLE_ID: {{ right.vehicle_id }}
+      RECALL COMPONENT_ID: {{ right.component_id }}
+      RECALL REPORT_RECEIVED_DATE: {{ right.report_received_date }}
+      RECALL DEFECT SUMMARY:
+      {{ right.defect_summary }}
+    blocking_conditions:
+      - >-
+        str(left.get("vehicle_id") or "").lower() == str(right.get("vehicle_id") or "").lower()
+        and str(left.get("component_id") or "").lower() == str(right.get("component_id") or "").lower()
+        and str(right.get("report_received_date") or "") >= str(left.get("minimum_recall_date") or "")
+    embedding_model: Qwen3-Embedding-8B
+    comparison_model: Qwen3.5-397B-A17B
+    timeout: 120
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 128
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: count_distinct_matched_pairs
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {
+              "count": len(
+                  {
+                      (
+                          str(item.get("complaint_id") or ""),
+                          str(item.get("recall_id") or ""),
+                      )
+                      for item in items
+                      if item.get("complaint_id") and item.get("recall_id")
+                  }
+              )
+          }
+
+pipeline:
+  steps:
+    - name: complaints
+      input: nhtsa_complaints
+      operations:
+        - filter_dated_complaints
+        - compute_minimum_recall_date
+    - name: recalls
+      input: nhtsa_recalls
+      operations:
+        - filter_dated_recalls
+        - flatten_recall_fields
+    - name: matched_pairs
+      operations:
+        - match_complaints_to_later_recalls:
+            left: complaints
+            right: recalls
+    - name: answer
+      input: matched_pairs
+      operations:
+        - count_distinct_matched_pairs
+  output:
+    type: file
+    path: raw_outputs/vehicle_safety/output_vehicle_safety-013.json

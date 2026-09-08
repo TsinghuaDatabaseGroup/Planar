@@ -1,0 +1,123 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_ex31_certifications
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is a SOX Section 302 certification exhibit
+      (EX-31).
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_ex31_certification: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_certification_identity
+    type: map
+    optimize: true
+    prompt: |
+      Return the company entity and certifying officer name.
+
+      Certification:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema: {certification_company: string, certifying_officer: string}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: drop_certification_text
+    type: map
+    drop_keys: [contents]
+
+  - name: filter_qualifying_ex10_agreements
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is an EX-10 employment or
+      restrictive-covenant agreement with a named employee and an explicit
+      non-compete duration.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_qualifying_ex10_agreement: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_agreement_identity_and_duration
+    type: map
+    optimize: true
+    prompt: |
+      Return the company or employer entity, named employee, input document ID,
+      and explicit non-compete duration normalized to years.
+
+      Input document ID: {{ input.doc_id }}
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        agreement_company: string
+        employee_name: string
+        ex10_document: string
+        non_compete_duration_years: float
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: drop_agreement_text
+    type: map
+    drop_keys: [contents]
+
+  - name: join_company_and_person_identity
+    type: equijoin
+    comparison_prompt: |
+      Match only if the certification and agreement concern the same company and
+      the certifying officer and named employee are the same individual. Allow
+      clear middle-name, nickname, and shortened-name variants.
+
+      Certification company: {{ left.certification_company }}
+      Certifying officer: {{ left.certifying_officer }}
+      Agreement company: {{ right.agreement_company }}
+      Named employee: {{ right.employee_name }}
+    blocking_keys: {left: [certification_company, certifying_officer], right: [agreement_company, employee_name]}
+    blocking_target_recall: 0.95
+    embedding_model: Qwen3-Embedding-8B
+    comparison_model: Qwen3.5-397B-A17B
+    timeout: 120
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: project_officer_agreement_pair
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "company": doc.get("certification_company"),
+              "certifying_officer": doc.get("certifying_officer"),
+              "ex10_document": doc.get("ex10_document"),
+              "non_compete_duration_years": doc.get("non_compete_duration_years"),
+          }
+  - name: deduplicate_officer_agreement_pairs
+    type: code_reduce
+    reduce_key: [company, certifying_officer, ex10_document]
+    code: |
+      def transform(items):
+          return {"non_compete_duration_years": items[0].get("non_compete_duration_years")}
+pipeline:
+  steps:
+    - name: certification_records
+      input: contract_exhibits
+      operations: [filter_ex31_certifications, extract_certification_identity, drop_certification_text]
+    - name: agreement_records
+      input: contract_exhibits
+      operations: [filter_qualifying_ex10_agreements, extract_agreement_identity_and_duration, drop_agreement_text]
+    - name: matched_identity_records
+      operations:
+        - join_company_and_person_identity: {left: certification_records, right: agreement_records}
+    - name: answer
+      input: matched_identity_records
+      operations: [project_officer_agreement_pair, deduplicate_officer_agreement_pairs]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-093.json

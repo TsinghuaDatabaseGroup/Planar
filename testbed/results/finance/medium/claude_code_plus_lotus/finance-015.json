@@ -1,0 +1,58 @@
+{
+  "task_id": "finance-015",
+  "answer": [
+    {
+      "company_name": "Roivant Sciences Ltd.",
+      "industry": "Healthcare",
+      "word_count": 130746
+    },
+    {
+      "company_name": "23andMe Holding Co.",
+      "industry": "Healthcare",
+      "word_count": 102522
+    },
+    {
+      "company_name": "ZeroFox Holdings, Inc.",
+      "industry": "Technology",
+      "word_count": 97527
+    },
+    {
+      "company_name": "StepStone Group Inc.",
+      "industry": "Finance",
+      "word_count": 92048
+    },
+    {
+      "company_name": "Autodesk, Inc.",
+      "industry": "Technology",
+      "word_count": 83517
+    },
+    {
+      "company_name": "Viasat, Inc.",
+      "industry": "Technology",
+      "word_count": 82562
+    },
+    {
+      "company_name": "Planet Labs PBC",
+      "industry": "Technology",
+      "word_count": 81367
+    },
+    {
+      "company_name": "Booz Allen Hamilton Holding Corporation",
+      "industry": "Technology",
+      "word_count": 77726
+    },
+    {
+      "company_name": "E2open Parent Holdings, Inc.",
+      "industry": "Technology",
+      "word_count": 75852
+    },
+    {
+      "company_name": "AeroVironment, Inc.",
+      "industry": "Defense",
+      "word_count": 75150
+    }
+  ],
+  "elapsed_seconds": 2043.215,
+  "cost_usd": 8.60783865,
+  "total_tokens": 23975531
+}

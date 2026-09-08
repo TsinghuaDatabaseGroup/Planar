@@ -1,0 +1,111 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_pure_titled_ndas
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if its exhibit type is exactly NDA and its
+      agreement title is identifiable.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_pure_titled_nda: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: filter_explicit_confidential_definition
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this agreement only if it explicitly defines confidential
+      information.
+
+      Agreement:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {explicitly_defines_confidential_information: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_title_and_exception_profile
+    type: map
+    optimize: true
+    prompt: |
+      Return the agreement title and whether each of the six standard
+      confidentiality exceptions is present: public information, prior
+      knowledge, independent development, third-party receipt, legal compulsion,
+      and consent.
+
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        agreement_title: string
+        public_information: boolean
+        prior_knowledge: boolean
+        independent_development: boolean
+        third_party_receipt: boolean
+        legal_compulsion: boolean
+        consent: boolean
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: project_title_exception_count
+    type: code_map
+    code: |
+      def transform(doc):
+          import re
+          title = re.sub(r"[\W_]+", " ", str(doc.get("agreement_title") or "").casefold(), flags=re.UNICODE)
+          title = " ".join(title.split())
+          fields = ["public_information", "prior_knowledge", "independent_development", "third_party_receipt", "legal_compulsion", "consent"]
+          return {"normalized_agreement_title": title, "exception_count": sum(doc.get(field) is True for field in fields)}
+  - name: aggregate_title_families
+    type: code_reduce
+    reduce_key: normalized_agreement_title
+    code: |
+      def transform(items):
+          return {"family_size": len(items), "average_exception_count": sum(int(item.get("exception_count") or 0) for item in items) / len(items)}
+  - name: filter_families_at_least_three
+    type: code_filter
+    code: |
+      def transform(doc):
+          return int(doc.get("family_size") or 0) >= 3
+  - name: assign_coverage_bucket
+    type: code_map
+    code: |
+      def transform(doc):
+          average = float(doc.get("average_exception_count") or 0)
+          bucket = "high_5_to_6" if average >= 5 else "medium_3_to_4" if average >= 3 else "low_0_to_2"
+          return {"coverage_bucket": bucket, "family_size": int(doc.get("family_size") or 0)}
+  - name: aggregate_coverage_buckets
+    type: code_reduce
+    reduce_key: coverage_bucket
+    code: |
+      def transform(items):
+          sizes = [int(item.get("family_size") or 0) for item in items]
+          return {"family_count": len(items), "average_family_size": round(sum(sizes) / len(sizes), 2)}
+  - name: order_coverage_buckets
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          order = {"high_5_to_6": 1, "medium_3_to_4": 2, "low_0_to_2": 3}
+          rows = sorted(items, key=lambda item: order.get(item.get("coverage_bucket"), 99))
+          return {"rows": [{"coverage_bucket": item.get("coverage_bucket"), "family_count": item.get("family_count"), "average_family_size": item.get("average_family_size")} for item in rows]}
+  - name: unnest_coverage_buckets
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields: [coverage_bucket, family_count, average_family_size]
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations: [filter_pure_titled_ndas, filter_explicit_confidential_definition, extract_title_and_exception_profile, project_title_exception_count, aggregate_title_families, filter_families_at_least_three, assign_coverage_bucket, aggregate_coverage_buckets, order_coverage_buckets, unnest_coverage_buckets]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-089.json

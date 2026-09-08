@@ -1,0 +1,14 @@
+{
+  "task_id": "legal_contracts-064",
+  "answer": [
+    {"document_id": "Non-Disclosure-Agreement-NDA.pdf", "word_count": 683},
+    {"document_id": "2_waycda.pdf", "word_count": 753},
+    {"document_id": "MUTUAL_NDA.pdf", "word_count": 885},
+    {"document_id": "resources-non-disclosure-agreement.pdf", "word_count": 998},
+    {"document_id": "1424657_0001213900-16-016691_f8k082516ex99iii_nextgroup.htm", "word_count": 1022},
+    {"document_id": "1101204_0001085037-00-000208_0015.txt", "word_count": 1084}
+  ],
+  "elapsed_seconds": 6540.59,
+  "cost_usd": 12.381505,
+  "total_tokens": 23432117
+}

@@ -1,0 +1,68 @@
+{
+  "task_id": "finance-012",
+  "answer": [
+    {
+      "industry_sector": "Banking",
+      "ai_ml_filings_2022": 7,
+      "ai_ml_filings_2023": 20,
+      "total_filings_2023": 249
+    },
+    {
+      "industry_sector": "Electric Utilities",
+      "ai_ml_filings_2022": 0,
+      "ai_ml_filings_2023": 12,
+      "total_filings_2023": 50
+    },
+    {
+      "industry_sector": "Asset Management",
+      "ai_ml_filings_2022": 1,
+      "ai_ml_filings_2023": 10,
+      "total_filings_2023": 48
+    },
+    {
+      "industry_sector": "Medical Devices",
+      "ai_ml_filings_2022": 25,
+      "ai_ml_filings_2023": 32,
+      "total_filings_2023": 118
+    },
+    {
+      "industry_sector": "Utilities",
+      "ai_ml_filings_2022": 1,
+      "ai_ml_filings_2023": 8,
+      "total_filings_2023": 81
+    },
+    {
+      "industry_sector": "Financial Services",
+      "ai_ml_filings_2022": 17,
+      "ai_ml_filings_2023": 22,
+      "total_filings_2023": 107
+    },
+    {
+      "industry_sector": "Semiconductors",
+      "ai_ml_filings_2022": 18,
+      "ai_ml_filings_2023": 23,
+      "total_filings_2023": 38
+    },
+    {
+      "industry_sector": "Financial Services (Business Development Company)",
+      "ai_ml_filings_2022": 0,
+      "ai_ml_filings_2023": 4,
+      "total_filings_2023": 42
+    },
+    {
+      "industry_sector": "Property and Casualty Insurance",
+      "ai_ml_filings_2022": 7,
+      "ai_ml_filings_2023": 11,
+      "total_filings_2023": 24
+    },
+    {
+      "industry_sector": "Biotechnology",
+      "ai_ml_filings_2022": 49,
+      "ai_ml_filings_2023": 52,
+      "total_filings_2023": 262
+    }
+  ],
+  "elapsed_seconds": 6728.4,
+  "cost_usd": 66.60515,
+  "total_tokens": 169332261
+}

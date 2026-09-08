@@ -1,0 +1,128 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_ex21_parent_filings
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is an EX-21 subsidiary-list filing that
+      explicitly identifies its parent company.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_ex21_parent_filing: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_parent_and_subsidiaries
+    type: map
+    optimize: true
+    prompt: |
+      Return the explicitly identified parent company, all listed subsidiary
+      entity names, and the number of listed subsidiaries.
+
+      Filing:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        parent_company: string
+        listed_subsidiaries: "list[string]"
+        subsidiary_count: integer
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: drop_ex21_text
+    type: map
+    drop_keys: [contents]
+
+  - name: filter_ex10_employment_agreements
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is an EX-10 employment, offer, or separation
+      agreement.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_ex10_employment_agreement: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: filter_complete_restrictive_durations
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this agreement only if it contains a non-compete clause and an
+      employee or customer non-solicitation clause, with both restrictive
+      durations stated.
+
+      Agreement:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {has_complete_restrictive_durations: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_ex10_company_entities
+    type: map
+    optimize: true
+    prompt: |
+      Return the input document ID and all employer or company entity names
+      stated in this agreement.
+
+      Input document ID: {{ input.doc_id }}
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        ex10_document_id: string
+        ex10_company_entities: "list[string]"
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: drop_ex10_text
+    type: map
+    drop_keys: [contents]
+
+  - name: join_ex21_and_ex10_entities
+    type: equijoin
+    comparison_prompt: |
+      Determine whether at least one EX-10 employer or company entity is either
+      the EX-21 parent company or an entity explicitly named in that EX-21
+      subsidiary list.
+
+      EX-21 parent: {{ left.parent_company }}
+      EX-21 listed subsidiaries: {{ left.listed_subsidiaries }}
+      EX-10 entities: {{ right.ex10_company_entities }}
+    blocking_keys: {left: [parent_company, listed_subsidiaries], right: [ex10_company_entities]}
+    blocking_target_recall: 0.95
+    embedding_model: Qwen3-Embedding-8B
+    comparison_model: Qwen3.5-397B-A17B
+    timeout: 120
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: aggregate_parent_matches
+    type: code_reduce
+    reduce_key: parent_company
+    code: |
+      def transform(items):
+          return {
+              "subsidiary_count": max(int(item.get("subsidiary_count") or 0) for item in items),
+              "qualifying_agreement_count": len({str(item.get("ex10_document_id") or "") for item in items if str(item.get("ex10_document_id") or "")}),
+          }
+pipeline:
+  steps:
+    - name: ex21_records
+      input: contract_exhibits
+      operations: [filter_ex21_parent_filings, extract_parent_and_subsidiaries, drop_ex21_text]
+    - name: ex10_records
+      input: contract_exhibits
+      operations: [filter_ex10_employment_agreements, filter_complete_restrictive_durations, extract_ex10_company_entities, drop_ex10_text]
+    - name: matched_records
+      operations:
+        - join_ex21_and_ex10_entities: {left: ex21_records, right: ex10_records}
+    - name: answer
+      input: matched_records
+      operations: [aggregate_parent_matches]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-091.json

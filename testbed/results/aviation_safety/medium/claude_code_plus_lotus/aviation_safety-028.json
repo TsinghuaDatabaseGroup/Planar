@@ -1,0 +1,16 @@
+{
+  "task_id": "aviation_safety-028",
+  "answer": [
+    {
+      "response_pattern": "followed_automation",
+      "incident_count": 12
+    },
+    {
+      "response_pattern": "overrode_or_disconnected",
+      "incident_count": 56
+    }
+  ],
+  "elapsed_seconds": 209.752,
+  "cost_usd": 0.44908155,
+  "total_tokens": 911966
+}

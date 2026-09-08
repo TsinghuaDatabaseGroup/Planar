@@ -1,0 +1,192 @@
+{
+  "task_id": "legal_contracts-006",
+  "answer": [
+    {
+      "document_id": "1068874_0001068874-07-000012_ex10_2.htm",
+      "governing_law": "Massachusetts",
+      "missing_exceptions": [
+        "prior knowledge",
+        "independent development"
+      ]
+    },
+    {
+      "document_id": "NDA_17.pdf",
+      "governing_law": "New Zealand",
+      "missing_exceptions": [
+        "prior knowledge",
+        "independent development"
+      ]
+    },
+    {
+      "document_id": "NDA_6.pdf",
+      "governing_law": "United States and the State of California",
+      "missing_exceptions": [
+        "independent development",
+        "legal compulsion"
+      ]
+    },
+    {
+      "document_id": "ICTSC-NDA-General-MandA-signed.pdf",
+      "governing_law": "New South Wales, Australia",
+      "missing_exceptions": [
+        "third-party receipt",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "standard_nda.pdf",
+      "governing_law": "India",
+      "missing_exceptions": [
+        "independent development",
+        "third-party receipt"
+      ]
+    },
+    {
+      "document_id": "exhibit1027-jcorsoemployme.htm",
+      "governing_law": "State of Texas",
+      "missing_exceptions": [
+        "prior knowledge",
+        "independent development"
+      ]
+    },
+    {
+      "document_id": "nondisclosure-Engl.pdf",
+      "governing_law": "France",
+      "missing_exceptions": [
+        "independent development",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "1413447_0001193125-16-771498_d295023dex99d5.htm",
+      "governing_law": "New York, USA",
+      "missing_exceptions": [
+        "prior knowledge",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "Non-Disclosure-Secrecy-Agreement.pdf",
+      "governing_law": "New Zealand",
+      "missing_exceptions": [
+        "independent development",
+        "legal compulsion"
+      ]
+    },
+    {
+      "document_id": "CON-NDA-PTL-01-2012-v1%20Non-Disclosure%20Agreement%20and%20Checklist.pdf",
+      "governing_law": "Province of Alberta",
+      "missing_exceptions": [
+        "independent development",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "NDA_and_assgmnt_of_ipMar2011.pdf",
+      "governing_law": "State of California",
+      "missing_exceptions": [
+        "independent development",
+        "legal compulsion"
+      ]
+    },
+    {
+      "document_id": "59b1148ff6952b0001bdbedc_20170907_non%20disclosure%20agreement_expert.pdf",
+      "governing_law": "Denmark",
+      "missing_exceptions": [
+        "prior knowledge",
+        "independent development"
+      ]
+    },
+    {
+      "document_id": "Example-Mutual-Non-Disclosure-Agreement.pdf",
+      "governing_law": "English law",
+      "missing_exceptions": [
+        "independent development",
+        "third-party receipt"
+      ]
+    },
+    {
+      "document_id": "Supplier_Non-Disclosure_Agreement.pdf",
+      "governing_law": "State of Michigan",
+      "missing_exceptions": [
+        "independent development",
+        "legal compulsion"
+      ]
+    },
+    {
+      "document_id": "modelnondisclosureagreement1.pdf",
+      "governing_law": "English Law",
+      "missing_exceptions": [
+        "legal compulsion",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "BO115-07-non-disclosure-agreement.pdf",
+      "governing_law": "Republic of South Africa",
+      "missing_exceptions": [
+        "independent development",
+        "legal compulsion"
+      ]
+    },
+    {
+      "document_id": "118.3-Non-disclosure-agreement.pdf",
+      "governing_law": "English law",
+      "missing_exceptions": [
+        "independent development",
+        "third-party receipt"
+      ]
+    },
+    {
+      "document_id": "1010471_0000950134-97-006281_document_5.txt",
+      "governing_law": "Delaware",
+      "missing_exceptions": [
+        "independent development",
+        "third-party receipt"
+      ]
+    },
+    {
+      "document_id": "714562_0001104659-19-001345_a18-42231_6ex10d8.htm",
+      "governing_law": "Indiana",
+      "missing_exceptions": [
+        "third-party receipt",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "RFP20171008-RFPPublishingNotice.pdf",
+      "governing_law": "Republic of Singapore",
+      "missing_exceptions": [
+        "prior knowledge",
+        "third-party receipt"
+      ]
+    },
+    {
+      "document_id": "1108906_0000889812-00-001212_document_45.txt",
+      "governing_law": "State of Connecticut",
+      "missing_exceptions": [
+        "legal compulsion",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "1178133_0000950131-03-000129_dex1013.txt",
+      "governing_law": "Minnesota",
+      "missing_exceptions": [
+        "prior knowledge",
+        "independent development"
+      ]
+    },
+    {
+      "document_id": "Example-One-Way-Non-Disclosure-Agreement.pdf",
+      "governing_law": "English law",
+      "missing_exceptions": [
+        "independent development",
+        "third-party receipt"
+      ]
+    }
+  ],
+  "elapsed_seconds": 2846.21,
+  "cost_usd": 5.205992,
+  "total_tokens": 9889843
+}

@@ -1,0 +1,73 @@
+{
+  "task_id": "vehicle_safety-042",
+  "answer": [
+    {
+      "campaign_number": "21V846000",
+      "matched_complaint_count": 34,
+      "dominant_adas_topic": "unexpected_braking",
+      "related_report_ids": [
+        "txt_investigation_0dc6b216b5a52248.txt",
+        "txt_investigation_1fac4e5d7de1a68a.txt",
+        "txt_investigation_3e540e709b495d53.txt",
+        "txt_investigation_474a0d5a0b275e80.txt",
+        "txt_investigation_5d9e89bac1b4e3f6.txt",
+        "txt_investigation_62c81aa5a162e7e4.txt",
+        "txt_investigation_6a6b8948bfc09aad.txt",
+        "txt_investigation_6bb46cfa3c2aaa30.txt",
+        "txt_investigation_77da89c8ed63ed47.txt",
+        "txt_investigation_94dab6b93d543ea4.txt",
+        "txt_investigation_b47da6c1e6001de4.txt",
+        "txt_investigation_be32fb0dab65727b.txt",
+        "txt_investigation_c0f486cb981bac22.txt",
+        "txt_investigation_ce73bb5b3231a9da.txt",
+        "txt_investigation_cf5067e3ac47ef78.txt",
+        "txt_investigation_da22923fc5523800.txt",
+        "txt_investigation_ef731290c14111ae.txt",
+        "txt_investigation_f45e16878882572f.txt",
+        "txt_investigation_f471802508be6b75.txt"
+      ]
+    },
+    {
+      "campaign_number": "22V317000",
+      "matched_complaint_count": 12,
+      "dominant_adas_topic": "steering_control",
+      "related_report_ids": [
+        "txt_investigation_0dc6b216b5a52248.txt",
+        "txt_investigation_1fac4e5d7de1a68a.txt",
+        "txt_investigation_3e540e709b495d53.txt",
+        "txt_investigation_474a0d5a0b275e80.txt",
+        "txt_investigation_5d9e89bac1b4e3f6.txt",
+        "txt_investigation_62c81aa5a162e7e4.txt",
+        "txt_investigation_6a6b8948bfc09aad.txt",
+        "txt_investigation_77da89c8ed63ed47.txt",
+        "txt_investigation_b47da6c1e6001de4.txt",
+        "txt_investigation_be32fb0dab65727b.txt",
+        "txt_investigation_c0f486cb981bac22.txt",
+        "txt_investigation_ce73bb5b3231a9da.txt",
+        "txt_investigation_cf5067e3ac47ef78.txt",
+        "txt_investigation_da22923fc5523800.txt",
+        "txt_investigation_ef731290c14111ae.txt",
+        "txt_investigation_f01846f35217de59.txt",
+        "txt_investigation_f471802508be6b75.txt"
+      ]
+    },
+    {
+      "campaign_number": "24V153000",
+      "matched_complaint_count": 4,
+      "dominant_adas_topic": "steering_control",
+      "related_report_ids": [
+        "txt_investigation_0dc6b216b5a52248.txt",
+        "txt_investigation_3e540e709b495d53.txt",
+        "txt_investigation_62c81aa5a162e7e4.txt",
+        "txt_investigation_b47da6c1e6001de4.txt",
+        "txt_investigation_be32fb0dab65727b.txt",
+        "txt_investigation_cf5067e3ac47ef78.txt",
+        "txt_investigation_da22923fc5523800.txt",
+        "txt_investigation_ef731290c14111ae.txt"
+      ]
+    }
+  ],
+  "elapsed_seconds": 357.44,
+  "cost_usd": 0.941546,
+  "total_tokens": 2303523
+}

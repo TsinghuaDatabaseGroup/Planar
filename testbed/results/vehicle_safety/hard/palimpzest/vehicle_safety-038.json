@@ -1,0 +1,29 @@
+{
+  "task_id": "vehicle_safety-038",
+  "answer": [
+    {
+      "campaign_number": "19V576000",
+      "matched_complaint_count": 3,
+      "dominant_complaint_sentiment": "acute_safety_event",
+      "dominant_recall_severity": "severe",
+      "shared_defect_phrase": "back-up camera may not activate"
+    },
+    {
+      "campaign_number": "25V744000",
+      "matched_complaint_count": 1,
+      "dominant_complaint_sentiment": "acute_safety_event",
+      "dominant_recall_severity": "severe",
+      "shared_defect_phrase": "rearview camera fails to display"
+    },
+    {
+      "campaign_number": "26V256000",
+      "matched_complaint_count": 1,
+      "dominant_complaint_sentiment": "acute_safety_event",
+      "dominant_recall_severity": "critical",
+      "shared_defect_phrase": "improperly welded seat brackets"
+    }
+  ],
+  "elapsed_seconds": 159.805,
+  "cost_usd": 0.324054,
+  "total_tokens": 409980
+}

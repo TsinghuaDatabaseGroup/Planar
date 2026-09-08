@@ -1,0 +1,28 @@
+{
+  "task_id": "vehicle_safety-043",
+  "answer": {
+    "FORD": {
+      "recall_campaign_count": 163,
+      "corroborated_complaint_count": 99,
+      "alignment_label": "not_cited"
+    },
+    "JEEP": {
+      "recall_campaign_count": 107,
+      "corroborated_complaint_count": 130,
+      "alignment_label": "not_cited"
+    },
+    "HONDA": {
+      "recall_campaign_count": 31,
+      "corroborated_complaint_count": 71,
+      "alignment_label": "not_cited"
+    },
+    "TESLA": {
+      "recall_campaign_count": 33,
+      "corroborated_complaint_count": 21,
+      "alignment_label": "not_cited"
+    }
+  },
+  "elapsed_seconds": 450.311,
+  "cost_usd": 1.68194016,
+  "total_tokens": 2968061
+}

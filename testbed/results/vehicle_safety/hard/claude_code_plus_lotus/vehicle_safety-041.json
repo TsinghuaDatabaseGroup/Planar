@@ -1,0 +1,19 @@
+{
+  "task_id": "vehicle_safety-041",
+  "answer": [
+    {
+      "campaign_number": "23V838000",
+      "matched_complaint_count": 2,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_3e540e709b495d53.txt",
+        "investigation_reports/txt_investigation_5d9e89bac1b4e3f6.txt",
+        "investigation_reports/txt_investigation_cf5067e3ac47ef78.txt"
+      ],
+      "dominant_defect_mechanism": "Autopilot failed to detect barrier",
+      "odi_risk_summary": "The ODI identified a safety risk where the prominence and scope of Tesla's Autosteer controls are insufficient to prevent driver misuse, leading to a failure mode in which drivers do not maintain adequate supervision of the SAE Level 2 system. This lack of enforced driver engagement has resulted in crashes involving frontal collisions with adequate reaction time and roadway departures due to inadvertent disengagement or low traction conditions. The population at risk includes owners of 2012–2023 Model S, 2016–2023 Model X, 2017–2023 Model 3, and 2020–2023 Model Y vehicles equipped with affected versions of Autosteer."
+    }
+  ],
+  "elapsed_seconds": 543.112,
+  "cost_usd": 1.45745433,
+  "total_tokens": 796935
+}

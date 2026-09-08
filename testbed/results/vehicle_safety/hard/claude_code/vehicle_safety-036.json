@@ -1,0 +1,43 @@
+{
+  "task_id": "vehicle_safety-036",
+  "answer": [
+    {
+      "campaign_number": "17V398000",
+      "matched_complaint_count": 36,
+      "severe_indicator_rate": 0.7778,
+      "dominant_complaint_severity": "severe_safety_event",
+      "dominant_recall_remedy_style": "part_replacement"
+    },
+    {
+      "campaign_number": "22V684000",
+      "matched_complaint_count": 34,
+      "severe_indicator_rate": 0.7353,
+      "dominant_complaint_severity": "severe_safety_event",
+      "dominant_recall_remedy_style": "part_replacement"
+    },
+    {
+      "campaign_number": "14V597000",
+      "matched_complaint_count": 25,
+      "severe_indicator_rate": 0.84,
+      "dominant_complaint_severity": "severe_safety_event",
+      "dominant_recall_remedy_style": "part_replacement"
+    },
+    {
+      "campaign_number": "21V805000",
+      "matched_complaint_count": 19,
+      "severe_indicator_rate": 0.7368,
+      "dominant_complaint_severity": "severe_safety_event",
+      "dominant_recall_remedy_style": "part_replacement"
+    },
+    {
+      "campaign_number": "23V072000",
+      "matched_complaint_count": 16,
+      "severe_indicator_rate": 0.8125,
+      "dominant_complaint_severity": "severe_safety_event",
+      "dominant_recall_remedy_style": "part_replacement"
+    }
+  ],
+  "elapsed_seconds": 1144.524,
+  "cost_usd": 0.88531038,
+  "total_tokens": 2056048
+}

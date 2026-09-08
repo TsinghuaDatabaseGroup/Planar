@@ -1,0 +1,1138 @@
+{
+  "task_id": "vehicle_safety-046",
+  "status": "failed",
+  "selected_plan_persisted_before_execution": false,
+  "source": "queries/queries.json reference_semantic_plan",
+  "input_plan": {
+    "task_id": "vehicle_safety-046",
+    "query": "For Chrysler airbag recall campaigns whose summaries describe the same defect as complaint narratives and whose matched defects are also discussed in investigation reports as the same airbag risk, what matched complaint count, dominant airbag failure mode, dominant remedy style in {software_update, part_replacement, other}, related investigation report IDs, and short ODI evidence summary correspond to each campaign number?",
+    "inputs": [
+      {
+        "source_id": "complaints_csv",
+        "dataset": "NHTSA Vehicle Safety",
+        "source_type": "table",
+        "role": "primary"
+      },
+      {
+        "source_id": "recalls_jsonl",
+        "dataset": "NHTSA Vehicle Safety",
+        "source_type": "document",
+        "role": "primary"
+      },
+      {
+        "source_id": "investigation_reports_txt",
+        "dataset": "NHTSA Vehicle Safety",
+        "source_type": "document",
+        "role": "primary"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [complaint_id, make, component_id, summary_text]) -> FILTER(make='CHRYSLER' AND component_id='AIRBAG') -> SEM_JOIN('Within Chrysler AIRBAG records, match a complaint to a recall only when the complaint narrative and recall defect summary describe the same airbag defect.', input_bindings_left={complaint_summary: summary_text, component_id: component_id}, input_bindings_right={recall_defect: r.risk.defect_summary, component_id: r.component_id}, right=( SCAN_DOCS(NHTSA, recalls AS r, [campaign.number, vehicle.make AS make, component.component_id AS component_id, risk.defect_summary, risk.consequence_summary, remedy.corrective_action]) -> FILTER(vehicle.make='CHRYSLER' AND component.component_id='AIRBAG') )) -> SEM_FILTER('the matched evidence describes an airbag safety risk such as non-deployment, unintended deployment, inflator rupture, or occupant injury risk', input_bindings={complaint_text: summary_text, recall_text: r.risk.defect_summary, consequence: r.risk.consequence_summary}) -> SEM_CLASSIFY('Assign the dominant airbag failure mode.', target_labels=['non_deployment','unintended_deployment','inflator_rupture','warning_or_sensor_fault','other'], input_bindings={text: summary_text}) -> SEM_JOIN('Match the Chrysler airbag issue to an investigation report only when the report discusses the same airbag risk or ODI evidence.', input_bindings_left={failure_mode: group, complaint_text: summary_text, recall_text: r.risk.defect_summary}, input_bindings_right={report_body: body}, right=( SCAN_DOCS(NHTSA, investigation_reports, selector='*.txt', columns=[file_id, body]) -> FILTER(body CONTAINS 'Chrysler' OR body CONTAINS 'airbag' OR body CONTAINS 'inflator') )) -> GROUP_BY([r.campaign.number], aggs={matched_complaint_count: count_distinct(complaint_id), dominant_airbag_failure_mode: mode_with_tiebreak(group, tiebreak='alpha_asc'), corrective_actions: collect_distinct(r.remedy.corrective_action), related_report_ids: collect_distinct_sorted(file_id, 'asc'), report_bodies: collect_distinct(body)}) -> SEM_AGGREGATE('Assign dominant_remedy_style from software_update, part_replacement, other and summarize ODI evidence in one short phrase.', out_schema={dominant_remedy_style: string, odi_evidence_summary: string}, group_by=[r.campaign.number], input_bindings={remedies: corrective_actions, reports: report_bodies}) -> PROJECT([campaign_number: r.campaign.number, matched_complaint_count, dominant_airbag_failure_mode, dominant_remedy_style, related_report_ids, odi_evidence_summary])"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "campaign_number",
+        "matched_complaint_count",
+        "dominant_airbag_failure_mode",
+        "dominant_remedy_style",
+        "related_report_ids",
+        "odi_evidence_summary"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "string",
+        "string",
+        "list[string]",
+        "string"
+      ]
+    }
+  },
+  "input_palimpzest_logical_plan": {
+    "root_dataset_id": "7fe381df2d",
+    "nodes": [
+      {
+        "dataset_id": "vehicle_safety-046-complaints-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "d6dd4d55e4",
+        "unique_logical_op_id": "0-d6dd4d55e4",
+        "depends_on": [],
+        "generated_fields": [
+          "complaint_id",
+          "component_id",
+          "summary_text"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "complaint_id",
+          "component_id",
+          "summary_text"
+        ]
+      },
+      {
+        "dataset_id": "vehicle_safety-046-recalls-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "0bd52cd22a",
+        "unique_logical_op_id": "1-0bd52cd22a",
+        "depends_on": [],
+        "generated_fields": [
+          "campaign_number",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_corrective_action",
+          "recall_defect_summary"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "campaign_number",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_corrective_action",
+          "recall_defect_summary"
+        ]
+      },
+      {
+        "dataset_id": "bf69f148ec",
+        "source_dataset_ids": [
+          "vehicle_safety-046-complaints-semantic-input",
+          "vehicle_safety-046-recalls-semantic-input"
+        ],
+        "logical_operator": "JoinOp",
+        "logical_op_id": "e463db9ebb",
+        "unique_logical_op_id": "2-e463db9ebb",
+        "depends_on": [
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "recall_component_id",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_corrective_action",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_corrective_action",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "condition": "Within Chrysler AIRBAG records, match a complaint to a recall only when component_id equals recall_component_id and the complaint narrative and recall defect summary describe the same airbag defect.",
+        "how": "inner"
+      },
+      {
+        "dataset_id": "e3d1698c36",
+        "source_dataset_ids": [
+          "bf69f148ec"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "d085a41cd5",
+        "unique_logical_op_id": "3-d085a41cd5",
+        "depends_on": [
+          "recall_consequence_summary",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_corrective_action",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_corrective_action",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "filter": "Keep this pair only if the matched evidence describes an airbag safety risk such as non-deployment, unintended deployment, inflator rupture, or occupant injury risk."
+      },
+      {
+        "dataset_id": "8ec2601996",
+        "source_dataset_ids": [
+          "e3d1698c36"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "2e3f6b52b5",
+        "unique_logical_op_id": "4-2e3f6b52b5",
+        "depends_on": [
+          "summary_text"
+        ],
+        "generated_fields": [
+          "airbag_failure_mode"
+        ],
+        "input_fields": [
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_corrective_action",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "output_fields": [
+          "airbag_failure_mode",
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_corrective_action",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "desc": "Assign the dominant airbag failure mode.",
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "1132e5565e",
+        "source_dataset_ids": [
+          "8ec2601996"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "2b9f89df0f",
+        "unique_logical_op_id": "5-2b9f89df0f",
+        "depends_on": [
+          "airbag_failure_mode"
+        ],
+        "generated_fields": [
+          "normalized_airbag_failure_mode"
+        ],
+        "input_fields": [
+          "airbag_failure_mode",
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_corrective_action",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "output_fields": [
+          "airbag_failure_mode",
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "normalized_airbag_failure_mode",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_corrective_action",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "4d06712158",
+        "source_dataset_ids": [
+          "1132e5565e"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "2c369eada3",
+        "unique_logical_op_id": "6-2c369eada3",
+        "depends_on": [
+          "normalized_airbag_failure_mode"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "airbag_failure_mode",
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "normalized_airbag_failure_mode",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_corrective_action",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "output_fields": [
+          "airbag_failure_mode",
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "normalized_airbag_failure_mode",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_corrective_action",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "filter": "valid_failure_mode"
+      },
+      {
+        "dataset_id": "vehicle_safety-046-reports-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "c53128d66b",
+        "unique_logical_op_id": "7-c53128d66b",
+        "depends_on": [],
+        "generated_fields": [
+          "body",
+          "file_id"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "body",
+          "file_id"
+        ]
+      },
+      {
+        "dataset_id": "65e146e57f",
+        "source_dataset_ids": [
+          "4d06712158",
+          "vehicle_safety-046-reports-semantic-input"
+        ],
+        "logical_operator": "JoinOp",
+        "logical_op_id": "23c142e69c",
+        "unique_logical_op_id": "8-23c142e69c",
+        "depends_on": [
+          "body",
+          "file_id",
+          "normalized_airbag_failure_mode",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "airbag_failure_mode",
+          "body",
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "file_id",
+          "normalized_airbag_failure_mode",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_corrective_action",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "output_fields": [
+          "airbag_failure_mode",
+          "body",
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "file_id",
+          "normalized_airbag_failure_mode",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_corrective_action",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "condition": "Match the Chrysler airbag issue to an investigation report only when the report discusses the same airbag risk or ODI evidence.",
+        "how": "inner"
+      },
+      {
+        "dataset_id": "28d439f1da",
+        "source_dataset_ids": [
+          "65e146e57f"
+        ],
+        "logical_operator": "GroupByAggregate",
+        "logical_op_id": "67dad1e433",
+        "unique_logical_op_id": "9-67dad1e433",
+        "depends_on": [],
+        "generated_fields": [
+          "list(body)",
+          "list(complaint_id)",
+          "list(file_id)",
+          "list(normalized_airbag_failure_mode)",
+          "list(recall_corrective_action)"
+        ],
+        "input_fields": [
+          "airbag_failure_mode",
+          "body",
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "file_id",
+          "normalized_airbag_failure_mode",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_corrective_action",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "list(body)",
+          "list(complaint_id)",
+          "list(file_id)",
+          "list(normalized_airbag_failure_mode)",
+          "list(recall_corrective_action)"
+        ],
+        "group_by": "GroupBy({'group_by_fields': ['campaign_number'], 'agg_funcs': ['list', 'list', 'list', 'list', 'list'], 'agg_fields': ['complaint_id', 'normalized_airbag_failure_mode', 'recall_corrective_action', 'file_id', 'body']})"
+      },
+      {
+        "dataset_id": "8b47bbc045",
+        "source_dataset_ids": [
+          "28d439f1da"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "acfa58be74",
+        "unique_logical_op_id": "10-acfa58be74",
+        "depends_on": [
+          "campaign_number",
+          "list(body)",
+          "list(recall_corrective_action)"
+        ],
+        "generated_fields": [
+          "dominant_remedy_style",
+          "odi_evidence_summary"
+        ],
+        "input_fields": [
+          "campaign_number",
+          "list(body)",
+          "list(complaint_id)",
+          "list(file_id)",
+          "list(normalized_airbag_failure_mode)",
+          "list(recall_corrective_action)"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "dominant_remedy_style",
+          "list(body)",
+          "list(complaint_id)",
+          "list(file_id)",
+          "list(normalized_airbag_failure_mode)",
+          "list(recall_corrective_action)",
+          "odi_evidence_summary"
+        ],
+        "desc": "Assign the dominant remedy style from the collected corrective actions and summarize the related ODI evidence in one short phrase.",
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "3c8d6f9bba",
+        "source_dataset_ids": [
+          "8b47bbc045"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "73d2780f34",
+        "unique_logical_op_id": "11-73d2780f34",
+        "depends_on": [
+          "dominant_remedy_style"
+        ],
+        "generated_fields": [
+          "normalized_remedy_style"
+        ],
+        "input_fields": [
+          "campaign_number",
+          "dominant_remedy_style",
+          "list(body)",
+          "list(complaint_id)",
+          "list(file_id)",
+          "list(normalized_airbag_failure_mode)",
+          "list(recall_corrective_action)",
+          "odi_evidence_summary"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "dominant_remedy_style",
+          "list(body)",
+          "list(complaint_id)",
+          "list(file_id)",
+          "list(normalized_airbag_failure_mode)",
+          "list(recall_corrective_action)",
+          "normalized_remedy_style",
+          "odi_evidence_summary"
+        ],
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "7fe381df2d",
+        "source_dataset_ids": [
+          "3c8d6f9bba"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "23b2e50969",
+        "unique_logical_op_id": "12-23b2e50969",
+        "depends_on": [
+          "normalized_remedy_style"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "campaign_number",
+          "dominant_remedy_style",
+          "list(body)",
+          "list(complaint_id)",
+          "list(file_id)",
+          "list(normalized_airbag_failure_mode)",
+          "list(recall_corrective_action)",
+          "normalized_remedy_style",
+          "odi_evidence_summary"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "dominant_remedy_style",
+          "list(body)",
+          "list(complaint_id)",
+          "list(file_id)",
+          "list(normalized_airbag_failure_mode)",
+          "list(recall_corrective_action)",
+          "normalized_remedy_style",
+          "odi_evidence_summary"
+        ],
+        "filter": "valid_remedy_style"
+      }
+    ],
+    "topological_logical_sequence": [
+      "0-d6dd4d55e4",
+      "1-0bd52cd22a",
+      "2-e463db9ebb",
+      "3-d085a41cd5",
+      "4-2e3f6b52b5",
+      "5-2b9f89df0f",
+      "6-2c369eada3",
+      "7-c53128d66b",
+      "8-23c142e69c",
+      "9-67dad1e433",
+      "10-acfa58be74",
+      "11-73d2780f34",
+      "12-23b2e50969"
+    ]
+  },
+  "optimizer": {
+    "strategy": "pareto",
+    "policy": "MaxQuality",
+    "physical_implementation_candidates": {
+      "allow_bonded_query": true,
+      "allow_model_selection": false,
+      "allow_rag_reduction": false,
+      "allow_mixtures": true,
+      "allow_critic": true,
+      "allow_split_merge": false,
+      "force_rag": false,
+      "execution_strategy": "parallel",
+      "max_workers": 64,
+      "join_parallelism": 64
+    },
+    "dynamic_learning_requested": true,
+    "dynamic_learning_pipeline_supported": true,
+    "dynamic_learning": true,
+    "dynamic_learning_support": {
+      "supported": false,
+      "reason": "Palimpzest Sentinel/MAB does not preserve source indices after non-final aggregate or limit operators",
+      "terminal_only_operator_violations": [
+        {
+          "dataset_id": "28d439f1da",
+          "unique_logical_op_id": "9-67dad1e433",
+          "logical_operator": "GroupByAggregate",
+          "direct_downstream": [
+            {
+              "dataset_id": "8b47bbc045",
+              "unique_logical_op_id": "10-acfa58be74",
+              "logical_operator": "ConvertScan"
+            }
+          ]
+        }
+      ]
+    },
+    "allow_unsupported_sentinel_plans": true,
+    "dynamic_learning_fallback": null,
+    "sentinel_execution_strategy": "mab",
+    "sentinel_k": 6,
+    "sentinel_j": 4,
+    "sentinel_sample_budget": 100,
+    "sentinel_seed": 42,
+    "available_models": [
+      "Qwen3.5-397B-A17B",
+      "openai/Qwen3-Embedding-8B"
+    ]
+  },
+  "sentinel_join_sampling": [
+    {
+      "unique_logical_op_id": "2-e463db9ebb",
+      "frontier_representative_operator_class": "NestedLoopsJoin",
+      "root_dataset_count": 2,
+      "left_available_source_indices": 67,
+      "right_available_source_indices": 18,
+      "theoretical_combination_count": 1206,
+      "available_combination_count": 1206,
+      "sample_limit": 100,
+      "sampled_combination_count": 100,
+      "sampling_method": "seeded_uniform_without_replacement_flat_indices",
+      "seed": 42
+    },
+    {
+      "unique_logical_op_id": "8-23c142e69c",
+      "frontier_representative_operator_class": "NestedLoopsJoin",
+      "root_dataset_count": 3,
+      "left_available_source_indices": 100,
+      "right_available_source_indices": 51,
+      "theoretical_combination_count": 61506,
+      "available_combination_count": 5100,
+      "sample_limit": 100,
+      "sampled_combination_count": 100,
+      "sampling_method": "seeded_uniform_without_replacement_flat_indices",
+      "seed": 42
+    }
+  ],
+  "sentinel_sampling_exhaustion": null,
+  "failure_type": "AssertionError",
+  "failure_message": "Non-join operator must have zero or one input groups.",
+  "partial_optimization_metrics": {
+    "elapsed_seconds": 192.00025439,
+    "sentinel_sampling_seconds": 191.78089595,
+    "optimizer_search_and_bookkeeping_seconds": 0.21935844,
+    "cost_usd": 0.34632278,
+    "text_llm_calls": 427,
+    "embedding_calls": 0,
+    "input_text_tokens": 348631,
+    "output_text_tokens": 89774,
+    "total_text_tokens": 438405,
+    "embedding_input_tokens": 0,
+    "cache_read_tokens": 0,
+    "cache_creation_tokens": 0,
+    "sampled_operators": {
+      "text_llm_calls": 328,
+      "embedding_calls": 0,
+      "input_text_tokens": 251801,
+      "output_text_tokens": 57797,
+      "embedding_input_tokens": 0,
+      "cost_usd": 0.2337329
+    },
+    "validator": {
+      "text_llm_calls": 99,
+      "input_text_tokens": 96830,
+      "output_text_tokens": 31977,
+      "total_text_tokens": 128807,
+      "cost_usd": 0.11258988
+    },
+    "model_usage_by_model": {
+      "Qwen3.5-397B-A17B": {
+        "roles": [
+          "text",
+          "validator"
+        ],
+        "calls": 427,
+        "input_tokens": 348631,
+        "output_tokens": 89774,
+        "total_tokens": 438405,
+        "cost_usd": 0.34632278
+      }
+    }
+  },
+  "partial_sentinel": {
+    "plan_id": "069d66837f",
+    "plan_string": "0. Schema['campaign_number', 'dominant_remedy_style', 'list(body)', 'list(complaint_id)', 'list(file_id)', 'list(normalized_airbag_failure_mode)', 'list(recall_corrective_action)', 'normalized_remedy_style', 'odi_evidence_summary'] -> NonLLMFilter -> Schema['campaign_number', 'dominant_remedy_style', 'list(body)', 'list(complaint_id)', 'list(file_id)', 'list(normalized_airbag_failure_mode)', 'list(recall_corrective_action)', 'normalized_remedy_style', 'odi_evidence_summary']\n    (campaign_number, dominant_reme) -> (campaign_number, dominant_reme)\n    Filter: valid_remedy_style\n\n  1. Schema['campaign_number', 'dominant_remedy_style', 'list(body)', 'list(complaint_id)', 'list(file_id)', 'list(normalized_airbag_failure_mode)', 'list(recall_corrective_action)', 'odi_evidence_summary'] -> NonLLMConvert -> Schema['campaign_number', 'dominant_remedy_style', 'list(body)', 'list(complaint_id)', 'list(file_id)', 'list(normalized_airbag_failure_mode)', 'list(recall_corrective_action)', 'normalized_remedy_style', 'odi_evidence_summary']\n    (campaign_number, dominant_reme) -> (campaign_number, dominant_reme)\n    UDF: normalize_remedy_style\n\n    2.1 - 5. Schema['campaign_number', 'list(body)', 'list(complaint_id)', 'list(file_id)', 'list(normalized_airbag_failure_mode)', 'list(recall_corrective_action)'] -> MixtureOfAgentsConvert -> Schema['campaign_number', 'dominant_remedy_style', 'list(body)', 'list(complaint_id)', 'list(file_id)', 'list(normalized_airbag_failure_mode)', 'list(recall_corrective_action)', 'odi_evidence_summary']\n    (campaign_number, list(body), l) -> (campaign_number, dominant_reme)\n    Prompt Strategy: None\n    Reasoning Effort: default\n    Proposer Models: [Qwen3.5-397B-A17B]\n    Temperatures: [0.8]\n    Aggregator Model: Qwen3.5-397B-A17B\n\n      3. Schema['airbag_failure_mode', 'body', 'campaign_number', 'complaint_id', 'component_id', 'file_id', 'normalized_airbag_failure_mode', 'recall_component_id', 'recall_consequence_summary', 'recall_corrective_action', 'recall_defect_summary', 'summary_text'] -> ApplyGroupByOp -> Schema['campaign_number', 'list(body)', 'list(complaint_id)', 'list(file_id)', 'list(normalized_airbag_failure_mode)', 'list(recall_corrective_action)']\n    (airbag_failure_mode, body, cam) -> (campaign_number, list(body), l)\n    Group-by Signature: GroupBy({'group_by_fields': ['campaign_number'], 'agg_funcs': ['list', 'list', 'list', 'list', 'list'], 'agg_fields': ['complaint_id', 'normalized_airbag_failure_mode', 'recall_corrective_action', 'file_id', 'body']})\n\n        4.1 - 2. Schema['airbag_failure_mode', 'body', 'campaign_number', 'complaint_id', 'component_id', 'file_id', 'normalized_airbag_failure_mode', 'recall_component_id', 'recall_consequence_summary', 'recall_corrective_action', 'recall_defect_summary', 'summary_text'] -> NestedLoopsJoin -> Schema['airbag_failure_mode', 'body', 'campaign_number', 'complaint_id', 'component_id', 'file_id', 'normalized_airbag_failure_mode', 'recall_component_id', 'recall_consequence_summary', 'recall_corrective_action', 'recall_defect_summary', 'summary_text']\n    (airbag_failure_mode, body, cam) -> (airbag_failure_mode, body, cam)\n    Model: Qwen3.5-397B-A17B\n    Condition: Match the Chrysler airbag issue to an investigation report only when the report discusses the same airbag risk or ODI evidence.\n    How: inner\n    On: None\n    Model: Qwen3.5-397B-A17B\n    Reasoning Effort: default\n    Prompt Strategy: join\n\n          5. Schema['airbag_failure_mode', 'campaign_number', 'complaint_id', 'component_id', 'normalized_airbag_failure_mode', 'recall_component_id', 'recall_consequence_summary', 'recall_corrective_action', 'recall_defect_summary', 'summary_text'] -> NonLLMFilter -> Schema['airbag_failure_mode', 'campaign_number', 'complaint_id', 'component_id', 'normalized_airbag_failure_mode', 'recall_component_id', 'recall_consequence_summary', 'recall_corrective_action', 'recall_defect_summary', 'summary_text']\n    (airbag_failure_mode, campaign_) -> (airbag_failure_mode, campaign_)\n    Filter: valid_failure_mode\n\n            6. Schema['airbag_failure_mode', 'campaign_number', 'complaint_id', 'component_id', 'recall_component_id', 'recall_consequence_summary', 'recall_corrective_action', 'recall_defect_summary', 'summary_text'] -> NonLLMConvert -> Schema['airbag_failure_mode', 'campaign_number', 'complaint_id', 'component_id', 'normalized_airbag_failure_mode', 'recall_component_id', 'recall_consequence_summary', 'recall_corrective_action', 'recall_defect_summary', 'summary_text']\n    (airbag_failure_mode, campaign_) -> (airbag_failure_mode, campaign_)\n    UDF: normalize_failure_mode\n\n              7.1 - 5. Schema['campaign_number', 'complaint_id', 'component_id', 'recall_component_id', 'recall_consequence_summary', 'recall_corrective_action', 'recall_defect_summary', 'summary_text'] -> MixtureOfAgentsConvert -> Schema['airbag_failure_mode', 'campaign_number', 'complaint_id', 'component_id', 'recall_component_id', 'recall_consequence_summary', 'recall_corrective_action', 'recall_defect_summary', 'summary_text']\n    (campaign_number, complaint_id,) -> (airbag_failure_mode, campaign_)\n    Prompt Strategy: None\n    Reasoning Effort: default\n    Proposer Models: [Qwen3.5-397B-A17B]\n    Temperatures: [0.4]\n    Aggregator Model: Qwen3.5-397B-A17B\n\n                8.1 - 5. Schema['campaign_number', 'complaint_id', 'component_id', 'recall_component_id', 'recall_consequence_summary', 'recall_corrective_action', 'recall_defect_summary', 'summary_text'] -> MixtureOfAgentsFilter -> Schema['campaign_number', 'complaint_id', 'component_id', 'recall_component_id', 'recall_consequence_summary', 'recall_corrective_action', 'recall_defect_summary', 'summary_text']\n    (campaign_number, complaint_id,) -> (campaign_number, complaint_id,)\n    Filter: Keep this pair only if the matched evidence describes an airbag safety risk such as non-deployment, unintended deployment, inflator rupture, or occupant injury risk.\n    Proposer Models: [Qwen3.5-397B-A17B]\n    Temperatures: [0.0]\n    Aggregator Model: Qwen3.5-397B-A17B\n\n                  9.1 - 2. Schema['campaign_number', 'complaint_id', 'component_id', 'recall_component_id', 'recall_consequence_summary', 'recall_corrective_action', 'recall_defect_summary', 'summary_text'] -> NestedLoopsJoin -> Schema['campaign_number', 'complaint_id', 'component_id', 'recall_component_id', 'recall_consequence_summary', 'recall_corrective_action', 'recall_defect_summary', 'summary_text']\n    (campaign_number, complaint_id,) -> (campaign_number, complaint_id,)\n    Model: Qwen3.5-397B-A17B\n    Condition: Within Chrysler AIRBAG records, match a complaint to a recall only when component_id equals recall_component_id and the complaint narrative and recall defect summary describe the same airbag defect.\n    How: inner\n    On: None\n    Model: Qwen3.5-397B-A17B\n    Reasoning Effort: default\n    Prompt Strategy: join\n\n                    10. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['complaint_id', 'component_id', 'summary_text']'>, id=vehicle_safety-046-complaints-semantic-input, op_id=d6dd4d55e4)) -> <class 'palimpzest.core.lib.schemas.Schema['complaint_id', 'component_id', 'summary_text']'>\n    (complaint_id, component_id, su)\n\n                    10. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['campaign_number', 'recall_component_id', 'recall_consequence_summary', 'recall_corrective_action', 'recall_defect_summary']'>, id=vehicle_safety-046-recalls-semantic-input, op_id=0bd52cd22a)) -> <class 'palimpzest.core.lib.schemas.Schema['campaign_number', 'recall_component_id', 'recall_consequence_summary', 'recall_corrective_action', 'recall_defect_summary']'>\n    (campaign_number, recall_compon)\n\n          5. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['body', 'file_id']'>, id=vehicle_safety-046-reports-semantic-input, op_id=c53128d66b)) -> <class 'palimpzest.core.lib.schemas.Schema['body', 'file_id']'>\n    (file_id, body)\n\n",
+    "operators": [
+      {
+        "physical_operator": "MarshalAndScanDataOp",
+        "full_op_id": "d6dd4d55e4-bb56e1e3dd",
+        "input_cardinality_observed": 0,
+        "output_cardinality_observed": 42,
+        "record_stats_count": 42,
+        "quality_scores_observed": 42,
+        "quality_scores_missing": 0,
+        "llm_calls": 0,
+        "text_llm_calls": 0,
+        "embedding_calls": 0,
+        "input_text_tokens": 0,
+        "output_text_tokens": 0,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.0,
+        "elapsed_seconds": 0.00243807,
+        "operator_details": {
+          "datasource_id": "vehicle_safety-046-complaints-semantic-input"
+        }
+      },
+      {
+        "physical_operator": "MarshalAndScanDataOp",
+        "full_op_id": "0bd52cd22a-cf56a41259",
+        "input_cardinality_observed": 0,
+        "output_cardinality_observed": 18,
+        "record_stats_count": 18,
+        "quality_scores_observed": 18,
+        "quality_scores_missing": 0,
+        "llm_calls": 0,
+        "text_llm_calls": 0,
+        "embedding_calls": 0,
+        "input_text_tokens": 0,
+        "output_text_tokens": 0,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.0,
+        "elapsed_seconds": 0.00120568,
+        "operator_details": {
+          "datasource_id": "vehicle_safety-046-recalls-semantic-input"
+        }
+      },
+      {
+        "physical_operator": "NestedLoopsJoin",
+        "full_op_id": "e463db9ebb-4a8e7eddaf",
+        "input_cardinality_observed": 57,
+        "output_cardinality_observed": 11,
+        "record_stats_count": 57,
+        "quality_scores_observed": 57,
+        "quality_scores_missing": 0,
+        "llm_calls": 57,
+        "text_llm_calls": 57,
+        "embedding_calls": 0,
+        "input_text_tokens": 52776,
+        "output_text_tokens": 21644,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.0712296,
+        "elapsed_seconds": 742.1331284,
+        "operator_details": {
+          "model": "Qwen3.5-397B-A17B",
+          "prompt_strategy": "join",
+          "reasoning_effort": "default",
+          "condition": "Within Chrysler AIRBAG records, match a complaint to a recall only when component_id equals recall_component_id and the complaint narrative and recall defect summary describe the same airbag defect.",
+          "join_parallelism": "64",
+          "desc": "None",
+          "how": "inner",
+          "on": "None"
+        }
+      },
+      {
+        "physical_operator": "EmbeddingJoin",
+        "full_op_id": "e463db9ebb-e9c4eff853",
+        "input_cardinality_observed": 57,
+        "output_cardinality_observed": 21,
+        "record_stats_count": 57,
+        "quality_scores_observed": 57,
+        "quality_scores_missing": 0,
+        "llm_calls": 10,
+        "text_llm_calls": 10,
+        "embedding_calls": 0,
+        "input_text_tokens": 9628,
+        "output_text_tokens": 3557,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.01225474,
+        "elapsed_seconds": 53.67534852,
+        "operator_details": {
+          "embedding_model": "openai/Qwen3-Embedding-8B",
+          "num_samples": "10",
+          "model": "Qwen3.5-397B-A17B",
+          "prompt_strategy": "join",
+          "reasoning_effort": "default",
+          "condition": "Within Chrysler AIRBAG records, match a complaint to a recall only when component_id equals recall_component_id and the complaint narrative and recall defect summary describe the same airbag defect.",
+          "join_parallelism": "64",
+          "desc": "None",
+          "how": "inner",
+          "on": "None"
+        }
+      },
+      {
+        "physical_operator": "MixtureOfAgentsFilter",
+        "full_op_id": "d085a41cd5-0b02974859",
+        "input_cardinality_observed": 12,
+        "output_cardinality_observed": 12,
+        "record_stats_count": 12,
+        "quality_scores_observed": 12,
+        "quality_scores_missing": 0,
+        "llm_calls": 24,
+        "text_llm_calls": 24,
+        "embedding_calls": 0,
+        "input_text_tokens": 19513,
+        "output_text_tokens": 3745,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.01637337,
+        "elapsed_seconds": 184.68552661,
+        "operator_details": {
+          "proposer_models": "['Qwen3.5-397B-A17B']",
+          "temperatures": "[0.0]",
+          "aggregator_model": "Qwen3.5-397B-A17B",
+          "model": "None",
+          "prompt_strategy": "None",
+          "reasoning_effort": "default",
+          "filter": "Keep this pair only if the matched evidence describes an airbag safety risk such as non-deployment, unintended deployment, inflator rupture, or occupant injury risk.",
+          "desc": "None"
+        }
+      },
+      {
+        "physical_operator": "LLMFilter",
+        "full_op_id": "d085a41cd5-d2d2c85492",
+        "input_cardinality_observed": 12,
+        "output_cardinality_observed": 12,
+        "record_stats_count": 12,
+        "quality_scores_observed": 12,
+        "quality_scores_missing": 0,
+        "llm_calls": 12,
+        "text_llm_calls": 12,
+        "embedding_calls": 0,
+        "input_text_tokens": 9142,
+        "output_text_tokens": 1651,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.00742872,
+        "elapsed_seconds": 170.60117197,
+        "operator_details": {
+          "model": "Qwen3.5-397B-A17B",
+          "prompt_strategy": "filter",
+          "reasoning_effort": "default",
+          "filter": "Keep this pair only if the matched evidence describes an airbag safety risk such as non-deployment, unintended deployment, inflator rupture, or occupant injury risk.",
+          "desc": "None"
+        }
+      },
+      {
+        "physical_operator": "CritiqueAndRefineFilter",
+        "full_op_id": "d085a41cd5-d95dce9e6f",
+        "input_cardinality_observed": 12,
+        "output_cardinality_observed": 0,
+        "record_stats_count": 12,
+        "quality_scores_observed": 12,
+        "quality_scores_missing": 0,
+        "llm_calls": 36,
+        "text_llm_calls": 36,
+        "embedding_calls": 0,
+        "input_text_tokens": 9142,
+        "output_text_tokens": 1624,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.00736554,
+        "elapsed_seconds": 230.59533882,
+        "operator_details": {
+          "critic_model": "Qwen3.5-397B-A17B",
+          "refine_model": "Qwen3.5-397B-A17B",
+          "model": "Qwen3.5-397B-A17B",
+          "prompt_strategy": "filter",
+          "reasoning_effort": "default",
+          "filter": "Keep this pair only if the matched evidence describes an airbag safety risk such as non-deployment, unintended deployment, inflator rupture, or occupant injury risk.",
+          "desc": "None"
+        }
+      },
+      {
+        "physical_operator": "MixtureOfAgentsFilter",
+        "full_op_id": "d085a41cd5-e39e90ce45",
+        "input_cardinality_observed": 12,
+        "output_cardinality_observed": 12,
+        "record_stats_count": 12,
+        "quality_scores_observed": 12,
+        "quality_scores_missing": 0,
+        "llm_calls": 24,
+        "text_llm_calls": 24,
+        "embedding_calls": 0,
+        "input_text_tokens": 19521,
+        "output_text_tokens": 3737,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.01635777,
+        "elapsed_seconds": 233.35729361,
+        "operator_details": {
+          "proposer_models": "['Qwen3.5-397B-A17B']",
+          "temperatures": "[0.8]",
+          "aggregator_model": "Qwen3.5-397B-A17B",
+          "model": "None",
+          "prompt_strategy": "None",
+          "reasoning_effort": "default",
+          "filter": "Keep this pair only if the matched evidence describes an airbag safety risk such as non-deployment, unintended deployment, inflator rupture, or occupant injury risk.",
+          "desc": "None"
+        }
+      },
+      {
+        "physical_operator": "MixtureOfAgentsFilter",
+        "full_op_id": "d085a41cd5-e93a8353ac",
+        "input_cardinality_observed": 12,
+        "output_cardinality_observed": 12,
+        "record_stats_count": 12,
+        "quality_scores_observed": 12,
+        "quality_scores_missing": 0,
+        "llm_calls": 24,
+        "text_llm_calls": 24,
+        "embedding_calls": 0,
+        "input_text_tokens": 19489,
+        "output_text_tokens": 3576,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.01596855,
+        "elapsed_seconds": 242.42878056,
+        "operator_details": {
+          "proposer_models": "['Qwen3.5-397B-A17B']",
+          "temperatures": "[0.4]",
+          "aggregator_model": "Qwen3.5-397B-A17B",
+          "model": "None",
+          "prompt_strategy": "None",
+          "reasoning_effort": "default",
+          "filter": "Keep this pair only if the matched evidence describes an airbag safety risk such as non-deployment, unintended deployment, inflator rupture, or occupant injury risk.",
+          "desc": "None"
+        }
+      },
+      {
+        "physical_operator": "MixtureOfAgentsConvert",
+        "full_op_id": "2e3f6b52b5-7e08563b8d",
+        "input_cardinality_observed": 12,
+        "output_cardinality_observed": 12,
+        "record_stats_count": 12,
+        "quality_scores_observed": 5,
+        "quality_scores_missing": 7,
+        "llm_calls": 24,
+        "text_llm_calls": 24,
+        "embedding_calls": 0,
+        "input_text_tokens": 19463,
+        "output_text_tokens": 2718,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.01395069,
+        "elapsed_seconds": 166.41135931,
+        "operator_details": {
+          "proposer_models": "['Qwen3.5-397B-A17B']",
+          "temperatures": "[0.4]",
+          "aggregator_model": "Qwen3.5-397B-A17B",
+          "model": "None",
+          "prompt_strategy": "None",
+          "reasoning_effort": "default",
+          "cardinality": "one-to-one",
+          "udf": "None",
+          "desc": "Assign the dominant airbag failure mode."
+        }
+      },
+      {
+        "physical_operator": "CritiqueAndRefineConvert",
+        "full_op_id": "2e3f6b52b5-a298dcd34b",
+        "input_cardinality_observed": 12,
+        "output_cardinality_observed": 12,
+        "record_stats_count": 12,
+        "quality_scores_observed": 9,
+        "quality_scores_missing": 3,
+        "llm_calls": 36,
+        "text_llm_calls": 36,
+        "embedding_calls": 0,
+        "input_text_tokens": 9793,
+        "output_text_tokens": 2020,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.00854607,
+        "elapsed_seconds": 251.84927416,
+        "operator_details": {
+          "critic_model": "Qwen3.5-397B-A17B",
+          "refine_model": "Qwen3.5-397B-A17B",
+          "model": "Qwen3.5-397B-A17B",
+          "prompt_strategy": "map",
+          "reasoning_effort": "default",
+          "cardinality": "one-to-one",
+          "udf": "None",
+          "desc": "Assign the dominant airbag failure mode."
+        }
+      },
+      {
+        "physical_operator": "MixtureOfAgentsConvert",
+        "full_op_id": "2e3f6b52b5-b0fb887000",
+        "input_cardinality_observed": 12,
+        "output_cardinality_observed": 12,
+        "record_stats_count": 12,
+        "quality_scores_observed": 6,
+        "quality_scores_missing": 6,
+        "llm_calls": 24,
+        "text_llm_calls": 24,
+        "embedding_calls": 0,
+        "input_text_tokens": 20302,
+        "output_text_tokens": 4215,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.01778088,
+        "elapsed_seconds": 214.82469511,
+        "operator_details": {
+          "proposer_models": "['Qwen3.5-397B-A17B']",
+          "temperatures": "[0.8]",
+          "aggregator_model": "Qwen3.5-397B-A17B",
+          "model": "None",
+          "prompt_strategy": "None",
+          "reasoning_effort": "default",
+          "cardinality": "one-to-one",
+          "udf": "None",
+          "desc": "Assign the dominant airbag failure mode."
+        }
+      },
+      {
+        "physical_operator": "LLMConvertBonded",
+        "full_op_id": "2e3f6b52b5-eac4914a32",
+        "input_cardinality_observed": 12,
+        "output_cardinality_observed": 12,
+        "record_stats_count": 12,
+        "quality_scores_observed": 6,
+        "quality_scores_missing": 6,
+        "llm_calls": 12,
+        "text_llm_calls": 12,
+        "embedding_calls": 0,
+        "input_text_tokens": 9793,
+        "output_text_tokens": 2095,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.00872157,
+        "elapsed_seconds": 131.59474254,
+        "operator_details": {
+          "model": "Qwen3.5-397B-A17B",
+          "prompt_strategy": "map",
+          "reasoning_effort": "default",
+          "cardinality": "one-to-one",
+          "udf": "None",
+          "desc": "Assign the dominant airbag failure mode."
+        }
+      },
+      {
+        "physical_operator": "MixtureOfAgentsConvert",
+        "full_op_id": "2e3f6b52b5-feaca1986f",
+        "input_cardinality_observed": 12,
+        "output_cardinality_observed": 12,
+        "record_stats_count": 12,
+        "quality_scores_observed": 5,
+        "quality_scores_missing": 7,
+        "llm_calls": 24,
+        "text_llm_calls": 24,
+        "embedding_calls": 0,
+        "input_text_tokens": 19801,
+        "output_text_tokens": 3406,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.01569243,
+        "elapsed_seconds": 245.48434401,
+        "operator_details": {
+          "proposer_models": "['Qwen3.5-397B-A17B']",
+          "temperatures": "[0.0]",
+          "aggregator_model": "Qwen3.5-397B-A17B",
+          "model": "None",
+          "prompt_strategy": "None",
+          "reasoning_effort": "default",
+          "cardinality": "one-to-one",
+          "udf": "None",
+          "desc": "Assign the dominant airbag failure mode."
+        }
+      },
+      {
+        "physical_operator": "NonLLMConvert",
+        "full_op_id": "2b9f89df0f-46eaa0a654",
+        "input_cardinality_observed": 12,
+        "output_cardinality_observed": 12,
+        "record_stats_count": 12,
+        "quality_scores_observed": 12,
+        "quality_scores_missing": 0,
+        "llm_calls": 0,
+        "text_llm_calls": 0,
+        "embedding_calls": 0,
+        "input_text_tokens": 0,
+        "output_text_tokens": 0,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.0,
+        "elapsed_seconds": 0.00609279,
+        "operator_details": {
+          "cardinality": "one-to-one",
+          "udf": "<function normalize_failure_mode at 0x7e779d1c6520>",
+          "desc": "None"
+        }
+      },
+      {
+        "physical_operator": "NonLLMFilter",
+        "full_op_id": "2c369eada3-9a79822128",
+        "input_cardinality_observed": 12,
+        "output_cardinality_observed": 12,
+        "record_stats_count": 12,
+        "quality_scores_observed": 12,
+        "quality_scores_missing": 0,
+        "llm_calls": 0,
+        "text_llm_calls": 0,
+        "embedding_calls": 0,
+        "input_text_tokens": 0,
+        "output_text_tokens": 0,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.0,
+        "elapsed_seconds": 0.00254297,
+        "operator_details": {
+          "filter": "valid_failure_mode",
+          "desc": "None"
+        }
+      },
+      {
+        "physical_operator": "MarshalAndScanDataOp",
+        "full_op_id": "c53128d66b-b35225deef",
+        "input_cardinality_observed": 0,
+        "output_cardinality_observed": 40,
+        "record_stats_count": 40,
+        "quality_scores_observed": 40,
+        "quality_scores_missing": 0,
+        "llm_calls": 0,
+        "text_llm_calls": 0,
+        "embedding_calls": 0,
+        "input_text_tokens": 0,
+        "output_text_tokens": 0,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.0,
+        "elapsed_seconds": 0.00253987,
+        "operator_details": {
+          "datasource_id": "vehicle_safety-046-reports-semantic-input"
+        }
+      },
+      {
+        "physical_operator": "NestedLoopsJoin",
+        "full_op_id": "23c142e69c-02b3867ab5",
+        "input_cardinality_observed": 11,
+        "output_cardinality_observed": 0,
+        "record_stats_count": 11,
+        "quality_scores_observed": 11,
+        "quality_scores_missing": 0,
+        "llm_calls": 11,
+        "text_llm_calls": 11,
+        "embedding_calls": 0,
+        "input_text_tokens": 17391,
+        "output_text_tokens": 1871,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.01116063,
+        "elapsed_seconds": 34.35459685,
+        "operator_details": {
+          "model": "Qwen3.5-397B-A17B",
+          "prompt_strategy": "join",
+          "reasoning_effort": "default",
+          "condition": "Match the Chrysler airbag issue to an investigation report only when the report discusses the same airbag risk or ODI evidence.",
+          "join_parallelism": "64",
+          "desc": "None",
+          "how": "inner",
+          "on": "None"
+        }
+      },
+      {
+        "physical_operator": "EmbeddingJoin",
+        "full_op_id": "23c142e69c-2ed213b90b",
+        "input_cardinality_observed": 11,
+        "output_cardinality_observed": 0,
+        "record_stats_count": 11,
+        "quality_scores_observed": 11,
+        "quality_scores_missing": 0,
+        "llm_calls": 10,
+        "text_llm_calls": 10,
+        "embedding_calls": 0,
+        "input_text_tokens": 16047,
+        "output_text_tokens": 1938,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.01090234,
+        "elapsed_seconds": 16.78758883,
+        "operator_details": {
+          "embedding_model": "openai/Qwen3-Embedding-8B",
+          "num_samples": "10",
+          "model": "Qwen3.5-397B-A17B",
+          "prompt_strategy": "join",
+          "reasoning_effort": "default",
+          "condition": "Match the Chrysler airbag issue to an investigation report only when the report discusses the same airbag risk or ODI evidence.",
+          "join_parallelism": "64",
+          "desc": "None",
+          "how": "inner",
+          "on": "None"
+        }
+      }
+    ],
+    "validation_llm_calls": 99,
+    "validation_input_text_tokens": 96830,
+    "validation_output_text_tokens": 31977,
+    "validation_cost_usd": 0.11258988
+  }
+}

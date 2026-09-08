@@ -1,0 +1,237 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+  asrs_aircraft_attributes:
+    type: file
+    path: data/asrs/aircraft_attributes.csv
+  asrs_components:
+    type: file
+    path: data/asrs/components.csv
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: https://llm-endpoint.example/v1
+default_embedding_api_base: https://llm-endpoint.example/v1
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: https://llm-endpoint.example/v1
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types:
+    - chunk
+    - proj_synthesis
+    - glean
+  equijoin:
+    target_recall: 0.95
+operations:
+- name: filter_aircraft_primary_problem
+  type: code_filter
+  code: "def transform(doc):\n    return doc.get(\"primary_problem\") == \"Aircraft\"\n"
+- name: load_asrs_narrative
+  type: code_map
+  code: "def transform(doc):\n    import os\n\n    base_dir = os.path.abspath(os.path.join(\"data\", \"\
+    asrs\"))\n    text_path = os.path.abspath(\n        os.path.join(base_dir, str(doc.get(\"text_file\"\
+    , \"\")))\n    )\n    if os.path.commonpath([base_dir, text_path]) != base_dir:\n        raise ValueError(\"\
+    ASRS text path escapes data/asrs\")\n    with open(text_path, \"r\", encoding=\"utf-8\", errors=\"\
+    replace\") as handle:\n        text = handle.read()\n    return {\"text\": text}\n"
+- name: filter_actual_maintenance_documentation_problem
+  type: filter
+  optimize: true
+  prompt: 'Keep this NASA ASRS report only when it describes an actual maintenance-
+
+    documentation problem that affected an aircraft component or another
+
+    required operational item.
+
+
+    Qualifying problems include incomplete, inaccurate, missing, or improperly
+
+    completed maintenance records, work instructions/cards, MEL procedures,
+
+    required documents, releases, or signoffs. The documentation problem must be
+
+    real and operationally relevant. Exclude reports describing only a mechanical
+
+    discrepancy, component failure, repair, or inspection when the associated
+
+    maintenance documentation was not itself problematic.
+
+
+    Narrative:
+
+    {{ input.text }}
+
+    '
+  output:
+    mode: structured_output
+    schema:
+      is_match: boolean
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 4096
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: extract_documentation_issue
+  type: map
+  optimize: true
+  prompt: "This report has already been identified as describing an actual maintenance-\ndocumentation\
+    \ problem. Assign exactly one primary documentation_issue_type:\n\n- incomplete_or_inaccurate_logbook:\
+    \ a logbook, aircraft maintenance log,\n  discrepancy entry, corrective-action entry, or log history\
+    \ was incomplete,\n  inaccurate, inconsistent, or misleading;\n- missing_or_incomplete_work_card:\
+    \ a maintenance work card, task card, job\n  card, checklist, or required work-step record was missing\
+    \ or incomplete;\n- incorrect_or_incomplete_mel_procedure: an MEL procedure, deferral procedure,\n\
+    \  required MEL action, placarding, or MEL-related maintenance step was\n  incorrect, incomplete,\
+    \ or not documented as required;\n- missing_required_document: another required maintenance, airworthiness,\n\
+    \  inspection, configuration, or onboard document was absent or unavailable;\n- release_or_signoff_error:\
+    \ a maintenance release, return-to-service approval,\n  signoff, signature, authorization, or certification\
+    \ was missing, incorrect,\n  or performed by the wrong person.\n\nThe categories are not a precedence\
+    \ list. Select the type that primarily\ndescribes the documentation failure. Extract affected_item\
+    \ as a normalized\nlowercase noun phrase of at most six words naming the component, document,\nprocedure,\
+    \ or required item most directly affected. Do not put the symptom,\nconsequence, or full explanation\
+    \ in the phrase.\n\nNarrative:\n{{ input.text }}\n"
+  output:
+    mode: structured_output
+    schema:
+      documentation_issue_type: enum[incomplete_or_inaccurate_logbook, missing_or_incomplete_work_card,
+        incorrect_or_incomplete_mel_procedure, missing_required_document, release_or_signoff_error]
+      affected_item: string
+  validate:
+  - 1 <= len(output["affected_item"].split()) <= 6
+  num_retries_on_validate_failure: 2
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 4096
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: normalize_affected_item
+  type: code_map
+  code: "def transform(doc):\n    import re\n\n    affected_item = re.sub(\n        r\"\\s+\", \" \",\
+    \ str(doc.get(\"affected_item\", \"\")).strip().lower()\n    )\n    return {\"affected_item\": affected_item}\n"
+- name: attach_documentation_status
+  type: code_map
+  code: "import csv\nimport os\nimport threading\n\n_documentation_status_index = None\n_documentation_status_lock\
+    \ = threading.Lock()\n\ndef load_documentation_status_index():\n    global _documentation_status_index\n\
+    \    if _documentation_status_index is None:\n        with _documentation_status_lock:\n         \
+    \   if _documentation_status_index is None:\n                index = {}\n                path = os.path.abspath(\n\
+    \                    os.path.join(\"data\", \"asrs\", \"aircraft_attributes.csv\")\n             \
+    \   )\n                with open(\n                    path, \"r\", encoding=\"utf-8\", errors=\"\
+    replace\", newline=\"\"\n                ) as handle:\n                    for row in csv.DictReader(handle):\n\
+    \                        attribute = row.get(\"attribute\")\n                        if attribute\
+    \ not in {\n                            \"maintenance_status_records_complete\",\n               \
+    \             \"maintenance_status_required_correct_doc_on_board\",\n                        }:\n\
+    \                            continue\n                        incident_id = str(row.get(\"incident_id\"\
+    , \"\"))\n                        value = row.get(\"value\")\n                        record = index.setdefault(\n\
+    \                            incident_id,\n                            {\n                       \
+    \         \"records_complete\": None,\n                                \"correct_document_on_board\"\
+    : None,\n                            },\n                        )\n                        key =\
+    \ (\n                            \"records_complete\"\n                            if attribute\n\
+    \                            == \"maintenance_status_records_complete\"\n                        \
+    \    else \"correct_document_on_board\"\n                        )\n                        current\
+    \ = record[key]\n                        if value is not None:\n                            record[key]\
+    \ = (\n                                value if current is None else max(current, value)\n       \
+    \                     )\n                _documentation_status_index = index\n    return _documentation_status_index\n\
+    \ndef transform(doc):\n    values = load_documentation_status_index().get(\n        str(doc.get(\"\
+    incident_id\", \"\"))\n    )\n    if values is None:\n        return {\n            \"has_documentation_status\"\
+    : False,\n            \"records_complete\": None,\n            \"correct_document_on_board\": None,\n\
+    \        }\n    return {\n        \"has_documentation_status\": True,\n        \"records_complete\"\
+    : values[\"records_complete\"],\n        \"correct_document_on_board\": values[\n            \"correct_document_on_board\"\
+    \n        ],\n    }\n"
+- name: inner_join_documentation_status
+  type: code_filter
+  code: "def transform(doc):\n    return doc.get(\"has_documentation_status\") is True\n"
+- name: attach_component_records
+  type: code_map
+  code: "import csv\nimport os\nimport threading\n\n_component_record_index = None\n_component_record_lock\
+    \ = threading.Lock()\n\ndef load_component_record_index():\n    global _component_record_index\n \
+    \   if _component_record_index is None:\n        with _component_record_lock:\n            if _component_record_index\
+    \ is None:\n                index = {}\n                path = os.path.abspath(\n                \
+    \    os.path.join(\"data\", \"asrs\", \"components.csv\")\n                )\n                with\
+    \ open(\n                    path, \"r\", encoding=\"utf-8\", errors=\"replace\", newline=\"\"\n \
+    \               ) as handle:\n                    for row in csv.DictReader(handle):\n           \
+    \             attribute = row.get(\"attribute\")\n                        if attribute not in {\"\
+    aircraft_component\", \"problem\"}:\n                            continue\n                      \
+    \  incident_id = str(row.get(\"incident_id\", \"\"))\n                        record = index.setdefault(\n\
+    \                            incident_id,\n                            {\n                       \
+    \         \"structured_components\": [],\n                                \"structured_problems\"\
+    : [],\n                            },\n                        )\n                        key = (\n\
+    \                            \"structured_components\"\n                            if attribute ==\
+    \ \"aircraft_component\"\n                            else \"structured_problems\"\n             \
+    \           )\n                        value = str(row.get(\"value\", \"\"))\n                   \
+    \     if value:\n                            record[key].append(value)\n                _component_record_index\
+    \ = {\n                    incident_id: {\n                        key: list(dict.fromkeys(values[key]))\n\
+    \                        for key in (\n                            \"structured_components\",\n  \
+    \                          \"structured_problems\",\n                        )\n                 \
+    \   }\n                    for incident_id, values in index.items()\n                }\n    return\
+    \ _component_record_index\n\ndef transform(doc):\n    values = load_component_record_index().get(\n\
+    \        str(doc.get(\"incident_id\", \"\"))\n    )\n    if values is None:\n        return {\n  \
+    \          \"structured_components\": [],\n            \"structured_problems\": [],\n        }\n \
+    \   return values\n"
+- name: inner_join_component_records
+  type: code_filter
+  code: "def transform(doc):\n    return bool(\n        doc.get(\"structured_components\") or doc.get(\"\
+    structured_problems\")\n    )\n"
+- name: aggregate_ranked_documentation_combinations
+  type: code_reduce
+  reduce_key: _all
+  code: "def transform(items):\n    from collections import Counter\n\n    grouped = {}\n    for item\
+    \ in items:\n        incident_id = str(item.get(\"incident_id\", \"\"))\n        key = (\n       \
+    \     item.get(\"documentation_issue_type\"),\n            item.get(\"records_complete\"),\n     \
+    \       item.get(\"correct_document_on_board\"),\n        )\n        if not incident_id:\n       \
+    \     continue\n        record = grouped.setdefault(\n            key,\n            {\"incident_ids\"\
+    : set(), \"affected_items\": Counter()},\n        )\n        if incident_id in record[\"incident_ids\"\
+    ]:\n            continue\n        record[\"incident_ids\"].add(incident_id)\n        record[\"affected_items\"\
+    ][item.get(\"affected_item\")] += 1\n\n    def status_sort_key(value):\n        return (value is None,\
+    \ \"\" if value is None else str(value))\n\n    rows = []\n    for key, values in grouped.items():\n\
+    \        issue_type, records_complete, correct_document = key\n        mode_item = sorted(\n     \
+    \       values[\"affected_items\"],\n            key=lambda item: (-values[\"affected_items\"][item],\
+    \ str(item)),\n        )[0]\n        rows.append(\n            {\n                \"documentation_issue_type\"\
+    : issue_type,\n                \"records_complete\": records_complete,\n                \"correct_document_on_board\"\
+    : correct_document,\n                \"incident_count\": len(values[\"incident_ids\"]),\n        \
+    \        \"canonical_affected_item\": mode_item,\n            }\n        )\n\n    rows.sort(\n   \
+    \     key=lambda row: (\n            -row[\"incident_count\"],\n            row[\"documentation_issue_type\"\
+    ],\n            status_sort_key(row[\"records_complete\"]),\n            status_sort_key(row[\"correct_document_on_board\"\
+    ]),\n        )\n    )\n    for rank, row in enumerate(rows[:15], start=1):\n        row[\"rank\"]\
+    \ = rank\n    return {\"rows\": rows[:15]}\n"
+- name: unnest_answer_rows
+  type: unnest
+  unnest_key: rows
+  recursive: true
+  depth: 2
+  expand_fields:
+  - rank
+  - documentation_issue_type
+  - records_complete
+  - correct_document_on_board
+  - incident_count
+  - canonical_affected_item
+pipeline:
+  steps:
+  - name: process
+    input: asrs_incidents
+    operations:
+    - filter_aircraft_primary_problem
+    - load_asrs_narrative
+    - filter_actual_maintenance_documentation_problem
+    - extract_documentation_issue
+    - normalize_affected_item
+    - attach_documentation_status
+    - inner_join_documentation_status
+    - attach_component_records
+    - inner_join_component_records
+    - aggregate_ranked_documentation_combinations
+    - unnest_answer_rows
+  output:
+    type: file
+    path: /home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-039/outputs/output_aviation_safety-039.json
+    intermediate_dir: /home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-039/intermediates
+bypass_cache: true

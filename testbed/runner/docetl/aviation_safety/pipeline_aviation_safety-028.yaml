@@ -1,0 +1,286 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+  asrs_aircraft_attributes:
+    type: file
+    path: data/asrs/aircraft_attributes.csv
+  asrs_events:
+    type: file
+    path: data/asrs/events.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_part121_airport_reports
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("far_part") == "Part 121"
+              and doc.get("locale_reference_type") == "Airport"
+          )
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: extract_dominant_narrative_response
+    type: map
+    optimize: true
+    prompt: |
+      Extract exactly one dominant crew response to automation from this NASA ASRS
+      narrative only when the crew's action is clear. Apply this strict precedence
+      when several responses occurred:
+
+      1. followed_automation: the crew knowingly followed, complied with, or
+         continued to act on automation, an automated advisory, or an automated
+         command;
+      2. overrode_or_disconnected: the crew overrode, disconnected, switched off,
+         rejected, or deliberately took control away from automation;
+      3. sought_atc_clarification: the crew contacted or questioned ATC to clarify
+         an automation-related clearance, instruction, discrepancy, or expected
+         action.
+
+      The action must be explicit in the narrative. Mere automation use, a mode
+      change without a clear crew response, an ATC communication unrelated to
+      clarification, or an ambiguous sequence is not enough. Return
+      no_clear_response when none of the three narrative actions is clear. Do not
+      use structured event labels here.
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        narrative_response: enum[followed_automation, overrode_or_disconnected, sought_atc_clarification, no_clear_response]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: attach_navigation_in_use
+    type: code_map
+    code: |
+      import csv
+      import os
+      import threading
+
+      _navigation_index = None
+      _navigation_lock = threading.Lock()
+
+      def load_navigation_index():
+          global _navigation_index
+          if _navigation_index is None:
+              with _navigation_lock:
+                  if _navigation_index is None:
+                      index = {}
+                      path = os.path.abspath(
+                          os.path.join("data", "asrs", "aircraft_attributes.csv")
+                      )
+                      with open(
+                          path, "r", encoding="utf-8", errors="replace", newline=""
+                      ) as handle:
+                          for row in csv.DictReader(handle):
+                              value = str(row.get("value", ""))
+                              if (
+                                  row.get("attribute") == "nav_in_use"
+                                  and ("FMS Or FMC" in value or "GPS" in value)
+                              ):
+                                  index.setdefault(
+                                      str(row.get("incident_id", "")), []
+                                  ).append(value)
+                      _navigation_index = index
+          return _navigation_index
+
+      def transform(doc):
+          values = load_navigation_index().get(
+              str(doc.get("incident_id", "")), []
+          )
+          return {"navigation_in_use": list(dict.fromkeys(values))}
+
+  - name: inner_join_navigation_records
+    type: code_filter
+    code: |
+      def transform(doc):
+          return bool(doc.get("navigation_in_use"))
+
+  - name: attach_automation_events
+    type: code_map
+    code: |
+      import csv
+      import os
+      import threading
+
+      _automation_event_index = None
+      _automation_event_lock = threading.Lock()
+
+      def load_automation_event_index():
+          global _automation_event_index
+          if _automation_event_index is None:
+              with _automation_event_lock:
+                  if _automation_event_index is None:
+                      index = {}
+                      path = os.path.abspath(
+                          os.path.join("data", "asrs", "events.csv")
+                      )
+                      with open(
+                          path, "r", encoding="utf-8", errors="replace", newline=""
+                      ) as handle:
+                          for row in csv.DictReader(handle):
+                              event_type = row.get("event_type")
+                              label = str(row.get("label", ""))
+                              if (
+                                  event_type in {"detector", "result"}
+                                  and "Automation" in label
+                              ):
+                                  index.setdefault(
+                                      str(row.get("incident_id", "")), []
+                                  ).append(
+                                      {
+                                          "event_type": event_type,
+                                          "label": label,
+                                      }
+                                  )
+                      _automation_event_index = index
+          return _automation_event_index
+
+      def transform(doc):
+          events = load_automation_event_index().get(
+              str(doc.get("incident_id", "")), []
+          )
+          return {"automation_event_labels": events}
+
+  - name: inner_join_automation_events
+    type: code_filter
+    code: |
+      def transform(doc):
+          return bool(doc.get("automation_event_labels"))
+
+  - name: project_response_pattern
+    type: code_map
+    code: |
+      def transform(doc):
+          narrative_response = doc.get("narrative_response")
+          if narrative_response in {
+              "followed_automation",
+              "overrode_or_disconnected",
+              "sought_atc_clarification",
+          }:
+              response = narrative_response
+          else:
+              labels = {
+                  event.get("label")
+                  for event in doc.get("automation_event_labels", [])
+                  if isinstance(event, dict)
+              }
+              if "Flight Crew FLC complied w / Automation / Advisory" in labels:
+                  response = "followed_automation"
+              elif labels.intersection(
+                  {
+                      "Flight Crew FLC Overrode Automation",
+                      "Flight Crew Overrode Automation",
+                  }
+              ):
+                  response = "overrode_or_disconnected"
+              else:
+                  response = None
+          return {"response_pattern": response}
+
+  - name: keep_non_null_response_patterns
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("response_pattern") is not None
+
+  - name: aggregate_response_patterns
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          response_order = [
+              "followed_automation",
+              "overrode_or_disconnected",
+              "sought_atc_clarification",
+          ]
+          incident_ids = {response: set() for response in response_order}
+
+          for item in items:
+              incident_id = str(item.get("incident_id", ""))
+              response = item.get("response_pattern")
+              if incident_id and response in incident_ids:
+                  incident_ids[response].add(incident_id)
+
+          rows = []
+          for response in response_order:
+              if not incident_ids[response]:
+                  continue
+              rows.append(
+                  {
+                      "response_pattern": response,
+                      "incident_count": len(incident_ids[response]),
+                  }
+              )
+          return {"rows": rows}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - response_pattern
+      - incident_count
+
+pipeline:
+  steps:
+    - name: process
+      input: asrs_incidents
+      operations:
+        - filter_part121_airport_reports
+        - load_asrs_narrative
+        - extract_dominant_narrative_response
+        - attach_navigation_in_use
+        - inner_join_navigation_records
+        - attach_automation_events
+        - inner_join_automation_events
+        - project_response_pattern
+        - keep_non_null_response_patterns
+        - aggregate_response_patterns
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-028.json

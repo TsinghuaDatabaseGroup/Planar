@@ -1,0 +1,32 @@
+{
+  "task_id": "finance-007",
+  "answer": [
+    {
+      "year": 2019,
+      "ai_ml_mention_rate_percent": 8.3
+    },
+    {
+      "year": 2020,
+      "ai_ml_mention_rate_percent": 10.8
+    },
+    {
+      "year": 2021,
+      "ai_ml_mention_rate_percent": 14.5
+    },
+    {
+      "year": 2022,
+      "ai_ml_mention_rate_percent": 15.6
+    },
+    {
+      "year": 2023,
+      "ai_ml_mention_rate_percent": 24.9
+    },
+    {
+      "year": 2024,
+      "ai_ml_mention_rate_percent": 37.5
+    }
+  ],
+  "elapsed_seconds": 1353.062,
+  "cost_usd": 10.60884933,
+  "total_tokens": 26785787
+}

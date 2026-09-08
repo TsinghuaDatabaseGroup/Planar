@@ -1,0 +1,27 @@
+{
+  "task_id": "aviation_safety-044",
+  "optimization_analysis": "Two main optimizations: (1) Push all cheap relational filters (component match, event match, Aircraft-primary) into a structural pre-filter JOIN before any semantic operator, so LLM calls are made only on the small set of incidents that already pass all structured criteria rather than on the full Aircraft-primary corpus. (2) Collapse the two sequential SEM_FILTERs into one and merge SEM_EXTRACT with SEM_CLASSIFY into a single combined operator, reducing per-document LLM passes from four (2×SEM_FILTER + SEM_EXTRACT + SEM_CLASSIFY) to two (1×SEM_FILTER + 1×SEM_EXTRACT+CLASSIFY). The final SEM_AGGREGATE is cheap because it runs once per group, not per document, so it is left unchanged.",
+  "optimized_semantic_plan": [
+    {
+      "type": "operator_dag",
+      "program": "qualifying_incidents := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, primary_problem])\n  -> FILTER(primary_problem = 'Aircraft')\n)\ncomponent_match := (\n  SCAN_TABLE(NASA_ASRS, components.csv, [incident_id, attribute, value])\n  -> FILTER(attribute = 'aircraft_component' AND (value CONTAINS 'Pressurization' OR value CONTAINS 'Pack' OR value CONTAINS 'Bleed' OR value CONTAINS 'Air Conditioning'))\n  -> GROUP_BY([incident_id], {component_records:COLLECT(value)})\n)\nevent_match := (\n  SCAN_TABLE(NASA_ASRS, events.csv, [incident_id, event_type, label])\n  -> FILTER(label = 'Flight Deck / Cabin / Aircraft Event Smoke / Fire / Fumes / Odor' OR label CONTAINS 'Aircraft Equipment Problem')\n  -> GROUP_BY([incident_id], {event_labels:COLLECT(event_type, label)})\n)\ncandidate_incidents := (\n  JOIN(left=qualifying_incidents, right=component_match, join_type=inner, condition=qualifying_incidents.incident_id = component_match.incident_id)\n  -> JOIN(right=event_match, join_type=inner, condition=incident_id = event_match.incident_id)\n)\ncausal_records := (\n  SCAN_DOCS(NASA_ASRS, selector=candidate_incidents.text_file, [incident_id, text])\n  -> SEM_FILTER(\"Keep reports whose narrative describes exactly one clearly primary cause for the smoke, fumes, odor, or equipment event AND an operational consequence beyond a maintenance-record entry alone.\", {text})\n  -> SEM_EXTRACT(\"Extract: (1) cause_category assigned to exactly one of equipment_malfunction | maintenance_or_release_decision | environmental_contamination | crew_procedure; (2) system_phrase describing the relevant system in at most six words; (3) operational_outcome describing the dominant operational consequence in at most six words.\", {incident_id:string, cause_category:string, system_phrase:string, operational_outcome:string}, {incident_id, text})\n)\njoined := JOIN(left=causal_records, right=candidate_incidents, join_type=inner, condition=causal_records.incident_id = candidate_incidents.incident_id)\njoined\n-> GROUP_BY([cause_category], {incident_count:COUNT_DISTINCT(incident_id), causal_records:COLLECT(system_phrase, operational_outcome, component_records, event_labels)})\n-> SEM_AGGREGATE(\"For each cause category, produce the canonical system and dominant operational outcome as phrases of at most six words.\", {canonical_system:string, dominant_operational_outcome:string}, group_by=[cause_category], input_bindings={causal_records})"
+    }
+  ],
+  "valid": true,
+  "validation_warnings": [],
+  "elapsed_secs": 36.018,
+  "cost_usd": 0.0312228,
+  "agent_cost_usd": 0.0312228,
+  "usage": {
+    "input": 3,
+    "output": 1666,
+    "cacheRead": 3096,
+    "cacheWrite": 1412
+  },
+  "agent_usage": {
+    "input": 3,
+    "output": 1666,
+    "cacheRead": 3096,
+    "cacheWrite": 1412
+  }
+}

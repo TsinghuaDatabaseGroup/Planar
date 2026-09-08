@@ -1,0 +1,42 @@
+[
+  {
+    "node": 12,
+    "path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-060/moar-search/pipeline_legal_contracts-060_input_sample_openai_Qwen3.5-397B-A17B.yaml",
+    "cost": 0.3693448200000001,
+    "accuracy": 0.7615384615384616,
+    "value": 0.3789747899159664,
+    "is_frontier": true
+  },
+  {
+    "node": 13,
+    "path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-060/moar-search/pipeline_input_sample_openai_13.yaml",
+    "cost": 0.28449369000000013,
+    "accuracy": 0.3046218487394958,
+    "value": 0.3046218487394958,
+    "is_frontier": true
+  },
+  {
+    "node": 14,
+    "path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-060/moar-search/pipeline_input_sample_openai_14.yaml",
+    "cost": 0.3267252299999999,
+    "accuracy": 0.3516806722689076,
+    "value": -0.26279896574014217,
+    "is_frontier": false
+  },
+  {
+    "node": 15,
+    "path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-060/moar-search/pipeline_input_sample_openai_15.yaml",
+    "cost": 0.2873679900000001,
+    "accuracy": 0.2848571428571429,
+    "value": -0.019764705882352906,
+    "is_frontier": false
+  },
+  {
+    "node": 16,
+    "path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-060/moar-search/pipeline_input_sample_openai_16.yaml",
+    "cost": 0.29197194000000004,
+    "accuracy": 0.6615384615384615,
+    "value": 0.3569166127989657,
+    "is_frontier": true
+  }
+]

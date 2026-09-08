@@ -1,0 +1,129 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+operations:
+- name: unnest_answer_rows
+  type: unnest
+  unnest_key: rows
+  recursive: true
+  depth: 2
+  expand_fields:
+  - operational_consequence
+  - incident_count
+  - with_numeric_fuel_value_count
+  - with_numeric_time_value_count
+  model: Qwen3.5-397B-A17B
+- name: aggregate_fuel_consequences
+  type: code_reduce
+  reduce_key: _all
+  code: "def transform(items):\n    consequence_order = [\n        \"emergency_declaration\",\n      \
+    \  \"diversion\",\n        \"return\",\n        \"holding\",\n        \"continued_with_concern\",\n\
+    \    ]\n    grouped = {\n        label: {\"all\": set(), \"fuel\": set(), \"time\": set()}\n     \
+    \   for label in consequence_order\n    }\n    for item in items:\n        label = item.get(\"operational_consequence\"\
+    )\n        incident_id = str(item.get(\"incident_id\") or \"\")\n        if label not in grouped or\
+    \ not incident_id:\n            continue\n        grouped[label][\"all\"].add(incident_id)\n     \
+    \   if item.get(\"has_numeric_fuel_value\") is True:\n            grouped[label][\"fuel\"].add(incident_id)\n\
+    \        if item.get(\"has_numeric_time_value\") is True:\n            grouped[label][\"time\"].add(incident_id)\n\
+    \n    rows = []\n    for label in consequence_order:\n        if not grouped[label][\"all\"]:\n  \
+    \          continue\n        rows.append(\n            {\n                \"operational_consequence\"\
+    : label,\n                \"incident_count\": len(grouped[label][\"all\"]),\n                \"with_numeric_fuel_value_count\"\
+    : len(\n                    grouped[label][\"fuel\"]\n                ),\n                \"with_numeric_time_value_count\"\
+    : len(\n                    grouped[label][\"time\"]\n                ),\n            }\n        )\n\
+    \    return {\"rows\": rows}\n"
+  model: Qwen3.5-397B-A17B
+- name: keep_fuel_affected_operations
+  type: code_filter
+  code: "def transform(doc):\n    return (\n        doc.get(\"qualifies\") is True\n        and doc.get(\"\
+    operational_consequence\")\n        in {\n            \"emergency_declaration\",\n            \"diversion\"\
+    ,\n            \"return\",\n            \"holding\",\n            \"continued_with_concern\",\n  \
+    \      }\n    )\n"
+  model: Qwen3.5-397B-A17B
+- name: extract_primary_fuel_consequence
+  type: map
+  prompt: 'Extract one row only when a fuel quantity, reserve, calculation, or
+
+    dispatch-release decision directly affected the operation. Assign the
+
+    highest applicable operational_consequence using this precedence:
+
+    emergency_declaration, diversion, return, holding, continued_with_concern.
+
+
+    Set has_numeric_fuel_value when a numeric fuel quantity is stated and
+
+    has_numeric_time_value when a numeric remaining-time or fuel-duration value
+
+    is stated. For a non-qualifying report, set qualifies=false and use
+
+    not_applicable for the consequence.
+
+
+    Recorded result summary:
+
+    {{ input.result_summary }}
+
+
+    Report:
+
+    {{ input.text }}
+
+    '
+  output:
+    mode: structured_output
+    schema:
+      qualifies: boolean
+      operational_consequence: enum[emergency_declaration, diversion, return, holding, continued_with_concern,
+        not_applicable]
+      has_numeric_fuel_value: boolean
+      has_numeric_time_value: boolean
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 256
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  model: Qwen3.5-397B-A17B
+- name: load_asrs_narrative
+  type: code_map
+  code: "def transform(doc):\n    import os\n\n    base_dir = os.path.abspath(os.path.join(\"data\", \"\
+    asrs\"))\n    text_path = os.path.abspath(\n        os.path.join(base_dir, str(doc.get(\"text_file\"\
+    , \"\")))\n    )\n    if os.path.commonpath([base_dir, text_path]) != base_dir:\n        raise ValueError(\"\
+    ASRS text path escapes data/asrs\")\n    with open(text_path, \"r\", encoding=\"utf-8\", errors=\"\
+    replace\") as handle:\n        return {\"text\": handle.read()}\n"
+  model: Qwen3.5-397B-A17B
+- name: filter_part121_passenger_reports
+  type: code_filter
+  code: "def transform(doc):\n    return (\n        doc.get(\"far_part\") == \"Part 121\"\n        and\
+    \ doc.get(\"mission\") == \"Passenger\"\n    )\n"
+  model: Qwen3.5-397B-A17B
+pipeline:
+  steps:
+  - name: process
+    operations:
+    - filter_part121_passenger_reports
+    - load_asrs_narrative
+    - extract_primary_fuel_consequence
+    - keep_fuel_affected_operations
+    - aggregate_fuel_consequences
+    - unnest_answer_rows
+    input: asrs_incidents
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-019.json
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  num_plans_to_evaluate_in_parallel: 1

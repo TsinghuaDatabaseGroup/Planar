@@ -1,0 +1,119 @@
+{
+  "task_id": "legal_contracts-082",
+  "answer": [
+    {
+      "document_id": "1044777_0000950124-98-000388_document_7.txt"
+    },
+    {
+      "document_id": "1052946_0000950134-98-001627_document_4.txt"
+    },
+    {
+      "document_id": "1053949_0001005150-98-000126_document_8.txt"
+    },
+    {
+      "document_id": "1062760_0001015402-05-001930_doc17.txt"
+    },
+    {
+      "document_id": "118.3-Non-disclosure-agreement.pdf"
+    },
+    {
+      "document_id": "41629_1.pdf"
+    },
+    {
+      "document_id": "Annex 18 - Non-Disclosure Agreement.pdf"
+    },
+    {
+      "document_id": "Attachment B - Intent to Propose and Non-Disclosure Agreement.pdf"
+    },
+    {
+      "document_id": "BO115-07-non-disclosure-agreement.pdf"
+    },
+    {
+      "document_id": "Confidentiality.pdf"
+    },
+    {
+      "document_id": "Focus-Group-APIC-Seattle-Confidentiality-Agreement-031115.pdf"
+    },
+    {
+      "document_id": "FormEConfidentialityandNon.pdf"
+    },
+    {
+      "document_id": "NDA-Seeed.pdf"
+    },
+    {
+      "document_id": "NDA.pdf"
+    },
+    {
+      "document_id": "NDA_5.pdf"
+    },
+    {
+      "document_id": "NDA_template.pdf"
+    },
+    {
+      "document_id": "NDD.pdf"
+    },
+    {
+      "document_id": "Non-Disclosure-Agreement-1.pdf"
+    },
+    {
+      "document_id": "Non-Disclosure_Agreement_oct2009.pdf"
+    },
+    {
+      "document_id": "Non-disclosure-Agreement_7.pdf"
+    },
+    {
+      "document_id": "Non-disclosure.pdf"
+    },
+    {
+      "document_id": "Proctor_Agreement.pdf"
+    },
+    {
+      "document_id": "QSA_NDA.pdf"
+    },
+    {
+      "document_id": "annex-iii---nda-agreement..pdf"
+    },
+    {
+      "document_id": "buyer_profile.pdf"
+    },
+    {
+      "document_id": "ceii-and-nda.pdf"
+    },
+    {
+      "document_id": "document_viewer.pdf"
+    },
+    {
+      "document_id": "epa_fillable_nda_template.pdf"
+    },
+    {
+      "document_id": "ingram-non-disclosure.pdf"
+    },
+    {
+      "document_id": "nda_gtl_inria.pdf"
+    },
+    {
+      "document_id": "neu_confidentiality_agreement.pdf"
+    },
+    {
+      "document_id": "nondisclosure.pdf"
+    },
+    {
+      "document_id": "resolution-2012-03-014r.pdf"
+    },
+    {
+      "document_id": "stevenson_confidentiality_agreement.pdf"
+    },
+    {
+      "document_id": "unm_confidentiality_agreement.pdf"
+    },
+    {
+      "document_id": "uwsp_confidentiality_agreement.pdf"
+    },
+    {
+      "document_id": "ws-confidentiality-and-non-disclosure-agreement.pdf"
+    }
+  ],
+  "elapsed_seconds": 605.61,
+  "cost_usd": 5.354045,
+  "total_tokens": 10045924
+}

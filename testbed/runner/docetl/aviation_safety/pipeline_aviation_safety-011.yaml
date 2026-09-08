@@ -1,0 +1,215 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_aircraft_equipment_problem
+    type: code_filter
+    code: |
+      def transform(doc):
+          return "Aircraft Equipment Problem" in str(
+              doc.get("anomaly_summary", "")
+          )
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: classify_airborne_system_problem
+    type: map
+    optimize: true
+    prompt: |
+      Assign exactly one primary system category for the aircraft-equipment problem
+      in this NASA ASRS report, using the structured flight phase, anomaly summary,
+      and narrative.
+
+      Categories:
+      - engine: an airborne propulsion-engine thrust, power, flameout, oil,
+        temperature, vibration, or other engine problem;
+      - pressurization_or_bleed_or_pack: an airborne cabin pressurization, pneumatic
+        bleed-air, air-conditioning pack, or closely related pressure-control issue;
+      - hydraulic: an airborne hydraulic-system, pressure, quantity, pump, leak, or
+        hydraulically powered function problem whose primary failed system is
+        hydraulic;
+      - flight_control: an airborne primary or secondary flight-control, trim,
+        control-surface, control-actuation, or flight-control computer problem;
+      - not_target: another system, an APU-only problem, a ground-only problem, or
+        no clearly primary target system.
+
+      The target problem must actually manifest while airborne. A maintenance note
+      about a problem found only before departure or after landing is not_target.
+      When multiple systems are mentioned, choose the one that primarily caused the
+      reported airborne event; do not apply category-list precedence.
+
+      Flight phase: {{ input.flight_phase }}
+      Anomaly summary: {{ input.anomaly_summary }}
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        system_category: enum[engine, pressurization_or_bleed_or_pack, hydraulic, flight_control, not_target]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: keep_part121_critical_target_systems
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("far_part") == "Part 121"
+              and "Aircraft Equipment Problem Critical"
+              in str(doc.get("anomaly_summary", ""))
+              and doc.get("system_category")
+              in {
+                  "engine",
+                  "pressurization_or_bleed_or_pack",
+                  "hydraulic",
+                  "flight_control",
+              }
+          )
+
+  - name: derive_response_category
+    type: code_map
+    code: |
+      def transform(doc):
+          result = str(doc.get("result_summary", ""))
+          if "Flight Crew Returned To Departure Airport" in result:
+              category = "return_to_departure"
+          elif any(
+              label in result
+              for label in (
+                  "General Declared Emergency",
+                  "Flight Crew Diverted",
+                  "Flight Crew Landed in Emergency Condition",
+              )
+          ):
+              category = "emergency_or_divert"
+          elif "Flight Crew Overcame Equipment Problem" in result:
+              category = "continue_after_troubleshooting"
+          elif "General Maintenance Action" in result:
+              category = "maintenance_action_only"
+          else:
+              category = None
+          return {"response_category": category}
+
+  - name: keep_mapped_response_categories
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("response_category") in {
+              "return_to_departure",
+              "emergency_or_divert",
+              "continue_after_troubleshooting",
+              "maintenance_action_only",
+          }
+
+  - name: aggregate_system_response_pairs
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          system_order = [
+              "engine",
+              "pressurization_or_bleed_or_pack",
+              "hydraulic",
+              "flight_control",
+          ]
+          response_order = [
+              "return_to_departure",
+              "emergency_or_divert",
+              "continue_after_troubleshooting",
+              "maintenance_action_only",
+          ]
+          incident_ids = {
+              (system, response): set()
+              for system in system_order
+              for response in response_order
+          }
+
+          for item in items:
+              incident_id = str(item.get("incident_id", ""))
+              key = (item.get("system_category"), item.get("response_category"))
+              if incident_id and key in incident_ids:
+                  incident_ids[key].add(incident_id)
+
+          rows = []
+          for system in system_order:
+              for response in response_order:
+                  ids = incident_ids[(system, response)]
+                  if not ids:
+                      continue
+                  rows.append(
+                      {
+                          "system_category": system,
+                          "response_category": response,
+                          "incident_count": len(ids),
+                      }
+                  )
+          return {"rows": rows}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - system_category
+      - response_category
+      - incident_count
+
+pipeline:
+  steps:
+    - name: process
+      input: asrs_incidents
+      operations:
+        - filter_aircraft_equipment_problem
+        - load_asrs_narrative
+        - classify_airborne_system_problem
+        - keep_part121_critical_target_systems
+        - derive_response_category
+        - keep_mapped_response_categories
+        - aggregate_system_response_pairs
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-011.json

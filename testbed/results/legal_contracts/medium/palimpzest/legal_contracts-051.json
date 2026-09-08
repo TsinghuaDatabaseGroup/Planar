@@ -1,0 +1,13 @@
+{
+  "task_id": "legal_contracts-051",
+  "answer": [
+    {"document_id": "exhibit21fy24q4formforwdesk.htm", "parent_company": "BECTON, DICKINSON AND COMPANY", "subsidiary_count": 315, "distinct_jurisdiction_count": 82, "top_jurisdictions": [{"jurisdiction": "Delaware", "subsidiary_count": 77}, {"jurisdiction": "Mexico", "subsidiary_count": 13}, {"jurisdiction": "United Kingdom", "subsidiary_count": 13}]},
+    {"document_id": "ame-20241231xex21.htm", "parent_company": "AMETEK, INC.", "subsidiary_count": 244, "distinct_jurisdiction_count": 59, "top_jurisdictions": [{"jurisdiction": "Delaware", "subsidiary_count": 71}, {"jurisdiction": "United Kingdom", "subsidiary_count": 25}, {"jurisdiction": "Germany", "subsidiary_count": 19}]},
+    {"document_id": "exhibit2193025.htm", "parent_company": "FRANKLIN RESOURCES, INC.", "subsidiary_count": 150, "distinct_jurisdiction_count": 38, "top_jurisdictions": [{"jurisdiction": "Delaware", "subsidiary_count": 55}, {"jurisdiction": "United Kingdom", "subsidiary_count": 9}, {"jurisdiction": "Cayman Islands", "subsidiary_count": 8}]},
+    {"document_id": "exhibit2193024.htm", "parent_company": "FRANKLIN RESOURCES, INC.", "subsidiary_count": 149, "distinct_jurisdiction_count": 38, "top_jurisdictions": [{"jurisdiction": "Delaware", "subsidiary_count": 48}, {"jurisdiction": "United Kingdom", "subsidiary_count": 12}, {"jurisdiction": "Cayman Islands", "subsidiary_count": 10}]},
+    {"document_id": "hghthcq42024exhibit211.htm", "parent_company": "Hertz Global Holdings, Inc.", "subsidiary_count": 125, "distinct_jurisdiction_count": 28, "top_jurisdictions": [{"jurisdiction": "Delaware", "subsidiary_count": 51}, {"jurisdiction": "United Kingdom", "subsidiary_count": 9}, {"jurisdiction": "Oklahoma", "subsidiary_count": 8}]}
+  ],
+  "elapsed_seconds": 1288.94,
+  "cost_usd": 1.591544,
+  "total_tokens": 3012012
+}

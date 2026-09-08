@@ -1,0 +1,89 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body: {chat_template_kwargs: {enable_thinking: false}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+
+operations:
+  - name: filter_nda_types
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is a mutual NDA, unilateral NDA, or
+      confidentiality-and-standstill agreement.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_qualifying_nda_type: boolean}}
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body: {chat_template_kwargs: {enable_thinking: false}}
+
+  - name: extract_duration_and_law
+    type: map
+    optimize: true
+    prompt: |
+      Extract the original confidentiality-duration wording, its duration in
+      months, and the expressly stated governing law. Set duration_available=false
+      when the duration is unstated, perpetual, indefinite, or unquantifiable and
+      use 0 only as a placeholder. Set governing_law_available=false when no law
+      is expressly stated and return an empty placeholder.
+
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        stated_duration: string
+        duration_available: boolean
+        duration_months_value: float
+        governing_law_available: boolean
+        governing_law_value: string
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body: {chat_template_kwargs: {enable_thinking: false}}
+
+  - name: normalize_nullable_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "document_id": str(doc.get("doc_id") or ""),
+              "stated_duration": str(doc.get("stated_duration") or ""),
+              "duration_months": float(doc.get("duration_months_value") or 0) if doc.get("duration_available") is True else None,
+              "governing_law": str(doc.get("governing_law_value") or "") if doc.get("governing_law_available") is True else None,
+          }
+
+  - name: filter_short_finite_duration_with_law
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("duration_months") is not None and float(doc["duration_months"]) <= 12 and doc.get("governing_law") is not None
+
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations:
+        - filter_nda_types
+        - extract_duration_and_law
+        - normalize_nullable_fields
+        - filter_short_finite_duration_with_law
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-005.json

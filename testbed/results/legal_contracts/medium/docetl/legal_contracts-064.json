@@ -1,0 +1,68 @@
+{
+  "task_id": "legal_contracts-064",
+  "answer": [
+    {
+      "document_id": "non-disclosure-agreement-mutual-generic-blank.pdf",
+      "word_count": 820
+    },
+    {
+      "document_id": "DBT%20Mutual%20NDA.pdf",
+      "word_count": 1079
+    },
+    {
+      "document_id": "900091_0001047469-97-003029_document_4.txt",
+      "word_count": 1283
+    },
+    {
+      "document_id": "Mutual-Non-Disclosure-Agreement-Inventor-Product-Development-Experts-Inc..pdf",
+      "word_count": 1285
+    },
+    {
+      "document_id": "69067_0000927016-00-002123_0010.txt",
+      "word_count": 1342
+    },
+    {
+      "document_id": "Non_Disclosure_Agreement_1.pdf",
+      "word_count": 1375
+    },
+    {
+      "document_id": "1001113_0000950134-07-005231_f27921orexv99wxdyx3y.htm",
+      "word_count": 1404
+    },
+    {
+      "document_id": "1001917_0000950123-08-007542_y61533exv99wdw3.htm",
+      "word_count": 1569
+    },
+    {
+      "document_id": "75448_0001193125-05-158309_dex99d4.htm",
+      "word_count": 1570
+    },
+    {
+      "document_id": "ojp_nda-confidentiality.pdf",
+      "word_count": 1606
+    },
+    {
+      "document_id": "NDA%20UDRC%203-way%20Final.pdf",
+      "word_count": 1663
+    },
+    {
+      "document_id": "09-24-2019-04-25-05-3914910473.pdf",
+      "word_count": 1709
+    },
+    {
+      "document_id": "cmu_non-disclosure_agreement_sample.pdf",
+      "word_count": 1710
+    },
+    {
+      "document_id": "1016503_0000929624-00-000894_0010.txt",
+      "word_count": 1751
+    },
+    {
+      "document_id": "1012887_0001193125-07-165503_dex99d6.htm",
+      "word_count": 1760
+    }
+  ],
+  "elapsed_seconds": 388.45,
+  "cost_usd": 3.640182,
+  "total_tokens": 6978551
+}

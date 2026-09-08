@@ -1,0 +1,18 @@
+{
+  "task_id": "legal_contracts-056",
+  "answer": [
+    {
+      "agreement_type": "unilateral_nda",
+      "document_count": 619,
+      "avg_word_count": 3881.18
+    },
+    {
+      "agreement_type": "mutual_nda",
+      "document_count": 294,
+      "avg_word_count": 1817.37
+    }
+  ],
+  "elapsed_seconds": 480.18,
+  "cost_usd": 4.769789,
+  "total_tokens": 8502186
+}

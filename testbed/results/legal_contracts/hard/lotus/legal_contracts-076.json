@@ -1,0 +1,111 @@
+{
+  "task_id": "legal_contracts-076",
+  "answer": [
+    {
+      "company_name": "Tigo Energy, Inc.",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2024-12-31",
+      "section_302_document_ids": [
+        "tygo-ex31_1.htm",
+        "tygo-ex31_2.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Bill Roeschlein",
+        "Zvi Alon"
+      ],
+      "section_906_document_ids": [
+        "tygo-ex32_1.htm",
+        "tygo-ex32_2.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Bill Roeschlein",
+        "Zvi Alon"
+      ]
+    },
+    {
+      "company_name": "Trinity Capital Inc.",
+      "reporting_period_type": "quarterly",
+      "reporting_period_end_date": "2025-03-31",
+      "section_302_document_ids": [
+        "trin-ex31_1.htm",
+        "trin-ex31_2.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Kyle Brown",
+        "Michael Testa"
+      ],
+      "section_906_document_ids": [
+        "trin-ex32_1.htm",
+        "trin-ex32_2.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Kyle Brown",
+        "Michael Testa"
+      ]
+    },
+    {
+      "company_name": "Wetouch Technology Inc.",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2023-12-31",
+      "section_302_document_ids": [
+        "ex31-1_4.htm",
+        "ex31-2_4.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Yuhua Huang",
+        "Zongyi Lian"
+      ],
+      "section_906_document_ids": [
+        "ex32-1_4.htm",
+        "ex32-2_3.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Yuhua Huang",
+        "Zongyi Lian"
+      ]
+    },
+    {
+      "company_name": "Xencor, Inc.",
+      "reporting_period_type": "annual",
+      "reporting_period_end_date": "2023-12-31",
+      "section_302_document_ids": [
+        "xncr-20231231xexx311.htm",
+        "xncr-20231231xexx312.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Bassil I. Dahiyat, Ph.D.",
+        "John J. Kuch"
+      ],
+      "section_906_document_ids": [
+        "xncr-20231231xexx321.htm",
+        "xncr-20231231xexx322.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Bassil I. Dahiyat, Ph.D.",
+        "John J. Kuch"
+      ]
+    },
+    {
+      "company_name": "iRhythm Technologies, Inc.",
+      "reporting_period_type": "quarterly",
+      "reporting_period_end_date": "2024-09-30",
+      "section_302_document_ids": [
+        "irtc-20240930xex311.htm",
+        "irtc-20240930xex312.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Daniel Wilson",
+        "Quentin S. Blackford"
+      ],
+      "section_906_document_ids": [
+        "irtc-20240930xex321.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Quentin S. Blackford"
+      ]
+    }
+  ],
+  "elapsed_seconds": 10071.98,
+  "cost_usd": 12.677476,
+  "total_tokens": 23787054
+}

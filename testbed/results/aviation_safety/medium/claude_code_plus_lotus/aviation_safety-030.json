@@ -1,0 +1,228 @@
+{
+  "task_id": "aviation_safety-030",
+  "answer": [
+    {
+      "rank": 1,
+      "incident_id": "asrs_080973",
+      "parties_involved": "C152 pilot and Tower",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 0,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": null,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "not_stated"
+    },
+    {
+      "rank": 2,
+      "incident_id": "asrs_109150",
+      "parties_involved": "EMB-170 and Airbus",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 0,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": null,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "not_stated"
+    },
+    {
+      "rank": 3,
+      "incident_id": "asrs_134237",
+      "parties_involved": "A321 flight crew",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 0,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": null,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "not_stated"
+    },
+    {
+      "rank": 4,
+      "incident_id": "asrs_141094",
+      "parties_involved": "Air carrier vs arriving aircraft",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 0,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": null,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "not_stated"
+    },
+    {
+      "rank": 5,
+      "incident_id": "asrs_099797",
+      "parties_involved": "Two GA aircraft in training pattern",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 5,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": 5,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "matches"
+    },
+    {
+      "rank": 6,
+      "incident_id": "asrs_029751",
+      "parties_involved": "S80 jet vs H500 helicopter",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 10,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": 10,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "matches"
+    },
+    {
+      "rank": 7,
+      "incident_id": "asrs_124473",
+      "parties_involved": "R22 helicopter vs pattern aircraft",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 20,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": 25,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "differs"
+    },
+    {
+      "rank": 8,
+      "incident_id": "asrs_089386",
+      "parties_involved": "C-152 instructor and student vs C-172",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 50,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": 50,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "matches"
+    },
+    {
+      "rank": 9,
+      "incident_id": "asrs_016747",
+      "parties_involved": "MD80 vs Cessna Caravan",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 100,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": 100,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "matches"
+    },
+    {
+      "rank": 10,
+      "incident_id": "asrs_072492",
+      "parties_involved": "C172 student pilot vs LSA aircraft",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 100,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": 100,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "matches"
+    },
+    {
+      "rank": 11,
+      "incident_id": "asrs_020128",
+      "parties_involved": "C172 training flight vs Citation jet",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 200,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": 200,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "matches"
+    },
+    {
+      "rank": 12,
+      "incident_id": "asrs_099441",
+      "parties_involved": "C172 vs Citation",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 200,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": 200,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "matches"
+    },
+    {
+      "rank": 13,
+      "incident_id": "asrs_122921",
+      "parties_involved": "Aircraft X vs Aircraft Y",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 200,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": null,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "not_stated"
+    },
+    {
+      "rank": 14,
+      "incident_id": "asrs_123517",
+      "parties_involved": "Helicopter vs Aircraft Y",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 200,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": null,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "not_stated"
+    },
+    {
+      "rank": 15,
+      "incident_id": "asrs_141979",
+      "parties_involved": "Aircraft X and Aircraft Y",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 200,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": 200,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "matches"
+    },
+    {
+      "rank": 16,
+      "incident_id": "asrs_082524",
+      "parties_involved": "AC90 aircraft vs helicopter",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 250,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": null,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "not_stated"
+    },
+    {
+      "rank": 17,
+      "incident_id": "asrs_137300",
+      "parties_involved": "C172 vs low-wing GA aircraft",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 250,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": 200,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "differs"
+    },
+    {
+      "rank": 18,
+      "incident_id": "asrs_045130",
+      "parties_involved": "Heavy jet vs heavy jet",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 300,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": 300,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "matches"
+    },
+    {
+      "rank": 19,
+      "incident_id": "asrs_131097",
+      "parties_involved": "Two GA aircraft in traffic pattern",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 300,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": 360,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "differs"
+    },
+    {
+      "rank": 20,
+      "incident_id": "asrs_069232",
+      "parties_involved": "A319 vs VFR aircraft",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 400,
+      "narrative_horizontal_ft": 1320,
+      "narrative_vertical_ft": 400,
+      "horizontal_comparison": "differs",
+      "vertical_comparison": "matches"
+    }
+  ],
+  "elapsed_seconds": 327.328,
+  "cost_usd": 0.69918384,
+  "total_tokens": 1324502
+}

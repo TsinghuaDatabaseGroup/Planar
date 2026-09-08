@@ -1,0 +1,394 @@
+{
+  "node_id": 56,
+  "sample_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-045/moar-search/pipeline_vehicle_safety-045_input_sample_openai_Qwen3.5-397B-A17B.yaml",
+  "sample_output_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-045/moar-search/pipeline_vehicle_safety-045_input_sample_openai_Qwen3.5-397B-A17B.json",
+  "semantic_fidelity": 0.6749999999999999,
+  "sample_execution_cost_usd": 1.3141397899999996,
+  "fidelity_threshold": 0.9,
+  "selection_reason": "highest_fidelity_no_candidate_met_threshold",
+  "optimization_path": "ROOT → change to Qwen3.5-397B-A17B(filter_chevrolet_brakes_complaints)",
+  "sample_execution_metrics_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-045/moar-search/candidate-metrics/execution_0001_node-56.json",
+  "full_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-045/selected-plan/pipeline_vehicle_safety-045_optimized_full.yaml",
+  "input_plan_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/pipeline-all/pipeline_vehicle_safety-045.yaml",
+  "input_plan_kind": "reference-plan translation used as the MOAR input plan",
+  "operator_execution_policy": {
+    "policy": "structural_rewrite_fixed_operator_execution",
+    "nested_v1_optimizer_invoked": false,
+    "fixed_default_model": "Qwen3.5-397B-A17B",
+    "unchanged_operations": [
+      "filter_chevrolet_brakes_complaints",
+      "filter_chevrolet_brakes_recalls",
+      "flatten_chevrolet_brakes_recall_fields",
+      "match_chevrolet_brakes_complaints_to_recalls",
+      "extract_chevrolet_braking_defect_theme",
+      "classify_chevrolet_braking_safety_risk",
+      "filter_candidate_chevrolet_brake_reports",
+      "match_chevrolet_brake_themes_to_reports",
+      "aggregate_chevrolet_brake_themes",
+      "summarize_chevrolet_odi_braking_risk",
+      "order_limit_and_rank_chevrolet_brake_themes",
+      "unnest_ranked_chevrolet_brake_themes"
+    ],
+    "new_or_replaced_operations": [],
+    "restored_fields": {},
+    "unchanged_operation_count": 12,
+    "new_or_replaced_operation_count": 0
+  },
+  "input_plan_signature": {
+    "definitions": {
+      "filter_chevrolet_brakes_complaints": "code_filter",
+      "filter_chevrolet_brakes_recalls": "code_filter",
+      "flatten_chevrolet_brakes_recall_fields": "code_map",
+      "match_chevrolet_brakes_complaints_to_recalls": "equijoin",
+      "extract_chevrolet_braking_defect_theme": "map",
+      "classify_chevrolet_braking_safety_risk": "filter",
+      "filter_candidate_chevrolet_brake_reports": "code_filter",
+      "match_chevrolet_brake_themes_to_reports": "equijoin",
+      "aggregate_chevrolet_brake_themes": "code_reduce",
+      "summarize_chevrolet_odi_braking_risk": "map",
+      "order_limit_and_rank_chevrolet_brake_themes": "code_reduce",
+      "unnest_ranked_chevrolet_brake_themes": "unnest"
+    },
+    "logical_operations": [
+      {
+        "name": "filter_chevrolet_brakes_complaints",
+        "type": "code_filter",
+        "logical_config_sha256": "9cccdac4e6473fce7b29f2efb0a2397a9c37ad00655bad0fbac4439a61432fc3"
+      },
+      {
+        "name": "filter_chevrolet_brakes_recalls",
+        "type": "code_filter",
+        "logical_config_sha256": "db4588b334860bbc772a0b20586ae965325ba72bbb1ac9813071f7bf233c8952"
+      },
+      {
+        "name": "flatten_chevrolet_brakes_recall_fields",
+        "type": "code_map",
+        "logical_config_sha256": "7d130d0a2a1058e662c07d525c929f56cb542860236bbcf7156a68b3ca18568b"
+      },
+      {
+        "name": "match_chevrolet_brakes_complaints_to_recalls",
+        "type": "equijoin",
+        "logical_config_sha256": "5ed0965234cea76525e987434bd44a9acf79323e395f7c0303359a1d3bbb1dd0"
+      },
+      {
+        "name": "extract_chevrolet_braking_defect_theme",
+        "type": "map",
+        "logical_config_sha256": "593faf1de27236fa6708cdd6da55eecaa0c6203fdbf29433d4e1be785a4ba3cc"
+      },
+      {
+        "name": "classify_chevrolet_braking_safety_risk",
+        "type": "filter",
+        "logical_config_sha256": "33d15e4f645cc70a15f1591011d0ea4fe1a16e5fe2dda8703a0ffa58b8a3746f"
+      },
+      {
+        "name": "filter_candidate_chevrolet_brake_reports",
+        "type": "code_filter",
+        "logical_config_sha256": "3f3452a6f9a7cf368f832f4894b6ee1075b120cce9ac75b0a6c30ae15ab751ec"
+      },
+      {
+        "name": "match_chevrolet_brake_themes_to_reports",
+        "type": "equijoin",
+        "logical_config_sha256": "c4e051382df140c1fa84334c83fd5000f971debc3ab064e775297d71ae282d97"
+      },
+      {
+        "name": "aggregate_chevrolet_brake_themes",
+        "type": "code_reduce",
+        "logical_config_sha256": "502c4750fa10a120f57baab33a6e6f655b15c152b0edf14e91f1e9b72049967d"
+      },
+      {
+        "name": "summarize_chevrolet_odi_braking_risk",
+        "type": "map",
+        "logical_config_sha256": "59c2c8f2697827292139d0b8f7a3cf388ade8002f99f6a50b47d4357ef4b09e4"
+      },
+      {
+        "name": "order_limit_and_rank_chevrolet_brake_themes",
+        "type": "code_reduce",
+        "logical_config_sha256": "63f748196370d4a282b5478ceeeeefb996bf89b61a034fcc40c183ea7854807d"
+      },
+      {
+        "name": "unnest_ranked_chevrolet_brake_themes",
+        "type": "unnest",
+        "logical_config_sha256": "dccd092d7cdbb9a09c490e561db26477d80d528b0b7c86299099fba3d20f420f"
+      }
+    ],
+    "steps": [
+      {
+        "name": "chevrolet_brakes_complaints",
+        "input": "nhtsa_complaints",
+        "operations": [
+          {
+            "name": "filter_chevrolet_brakes_complaints",
+            "type": "code_filter"
+          }
+        ]
+      },
+      {
+        "name": "chevrolet_brakes_recalls",
+        "input": "nhtsa_recalls",
+        "operations": [
+          {
+            "name": "filter_chevrolet_brakes_recalls",
+            "type": "code_filter"
+          },
+          {
+            "name": "flatten_chevrolet_brakes_recall_fields",
+            "type": "code_map"
+          }
+        ]
+      },
+      {
+        "name": "matched_chevrolet_brakes_pairs",
+        "input": null,
+        "operations": [
+          {
+            "name": "match_chevrolet_brakes_complaints_to_recalls",
+            "type": "equijoin",
+            "inputs": {
+              "left": "chevrolet_brakes_complaints",
+              "right": "chevrolet_brakes_recalls"
+            }
+          }
+        ]
+      },
+      {
+        "name": "qualified_chevrolet_brakes_pairs",
+        "input": "matched_chevrolet_brakes_pairs",
+        "operations": [
+          {
+            "name": "extract_chevrolet_braking_defect_theme",
+            "type": "map"
+          },
+          {
+            "name": "classify_chevrolet_braking_safety_risk",
+            "type": "filter"
+          }
+        ]
+      },
+      {
+        "name": "candidate_chevrolet_brake_reports",
+        "input": "nhtsa_investigation_reports",
+        "operations": [
+          {
+            "name": "filter_candidate_chevrolet_brake_reports",
+            "type": "code_filter"
+          }
+        ]
+      },
+      {
+        "name": "matched_chevrolet_brake_reports",
+        "input": null,
+        "operations": [
+          {
+            "name": "match_chevrolet_brake_themes_to_reports",
+            "type": "equijoin",
+            "inputs": {
+              "left": "qualified_chevrolet_brakes_pairs",
+              "right": "candidate_chevrolet_brake_reports"
+            }
+          }
+        ]
+      },
+      {
+        "name": "ranked_chevrolet_brake_themes",
+        "input": "matched_chevrolet_brake_reports",
+        "operations": [
+          {
+            "name": "aggregate_chevrolet_brake_themes",
+            "type": "code_reduce"
+          },
+          {
+            "name": "summarize_chevrolet_odi_braking_risk",
+            "type": "map"
+          },
+          {
+            "name": "order_limit_and_rank_chevrolet_brake_themes",
+            "type": "code_reduce"
+          },
+          {
+            "name": "unnest_ranked_chevrolet_brake_themes",
+            "type": "unnest"
+          }
+        ]
+      }
+    ]
+  },
+  "selected_plan_signature": {
+    "definitions": {
+      "filter_chevrolet_brakes_complaints": "code_filter",
+      "filter_chevrolet_brakes_recalls": "code_filter",
+      "flatten_chevrolet_brakes_recall_fields": "code_map",
+      "match_chevrolet_brakes_complaints_to_recalls": "equijoin",
+      "extract_chevrolet_braking_defect_theme": "map",
+      "classify_chevrolet_braking_safety_risk": "filter",
+      "filter_candidate_chevrolet_brake_reports": "code_filter",
+      "match_chevrolet_brake_themes_to_reports": "equijoin",
+      "aggregate_chevrolet_brake_themes": "code_reduce",
+      "summarize_chevrolet_odi_braking_risk": "map",
+      "order_limit_and_rank_chevrolet_brake_themes": "code_reduce",
+      "unnest_ranked_chevrolet_brake_themes": "unnest"
+    },
+    "logical_operations": [
+      {
+        "name": "filter_chevrolet_brakes_complaints",
+        "type": "code_filter",
+        "logical_config_sha256": "9cccdac4e6473fce7b29f2efb0a2397a9c37ad00655bad0fbac4439a61432fc3"
+      },
+      {
+        "name": "filter_chevrolet_brakes_recalls",
+        "type": "code_filter",
+        "logical_config_sha256": "db4588b334860bbc772a0b20586ae965325ba72bbb1ac9813071f7bf233c8952"
+      },
+      {
+        "name": "flatten_chevrolet_brakes_recall_fields",
+        "type": "code_map",
+        "logical_config_sha256": "7d130d0a2a1058e662c07d525c929f56cb542860236bbcf7156a68b3ca18568b"
+      },
+      {
+        "name": "match_chevrolet_brakes_complaints_to_recalls",
+        "type": "equijoin",
+        "logical_config_sha256": "5ed0965234cea76525e987434bd44a9acf79323e395f7c0303359a1d3bbb1dd0"
+      },
+      {
+        "name": "extract_chevrolet_braking_defect_theme",
+        "type": "map",
+        "logical_config_sha256": "593faf1de27236fa6708cdd6da55eecaa0c6203fdbf29433d4e1be785a4ba3cc"
+      },
+      {
+        "name": "classify_chevrolet_braking_safety_risk",
+        "type": "filter",
+        "logical_config_sha256": "33d15e4f645cc70a15f1591011d0ea4fe1a16e5fe2dda8703a0ffa58b8a3746f"
+      },
+      {
+        "name": "filter_candidate_chevrolet_brake_reports",
+        "type": "code_filter",
+        "logical_config_sha256": "3f3452a6f9a7cf368f832f4894b6ee1075b120cce9ac75b0a6c30ae15ab751ec"
+      },
+      {
+        "name": "match_chevrolet_brake_themes_to_reports",
+        "type": "equijoin",
+        "logical_config_sha256": "c4e051382df140c1fa84334c83fd5000f971debc3ab064e775297d71ae282d97"
+      },
+      {
+        "name": "aggregate_chevrolet_brake_themes",
+        "type": "code_reduce",
+        "logical_config_sha256": "502c4750fa10a120f57baab33a6e6f655b15c152b0edf14e91f1e9b72049967d"
+      },
+      {
+        "name": "summarize_chevrolet_odi_braking_risk",
+        "type": "map",
+        "logical_config_sha256": "59c2c8f2697827292139d0b8f7a3cf388ade8002f99f6a50b47d4357ef4b09e4"
+      },
+      {
+        "name": "order_limit_and_rank_chevrolet_brake_themes",
+        "type": "code_reduce",
+        "logical_config_sha256": "63f748196370d4a282b5478ceeeeefb996bf89b61a034fcc40c183ea7854807d"
+      },
+      {
+        "name": "unnest_ranked_chevrolet_brake_themes",
+        "type": "unnest",
+        "logical_config_sha256": "dccd092d7cdbb9a09c490e561db26477d80d528b0b7c86299099fba3d20f420f"
+      }
+    ],
+    "steps": [
+      {
+        "name": "chevrolet_brakes_complaints",
+        "input": "nhtsa_complaints",
+        "operations": [
+          {
+            "name": "filter_chevrolet_brakes_complaints",
+            "type": "code_filter"
+          }
+        ]
+      },
+      {
+        "name": "chevrolet_brakes_recalls",
+        "input": "nhtsa_recalls",
+        "operations": [
+          {
+            "name": "filter_chevrolet_brakes_recalls",
+            "type": "code_filter"
+          },
+          {
+            "name": "flatten_chevrolet_brakes_recall_fields",
+            "type": "code_map"
+          }
+        ]
+      },
+      {
+        "name": "matched_chevrolet_brakes_pairs",
+        "input": null,
+        "operations": [
+          {
+            "name": "match_chevrolet_brakes_complaints_to_recalls",
+            "type": "equijoin",
+            "inputs": {
+              "left": "chevrolet_brakes_complaints",
+              "right": "chevrolet_brakes_recalls"
+            }
+          }
+        ]
+      },
+      {
+        "name": "qualified_chevrolet_brakes_pairs",
+        "input": "matched_chevrolet_brakes_pairs",
+        "operations": [
+          {
+            "name": "extract_chevrolet_braking_defect_theme",
+            "type": "map"
+          },
+          {
+            "name": "classify_chevrolet_braking_safety_risk",
+            "type": "filter"
+          }
+        ]
+      },
+      {
+        "name": "candidate_chevrolet_brake_reports",
+        "input": "nhtsa_investigation_reports",
+        "operations": [
+          {
+            "name": "filter_candidate_chevrolet_brake_reports",
+            "type": "code_filter"
+          }
+        ]
+      },
+      {
+        "name": "matched_chevrolet_brake_reports",
+        "input": null,
+        "operations": [
+          {
+            "name": "match_chevrolet_brake_themes_to_reports",
+            "type": "equijoin",
+            "inputs": {
+              "left": "qualified_chevrolet_brakes_pairs",
+              "right": "candidate_chevrolet_brake_reports"
+            }
+          }
+        ]
+      },
+      {
+        "name": "ranked_chevrolet_brake_themes",
+        "input": "matched_chevrolet_brake_reports",
+        "operations": [
+          {
+            "name": "aggregate_chevrolet_brake_themes",
+            "type": "code_reduce"
+          },
+          {
+            "name": "summarize_chevrolet_odi_braking_risk",
+            "type": "map"
+          },
+          {
+            "name": "order_limit_and_rank_chevrolet_brake_themes",
+            "type": "code_reduce"
+          },
+          {
+            "name": "unnest_ranked_chevrolet_brake_themes",
+            "type": "unnest"
+          }
+        ]
+      }
+    ]
+  },
+  "plan_changed": false
+}

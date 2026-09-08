@@ -1,0 +1,277 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+  asrs_person_factors:
+    type: file
+    path: data/asrs/person_factors.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_human_factors_primary
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("primary_problem") == "Human Factors"
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: extract_communication_pair_mechanisms
+    type: map
+    optimize: true
+    prompt: |
+      For this NASA ASRS narrative, emit one classification for every clearly
+      supported participant group involved in a communication breakdown. The
+      allowed communication_pair values are:
+
+      - flight_crew_atc: communication between flight crew and air traffic control;
+      - flight_crew_flight_crew: communication among flight crew members.
+
+      For each supported participant group, assign exactly one primary
+      breakdown_mode:
+
+      - phraseology: ambiguous, confusing, incorrect, nonstandard, or misleading
+        wording or terminology was the primary breakdown;
+      - timing_or_late_information: information was communicated too late, delayed,
+        withheld until too late, or not provided when it was operationally needed;
+      - assumption_or_expectation: an unverified assumption or expectation about
+        what another participant knew, meant, would say, or would do was primary;
+      - task_division_or_role: unclear or ineffective responsibility, task sharing,
+        monitoring, briefing, or communication-role division was primary;
+      - failure_to_challenge: a participant failed to question, challenge, correct,
+        or speak up about a recognized or reasonably apparent problem.
+
+      The modes are not a precedence list. For each participant group, select only
+      the mode most directly responsible for its communication breakdown. Emit that
+      group only when the narrative clearly supports both the group and one primary
+      mode. The same report may emit both participant groups, potentially with
+      different modes. Emit each participant group at most once.
+
+      Return communication_pairs and breakdown_modes as aligned arrays: entries at
+      the same index form one output row. Return two empty arrays when no qualifying
+      group and mechanism are clearly supported.
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        communication_pairs: list[string]
+        breakdown_modes: list[string]
+    validate:
+      - len(output["communication_pairs"]) == len(output["breakdown_modes"])
+      - len(output["communication_pairs"]) <= 2
+      - len(output["communication_pairs"]) == len(set(output["communication_pairs"]))
+      - all([value in ["flight_crew_atc", "flight_crew_flight_crew"] for value in output["communication_pairs"]])
+      - all([value in ["phraseology", "timing_or_late_information", "assumption_or_expectation", "task_division_or_role", "failure_to_challenge"] for value in output["breakdown_modes"]])
+    num_retries_on_validate_failure: 2
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: build_semantic_pair_rows
+    type: code_map
+    code: |
+      def transform(doc):
+          valid_pairs = {"flight_crew_atc", "flight_crew_flight_crew"}
+          valid_modes = {
+              "phraseology",
+              "timing_or_late_information",
+              "assumption_or_expectation",
+              "task_division_or_role",
+              "failure_to_challenge",
+          }
+          pairs = doc.get("communication_pairs") or []
+          modes = doc.get("breakdown_modes") or []
+          rows = []
+          seen_pairs = set()
+          for pair, mode in zip(pairs, modes):
+              if (
+                  pair not in valid_pairs
+                  or mode not in valid_modes
+                  or pair in seen_pairs
+              ):
+                  continue
+              seen_pairs.add(pair)
+              rows.append(
+                  {
+                      "communication_pair": pair,
+                      "breakdown_mode": mode,
+                  }
+              )
+          return {"semantic_pair_rows": rows}
+
+  - name: unnest_semantic_pair_rows
+    type: unnest
+    unnest_key: semantic_pair_rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - communication_pair
+      - breakdown_mode
+
+  - name: attach_structured_communication_pairs
+    type: code_map
+    code: |
+      import csv
+      import os
+      import threading
+
+      _communication_pair_index = None
+      _communication_pair_lock = threading.Lock()
+
+      def load_communication_pair_index():
+          global _communication_pair_index
+          if _communication_pair_index is None:
+              with _communication_pair_lock:
+                  if _communication_pair_index is None:
+                      index = {}
+                      path = os.path.abspath(
+                          os.path.join("data", "asrs", "person_factors.csv")
+                      )
+                      with open(
+                          path, "r", encoding="utf-8", errors="replace", newline=""
+                      ) as handle:
+                          for row in csv.DictReader(handle):
+                              value = str(row.get("value", ""))
+                              if (
+                                  row.get("factor_type") != "communication_breakdown"
+                                  or "Flight Crew" not in value
+                              ):
+                                  continue
+                              incident_id = str(row.get("incident_id", ""))
+                              pairs = index.setdefault(incident_id, set())
+                              if (
+                                  "Party1 Flight Crew" in value
+                                  and "Party2 ATC" in value
+                              ) or (
+                                  "Party1 ATC" in value
+                                  and "Party2 Flight Crew" in value
+                              ):
+                                  pairs.add("flight_crew_atc")
+                              if (
+                                  "Party1 Flight Crew" in value
+                                  and "Party2 Flight Crew" in value
+                              ):
+                                  pairs.add("flight_crew_flight_crew")
+                      _communication_pair_index = index
+          return _communication_pair_index
+
+      def transform(doc):
+          pairs = load_communication_pair_index().get(
+              str(doc.get("incident_id", "")), set()
+          )
+          return {"structured_communication_pairs": sorted(pairs)}
+
+  - name: inner_join_matching_communication_pair
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("communication_pair") in set(
+              doc.get("structured_communication_pairs", [])
+          )
+
+  - name: aggregate_pair_mechanism_counts
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          pair_order = ["flight_crew_atc", "flight_crew_flight_crew"]
+          mode_order = [
+              "phraseology",
+              "timing_or_late_information",
+              "assumption_or_expectation",
+              "task_division_or_role",
+              "failure_to_challenge",
+          ]
+          incident_ids = {
+              (pair, mode): set()
+              for pair in pair_order
+              for mode in mode_order
+          }
+
+          for item in items:
+              incident_id = str(item.get("incident_id", ""))
+              key = (item.get("communication_pair"), item.get("breakdown_mode"))
+              if incident_id and key in incident_ids:
+                  incident_ids[key].add(incident_id)
+
+          rows = []
+          for pair in pair_order:
+              for mode in mode_order:
+                  ids = incident_ids[(pair, mode)]
+                  if not ids:
+                      continue
+                  rows.append(
+                      {
+                          "communication_pair": pair,
+                          "breakdown_mode": mode,
+                          "incident_count": len(ids),
+                      }
+                  )
+          return {"rows": rows}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - communication_pair
+      - breakdown_mode
+      - incident_count
+
+pipeline:
+  steps:
+    - name: process
+      input: asrs_incidents
+      operations:
+        - filter_human_factors_primary
+        - load_asrs_narrative
+        - extract_communication_pair_mechanisms
+        - build_semantic_pair_rows
+        - unnest_semantic_pair_rows
+        - attach_structured_communication_pairs
+        - inner_join_matching_communication_pair
+        - aggregate_pair_mechanism_counts
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-016.json

@@ -1,0 +1,26 @@
+{
+  "task_id": "vehicle_safety-045",
+  "answer": [
+    {
+      "rank": 1,
+      "defect_theme": "Electronic brake assist disabled due to software error.",
+      "matched_complaint_count": 14,
+      "distinct_campaign_count": 1,
+      "related_report_ids": [],
+      "odi_risk_summary": "Loss of braking assistance"
+    },
+    {
+      "rank": 2,
+      "defect_theme": "Vacuum pump failure causes reduced braking power.",
+      "matched_complaint_count": 11,
+      "distinct_campaign_count": 1,
+      "related_report_ids": [
+        "txt_investigation_8be18f99e74db448.txt"
+      ],
+      "odi_risk_summary": "Vacuum pump failure reduces brake assist, extending stopping distances."
+    }
+  ],
+  "elapsed_seconds": 290.2,
+  "cost_usd": 0.399382,
+  "total_tokens": 813371
+}

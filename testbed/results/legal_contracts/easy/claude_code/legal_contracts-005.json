@@ -1,0 +1,56 @@
+{
+  "task_id": "legal_contracts-005",
+  "answer": [
+    {
+      "document_id": "1011344_0001193125-08-097987_dex99d5.htm",
+      "stated_duration": "one (1) year",
+      "duration_months": 12.0,
+      "governing_law": "laws of the State of California"
+    },
+    {
+      "document_id": "1363033_0001144204-06-024852_v045245_ex10-8.htm",
+      "stated_duration": "during the Term",
+      "duration_months": 12.0,
+      "governing_law": "This Agreement is governed by the laws of Pennsylvania."
+    },
+    {
+      "document_id": "1373467_0001096350-07-000140_ex99threea.htm",
+      "stated_duration": "twelve (12) months",
+      "duration_months": 12.0,
+      "governing_law": "the laws of the State of Colorado"
+    },
+    {
+      "document_id": "183.pdf",
+      "stated_duration": "one (1) year after the termination of the business relationship between the Parties",
+      "duration_months": 12.0,
+      "governing_law": "the laws of the State of New York"
+    },
+    {
+      "document_id": "Confidentiality%20and%20Non-Disclosure%20Agreement%20%28CNA-1%29.pdf",
+      "stated_duration": "1 year",
+      "duration_months": 12.0,
+      "governing_law": "laws of the State of Florida"
+    },
+    {
+      "document_id": "Non-Disclosure-NDA-UW-Oshkosh_FINALV2.pdf",
+      "stated_duration": "one (1) yea",
+      "duration_months": 12.0,
+      "governing_law": "the laws of the State of Wisconsin, U.S.A. without regard to conflicts of law provisions"
+    },
+    {
+      "document_id": "Sample%20NDA%202018.pdf",
+      "stated_duration": "one (1) year",
+      "duration_months": 12.0,
+      "governing_law": "the internal laws of the State of North Carolina"
+    },
+    {
+      "document_id": "US-Non-Disclosure-Agreement.pdf",
+      "stated_duration": "one year",
+      "duration_months": 12.0,
+      "governing_law": "the laws of the State of New Hampshire"
+    }
+  ],
+  "elapsed_seconds": 402.594,
+  "cost_usd": 0.83802714,
+  "total_tokens": 1654600
+}

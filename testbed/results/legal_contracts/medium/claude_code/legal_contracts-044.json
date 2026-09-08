@@ -1,0 +1,56 @@
+{
+  "task_id": "legal_contracts-044",
+  "answer": [
+    {
+      "document_name": "a2023q4voyaex97voyafinanci.htm",
+      "company_name": "Voya Financial, Inc.",
+      "effective_date": "October 2023",
+      "covered_persons": "All Executive Officers who received Incentive-based Compensation and all employees, including Executive Officers, and directors who engage in misconduct"
+    },
+    {
+      "document_name": "a2024q4voyaex97voyafinanci.htm",
+      "company_name": "Voya Financial, Inc.",
+      "effective_date": "October 2023",
+      "covered_persons": "All Executive Officers who received Incentive-based Compensation and all employees, including Executive Officers, and directors who engage in misconduct"
+    },
+    {
+      "document_name": "ex971globalstarincclawback.htm",
+      "company_name": "Globalstar, Inc.",
+      "effective_date": "2025-02-25",
+      "covered_persons": "Section 16 Officers (for mandatory recovery of Erroneously Awarded Compensation) and Covered Executives (for discretionary recovery of Recoverable Amounts)"
+    },
+    {
+      "document_name": "ex_612612.htm",
+      "company_name": "H.B. Fuller Company",
+      "effective_date": "2023-10-02",
+      "covered_persons": "All current and former executive officers and key managers (employees at grade level 32 or above)"
+    },
+    {
+      "document_name": "exhibit971-clawbackpolicy.htm",
+      "company_name": "Skyworks Solutions, Inc.",
+      "effective_date": "2023-10-02",
+      "covered_persons": "Executive Officers (defined as the Company's officers as defined in Rule 16a-1(f) under the Exchange Act) who served at any time during the performance period for the applicable Incentive-Based Compensation"
+    },
+    {
+      "document_name": "loco-20231227xex97d1.htm",
+      "company_name": "El Pollo Loco Holdings, Inc.",
+      "effective_date": "2023-10-31",
+      "covered_persons": "any current or former officer of the Company who is or was subject to Section 16 of the Securities Exchange Act of 1934, as amended, at any time during the applicable performance period for the relevant Incentive-Based Compensation"
+    },
+    {
+      "document_name": "stra-20231231xex971.htm",
+      "company_name": "Strategic Education, Inc.",
+      "effective_date": "February 2, 2016 (amended February 25, 2021 and November 1, 2023)",
+      "covered_persons": "current and former Executive Officers, and Employees (specifically those covered by the Incentive Payment Rule)"
+    },
+    {
+      "document_name": "zspc-20241231xex97d1.htm",
+      "company_name": "zSpace, Inc.",
+      "effective_date": "2024-06-18",
+      "covered_persons": "Executive Officers (defined as each individual who is currently or was previously designated as an \"officer\" of the Company as defined in Rule 16a-1(f) under the Exchange Act, including those identified pursuant to Item 401(b) of Regulation S-K, as well as the principal financial officer and principal accounting officer or controller)"
+    }
+  ],
+  "elapsed_seconds": 61.547,
+  "cost_usd": 0.14829534,
+  "total_tokens": 239398
+}

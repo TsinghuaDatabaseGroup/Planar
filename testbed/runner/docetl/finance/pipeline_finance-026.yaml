@@ -1,0 +1,288 @@
+datasets:
+  sec_2020_filings:
+    type: file
+    path: data/SEC/CSV/2020.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_filings_over_50000_words
+    type: code_filter
+    code: |
+      def transform(doc):
+          try:
+              return int(doc.get("word_count", 0)) > 50000
+          except (TypeError, ValueError):
+              return False
+
+  - name: load_filing_document
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("SEC text path escapes data/SEC")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              document = handle.read()
+          return {"document": document}
+
+  - name: filter_substantial_going_concern_doubt
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this SEC 10-K filing only if it affirmatively expresses substantial
+      doubt about the reporting company's ability to continue as a going concern.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_reported_legal_proceedings
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this SEC 10-K filing only if it reports a pending, threatened, or
+      ongoing litigation matter, legal proceeding, lawsuit, or regulatory
+      investigation involving the reporting company.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: classify_growth_strategy
+    type: map
+    optimize: true
+    prompt: |
+      Assign this SEC 10-K filing to exactly one stated growth-strategy category:
+
+      - organic: growth through the company's internal business activities;
+      - acquisition_driven: growth primarily through acquisitions;
+      - hybrid: both organic growth and acquisitions;
+      - not_applicable: the filing states that a growth strategy is not applicable;
+      - undetermined: the stated strategy cannot be determined from the filing.
+
+      Base the category on the reporting company's stated growth strategy.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        growth_strategy: enum[organic, acquisition_driven, hybrid, not_applicable, undetermined]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 256
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_determined_growth_strategies
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("growth_strategy") != "undetermined"
+
+  - name: extract_employee_and_risk_factor_counts
+    type: map
+    optimize: true
+    prompt: |
+      Extract the reported company-wide employee count and the total number of
+      distinct risk factors from this SEC 10-K filing.
+
+      Use an explicitly reported company-wide employee total for the latest
+      reporting date covered by the filing. Count distinct risk factors presented
+      in the filing's risk-factor section, rather than pages, paragraphs, or broad
+      category headings.
+
+      For each value, set its available flag to true only when the value can be
+      determined from the filing. When unavailable, set the flag to false and
+      return 0 as the required placeholder; the following deterministic operation
+      converts it to null.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        employee_count_available: boolean
+        employee_count_value: integer
+        risk_factor_count_available: boolean
+        risk_factor_count_value: integer
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 512
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: normalize_nullable_counts
+    type: code_map
+    code: |
+      def transform(doc):
+          def nullable_integer(flag_key, value_key):
+              if doc.get(flag_key) is not True:
+                  return None
+              try:
+                  return int(doc.get(value_key))
+              except (TypeError, ValueError):
+                  return None
+
+          return {
+              "employee_count": nullable_integer(
+                  "employee_count_available", "employee_count_value"
+              ),
+              "risk_factor_count": nullable_integer(
+                  "risk_factor_count_available", "risk_factor_count_value"
+              ),
+          }
+
+  - name: aggregate_by_growth_strategy
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          from collections import defaultdict
+          from statistics import median
+
+          groups = defaultdict(list)
+          for item in items:
+              groups[str(item.get("growth_strategy", ""))].append(item)
+
+          rows = []
+          for growth_strategy, group in groups.items():
+              employee_counts = [
+                  item["employee_count"]
+                  for item in group
+                  if item.get("employee_count") is not None
+              ]
+              risk_factor_counts = [
+                  item["risk_factor_count"]
+                  for item in group
+                  if item.get("risk_factor_count") is not None
+              ]
+              rows.append(
+                  {
+                      "growth_strategy": growth_strategy,
+                      "filing_count": len(group),
+                      "median_employee_count": (
+                          round(float(median(employee_counts)), 1)
+                          if employee_counts
+                          else None
+                      ),
+                      "median_risk_factor_count": (
+                          round(float(median(risk_factor_counts)), 1)
+                          if risk_factor_counts
+                          else None
+                      ),
+                  }
+              )
+          return {"rows": rows}
+
+  - name: unnest_growth_strategy_groups
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - growth_strategy
+      - filing_count
+      - median_employee_count
+      - median_risk_factor_count
+
+  - name: filter_groups_with_at_least_10_filings
+    type: code_filter
+    code: |
+      def transform(doc):
+          return int(doc.get("filing_count", 0)) >= 10
+
+  - name: order_growth_strategy_groups
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          rows = sorted(
+              items,
+              key=lambda item: (
+                  -int(item.get("filing_count", 0)),
+                  str(item.get("growth_strategy", "")),
+              ),
+          )
+          return {"rows": rows}
+
+  - name: unnest_ordered_groups
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - growth_strategy
+      - filing_count
+      - median_employee_count
+      - median_risk_factor_count
+
+pipeline:
+  steps:
+    - name: process
+      input: sec_2020_filings
+      operations:
+        - filter_filings_over_50000_words
+        - load_filing_document
+        - filter_substantial_going_concern_doubt
+        - filter_reported_legal_proceedings
+        - classify_growth_strategy
+        - filter_determined_growth_strategies
+        - extract_employee_and_risk_factor_counts
+        - normalize_nullable_counts
+        - aggregate_by_growth_strategy
+        - unnest_growth_strategy_groups
+        - filter_groups_with_at_least_10_filings
+        - order_growth_strategy_groups
+        - unnest_ordered_groups
+  output:
+    type: file
+    path: raw_outputs/finance/output_finance-026.json

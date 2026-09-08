@@ -1,0 +1,20 @@
+{
+  "task_id": "legal_contracts-025",
+  "answer": [
+    {
+      "document_id": "1473637_0001432093-12-000764_ex10-34.htm",
+      "governing_law": "Province of Ontario"
+    },
+    {
+      "document_id": "EFCAConfidentialityAgreement.pdf",
+      "governing_law": "State of Victoria"
+    },
+    {
+      "document_id": "example-NDA-one-way-short-form-2012-1.pdf",
+      "governing_law": "English law"
+    }
+  ],
+  "elapsed_seconds": 362.643,
+  "cost_usd": 1.22572614,
+  "total_tokens": 2942366
+}

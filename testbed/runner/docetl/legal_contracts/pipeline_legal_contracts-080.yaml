@@ -1,0 +1,168 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_ex31_section_302_certifications
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is a genuine EX-31 SOX Section 302
+      certification.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_ex31_section_302_certification: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_certification_company
+    type: map
+    optimize: true
+    prompt: |
+      Return the company name stated in this certification.
+
+      Certification:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {certification_company: string}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: normalize_certification_company
+    type: code_map
+    code: |
+      def transform(doc):
+          import re
+          suffixes = {"inc", "incorporated", "corporation", "corp", "company", "co", "limited", "ltd", "llc", "plc", "lp", "llp"}
+          tokens = re.findall(r"[a-z0-9]+", str(doc.get("certification_company") or "").casefold())
+          while tokens and tokens[-1] in suffixes:
+              tokens.pop()
+          return {"normalized_company": " ".join(tokens)}
+  - name: deduplicate_certification_companies
+    type: code_reduce
+    reduce_key: normalized_company
+    code: |
+      def transform(items):
+          return {"certification_company": min(str(item.get("certification_company") or "") for item in items)}
+
+  - name: filter_ex19_insider_trading_policies
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is a genuine EX-19 insider-trading policy.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_ex19_insider_trading_policy: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_policy_requirements
+    type: map
+    optimize: true
+    prompt: |
+      Return the input document ID, stated company name, policy approval or
+      adoption date normalized to YYYY-MM-DD, whether pre-clearance is required,
+      whether hedging, short selling, and pledging are each prohibited, and the
+      covered-person categories present. Use only these category labels in this
+      order: directors, officers_or_executives, employees_or_personnel,
+      external_service_providers, family_or_household,
+      controlled_entities_or_accounts. Set policy_version_date_available=false
+      when no approval or adoption date is stated, using an empty date string
+      only as a placeholder.
+
+      Input document ID: {{ input.doc_id }}
+      Policy:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        policy_document_id: string
+        policy_company: string
+        policy_version_date_available: boolean
+        policy_version_date_value: string
+        pre_clearance_required: boolean
+        prohibits_hedging: boolean
+        prohibits_short_selling: boolean
+        prohibits_pledging: boolean
+        covered_person_categories: "list[string]"
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: normalize_policy_company_and_date
+    type: code_map
+    code: |
+      def transform(doc):
+          import re
+          suffixes = {"inc", "incorporated", "corporation", "corp", "company", "co", "limited", "ltd", "llc", "plc", "lp", "llp"}
+          tokens = re.findall(r"[a-z0-9]+", str(doc.get("policy_company") or "").casefold())
+          while tokens and tokens[-1] in suffixes:
+              tokens.pop()
+          return {
+              "normalized_company": " ".join(tokens),
+              "policy_version_date": str(doc.get("policy_version_date_value") or "") if doc.get("policy_version_date_available") is True else None,
+          }
+  - name: select_latest_policy_per_company
+    type: code_reduce
+    reduce_key: normalized_company
+    code: |
+      def transform(items):
+          ordered = sorted(items, key=lambda item: str(item.get("policy_document_id") or ""))
+          ordered.sort(key=lambda item: (item.get("policy_version_date") is not None, str(item.get("policy_version_date") or "")), reverse=True)
+          chosen = ordered[0]
+          return {
+              "policy_document_id": chosen.get("policy_document_id"),
+              "policy_company": chosen.get("policy_company"),
+              "policy_version_date": chosen.get("policy_version_date"),
+              "pre_clearance_required": chosen.get("pre_clearance_required"),
+              "prohibits_hedging": chosen.get("prohibits_hedging"),
+              "prohibits_short_selling": chosen.get("prohibits_short_selling"),
+              "prohibits_pledging": chosen.get("prohibits_pledging"),
+              "covered_person_categories": chosen.get("covered_person_categories") or [],
+          }
+
+  - name: join_certifications_and_policies
+    type: equijoin
+    deterministic: true
+    blocking_conditions:
+      - left["normalized_company"] == right["normalized_company"]
+  - name: filter_qualifying_policy_controls
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("pre_clearance_required") is True
+              and doc.get("prohibits_hedging") is True
+              and doc.get("prohibits_short_selling") is True
+              and doc.get("prohibits_pledging") is True
+              and len(doc.get("covered_person_categories") or []) >= 5
+          )
+  - name: order_qualifying_companies
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          rows = [{"company": item.get("policy_company"), "covered_person_categories": item.get("covered_person_categories") or []} for item in items]
+          rows.sort(key=lambda item: (-len(item["covered_person_categories"]), str(item.get("company") or "")))
+          return {"rows": rows}
+  - name: unnest_qualifying_companies
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields: [company, covered_person_categories]
+pipeline:
+  steps:
+    - name: certification_companies
+      input: contract_exhibits
+      operations: [filter_ex31_section_302_certifications, extract_certification_company, normalize_certification_company, deduplicate_certification_companies]
+    - name: latest_policies
+      input: contract_exhibits
+      operations: [filter_ex19_insider_trading_policies, extract_policy_requirements, normalize_policy_company_and_date, select_latest_policy_per_company]
+    - name: matched_companies
+      operations:
+        - join_certifications_and_policies: {left: certification_companies, right: latest_policies}
+    - name: answer
+      input: matched_companies
+      operations: [filter_qualifying_policy_controls, order_qualifying_companies, unnest_qualifying_companies]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-080.json

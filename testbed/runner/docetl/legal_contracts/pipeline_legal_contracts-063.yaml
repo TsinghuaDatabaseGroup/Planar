@@ -1,0 +1,85 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_nda_and_standstill_agreements
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is a mutual NDA, unilateral NDA, or
+      confidentiality-and-standstill agreement.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_in_scope_agreement: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: filter_combined_restrictions
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this agreement only if it contains an operative non-compete clause
+      and at least one operative customer or employee non-solicitation clause.
+
+      Agreement:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {has_combined_restrictions: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_restriction_durations
+    type: map
+    optimize: true
+    prompt: |
+      Return the non-compete duration and the presence and duration of each
+      customer and employee non-solicitation restriction. Normalize all stated
+      durations to years. For each duration, set its availability flag to false
+      when missing, using 0 only as a placeholder.
+
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        noncompete_duration_available: boolean
+        noncompete_duration_years_value: float
+        customers_present: boolean
+        customers_duration_available: boolean
+        customers_duration_years_value: float
+        employees_present: boolean
+        employees_duration_available: boolean
+        employees_duration_years_value: float
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: classify_duration_pattern
+    type: code_map
+    code: |
+      def transform(doc):
+          nc = float(doc.get("noncompete_duration_years_value") or 0) if doc.get("noncompete_duration_available") is True else None
+          customers_present = doc.get("customers_present") is True
+          employees_present = doc.get("employees_present") is True
+          customer = float(doc.get("customers_duration_years_value") or 0) if doc.get("customers_duration_available") is True else None
+          employee = float(doc.get("employees_duration_years_value") or 0) if doc.get("employees_duration_available") is True else None
+          if nc is None or not (customers_present or employees_present) or (customers_present and customer is None) or (employees_present and employee is None):
+              pattern = "Partially Unspecified"
+          else:
+              longest_ns = max(value for value, present in [(customer, customers_present), (employee, employees_present)] if present)
+              pattern = "NC Longer" if nc > longest_ns else "NS Longer" if nc < longest_ns else "Equal"
+          return {"duration_pattern": pattern}
+  - name: count_duration_patterns
+    type: code_reduce
+    reduce_key: duration_pattern
+    code: |
+      def transform(items):
+          return {"document_count": len(items)}
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations: [filter_nda_and_standstill_agreements, filter_combined_restrictions, extract_restriction_durations, classify_duration_pattern, count_duration_patterns]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-063.json

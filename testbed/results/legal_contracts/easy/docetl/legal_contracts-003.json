@@ -1,0 +1,108 @@
+{
+  "task_id": "legal_contracts-003",
+  "answer": [
+    {
+      "document_id": "cdna-20250630x10qxexx311.htm",
+      "certifying_officers": [
+        "John W. Hanna"
+      ],
+      "reporting_period_type": "quarterly"
+    },
+    {
+      "document_id": "cdna-20250630x10qxexx312.htm",
+      "certifying_officers": [
+        "Abhishek Jain"
+      ],
+      "reporting_period_type": "quarterly"
+    },
+    {
+      "document_id": "ef20050389_ex31-1.htm",
+      "certifying_officers": [
+        "George Magrath"
+      ],
+      "reporting_period_type": "quarterly"
+    },
+    {
+      "document_id": "ef20050389_ex31-2.htm",
+      "certifying_officers": [
+        "Amy Rabourn"
+      ],
+      "reporting_period_type": "quarterly"
+    },
+    {
+      "document_id": "exhibit31-1q22025.htm",
+      "certifying_officers": [
+        "Eric Risser"
+      ],
+      "reporting_period_type": "quarterly"
+    },
+    {
+      "document_id": "exhibit31-2q22025.htm",
+      "certifying_officers": [
+        "James Karrels"
+      ],
+      "reporting_period_type": "quarterly"
+    },
+    {
+      "document_id": "exhibit32-1q22025.htm",
+      "certifying_officers": [
+        "Eric Risser"
+      ],
+      "reporting_period_type": "quarterly"
+    },
+    {
+      "document_id": "exhibit32-2q22025.htm",
+      "certifying_officers": [
+        "James Karrels"
+      ],
+      "reporting_period_type": "quarterly"
+    },
+    {
+      "document_id": "exhibit3206302025.htm",
+      "certifying_officers": [
+        "Richard P. Wallace",
+        "Bren D. Higgins"
+      ],
+      "reporting_period_type": "annual"
+    },
+    {
+      "document_id": "paaq22025exhibit321.htm",
+      "certifying_officers": [
+        "Willie Chiang"
+      ],
+      "reporting_period_type": "quarterly"
+    },
+    {
+      "document_id": "paaq22025exhibit322.htm",
+      "certifying_officers": [
+        "Al Swanson"
+      ],
+      "reporting_period_type": "quarterly"
+    },
+    {
+      "document_id": "pagpq22025exhibit321.htm",
+      "certifying_officers": [
+        "Willie Chiang"
+      ],
+      "reporting_period_type": "quarterly"
+    },
+    {
+      "document_id": "pagpq22025exhibit322.htm",
+      "certifying_officers": [
+        "Al Swanson"
+      ],
+      "reporting_period_type": "quarterly"
+    },
+    {
+      "document_id": "tpst-ex32_1.htm",
+      "certifying_officers": [
+        "Stephen Brady",
+        "Nicholas Maestas"
+      ],
+      "reporting_period_type": "quarterly"
+    }
+  ],
+  "elapsed_seconds": 377.82,
+  "cost_usd": 3.586264,
+  "total_tokens": 6894682
+}

@@ -1,0 +1,158 @@
+datasets:
+  sec_csv_scan_seed:
+    type: file
+    path: data/SEC/CSV/2024.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: scan_all_sec_csv_tables
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          import csv
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          csv_dir = os.path.abspath(os.path.join(base_dir, "CSV"))
+          if os.path.commonpath([base_dir, csv_dir]) != base_dir:
+              raise ValueError("SEC CSV path escapes data/SEC")
+
+          rows = []
+          for year in range(2019, 2025):
+              csv_path = os.path.join(csv_dir, f"{year}.csv")
+              with open(
+                  csv_path,
+                  "r",
+                  encoding="utf-8-sig",
+                  newline="",
+              ) as handle:
+                  for row in csv.DictReader(handle):
+                      rows.append(
+                          {
+                              "year": year,
+                              "text": row.get("text"),
+                          }
+                      )
+          return {"rows": rows}
+
+  - name: unnest_all_sec_filings
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - year
+      - text
+
+  - name: load_filing_document
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("SEC text path escapes data/SEC")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              document = handle.read()
+          return {"document": document}
+
+  - name: extract_ai_ml_business_context_mention
+    type: map
+    optimize: true
+    prompt: |
+      Determine whether this SEC 10-K filing specifically mentions artificial
+      intelligence, machine learning, deep learning, neural networks, AI-powered
+      technology, or a clearly similar AI/ML technology in the context of the
+      reporting company's business, products, or strategy.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        ai_ml_mentioned: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 256
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: aggregate_ai_ml_rate_by_year
+    type: code_reduce
+    reduce_key: year
+    code: |
+      def transform(items):
+          from decimal import Decimal, ROUND_HALF_UP
+
+          mention_count = sum(
+              1 for item in items if item.get("ai_ml_mentioned") is True
+          )
+          mention_rate = float(
+              (
+                  Decimal(100 * mention_count) / Decimal(len(items))
+              ).quantize(Decimal("0.1"), rounding=ROUND_HALF_UP)
+          )
+          return {"ai_ml_mention_rate_percent": mention_rate}
+
+  - name: order_by_year
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {
+              "rows": sorted(
+                  items,
+                  key=lambda item: int(item.get("year", 0)),
+              )
+          }
+
+  - name: unnest_chronological_rates
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - year
+      - ai_ml_mention_rate_percent
+
+pipeline:
+  steps:
+    - name: process
+      input: sec_csv_scan_seed
+      operations:
+        - scan_all_sec_csv_tables
+        - unnest_all_sec_filings
+        - load_filing_document
+        - extract_ai_ml_business_context_mention
+        - aggregate_ai_ml_rate_by_year
+        - order_by_year
+        - unnest_chronological_rates
+  output:
+    type: file
+    path: raw_outputs/finance/output_finance-007.json

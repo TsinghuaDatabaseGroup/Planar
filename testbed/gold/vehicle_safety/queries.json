@@ -1,0 +1,3204 @@
+[
+  {
+    "task_id": "vehicle_safety-001",
+    "gold_answer": 11,
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [vehicle_id, crash_flag, fire_flag, summary_text]) -> FILTER(vehicle_id='TESLA__MODEL_3__2022' AND crash_flag='true' AND fire_flag='false') -> SEM_FILTER('summary_text describes phantom braking or sudden unintended acceleration', input=summary_text) -> GROUP_BY([], aggs={n: count(*)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "scalar",
+      "value_type": "integer"
+    }
+  },
+  {
+    "task_id": "vehicle_safety-002",
+    "gold_answer": "No",
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(NHTSA, recalls, [component.component_id, risk.defect_summary]) -> FILTER(component.component_id='SEATBELT') -> SEM_AGGREGATE('Do all input defect_summary texts describe a defect that could prevent the belt from restraining an occupant during a crash AND do none of them describe a purely cosmetic or comfort-only issue? Output Yes or No.', out_schema={answer: string}, input=risk.defect_summary)"
+      }
+    ],
+    "answer_schema": {
+      "type": "label",
+      "value_type": "string",
+      "labels": [
+        "Yes",
+        "No"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-003",
+    "gold_answer": [
+      {
+        "complaint_id": "complaint_11485145",
+        "model_year": 2014,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11210797",
+        "model_year": 2014,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11522698",
+        "model_year": 2014,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11256894",
+        "model_year": 2014,
+        "airbag_failure_mode": "frontal airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11372828",
+        "model_year": 2014,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_10971161",
+        "model_year": 2015,
+        "airbag_failure_mode": "side airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11443991",
+        "model_year": 2016,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11312248",
+        "model_year": 2017,
+        "airbag_failure_mode": "front airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11288524",
+        "model_year": 2018,
+        "airbag_failure_mode": "passenger lower airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11317082",
+        "model_year": 2018,
+        "airbag_failure_mode": "steering wheel airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11462881",
+        "model_year": 2019,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11503303",
+        "model_year": 2019,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11614203",
+        "model_year": 2019,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11230535",
+        "model_year": 2019,
+        "airbag_failure_mode": "unintended airbag deployment"
+      },
+      {
+        "complaint_id": "complaint_11503306",
+        "model_year": 2020,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11429710",
+        "model_year": 2020,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11496766",
+        "model_year": 2020,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11721443",
+        "model_year": 2020,
+        "airbag_failure_mode": "unintended side-curtain airbag deployment"
+      },
+      {
+        "complaint_id": "complaint_11503929",
+        "model_year": 2022,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11363370",
+        "model_year": 2014,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11228595",
+        "model_year": 2014,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_10850966",
+        "model_year": 2014,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11421579",
+        "model_year": 2014,
+        "airbag_failure_mode": "active head restraint deployment"
+      },
+      {
+        "complaint_id": "complaint_10898999",
+        "model_year": 2014,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11619698",
+        "model_year": 2014,
+        "airbag_failure_mode": "active head restraint deployment"
+      },
+      {
+        "complaint_id": "complaint_11437749",
+        "model_year": 2014,
+        "airbag_failure_mode": "active head restraint deployment"
+      },
+      {
+        "complaint_id": "complaint_11535229",
+        "model_year": 2014,
+        "airbag_failure_mode": "active head restraint deployment"
+      },
+      {
+        "complaint_id": "complaint_11438209",
+        "model_year": 2014,
+        "airbag_failure_mode": "active head restraint deployment"
+      },
+      {
+        "complaint_id": "complaint_10839698",
+        "model_year": 2014,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11099374",
+        "model_year": 2014,
+        "airbag_failure_mode": "active head restraint deployment"
+      },
+      {
+        "complaint_id": "complaint_11546116",
+        "model_year": 2014,
+        "airbag_failure_mode": "active head restraint deployment"
+      },
+      {
+        "complaint_id": "complaint_11721043",
+        "model_year": 2014,
+        "airbag_failure_mode": "active head restraint deployment"
+      },
+      {
+        "complaint_id": "complaint_10781565",
+        "model_year": 2014,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11161298",
+        "model_year": 2015,
+        "airbag_failure_mode": "airbag warning and non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11475193",
+        "model_year": 2015,
+        "airbag_failure_mode": "active head restraint deployment"
+      },
+      {
+        "complaint_id": "complaint_11445424",
+        "model_year": 2015,
+        "airbag_failure_mode": "active head restraint deployment"
+      },
+      {
+        "complaint_id": "complaint_11698901",
+        "model_year": 2015,
+        "airbag_failure_mode": "active head restraint deployment"
+      },
+      {
+        "complaint_id": "complaint_11341897",
+        "model_year": 2015,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11514831",
+        "model_year": 2015,
+        "airbag_failure_mode": "active head restraint deployment"
+      },
+      {
+        "complaint_id": "complaint_10925961",
+        "model_year": 2016,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11474475",
+        "model_year": 2016,
+        "airbag_failure_mode": "other/unclear airbag issue"
+      },
+      {
+        "complaint_id": "complaint_10903739",
+        "model_year": 2016,
+        "airbag_failure_mode": "active head restraint deployment"
+      },
+      {
+        "complaint_id": "complaint_11281321",
+        "model_year": 2016,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11433155",
+        "model_year": 2017,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11354002",
+        "model_year": 2018,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11182599",
+        "model_year": 2018,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11606456",
+        "model_year": 2018,
+        "airbag_failure_mode": "active head restraint deployment"
+      },
+      {
+        "complaint_id": "complaint_11282340",
+        "model_year": 2019,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11571930",
+        "model_year": 2019,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11557257",
+        "model_year": 2021,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11510847",
+        "model_year": 2021,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11705096",
+        "model_year": 2021,
+        "airbag_failure_mode": "airbag non-deployment"
+      },
+      {
+        "complaint_id": "complaint_11660838",
+        "model_year": 2023,
+        "airbag_failure_mode": "airbag non-deployment"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [complaint_id, make, model_year, component_id, injury_count, fire_flag, summary_text]) -> FILTER(make='DODGE' AND component_id='AIRBAG' AND injury_count>=1 AND fire_flag='false') -> SEM_EXTRACT('Extract the primary airbag failure mode described in summary_text as a short canonical phrase, such as non-deployment, unintended deployment, inflator rupture, occupant burn or laceration, warning-light fault, or other.', out_schema={airbag_failure_mode: string}, input_bindings={text: summary_text}) -> PROJECT([complaint_id, model_year, airbag_failure_mode])"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "complaint_id",
+        "model_year",
+        "airbag_failure_mode"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-004",
+    "gold_answer": [
+      {
+        "campaign_number": "23V610000",
+        "failure_mechanism": "rearview camera mounting clips break"
+      },
+      {
+        "campaign_number": "23V639000",
+        "failure_mechanism": "water intrusion into rearview camera"
+      },
+      {
+        "campaign_number": "23V579000",
+        "failure_mechanism": "air bag warning labels detach"
+      },
+      {
+        "campaign_number": "15V089000",
+        "failure_mechanism": "improperly soldered accelerator pedal component"
+      },
+      {
+        "campaign_number": "16V862000",
+        "failure_mechanism": "tow hitch module malfunction"
+      },
+      {
+        "campaign_number": "16V770000",
+        "failure_mechanism": "inadequate seatback weld joints"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(NHTSA, recalls, [campaign.number, vehicle.make, component.component_id, risk.park_outside, risk.defect_summary]) -> FILTER(vehicle.make='KIA' AND component.component_id='OTHER' AND risk.park_outside='FALSE') -> DEDUP([campaign.number]) -> SEM_EXTRACT('Extract a short canonical phrase of at most six words describing the underlying failure mechanism from risk.defect_summary.', out_schema={failure_mechanism: string}, input=risk.defect_summary)"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "campaign_number",
+        "failure_mechanism"
+      ],
+      "types": [
+        "string",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-005",
+    "gold_answer": [
+      {
+        "campaign_number": "23V838000"
+      },
+      {
+        "campaign_number": "25V092000"
+      },
+      {
+        "campaign_number": "23V085000"
+      },
+      {
+        "campaign_number": "22V037000"
+      },
+      {
+        "campaign_number": "21V846000"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(NHTSA, recalls, [campaign.number, vehicle.make, vehicle.model, vehicle.model_year, risk.park_outside, risk.do_not_drive, risk.defect_summary, remedy.corrective_action]) -> FILTER(vehicle.make='TESLA' AND risk.park_outside='FALSE' AND risk.do_not_drive='FALSE') -> SEM_FILTER('remedy.corrective_action describes an over-the-air software update AND risk.defect_summary describes a steering or motion-control issue', input_bindings={action: remedy.corrective_action, defect: risk.defect_summary}) -> PROJECT([campaign.number AS campaign_number, vehicle.model AS model, vehicle.model_year AS model_year, risk.defect_summary AS defect_summary])"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "campaign_number"
+      ],
+      "types": [
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-006",
+    "gold_answer": 1,
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [make, model, model_year, crash_flag, summary_text]) -> FILTER(make='SUBARU' AND model='OUTBACK' AND model_year>=2024 AND crash_flag='false') -> SEM_FILTER('summary_text describes an unintended brake activation or sudden brake hold event', input=summary_text) -> GROUP_BY([], aggs={n: count_distinct(model_year)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "scalar",
+      "value_type": "integer"
+    }
+  },
+  {
+    "task_id": "vehicle_safety-007",
+    "gold_answer": 39,
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [make, model, injury_count, fire_flag, summary_text]) -> FILTER(make='HYUNDAI' AND model='ELANTRA' AND injury_count>=1 AND fire_flag='false') -> SEM_FILTER('summary_text describes a loss of vehicle control while driving', input=summary_text) -> GROUP_BY([], aggs={n: count(*)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "scalar",
+      "value_type": "integer"
+    }
+  },
+  {
+    "task_id": "vehicle_safety-008",
+    "gold_answer": [
+      {
+        "campaign_number": "23V085000",
+        "primary_cause_phrase": "FSD Beta unsafe behavior"
+      },
+      {
+        "campaign_number": "25V092000",
+        "primary_cause_phrase": "PCB overstress"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(NHTSA, recalls, [campaign.number, vehicle.make, component.component_id, risk.park_outside, risk.do_not_drive, risk.defect_summary]) -> FILTER(vehicle.make='TESLA' AND component.component_id='STEERING' AND risk.park_outside='FALSE' AND risk.do_not_drive='FALSE') -> DEDUP([campaign.number]) -> SEM_EXTRACT('Identify the primary failure cause described in risk.defect_summary; return as a short canonical phrase of at most six words.', out_schema={primary_cause_phrase: string}, input=risk.defect_summary)"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "campaign_number",
+        "primary_cause_phrase"
+      ],
+      "types": [
+        "string",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-009",
+    "gold_answer": "software",
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [make, model, model_year, crash_flag, summary_text]) -> FILTER(make='SUBARU' AND model='OUTBACK' AND model_year>=2024 AND crash_flag='false') -> SEM_AGGREGATE('Determine the dominant failure mode across all input summaries: electrical, mechanical, or software. If unclear or tied, output mixed.', out_schema={dominant_mode: string}, input=summary_text)"
+      }
+    ],
+    "answer_schema": {
+      "type": "label",
+      "value_type": "string",
+      "labels": [
+        "electrical",
+        "mechanical",
+        "software",
+        "mixed"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-010",
+    "gold_answer": "Yes",
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [make, model, model_year, injury_count, fire_flag, summary_text]) -> FILTER(make='TOYOTA' AND model='RAV4' AND model_year IN [2021,2022,2023,2024] AND injury_count>=1 AND fire_flag='false') -> SEM_AGGREGATE('Among the input complaint summaries, determine whether at least ten describe a loss of braking ability or unexpected brake failure. Output Yes or No.', out_schema={answer: string}, input_bindings={summaries: summary_text})"
+      }
+    ],
+    "answer_schema": {
+      "type": "label",
+      "value_type": "string",
+      "labels": [
+        "Yes",
+        "No"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-011",
+    "gold_answer": [
+      {
+        "manufacturer": "BMW of North America, LLC",
+        "recall_count": 1,
+        "dominant_action_style": "part_replacement",
+        "distinct_components_recalled": 1
+      },
+      {
+        "manufacturer": "Braun Corporation",
+        "recall_count": 1,
+        "dominant_action_style": "part_replacement",
+        "distinct_components_recalled": 1
+      },
+      {
+        "manufacturer": "Chrysler (FCA US, LLC)",
+        "recall_count": 88,
+        "dominant_action_style": "part_replacement",
+        "distinct_components_recalled": 12
+      },
+      {
+        "manufacturer": "Chrysler (FCA US, LLC) (Stellantis)",
+        "recall_count": 5,
+        "dominant_action_style": "part_replacement",
+        "distinct_components_recalled": 3
+      },
+      {
+        "manufacturer": "Ford Motor Company",
+        "recall_count": 99,
+        "dominant_action_style": "part_replacement",
+        "distinct_components_recalled": 12
+      },
+      {
+        "manufacturer": "General Motors, LLC",
+        "recall_count": 13,
+        "dominant_action_style": "part_replacement",
+        "distinct_components_recalled": 8
+      },
+      {
+        "manufacturer": "Gulf States Toyota, Inc.",
+        "recall_count": 1,
+        "dominant_action_style": "part_replacement",
+        "distinct_components_recalled": 1
+      },
+      {
+        "manufacturer": "Honda (American Honda Motor Co.)",
+        "recall_count": 14,
+        "dominant_action_style": "part_replacement",
+        "distinct_components_recalled": 8
+      },
+      {
+        "manufacturer": "Hyundai Motor America",
+        "recall_count": 8,
+        "dominant_action_style": "part_replacement",
+        "distinct_components_recalled": 7
+      },
+      {
+        "manufacturer": "Kia America, Inc.",
+        "recall_count": 10,
+        "dominant_action_style": "part_replacement",
+        "distinct_components_recalled": 5
+      },
+      {
+        "manufacturer": "Kia Motors America",
+        "recall_count": 1,
+        "dominant_action_style": "part_replacement",
+        "distinct_components_recalled": 1
+      },
+      {
+        "manufacturer": "Nissan North America, Inc.",
+        "recall_count": 9,
+        "dominant_action_style": "part_replacement",
+        "distinct_components_recalled": 5
+      },
+      {
+        "manufacturer": "OEM Systems, LLC",
+        "recall_count": 1,
+        "dominant_action_style": "part_replacement",
+        "distinct_components_recalled": 1
+      },
+      {
+        "manufacturer": "Rollx Vans",
+        "recall_count": 1,
+        "dominant_action_style": "part_replacement",
+        "distinct_components_recalled": 1
+      },
+      {
+        "manufacturer": "Subaru of America, Inc.",
+        "recall_count": 6,
+        "dominant_action_style": "part_replacement",
+        "distinct_components_recalled": 4
+      },
+      {
+        "manufacturer": "Tesla, Inc.",
+        "recall_count": 22,
+        "dominant_action_style": "software_update",
+        "distinct_components_recalled": 8
+      },
+      {
+        "manufacturer": "Toyota Motor Engineering & Manufacturing",
+        "recall_count": 8,
+        "dominant_action_style": "part_replacement",
+        "distinct_components_recalled": 6
+      },
+      {
+        "manufacturer": "Vantage Mobility",
+        "recall_count": 1,
+        "dominant_action_style": "part_replacement",
+        "distinct_components_recalled": 1
+      },
+      {
+        "manufacturer": "Volkswagen Group of America, Inc.",
+        "recall_count": 4,
+        "dominant_action_style": "part_replacement",
+        "distinct_components_recalled": 3
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(NHTSA, recalls, [campaign.number, campaign.manufacturer, campaign.report_received_date, component.component_id, remedy.corrective_action]) -> FILTER(campaign.report_received_date >= '2022-01-01' AND campaign.report_received_date <= '2025-12-31') -> DEDUP([campaign.number]) -> SEM_CLASSIFY('Group each recall by the dominant style of corrective action.', target_labels=['software_update','part_replacement','dealer_inspection_only','other'], input_bindings={text: remedy.corrective_action}) -> GROUP_BY([campaign.manufacturer], aggs={recall_count: count_distinct(campaign.number), dominant_action_style: mode_with_tiebreak(group, tiebreak='alpha_asc'), distinct_components_recalled: count_distinct(component.component_id)}) -> PROJECT([manufacturer: campaign.manufacturer, recall_count, dominant_action_style, distinct_components_recalled])"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "manufacturer",
+        "recall_count",
+        "dominant_action_style",
+        "distinct_components_recalled"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-012",
+    "gold_answer": [
+      {
+        "campaign_number": "20V519000",
+        "make": "KIA",
+        "component_id": "BRAKES",
+        "matched_complaint_count": 9,
+        "defect_summary": "Kia Motors America (Kia) is recalling certain 2013-2015 Optima and 2014-2015 Sorento vehicles. Brake fluid may leak inside the Hydraulic Electronic Control Unit (HECU), possibly resulting in an electrical short."
+      },
+      {
+        "campaign_number": "21V331000",
+        "make": "KIA",
+        "component_id": "BRAKES",
+        "matched_complaint_count": 9,
+        "defect_summary": "Kia Motors America (Kia) is recalling certain 2013-2015 Optima and 2014-2015 Sorento vehicles previously recalled under recall 20V-519. Brake fluid may leak inside the Hydraulic Electronic Control Unit (HECU), possibly resulting in an electrical short."
+      },
+      {
+        "campaign_number": "22V703000",
+        "make": "KIA",
+        "component_id": "OTHER",
+        "matched_complaint_count": 13,
+        "defect_summary": "Kia America, Inc. (Kia) is recalling certain 2016-2022 Sorento, 2021-2022 Sorento Hybrid (HEV), 2022-2023 Sorento Plug-In Hybrid (PHEV), and 2017-2022 Sportage vehicles equipped with a tow hitch harness installed as original equipment, or purchased as an accessory through a Kia dealership. Debris and moisture accumulation on the tow hitch harness module printed circuit board (PCB) may cause an electrical short, which can result in a fire."
+      },
+      {
+        "campaign_number": "23V526000",
+        "make": "HYUNDAI",
+        "component_id": "POWERTRAIN",
+        "matched_complaint_count": 0,
+        "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2023-2024 Palisade Tucson, 2023 Sonata, Elantra, and Kona vehicles. The electronic controller for the Idle Stop & Go oil pump assembly may contain damaged electrical components that can cause the pump controller to overheat."
+      },
+      {
+        "campaign_number": "23V651000",
+        "make": "HYUNDAI",
+        "component_id": "BRAKES",
+        "matched_complaint_count": 4,
+        "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2011-2015 Elantra, Genesis Coupe, Sonata Hybrid, 2012-2015 Accent, Azera, Veloster, 2013-2015 Elantra Coupe, Santa Fe, 2014-2015 Equus, 2010-2012 Veracruz, 2010-2013 Tucson, 2015 Tucson Fuel Cell, and 2013 Santa Fe Sport vehicles. The Anti-Lock Brake System (ABS) module may leak brake fluid internally and cause an electrical short, which can result in an engine compartment fire while parked or driving."
+      },
+      {
+        "campaign_number": "23V652000",
+        "make": "KIA",
+        "component_id": "BRAKES",
+        "matched_complaint_count": 9,
+        "defect_summary": "Kia America, Inc. (Kia) is recalling certain 2010-2019 Borrego, 2014-2016 Cadenza, 2010-2013 Forte, Forte Koup, Sportage, 2015-2018 K900, 2011-2015 Optima, 2011-2013 Optima Hybrid, Soul, 2012-2017 Rio, 2011-2014 Sorento, and 2010-2011 Rondo vehicles. The Hydraulic Electronic Control Unit (HECU) may experience an electrical short, which can result in an engine compartment fire while parked or driving."
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [complaint_id, make, component_id, summary_text]) -> FILTER(make IN ['KIA','HYUNDAI']) -> SEM_FILTER('summary_text describes fire, smoke, burning smell, melting, or an electrical short related to the vehicle system.', input_bindings={text: summary_text}) -> JOIN(inner, on=[make = r.make AND component_id = r.component_id], right=( SCAN_DOCS(NHTSA, recalls AS r, [campaign.number, vehicle.make AS make, component.component_id AS component_id, risk.park_outside, risk.defect_summary]) -> FILTER(vehicle.make IN ['KIA','HYUNDAI'] AND risk.park_outside='TRUE') -> DEDUP([campaign.number]) )) -> GROUP_BY([r.campaign.number, r.make, r.component_id], aggs={matched_complaint_count: count_distinct(complaint_id), defect_summary: any(risk.defect_summary)}) -> PROJECT([campaign_number: r.campaign.number, make: r.make, component_id: r.component_id, matched_complaint_count, defect_summary])"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "campaign_number",
+        "make",
+        "component_id",
+        "matched_complaint_count",
+        "defect_summary"
+      ],
+      "types": [
+        "string",
+        "string",
+        "string",
+        "integer",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-013",
+    "gold_answer": 237,
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "complaints := (\n  SCAN_TABLE(NHTSA, complaints, [complaint_id,vehicle_id,component_id,received_date,summary_text])\n  -> FILTER(received_date IS NOT NULL AND received_date <> '')\n)\nrecalls := (\n  SCAN_DOCS(NHTSA, recalls, [recall_id,campaign.number,vehicle.vehicle_id AS vehicle_id,component.component_id AS component_id,campaign.report_received_date,risk.defect_summary])\n  -> FILTER(campaign.report_received_date IS NOT NULL AND campaign.report_received_date <> '')\n)\nmatched_pairs := SEM_JOIN(left=complaints, right=recalls, instruction=\"Evaluate only pairs with the same vehicle_id and component_id where the recall report date is at least 90 days after the complaint date. Keep a pair only when the complaint summary and recall defect summary describe the same concrete underlying defect mechanism, not merely the same broad component or symptom.\", input_bindings_left={complaint_id,vehicle_id,component_id,received_date,summary_text}, input_bindings_right={recall_id,campaign.number,vehicle_id,component_id,report_received_date,defect_summary})\nmatched_pairs\n-> GROUP_BY([], {matched_pair_count:COUNT_DISTINCT(left.complaint_id,right.recall_id)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "scalar",
+      "value_type": "integer"
+    }
+  },
+  {
+    "task_id": "vehicle_safety-014",
+    "gold_answer": [
+      {
+        "campaign_number": "24V198000",
+        "matched_pair_count": 21
+      },
+      {
+        "campaign_number": "15V467000",
+        "matched_pair_count": 9
+      },
+      {
+        "campaign_number": "19V018000",
+        "matched_pair_count": 8
+      },
+      {
+        "campaign_number": "21V280000",
+        "matched_pair_count": 2
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "dodge_airbag_complaints := (\n  SCAN_TABLE(NHTSA, complaints, [complaint_id,make,component_id,summary_text])\n  -> FILTER(make = 'DODGE' AND component_id = 'AIRBAG')\n)\ndodge_airbag_recalls := (\n  SCAN_DOCS(NHTSA, recalls, [campaign.number,vehicle.make AS make,component.component_id AS component_id,risk.defect_summary])\n  -> FILTER(make = 'DODGE' AND component_id = 'AIRBAG')\n  -> DEDUP([campaign.number])\n)\nmatched_pairs := SEM_JOIN(left=dodge_airbag_complaints, right=dodge_airbag_recalls, instruction=\"Keep a complaint-recall pair only when both texts describe the same concrete airbag failure mechanism or deployment hazard, such as the same non-deployment, unintended deployment, or inflator-rupture problem. A generic shared mention of airbags is insufficient.\", input_bindings_left={complaint_id,summary_text}, input_bindings_right={campaign.number,defect_summary})\nmatched_pairs\n-> GROUP_BY([right.campaign.number], {matched_pair_count:COUNT_DISTINCT(left.complaint_id,right.campaign.number)})\n-> ORDER_BY([matched_pair_count DESC,right.campaign.number ASC])\n-> PROJECT([campaign_number=right.campaign.number,matched_pair_count])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "campaign_number",
+        "matched_pair_count"
+      ],
+      "types": [
+        "string",
+        "integer"
+      ],
+      "order_by": [
+        "matched_pair_count DESC",
+        "campaign_number ASC"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-015",
+    "gold_answer": [
+      {
+        "campaign_number": "18V524000",
+        "matched_pair_count": 7
+      },
+      {
+        "campaign_number": "17V435000",
+        "matched_pair_count": 5
+      },
+      {
+        "campaign_number": "17V741000",
+        "matched_pair_count": 5
+      },
+      {
+        "campaign_number": "14V634000",
+        "matched_pair_count": 4
+      },
+      {
+        "campaign_number": "19V203000",
+        "matched_pair_count": 2
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "dodge_electrical_complaints := (\n  SCAN_TABLE(NHTSA, complaints, [complaint_id,make,component_id,summary_text])\n  -> FILTER(make = 'DODGE' AND component_id = 'ELECTRICAL')\n)\ndodge_electrical_recalls := (\n  SCAN_DOCS(NHTSA, recalls, [recall_row_id,campaign.number,vehicle.make AS make,component.component_id AS component_id,risk.defect_summary])\n  -> FILTER(make = 'DODGE' AND component_id = 'ELECTRICAL')\n)\nmatched_pairs := SEM_JOIN(left=dodge_electrical_complaints, right=dodge_electrical_recalls, instruction=\"Keep a pair only when the complaint narrative and recall defect summary describe the same concrete electrical failure and the shared failure has a safety consequence such as stall, fire risk, loss of motive power, loss of lighting or warnings, unintended cruise behavior, or warning-system failure. Broad ELECTRICAL-category overlap is insufficient.\", input_bindings_left={complaint_id,summary_text}, input_bindings_right={recall_row_id,campaign.number,defect_summary})\nmatched_pairs\n-> GROUP_BY([right.campaign.number], {matched_pair_count:COUNT_DISTINCT(left.complaint_id,right.recall_row_id)})\n-> ORDER_BY([matched_pair_count DESC,right.campaign.number ASC])\n-> PROJECT([campaign_number=right.campaign.number,matched_pair_count])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "campaign_number",
+        "matched_pair_count"
+      ],
+      "types": [
+        "string",
+        "integer"
+      ],
+      "order_by": [
+        "matched_pair_count DESC",
+        "campaign_number ASC"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-016",
+    "gold_answer": 0.938,
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [component_id, summary_text]) -> FILTER(component_id='ENGINE') -> SEM_FILTER('summary_text describes an engine stall, engine shutoff, loss of power, or failure to accelerate caused by engine operation.', input_bindings={text: summary_text}) -> SEM_CLASSIFY('Group each remaining complaint by whether the event happened while the vehicle was moving or in traffic versus parked, idling, starting, or unclear.', target_labels=['moving_or_in_traffic','parked_idling_or_unclear'], input_bindings={text: summary_text}) -> GROUP_BY([], aggs={total_engine_stall_power_loss: count(*), moving_or_traffic_count: count_if(group='moving_or_in_traffic')}) -> PROJECT(ratio = round(moving_or_traffic_count/total_engine_stall_power_loss, 3))"
+      }
+    ],
+    "answer_schema": {
+      "type": "scalar",
+      "value_type": "float"
+    }
+  },
+  {
+    "task_id": "vehicle_safety-017",
+    "gold_answer": 0.702,
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [component_id, summary_text]) -> FILTER(component_id='AIRBAG') -> SEM_FILTER('summary_text describes an unintended or unexpected airbag deployment.', input_bindings={text: summary_text}) -> SEM_CLASSIFY('Group each remaining complaint by whether the deployment happened before any collision impact or without a collision versus during or after a crash impact.', target_labels=['pre_impact_or_no_collision','during_or_after_collision'], input_bindings={text: summary_text}) -> GROUP_BY([], aggs={total_unintended_deployments: count(*), pre_impact_or_no_collision_count: count_if(group='pre_impact_or_no_collision')}) -> PROJECT(ratio = round(pre_impact_or_no_collision_count/total_unintended_deployments, 3))"
+      }
+    ],
+    "answer_schema": {
+      "type": "scalar",
+      "value_type": "float"
+    }
+  },
+  {
+    "task_id": "vehicle_safety-018",
+    "gold_answer": [
+      {
+        "file_id": "txt_investigation_6bb46cfa3c2aaa30.txt",
+        "cited_recall_numbers": [
+          "23V488000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_77da89c8ed63ed47.txt",
+        "cited_recall_numbers": [
+          "21V035000"
+        ]
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(NHTSA, investigation_reports, selector='*.txt', columns=[file_id, body]) -> SEM_FILTER('body explicitly mentions a Tesla model (e.g., Model 3, Model S, Model Y, Model X)', input_bindings={text: body}) -> SEM_EXTRACT('Extract every NHTSA recall number cited in the body. Accept formats like 12V-491, 23V085, 23V085000. Normalize to the long form and deduplicate.', out_schema={cited_recall_numbers: list[string]}, input_bindings={text: body}) -> FILTER(len(cited_recall_numbers) >= 1) -> PROJECT([file_id, cited_recall_numbers])"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "file_id",
+        "cited_recall_numbers"
+      ],
+      "types": [
+        "string",
+        "list[string]"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-019",
+    "gold_answer": [
+      {
+        "file_id": "txt_investigation_0035ca0a5c3b107f.txt",
+        "primary_topic": "electrical",
+        "cited_recall_numbers": [
+          "24V951000",
+          "25V695000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_01f32e30ee9acd46.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "24V635000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_029c56de0e8e61b4.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "16V248000",
+          "19V075000",
+          "19V433000",
+          "24V444000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_04d076db351e73db.txt",
+        "primary_topic": "other",
+        "cited_recall_numbers": [
+          "14V571000",
+          "21V473000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_05bd17c9f6b092da.txt",
+        "primary_topic": "electrical",
+        "cited_recall_numbers": [
+          "22V867000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_06eb6243a86354e7.txt",
+        "primary_topic": "electrical",
+        "cited_recall_numbers": [
+          "14V530000",
+          "15V115000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_0adaa86fa0127f9f.txt",
+        "primary_topic": "other",
+        "cited_recall_numbers": [
+          "19V680000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_0c952e49c1e7a9dd.txt",
+        "primary_topic": "braking",
+        "cited_recall_numbers": [
+          "18V916000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_15ba420019ead973.txt",
+        "primary_topic": "braking",
+        "cited_recall_numbers": [
+          "15V800000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_189b15104776e16d.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "16V248000",
+          "19V075000",
+          "19V433000",
+          "24V444000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_1a7dddd2f3a322af.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "20V389000",
+          "23V724000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_1aba8edbfb2b2c6b.txt",
+        "primary_topic": "braking",
+        "cited_recall_numbers": [
+          "14V541000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_1b86083e3e94b94e.txt",
+        "primary_topic": "airbag",
+        "cited_recall_numbers": [
+          "15V483000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_21a87149f4bb9bcf.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "13V523000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_23cca884e0a0a76e.txt",
+        "primary_topic": "airbag",
+        "cited_recall_numbers": [
+          "16V288000",
+          "16V290000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_2bf77ed0aa95c220.txt",
+        "primary_topic": "other",
+        "cited_recall_numbers": [
+          "18V405000",
+          "18V610000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_2fad9b440be659f1.txt",
+        "primary_topic": "other",
+        "cited_recall_numbers": [
+          "16V643000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_2fbdb70e70383260.txt",
+        "primary_topic": "electrical",
+        "cited_recall_numbers": [
+          "23V734000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_30789e2407e33aa2.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "25V099000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_30f3986188602865.txt",
+        "primary_topic": "braking",
+        "cited_recall_numbers": [
+          "13V454000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_35c6363f0571b318.txt",
+        "primary_topic": "other",
+        "cited_recall_numbers": [
+          "22V627000",
+          "23V180000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_37c19cad492e19cb.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "25V455000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_3bbbb3e89f1dc774.txt",
+        "primary_topic": "airbag",
+        "cited_recall_numbers": [
+          "12V527000",
+          "15V046000",
+          "15V673000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_3c6068a70799e2c4.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "16V907000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_3d59e5e1d5aa5367.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "22V859000",
+          "24V187000",
+          "25V165000",
+          "25V467000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_3e540e709b495d53.txt",
+        "primary_topic": "electrical",
+        "cited_recall_numbers": [
+          "23V838000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_4078106d0340d00c.txt",
+        "primary_topic": "airbag",
+        "cited_recall_numbers": [
+          "16V244000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_40efba00fd61b8a7.txt",
+        "primary_topic": "steering",
+        "cited_recall_numbers": [
+          "23V836000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_421f53f268bd8f75.txt",
+        "primary_topic": "steering",
+        "cited_recall_numbers": [
+          "15V054000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_42c3e17189d2b07b.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "14V796000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_4441c7de869cda3a.txt",
+        "primary_topic": "other",
+        "cited_recall_numbers": [
+          "22V420000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_4627c950ddeecf43.txt",
+        "primary_topic": "electrical",
+        "cited_recall_numbers": [
+          "14V391000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_47fd41935c989692.txt",
+        "primary_topic": "airbag",
+        "cited_recall_numbers": [
+          "16V668000",
+          "18E043000",
+          "18V137000",
+          "18V363000",
+          "20V024000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_4917ede093662e29.txt",
+        "primary_topic": "other",
+        "cited_recall_numbers": [
+          "25V607000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_49e1ff012e25233c.txt",
+        "primary_topic": "airbag",
+        "cited_recall_numbers": [
+          "17V144000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_4a0e2f4555b168e8.txt",
+        "primary_topic": "electrical",
+        "cited_recall_numbers": [
+          "14V755000",
+          "15V519000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_4adb097facfb9a53.txt",
+        "primary_topic": "braking",
+        "cited_recall_numbers": [
+          "25V859000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_4d837e99bf438d50.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "23V905000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_4f052d0a5f538055.txt",
+        "primary_topic": "braking",
+        "cited_recall_numbers": [
+          "24E100000",
+          "24V896000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_546753c540477aaf.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "18V735000",
+          "19V515000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_54933417c6dc47ca.txt",
+        "primary_topic": "electrical",
+        "cited_recall_numbers": [
+          "25E052000",
+          "25V552000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_55ab3e3a07bc3e29.txt",
+        "primary_topic": "steering",
+        "cited_recall_numbers": [
+          "12V550000",
+          "18V336000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_59594290efc7f9a8.txt",
+        "primary_topic": "electrical",
+        "cited_recall_numbers": [
+          "24V204000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_5abaf6de874f592b.txt",
+        "primary_topic": "airbag",
+        "cited_recall_numbers": [
+          "14V438000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_5f2c24ffe8b00042.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "16V248000",
+          "19V075000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_62d483d67c6ed8cf.txt",
+        "primary_topic": "airbag",
+        "cited_recall_numbers": [
+          "11V139000",
+          "14V047000",
+          "14V373000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_64fd85325481e592.txt",
+        "primary_topic": "steering",
+        "cited_recall_numbers": [
+          "22V089000",
+          "24V097000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_685728832d7ff058.txt",
+        "primary_topic": "steering",
+        "cited_recall_numbers": [
+          "15V340000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_6bb46cfa3c2aaa30.txt",
+        "primary_topic": "other",
+        "cited_recall_numbers": [
+          "23V488000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_6c619374a2441ea0.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "23V010000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_6c8e95783095e3ca.txt",
+        "primary_topic": "steering",
+        "cited_recall_numbers": [
+          "18V675000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_6d6bccf3eb1dd7ca.txt",
+        "primary_topic": "electrical",
+        "cited_recall_numbers": [
+          "22V867000",
+          "24V321000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_6e5ef201083ff24a.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "21V972000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_71256379f06f885d.txt",
+        "primary_topic": "airbag",
+        "cited_recall_numbers": [
+          "16V056000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_72f5d6d3d4d27632.txt",
+        "primary_topic": "electrical",
+        "cited_recall_numbers": [
+          "14V634000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_74e6c7c0ae4bb88b.txt",
+        "primary_topic": "other",
+        "cited_recall_numbers": [
+          "16V647000",
+          "24V110000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_75b45cc24b25760c.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "17V224000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_77da89c8ed63ed47.txt",
+        "primary_topic": "electrical",
+        "cited_recall_numbers": [
+          "21V035000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_7853ee7777b08bce.txt",
+        "primary_topic": "braking",
+        "cited_recall_numbers": [
+          "15V507000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_786680a446f7dee1.txt",
+        "primary_topic": "other",
+        "cited_recall_numbers": [
+          "23V236000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_7a397b1421fa512b.txt",
+        "primary_topic": "other",
+        "cited_recall_numbers": [
+          "24V099000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_7ac9beb7fc280c79.txt",
+        "primary_topic": "braking",
+        "cited_recall_numbers": [
+          "08V311000",
+          "09V431000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_7b10c70876b82275.txt",
+        "primary_topic": "braking",
+        "cited_recall_numbers": [
+          "16V345000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_82e1fe17a99039ae.txt",
+        "primary_topic": "other",
+        "cited_recall_numbers": [
+          "14V266000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_88851cb7181f50c2.txt",
+        "primary_topic": "other",
+        "cited_recall_numbers": [
+          "15V573000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_8be18f99e74db448.txt",
+        "primary_topic": "braking",
+        "cited_recall_numbers": [
+          "19V645000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_8dd794de1b4ea239.txt",
+        "primary_topic": "airbag",
+        "cited_recall_numbers": [
+          "15V665000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_8e9ad5653bf294ed.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "15V568000",
+          "17V226000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_93ab6f9ddf8ca1cb.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "13V535000",
+          "15V175000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_963f25789a1dfa40.txt",
+        "primary_topic": "steering",
+        "cited_recall_numbers": [
+          "19V021000",
+          "19V201000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_999b2fb9ba4aecf2.txt",
+        "primary_topic": "other",
+        "cited_recall_numbers": [
+          "17V671000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_9d28e2718f7bcdae.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "19V432000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_9e8baf3257492b4d.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "13V173000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_9f7934e5d65007b4.txt",
+        "primary_topic": "airbag",
+        "cited_recall_numbers": [
+          "16V244000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_a161df2726af9f3e.txt",
+        "primary_topic": "electrical",
+        "cited_recall_numbers": [
+          "24V148000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_a2bbc03859794081.txt",
+        "primary_topic": "braking",
+        "cited_recall_numbers": [
+          "21V042000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_a537d998ca815ea0.txt",
+        "primary_topic": "braking",
+        "cited_recall_numbers": [
+          "20V469000",
+          "25V544000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_a8a91c3c5ac6b4b7.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "15V568000",
+          "17V224000",
+          "17V226000",
+          "19V120000",
+          "20V746000",
+          "20V750000",
+          "21V727000",
+          "21V844000",
+          "23V877000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_aaff8bd3a8163eb8.txt",
+        "primary_topic": "other",
+        "cited_recall_numbers": [
+          "23V099000",
+          "24V099000",
+          "25V197000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_adbbd4c8f56732aa.txt",
+        "primary_topic": "electrical",
+        "cited_recall_numbers": [
+          "22V709000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_b1b8105af73ec4fe.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "23V751000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_b35cf69100ea7662.txt",
+        "primary_topic": "braking",
+        "cited_recall_numbers": [
+          "15V393000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_b3813da54ee3dda9.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "25V437000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_b452061e4444c05f.txt",
+        "primary_topic": "other",
+        "cited_recall_numbers": [
+          "24V031000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_b8b862a9751c4144.txt",
+        "primary_topic": "other",
+        "cited_recall_numbers": [
+          "21V197000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_bb0ab1e97dc07331.txt",
+        "primary_topic": "airbag",
+        "cited_recall_numbers": [
+          "18V137000",
+          "18V363000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_bb33ce872d92e3ef.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "19V293000",
+          "25E065000",
+          "25V674000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_bb491b3d9a026ff0.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "20V797000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_bec5f42242222b3d.txt",
+        "primary_topic": "other",
+        "cited_recall_numbers": [
+          "18V568000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_bfbc6a86158c92e1.txt",
+        "primary_topic": "braking",
+        "cited_recall_numbers": [
+          "20V469000",
+          "23V162000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_c3a46db658574bab.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "18V837000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_c56f72fc45a125b9.txt",
+        "primary_topic": "electrical",
+        "cited_recall_numbers": [
+          "23V213000",
+          "23V312000",
+          "24V651000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_c6b1043bc66992ae.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "25V274000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_c98f11104a195c3d.txt",
+        "primary_topic": "other",
+        "cited_recall_numbers": [
+          "20V724000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_c9bcec9b6b455621.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "13V583000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_cd7dcc0ff5b176ee.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "22V255000",
+          "23V199000",
+          "23V675000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_d106e6c060b949dc.txt",
+        "primary_topic": "other",
+        "cited_recall_numbers": [
+          "15V676000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_d474e3d121904e2e.txt",
+        "primary_topic": "electrical",
+        "cited_recall_numbers": [
+          "19V864000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_d58ed1b6bf651bf9.txt",
+        "primary_topic": "other",
+        "cited_recall_numbers": [
+          "06V181000",
+          "09V491000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_d7dc58c50115c2c9.txt",
+        "primary_topic": "electrical",
+        "cited_recall_numbers": [
+          "24V267000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_db52160d7de36fcc.txt",
+        "primary_topic": "electrical",
+        "cited_recall_numbers": [
+          "24V321000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_ddaa5a22b8dac784.txt",
+        "primary_topic": "airbag",
+        "cited_recall_numbers": [
+          "13V282000",
+          "17V640000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_de1f0bf1e029a8b2.txt",
+        "primary_topic": "electrical",
+        "cited_recall_numbers": [
+          "22V412000",
+          "23V687000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_dec57a3b8937e851.txt",
+        "primary_topic": "other",
+        "cited_recall_numbers": [
+          "15V246000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_dfd77acc9e78ba47.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "13V355000",
+          "13V356000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_e0582ed197ad5d72.txt",
+        "primary_topic": "other",
+        "cited_recall_numbers": [
+          "23V782000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_e17c60c0a37bb3b2.txt",
+        "primary_topic": "braking",
+        "cited_recall_numbers": [
+          "20V332000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_e23a4bb79d52d0ae.txt",
+        "primary_topic": "electrical",
+        "cited_recall_numbers": [
+          "24V267000",
+          "25V019000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_e505f40d3edd40f8.txt",
+        "primary_topic": "powertrain",
+        "cited_recall_numbers": [
+          "24V200000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_e8883e646b2ba0f9.txt",
+        "primary_topic": "braking",
+        "cited_recall_numbers": [
+          "20V471000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_eac49ed155cf0f45.txt",
+        "primary_topic": "electrical",
+        "cited_recall_numbers": [
+          "15V861000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_ee5d087133e2493f.txt",
+        "primary_topic": "electrical",
+        "cited_recall_numbers": [
+          "14V391000",
+          "15V879000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_eecb33ba9f820949.txt",
+        "primary_topic": "steering",
+        "cited_recall_numbers": [
+          "16V054000",
+          "21V213000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_ef12d2cfbf020527.txt",
+        "primary_topic": "airbag",
+        "cited_recall_numbers": [
+          "14V343000",
+          "14V344000",
+          "14V348000",
+          "14V351000",
+          "14V353000",
+          "14V655000",
+          "14V700000",
+          "14V701000",
+          "14V752000",
+          "14V763000",
+          "14V770000",
+          "14V773000",
+          "14V787000",
+          "14V802000",
+          "14V817000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_f18cadcc9405a945.txt",
+        "primary_topic": "other",
+        "cited_recall_numbers": [
+          "16V582000",
+          "22V165000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_f23c5be30f9eef9c.txt",
+        "primary_topic": "electrical",
+        "cited_recall_numbers": [
+          "14V795000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_f5707b70ca508686.txt",
+        "primary_topic": "electrical",
+        "cited_recall_numbers": [
+          "20V701000",
+          "21V560000",
+          "21V650000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_f9217e5aafe61229.txt",
+        "primary_topic": "other",
+        "cited_recall_numbers": [
+          "15V246000",
+          "16V643000",
+          "17V210000",
+          "20V177000",
+          "20V331000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_fca5adff66b5638c.txt",
+        "primary_topic": "other",
+        "cited_recall_numbers": [
+          "21V796000",
+          "22V069000",
+          "22V123000",
+          "22V127000",
+          "22V218000",
+          "22V354000",
+          "22V447000",
+          "22V458000",
+          "22V816000",
+          "23V094000",
+          "23V210000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_ff80ac56284e6f05.txt",
+        "primary_topic": "steering",
+        "cited_recall_numbers": [
+          "24V744000"
+        ]
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(NHTSA, investigation_reports, selector='*.txt', columns=[file_id, body]) -> SEM_FILTER('body indicates the investigation is closed (mentions closed, concluded, ended, or similar status indicator).', input_bindings={text: body}) -> SEM_EXTRACT('Extract every NHTSA recall number cited in the body. Accept formats like 12V-491, 23V085, 23V085000. Normalize and deduplicate.', out_schema={cited_recall_numbers: list[string]}, input_bindings={text: body}) -> FILTER(len(cited_recall_numbers) >= 1) -> SEM_CLASSIFY('Group each report by its primary defect topic.', target_labels=['steering','braking','airbag','electrical','powertrain','other'], input_bindings={text: body}) -> PROJECT([file_id, group AS primary_topic, cited_recall_numbers])"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "file_id",
+        "primary_topic",
+        "cited_recall_numbers"
+      ],
+      "types": [
+        "string",
+        "string",
+        "list[string]"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-020",
+    "gold_answer": [
+      {
+        "file_id": "txt_investigation_3bbbb3e89f1dc774.txt",
+        "cited_recall_numbers": [
+          "12V527000",
+          "15V046000",
+          "15V673000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_49e1ff012e25233c.txt",
+        "cited_recall_numbers": [
+          "17V144000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_8dd794de1b4ea239.txt",
+        "cited_recall_numbers": [
+          "15V665000"
+        ]
+      },
+      {
+        "file_id": "txt_investigation_ef12d2cfbf020527.txt",
+        "cited_recall_numbers": [
+          "14V343000",
+          "14V344000",
+          "14V348000",
+          "14V351000",
+          "14V353000",
+          "14V655000",
+          "14V700000",
+          "14V701000",
+          "14V752000",
+          "14V763000",
+          "14V770000",
+          "14V773000",
+          "14V787000",
+          "14V802000",
+          "14V817000"
+        ]
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(NHTSA, investigation_reports, selector='*.txt', columns=[file_id, body]) -> SEM_FILTER('body discusses an airbag inflator defect or unintended airbag deployment', input_bindings={text: body}) -> SEM_EXTRACT('Extract every NHTSA recall number cited in the body. Accept formats like 12V-491, 23V085, 23V085000. Normalize to the long form and deduplicate.', out_schema={cited_recall_numbers: list[string]}, input_bindings={text: body}) -> FILTER(len(cited_recall_numbers) >= 1) -> PROJECT([file_id, cited_recall_numbers])"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "file_id",
+        "cited_recall_numbers"
+      ],
+      "types": [
+        "string",
+        "list[string]"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-021",
+    "gold_answer": [
+      {
+        "complaint_id": "complaint_11083508",
+        "vehicle_id": "NISSAN__ALTIMA__2014",
+        "campaign_number": "15V681000",
+        "airbag_failure_mode": "inflator rupture"
+      },
+      {
+        "complaint_id": "complaint_11083508",
+        "vehicle_id": "NISSAN__ALTIMA__2014",
+        "campaign_number": "16V244000",
+        "airbag_failure_mode": "inflator rupture"
+      },
+      {
+        "complaint_id": "complaint_11083508",
+        "vehicle_id": "NISSAN__ALTIMA__2014",
+        "campaign_number": "16V911000",
+        "airbag_failure_mode": "inflator rupture"
+      },
+      {
+        "complaint_id": "complaint_11092321",
+        "vehicle_id": "NISSAN__ALTIMA__2014",
+        "campaign_number": "15V681000",
+        "airbag_failure_mode": "inflator rupture"
+      },
+      {
+        "complaint_id": "complaint_11092321",
+        "vehicle_id": "NISSAN__ALTIMA__2014",
+        "campaign_number": "16V244000",
+        "airbag_failure_mode": "inflator rupture"
+      },
+      {
+        "complaint_id": "complaint_11092321",
+        "vehicle_id": "NISSAN__ALTIMA__2014",
+        "campaign_number": "16V911000",
+        "airbag_failure_mode": "inflator rupture"
+      },
+      {
+        "complaint_id": "complaint_11097236",
+        "vehicle_id": "NISSAN__ALTIMA__2014",
+        "campaign_number": "15V681000",
+        "airbag_failure_mode": "inflator rupture"
+      },
+      {
+        "complaint_id": "complaint_11097236",
+        "vehicle_id": "NISSAN__ALTIMA__2014",
+        "campaign_number": "16V244000",
+        "airbag_failure_mode": "inflator rupture"
+      },
+      {
+        "complaint_id": "complaint_11097236",
+        "vehicle_id": "NISSAN__ALTIMA__2014",
+        "campaign_number": "16V911000",
+        "airbag_failure_mode": "inflator rupture"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [complaint_id, vehicle_id, make, model, component_id, injury_count, death_count, summary_text]) -> FILTER(make='NISSAN' AND model='ALTIMA' AND component_id='AIRBAG' AND (injury_count > 0 OR death_count > 0)) -> SEM_FILTER('summary_text describes an airbag inflator rupture, airbag explosion, shrapnel, or metal fragments causing injury or possible serious injury.', input_bindings={text: summary_text}) -> SEM_EXTRACT('Extract the primary airbag failure mode as a short canonical phrase.', out_schema={airbag_failure_mode: string}, input_bindings={text: summary_text}) -> JOIN(inner, on=[vehicle_id], right=( SCAN_DOCS(NHTSA, recalls, [campaign.number, vehicle.vehicle_id AS vehicle_id, component.component_id]) -> FILTER(component.component_id='AIRBAG') -> DEDUP([vehicle_id, campaign.number]) )) -> PROJECT([complaint_id, vehicle_id, campaign_number: campaign.number, airbag_failure_mode])"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "complaint_id",
+        "vehicle_id",
+        "campaign_number",
+        "airbag_failure_mode"
+      ],
+      "types": [
+        "string",
+        "string",
+        "string",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-022",
+    "gold_answer": [
+      {
+        "topic": "airbag",
+        "complaint_count": 892
+      },
+      {
+        "topic": "powertrain",
+        "complaint_count": 335
+      },
+      {
+        "topic": "other",
+        "complaint_count": 217
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [medical_attention_flag, summary_text]) -> FILTER(medical_attention_flag='true') -> SEM_FILTER('summary_text describes a concrete vehicle malfunction, crash sequence, or safety incident rather than only a billing, paperwork, or service-scheduling issue.', input_bindings={text: summary_text}) -> SEM_CLASSIFY('Group each remaining complaint by its primary safety-event topic.', target_labels=['steering','braking','airbag','electrical','powertrain','other'], input_bindings={text: summary_text}) -> GROUP_BY([group AS topic], aggs={complaint_count: count(*)}) -> ORDER_BY([complaint_count DESC, topic ASC]) -> LIMIT(3)"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "topic",
+        "complaint_count"
+      ],
+      "types": [
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-023",
+    "gold_answer": [
+      {
+        "state": "CA",
+        "complaint_count": 98
+      },
+      {
+        "state": "FL",
+        "complaint_count": 98
+      },
+      {
+        "state": "TX",
+        "complaint_count": 96
+      },
+      {
+        "state": "GA",
+        "complaint_count": 50
+      },
+      {
+        "state": "NY",
+        "complaint_count": 50
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [state_of_incident, medical_attention_flag, summary_text]) -> FILTER(medical_attention_flag='true' AND state_of_incident <> '') -> SEM_FILTER('summary_text is airbag-related, including airbags, inflators, pretensioners, or supplemental restraint system behavior.', input_bindings={text: summary_text}) -> SEM_FILTER('summary_text describes an airbag deployment failure, unintended deployment, inflator rupture, or similar deployment hazard.', input_bindings={text: summary_text}) -> GROUP_BY([state_of_incident AS state], aggs={complaint_count: count(*)}) -> ORDER_BY([complaint_count DESC, state ASC]) -> LIMIT(5)"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "state",
+        "complaint_count"
+      ],
+      "types": [
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-024",
+    "gold_answer": [
+      {
+        "component_id": "ADAS",
+        "complaint_count": 260,
+        "towed_rate": 0.065,
+        "avg_injury": 0.062,
+        "dominant_failure_mode": "adas malfunction"
+      },
+      {
+        "component_id": "AIRBAG",
+        "complaint_count": 53,
+        "towed_rate": 0.604,
+        "avg_injury": 0.623,
+        "dominant_failure_mode": "airbag nondeployment"
+      },
+      {
+        "component_id": "BODY",
+        "complaint_count": 74,
+        "towed_rate": 0.041,
+        "avg_injury": 0.108,
+        "dominant_failure_mode": "structure or body defect"
+      },
+      {
+        "component_id": "BRAKES",
+        "complaint_count": 77,
+        "towed_rate": 0.208,
+        "avg_injury": 0.195,
+        "dominant_failure_mode": "brake failure"
+      },
+      {
+        "component_id": "ELECTRICAL",
+        "complaint_count": 191,
+        "towed_rate": 0.052,
+        "avg_injury": 0.052,
+        "dominant_failure_mode": "loss of motive power"
+      },
+      {
+        "component_id": "ENGINE",
+        "complaint_count": 153,
+        "towed_rate": 0.268,
+        "avg_injury": 0.039,
+        "dominant_failure_mode": "loss of motive power"
+      },
+      {
+        "component_id": "FUEL",
+        "complaint_count": 13,
+        "towed_rate": 0.154,
+        "avg_injury": 0.077,
+        "dominant_failure_mode": "unintended acceleration"
+      },
+      {
+        "component_id": "OTHER",
+        "complaint_count": 82,
+        "towed_rate": 0.11,
+        "avg_injury": 0.183,
+        "dominant_failure_mode": "structure or body defect"
+      },
+      {
+        "component_id": "POWERTRAIN",
+        "complaint_count": 29,
+        "towed_rate": 0.241,
+        "avg_injury": 0.034,
+        "dominant_failure_mode": "transmission malfunction"
+      },
+      {
+        "component_id": "SEATBELT",
+        "complaint_count": 8,
+        "towed_rate": 0.125,
+        "avg_injury": 0.125,
+        "dominant_failure_mode": "seat belt malfunction"
+      },
+      {
+        "component_id": "STEERING",
+        "complaint_count": 15,
+        "towed_rate": 0.267,
+        "avg_injury": 0.133,
+        "dominant_failure_mode": "loss of steering control"
+      },
+      {
+        "component_id": "SUSPENSION",
+        "complaint_count": 1,
+        "towed_rate": 0.0,
+        "avg_injury": 0.0,
+        "dominant_failure_mode": "suspension failure"
+      },
+      {
+        "component_id": "TIRES",
+        "complaint_count": 7,
+        "towed_rate": 0.143,
+        "avg_injury": 0.286,
+        "dominant_failure_mode": "wheel or tire failure"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [model_year, component_id, vehicle_towed_flag, injury_count, summary_text]) -> FILTER(model_year IN [2024,2025]) -> SEM_FILTER('summary_text describes a tangible safety event, not only a paperwork issue, recall notice, cosmetic concern, or routine service request.', input_bindings={text: summary_text}) -> SEM_EXTRACT('Extract a short canonical failure_mode label from the complaint summary.', out_schema={failure_mode: string}, input_bindings={text: summary_text}) -> GROUP_BY([component_id], aggs={complaint_count: count(*), towed_rate: avg(vehicle_towed_flag='true'), avg_injury: avg(injury_count), dominant_failure_mode: mode_with_tiebreak(failure_mode, tiebreak='alpha_asc')}) -> PROJECT([component_id, complaint_count, towed_rate, avg_injury, dominant_failure_mode])"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "component_id",
+        "complaint_count",
+        "towed_rate",
+        "avg_injury",
+        "dominant_failure_mode"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "float",
+        "float",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-025",
+    "gold_answer": [
+      {
+        "make": "ACURA",
+        "phantom_braking_complaint_count": 41,
+        "matching_adas_recall_count": 1
+      },
+      {
+        "make": "SUBARU",
+        "phantom_braking_complaint_count": 36,
+        "matching_adas_recall_count": 1
+      },
+      {
+        "make": "TESLA",
+        "phantom_braking_complaint_count": 19,
+        "matching_adas_recall_count": 2
+      },
+      {
+        "make": "FORD",
+        "phantom_braking_complaint_count": 1,
+        "matching_adas_recall_count": 2
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [complaint_id, make, component_id, summary_text]) -> FILTER(component_id='ADAS') -> SEM_FILTER('summary_text specifically describes phantom braking: sudden, automatic, unprovoked braking by a driver-assist system.', input_bindings={text: summary_text}) -> GROUP_BY([make], aggs={phantom_braking_complaint_count: count_distinct(complaint_id)}) -> JOIN(inner, on=[make = r.make], right=( SCAN_DOCS(NHTSA, recalls AS r, [campaign.number, vehicle.make AS make, component.component_id, risk.defect_summary]) -> FILTER(component.component_id='ADAS') -> SEM_FILTER('risk.defect_summary discusses automatic braking, driver-assist braking, adaptive cruise braking, or speed-control behavior as the recall defect.', input_bindings={text: risk.defect_summary}) -> GROUP_BY([make], aggs={matching_adas_recall_count: count_distinct(campaign.number)}) )) -> ORDER_BY([phantom_braking_complaint_count DESC, make ASC]) -> LIMIT(4) -> PROJECT([rank: row_number(), make, phantom_braking_complaint_count, matching_adas_recall_count])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "make",
+        "phantom_braking_complaint_count",
+        "matching_adas_recall_count"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-026",
+    "gold_answer": {
+      "most_common_label": "spontaneous_glass_breakage",
+      "per_label_counts": {
+        "door_water_intrusion": {
+          "count": 6
+        },
+        "spontaneous_glass_breakage": {
+          "count": 11
+        },
+        "visibility_distortion_or_defect": {
+          "count": 2
+        }
+      }
+    },
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [make, model, component_id, summary_text]) -> FILTER(make='TOYOTA' AND model='RAV4' AND component_id='BODY') -> SEM_FILTER('summary_text describes a safety-relevant glass, window, windshield, sunroof or moonroof, or water-in-door/window visibility defect.', input_bindings={text: summary_text}) -> SEM_CLASSIFY('Group each relevant RAV4 body complaint by likely root-cause label.', target_labels=['spontaneous_glass_breakage','door_water_intrusion','visibility_distortion_or_defect','other'], input_bindings={text: summary_text}) -> GROUP_BY([group], aggs={count: count(*)}) -> PROJECT(format_as_dictionary, derive most_common_label = argmax_with_tiebreak(count, tiebreak='alpha_asc'), per_label_counts={group: {count}})"
+      }
+    ],
+    "answer_schema": {
+      "type": "dictionary",
+      "keys": [
+        "most_common_label",
+        "per_label_counts"
+      ],
+      "value_types": [
+        "string",
+        "dictionary"
+      ],
+      "items": {
+        "per_label_counts": {
+          "key_description": "label (string)",
+          "value_schema": {
+            "count": "integer"
+          }
+        }
+      }
+    }
+  },
+  {
+    "task_id": "vehicle_safety-027",
+    "gold_answer": {
+      "dominant_label": "other",
+      "per_label_counts": {
+        "inflator_defect": {
+          "count": 1
+        },
+        "other": {
+          "count": 3
+        }
+      },
+      "per_label_percentages": {
+        "inflator_defect": {
+          "percentage": 25.0
+        },
+        "other": {
+          "percentage": 75.0
+        }
+      }
+    },
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [make, component_id, summary_text]) -> FILTER(make='TOYOTA' AND component_id='AIRBAG') -> SEM_FILTER('summary_text describes an unintended airbag deployment (airbag deployed without a corresponding collision or impact)', input_bindings={text: summary_text}) -> SEM_FILTER('summary_text reports an occupant injury or burn caused by the airbag deployment', input_bindings={text: summary_text}) -> SEM_CLASSIFY('Group each unintended-deployment complaint by likely root cause.', target_labels=['sensor_misfire','software_logic_error','inflator_defect','other'], input_bindings={text: summary_text}) -> GROUP_BY([group], aggs={count: count(*)}) -> PROJECT(format_as_dictionary, derive dominant_label = argmax_with_tiebreak(count, tiebreak='alpha_asc'), per_label_counts={group: {count}}, per_label_percentages = {group: round(100.0 * count / sum(count), 1) for each group})"
+      }
+    ],
+    "answer_schema": {
+      "type": "dictionary",
+      "keys": [
+        "dominant_label",
+        "per_label_counts",
+        "per_label_percentages"
+      ],
+      "value_types": [
+        "string",
+        "dictionary",
+        "dictionary"
+      ],
+      "items": {
+        "per_label_counts": {
+          "key_description": "label (string)",
+          "value_schema": {
+            "count": "integer"
+          }
+        },
+        "per_label_percentages": {
+          "key_description": "label (string)",
+          "value_schema": {
+            "percentage": "float - rounded to one decimal"
+          }
+        }
+      }
+    }
+  },
+  {
+    "task_id": "vehicle_safety-028",
+    "gold_answer": {
+      "toyota_matched_complaint_count": 588,
+      "honda_matched_complaint_count": 520,
+      "higher_matched_complaint_make": "TOYOTA"
+    },
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [complaint_id, make, vehicle_id, summary_text]) -> FILTER(make IN ['TOYOTA','HONDA']) -> SEM_FILTER('summary_text describes a severe safety event that happened while the vehicle was being driven, including crash, injury, death, fire, airbag non-deployment, loss of control, brake failure, loss of power, or towing after a driving incident.', input_bindings={text: summary_text}) -> JOIN(inner, on=[vehicle_id = r.vehicle_id], right=( SCAN_DOCS(NHTSA, recalls AS r, [campaign.number, vehicle.vehicle_id AS vehicle_id, vehicle.make AS make, risk.defect_summary]) -> FILTER(vehicle.make IN ['TOYOTA','HONDA']) -> SEM_FILTER('risk.defect_summary describes a safety-critical defect that can cause crash, injury, fire, loss of control, airbag failure, braking failure, or loss of motive power.', input_bindings={text: risk.defect_summary}) -> DEDUP([campaign.number, vehicle_id]) )) -> GROUP_BY([make], aggs={matched_complaint_count: count_distinct(complaint_id)}) -> PROJECT(format_as_dictionary, keys={toyota_matched_complaint_count: value_where(make='TOYOTA', matched_complaint_count), honda_matched_complaint_count: value_where(make='HONDA', matched_complaint_count), higher_matched_complaint_make: compare_counts(toyota_matched_complaint_count, honda_matched_complaint_count, tie='tie')})"
+      }
+    ],
+    "answer_schema": {
+      "type": "dictionary",
+      "keys": [
+        "toyota_matched_complaint_count",
+        "honda_matched_complaint_count",
+        "higher_matched_complaint_make"
+      ],
+      "value_types": [
+        "integer",
+        "integer",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-029",
+    "gold_answer": "BRAKES_higher",
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [make, component_id, injury_count, summary_text]) -> FILTER(make='HONDA' AND component_id IN ['ADAS','BRAKES']) -> SEM_FILTER('summary_text describes a tangible safety event, NOT a minor inconvenience like screen flicker or infotainment lag or cosmetic blemish.', input_bindings={text: summary_text}) -> SEM_FILTER('summary_text indicates the problem manifested while the vehicle was being driven (not while parked or stationary)', input_bindings={text: summary_text}) -> GROUP_BY([component_id], aggs={avg_injury: avg(injury_count)}) -> PROJECT(label = case(avg_injury_ADAS - avg_injury_BRAKES > 0.01 -> 'ADAS_higher'; avg_injury_BRAKES - avg_injury_ADAS > 0.01 -> 'BRAKES_higher'; else 'tie'))"
+      }
+    ],
+    "answer_schema": {
+      "type": "label",
+      "value_type": "string",
+      "labels": [
+        "ADAS_higher",
+        "BRAKES_higher",
+        "tie"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-030",
+    "gold_answer": [
+      {
+        "make": "JEEP",
+        "ev_hybrid_complaint_count": 24,
+        "related_ev_hybrid_recall_count": 5
+      },
+      {
+        "make": "DODGE",
+        "ev_hybrid_complaint_count": 12,
+        "related_ev_hybrid_recall_count": 2
+      },
+      {
+        "make": "CHRYSLER",
+        "ev_hybrid_complaint_count": 5,
+        "related_ev_hybrid_recall_count": 1
+      },
+      {
+        "make": "FORD",
+        "ev_hybrid_complaint_count": 1,
+        "related_ev_hybrid_recall_count": 4
+      },
+      {
+        "make": "LINCOLN",
+        "ev_hybrid_complaint_count": 1,
+        "related_ev_hybrid_recall_count": 2
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [complaint_id, make, model_year, summary_text]) -> FILTER(model_year IN [2023,2024,2025]) -> SEM_FILTER('summary_text describes an EV or hybrid component issue involving a battery, charging system, BMS, electric drive, hybrid drivetrain, high-voltage system, or powertrain-control software.', input_bindings={text: summary_text}) -> GROUP_BY([make], aggs={ev_hybrid_complaint_count: count_distinct(complaint_id)}) -> JOIN(inner, on=[make = r.make], right=( SCAN_DOCS(NHTSA, recalls AS r, [campaign.number, vehicle.make AS make, campaign.report_received_date, risk.defect_summary, remedy.corrective_action]) -> FILTER(campaign.report_received_date >= '2023-01-01' AND campaign.report_received_date <= '2025-12-31') -> SEM_FILTER('risk.defect_summary or remedy.corrective_action discusses EV batteries, charging, high-voltage systems, electric drive, hybrid drivetrain, or powertrain-control software.', input_bindings={defect: risk.defect_summary, remedy: remedy.corrective_action}) -> GROUP_BY([make], aggs={related_ev_hybrid_recall_count: count_distinct(campaign.number)}) )) -> ORDER_BY([ev_hybrid_complaint_count DESC, make ASC]) -> LIMIT(5) -> PROJECT([rank: row_number(), make, ev_hybrid_complaint_count, related_ev_hybrid_recall_count])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "make",
+        "ev_hybrid_complaint_count",
+        "related_ev_hybrid_recall_count"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-031",
+    "gold_answer": 45,
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [complaint_id, vehicle_id, component_id, summary_text]) -> FILTER(component_id='AIRBAG') -> SEM_FILTER('summary_text describes airbag non-deployment, unintended deployment, inflator rupture, shrapnel, or another serious deployment hazard.', input_bindings={text: summary_text}) -> JOIN(inner, on=[vehicle_id], right=( SCAN_DOCS(NHTSA, recalls, [campaign.number, vehicle.vehicle_id AS vehicle_id, component.component_id AS component_id, remedy.corrective_action]) -> FILTER(component.component_id='AIRBAG') -> SEM_FILTER('remedy.corrective_action describes replacement of an airbag inflator, airbag module, or inflator assembly.', input_bindings={text: remedy.corrective_action}) )) -> GROUP_BY([], aggs={n: count_distinct(campaign.number)}) -> PROJECT([n])"
+      }
+    ],
+    "answer_schema": {
+      "type": "scalar",
+      "value_type": "integer"
+    }
+  },
+  {
+    "task_id": "vehicle_safety-032",
+    "gold_answer": "Yes",
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [complaint_id, make, model, model_year, vehicle_id, component_id, summary_text]) -> FILTER(make='TESLA' AND model='MODEL 3' AND model_year IN [2020,2021,2022]) -> SEM_FILTER('summary_text describes unintended acceleration or stuck accelerator pedal event', input_bindings={text: summary_text}) -> JOIN(inner, on=[vehicle_id, component_id], right=( SCAN_DOCS(NHTSA, recalls, [recall_id, vehicle.vehicle_id AS vehicle_id, component.component_id AS component_id, vehicle.make, vehicle.model, vehicle.model_year, risk.defect_summary]) -> FILTER(vehicle.make='TESLA' AND vehicle.model='MODEL 3' AND vehicle.model_year IN [2020,2021,2022]) -> SEM_FILTER('risk.defect_summary describes an accelerator-pedal or speed-control defect', input_bindings={text: risk.defect_summary}) )) -> GROUP_BY([], aggs={n: count_distinct(complaint_id, recall_id)}) -> PROJECT(label = (n >= 2 ? 'Yes' : 'No'))"
+      }
+    ],
+    "answer_schema": {
+      "type": "label",
+      "value_type": "string",
+      "labels": [
+        "Yes",
+        "No"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-033",
+    "gold_answer": [
+      {
+        "complaint_id": "complaint_10818332",
+        "campaign_number": "22V612000",
+        "days_between": 2467,
+        "defect_root_cause": "faulty shift lever components prevent locking"
+      },
+      {
+        "complaint_id": "complaint_10896135",
+        "campaign_number": "24V196000",
+        "days_between": 2768,
+        "defect_root_cause": "debris contamination may cause clockspring failure"
+      },
+      {
+        "complaint_id": "complaint_10970121",
+        "campaign_number": "22V150000",
+        "days_between": 2040,
+        "defect_root_cause": "master cylinder may leak fluid into brake booster"
+      },
+      {
+        "complaint_id": "complaint_11109618",
+        "campaign_number": "25V236000",
+        "days_between": 2679,
+        "defect_root_cause": "brake fluid may leak into brake booster"
+      },
+      {
+        "complaint_id": "complaint_11112485",
+        "campaign_number": "22V413000",
+        "days_between": 1540,
+        "defect_root_cause": "shifter cable bushing may degrade or detach"
+      },
+      {
+        "complaint_id": "complaint_11119905",
+        "campaign_number": "22V413000",
+        "days_between": 1514,
+        "defect_root_cause": "shifter cable bushing may degrade or detach"
+      },
+      {
+        "complaint_id": "complaint_11208389",
+        "campaign_number": "25V236000",
+        "days_between": 2362,
+        "defect_root_cause": "brake fluid may leak into brake booster"
+      },
+      {
+        "complaint_id": "complaint_11325862",
+        "campaign_number": "25V298000",
+        "days_between": 1898,
+        "defect_root_cause": "driver air bag may not be connected properly"
+      },
+      {
+        "complaint_id": "complaint_11365925",
+        "campaign_number": "25V442000",
+        "days_between": 1708,
+        "defect_root_cause": "software error may blank or retain rearview image"
+      },
+      {
+        "complaint_id": "complaint_11421240",
+        "campaign_number": "26V378000",
+        "days_between": 1907,
+        "defect_root_cause": "output shaft speed sensor signal loss"
+      },
+      {
+        "complaint_id": "complaint_11424739",
+        "campaign_number": "26V378000",
+        "days_between": 1880,
+        "defect_root_cause": "output shaft speed sensor signal loss"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(NHTSA, recalls, [campaign.number, vehicle.vehicle_id AS vehicle_id, component.component_id AS component_id, campaign.report_received_date, risk.defect_summary]) -> FILTER(campaign.report_received_date IS NOT NULL AND campaign.report_received_date <> '') -> SEM_EXTRACT('Extract a short (<=10 words) root-cause phrase from risk.defect_summary.', out_schema={defect_root_cause: string}, input_bindings={text: risk.defect_summary}) -> JOIN(inner, on=[vehicle_id, component_id, complaint.received_date < right.report_received_date AND date_diff(right.report_received_date, complaint.received_date) >= 1500], right=( SCAN_TABLE(NHTSA, complaints, [complaint_id, vehicle_id, component_id, received_date, summary_text]) )) -> SEM_FILTER('the complaint summary describes the same defect mechanism as the recall defect summary', input_bindings={complaint_text: summary_text, recall_text: risk.defect_summary}) -> PROJECT([complaint_id, campaign.number AS campaign_number, date_diff(report_received_date, received_date) AS days_between, defect_root_cause])"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "complaint_id",
+        "campaign_number",
+        "days_between",
+        "defect_root_cause"
+      ],
+      "types": [
+        "string",
+        "string",
+        "integer",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-034",
+    "gold_answer": 173,
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [complaint_id, make, component_id, summary_text]) -> FILTER(make='JEEP') -> SEM_FILTER('summary_text describes a genuine safety-relevant defect, not a cosmetic or convenience-only issue', input_bindings={text: summary_text}) -> SEM_JOIN('Match Jeep complaints to Jeep recalls in the same component category only when the complaint narrative and recall defect summary describe the same underlying failure mechanism or sufficiently specific defect condition; a broad shared symptom alone is not enough.', input_bindings_left={component_id: component_id, text: summary_text}, input_bindings_right={component_id: right.component_id, defect: right.defect_summary}, right=( SCAN_DOCS(NHTSA, recalls, [campaign.number, vehicle.make, component.component_id AS component_id, risk.defect_summary AS defect_summary]) -> FILTER(vehicle.make='JEEP') )) -> JOIN(inner, on=[component_id = report_component_id], right=( SCAN_DOCS(NHTSA, investigation_reports, selector='*.txt', columns=[file_id, body]) -> SEM_EXTRACT('Using only the report body, determine whether the investigated or reviewed vehicle population explicitly includes at least one Jeep model, and map the report's investigated safety issue to exactly one of ADAS, AIRBAG, BODY, BRAKES, ELECTRICAL, ENGINE, FUEL, OTHER, POWERTRAIN, SEATBELT, STEERING, SUSPENSION, or TIRES. Do not infer Jeep coverage solely from an unexplained recall number, external metadata, or manufacturer identity.', out_schema={covers_jeep: boolean, report_component_id: string}, input_bindings={report_text: body}) -> FILTER(covers_jeep=true) -> DEDUP([report_component_id]) )) -> GROUP_BY([], aggs={n: count_distinct(complaint_id)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "scalar",
+      "value_type": "integer"
+    }
+  },
+  {
+    "task_id": "vehicle_safety-035",
+    "gold_answer": [
+      {
+        "campaign_number": "19V018000",
+        "matched_complaint_count": 8,
+        "related_report_ids": [
+          "txt_investigation_1b079ec22d532228",
+          "txt_investigation_a6af87cc65c4685e",
+          "txt_investigation_ef12d2cfbf020527"
+        ],
+        "root_cause_phrase": "airbag inflator rupture/explosion",
+        "odi_safety_conclusion": "Takata inflator rupture risk warranted expanded recalls"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [complaint_id, make, component_id, summary_text]) -> FILTER(make='DODGE' AND component_id='AIRBAG') -> SEM_JOIN('Within Dodge AIRBAG records, match a complaint to a recall only when the complaint narrative and recall defect summary describe the same airbag failure mechanism or deployment hazard.', input_bindings_left={complaint_summary: summary_text, component_id: component_id}, input_bindings_right={recall_defect: r.risk.defect_summary, component_id: r.component_id}, right=( SCAN_DOCS(NHTSA, recalls AS r, [campaign.number, vehicle.make AS make, component.component_id AS component_id, risk.defect_summary, risk.consequence_summary]) -> FILTER(vehicle.make='DODGE' AND component.component_id='AIRBAG') )) -> SEM_FILTER('the matched complaint-recall pair describes an airbag safety consequence such as non-deployment, unintended deployment, inflator rupture, injury, or crash exposure', input_bindings={complaint_text: summary_text, recall_text: r.risk.defect_summary, consequence: r.risk.consequence_summary}) -> SEM_EXTRACT('Extract a short root-cause phrase shared by the complaint and recall.', out_schema={root_cause_phrase: string}, input_bindings={complaint_text: summary_text, recall_text: r.risk.defect_summary}) -> SEM_JOIN('Match this Dodge airbag complaint-recall defect to an investigation report only when the report discusses the same airbag mechanism and ODI safety assessment.', input_bindings_left={root_cause: root_cause_phrase, complaint_text: summary_text, recall_text: r.risk.defect_summary}, input_bindings_right={report_body: body}, right=( SCAN_DOCS(NHTSA, investigation_reports, selector='*.txt', columns=[file_id, body]) -> FILTER(body CONTAINS 'Dodge' OR body CONTAINS 'airbag' OR body CONTAINS 'inflator') )) -> GROUP_BY([r.campaign.number], aggs={matched_complaint_count: count_distinct(complaint_id), related_report_ids: collect_distinct_sorted(file_id, 'asc'), root_cause_phrase: mode_with_tiebreak(root_cause_phrase, tiebreak='alpha_asc'), report_bodies: collect_distinct(body)}) -> SEM_AGGREGATE('Summarize the ODI safety conclusion for this campaign from the related report bodies in one short phrase.', out_schema={odi_safety_conclusion: string}, group_by=[r.campaign.number], input_bindings={reports: report_bodies}) -> PROJECT([campaign_number: r.campaign.number, matched_complaint_count, related_report_ids, root_cause_phrase, odi_safety_conclusion])"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "campaign_number",
+        "matched_complaint_count",
+        "related_report_ids",
+        "root_cause_phrase",
+        "odi_safety_conclusion"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "list[string]",
+        "string",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-036",
+    "gold_answer": [
+      {
+        "campaign_number": "17V398000",
+        "matched_complaint_count": 30,
+        "severe_indicator_rate": 1.0,
+        "dominant_complaint_severity": "severe_safety_event",
+        "dominant_recall_remedy_style": "part_replacement"
+      },
+      {
+        "campaign_number": "14V597000",
+        "matched_complaint_count": 22,
+        "severe_indicator_rate": 1.0,
+        "dominant_complaint_severity": "severe_safety_event",
+        "dominant_recall_remedy_style": "part_replacement"
+      },
+      {
+        "campaign_number": "21V805000",
+        "matched_complaint_count": 22,
+        "severe_indicator_rate": 1.0,
+        "dominant_complaint_severity": "severe_safety_event",
+        "dominant_recall_remedy_style": "part_replacement"
+      },
+      {
+        "campaign_number": "22V684000",
+        "matched_complaint_count": 20,
+        "severe_indicator_rate": 1.0,
+        "dominant_complaint_severity": "severe_safety_event",
+        "dominant_recall_remedy_style": "part_replacement"
+      },
+      {
+        "campaign_number": "23V072000",
+        "matched_complaint_count": 11,
+        "severe_indicator_rate": 1.0,
+        "dominant_complaint_severity": "severe_safety_event",
+        "dominant_recall_remedy_style": "part_replacement"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [complaint_id, make, component_id, crash_flag, injury_count, vehicle_towed_flag, summary_text]) -> FILTER(make='FORD' AND component_id='AIRBAG') -> SEM_JOIN('Within Ford AIRBAG records, match a complaint to a recall only when the complaint narrative and recall defect summary describe the same airbag failure mechanism.', input_bindings_left={complaint_summary: summary_text, component_id: component_id}, input_bindings_right={recall_defect: r.risk.defect_summary, component_id: r.component_id}, right=( SCAN_DOCS(NHTSA, recalls AS r, [campaign.number, vehicle.make AS make, component.component_id AS component_id, risk.defect_summary, remedy.corrective_action]) -> FILTER(vehicle.make='FORD' AND component.component_id='AIRBAG') )) -> SEM_FILTER('the complaint narrative describes a concrete airbag safety event rather than a cosmetic warning-light-only concern', input_bindings={text: summary_text}) -> SEM_CLASSIFY('Classify the complaint severity.', target_labels=['minor_inconvenience','moderate_safety_event','severe_safety_event'], input_bindings={text: summary_text}) -> PROJECT([complaint_id, crash_flag, injury_count, vehicle_towed_flag, summary_text, r.campaign.number, r.remedy.corrective_action, complaint_severity: group]) -> SEM_CLASSIFY('Classify the recall remedy style.', target_labels=['software_update','part_replacement','other'], input_bindings={text: r.remedy.corrective_action}) -> PROJECT([complaint_id, crash_flag, injury_count, vehicle_towed_flag, r.campaign.number, complaint_severity, recall_remedy_style: group]) -> GROUP_BY([r.campaign.number], aggs={matched_complaint_count: count_distinct(complaint_id), severe_indicator_rate: avg(crash_flag='true' OR injury_count > 0 OR vehicle_towed_flag='true'), dominant_complaint_severity: mode_with_tiebreak(complaint_severity, tiebreak='alpha_asc'), dominant_recall_remedy_style: mode_with_tiebreak(recall_remedy_style, tiebreak='alpha_asc')}) -> ORDER_BY([matched_complaint_count DESC, r.campaign.number ASC]) -> LIMIT(5) -> PROJECT([rank: row_number(), campaign_number: r.campaign.number, matched_complaint_count, severe_indicator_rate, dominant_complaint_severity, dominant_recall_remedy_style])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "campaign_number",
+        "matched_complaint_count",
+        "severe_indicator_rate",
+        "dominant_complaint_severity",
+        "dominant_recall_remedy_style"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "float",
+        "string",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-037",
+    "gold_answer": [
+      {
+        "root_cause_theme": "connecting rod bearing wear/seizure",
+        "matched_complaint_count": 29,
+        "distinct_campaign_count": 1,
+        "related_report_ids": [
+          "txt_investigation_638ded8941573dd0",
+          "txt_investigation_b1b8105af73ec4fe"
+        ],
+        "odi_evidence_summary": "ODI reports Acura/Honda 3.5L V6 connecting rod bearing failures and recall-scope findings"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [complaint_id, make, component_id, summary_text]) -> FILTER(make='ACURA' AND component_id='ENGINE') -> SEM_JOIN('Within Acura ENGINE records, match a complaint to a recall only when the complaint narrative and recall defect summary describe the same engine failure mechanism.', input_bindings_left={complaint_summary: summary_text, component_id: component_id}, input_bindings_right={recall_defect: r.risk.defect_summary, component_id: r.component_id}, right=( SCAN_DOCS(NHTSA, recalls AS r, [campaign.number, vehicle.make AS make, component.component_id AS component_id, risk.defect_summary, risk.consequence_summary]) -> FILTER(vehicle.make='ACURA' AND component.component_id='ENGINE') )) -> SEM_EXTRACT('Extract the shared engine root-cause theme in <=8 words.', out_schema={root_cause_theme: string}, input_bindings={complaint_text: summary_text, recall_text: r.risk.defect_summary}) -> SEM_FILTER('the matched evidence describes loss of motive power, stalling, engine seizure, or another driving-safety consequence', input_bindings={complaint_text: summary_text, recall_consequence: r.risk.consequence_summary}) -> SEM_JOIN('Match the complaint-recall root-cause theme to an investigation report only when the report discusses the same Acura/Honda engine-failure scope or ODI finding.', input_bindings_left={root_cause: root_cause_theme, complaint_text: summary_text, recall_text: r.risk.defect_summary}, input_bindings_right={report_body: body}, right=( SCAN_DOCS(NHTSA, investigation_reports, selector='*.txt', columns=[file_id, body]) -> FILTER(body CONTAINS 'Acura' OR body CONTAINS 'Honda' OR body CONTAINS 'engine failure') )) -> GROUP_BY([root_cause_theme], aggs={matched_complaint_count: count_distinct(complaint_id), distinct_campaign_count: count_distinct(r.campaign.number), related_report_ids: collect_distinct_sorted(file_id, 'asc'), report_bodies: collect_distinct(body)}) -> SEM_AGGREGATE('Summarize the ODI evidence across the related report bodies in one short phrase.', out_schema={odi_evidence_summary: string}, group_by=[root_cause_theme], input_bindings={reports: report_bodies}) -> ORDER_BY([matched_complaint_count DESC, root_cause_theme ASC]) -> LIMIT(1) -> PROJECT([root_cause_theme, matched_complaint_count, distinct_campaign_count, related_report_ids, odi_evidence_summary])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "root_cause_theme",
+        "matched_complaint_count",
+        "distinct_campaign_count",
+        "related_report_ids",
+        "odi_evidence_summary"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "integer",
+        "list[string]",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-038",
+    "gold_answer": [
+      {
+        "campaign_number": "19V576000",
+        "matched_complaint_count": 1,
+        "dominant_complaint_sentiment": "acute_safety_event",
+        "dominant_recall_severity": "moderate",
+        "shared_defect_phrase": "backup camera failed in reverse"
+      },
+      {
+        "campaign_number": "25V744000",
+        "matched_complaint_count": 1,
+        "dominant_complaint_sentiment": "acute_safety_event",
+        "dominant_recall_severity": "severe",
+        "shared_defect_phrase": "rearview camera blank in reverse"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [complaint_id, make, component_id, summary_text]) -> FILTER(make='TOYOTA' AND component_id='OTHER') -> SEM_JOIN('Within Toyota OTHER records, match a complaint to a recall only when the complaint narrative and recall defect summary describe the same non-standard safety defect.', input_bindings_left={complaint_summary: summary_text, component_id: component_id}, input_bindings_right={recall_defect: r.risk.defect_summary, component_id: r.component_id}, right=( SCAN_DOCS(NHTSA, recalls AS r, [campaign.number, vehicle.make AS make, component.component_id AS component_id, risk.defect_summary, risk.consequence_summary]) -> FILTER(vehicle.make='TOYOTA' AND component.component_id='OTHER') )) -> SEM_FILTER('the matched Toyota OTHER evidence describes a meaningful safety defect rather than convenience, labeling, or cosmetic-only concern', input_bindings={complaint_text: summary_text, recall_text: r.risk.defect_summary, consequence: r.risk.consequence_summary}) -> SEM_CLASSIFY('Assign the complaint sentiment.', target_labels=['acute_safety_event','intermittent_issue','cosmetic_or_minor'], input_bindings={text: summary_text}) -> SEM_EXTRACT('Extract the shared defect phrase in <=8 words and assign recall_severity as one of critical, severe, moderate, minor.', out_schema={shared_defect_phrase: string, recall_severity: string}, input_bindings={recall_text: r.risk.defect_summary, consequence: r.risk.consequence_summary}) -> GROUP_BY([r.campaign.number], aggs={matched_complaint_count: count_distinct(complaint_id), dominant_complaint_sentiment: mode_with_tiebreak(group, tiebreak='alpha_asc'), dominant_recall_severity: mode_with_tiebreak(recall_severity, tiebreak='alpha_asc'), shared_defect_phrase: mode_with_tiebreak(shared_defect_phrase, tiebreak='alpha_asc')}) -> PROJECT([campaign_number: r.campaign.number, matched_complaint_count, dominant_complaint_sentiment, dominant_recall_severity, shared_defect_phrase])"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "campaign_number",
+        "matched_complaint_count",
+        "dominant_complaint_sentiment",
+        "dominant_recall_severity",
+        "shared_defect_phrase"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "string",
+        "string",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-039",
+    "gold_answer": [
+      {
+        "rank": 1,
+        "campaign_number": "20V197000",
+        "component_id": "POWERTRAIN",
+        "corroborating_complaint_count": 36,
+        "cited_by_investigation": "false"
+      },
+      {
+        "rank": 2,
+        "campaign_number": "18V471000",
+        "component_id": "POWERTRAIN",
+        "corroborating_complaint_count": 34,
+        "cited_by_investigation": "false"
+      },
+      {
+        "rank": 3,
+        "campaign_number": "22V413000",
+        "component_id": "POWERTRAIN",
+        "corroborating_complaint_count": 34,
+        "cited_by_investigation": "false"
+      },
+      {
+        "rank": 4,
+        "campaign_number": "22V254000",
+        "component_id": "POWERTRAIN",
+        "corroborating_complaint_count": 33,
+        "cited_by_investigation": "false"
+      },
+      {
+        "rank": 5,
+        "campaign_number": "17V398000",
+        "component_id": "AIRBAG",
+        "corroborating_complaint_count": 30,
+        "cited_by_investigation": "false"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(NHTSA, investigation_reports, selector='*.txt', columns=[file_id, body]) -> SEM_EXTRACT('Extract every NHTSA recall number cited in the body; normalize to the NHTSA canonical core (2-digit year + 3-digit campaign sequence) and deduplicate.', out_schema={cited_recall_cores: list[string]}, input_bindings={text: body}) -> GROUP_BY([], aggs={investigation_cited_cores: collect_distinct(cited_recall_cores)}) -> JOIN(cross, right=( SCAN_DOCS(NHTSA, recalls, [campaign.number, vehicle.make, component.component_id AS component_id, risk.defect_summary AS defect_summary]) -> FILTER(vehicle.make='FORD') -> DEDUP([campaign.number]) -> SEM_JOIN('Within the same component_id block, match a Ford recall campaign to a Ford complaint only when the complaint narrative describes the same underlying defect as the recall defect summary.', input_bindings_left={component_id: component_id, defect_summary: defect_summary}, input_bindings_right={component_id: c.component_id, complaint_summary: c.summary_text}, right=( SCAN_TABLE(NHTSA, complaints AS c, [complaint_id, make, component_id, summary_text]) -> FILTER(make='FORD') )) -> GROUP_BY([campaign.number], aggs={component_id: any(component_id), corroborating_complaint_count: count_distinct(complaint_id)}) )) -> PROJECT([campaign_number: campaign.number, component_id, corroborating_complaint_count, cited_by_investigation: (core(campaign.number) IN investigation_cited_cores ? 'true' : 'false')]) -> ORDER_BY([corroborating_complaint_count DESC, campaign_number ASC]) -> LIMIT(5) -> PROJECT([rank: row_number(), campaign_number, component_id, corroborating_complaint_count, cited_by_investigation])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "rank",
+        "campaign_number",
+        "component_id",
+        "corroborating_complaint_count",
+        "cited_by_investigation"
+      ],
+      "types": [
+        "integer",
+        "string",
+        "string",
+        "integer",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-040",
+    "gold_answer": [
+      {
+        "failure_mode": "EGR cooler intake fire",
+        "matched_complaint_count": 12,
+        "distinct_campaign_count": 1,
+        "earliest_complaint_date": "2016-04-03",
+        "earliest_recall_date": "2020-12-11",
+        "pre_recall_complaint_count": 4,
+        "dominant_complaint_sentiment": "acute_safety_event"
+      },
+      {
+        "failure_mode": "crankshaft position sensor stall",
+        "matched_complaint_count": 4,
+        "distinct_campaign_count": 2,
+        "earliest_complaint_date": "2019-10-16",
+        "earliest_recall_date": "2020-08-13",
+        "pre_recall_complaint_count": 2,
+        "dominant_complaint_sentiment": "acute_safety_event"
+      },
+      {
+        "failure_mode": "loss of motive power",
+        "matched_complaint_count": 6,
+        "distinct_campaign_count": 2,
+        "earliest_complaint_date": "2023-02-01",
+        "earliest_recall_date": "2022-04-28",
+        "pre_recall_complaint_count": 0,
+        "dominant_complaint_sentiment": "acute_safety_event"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [complaint_id, make, component_id, received_date, summary_text]) -> FILTER(make='JEEP' AND component_id='ENGINE') -> SEM_JOIN('Within Jeep ENGINE records, match a complaint to a recall only when the complaint narrative and recall defect summary describe the same engine failure mechanism.', input_bindings_left={complaint_summary: summary_text, component_id: component_id}, input_bindings_right={recall_defect: r.risk.defect_summary, component_id: r.component_id}, right=( SCAN_DOCS(NHTSA, recalls AS r, [campaign.number, campaign.report_received_date, vehicle.make AS make, component.component_id AS component_id, risk.defect_summary]) -> FILTER(vehicle.make='JEEP' AND component.component_id='ENGINE') )) -> SEM_EXTRACT('Extract a normalized engine failure mode in <=6 words.', out_schema={failure_mode: string}, input_bindings={complaint_text: summary_text, recall_text: r.risk.defect_summary}) -> SEM_FILTER('the matched evidence describes an engine failure that can affect driving safety, such as stall, loss of motive power, fire risk, or seizure', input_bindings={complaint_text: summary_text, recall_text: r.risk.defect_summary}) -> SEM_CLASSIFY('Assign the complaint sentiment.', target_labels=['acute_safety_event','intermittent_issue','cosmetic_or_minor'], input_bindings={text: summary_text}) -> GROUP_BY([failure_mode], aggs={matched_complaint_count: count_distinct(complaint_id), distinct_campaign_count: count_distinct(r.campaign.number), earliest_complaint_date: min(received_date), earliest_recall_date: min(r.campaign.report_received_date), pre_recall_complaint_count: count_distinct_if(complaint_id, received_date < r.campaign.report_received_date), dominant_complaint_sentiment: mode_with_tiebreak(group, tiebreak='alpha_asc')}) -> PROJECT([failure_mode, matched_complaint_count, distinct_campaign_count, earliest_complaint_date, earliest_recall_date, pre_recall_complaint_count, dominant_complaint_sentiment])"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "failure_mode",
+        "matched_complaint_count",
+        "distinct_campaign_count",
+        "earliest_complaint_date",
+        "earliest_recall_date",
+        "pre_recall_complaint_count",
+        "dominant_complaint_sentiment"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "integer",
+        "string",
+        "string",
+        "integer",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-041",
+    "gold_answer": [
+      {
+        "campaign_number": "23V838000",
+        "matched_complaint_count": 4,
+        "related_report_ids": [
+          "txt_investigation_3e540e709b495d53",
+          "txt_investigation_5d9e89bac1b4e3f6",
+          "txt_investigation_62c81aa5a162e7e4",
+          "txt_investigation_cf5067e3ac47ef78",
+          "txt_investigation_da22923fc5523800"
+        ],
+        "dominant_defect_mechanism": "Autosteer driver supervision insufficiency",
+        "odi_risk_summary": "misuse-related crashes linked to weak driver monitoring"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [complaint_id, make, component_id, summary_text]) -> FILTER(make='TESLA' AND component_id='ELECTRICAL') -> SEM_JOIN('Within Tesla ELECTRICAL records, match a complaint to a recall only when the complaint narrative and recall defect summary describe the same electrical, warning, software-control, or power-loss defect.', input_bindings_left={complaint_summary: summary_text, component_id: component_id}, input_bindings_right={recall_defect: r.risk.defect_summary, component_id: r.component_id}, right=( SCAN_DOCS(NHTSA, recalls AS r, [campaign.number, vehicle.make AS make, component.component_id AS component_id, risk.defect_summary, risk.consequence_summary]) -> FILTER(vehicle.make='TESLA' AND component.component_id='ELECTRICAL') )) -> SEM_EXTRACT('Extract the dominant Tesla electrical defect mechanism in <=8 words.', out_schema={defect_mechanism: string}, input_bindings={complaint_text: summary_text, recall_text: r.risk.defect_summary}) -> SEM_FILTER('the matched evidence describes a driving-safety or warning-control risk, not only an infotainment or convenience issue', input_bindings={complaint_text: summary_text, recall_consequence: r.risk.consequence_summary}) -> SEM_JOIN('Match the Tesla electrical defect mechanism to an investigation report only when the report discusses the same Tesla control, warning, or electrical-failure risk and ODI assessment.', input_bindings_left={mechanism: defect_mechanism, complaint_text: summary_text, recall_text: r.risk.defect_summary}, input_bindings_right={report_body: body}, right=( SCAN_DOCS(NHTSA, investigation_reports, selector='*.txt', columns=[file_id, body]) -> FILTER(body CONTAINS 'Tesla' OR body CONTAINS 'Autopilot' OR body CONTAINS 'electrical') )) -> GROUP_BY([r.campaign.number], aggs={matched_complaint_count: count_distinct(complaint_id), related_report_ids: collect_distinct_sorted(file_id, 'asc'), defect_mechanisms: collect(defect_mechanism), report_bodies: collect_distinct(body)}) -> SEM_AGGREGATE('Summarize the ODI risk signal for this campaign in one short phrase.', out_schema={odi_risk_summary: string, dominant_defect_mechanism: string}, group_by=[r.campaign.number], input_bindings={mechanisms: defect_mechanisms, reports: report_bodies}) -> PROJECT([campaign_number: r.campaign.number, matched_complaint_count, related_report_ids, dominant_defect_mechanism, odi_risk_summary])"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "campaign_number",
+        "matched_complaint_count",
+        "related_report_ids",
+        "dominant_defect_mechanism",
+        "odi_risk_summary"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "list[string]",
+        "string",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-042",
+    "gold_answer": [
+      {
+        "campaign_number": "21V846000",
+        "matched_complaint_count": 23,
+        "dominant_adas_topic": "unexpected_braking",
+        "related_report_ids": [
+          "txt_investigation_ef731290c14111ae"
+        ]
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [complaint_id, make, component_id, summary_text]) -> FILTER(make='TESLA' AND component_id='ADAS') -> SEM_JOIN('Within Tesla ADAS records, match a complaint to a recall only when the complaint narrative and recall defect summary describe the same driver-assistance or automation-control problem.', input_bindings_left={complaint_summary: summary_text, component_id: component_id}, input_bindings_right={recall_defect: r.risk.defect_summary, component_id: r.component_id}, right=( SCAN_DOCS(NHTSA, recalls AS r, [campaign.number, vehicle.make AS make, component.component_id AS component_id, risk.defect_summary, risk.consequence_summary]) -> FILTER(vehicle.make='TESLA' AND component.component_id='ADAS') )) -> SEM_FILTER('the complaint describes a driving-context ADAS safety issue rather than general infotainment or account software behavior', input_bindings={text: summary_text}) -> SEM_CLASSIFY('Assign the dominant Tesla ADAS defect topic.', target_labels=['autopilot_misuse','unexpected_braking','steering_control','warning_or_supervision_gap','other'], input_bindings={text: summary_text}) -> SEM_JOIN('Match the Tesla ADAS complaint-recall issue to an investigation report only when the report discusses the same driver-assistance safety issue or ODI human-factors concern.', input_bindings_left={topic: group, complaint_text: summary_text, recall_text: r.risk.defect_summary}, input_bindings_right={report_body: body}, right=( SCAN_DOCS(NHTSA, investigation_reports, selector='*.txt', columns=[file_id, body]) -> FILTER(body CONTAINS 'Tesla' OR body CONTAINS 'Autopilot' OR body CONTAINS 'driver assistance') )) -> GROUP_BY([r.campaign.number], aggs={matched_complaint_count: count_distinct(complaint_id), dominant_adas_topic: mode_with_tiebreak(group, tiebreak='alpha_asc'), related_report_ids: collect_distinct_sorted(file_id, 'asc')}) -> PROJECT([campaign_number: r.campaign.number, matched_complaint_count, dominant_adas_topic, related_report_ids])"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "campaign_number",
+        "matched_complaint_count",
+        "dominant_adas_topic",
+        "related_report_ids"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "string",
+        "list[string]"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-043",
+    "gold_answer": {
+      "FORD": {
+        "corroborated_complaint_count": 263,
+        "recall_campaign_count": 163,
+        "alignment_label": "cited"
+      },
+      "JEEP": {
+        "corroborated_complaint_count": 293,
+        "recall_campaign_count": 107,
+        "alignment_label": "cited"
+      },
+      "HONDA": {
+        "corroborated_complaint_count": 93,
+        "recall_campaign_count": 31,
+        "alignment_label": "cited"
+      },
+      "TESLA": {
+        "corroborated_complaint_count": 40,
+        "recall_campaign_count": 33,
+        "alignment_label": "cited"
+      }
+    },
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(NHTSA, investigation_reports, selector='*.txt', columns=[file_id, body]) -> SEM_EXTRACT('Extract every NHTSA recall number cited in the body; normalize to the NHTSA canonical core (2-digit year + 3-digit campaign sequence) and deduplicate.', out_schema={cited_recall_cores: list[string]}, input_bindings={text: body}) -> GROUP_BY([], aggs={investigation_cited_cores: collect_distinct(cited_recall_cores)}) -> JOIN(cross, right=( SCAN_DOCS(NHTSA, recalls, [campaign.number, vehicle.make AS make]) -> FILTER(vehicle.make IN ['FORD','JEEP','HONDA','TESLA']) -> GROUP_BY([make], aggs={recall_campaign_count: count_distinct(campaign.number), all_recall_cores: collect_distinct(core(campaign.number))}) -> JOIN(left, on=[make = right.make], right=( SCAN_TABLE(NHTSA, complaints, [complaint_id, make, component_id, summary_text]) -> FILTER(make IN ['FORD','JEEP','HONDA','TESLA']) -> SEM_JOIN('Within the same make and component category, match a complaint to a recall only when the complaint narrative describes the same underlying defect as the recall defect summary.', input_bindings_left={make: make, component_id: component_id, complaint_summary: summary_text}, input_bindings_right={make: r.make, component_id: r.component_id, recall_defect_summary: r.defect_summary}, right=( SCAN_DOCS(NHTSA, recalls AS r, [campaign.number, vehicle.make AS make, component.component_id AS component_id, risk.defect_summary AS defect_summary]) -> FILTER(vehicle.make IN ['FORD','JEEP','HONDA','TESLA']) )) -> GROUP_BY([make], aggs={corroborated_complaint_count: count_distinct(complaint_id)}) )) )) -> PROJECT(format_as_dictionary, key=make, value={corroborated_complaint_count: coalesce(corroborated_complaint_count, 0), recall_campaign_count, alignment_label: (intersects(all_recall_cores, investigation_cited_cores) ? 'cited' : 'not_cited')})"
+      }
+    ],
+    "answer_schema": {
+      "type": "dictionary",
+      "key_description": "vehicle make (string, one of FORD, JEEP, HONDA, TESLA)",
+      "value_schema": {
+        "corroborated_complaint_count": "integer - distinct complaints of this make whose narrative semantically matches one of the make's recalls in the same component category",
+        "recall_campaign_count": "integer - distinct recall campaign numbers for this make",
+        "alignment_label": "string in {cited, not_cited}"
+      }
+    }
+  },
+  {
+    "task_id": "vehicle_safety-044",
+    "gold_answer": [
+      {
+        "campaign_number": "18V777000",
+        "matched_complaint_count": 7,
+        "severe_complaint_rate": 0.857143,
+        "dominant_braking_failure_mode": "reduced brake performance",
+        "dominant_recall_severity": "severe"
+      },
+      {
+        "campaign_number": "23V458000",
+        "matched_complaint_count": 7,
+        "severe_complaint_rate": 0.857143,
+        "dominant_braking_failure_mode": "loss of brake function",
+        "dominant_recall_severity": "severe"
+      },
+      {
+        "campaign_number": "25V391000",
+        "matched_complaint_count": 3,
+        "severe_complaint_rate": 0.666667,
+        "dominant_braking_failure_mode": "brake pedal shifts out of position",
+        "dominant_recall_severity": "severe"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [complaint_id, make, component_id, crash_flag, injury_count, vehicle_towed_flag, summary_text]) -> FILTER(make='ACURA' AND component_id='BRAKES') -> SEM_JOIN('Within Acura BRAKES records, match a complaint to a recall only when the complaint narrative and recall defect summary describe the same braking defect.', input_bindings_left={complaint_summary: summary_text, component_id: component_id}, input_bindings_right={recall_defect: r.risk.defect_summary, component_id: r.component_id}, right=( SCAN_DOCS(NHTSA, recalls AS r, [campaign.number, vehicle.make AS make, component.component_id AS component_id, risk.defect_summary, risk.consequence_summary]) -> FILTER(vehicle.make='ACURA' AND component.component_id='BRAKES') )) -> SEM_FILTER('the complaint describes a real braking-performance safety issue such as loss of braking, extended stopping distance, unintended braking, or brake failure', input_bindings={text: summary_text}) -> SEM_EXTRACT('Extract the dominant braking failure mode in <=6 words.', out_schema={braking_failure_mode: string}, input_bindings={complaint_text: summary_text, recall_text: r.risk.defect_summary}) -> SEM_CLASSIFY('Assign the recall severity.', target_labels=['critical','severe','moderate','minor'], input_bindings={text: r.risk.consequence_summary}) -> GROUP_BY([r.campaign.number], aggs={matched_complaint_count: count_distinct(complaint_id), severe_complaint_rate: avg(crash_flag='true' OR injury_count > 0 OR vehicle_towed_flag='true'), dominant_braking_failure_mode: mode_with_tiebreak(braking_failure_mode, tiebreak='alpha_asc'), dominant_recall_severity: mode_with_tiebreak(group, tiebreak='alpha_asc')}) -> ORDER_BY([matched_complaint_count DESC, r.campaign.number ASC]) -> LIMIT(3) -> PROJECT([rank: row_number(), campaign_number: r.campaign.number, matched_complaint_count, severe_complaint_rate, dominant_braking_failure_mode, dominant_recall_severity])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "campaign_number",
+        "matched_complaint_count",
+        "severe_complaint_rate",
+        "dominant_braking_failure_mode",
+        "dominant_recall_severity"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "float",
+        "string",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-045",
+    "gold_answer": [
+      {
+        "rank": 1,
+        "defect_theme": "brake assist loss",
+        "matched_complaint_count": 46,
+        "distinct_campaign_count": 3,
+        "related_report_ids": [
+          "txt_investigation_7b1f3170b7ec4fb9",
+          "txt_investigation_8be18f99e74db448"
+        ],
+        "odi_risk_summary": "reduced brake assist causing hard pedal and longer stopping distance"
+      },
+      {
+        "rank": 2,
+        "defect_theme": "unintended braking",
+        "matched_complaint_count": 2,
+        "distinct_campaign_count": 1,
+        "related_report_ids": [
+          "txt_investigation_1aba8edbfb2b2c6b"
+        ],
+        "odi_risk_summary": "unexpected brake application or drag causing sudden deceleration"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [complaint_id, make, component_id, summary_text]) -> FILTER(make='CHEVROLET' AND component_id='BRAKES') -> SEM_JOIN('Within Chevrolet BRAKES records, match a complaint to a recall only when the complaint narrative and recall defect summary describe the same braking defect or risk.', input_bindings_left={complaint_summary: summary_text, component_id: component_id}, input_bindings_right={recall_defect: r.risk.defect_summary, component_id: r.component_id}, right=( SCAN_DOCS(NHTSA, recalls AS r, [campaign.number, vehicle.make AS make, component.component_id AS component_id, risk.defect_summary, risk.consequence_summary]) -> FILTER(vehicle.make='CHEVROLET' AND component.component_id='BRAKES') )) -> SEM_EXTRACT('Extract the shared braking defect theme in <=8 words.', out_schema={defect_theme: string}, input_bindings={complaint_text: summary_text, recall_text: r.risk.defect_summary}) -> SEM_FILTER('the matched evidence describes a braking safety risk with potential crash, loss-of-control, or extended-stopping consequence', input_bindings={complaint_text: summary_text, recall_consequence: r.risk.consequence_summary}) -> SEM_JOIN('Match the braking defect theme to an investigation report only when the report discusses the same Chevrolet/GM braking issue or ODI risk finding.', input_bindings_left={theme: defect_theme, complaint_text: summary_text, recall_text: r.risk.defect_summary}, input_bindings_right={report_body: body}, right=( SCAN_DOCS(NHTSA, investigation_reports, selector='*.txt', columns=[file_id, body]) -> FILTER(body CONTAINS 'Chevrolet' OR body CONTAINS 'GM' OR body CONTAINS 'brake') )) -> GROUP_BY([defect_theme], aggs={matched_complaint_count: count_distinct(complaint_id), distinct_campaign_count: count_distinct(r.campaign.number), related_report_ids: collect_distinct_sorted(file_id, 'asc'), report_bodies: collect_distinct(body)}) -> SEM_AGGREGATE('Summarize the ODI braking risk finding for this defect theme in one short phrase.', out_schema={odi_risk_summary: string}, group_by=[defect_theme], input_bindings={reports: report_bodies}) -> ORDER_BY([matched_complaint_count DESC, defect_theme ASC]) -> LIMIT(2) -> PROJECT([rank: row_number(), defect_theme, matched_complaint_count, distinct_campaign_count, related_report_ids, odi_risk_summary])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "rank",
+        "defect_theme",
+        "matched_complaint_count",
+        "distinct_campaign_count",
+        "related_report_ids",
+        "odi_risk_summary"
+      ],
+      "types": [
+        "integer",
+        "string",
+        "integer",
+        "integer",
+        "list[string]",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-046",
+    "gold_answer": [
+      {
+        "campaign_number": "24V199000",
+        "matched_complaint_count": 10,
+        "dominant_airbag_failure_mode": "non_deployment",
+        "dominant_remedy_style": "part_replacement",
+        "related_report_ids": [
+          "txt_investigation_23cca884e0a0a76e",
+          "txt_investigation_47fd41935c989692",
+          "txt_investigation_5abaf6de874f592b",
+          "txt_investigation_62d483d67c6ed8cf",
+          "txt_investigation_ddaa5a22b8dac784"
+        ],
+        "odi_evidence_summary": "FCA airbag system defects causing warning lights and crash non-deployment risk"
+      },
+      {
+        "campaign_number": "24V793000",
+        "matched_complaint_count": 17,
+        "dominant_airbag_failure_mode": "non_deployment",
+        "dominant_remedy_style": "other",
+        "related_report_ids": [
+          "txt_investigation_23cca884e0a0a76e",
+          "txt_investigation_47fd41935c989692",
+          "txt_investigation_5abaf6de874f592b",
+          "txt_investigation_62d483d67c6ed8cf",
+          "txt_investigation_ddaa5a22b8dac784"
+        ],
+        "odi_evidence_summary": "FCA airbag electrical faults may disable restraints and cause non-deployment"
+      },
+      {
+        "campaign_number": "26V358000",
+        "matched_complaint_count": 14,
+        "dominant_airbag_failure_mode": "non_deployment",
+        "dominant_remedy_style": "part_replacement",
+        "related_report_ids": [
+          "txt_investigation_23cca884e0a0a76e",
+          "txt_investigation_47fd41935c989692",
+          "txt_investigation_5abaf6de874f592b",
+          "txt_investigation_62d483d67c6ed8cf",
+          "txt_investigation_ddaa5a22b8dac784"
+        ],
+        "odi_evidence_summary": "Chrysler/FCA electrical and module faults causing airbag disablement or non-deployment"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [complaint_id, make, component_id, summary_text]) -> FILTER(make='CHRYSLER' AND component_id='AIRBAG') -> SEM_JOIN('Within Chrysler AIRBAG records, match a complaint to a recall only when the complaint narrative and recall defect summary describe the same airbag defect.', input_bindings_left={complaint_summary: summary_text, component_id: component_id}, input_bindings_right={recall_defect: r.risk.defect_summary, component_id: r.component_id}, right=( SCAN_DOCS(NHTSA, recalls AS r, [campaign.number, vehicle.make AS make, component.component_id AS component_id, risk.defect_summary, risk.consequence_summary, remedy.corrective_action]) -> FILTER(vehicle.make='CHRYSLER' AND component.component_id='AIRBAG') )) -> SEM_FILTER('the matched evidence describes an airbag safety risk such as non-deployment, unintended deployment, inflator rupture, or occupant injury risk', input_bindings={complaint_text: summary_text, recall_text: r.risk.defect_summary, consequence: r.risk.consequence_summary}) -> SEM_CLASSIFY('Assign the dominant airbag failure mode.', target_labels=['non_deployment','unintended_deployment','inflator_rupture','warning_or_sensor_fault','other'], input_bindings={text: summary_text}) -> SEM_JOIN('Match the Chrysler airbag issue to an investigation report only when the report discusses the same airbag risk or ODI evidence.', input_bindings_left={failure_mode: group, complaint_text: summary_text, recall_text: r.risk.defect_summary}, input_bindings_right={report_body: body}, right=( SCAN_DOCS(NHTSA, investigation_reports, selector='*.txt', columns=[file_id, body]) -> FILTER(body CONTAINS 'Chrysler' OR body CONTAINS 'airbag' OR body CONTAINS 'inflator') )) -> GROUP_BY([r.campaign.number], aggs={matched_complaint_count: count_distinct(complaint_id), dominant_airbag_failure_mode: mode_with_tiebreak(group, tiebreak='alpha_asc'), corrective_actions: collect_distinct(r.remedy.corrective_action), related_report_ids: collect_distinct_sorted(file_id, 'asc'), report_bodies: collect_distinct(body)}) -> SEM_AGGREGATE('Assign dominant_remedy_style from software_update, part_replacement, other and summarize ODI evidence in one short phrase.', out_schema={dominant_remedy_style: string, odi_evidence_summary: string}, group_by=[r.campaign.number], input_bindings={remedies: corrective_actions, reports: report_bodies}) -> PROJECT([campaign_number: r.campaign.number, matched_complaint_count, dominant_airbag_failure_mode, dominant_remedy_style, related_report_ids, odi_evidence_summary])"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "campaign_number",
+        "matched_complaint_count",
+        "dominant_airbag_failure_mode",
+        "dominant_remedy_style",
+        "related_report_ids",
+        "odi_evidence_summary"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "string",
+        "string",
+        "list[string]",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "vehicle_safety-047",
+    "gold_answer": [
+      {
+        "campaign_number": "14V634000",
+        "matched_complaint_count": 2,
+        "median_days_complaint_to_recall": -711,
+        "share_complaints_before_recall": 0.0,
+        "dominant_electrical_root_cause": "alternator failure",
+        "response_promptness_label": "fast"
+      },
+      {
+        "campaign_number": "17V435000",
+        "matched_complaint_count": 2,
+        "median_days_complaint_to_recall": 443,
+        "share_complaints_before_recall": 1.0,
+        "dominant_electrical_root_cause": "alternator failure",
+        "response_promptness_label": "typical"
+      },
+      {
+        "campaign_number": "17V741000",
+        "matched_complaint_count": 3,
+        "median_days_complaint_to_recall": 359,
+        "share_complaints_before_recall": 1.0,
+        "dominant_electrical_root_cause": "alternator failure",
+        "response_promptness_label": "typical"
+      },
+      {
+        "campaign_number": "18V524000",
+        "matched_complaint_count": 3,
+        "median_days_complaint_to_recall": -1423,
+        "share_complaints_before_recall": 0.0,
+        "dominant_electrical_root_cause": "PCM voltage regulator chip failure",
+        "response_promptness_label": "fast"
+      },
+      {
+        "campaign_number": "19V203000",
+        "matched_complaint_count": 2,
+        "median_days_complaint_to_recall": -2368,
+        "share_complaints_before_recall": 0.0,
+        "dominant_electrical_root_cause": "instrument cluster warning illumination failure",
+        "response_promptness_label": "fast"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [complaint_id, make, component_id, received_date, summary_text]) -> FILTER(make='DODGE' AND component_id='ELECTRICAL') -> SEM_JOIN('Within Dodge ELECTRICAL records, match a complaint to a recall only when the complaint narrative and recall defect summary describe the same electrical failure.', input_bindings_left={complaint_summary: summary_text, component_id: component_id}, input_bindings_right={recall_defect: r.risk.defect_summary, component_id: r.component_id}, right=( SCAN_DOCS(NHTSA, recalls AS r, [campaign.number, campaign.report_received_date, vehicle.make AS make, component.component_id AS component_id, risk.defect_summary]) -> FILTER(vehicle.make='DODGE' AND component.component_id='ELECTRICAL') )) -> SEM_FILTER('the matched evidence describes an electrical failure with a safety consequence such as stall, fire risk, loss of lighting, loss of motive power, or warning-system failure', input_bindings={complaint_text: summary_text, recall_text: r.risk.defect_summary}) -> SEM_EXTRACT('Extract the shared electrical root-cause phrase in <=8 words.', out_schema={electrical_root_cause: string}, input_bindings={complaint_text: summary_text, recall_text: r.risk.defect_summary}) -> GROUP_BY([r.campaign.number], aggs={matched_complaint_count: count_distinct(complaint_id), median_days_complaint_to_recall: round(median(date_diff(r.campaign.report_received_date, received_date))), share_complaints_before_recall: avg(received_date < r.campaign.report_received_date), days_distribution: collect(date_diff(r.campaign.report_received_date, received_date)), root_causes: collect(electrical_root_cause), complaint_summaries: collect(summary_text)}) -> SEM_AGGREGATE('Assign response_promptness_label as fast, typical, or slow from the days distribution and matched complaint descriptions, and choose the dominant electrical root-cause phrase.', out_schema={response_promptness_label: string, dominant_electrical_root_cause: string}, group_by=[r.campaign.number], input_bindings={days: days_distribution, root_causes: root_causes, complaints: complaint_summaries}) -> PROJECT([campaign_number: r.campaign.number, matched_complaint_count, median_days_complaint_to_recall, share_complaints_before_recall, dominant_electrical_root_cause, response_promptness_label])"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "campaign_number",
+        "matched_complaint_count",
+        "median_days_complaint_to_recall",
+        "share_complaints_before_recall",
+        "dominant_electrical_root_cause",
+        "response_promptness_label"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "integer",
+        "float",
+        "string",
+        "string"
+      ]
+    }
+  }
+]

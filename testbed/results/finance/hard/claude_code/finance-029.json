@@ -1,0 +1,152 @@
+{
+  "task_id": "finance-029",
+  "answer": [
+    {
+      "company_name": "Oportun Financial Corporation",
+      "industry": "Financial Services"
+    },
+    {
+      "company_name": "ENGlobal Corporation",
+      "industry": "Energy"
+    },
+    {
+      "company_name": "Codexis, Inc.",
+      "industry": "Biotechnology"
+    },
+    {
+      "company_name": "The RealReal, Inc.",
+      "industry": "Consumer Discretionary"
+    },
+    {
+      "company_name": "Unknown",
+      "industry": "Unknown"
+    },
+    {
+      "company_name": "Cineverse Corp.",
+      "industry": "Entertainment"
+    },
+    {
+      "company_name": "ENZO BIOCHEM, INC.",
+      "industry": "Healthcare"
+    },
+    {
+      "company_name": "Vaccinex, Inc.",
+      "industry": "Biotechnology"
+    },
+    {
+      "company_name": "SWK Holdings Corporation",
+      "industry": "Unknown"
+    },
+    {
+      "company_name": "BJ's Restaurants, Inc.",
+      "industry": "Restaurants"
+    },
+    {
+      "company_name": "Axcelis Technologies, Inc.",
+      "industry": "Semiconductor Equipment"
+    },
+    {
+      "company_name": "8x8, Inc.",
+      "industry": "Technology"
+    },
+    {
+      "company_name": "BOK Financial Corp",
+      "industry": "Financial Services"
+    },
+    {
+      "company_name": "IEH Corporation",
+      "industry": "Unknown"
+    },
+    {
+      "company_name": "Super League Enterprise, Inc.",
+      "industry": "Unknown"
+    },
+    {
+      "company_name": "CACI International Inc",
+      "industry": "Information Technology Services"
+    },
+    {
+      "company_name": "Kraig Biocraft Laboratories, Inc.",
+      "industry": "Biotechnology"
+    },
+    {
+      "company_name": "JAKKS PACIFIC, INC.",
+      "industry": "Consumer Discretionary"
+    },
+    {
+      "company_name": "Sonim Technologies, Inc.",
+      "industry": "Technology"
+    },
+    {
+      "company_name": "SOBR SAFE, INC.",
+      "industry": "Unknown"
+    },
+    {
+      "company_name": "ENERGY AND WATER DEVELOPMENT CORP.",
+      "industry": "Unknown"
+    },
+    {
+      "company_name": "Scholar Rock Holding Corporation",
+      "industry": "Biotechnology"
+    },
+    {
+      "company_name": "CEMTREX, INC.",
+      "industry": "Unknown"
+    },
+    {
+      "company_name": "AGEAGLE AERIAL SYSTEMS INC.",
+      "industry": "Aerospace & Defense"
+    },
+    {
+      "company_name": "Air Industries Group",
+      "industry": "Aerospace & Defense"
+    },
+    {
+      "company_name": "Pressure BioSciences, Inc.",
+      "industry": "Life Sciences"
+    },
+    {
+      "company_name": "Ideanomics",
+      "industry": "Electric Vehicles"
+    },
+    {
+      "company_name": "Gossamer Bio, Inc.",
+      "industry": "Biotechnology"
+    },
+    {
+      "company_name": "Village Farms International, Inc.",
+      "industry": "Agriculture"
+    },
+    {
+      "company_name": "T2 Biosystems, Inc.",
+      "industry": "Healthcare"
+    },
+    {
+      "company_name": "INNODATA INC.",
+      "industry": "Unknown"
+    },
+    {
+      "company_name": "Lendway, Inc.",
+      "industry": "Unknown"
+    },
+    {
+      "company_name": "Harvard Bioscience, Inc.",
+      "industry": "Life Sciences Tools and Services"
+    },
+    {
+      "company_name": "NETWORK CN INC.",
+      "industry": "Unknown"
+    },
+    {
+      "company_name": "BARFRESH FOOD GROUP INC.",
+      "industry": "Food and Beverage"
+    },
+    {
+      "company_name": "FRANKLIN WIRELESS CORP.",
+      "industry": "Technology"
+    }
+  ],
+  "elapsed_seconds": 2072.881,
+  "cost_usd": 13.57553235,
+  "total_tokens": 34584468
+}

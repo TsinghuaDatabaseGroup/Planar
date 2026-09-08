@@ -1,0 +1,694 @@
+{
+  "task_id": "vehicle_safety-033",
+  "answer": [
+    {
+      "campaign": {
+        "affected_units": 694271,
+        "manufacturer": "Ford Motor Company",
+        "number": "25V467000",
+        "owner_notification_date": "",
+        "report_received_date": "2025-11-07"
+      },
+      "component": {
+        "component_id": "FUEL",
+        "parts": [
+          "FUEL SYSTEM",
+          "GASOLINE:FUEL INJECTION SYSTEM"
+        ],
+        "raw": "FUEL SYSTEM, GASOLINE:FUEL INJECTION SYSTEM"
+      },
+      "recall_id": "recall_566fbeff2a5de9cf",
+      "remedy": {
+        "corrective_action": "Dealers will update the engine control software. and replace the high pressure fuel rail assembly and the fuel injector ,free of charge. As an interim repair, dealers will update the engine control software, free of charge. Interim owner notification letters notifying owners of the safety risk were mailed August 29, 2025. Second letters will be sent once the final remedy is available, anticipated in July 2026. Owners may contact Ford customer service at 1-866-436-7332. Ford's number for this recall is 25S76. This recall expands and replaces previous recall numbers 22V-859, 24V187, and 25V165. Vehicles previously remedied under 22V-859, 24V187, and 25V165 will need to have the new final remedy performed once it is available.",
+        "notes": ""
+      },
+      "risk": {
+        "consequence_summary": "A fuel leak in the presence of an ignition source, such as hot engine or exhaust components, can increase the risk of a fire.",
+        "defect_summary": "Ford Motor Company (Ford) is recalling certain 2021-2024 Bronco Sport and 2020-2022 Escape vehicles equipped with 1.5L engines. A fuel injector may crack and leak fuel inside the engine compartment.",
+        "do_not_drive": "FALSE",
+        "park_outside": "FALSE"
+      },
+      "source": {
+        "api_url": "https://api.nhtsa.gov/recalls/recallsByVehicle?make=Ford&model=Escape&modelYear=2021"
+      },
+      "vehicle": {
+        "make": "FORD",
+        "model": "ESCAPE",
+        "model_year": 2021,
+        "vehicle_id": "FORD__ESCAPE__2021"
+      },
+      "campaign_number": "25V467000",
+      "vehicle_id_left": "FORD__ESCAPE__2021",
+      "component_id_left": "FUEL",
+      "report_received_date": "2025-11-07",
+      "report_received_ordinal": 739562,
+      "defect_summary": "Ford Motor Company (Ford) is recalling certain 2021-2024 Bronco Sport and 2020-2022 Escape vehicles equipped with 1.5L engines. A fuel injector may crack and leak fuel inside the engine compartment.",
+      "complaint_id": "complaint_11426742",
+      "odi_number": "11426742",
+      "received_date": "2021-07-27",
+      "incident_date": "2021-07-16",
+      "make": "FORD",
+      "model": "ESCAPE",
+      "model_year": "2021",
+      "vehicle_id_right": "FORD__ESCAPE__2021",
+      "component_id_right": "FUEL",
+      "summary_text": "Vehicle was being driven down the road. Vehicle stalled. Check engine light came on. Attempted to restart vehicle but vehicle stalled again. Smelled fuel. Heard a boom then fire ignited. Fire came from the underside of vehicle and flames were rising on driver side of vehicle with black smoke. Attempted to exit vehicle from driver side door but was unable to do so due to flames. Crawled over to passenger side of vehicle and exited the vehicle. Fire department extinguished the fire with water. Fire reignited and fire department extinguished fire again. Insurance company inspected the vehicle but was unable to determine root cause of fire.",
+      "crash_flag": "false",
+      "fire_flag": "true",
+      "injury_count": "0",
+      "death_count": "0",
+      "medical_attention_flag": "false",
+      "vehicle_towed_flag": "false",
+      "state_of_incident": "MI",
+      "complaint_received_ordinal": 737998,
+      "defect_root_cause": "Fuel injector cracking and leaking fuel",
+      "days_between": 1564
+    },
+    {
+      "campaign": {
+        "affected_units": 200237,
+        "manufacturer": "Ford Motor Company",
+        "number": "25V442000",
+        "owner_notification_date": "",
+        "report_received_date": "2025-06-27"
+      },
+      "component": {
+        "component_id": "OTHER",
+        "parts": [
+          "BACK OVER PREVENTION:SOFTWARE"
+        ],
+        "raw": "BACK OVER PREVENTION:SOFTWARE"
+      },
+      "recall_id": "recall_b783f13bf4aa6d16",
+      "remedy": {
+        "corrective_action": "Dealers will update the rearview camera software, free of charge. Owner notification letters were mailed September 4, 2025. Owners may contact Ford customer service at 1-866-436-7332. Ford's number for this recall is 25S72.",
+        "notes": ""
+      },
+      "risk": {
+        "consequence_summary": "A rearview camera that displays a blank image can reduce the driver's view behind the vehicle. A rearview image that continues to be displayed after the vehicle is shifted out of reverse may distract the driver. Both of these situations can increase the risk of a crash.",
+        "defect_summary": "Ford Motor Company (Ford) is recalling certain 2018-2022 Transit Connect, 2019-2020 MKZ, MKX, Edge, Continental, F-150, Nautilus, Fusion, 2019-2023 Ranger, Mustang, 2020-2021 EcoSport, Expedition, Navigator, 2020-2022 Escape, F-250 SD, Corsair, 2020-2023 Aviator, Transit, 2020-2024 Explorer, 2021-2024 Bronco Sport, and 2022-2024 Maverick vehicles. A software error may cause the rearview camera to display a blank image, or the image may remain on the display after the backing event has ended.",
+        "do_not_drive": "FALSE",
+        "park_outside": "FALSE"
+      },
+      "source": {
+        "api_url": "https://api.nhtsa.gov/recalls/recallsByVehicle?make=Ford&model=F-150&modelYear=2020"
+      },
+      "vehicle": {
+        "make": "FORD",
+        "model": "F-150",
+        "model_year": 2020,
+        "vehicle_id": "FORD__F_150__2020"
+      },
+      "campaign_number": "25V442000",
+      "vehicle_id_left": "FORD__F_150__2020",
+      "component_id_left": "OTHER",
+      "report_received_date": "2025-06-27",
+      "report_received_ordinal": 739429,
+      "defect_summary": "Ford Motor Company (Ford) is recalling certain 2018-2022 Transit Connect, 2019-2020 MKZ, MKX, Edge, Continental, F-150, Nautilus, Fusion, 2019-2023 Ranger, Mustang, 2020-2021 EcoSport, Expedition, Navigator, 2020-2022 Escape, F-250 SD, Corsair, 2020-2023 Aviator, Transit, 2020-2024 Explorer, 2021-2024 Bronco Sport, and 2022-2024 Maverick vehicles. A software error may cause the rearview camera to display a blank image, or the image may remain on the display after the backing event has ended.",
+      "complaint_id": "complaint_11365925",
+      "odi_number": "11365925",
+      "received_date": "2020-10-23",
+      "incident_date": "2020-10-22",
+      "make": "FORD",
+      "model": "F-150",
+      "model_year": "2020",
+      "vehicle_id_right": "FORD__F_150__2020",
+      "component_id_right": "OTHER",
+      "summary_text": "AS I WAS BACKING INTO A SPACE THE BACKUP CAMERA MALFUNCTIONED (WENT INTO STATIC LINES AND THEM BLACKED OUT) I BACKED INTO A POLE AND DENTED THE BUMPER.",
+      "crash_flag": "true",
+      "fire_flag": "false",
+      "injury_count": "0",
+      "death_count": "0",
+      "medical_attention_flag": "false",
+      "vehicle_towed_flag": "false",
+      "state_of_incident": "MO",
+      "complaint_received_ordinal": 737721,
+      "defect_root_cause": "Software error causing rearview camera display malfunction during reverse operation",
+      "days_between": 1708
+    },
+    {
+      "campaign": {
+        "affected_units": 195864,
+        "manufacturer": "Ford Motor Company",
+        "number": "22V150000",
+        "owner_notification_date": "",
+        "report_received_date": "2022-11-03"
+      },
+      "component": {
+        "component_id": "BRAKES",
+        "parts": [
+          "SERVICE BRAKES",
+          "HYDRAULIC:POWER ASSIST"
+        ],
+        "raw": "SERVICE BRAKES, HYDRAULIC:POWER ASSIST"
+      },
+      "recall_id": "recall_788bb239ef26ec07",
+      "remedy": {
+        "corrective_action": "Dealers will replace the brake master cylinder. If the master cylinder is leaking, the brake booster will also be replaced. Repairs will be performed free of charge. An interim owner notification letter notifying customers of the safety defect were mailed on April 29, 2022. Owner notification letters were mailed April 29, 2022. This recall is an expansion of NHTSA recall number 20V-332. Owners may contact Ford customer service at 1-866-436-7332. Ford's number for this recall is 22S11.",
+        "notes": "Owners may also contact the National Highway Traffic Safety Administration Vehicle Safety Hotline at 1-888-327-4236 (TTY 1-800-424-9153), or go to www.nhtsa.gov."
+      },
+      "risk": {
+        "consequence_summary": "A loss of brake fluid may result in a change in brake pedal travel, increased pedal effort and reduced front brake function, requiring greater effort and distance to stop the vehicle. These conditions can increase the risk of a crash.",
+        "defect_summary": "Ford Motor Company (Ford) is recalling certain 2016-2017 Ford Expedition, Lincoln Navigator, and 2016-2018 F-150 vehicles equipped with 3.5L Ecoboost engines. The brake master cylinder may allow brake fluid to leak from the front wheel circuit into the brake booster.",
+        "do_not_drive": "FALSE",
+        "park_outside": "FALSE"
+      },
+      "source": {
+        "api_url": "https://api.nhtsa.gov/recalls/recallsByVehicle?make=Ford&model=F-150&modelYear=2016"
+      },
+      "vehicle": {
+        "make": "FORD",
+        "model": "F-150",
+        "model_year": 2016,
+        "vehicle_id": "FORD__F_150__2016"
+      },
+      "campaign_number": "22V150000",
+      "vehicle_id_left": "FORD__F_150__2016",
+      "component_id_left": "BRAKES",
+      "report_received_date": "2022-11-03",
+      "report_received_ordinal": 738462,
+      "defect_summary": "Ford Motor Company (Ford) is recalling certain 2016-2017 Ford Expedition, Lincoln Navigator, and 2016-2018 F-150 vehicles equipped with 3.5L Ecoboost engines. The brake master cylinder may allow brake fluid to leak from the front wheel circuit into the brake booster.",
+      "complaint_id": "complaint_10970121",
+      "odi_number": "10970121",
+      "received_date": "2017-04-03",
+      "incident_date": "2017-03-31",
+      "make": "FORD",
+      "model": "F-150",
+      "model_year": "2016",
+      "vehicle_id_right": "FORD__F_150__2016",
+      "component_id_right": "BRAKES",
+      "summary_text": "IN NOVEMBER 2016 JUST 8 MONTHS AFTER OUR TRUCK WAS PURCHASED MY HUSBAND WAS TRYING TO STOP AT A RED LIGHTIN OUR NEIGHBORHOOD AND THE BRAKES WENT ALL THE WAY TO THE FLOOR AND DI'D NOT STOP, THE BRAKES DID NOT WORK. LUCKILY THERE WAS NOT AN ACCIDENT OR INJURY THIS TIME. WE TOOK THE VEHICLE TO FORD IN GRAPEVINE AND THEY TOLD US THE MASTER CYLINDER IN THE. TAKES NEEDED TO BE REPLACED SO THEY REPLACED IT. 3 MONTHS LATER IN MARCH 2017 MY HUSBAND WAS IN TRAFFIC TURNING AT A LIGHT TO MERGE ONTO THE HIGHWAY, TRAFFIC CAME TO A STOP AND HE TRIED TO STOP AND AGAIN THE BRAKES WENT ALL THE WAY TO THE GROUND AND THEY DIDN'T WORK NOR DID THEY STOP THE VEHICLE. THIS TIME HE REAR ENDED A LADY IN AN SUV. HE SAID HE HAD PLENTY OF TIME TO STOP AND WAS LUCKILY GOING AT A REDUCED SPEED BUT STILL WAS UNABLE TO STOP OR SLOW BEFORE COLLIDING WITH ANOTHER VEHICLE DUE TO BRAKE MALFUNCTION. THE TRUCK IS NOW AT GRAPEVINE FORD AGAIN AND WE HAVE YET BEEN TOLD WHAT THE ISSUE WAS. BOTH TIMES THESE INCIDENTS OCCURRED THERE WAS NO WARNING, NO LIGHTS, NOTHING THAT WE NOTICED THAT COULD INDICATE AN ISSUE. WE HAVE HAD TONS OF OTHER ISSUES WITH THIS TRUCK, DRIVERS SIDE SEATBELT BROKE, AIR CONDITIONING UNIT BROKE, SKYLINK SYSTEM SHORTED AND BRAKE FAILURE. WE HAVE BEEN REFUSED A REPLACEMENT VEHICLE BY FORD AND ARE CURRENTLY DEALING WITH LAWYERS BUT THAT COULD TAKE 3 MORE MONTHS. I AM FURIOUS THAT NO CONSIDERATION HAS BEEN GIVEN TO ME AND MY FAMILY OVER THESE ISSUES. HAVE THEY FIXED OUR VEHICLE? SURE, BUT I AM TERRIFIED TO PUT MY BABIES IN THIS TRUCK EVER AGAIN NO MATTER FIXED OR NOT. THE NEXT TIME WE MAY NOT BE SO LUCKY AND I CAN NOT TAKE THAT CHANCE. THIS IS A WORK AND FAMILY VEHICLE AND OUR WORK/FINANCES HAVE BEEN SEVERELY COMPROMISED AS WE PAY A LOT OF MONEY FOR THIS TRUCK. I AM EXTREMELY DISAPPOINTED WITH FORD AND THEIR CUSTOMER SERVICE AND THEIR PRODUCT AND HOPE THIS MAY HELP GET OUR ISSUES RESOLVED.",
+      "crash_flag": "true",
+      "fire_flag": "false",
+      "injury_count": "2",
+      "death_count": "0",
+      "medical_attention_flag": "false",
+      "vehicle_towed_flag": "true",
+      "state_of_incident": "TX",
+      "complaint_received_ordinal": 736422,
+      "defect_root_cause": "Brake master cylinder allows fluid leak into booster",
+      "days_between": 2040
+    },
+    {
+      "campaign": {
+        "affected_units": 123611,
+        "manufacturer": "Ford Motor Company",
+        "number": "25V236000",
+        "owner_notification_date": "",
+        "report_received_date": "2025-11-04"
+      },
+      "component": {
+        "component_id": "BRAKES",
+        "parts": [
+          "SERVICE BRAKES",
+          "HYDRAULIC:FOUNDATION COMPONENTS:MASTER CYLINDER"
+        ],
+        "raw": "SERVICE BRAKES, HYDRAULIC:FOUNDATION COMPONENTS:MASTER CYLINDER"
+      },
+      "recall_id": "recall_dd77909d079e55ac",
+      "remedy": {
+        "corrective_action": "Dealers will replace the brake master cylinder. If the master cylinder is leaking, the brake booster will also be replaced. Repairs will be performed free of charge. Owner notification letters were mailed September 25, 2025. Owners may contact Ford customer service at 1-866-436-7332. Ford's number for this recall is 25S37. This recall is an expansion of NHTSA recall number 22V-150.",
+        "notes": "Owners may also contact the National Highway Traffic Safety Administration Vehicle Safety Hotline at 1-888-327-4236 (TTY 1- 888-275-9171) or go to www.safercar.gov."
+      },
+      "risk": {
+        "consequence_summary": "A brake fluid leak can cause reduced brake function and extend the distance required to stop, increasing the risk of a crash.",
+        "defect_summary": "Ford Motor Company (Ford) is recalling certain 2017-2018 F-150, Expedition, and Lincoln Navigator vehicles. The brake master cylinder may allow brake fluid to leak from the front wheel circuit into the brake booster.",
+        "do_not_drive": "FALSE",
+        "park_outside": "FALSE"
+      },
+      "source": {
+        "api_url": "https://api.nhtsa.gov/recalls/recallsByVehicle?make=Ford&model=F-150&modelYear=2017"
+      },
+      "vehicle": {
+        "make": "FORD",
+        "model": "F-150",
+        "model_year": 2017,
+        "vehicle_id": "FORD__F_150__2017"
+      },
+      "campaign_number": "25V236000",
+      "vehicle_id_left": "FORD__F_150__2017",
+      "component_id_left": "BRAKES",
+      "report_received_date": "2025-11-04",
+      "report_received_ordinal": 739559,
+      "defect_summary": "Ford Motor Company (Ford) is recalling certain 2017-2018 F-150, Expedition, and Lincoln Navigator vehicles. The brake master cylinder may allow brake fluid to leak from the front wheel circuit into the brake booster.",
+      "complaint_id": "complaint_11109618",
+      "odi_number": "11109618",
+      "received_date": "2018-07-05",
+      "incident_date": "2018-05-30",
+      "make": "FORD",
+      "model": "F-150",
+      "model_year": "2017",
+      "vehicle_id_right": "FORD__F_150__2017",
+      "component_id_right": "BRAKES",
+      "summary_text": "TL* THE CONTACT OWNS A 2017 FORD F-150. WHILE DRIVING 25 MPH AND APPROACHING A STOP LIGHT, THE BRAKE PEDAL WAS DEPRESSED AND TRAVELED TO THE FLOORBOARD. THE VEHICLE FAILED TO STOP AND CRASHED INTO THE MIDDLE OF THE FRONT DRIVER SIDE DOOR OF ANOTHER VEHICLE. THERE WAS NO WARNING INDICATOR ILLUMINATED. THE CONTACT SUSTAINED ARM INJURIES, BUT DID NOT REQUIRE MEDICAL ATTENTION. A POLICE REPORT WAS FILED. THE VEHICLE WAS TOWED TO THE CONTACT'S RESIDENCE. THE CONTACT CALLED LARRY H. MILLER FORD LAKEWOOD (11595 W 6TH AVE, LAKEWOOD, CO 80215, (303) 232-2200) AND WAS ADVISED TO HAVE THE VEHICLE TOWED TO THE COLLISION CENTER. THE VEHICLE WAS NOT DIAGNOSED OR REPAIRED. THE MANUFACTURER WAS NOT NOTIFIED OF THE FAILURE. THE APPROXIMATE FAILURE MILEAGE WAS 10,000. THE VIN WAS NOT AVAILABLE.",
+      "crash_flag": "true",
+      "fire_flag": "false",
+      "injury_count": "1",
+      "death_count": "0",
+      "medical_attention_flag": "false",
+      "vehicle_towed_flag": "true",
+      "state_of_incident": "CO",
+      "complaint_received_ordinal": 736880,
+      "defect_root_cause": "Brake master cylinder allows fluid leak into brake booster",
+      "days_between": 2679
+    },
+    {
+      "campaign": {
+        "affected_units": 123611,
+        "manufacturer": "Ford Motor Company",
+        "number": "25V236000",
+        "owner_notification_date": "",
+        "report_received_date": "2025-11-04"
+      },
+      "component": {
+        "component_id": "BRAKES",
+        "parts": [
+          "SERVICE BRAKES",
+          "HYDRAULIC:FOUNDATION COMPONENTS:MASTER CYLINDER"
+        ],
+        "raw": "SERVICE BRAKES, HYDRAULIC:FOUNDATION COMPONENTS:MASTER CYLINDER"
+      },
+      "recall_id": "recall_dd77909d079e55ac",
+      "remedy": {
+        "corrective_action": "Dealers will replace the brake master cylinder. If the master cylinder is leaking, the brake booster will also be replaced. Repairs will be performed free of charge. Owner notification letters were mailed September 25, 2025. Owners may contact Ford customer service at 1-866-436-7332. Ford's number for this recall is 25S37. This recall is an expansion of NHTSA recall number 22V-150.",
+        "notes": "Owners may also contact the National Highway Traffic Safety Administration Vehicle Safety Hotline at 1-888-327-4236 (TTY 1- 888-275-9171) or go to www.safercar.gov."
+      },
+      "risk": {
+        "consequence_summary": "A brake fluid leak can cause reduced brake function and extend the distance required to stop, increasing the risk of a crash.",
+        "defect_summary": "Ford Motor Company (Ford) is recalling certain 2017-2018 F-150, Expedition, and Lincoln Navigator vehicles. The brake master cylinder may allow brake fluid to leak from the front wheel circuit into the brake booster.",
+        "do_not_drive": "FALSE",
+        "park_outside": "FALSE"
+      },
+      "source": {
+        "api_url": "https://api.nhtsa.gov/recalls/recallsByVehicle?make=Ford&model=F-150&modelYear=2017"
+      },
+      "vehicle": {
+        "make": "FORD",
+        "model": "F-150",
+        "model_year": 2017,
+        "vehicle_id": "FORD__F_150__2017"
+      },
+      "campaign_number": "25V236000",
+      "vehicle_id_left": "FORD__F_150__2017",
+      "component_id_left": "BRAKES",
+      "report_received_date": "2025-11-04",
+      "report_received_ordinal": 739559,
+      "defect_summary": "Ford Motor Company (Ford) is recalling certain 2017-2018 F-150, Expedition, and Lincoln Navigator vehicles. The brake master cylinder may allow brake fluid to leak from the front wheel circuit into the brake booster.",
+      "complaint_id": "complaint_11339784",
+      "odi_number": "11339784",
+      "received_date": "2020-07-16",
+      "incident_date": "2020-07-14",
+      "make": "FORD",
+      "model": "F-150",
+      "model_year": "2017",
+      "vehicle_id_right": "FORD__F_150__2017",
+      "component_id_right": "BRAKES",
+      "summary_text": "I WAS IN MY DRIVEWAY SITTING STATIONARY IN MY VEHICLE BUCKLING UP TO DEPART FOR THE STORE. I PUT MY FOOT ON THE BRAKE PEDAL TO PUSH THE START BUTTON. AFTER STARTING I MOVED THE SHIFT LEVER TO PUT THE VEHICLE IN GEAR AND THE VEHICLE STARTED TO ROLL AND MY BRAKE PEDAL WENT TO THE FLOOR. BECAUSE MY DRIVEWAY HAS A SLIGHT RAMP TO IT THE VEHICLE KEPT ROLLING FORWARD, I KEPT HITTING THE BRAKE PEDAL BUT THE BRAKE PEDAL KEPT GOING TO THE FLOOR AND THE VEHICLE WOULD NOT STOP. AS A RESULT I ROLLED INTO A BLOCK FENCE ACROSS FROM MY DRIVEWAY KNOCKING IT DOWN AND DAMAGING MY VEHICLE. VEHICLE WAS JUST ROLLING UNDER ITS OWN MOMENTUM, NO POWER TO THE DRIVE TRAIN. NO INJURIES, BUT FENCE WAS DOWN AND VEHICLE HOOD AND OTHER FRONT END AREAS WERE DAMAGED. I HAVE NO IDEA WHAT CAUSED THE BRAKES TO FAIL. FILED AN INSURANCE CLAIM AND HAD TO HAVE VEHICLE TOWED TO DEALER FOR BODY REPAIRS AND NEIGHBORS FENCE REPAIRED.",
+      "crash_flag": "true",
+      "fire_flag": "false",
+      "injury_count": "0",
+      "death_count": "0",
+      "medical_attention_flag": "false",
+      "vehicle_towed_flag": "true",
+      "state_of_incident": "AZ",
+      "complaint_received_ordinal": 737622,
+      "defect_root_cause": "Brake master cylinder allows fluid leak into brake booster",
+      "days_between": 1937
+    },
+    {
+      "campaign": {
+        "affected_units": 44963,
+        "manufacturer": "Ford Motor Company",
+        "number": "26V378000",
+        "owner_notification_date": "",
+        "report_received_date": "2026-09-06"
+      },
+      "component": {
+        "component_id": "POWERTRAIN",
+        "parts": [
+          "POWER TRAIN:AUTOMATIC TRANSMISSION:CONTROL MODULE (TCM/PCM/TECM)"
+        ],
+        "raw": "POWER TRAIN:AUTOMATIC TRANSMISSION:CONTROL MODULE (TCM/PCM/TECM)"
+      },
+      "recall_id": "recall_2d00e2aee7db43d8",
+      "remedy": {
+        "corrective_action": "Dealers will update the PCM software, free of charge. Owner notification letters are expected to be mailed July 6. 2026. Owners may contact customer service at 1-866-436-7332. Ford's number for this recall is 26S45. Vehicle Identification Numbers (VINs) involved in this recall will become searchable on NHTSA.gov on July 6, 2026.",
+        "notes": ""
+      },
+      "risk": {
+        "consequence_summary": "Unexpectedly downshifting into first gear may result in a loss of vehicle control, increasing the risk of a crash.",
+        "defect_summary": "Ford Motor Company (Ford) is recalling certain model year 2014 F-150 vehicles previously repaired incorrectly under recall number 24V444. A loss of signal between the transmission output shaft speed sensor and the powertrain control module (PCM) can cause the transmission to unexpectedly downshift into first gear.",
+        "do_not_drive": "FALSE",
+        "park_outside": "FALSE"
+      },
+      "source": {
+        "api_url": "https://api.nhtsa.gov/recalls/recallsByVehicle?make=Ford&model=F-150&modelYear=2014"
+      },
+      "vehicle": {
+        "make": "FORD",
+        "model": "F-150",
+        "model_year": 2014,
+        "vehicle_id": "FORD__F_150__2014"
+      },
+      "campaign_number": "26V378000",
+      "vehicle_id_left": "FORD__F_150__2014",
+      "component_id_left": "POWERTRAIN",
+      "report_received_date": "2026-09-06",
+      "report_received_ordinal": 739865,
+      "defect_summary": "Ford Motor Company (Ford) is recalling certain model year 2014 F-150 vehicles previously repaired incorrectly under recall number 24V444. A loss of signal between the transmission output shaft speed sensor and the powertrain control module (PCM) can cause the transmission to unexpectedly downshift into first gear.",
+      "complaint_id": "complaint_11424739",
+      "odi_number": "11424739",
+      "received_date": "2021-07-14",
+      "incident_date": "2021-05-25",
+      "make": "FORD",
+      "model": "F-150",
+      "model_year": "2014",
+      "vehicle_id_right": "FORD__F_150__2014",
+      "component_id_right": "POWERTRAIN",
+      "summary_text": "while driving my vehicle it suddenly downshifts from 6th gear to 1st gear causing the rear wheels to lock up.",
+      "crash_flag": "false",
+      "fire_flag": "false",
+      "injury_count": "1",
+      "death_count": "0",
+      "medical_attention_flag": "false",
+      "vehicle_towed_flag": "false",
+      "state_of_incident": "CA",
+      "complaint_received_ordinal": 737985,
+      "defect_root_cause": "Loss of signal between speed sensor and PCM",
+      "days_between": 1880
+    },
+    {
+      "campaign": {
+        "affected_units": 44963,
+        "manufacturer": "Ford Motor Company",
+        "number": "26V378000",
+        "owner_notification_date": "",
+        "report_received_date": "2026-09-06"
+      },
+      "component": {
+        "component_id": "POWERTRAIN",
+        "parts": [
+          "POWER TRAIN:AUTOMATIC TRANSMISSION:CONTROL MODULE (TCM/PCM/TECM)"
+        ],
+        "raw": "POWER TRAIN:AUTOMATIC TRANSMISSION:CONTROL MODULE (TCM/PCM/TECM)"
+      },
+      "recall_id": "recall_2d00e2aee7db43d8",
+      "remedy": {
+        "corrective_action": "Dealers will update the PCM software, free of charge. Owner notification letters are expected to be mailed July 6. 2026. Owners may contact customer service at 1-866-436-7332. Ford's number for this recall is 26S45. Vehicle Identification Numbers (VINs) involved in this recall will become searchable on NHTSA.gov on July 6, 2026.",
+        "notes": ""
+      },
+      "risk": {
+        "consequence_summary": "Unexpectedly downshifting into first gear may result in a loss of vehicle control, increasing the risk of a crash.",
+        "defect_summary": "Ford Motor Company (Ford) is recalling certain model year 2014 F-150 vehicles previously repaired incorrectly under recall number 24V444. A loss of signal between the transmission output shaft speed sensor and the powertrain control module (PCM) can cause the transmission to unexpectedly downshift into first gear.",
+        "do_not_drive": "FALSE",
+        "park_outside": "FALSE"
+      },
+      "source": {
+        "api_url": "https://api.nhtsa.gov/recalls/recallsByVehicle?make=Ford&model=F-150&modelYear=2014"
+      },
+      "vehicle": {
+        "make": "FORD",
+        "model": "F-150",
+        "model_year": 2014,
+        "vehicle_id": "FORD__F_150__2014"
+      },
+      "campaign_number": "26V378000",
+      "vehicle_id_left": "FORD__F_150__2014",
+      "component_id_left": "POWERTRAIN",
+      "report_received_date": "2026-09-06",
+      "report_received_ordinal": 739865,
+      "defect_summary": "Ford Motor Company (Ford) is recalling certain model year 2014 F-150 vehicles previously repaired incorrectly under recall number 24V444. A loss of signal between the transmission output shaft speed sensor and the powertrain control module (PCM) can cause the transmission to unexpectedly downshift into first gear.",
+      "complaint_id": "complaint_11421240",
+      "odi_number": "11421240",
+      "received_date": "2021-06-17",
+      "incident_date": "2021-06-16",
+      "make": "FORD",
+      "model": "F-150",
+      "model_year": "2014",
+      "vehicle_id_right": "FORD__F_150__2014",
+      "component_id_right": "POWERTRAIN",
+      "summary_text": "while driving on the freeway my 2014 ford f150 suddenly downshifted from 6th gear to 1st gear causing my rear wheels to lock up and having the steering wheel jerk to the left. the car behind me had to swerve to avoid hitting me from behind since the trucks wheels locked up with no brake lights. this has been the 8th time this has happened. each time i take it to ford for them to check it out they tell me they can not duplicate the issue. the wrench light comes on and it throws codes and ford will do nothing to fix it.",
+      "crash_flag": "false",
+      "fire_flag": "false",
+      "injury_count": "1",
+      "death_count": "0",
+      "medical_attention_flag": "true",
+      "vehicle_towed_flag": "false",
+      "state_of_incident": "CA",
+      "complaint_received_ordinal": 737958,
+      "defect_root_cause": "Loss of signal between speed sensor and PCM",
+      "days_between": 1907
+    },
+    {
+      "campaign": {
+        "affected_units": 28065,
+        "manufacturer": "Kia America, Inc.",
+        "number": "22V612000",
+        "owner_notification_date": "",
+        "report_received_date": "2022-10-08"
+      },
+      "component": {
+        "component_id": "POWERTRAIN",
+        "parts": [
+          "POWER TRAIN:AUTOMATIC TRANSMISSION:LEVER AND LINKAGE:COLUMN SHIFT"
+        ],
+        "raw": "POWER TRAIN:AUTOMATIC TRANSMISSION:LEVER AND LINKAGE:COLUMN SHIFT"
+      },
+      "recall_id": "recall_e20a5bba5f964eb1",
+      "remedy": {
+        "corrective_action": "Dealers will inspect and replace the automatic transmission shift lever assembly components, as necessary, free of charge. Owner notification letters were mailed October 7, 2022. Owners may contact Kia customer service at 1-800-333-4542. Kia's number for this recall is SC246.",
+        "notes": "Owners may also contact the National Highway Traffic Safety Administration Vehicle Safety Hotline at 1-888-327-4236 (TTY 1-800-424-9153), or go to www.nhtsa.gov."
+      },
+      "risk": {
+        "consequence_summary": "A vehicle rollaway increases the risk of a crash and injury.",
+        "defect_summary": "Kia America, Inc. (Kia) is recalling certain 2016 Sedona and Sorento vehicles. The vehicles may have been manufactured with faulty automatic transmission shift lever assembly components, preventing the shift lever from locking, which can allow the vehicle to rollaway.",
+        "do_not_drive": "FALSE",
+        "park_outside": "FALSE"
+      },
+      "source": {
+        "api_url": "https://api.nhtsa.gov/recalls/recallsByVehicle?make=Kia&model=Sorento&modelYear=2016"
+      },
+      "vehicle": {
+        "make": "KIA",
+        "model": "SORENTO",
+        "model_year": 2016,
+        "vehicle_id": "KIA__SORENTO__2016"
+      },
+      "campaign_number": "22V612000",
+      "vehicle_id_left": "KIA__SORENTO__2016",
+      "component_id_left": "POWERTRAIN",
+      "report_received_date": "2022-10-08",
+      "report_received_ordinal": 738436,
+      "defect_summary": "Kia America, Inc. (Kia) is recalling certain 2016 Sedona and Sorento vehicles. The vehicles may have been manufactured with faulty automatic transmission shift lever assembly components, preventing the shift lever from locking, which can allow the vehicle to rollaway.",
+      "complaint_id": "complaint_11222482",
+      "odi_number": "11222482",
+      "received_date": "2016-01-06",
+      "incident_date": "2015-12-30",
+      "make": "KIA",
+      "model": "SORENTO",
+      "model_year": "2016",
+      "vehicle_id_right": "KIA__SORENTO__2016",
+      "component_id_right": "POWERTRAIN",
+      "summary_text": "TL* THE CONTACT OWNS A 2016 KIA SORENTO. AFTER PARKING THE VEHICLE ON AN INCLINE, THE DRIVER EXITED THE VEHICLE. APPROXIMATELY 15 MINUTES LATER, THE VEHICLE BEGAN TO ROLL DOWN THE HILL AND CRASHED INTO SEVERAL TREES. A POLICE REPORT WAS FILED AND THERE WERE NO INJURIES. THE CAUSE OF THE FAILURE WAS NOT DIAGNOSED OR REPAIRED. THE MANUFACTURER WAS NOT NOTIFIED. THE VIN WAS NOT AVAILABLE. THE FAILURE MILEAGE WAS 1,000.",
+      "crash_flag": "true",
+      "fire_flag": "false",
+      "injury_count": "0",
+      "death_count": "0",
+      "medical_attention_flag": "false",
+      "vehicle_towed_flag": "false",
+      "state_of_incident": "VT",
+      "complaint_received_ordinal": 735969,
+      "defect_root_cause": "Faulty automatic transmission shift lever assembly components",
+      "days_between": 2467
+    },
+    {
+      "campaign": {
+        "affected_units": 3493,
+        "manufacturer": "Hyundai Motor America",
+        "number": "26V307000",
+        "owner_notification_date": "",
+        "report_received_date": "2026-05-15"
+      },
+      "component": {
+        "component_id": "AIRBAG",
+        "parts": [
+          "AIR BAGS:FRONTAL:DRIVER SIDE:INFLATOR MODULE"
+        ],
+        "raw": "AIR BAGS:FRONTAL:DRIVER SIDE:INFLATOR MODULE"
+      },
+      "recall_id": "recall_0254df800f5ea5ad",
+      "remedy": {
+        "corrective_action": "Dealers will inspect and replace the air bag inflator, as necessary, free of charge. Owner notification letters are expected to be mailed July 13, 2026. Owners may contact Hyundai customer service at 1-855-371-9460. Hyundai's number for this recall is 300. Vehicle Identification Numbers (VINs) involved in this recall became searchable on NHTSA.gov on May 16, 2026.",
+        "notes": ""
+      },
+      "risk": {
+        "consequence_summary": "An air bag inflator that ruptures may result in sharp metal fragments striking the driver or passengers, increasing the risk of injury or death.",
+        "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2015-2016 Elantra and 2016 Elantra GT vehicles. The driver's air bag inflator may rupture during deployment.",
+        "do_not_drive": "FALSE",
+        "park_outside": "FALSE"
+      },
+      "source": {
+        "api_url": "https://api.nhtsa.gov/recalls/recallsByVehicle?make=Hyundai&model=Elantra&modelYear=2016"
+      },
+      "vehicle": {
+        "make": "HYUNDAI",
+        "model": "ELANTRA",
+        "model_year": 2016,
+        "vehicle_id": "HYUNDAI__ELANTRA__2016"
+      },
+      "campaign_number": "26V307000",
+      "vehicle_id_left": "HYUNDAI__ELANTRA__2016",
+      "component_id_left": "AIRBAG",
+      "report_received_date": "2026-05-15",
+      "report_received_ordinal": 739751,
+      "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2015-2016 Elantra and 2016 Elantra GT vehicles. The driver's air bag inflator may rupture during deployment.",
+      "complaint_id": "complaint_10906014",
+      "odi_number": "10906014",
+      "received_date": "2016-09-13",
+      "incident_date": "2016-09-11",
+      "make": "HYUNDAI",
+      "model": "ELANTRA",
+      "model_year": "2016",
+      "vehicle_id_right": "HYUNDAI__ELANTRA__2016",
+      "component_id_right": "AIRBAG",
+      "summary_text": "TL* THE CONTACT OWNS A 2016 HYUNDAI ELANTRA. THE CONTACT STATED THAT WHILE DRIVING AT 25 MPH, THE CONTACT CRASHED INTO ANOTHER VEHICLE. THE CONTACT STATED THAT THE AIR BAGS DEPLOYED AND EMITTED FIRE DURING THE DEPLOYMENT. A POLICE REPORT WAS FILED. THERE WERE NO INJURIES REPORTED. THE VEHICLE WAS TOWED TO AN INDEPENDENT MECHANIC. THE VEHICLE WAS NOT REPAIRED. THE MANUFACTURER WAS NOTIFIED OF THE FAILURE. THE APPROXIMATE FAILURE MILEAGE WAS 9,999.",
+      "crash_flag": "true",
+      "fire_flag": "true",
+      "injury_count": "0",
+      "death_count": "0",
+      "medical_attention_flag": "false",
+      "vehicle_towed_flag": "true",
+      "state_of_incident": "FL",
+      "complaint_received_ordinal": 736220,
+      "defect_root_cause": "Driver's air bag inflator rupture",
+      "days_between": 3531
+    },
+    {
+      "campaign": {
+        "affected_units": 71,
+        "manufacturer": "Chrysler (FCA US, LLC)",
+        "number": "25V298000",
+        "owner_notification_date": "",
+        "report_received_date": "2025-08-05"
+      },
+      "component": {
+        "component_id": "AIRBAG",
+        "parts": [
+          "AIR BAGS"
+        ],
+        "raw": "AIR BAGS"
+      },
+      "recall_id": "recall_2105031597797eb2",
+      "remedy": {
+        "corrective_action": "Dealers secured the connectors for the air bag, free of charge. All vehicles have been remedied. Owner notification letters were mailed May 27, 2025. Owners may contact Chrysler customer service at 800-853-1403. Chrysler's number for this recall is 08C.",
+        "notes": "Owners may also contact the National Highway Traffic Safety Administration Vehicle Safety Hotline at 888-327-4236 (TTY 888-275-9171) or go to nhtsa.gov."
+      },
+      "risk": {
+        "consequence_summary": "A driver's side air bag that does not deploy as intended increases the risk of injury in a crash.",
+        "defect_summary": "Chrysler (FCA US, LLC) is recalling certain 2019-2024 Ram 1500 vehicles. The driver's side air bag may not be connected properly, which can cause the air bag not to deploy as intended. As such, these vehicles fail to comply with the requirements of Federal Motor Vehicle Safety Standard number 208, \"Occupant Crash Protection.\"",
+        "do_not_drive": "FALSE",
+        "park_outside": "FALSE"
+      },
+      "source": {
+        "api_url": "https://api.nhtsa.gov/recalls/recallsByVehicle?make=Ram&model=1500&modelYear=2019"
+      },
+      "vehicle": {
+        "make": "RAM",
+        "model": "1500",
+        "model_year": 2019,
+        "vehicle_id": "RAM__1500__2019"
+      },
+      "campaign_number": "25V298000",
+      "vehicle_id_left": "RAM__1500__2019",
+      "component_id_left": "AIRBAG",
+      "report_received_date": "2025-08-05",
+      "report_received_ordinal": 739468,
+      "defect_summary": "Chrysler (FCA US, LLC) is recalling certain 2019-2024 Ram 1500 vehicles. The driver's side air bag may not be connected properly, which can cause the air bag not to deploy as intended. As such, these vehicles fail to comply with the requirements of Federal Motor Vehicle Safety Standard number 208, \"Occupant Crash Protection.\"",
+      "complaint_id": "complaint_11394876",
+      "odi_number": "11394876",
+      "received_date": "2021-02-05",
+      "incident_date": "2020-12-08",
+      "make": "RAM",
+      "model": "1500",
+      "model_year": "2019",
+      "vehicle_id_right": "RAM__1500__2019",
+      "component_id_right": "AIRBAG",
+      "summary_text": "TL* THE CONTACT OWNS A 2019 RAM 1500. THE CONTACT STATED THAT WHILE DRIVING AT 40 MPH, HE HAD MISSED A LEFT TURN AND DROVE 300 FT OFF OF A CLIFF AND NOSE DIVED INTO AN EMBANKMENT. THE CONTACT HIT HIS FACE ON THE STEERING WHEEL AND WAS KNOCKED UNCONSCIOUS. THE AIR BAGS DID NOT DEPLOY UPON IMPACT. AN AMBULANCE WAS CALLED AND THE CONTACT WAS RUSHED TO EMERGENCY ROOM WHERE HE HAD AN EMERGENCY SURGERY FOR A BROKEN BACK. POLICE DID ARRIVE ON THE SCENE; HOWEVER, THE CONTACT WAS UNAWARE IF A REPORT WAS FILED. DUE TO THE FAILURE, THE VEHICLE WAS TOWED TO TRI LAKES FORD(180 STATE HWY F &, 65, BRANSON, MO 65616) WHERE IT WAS SERVICED AND REPAIRED WITHOUT THE CONTACT'S KNOWLEDGE. THE VEHICLE WAS RETURNED TO THE CONTACT ONCE HE LEFT THE HOSPITAL. THE MANUFACTURER HAD YET TO BE NOTIFIED OF THE FAILURE. THE VEHICLE HAD BEEN REPAIRED. THE FAILURE MILEAGE WAS APPROXIMATELY 27,500.",
+      "crash_flag": "true",
+      "fire_flag": "false",
+      "injury_count": "1",
+      "death_count": "0",
+      "medical_attention_flag": "true",
+      "vehicle_towed_flag": "true",
+      "state_of_incident": "MO",
+      "complaint_received_ordinal": 737826,
+      "defect_root_cause": "Driver's side air bag not connected properly",
+      "days_between": 1642
+    },
+    {
+      "campaign": {
+        "affected_units": 71,
+        "manufacturer": "Chrysler (FCA US, LLC)",
+        "number": "25V298000",
+        "owner_notification_date": "",
+        "report_received_date": "2025-08-05"
+      },
+      "component": {
+        "component_id": "AIRBAG",
+        "parts": [
+          "AIR BAGS"
+        ],
+        "raw": "AIR BAGS"
+      },
+      "recall_id": "recall_2105031597797eb2",
+      "remedy": {
+        "corrective_action": "Dealers secured the connectors for the air bag, free of charge. All vehicles have been remedied. Owner notification letters were mailed May 27, 2025. Owners may contact Chrysler customer service at 800-853-1403. Chrysler's number for this recall is 08C.",
+        "notes": "Owners may also contact the National Highway Traffic Safety Administration Vehicle Safety Hotline at 888-327-4236 (TTY 888-275-9171) or go to nhtsa.gov."
+      },
+      "risk": {
+        "consequence_summary": "A driver's side air bag that does not deploy as intended increases the risk of injury in a crash.",
+        "defect_summary": "Chrysler (FCA US, LLC) is recalling certain 2019-2024 Ram 1500 vehicles. The driver's side air bag may not be connected properly, which can cause the air bag not to deploy as intended. As such, these vehicles fail to comply with the requirements of Federal Motor Vehicle Safety Standard number 208, \"Occupant Crash Protection.\"",
+        "do_not_drive": "FALSE",
+        "park_outside": "FALSE"
+      },
+      "source": {
+        "api_url": "https://api.nhtsa.gov/recalls/recallsByVehicle?make=Ram&model=1500&modelYear=2019"
+      },
+      "vehicle": {
+        "make": "RAM",
+        "model": "1500",
+        "model_year": 2019,
+        "vehicle_id": "RAM__1500__2019"
+      },
+      "campaign_number": "25V298000",
+      "vehicle_id_left": "RAM__1500__2019",
+      "component_id_left": "AIRBAG",
+      "report_received_date": "2025-08-05",
+      "report_received_ordinal": 739468,
+      "defect_summary": "Chrysler (FCA US, LLC) is recalling certain 2019-2024 Ram 1500 vehicles. The driver's side air bag may not be connected properly, which can cause the air bag not to deploy as intended. As such, these vehicles fail to comply with the requirements of Federal Motor Vehicle Safety Standard number 208, \"Occupant Crash Protection.\"",
+      "complaint_id": "complaint_11319766",
+      "odi_number": "11319766",
+      "received_date": "2020-03-30",
+      "incident_date": "2020-03-23",
+      "make": "RAM",
+      "model": "1500",
+      "model_year": "2019",
+      "vehicle_id_right": "RAM__1500__2019",
+      "component_id_right": "AIRBAG",
+      "summary_text": "I WAS IN A MAJOR MOTOR VEHICLE ACCIDENT IN WHERE I FELL ASLEEP BEHIND THE WHEEL. AS A RESULT I SWERVED RIGHT, COLLIDED WITH 20-30 FT OF GUARD RAIL AND ROLLED AT LEAST 2 TIMES. I DON'T REMEMBER A THING SINCE I RECEIVED A MAJOR CONCUSSION FROM SLAMMING MY HEAD INTO THE STEERING WHEEL AT IMPACT. HAD MY AIRBAGS WORKED, I WOULDN'T HAVE A MASSIVE SCAR ON MY FOREHEAD, I WOULD BE ABLE TO DEFEND MYSELF IN COURT BECAUSE I MAY HAVE MEMORY OF THE ACCIDENT. NEITHER FRONT AIRBAG DEPLOYED, THE REST OF THE TRUCK AIRBAGS DEPLOYED, INCLUDING THE REAR PASSENGER AIRBAG",
+      "crash_flag": "true",
+      "fire_flag": "false",
+      "injury_count": "1",
+      "death_count": "0",
+      "medical_attention_flag": "true",
+      "vehicle_towed_flag": "true",
+      "state_of_incident": "NH",
+      "complaint_received_ordinal": 737514,
+      "defect_root_cause": "Driver's side air bag not connected properly",
+      "days_between": 1954
+    }
+  ],
+  "elapsed_seconds": 191.22,
+  "cost_usd": 0.280916,
+  "total_tokens": 543389
+}

@@ -1,0 +1,26 @@
+{
+  "task_id": "finance-038",
+  "answer": [
+    {
+      "competitive_position": "niche_player",
+      "filing_count": 110,
+      "median_employee_count": 45.5,
+      "top_risk_theme": null
+    },
+    {
+      "competitive_position": "emerging",
+      "filing_count": 38,
+      "median_employee_count": 86.0,
+      "top_risk_theme": null
+    },
+    {
+      "competitive_position": "challenger",
+      "filing_count": 31,
+      "median_employee_count": 417.0,
+      "top_risk_theme": null
+    }
+  ],
+  "elapsed_seconds": 3019.47,
+  "cost_usd": 158.678073,
+  "total_tokens": 421427445
+}

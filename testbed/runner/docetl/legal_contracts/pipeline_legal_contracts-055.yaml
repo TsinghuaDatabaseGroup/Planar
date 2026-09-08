@@ -1,0 +1,59 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_residual_information_clause
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this agreement only if it contains a residual-information clause.
+
+      Agreement:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {has_residual_information_clause: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: filter_law_and_ip_ownership
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this agreement only if it expressly states a governing law and
+      contains an intellectual-property or work-product ownership clause.
+
+      Agreement:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {has_law_and_ip_ownership: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_agreement_details
+    type: map
+    optimize: true
+    prompt: |
+      Return the document ID, exhibit type, agreement type, and governing law.
+      For a document that is both an NDA and an EX-xx exhibit, format the
+      exhibit type as NDA|EX-xx. Use the input document ID as document_id.
+
+      Input document ID: {{ input.doc_id }}
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        document_id: string
+        exhibit_type: string
+        agreement_type: string
+        governing_law: string
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations: [filter_residual_information_clause, filter_law_and_ip_ownership, extract_agreement_details]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-055.json

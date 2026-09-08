@@ -1,0 +1,40 @@
+{
+  "task_id": "vehicle_safety-046",
+  "answer": [
+    {
+      "campaign_number": "24V793000",
+      "matched_complaint_count": 2,
+      "dominant_airbag_failure_mode": "non_deployment",
+      "dominant_remedy_style": "other",
+      "related_report_ids": [],
+      "odi_evidence_summary": "Improperly secured side curtain air bag connector prevents deployment."
+    },
+    {
+      "campaign_number": "25V302000",
+      "matched_complaint_count": 27,
+      "dominant_airbag_failure_mode": "other",
+      "dominant_remedy_style": "part_replacement",
+      "related_report_ids": [],
+      "odi_evidence_summary": "Curtain air bags have insufficient pressure retention from improperly sealed seams."
+    },
+    {
+      "campaign_number": "25V573000",
+      "matched_complaint_count": 4,
+      "dominant_airbag_failure_mode": "other",
+      "dominant_remedy_style": "part_replacement",
+      "related_report_ids": [],
+      "odi_evidence_summary": "Curtain air bags have insufficient pressure retention from improperly sealed seams."
+    },
+    {
+      "campaign_number": "26V189000",
+      "matched_complaint_count": 8,
+      "dominant_airbag_failure_mode": "other",
+      "dominant_remedy_style": "part_replacement",
+      "related_report_ids": [],
+      "odi_evidence_summary": "Curtain air bags have insufficient pressure retention from improperly sealed seams."
+    }
+  ],
+  "elapsed_seconds": 284.722,
+  "cost_usd": 0.54086223,
+  "total_tokens": 337232
+}

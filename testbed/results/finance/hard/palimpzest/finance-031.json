@@ -1,0 +1,30 @@
+{
+  "task_id": "finance-031",
+  "answer": {
+    "top_sectors": {
+      "Banking": 20,
+      "Real Estate": 27,
+      "Financial Services": 34,
+      "Software": 132,
+      "Utilities": 48,
+      "Biopharmaceuticals": 55,
+      "Biotechnology": 62,
+      "Pharmaceuticals": 69,
+      "Retail": 76,
+      "Mining": 83,
+      "Technology": 90,
+      "Energy": 97,
+      "Consumer Products": 104,
+      "Insurance": 111,
+      "Transportation": 118,
+      "Telecommunications": 125,
+      "Media": 132,
+      "Hospitality": 139,
+      "Construction": 146
+    },
+    "mean_risk_factor_count_change": 0.0
+  },
+  "elapsed_seconds": 4302.11,
+  "cost_usd": 45.37305,
+  "total_tokens": 113814470
+}

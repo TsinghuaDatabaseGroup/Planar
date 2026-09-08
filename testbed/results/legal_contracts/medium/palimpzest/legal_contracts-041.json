@@ -1,0 +1,16 @@
+{
+  "task_id": "legal_contracts-041",
+  "answer": [
+    {
+      "document_id": "ex19-1_7.htm",
+      "covered_persons": "All officers, directors, employees, consultants, and advisors of the Company and its subsidiaries or consolidated entities, as well as any other person or entity over which such individuals exercise influence or control regarding investment decisions, or any entity effecting transactions in Company securities beneficially owned by such individuals."
+    },
+    {
+      "document_id": "mrccinsidertradingpolicyex.htm",
+      "covered_persons": "Access Persons"
+    }
+  ],
+  "elapsed_seconds": 1058.93,
+  "cost_usd": 1.17669,
+  "total_tokens": 2235363
+}

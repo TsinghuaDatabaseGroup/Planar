@@ -1,0 +1,26 @@
+{
+  "task_id": "legal_contracts-094",
+  "answer": [
+    {
+      "governing_law": "New York",
+      "mutual_count": 22,
+      "unilateral_count": 25,
+      "average_finite_term_years": 1.63
+    },
+    {
+      "governing_law": "California",
+      "mutual_count": 18,
+      "unilateral_count": 17,
+      "average_finite_term_years": 1.87
+    },
+    {
+      "governing_law": "Delaware",
+      "mutual_count": 19,
+      "unilateral_count": 11,
+      "average_finite_term_years": 1.94
+    }
+  ],
+  "elapsed_seconds": 161.98,
+  "cost_usd": 1.310121,
+  "total_tokens": 2421514
+}

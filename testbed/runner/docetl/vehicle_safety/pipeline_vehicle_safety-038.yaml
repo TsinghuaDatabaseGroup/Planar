@@ -1,0 +1,278 @@
+datasets:
+  nhtsa_complaints:
+    type: file
+    path: data/nhtsa_vehicle_safety/complaints.csv
+  nhtsa_recalls:
+    type: file
+    path: data/nhtsa_vehicle_safety/recalls.jsonl
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_toyota_other_complaints
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("make") == "TOYOTA"
+              and doc.get("component_id") == "OTHER"
+          )
+
+  - name: filter_toyota_other_recalls
+    type: code_filter
+    code: |
+      def transform(doc):
+          vehicle = doc.get("vehicle") or {}
+          component = doc.get("component") or {}
+          return (
+              vehicle.get("make") == "TOYOTA"
+              and component.get("component_id") == "OTHER"
+          )
+
+  - name: flatten_toyota_other_recall_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          campaign = doc.get("campaign") or {}
+          vehicle = doc.get("vehicle") or {}
+          component = doc.get("component") or {}
+          risk = doc.get("risk") or {}
+          return {
+              "campaign_number": campaign.get("number"),
+              "make": vehicle.get("make"),
+              "component_id": component.get("component_id"),
+              "defect_summary": risk.get("defect_summary") or "",
+              "consequence_summary": risk.get("consequence_summary") or "",
+          }
+
+  - name: match_toyota_other_complaints_to_recalls
+    type: equijoin
+    comparison_prompt: |
+      Determine whether this Toyota OTHER-category complaint and recall describe
+      the same non-standard safety defect.
+
+      Match only when the complaint narrative and recall defect identify the same
+      concrete problem or directly equivalent failure mechanism. A shared Toyota
+      make, OTHER category, general safety concern, or similar consequence alone
+      is not sufficient.
+
+      COMPLAINT:
+      {{ left.summary_text }}
+
+      RECALL DEFECT:
+      {{ right.defect_summary }}
+    blocking_conditions:
+      - left["component_id"] == right["component_id"]
+    comparison_model: Qwen3.5-397B-A17B
+    timeout: 120
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: classify_meaningful_other_safety_defect
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether this matched Toyota OTHER-category evidence describes a
+      meaningful safety defect rather than a convenience, labeling, or
+      cosmetic-only concern.
+
+      Use the complaint, recall defect, and recall consequence together. Qualify
+      only when the evidence establishes a plausible hazard to occupants, vehicle
+      control, continued operation, fire safety, crash avoidance, or another
+      substantive safety function.
+
+      Complaint:
+      {{ input.summary_text }}
+
+      Recall defect:
+      {{ input.defect_summary }}
+
+      Recall consequence:
+      {{ input.consequence_summary }}
+    output:
+      mode: structured_output
+      schema:
+        is_meaningful_safety_defect: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: classify_toyota_other_complaint_sentiment
+    type: map
+    optimize: true
+    prompt: |
+      Assign this complaint to exactly one complaint-sentiment label:
+
+      - acute_safety_event: a concrete urgent event such as loss of control,
+        crash exposure, fire, sudden disablement, injury, or immediate hazard.
+      - intermittent_issue: a recurring, sporadic, or unresolved functional
+        problem without a concrete acute event in the narrative.
+      - cosmetic_or_minor: a cosmetic, labeling, trim, comfort, convenience, or
+        otherwise minor concern.
+
+      Base the label only on the complaint narrative.
+
+      Complaint:
+      {{ input.summary_text }}
+    output:
+      mode: structured_output
+      schema:
+        complaint_sentiment: string
+    validate:
+      - output["complaint_sentiment"] in ["acute_safety_event", "intermittent_issue", "cosmetic_or_minor"]
+    num_retries_on_validate_failure: 2
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: extract_shared_defect_and_recall_severity
+    type: map
+    optimize: true
+    prompt: |
+      Analyze the recall defect and consequence, then return both requested
+      fields.
+
+      shared_defect_phrase: the concrete defect shared with the already matched
+      complaint, in no more than 8 words. Return a mechanism or defect, not the
+      vehicle identity, campaign number, consequence, repair, or sentence.
+
+      recall_severity: exactly one of critical, severe, moderate, minor. Judge the
+      potential safety consequence stated by the recall: critical for
+      life-threatening or catastrophic hazards; severe for major crash, fire, or
+      injury exposure; moderate for a meaningful but less acute safety impact;
+      minor for limited safety impact.
+
+      Complaint:
+      {{ input.summary_text }}
+
+      Recall defect:
+      {{ input.defect_summary }}
+
+      Recall consequence:
+      {{ input.consequence_summary }}
+    output:
+      mode: structured_output
+      schema:
+        shared_defect_phrase: string
+        recall_severity: string
+    validate:
+      - len(output["shared_defect_phrase"].strip()) > 0
+      - len(output["shared_defect_phrase"].strip().split()) <= 8
+      - output["recall_severity"] in ["critical", "severe", "moderate", "minor"]
+    num_retries_on_validate_failure: 2
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: aggregate_toyota_other_campaigns
+    type: code_reduce
+    reduce_key: campaign_number
+    code: |
+      def transform(items):
+          from collections import Counter
+
+          def alpha_mode(field):
+              counts = Counter(
+                  str(item.get(field) or "").strip()
+                  for item in items
+                  if str(item.get(field) or "").strip()
+              )
+              if not counts:
+                  return ""
+              return sorted(
+                  counts,
+                  key=lambda value: (-counts[value], value),
+              )[0]
+
+          complaint_ids = {
+              item.get("complaint_id")
+              for item in items
+              if item.get("complaint_id")
+          }
+          return {
+              "matched_complaint_count": len(complaint_ids),
+              "dominant_complaint_sentiment": alpha_mode(
+                  "complaint_sentiment"
+              ),
+              "dominant_recall_severity": alpha_mode("recall_severity"),
+              "shared_defect_phrase": alpha_mode("shared_defect_phrase"),
+          }
+
+  - name: project_toyota_other_campaign_summary
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "campaign_number": doc.get("campaign_number"),
+              "matched_complaint_count": doc.get(
+                  "matched_complaint_count"
+              ),
+              "dominant_complaint_sentiment": doc.get(
+                  "dominant_complaint_sentiment"
+              ),
+              "dominant_recall_severity": doc.get(
+                  "dominant_recall_severity"
+              ),
+              "shared_defect_phrase": doc.get("shared_defect_phrase"),
+          }
+
+pipeline:
+  steps:
+    - name: toyota_other_complaints
+      input: nhtsa_complaints
+      operations:
+        - filter_toyota_other_complaints
+    - name: toyota_other_recalls
+      input: nhtsa_recalls
+      operations:
+        - filter_toyota_other_recalls
+        - flatten_toyota_other_recall_fields
+    - name: matched_toyota_other_pairs
+      operations:
+        - match_toyota_other_complaints_to_recalls:
+            left: toyota_other_complaints
+            right: toyota_other_recalls
+    - name: toyota_other_campaign_summaries
+      input: matched_toyota_other_pairs
+      operations:
+        - classify_meaningful_other_safety_defect
+        - classify_toyota_other_complaint_sentiment
+        - extract_shared_defect_and_recall_severity
+        - aggregate_toyota_other_campaigns
+        - project_toyota_other_campaign_summary
+  output:
+    type: file
+    path: raw_outputs/vehicle_safety/output_vehicle_safety-038.json

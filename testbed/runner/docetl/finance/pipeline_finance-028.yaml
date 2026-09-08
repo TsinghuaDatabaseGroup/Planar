@@ -1,0 +1,201 @@
+datasets:
+  sec_2021_filings:
+    type: file
+    path: data/SEC/CSV/2021.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: load_filing_document
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("SEC text path escapes data/SEC")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              document = handle.read()
+          return {"document": document}
+
+  - name: filter_substantial_going_concern_doubt
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this SEC 10-K filing only if it affirmatively reports substantial
+      doubt about the reporting company's ability to continue as a going concern.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_pending_litigation
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this SEC 10-K filing only if it reports litigation that is pending for
+      the reporting company.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_single_customer_at_least_10_percent_revenue
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this SEC 10-K filing only if it reports that at least one single
+      customer accounts for 10 percent or more of the reporting company's revenue
+      or sales.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: extract_industry_sector
+    type: map
+    optimize: true
+    prompt: |
+      Extract the reporting company's industry sector from this SEC 10-K filing.
+      Return a concise, conventional industry-sector name grounded in the filing
+      rather than a detailed business description or product category.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        industry_sector: string
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 256
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: deduplicate_by_cik
+    type: code_reduce
+    reduce_key: cik
+    code: |
+      def transform(items):
+          first = items[0]
+          return {"industry_sector": first.get("industry_sector")}
+
+  - name: count_companies_by_industry
+    type: code_reduce
+    reduce_key: industry_sector
+    code: |
+      def transform(items):
+          return {"company_count": len(items)}
+
+  - name: order_industries_by_company_count
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          rows = sorted(
+              items,
+              key=lambda item: (
+                  -int(item.get("company_count", 0)),
+                  str(item.get("industry_sector", "")),
+              ),
+          )
+          return {"rows": rows}
+
+  - name: unnest_ordered_industries
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - industry_sector
+      - company_count
+
+  - name: limit_to_10_industries
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {"rows": items[:10]}
+
+  - name: unnest_limited_industries
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - industry_sector
+      - company_count
+
+pipeline:
+  steps:
+    - name: process
+      input: sec_2021_filings
+      operations:
+        - load_filing_document
+        - filter_substantial_going_concern_doubt
+        - filter_pending_litigation
+        - filter_single_customer_at_least_10_percent_revenue
+        - extract_industry_sector
+        - deduplicate_by_cik
+        - count_companies_by_industry
+        - order_industries_by_company_count
+        - unnest_ordered_industries
+        - limit_to_10_industries
+        - unnest_limited_industries
+  output:
+    type: file
+    path: raw_outputs/finance/output_finance-028.json

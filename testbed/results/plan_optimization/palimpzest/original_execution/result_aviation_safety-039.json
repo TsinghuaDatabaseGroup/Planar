@@ -1,0 +1,48 @@
+{
+  "task_id": "aviation_safety-039",
+  "answer": [
+    {
+      "rank": 1,
+      "documentation_issue_type": "incorrect_or_incomplete_mel_procedure",
+      "records_complete": "Y",
+      "correct_document_on_board": "Y",
+      "incident_count": 3,
+      "canonical_affected_item": "Flap Disagree QRH procedure"
+    },
+    {
+      "rank": 2,
+      "documentation_issue_type": "incomplete_or_inaccurate_logbook",
+      "records_complete": "N",
+      "correct_document_on_board": "N",
+      "incident_count": 1,
+      "canonical_affected_item": "passenger door maintenance records"
+    },
+    {
+      "rank": 3,
+      "documentation_issue_type": "incomplete_or_inaccurate_logbook",
+      "records_complete": "Y",
+      "correct_document_on_board": "Y",
+      "incident_count": 1,
+      "canonical_affected_item": "air/ground system"
+    },
+    {
+      "rank": 4,
+      "documentation_issue_type": "incorrect_or_incomplete_mel_procedure",
+      "records_complete": "N",
+      "correct_document_on_board": "N",
+      "incident_count": 1,
+      "canonical_affected_item": "oil tank vent line"
+    },
+    {
+      "rank": 5,
+      "documentation_issue_type": "missing_or_incomplete_work_card",
+      "records_complete": null,
+      "correct_document_on_board": "Y",
+      "incident_count": 1,
+      "canonical_affected_item": "brakes"
+    }
+  ],
+  "elapsed_seconds": 1230.15,
+  "cost_usd": 2.698791,
+  "total_tokens": 3457492
+}

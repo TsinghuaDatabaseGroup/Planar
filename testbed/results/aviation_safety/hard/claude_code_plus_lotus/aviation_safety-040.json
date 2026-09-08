@@ -1,0 +1,88 @@
+{
+  "task_id": "aviation_safety-040",
+  "answer": [
+    {
+      "rank": 1,
+      "left_incident_id": "asrs_012731",
+      "right_incident_id": "asrs_077530",
+      "alert_or_advisory": "unspecified automation advisory",
+      "left_response": "override_advisory",
+      "right_response": "follow_advisory"
+    },
+    {
+      "rank": 2,
+      "left_incident_id": "asrs_012731",
+      "right_incident_id": "asrs_079690",
+      "alert_or_advisory": "unspecified automation advisory",
+      "left_response": "override_advisory",
+      "right_response": "follow_advisory"
+    },
+    {
+      "rank": 3,
+      "left_incident_id": "asrs_012731",
+      "right_incident_id": "asrs_087926",
+      "alert_or_advisory": "unspecified automation advisory and landing gear",
+      "left_response": "override_advisory",
+      "right_response": "follow_advisory"
+    },
+    {
+      "rank": 4,
+      "left_incident_id": "asrs_012731",
+      "right_incident_id": "asrs_094028",
+      "alert_or_advisory": "unspecified automation advisory",
+      "left_response": "override_advisory",
+      "right_response": "follow_advisory"
+    },
+    {
+      "rank": 5,
+      "left_incident_id": "asrs_012731",
+      "right_incident_id": "asrs_097030",
+      "alert_or_advisory": "unspecified automation advisory",
+      "left_response": "override_advisory",
+      "right_response": "follow_advisory"
+    },
+    {
+      "rank": 6,
+      "left_incident_id": "asrs_012731",
+      "right_incident_id": "asrs_108037",
+      "alert_or_advisory": "LG AIR GND FAIL",
+      "left_response": "override_advisory",
+      "right_response": "follow_advisory"
+    },
+    {
+      "rank": 7,
+      "left_incident_id": "asrs_012731",
+      "right_incident_id": "asrs_142262",
+      "alert_or_advisory": "Bleed Duct Warning",
+      "left_response": "override_advisory",
+      "right_response": "follow_advisory"
+    },
+    {
+      "rank": 8,
+      "left_incident_id": "asrs_012731",
+      "right_incident_id": "asrs_144475",
+      "alert_or_advisory": "unspecified automation advisory",
+      "left_response": "override_advisory",
+      "right_response": "follow_advisory"
+    },
+    {
+      "rank": 9,
+      "left_incident_id": "asrs_072307",
+      "right_incident_id": "asrs_077530",
+      "alert_or_advisory": "unspecified automation advisory",
+      "left_response": "seek_clarification_before_acting",
+      "right_response": "follow_advisory"
+    },
+    {
+      "rank": 10,
+      "left_incident_id": "asrs_072307",
+      "right_incident_id": "asrs_079690",
+      "alert_or_advisory": "unspecified automation advisory",
+      "left_response": "seek_clarification_before_acting",
+      "right_response": "follow_advisory"
+    }
+  ],
+  "elapsed_seconds": 660.691,
+  "cost_usd": 1.19538852,
+  "total_tokens": 2348630
+}

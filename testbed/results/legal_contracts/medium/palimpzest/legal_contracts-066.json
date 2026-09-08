@@ -1,0 +1,9 @@
+{
+  "task_id": "legal_contracts-066",
+  "answer": [
+    {"exception_bracket": "6", "agreement_count": 297, "avg_finite_duration_years": 5.44, "return_of_materials_rate": 0.7946}
+  ],
+  "elapsed_seconds": 4611.75,
+  "cost_usd": 8.415022,
+  "total_tokens": 15925511
+}

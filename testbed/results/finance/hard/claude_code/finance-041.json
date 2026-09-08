@@ -1,0 +1,203 @@
+{
+  "task_id": "finance-041",
+  "answer": [
+    {
+      "acquirer": "Company_CIK_1719489",
+      "target": "Solutions Infini",
+      "target_sector": "Telecommunications"
+    },
+    {
+      "acquirer": "Company_CIK_1719489",
+      "target": "Buc Mobile",
+      "target_sector": "Telecommunications"
+    },
+    {
+      "acquirer": "Company_CIK_1719489",
+      "target": "Solutions Infini",
+      "target_sector": "Telecommunications"
+    },
+    {
+      "acquirer": "Company_CIK_1719489",
+      "target": "Buc Mobile",
+      "target_sector": "Telecommunications"
+    },
+    {
+      "acquirer": "Company_CIK_1719489",
+      "target": "mGage",
+      "target_sector": "Telecommunications"
+    },
+    {
+      "acquirer": "Company_CIK_1719489",
+      "target": "Solutions Infini",
+      "target_sector": "Telecommunications"
+    },
+    {
+      "acquirer": "Company_CIK_1719489",
+      "target": "Buc Mobile",
+      "target_sector": "Telecommunications"
+    },
+    {
+      "acquirer": "Company_CIK_1719489",
+      "target": "Solutions Infini",
+      "target_sector": "Telecommunications"
+    },
+    {
+      "acquirer": "Company_CIK_1719489",
+      "target": "Buc Mobile",
+      "target_sector": "Telecommunications"
+    },
+    {
+      "acquirer": "Company_CIK_1719489",
+      "target": "Kaleyra S.p.A.",
+      "target_sector": "Telecommunications"
+    },
+    {
+      "acquirer": "Company_CIK_1719489",
+      "target": "Solutions Infini",
+      "target_sector": "Telecommunications"
+    },
+    {
+      "acquirer": "Company_CIK_1719489",
+      "target": "Buc Mobile",
+      "target_sector": "Telecommunications"
+    },
+    {
+      "acquirer": "Company_CIK_1719489",
+      "target": "Kaleyra S.p.A.",
+      "target_sector": "Telecommunications"
+    },
+    {
+      "acquirer": "Company_CIK_1719489",
+      "target": "mGage",
+      "target_sector": "Telecommunications"
+    },
+    {
+      "acquirer": "Company_CIK_1719489",
+      "target": "mGage",
+      "target_sector": "Telecommunications"
+    },
+    {
+      "acquirer": "Company_CIK_1498232",
+      "target": "PRAMA",
+      "target_sector": "Other"
+    },
+    {
+      "acquirer": "Company_CIK_1648365",
+      "target": "Enigma BVI",
+      "target_sector": "Other"
+    },
+    {
+      "acquirer": "Company_CIK_1648365",
+      "target": "One Belt One Network Holdings Limited (OBON BVI)",
+      "target_sector": "Other"
+    },
+    {
+      "acquirer": "Company_CIK_1648365",
+      "target": "Enigma BVI",
+      "target_sector": "Other"
+    },
+    {
+      "acquirer": "Company_CIK_1648365",
+      "target": "One Belt One Network Holdings Limited (OBON BVI)",
+      "target_sector": "Other"
+    },
+    {
+      "acquirer": "Company_CIK_1648365",
+      "target": "Enigma BVI",
+      "target_sector": "Other"
+    },
+    {
+      "acquirer": "Company_CIK_1648365",
+      "target": "One Belt One Network Holdings Limited (OBON BVI)",
+      "target_sector": "Telecommunications"
+    },
+    {
+      "acquirer": "Company_CIK_1648365",
+      "target": "Enigma BVI",
+      "target_sector": "Other"
+    },
+    {
+      "acquirer": "Company_CIK_1648365",
+      "target": "Tingo Mobile PLC",
+      "target_sector": "Financial Services"
+    },
+    {
+      "acquirer": "Company_CIK_1648365",
+      "target": "Tingo Mobile PLC",
+      "target_sector": "Telecommunications"
+    },
+    {
+      "acquirer": "Company_CIK_1648365",
+      "target": "Tingo Mobile PLC",
+      "target_sector": "Telecommunications"
+    },
+    {
+      "acquirer": "Company_CIK_1648365",
+      "target": "Tingo Mobile, PLC",
+      "target_sector": "Financial Services"
+    },
+    {
+      "acquirer": "Company_CIK_1648365",
+      "target": "Tingo Mobile",
+      "target_sector": "Telecommunications"
+    },
+    {
+      "acquirer": "Company_CIK_1648365",
+      "target": "Tingo Mobile",
+      "target_sector": "Telecommunications"
+    },
+    {
+      "acquirer": "Company_CIK_1278021",
+      "target": "LiquidityEdge LLC",
+      "target_sector": "Financial Services"
+    },
+    {
+      "acquirer": "Company_CIK_1278021",
+      "target": "LiquidityEdge LLC",
+      "target_sector": "Financial Services"
+    },
+    {
+      "acquirer": "Company_CIK_1278021",
+      "target": "MuniBrokers",
+      "target_sector": "Financial Services"
+    },
+    {
+      "acquirer": "Company_CIK_1278021",
+      "target": "MuniBrokers LLC",
+      "target_sector": "Financial Services"
+    },
+    {
+      "acquirer": "Company_CIK_1278021",
+      "target": "LiquidityEdge",
+      "target_sector": "Financial Services"
+    },
+    {
+      "acquirer": "Company_CIK_1278021",
+      "target": "MuniBrokers",
+      "target_sector": "Financial Services"
+    },
+    {
+      "acquirer": "Company_CIK_1278021",
+      "target": "MuniBrokers",
+      "target_sector": "Financial Services"
+    },
+    {
+      "acquirer": "Company_CIK_1278021",
+      "target": "Pragma LLC and Pragma Financial Systems LLC",
+      "target_sector": "Financial Services"
+    },
+    {
+      "acquirer": "Company_CIK_1278021",
+      "target": "Pragma",
+      "target_sector": "Financial Services"
+    },
+    {
+      "acquirer": "Company_CIK_1073349",
+      "target": "AnaSys",
+      "target_sector": "Other"
+    }
+  ],
+  "elapsed_seconds": 249.37,
+  "cost_usd": 0.28071387,
+  "total_tokens": 518754
+}

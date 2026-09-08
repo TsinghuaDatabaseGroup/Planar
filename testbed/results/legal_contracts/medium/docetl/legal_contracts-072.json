@@ -1,0 +1,108 @@
+{
+  "task_id": "legal_contracts-072",
+  "answer": [
+    {
+      "document_name": "idya-ex19_1_1.htm",
+      "policy_title": "IDEAYA BIOSCIENCES, INC. INSIDER TRADING compliance POLICY",
+      "policy_date": "2019-04-04"
+    },
+    {
+      "document_name": "a202410kex191insidertrading.htm",
+      "policy_title": "HUDSON PACIFIC PROPERTIES, INC. INSIDER TRADING COMPLIANCE PROGRAM",
+      "policy_date": "2020-03-04"
+    },
+    {
+      "document_name": "annx-ex19_1.htm",
+      "policy_title": "INSIDER TRADING compliance POLICY",
+      "policy_date": "2020-07-27"
+    },
+    {
+      "document_name": "exhibit191-insidertradin.htm",
+      "policy_title": "AUTOLUS THERAPEUTICS PLC INSIDER TRADING AND WINDOW PERIOD POLICY",
+      "policy_date": "2020-10-16"
+    },
+    {
+      "document_name": "q4202410kexhibit19.htm",
+      "policy_title": "Embecta Corp. Insider Trading Policy",
+      "policy_date": "2022-04-01"
+    },
+    {
+      "document_name": "ex191securitiesandinsidert.htm",
+      "policy_title": "SECURITIES AND INSIDER TRADING POLICY",
+      "policy_date": "2023-02-16"
+    },
+    {
+      "document_name": "exhibit191insidertradingco.htm",
+      "policy_title": "SOLO BRANDS, INC. INSIDER TRADING COMPLIANCE POLICY",
+      "policy_date": "2023-02-27"
+    },
+    {
+      "document_name": "d779517dex191.htm",
+      "policy_title": "Insider Trading Policy and Guidelines for Disclosure of Material Non-Public Information",
+      "policy_date": "2023-04-23"
+    },
+    {
+      "document_name": "hlit-20241231xex191.htm",
+      "policy_title": "HARMONIC INC. INSIDER TRADING COMPLIANCE PROGRAM",
+      "policy_date": "2023-05-03"
+    },
+    {
+      "document_name": "exhibit191aniinsidertradin.htm",
+      "policy_title": "ANI PHARMACEUTICALS, INC. INSIDER TRADING AND CONFIDENTIALITY NOTICE",
+      "policy_date": "2023-05-07"
+    },
+    {
+      "document_name": "exhibit191taskusincsecurit.htm",
+      "policy_title": "TASKUS, INC. SECURITIES TRADING POLICY",
+      "policy_date": "2023-05-10"
+    },
+    {
+      "document_name": "a123124ex191insidertrading.htm",
+      "policy_title": "PROPETRO HOLDING CORP. INSIDER TRADING COMPLIANCE POLICY",
+      "policy_date": "2023-05-12"
+    },
+    {
+      "document_name": "ino-12312024x10kex191.htm",
+      "policy_title": "Insider Trading Policy",
+      "policy_date": "2023-05-16"
+    },
+    {
+      "document_name": "tygo-ex19_1.htm",
+      "policy_title": "INSIDER TRADING POLICY",
+      "policy_date": "2023-05-24"
+    },
+    {
+      "document_name": "hii-ex19202410xk.htm",
+      "policy_title": "Insider Trading",
+      "policy_date": "2023-08-24"
+    },
+    {
+      "document_name": "ip-20231231exhibit19.htm",
+      "policy_title": "GLOBAL CORPORATE COMPLIANCE POLICY INSIDER TRADING",
+      "policy_date": "2023-09-07"
+    },
+    {
+      "document_name": "ex-191insidertradingcompli.htm",
+      "policy_title": "Rivian Automotive, Inc. Insider Trading Compliance Policy",
+      "policy_date": "2023-09-19"
+    },
+    {
+      "document_name": "ex-191insidertradingpolicy.htm",
+      "policy_title": "TELOS CORPORATION INSIDER TRADING POLICY",
+      "policy_date": "2023-11-07"
+    },
+    {
+      "document_name": "ex191insidertradingpolic.htm",
+      "policy_title": "VOLATO GROUP, INC. INSIDER TRADING POLICY",
+      "policy_date": "2023-12-01"
+    },
+    {
+      "document_name": "playtika-insidertradingcom.htm",
+      "policy_title": "PLAYTIKA HOLDING CORP. INSIDER TRADING COMPLIANCE POLICY",
+      "policy_date": "2023-12-20"
+    }
+  ],
+  "elapsed_seconds": 432.97,
+  "cost_usd": 3.951871,
+  "total_tokens": 7533566
+}

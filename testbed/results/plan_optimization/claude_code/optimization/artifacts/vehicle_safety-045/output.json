@@ -1,0 +1,27 @@
+{
+  "task_id": "vehicle_safety-045",
+  "optimization_analysis": "Three optimizations reduce LM cost without changing semantics. (1) Fold SEM_FILTER into the first SEM_JOIN: the standalone SEM_FILTER checking for crash/loss-of-control/extended-stopping consequences requires a full LM pass over every matched complaint-recall pair; merging that condition into the SEM_JOIN predicate eliminates that pass entirely. (2) Early GROUP_BY + LIMIT(5) before the investigation-report SEM_JOIN: in the original plan the second SEM_JOIN operates on individual (complaint, recall) rows crossed with every candidate investigation report, yielding O(complaints × recalls × reports) LM calls; by grouping on defect_theme and limiting to the top 5 themes first, the SEM_JOIN operates on at most 5 theme rows crossed with candidate reports, reducing calls by orders of magnitude. A representative sample_recall_text column preserves the context the SEM_JOIN needs. (3) Remove redundant component_id bindings from the first SEM_JOIN: both sides have already been filtered on component_id='BRAKES', so passing it as an LM binding is dead weight that inflates prompt tokens on every call.",
+  "optimized_semantic_plan": [
+    {
+      "type": "operator_dag",
+      "program": "SCAN_TABLE(NHTSA, complaints, [complaint_id, make, component_id, summary_text]) -> FILTER(make='CHEVROLET' AND component_id='BRAKES') -> SEM_JOIN('Match a Chevrolet BRAKES complaint to a recall only when the complaint narrative and recall defect summary describe the same braking defect or risk AND the recall consequence indicates a crash, loss-of-control, or extended-stopping safety risk.', input_bindings_left={complaint_summary: summary_text}, input_bindings_right={recall_defect: r.risk.defect_summary, recall_consequence: r.risk.consequence_summary}, right=( SCAN_DOCS(NHTSA, recalls AS r, [campaign.number, vehicle.make AS make, component.component_id AS component_id, risk.defect_summary, risk.consequence_summary]) -> FILTER(vehicle.make='CHEVROLET' AND component.component_id='BRAKES') )) -> SEM_EXTRACT('Extract the shared braking defect theme in <=8 words.', out_schema={defect_theme: string}, input_bindings={complaint_text: summary_text, recall_text: r.risk.defect_summary}) -> GROUP_BY([defect_theme], aggs={matched_complaint_count: count_distinct(complaint_id), distinct_campaign_count: count_distinct(r.campaign.number), sample_recall_text: first(r.risk.defect_summary)}) -> ORDER_BY([matched_complaint_count DESC, defect_theme ASC]) -> LIMIT(5) -> SEM_JOIN('Match the braking defect theme to an investigation report only when the report discusses the same Chevrolet/GM braking issue or ODI risk finding.', input_bindings_left={theme: defect_theme, recall_context: sample_recall_text}, input_bindings_right={report_body: body}, right=( SCAN_DOCS(NHTSA, investigation_reports, selector='*.txt', columns=[file_id, body]) -> FILTER(body CONTAINS 'Chevrolet' OR body CONTAINS 'GM' OR body CONTAINS 'brake') )) -> GROUP_BY([defect_theme, matched_complaint_count, distinct_campaign_count], aggs={related_report_ids: collect_distinct_sorted(file_id, 'asc'), report_bodies: collect_distinct(body)}) -> SEM_AGGREGATE('Summarize the ODI braking risk finding for this defect theme in one short phrase.', out_schema={odi_risk_summary: string}, group_by=[defect_theme], input_bindings={reports: report_bodies}) -> ORDER_BY([matched_complaint_count DESC, defect_theme ASC]) -> LIMIT(5) -> PROJECT([rank: row_number(), defect_theme, matched_complaint_count, distinct_campaign_count, related_report_ids, odi_risk_summary])"
+    }
+  ],
+  "valid": true,
+  "validation_warnings": [],
+  "elapsed_secs": 105.065,
+  "cost_usd": 0.11831175,
+  "agent_cost_usd": 0.11831175,
+  "usage": {
+    "input": 3,
+    "output": 7460,
+    "cacheRead": 6630,
+    "cacheWrite": 1177
+  },
+  "agent_usage": {
+    "input": 3,
+    "output": 7460,
+    "cacheRead": 6630,
+    "cacheWrite": 1177
+  }
+}

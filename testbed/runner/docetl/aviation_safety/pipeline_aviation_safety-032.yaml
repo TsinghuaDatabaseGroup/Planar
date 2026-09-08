@@ -1,0 +1,253 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+  asrs_events:
+    type: file
+    path: data/asrs/events.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_part121_passenger_reports
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("far_part") == "Part 121"
+              and doc.get("mission") == "Passenger"
+          )
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: extract_cabin_issue_decision_change
+    type: map
+    optimize: true
+    prompt: |
+      Emit a classification only when a cabin-side issue directly caused a
+      flight-deck operational change in this NASA ASRS narrative. The causal link
+      must be clear: the pilots or flight deck changed whether, when, where, or how
+      the flight would operate because of the cabin issue. A detail affecting only
+      cabin service, passenger comfort, routine cabin handling, or flight-attendant
+      duties without a flight-deck operational change does not qualify.
+
+      Assign one primary issue_category:
+      - passenger_medical: passenger illness, injury, incapacitation, medical
+        emergency, or need for medical evaluation or treatment;
+      - security_or_behavior: security threat, suspected unlawful interference,
+        violence, disruptive or noncompliant passenger conduct, or comparable
+        passenger-behavior concern;
+      - cabin_equipment_or_door: cabin, galley, lavatory, seat, cabin oxygen,
+        evacuation slide, passenger/cabin door, or other cabin-equipment issue;
+      - boarding_or_deplaning: a problem arising from passenger boarding,
+        loading/seating during boarding, deplaning, or disembarkation;
+      - flight_attendant_communication: a flight-attendant report,
+        misunderstanding, delayed message, missing message, or communication
+        failure was itself the primary cabin-side issue driving the decision.
+
+      Assign one primary decision_category:
+      - delay_or_cancel: delay, cancellation, postponed departure, or a comparable
+        decision not to proceed on schedule;
+      - return_or_divert: return to departure/gate after beginning operation or
+        diversion from the intended destination;
+      - continue_changed: the flight continued, but with a changed route, altitude,
+        destination plan, landing priority, procedure, or other material operating
+        plan;
+      - other_operational_change: another clear flight-deck operational change not
+        covered above.
+
+      Neither category list is a precedence list. Select the issue and decision
+      that primarily define the causal event. Use not_target for both fields when
+      the report does not qualify or no primary pair is clear.
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        issue_category: enum[passenger_medical, security_or_behavior, cabin_equipment_or_door, boarding_or_deplaning, flight_attendant_communication, not_target]
+        decision_category: enum[delay_or_cancel, return_or_divert, continue_changed, other_operational_change, not_target]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: keep_qualifying_cabin_decisions
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("issue_category")
+              in {
+                  "passenger_medical",
+                  "security_or_behavior",
+                  "cabin_equipment_or_door",
+                  "boarding_or_deplaning",
+                  "flight_attendant_communication",
+              }
+              and doc.get("decision_category")
+              in {
+                  "delay_or_cancel",
+                  "return_or_divert",
+                  "continue_changed",
+                  "other_operational_change",
+              }
+          )
+
+  - name: attach_passengers_involved_event
+    type: code_map
+    code: |
+      import csv
+      import os
+      import threading
+
+      _passenger_event_incidents = None
+      _passenger_event_lock = threading.Lock()
+
+      def load_passenger_event_incidents():
+          global _passenger_event_incidents
+          if _passenger_event_incidents is None:
+              with _passenger_event_lock:
+                  if _passenger_event_incidents is None:
+                      incident_ids = set()
+                      path = os.path.abspath(
+                          os.path.join("data", "asrs", "events.csv")
+                      )
+                      with open(
+                          path, "r", encoding="utf-8", errors="replace", newline=""
+                      ) as handle:
+                          for row in csv.DictReader(handle):
+                              if (
+                                  row.get("event_type") == "passengers_involved"
+                                  and row.get("label") == "Y"
+                              ):
+                                  incident_ids.add(str(row.get("incident_id", "")))
+                      _passenger_event_incidents = incident_ids
+          return _passenger_event_incidents
+
+      def transform(doc):
+          return {
+              "has_passengers_involved_event": str(doc.get("incident_id", ""))
+              in load_passenger_event_incidents()
+          }
+
+  - name: inner_join_passenger_events
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("has_passengers_involved_event") is True
+
+  - name: aggregate_ranked_cabin_decisions
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          issue_order = [
+              "passenger_medical",
+              "security_or_behavior",
+              "cabin_equipment_or_door",
+              "boarding_or_deplaning",
+              "flight_attendant_communication",
+          ]
+          decision_order = [
+              "delay_or_cancel",
+              "return_or_divert",
+              "continue_changed",
+              "other_operational_change",
+          ]
+          incident_ids = {
+              (issue, decision): set()
+              for issue in issue_order
+              for decision in decision_order
+          }
+
+          for item in items:
+              incident_id = str(item.get("incident_id", ""))
+              key = (item.get("issue_category"), item.get("decision_category"))
+              if incident_id and key in incident_ids:
+                  incident_ids[key].add(incident_id)
+
+          rows = []
+          for (issue, decision), ids in incident_ids.items():
+              if not ids:
+                  continue
+              rows.append(
+                  {
+                      "issue_category": issue,
+                      "decision_category": decision,
+                      "incident_count": len(ids),
+                  }
+              )
+          rows.sort(
+              key=lambda row: (
+                  -row["incident_count"],
+                  row["issue_category"],
+                  row["decision_category"],
+              )
+          )
+          for rank, row in enumerate(rows[:10], start=1):
+              row["rank"] = rank
+          return {"rows": rows[:10]}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - rank
+      - issue_category
+      - decision_category
+      - incident_count
+
+pipeline:
+  steps:
+    - name: process
+      input: asrs_incidents
+      operations:
+        - filter_part121_passenger_reports
+        - load_asrs_narrative
+        - extract_cabin_issue_decision_change
+        - keep_qualifying_cabin_decisions
+        - attach_passengers_involved_event
+        - inner_join_passenger_events
+        - aggregate_ranked_cabin_decisions
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-032.json

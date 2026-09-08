@@ -1,0 +1,27 @@
+{
+  "task_id": "legal_contracts-084",
+  "answer": [
+    {
+      "company": "tpg",
+      "certifying_officers": [
+        "Jack Weingart",
+        "Jon Winkelried"
+      ],
+      "covered_person_category": "Participants granted Restricted Stock Units under the TPG Inc. Omnibus Incentive Plan",
+      "largest_subsidiary_count": 134
+    },
+    {
+      "company": "international paper",
+      "certifying_officers": [
+        "Andrew K. Silvernail",
+        "Mark S. Sutton",
+        "Timothy S. Nicholls"
+      ],
+      "covered_person_category": "Participants awarded Restricted Stock Units under the Plan",
+      "largest_subsidiary_count": 78
+    }
+  ],
+  "elapsed_seconds": 1527.82,
+  "cost_usd": 1.71581403,
+  "total_tokens": 3767749
+}

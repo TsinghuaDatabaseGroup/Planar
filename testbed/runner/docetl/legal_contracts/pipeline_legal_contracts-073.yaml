@@ -1,0 +1,75 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_compensation_recovery_policies
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is a clawback or compensation-recovery
+      policy.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_compensation_recovery_policy: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_recovery_scope
+    type: map
+    optimize: true
+    prompt: |
+      Return the input document ID as document_name, policy title, lookback
+      period, whether financial restatement triggers recovery, whether misconduct
+      triggers recovery, and the expanded covered-person group. Mark the expanded
+      group available only when coverage reaches beyond current or former Rule
+      10D-1 or Section 16 executive officers; otherwise use false and an empty
+      string placeholder.
+
+      Input document ID: {{ input.doc_id }}
+      Policy:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        document_name: string
+        policy_title: string
+        lookback_period: string
+        restatement_trigger: boolean
+        misconduct_trigger: boolean
+        expanded_covered_group_available: boolean
+        expanded_covered_group_value: string
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: normalize_expanded_group
+    type: code_map
+    code: |
+      def transform(doc):
+          return {"expanded_covered_group": str(doc.get("expanded_covered_group_value") or "") if doc.get("expanded_covered_group_available") is True else None}
+  - name: filter_restatement_misconduct_expanded
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("restatement_trigger") is True and doc.get("misconduct_trigger") is True and doc.get("expanded_covered_group") is not None
+  - name: project_recovery_policy_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "document_name": doc.get("document_name"),
+              "policy_title": doc.get("policy_title"),
+              "lookback_period": doc.get("lookback_period"),
+              "expanded_covered_group": doc.get("expanded_covered_group"),
+          }
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations: [filter_compensation_recovery_policies, extract_recovery_scope, normalize_expanded_group, filter_restatement_misconduct_expanded, project_recovery_policy_fields]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-073.json

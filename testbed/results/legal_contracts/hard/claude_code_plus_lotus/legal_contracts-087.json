@@ -1,0 +1,48 @@
+{
+  "task_id": "legal_contracts-087",
+  "answer": [
+    {
+      "normalized_agreement_title": "non disclosure agreement",
+      "family_size": 166,
+      "qualifying_member_count": 68
+    },
+    {
+      "normalized_agreement_title": "mutual non disclosure agreement",
+      "family_size": 79,
+      "qualifying_member_count": 54
+    },
+    {
+      "normalized_agreement_title": "confidentiality and non disclosure agreement",
+      "family_size": 38,
+      "qualifying_member_count": 12
+    },
+    {
+      "normalized_agreement_title": "confidentiality agreement",
+      "family_size": 23,
+      "qualifying_member_count": 10
+    },
+    {
+      "normalized_agreement_title": "non disclosure and confidentiality agreement",
+      "family_size": 11,
+      "qualifying_member_count": 4
+    },
+    {
+      "normalized_agreement_title": "mutual confidentiality and non disclosure agreement",
+      "family_size": 7,
+      "qualifying_member_count": 4
+    },
+    {
+      "normalized_agreement_title": "non disclosure confidentiality agreement",
+      "family_size": 5,
+      "qualifying_member_count": 3
+    },
+    {
+      "normalized_agreement_title": "mutual nondisclosure agreement",
+      "family_size": 6,
+      "qualifying_member_count": 2
+    }
+  ],
+  "elapsed_seconds": 619.242,
+  "cost_usd": 5.02952886,
+  "total_tokens": 12107144
+}

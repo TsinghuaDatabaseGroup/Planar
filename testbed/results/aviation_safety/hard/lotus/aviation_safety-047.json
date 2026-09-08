@@ -1,0 +1,26 @@
+{
+  "task_id": "aviation_safety-047",
+  "answer": [
+    {
+      "attribution_category": "mainly_equipment_driven",
+      "incident_count": 137,
+      "dominant_initiating_factor": "",
+      "dominant_intervention": ""
+    },
+    {
+      "attribution_category": "mainly_human_factor_driven",
+      "incident_count": 431,
+      "dominant_initiating_factor": "",
+      "dominant_intervention": ""
+    },
+    {
+      "attribution_category": "mixed_equipment_human_factor",
+      "incident_count": 307,
+      "dominant_initiating_factor": "",
+      "dominant_intervention": ""
+    }
+  ],
+  "elapsed_seconds": 355.19,
+  "cost_usd": 1.661834,
+  "total_tokens": 3652859
+}

@@ -1,0 +1,44 @@
+{
+  "task_id": "legal_contracts-025",
+  "answer": [
+    {
+      "document_id": "01_Bosch-Automotive-Service-Solutions-Mutual-Non-Disclosure-Agreement-7-12-17.pdf",
+      "governing_law": "State of Michigan"
+    },
+    {
+      "document_id": "1473637_0001432093-12-000764_ex10-34.htm",
+      "governing_law": "Province of Ontario"
+    },
+    {
+      "document_id": "32251_0000950133-99-003991_document_17.txt",
+      "governing_law": "Commonwealth of Virginia"
+    },
+    {
+      "document_id": "Agency-Lending-Disclosure_A-Z-Guide_Appendix_Sample-Confidentiality-Agreements.pdf",
+      "governing_law": "State of New York"
+    },
+    {
+      "document_id": "EFCAConfidentialityAgreement.pdf",
+      "governing_law": "State of Victoria"
+    },
+    {
+      "document_id": "LiiON%20NDA%202-27-2015%20v1.0.pdf",
+      "governing_law": "State of Illinois"
+    },
+    {
+      "document_id": "NDA_118.pdf",
+      "governing_law": "Province of Ontario"
+    },
+    {
+      "document_id": "NRSC_2015_NDAForm.pdf",
+      "governing_law": "State of New York"
+    },
+    {
+      "document_id": "helpjuice_production%2Fuploads%2Fupload%2Fimage%2F2329%2Fdirect%2F1526996160411-FullStory+Mutual+Non-Disclosure+Agreement+2018.pdf",
+      "governing_law": "Delaware"
+    }
+  ],
+  "elapsed_seconds": 579.17,
+  "cost_usd": 4.863426,
+  "total_tokens": 12383255
+}

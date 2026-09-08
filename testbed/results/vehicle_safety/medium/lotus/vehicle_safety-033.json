@@ -1,0 +1,68 @@
+{
+  "task_id": "vehicle_safety-033",
+  "answer": [
+    {
+      "complaint_id": "complaint_11376005",
+      "campaign_number": "25V741000",
+      "days_between": 1802,
+      "defect_root_cause": "High voltage battery internal failure"
+    },
+    {
+      "complaint_id": "complaint_11119905",
+      "campaign_number": "22V413000",
+      "days_between": 1514,
+      "defect_root_cause": "Shifter cable bushing may degrade or detach"
+    },
+    {
+      "complaint_id": "complaint_11365925",
+      "campaign_number": "25V442000",
+      "days_between": 1708,
+      "defect_root_cause": "Software error causing rearview camera display issues"
+    },
+    {
+      "complaint_id": "complaint_10970121",
+      "campaign_number": "22V150000",
+      "days_between": 2040,
+      "defect_root_cause": "Brake master cylinder allows fluid leak into booster"
+    },
+    {
+      "complaint_id": "complaint_11424739",
+      "campaign_number": "26V378000",
+      "days_between": 1880,
+      "defect_root_cause": "Loss of signal between transmission sensor and PCM"
+    },
+    {
+      "complaint_id": "complaint_11421240",
+      "campaign_number": "26V378000",
+      "days_between": 1907,
+      "defect_root_cause": "Loss of signal between transmission sensor and PCM"
+    },
+    {
+      "complaint_id": "complaint_11279814",
+      "campaign_number": "25V298000",
+      "days_between": 2092,
+      "defect_root_cause": "Driver's side air bag not connected properly"
+    },
+    {
+      "complaint_id": "complaint_11394876",
+      "campaign_number": "25V298000",
+      "days_between": 1642,
+      "defect_root_cause": "Driver's side air bag not connected properly"
+    },
+    {
+      "complaint_id": "complaint_11329424",
+      "campaign_number": "25V298000",
+      "days_between": 1875,
+      "defect_root_cause": "Driver's side air bag not connected properly"
+    },
+    {
+      "complaint_id": "complaint_11130318",
+      "campaign_number": "23V010000",
+      "days_between": 1580,
+      "defect_root_cause": "Internal transmission wiring connector short circuit"
+    }
+  ],
+  "elapsed_seconds": 311.77,
+  "cost_usd": 0.32367,
+  "total_tokens": 629129
+}

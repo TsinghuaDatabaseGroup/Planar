@@ -1,0 +1,27 @@
+{
+  "task_id": "aviation_safety-039",
+  "optimization_analysis": "The current plan scans all Aircraft-primary incident documents through SEM_FILTER and SEM_EXTRACT before filtering by status and component requirements, processing many documents unnecessarily. The optimization pre-filters incidents to only those with the required maintenance status values and component records using structured data joins, then applies semantic operators only to this reduced set. This drastically reduces LM calls while preserving semantics: the final join with component_records ensures only incidents with component problems remain, and moving status filtering earlier eliminates documents that would be discarded anyway.",
+  "optimized_semantic_plan": [
+    {
+      "type": "operator_dag",
+      "program": "aircraft_incidents := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id,text_file,primary_problem])\n  -> FILTER(primary_problem = 'Aircraft')\n)\ndocumentation_status := (\n  SCAN_TABLE(NASA_ASRS, aircraft_attributes.csv, [incident_id,attribute,value])\n  -> FILTER(attribute IN ('maintenance_status_records_complete','maintenance_status_required_correct_doc_on_board'))\n  -> GROUP_BY([incident_id], {records_complete:MAX_IF(value,attribute='maintenance_status_records_complete'),correct_document_on_board:MAX_IF(value,attribute='maintenance_status_required_correct_doc_on_board')})\n)\ncomponent_records := (\n  SCAN_TABLE(NASA_ASRS, components.csv, [incident_id,attribute,value])\n  -> FILTER(attribute IN ('aircraft_component','problem'))\n  -> GROUP_BY([incident_id], {structured_components:COLLECT_IF(value,attribute='aircraft_component'),structured_problems:COLLECT_IF(value,attribute='problem')})\n)\nfiltered_incidents := (\n  aircraft_incidents\n  -> JOIN(right=documentation_status, join_type=inner, condition=aircraft_incidents.incident_id = documentation_status.incident_id)\n  -> JOIN(right=component_records, join_type=inner, condition=aircraft_incidents.incident_id = component_records.incident_id)\n)\ndocumentation_issues := (\n  filtered_incidents\n  -> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id,text])\n  -> SEM_FILTER(\"Keep reports describing an actual maintenance-documentation problem that affected a component or required item, rather than a mechanical discrepancy alone.\", {text})\n  -> SEM_EXTRACT(\"Assign documentation_issue_type from {incomplete_or_inaccurate_logbook,missing_or_incomplete_work_card,incorrect_or_incomplete_mel_procedure,missing_required_document,release_or_signoff_error}, and extract the affected item as a phrase of at most six words.\", {incident_id:string,documentation_issue_type:string,affected_item:string}, {incident_id,text})\n)\nresult := (\n  documentation_issues\n  -> JOIN(right=filtered_incidents, join_type=inner, condition=documentation_issues.incident_id = filtered_incidents.incident_id)\n  -> GROUP_BY([documentation_issue_type,records_complete,correct_document_on_board], {incident_count:COUNT_DISTINCT(incident_id),canonical_affected_item:MODE(affected_item)})\n  -> ORDER_BY([incident_count DESC,documentation_issue_type ASC,records_complete ASC,correct_document_on_board ASC])\n  -> LIMIT(15)\n  -> PROJECT([rank=ROW_NUMBER(),documentation_issue_type,records_complete,correct_document_on_board,incident_count,canonical_affected_item])\n)\nresult"
+    }
+  ],
+  "valid": true,
+  "validation_warnings": [],
+  "elapsed_secs": 15.506,
+  "cost_usd": 0.031719,
+  "agent_cost_usd": 0.031719,
+  "usage": {
+    "input": 3,
+    "output": 1002,
+    "cacheRead": 0,
+    "cacheWrite": 4448
+  },
+  "agent_usage": {
+    "input": 3,
+    "output": 1002,
+    "cacheRead": 0,
+    "cacheWrite": 4448
+  }
+}

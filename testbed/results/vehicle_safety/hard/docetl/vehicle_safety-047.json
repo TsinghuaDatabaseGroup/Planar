@@ -1,0 +1,48 @@
+{
+  "task_id": "vehicle_safety-047",
+  "answer": [
+    {
+      "campaign_number": "17V435000",
+      "matched_complaint_count": 2,
+      "median_days_complaint_to_recall": 443,
+      "share_complaints_before_recall": 1.0,
+      "dominant_electrical_root_cause": "sudden alternator failure",
+      "response_promptness_label": "slow"
+    },
+    {
+      "campaign_number": "14V634000",
+      "matched_complaint_count": 2,
+      "median_days_complaint_to_recall": -2438,
+      "share_complaints_before_recall": 0.0,
+      "dominant_electrical_root_cause": "sudden alternator failure",
+      "response_promptness_label": "slow"
+    },
+    {
+      "campaign_number": "17V741000",
+      "matched_complaint_count": 1,
+      "median_days_complaint_to_recall": 617,
+      "share_complaints_before_recall": 1.0,
+      "dominant_electrical_root_cause": "sudden alternator failure",
+      "response_promptness_label": "slow"
+    },
+    {
+      "campaign_number": "15V461000",
+      "matched_complaint_count": 1,
+      "median_days_complaint_to_recall": -2953,
+      "share_complaints_before_recall": 0.0,
+      "dominant_electrical_root_cause": "radio software vulnerabilities",
+      "response_promptness_label": "slow"
+    },
+    {
+      "campaign_number": "18V524000",
+      "matched_complaint_count": 7,
+      "median_days_complaint_to_recall": -2273,
+      "share_complaints_before_recall": 0.0,
+      "dominant_electrical_root_cause": "failed voltage regulator chip in powertrain control module",
+      "response_promptness_label": "slow"
+    }
+  ],
+  "elapsed_seconds": 78.24,
+  "cost_usd": 0.445595,
+  "total_tokens": 983226
+}

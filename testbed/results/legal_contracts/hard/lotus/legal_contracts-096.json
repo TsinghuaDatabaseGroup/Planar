@@ -1,0 +1,64 @@
+{
+  "task_id": "legal_contracts-096",
+  "answer": [
+    {
+      "company": "Aveanna Healthcare Holdings Inc.",
+      "certifying_officer": "Matthew Buckhalter",
+      "ex10_document": "avah-ex10_23.htm",
+      "certification_count": 1,
+      "non_compete_duration_years": 1.0
+    },
+    {
+      "company": "CareDx, Inc.",
+      "certifying_officer": "John W. Hanna",
+      "ex10_document": "d822701dex103.htm",
+      "certification_count": 2,
+      "non_compete_duration_years": 12.0
+    },
+    {
+      "company": "Kaival Brands Innovations Group, Inc.",
+      "certifying_officer": "Barry Hopkins",
+      "ex10_document": "e5407_ex10-29.htm",
+      "certification_count": 1,
+      "non_compete_duration_years": 6.0
+    },
+    {
+      "company": "Gryphon Digital Mining, Inc.",
+      "certifying_officer": "Simeon Salzman",
+      "ex10_document": "ea020224801ex10-23_gryphon.htm",
+      "certification_count": 1,
+      "non_compete_duration_years": 12.0
+    },
+    {
+      "company": "IDEXX Laboratories, Inc.",
+      "certifying_officer": "Jonathan J. Mazelsky",
+      "ex10_document": "idxx2024q210-qexhibit104.htm",
+      "certification_count": 2,
+      "non_compete_duration_years": 4.0
+    },
+    {
+      "company": "IDEXX Laboratories, Inc.",
+      "certifying_officer": "Jonathan J. Mazelsky",
+      "ex10_document": "idxx2024q310-qexhibit101.htm",
+      "certification_count": 2,
+      "non_compete_duration_years": 4.0
+    },
+    {
+      "company": "Nucor Corporation",
+      "certifying_officer": "Leon J. Topalian",
+      "ex10_document": "nue-ex10_xx.htm",
+      "certification_count": 1,
+      "non_compete_duration_years": 3.5
+    },
+    {
+      "company": "Nucor Corporation",
+      "certifying_officer": "Stephen D. Laxton",
+      "ex10_document": "nue-ex10_xxxi.htm",
+      "certification_count": 1,
+      "non_compete_duration_years": 3.5
+    }
+  ],
+  "elapsed_seconds": 2814.18,
+  "cost_usd": 12.012992,
+  "total_tokens": 22540266
+}

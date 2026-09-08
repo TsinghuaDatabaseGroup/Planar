@@ -1,0 +1,291 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+  asrs_events:
+    type: file
+    path: data/asrs/events.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_part121_airport_reports
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("far_part") == "Part 121"
+              and doc.get("locale_reference_type") == "Airport"
+          )
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: extract_automation_atc_conflict
+    type: map
+    optimize: true
+    prompt: |
+      Emit a classification only when automation guidance and an ATC instruction
+      were difficult to reconcile during the same episode in this NASA ASRS
+      narrative. Both the automation guidance and the ATC instruction must be
+      identifiable, and the narrative must show an actual conflict, changed or
+      delayed compliance, or need for clarification between them. Separate or
+      unrelated mentions of automation and ATC do not qualify.
+
+      Assign exactly one reconciliation_pattern:
+      - direct_conflict: the automation guidance directly contradicted or was
+        incompatible with the ATC instruction in the same episode;
+      - modified_or_delayed_compliance: the crew modified, interrupted, deferred,
+        or delayed compliance with one instruction to reconcile it with the other;
+      - clarification_required: the inconsistency or ambiguity required the crew
+        to request or obtain clarification from ATC before resolving it.
+
+      These categories describe the primary reconciliation pattern; do not use
+      their listed order as precedence during extraction. Express
+      automation_guidance and atc_instruction as concise phrases of at most eight
+      words each, preserving the direction or action needed to understand the
+      conflict. Use not_target for reconciliation_pattern when the report does not
+      qualify; return "not stated" for both phrases in that case.
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        reconciliation_pattern: enum[direct_conflict, modified_or_delayed_compliance, clarification_required, not_target]
+        automation_guidance: string
+        atc_instruction: string
+    validate:
+      - 1 <= len(output["automation_guidance"].split()) <= 8
+      - 1 <= len(output["atc_instruction"].split()) <= 8
+    num_retries_on_validate_failure: 2
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: keep_qualifying_reconciliation_patterns
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("reconciliation_pattern") in {
+              "direct_conflict",
+              "modified_or_delayed_compliance",
+              "clarification_required",
+          }
+
+  - name: attach_automation_detector_distances
+    type: code_map
+    code: |
+      import csv
+      import os
+      import re
+      import threading
+
+      _event_record_index = None
+      _event_record_lock = threading.Lock()
+
+      def load_event_record_index():
+          global _event_record_index
+          if _event_record_index is None:
+              with _event_record_lock:
+                  if _event_record_index is None:
+                      grouped = {}
+                      detector_labels = {
+                          "Automation Aircraft RA",
+                          "Automation Aircraft TA",
+                      }
+                      path = os.path.abspath(
+                          os.path.join("data", "asrs", "events.csv")
+                      )
+                      with open(
+                          path, "r", encoding="utf-8", errors="replace", newline=""
+                      ) as handle:
+                          for row in csv.DictReader(handle):
+                              event_type = row.get("event_type")
+                              label = str(row.get("label", ""))
+                              if not (
+                                  (event_type == "detector" and label in detector_labels)
+                                  or event_type == "miss_distance"
+                              ):
+                                  continue
+                              incident_id = str(row.get("incident_id", ""))
+                              record = grouped.setdefault(
+                                  incident_id,
+                                  {
+                                      "automation_detectors": set(),
+                                      "horizontal": None,
+                                      "vertical": None,
+                                  },
+                              )
+                              if event_type == "detector":
+                                  record["automation_detectors"].add(label)
+                                  continue
+                              match = re.fullmatch(
+                                  r"(Horizontal|Vertical)\s+(\d+)", label
+                              )
+                              if not match:
+                                  continue
+                              dimension = match.group(1).lower()
+                              value = int(match.group(2))
+                              current = record[dimension]
+                              record[dimension] = (
+                                  value if current is None else min(current, value)
+                              )
+
+                      _event_record_index = {
+                          incident_id: {
+                              "automation_detectors": sorted(
+                                  values["automation_detectors"]
+                              ),
+                              "horizontal_separation_ft": values["horizontal"],
+                              "vertical_separation_ft": values["vertical"],
+                          }
+                          for incident_id, values in grouped.items()
+                          if values["automation_detectors"]
+                          and values["horizontal"] is not None
+                          and values["vertical"] is not None
+                      }
+          return _event_record_index
+
+      def transform(doc):
+          values = load_event_record_index().get(str(doc.get("incident_id", "")))
+          if values is None:
+              return {
+                  "automation_detectors": [],
+                  "horizontal_separation_ft": None,
+                  "vertical_separation_ft": None,
+              }
+          return values
+
+  - name: inner_join_complete_event_records
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              bool(doc.get("automation_detectors"))
+              and doc.get("horizontal_separation_ft") is not None
+              and doc.get("vertical_separation_ft") is not None
+          )
+
+  - name: project_reconciliation_severity
+    type: code_map
+    code: |
+      def transform(doc):
+          severity = {
+              "direct_conflict": 1,
+              "modified_or_delayed_compliance": 2,
+              "clarification_required": 3,
+          }
+          return {
+              "severity_order": severity.get(doc.get("reconciliation_pattern"))
+          }
+
+  - name: order_limit_and_rank_conflicts
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          ordered = sorted(
+              items,
+              key=lambda item: (
+                  item.get("severity_order"),
+                  item.get("horizontal_separation_ft"),
+                  item.get("vertical_separation_ft"),
+                  str(item.get("incident_id", "")),
+              ),
+          )
+
+          rows = []
+          seen_incidents = set()
+          for item in ordered:
+              incident_id = str(item.get("incident_id", ""))
+              if not incident_id or incident_id in seen_incidents:
+                  continue
+              seen_incidents.add(incident_id)
+              rows.append(
+                  {
+                      "rank": len(rows) + 1,
+                      "incident_id": item.get("incident_id"),
+                      "reconciliation_pattern": item.get(
+                          "reconciliation_pattern"
+                      ),
+                      "automation_guidance": item.get("automation_guidance"),
+                      "atc_instruction": item.get("atc_instruction"),
+                      "horizontal_separation_ft": item.get(
+                          "horizontal_separation_ft"
+                      ),
+                      "vertical_separation_ft": item.get(
+                          "vertical_separation_ft"
+                      ),
+                  }
+              )
+              if len(rows) == 5:
+                  break
+          return {"rows": rows}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - rank
+      - incident_id
+      - reconciliation_pattern
+      - automation_guidance
+      - atc_instruction
+      - horizontal_separation_ft
+      - vertical_separation_ft
+
+pipeline:
+  steps:
+    - name: process
+      input: asrs_incidents
+      operations:
+        - filter_part121_airport_reports
+        - load_asrs_narrative
+        - extract_automation_atc_conflict
+        - keep_qualifying_reconciliation_patterns
+        - attach_automation_detector_distances
+        - inner_join_complete_event_records
+        - project_reconciliation_severity
+        - order_limit_and_rank_conflicts
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-034.json

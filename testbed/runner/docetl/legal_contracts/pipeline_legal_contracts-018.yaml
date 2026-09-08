@@ -1,0 +1,120 @@
+datasets:
+  contract_exhibit_root:
+    type: memory
+    path:
+    - root: data/contract-exhibit
+operations:
+- name: unnest_answer_rows
+  type: unnest
+  unnest_key: rows
+  recursive: true
+  depth: 2
+  expand_fields:
+  - agreement_or_filing_type
+  - document_count
+  model: Qwen3.5-397B-A17B
+- name: aggregate_and_order_document_types
+  type: code_reduce
+  reduce_key: _all
+  code: "def transform(items):\n    grouped = {}\n    for item in items:\n        label = item.get(\"\
+    agreement_or_filing_type\")\n        contract_id = str(item.get(\"contract_id\") or \"\")\n      \
+    \  if label and contract_id:\n            grouped.setdefault(label, set()).add(contract_id)\n    rows\
+    \ = [\n        {\n            \"agreement_or_filing_type\": label,\n            \"document_count\"\
+    : len(contract_ids),\n        }\n        for label, contract_ids in grouped.items()\n    ]\n    rows.sort(\n\
+    \        key=lambda row: (\n            -row[\"document_count\"], row[\"agreement_or_filing_type\"\
+    ]\n        )\n    )\n    return {\"rows\": rows}\n"
+  model: Qwen3.5-397B-A17B
+- name: assign_primary_agreement_or_filing_type
+  type: map
+  prompt: 'Assign exactly one primary agreement_or_filing_type to this HTML-format
+
+    contract exhibit from: sox_certification, employment_agreement,
+
+    insider_trading_policy, auditor_consent, subsidiary_list, clawback_policy,
+
+    mutual_nda, unilateral_nda, confidentiality_standstill,
+
+    non_compete_agreement, supply_agreement, non_solicitation_agreement, or
+
+    other. Treat genuine Section 302 or Section 906 officer certifications as
+
+    sox_certification, but classify Regulation AB servicing certifications as
+
+    other.
+
+
+    Document:
+
+    {{ input.text }}
+
+    '
+  output:
+    mode: structured_output
+    schema:
+      agreement_or_filing_type: enum[sox_certification, employment_agreement, insider_trading_policy,
+        auditor_consent, subsidiary_list, clawback_policy, mutual_nda, unilateral_nda, confidentiality_standstill,
+        non_compete_agreement, supply_agreement, non_solicitation_agreement, other]
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 128
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  model: Qwen3.5-397B-A17B
+- name: unnest_html_contract_documents
+  type: unnest
+  unnest_key: documents
+  recursive: true
+  depth: 2
+  expand_fields:
+  - contract_id
+  - doc_format
+  - text
+  model: Qwen3.5-397B-A17B
+- name: load_html_contract_documents
+  type: code_map
+  code: "def transform(doc):\n    import glob\n    import os\n    from html.parser import HTMLParser\n\
+    \n    class TextExtractor(HTMLParser):\n        def __init__(self):\n            super().__init__()\n\
+    \            self.parts = []\n            self.skip_depth = 0\n\n        def handle_starttag(self,\
+    \ tag, attrs):\n            if tag.lower() in {\"script\", \"style\"}:\n                self.skip_depth\
+    \ += 1\n\n        def handle_endtag(self, tag):\n            if tag.lower() in {\"script\", \"style\"\
+    } and self.skip_depth:\n                self.skip_depth -= 1\n\n        def handle_data(self, data):\n\
+    \            if not self.skip_depth:\n                value = \" \".join(data.split())\n         \
+    \       if value:\n                    self.parts.append(value)\n\n    root = os.path.abspath(str(doc.get(\"\
+    root\", \"\")))\n    paths = sorted(\n        path\n        for path in glob.glob(os.path.join(root,\
+    \ \"*\"))\n        if os.path.splitext(path)[1].lower() in {\".htm\", \".html\"}\n    )\n    documents\
+    \ = []\n    for path in paths:\n        with open(path, \"r\", encoding=\"utf-8\", errors=\"replace\"\
+    ) as handle:\n            parser = TextExtractor()\n            parser.feed(handle.read())\n     \
+    \   documents.append(\n            {\n                \"contract_id\": os.path.basename(path),\n \
+    \               \"doc_format\": \"htm\",\n                \"text\": \"\\n\".join(parser.parts),\n\
+    \            }\n        )\n    return {\"documents\": documents}\n"
+  model: Qwen3.5-397B-A17B
+pipeline:
+  steps:
+  - name: process
+    operations:
+    - load_html_contract_documents
+    - unnest_html_contract_documents
+    - assign_primary_agreement_or_filing_type
+    - aggregate_and_order_document_types
+    - unnest_answer_rows
+    input: contract_exhibit_root
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-018.json
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  num_plans_to_evaluate_in_parallel: 1

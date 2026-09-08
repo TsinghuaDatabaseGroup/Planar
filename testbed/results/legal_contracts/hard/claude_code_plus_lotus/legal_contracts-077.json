@@ -1,0 +1,57 @@
+{
+  "task_id": "legal_contracts-077",
+  "answer": [
+    {
+      "company_name": "Valco Inc.",
+      "nda_document_id": "24104_0000024104-96-000010_document_3.txt",
+      "restrictive_document_id": "24104_0000024104-96-000010_document_3.txt",
+      "nda_duration_years": 10.0,
+      "noncompete_duration_years": 10.0
+    },
+    {
+      "company_name": "SPRINGS GLOBAL US, INC.",
+      "nda_document_id": "25895_0000950134-07-023464_d51356exv10w1.htm",
+      "restrictive_document_id": "25895_0000950134-07-023464_d51356exv10w1.htm",
+      "nda_duration_years": 4.0,
+      "noncompete_duration_years": 4.0
+    },
+    {
+      "company_name": "Last Man Stands",
+      "nda_document_id": "LMS_Non_Disclosure_Agreement.pdf",
+      "restrictive_document_id": "LMS_Non_Disclosure_Agreement.pdf",
+      "nda_duration_years": 5.0,
+      "noncompete_duration_years": 3.0
+    },
+    {
+      "company_name": "CVS Pharmacy, Inc.",
+      "nda_document_id": "Mutual%20Non%20Disclosure%20Agreement_0.pdf",
+      "restrictive_document_id": "a03312024ex101.htm",
+      "nda_duration_years": 3.0,
+      "noncompete_duration_years": 1.5
+    },
+    {
+      "company_name": "CVS Pharmacy, Inc.",
+      "nda_document_id": "Mutual%20Non%20Disclosure%20Agreement_0.pdf",
+      "restrictive_document_id": "a03312025ex101.htm",
+      "nda_duration_years": 3.0,
+      "noncompete_duration_years": 1.5
+    },
+    {
+      "company_name": "CVS Pharmacy, Inc.",
+      "nda_document_id": "Mutual%20Non%20Disclosure%20Agreement_0.pdf",
+      "restrictive_document_id": "a03312025ex103.htm",
+      "nda_duration_years": 3.0,
+      "noncompete_duration_years": 1.5
+    },
+    {
+      "company_name": "VisionWave Holdings, Inc.",
+      "nda_document_id": "e6756_ex10-6.htm",
+      "restrictive_document_id": "e6756_ex10-6.htm",
+      "nda_duration_years": 3.0,
+      "noncompete_duration_years": 2.0
+    }
+  ],
+  "elapsed_seconds": 1117.891,
+  "cost_usd": 8.84851803,
+  "total_tokens": 21855197
+}

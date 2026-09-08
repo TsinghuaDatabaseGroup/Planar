@@ -1,0 +1,26 @@
+{
+  "task_id": "legal_contracts-093",
+  "answer": [
+    {
+      "company": "Hudson Pacific Properties, Inc.",
+      "certifying_officer": "Victor J. Coleman",
+      "ex10_document": "a2024ex1070thirdamendedand.htm",
+      "non_compete_duration_years": 0
+    },
+    {
+      "company": "Aveanna Healthcare Holdings Inc.",
+      "certifying_officer": "Matthew Buckhalter",
+      "ex10_document": "avah-ex10_23.htm",
+      "non_compete_duration_years": 1.0
+    },
+    {
+      "company": "CareDx, Inc.",
+      "certifying_officer": "John W. Hanna",
+      "ex10_document": "d822701dex103.htm",
+      "non_compete_duration_years": 1.0
+    }
+  ],
+  "elapsed_seconds": 3244.86,
+  "cost_usd": 12.821105,
+  "total_tokens": 24056548
+}

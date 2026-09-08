@@ -1,0 +1,303 @@
+{
+  "node_id": 15,
+  "sample_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-036/moar-search/pipeline_input_sample_openai_15.yaml",
+  "sample_output_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-036/moar-search/pipeline_input_sample_openai_15.json",
+  "semantic_fidelity": 0.8700000000000001,
+  "sample_execution_cost_usd": 0.3775157099999994,
+  "fidelity_threshold": 0.9,
+  "selection_reason": "highest_fidelity_no_candidate_met_threshold",
+  "optimization_path": "ROOT → change to Qwen3.5-397B-A17B(filter_ford_airbag_complaints) → arbitrary_rewrite(classify_complaint_severity)",
+  "sample_execution_metrics_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-036/moar-search/candidate-metrics/execution_0003_node-15.json",
+  "full_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-036/selected-plan/pipeline_vehicle_safety-036_optimized_full.yaml",
+  "input_plan_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/pipeline-all/pipeline_vehicle_safety-036.yaml",
+  "input_plan_kind": "reference-plan translation used as the MOAR input plan",
+  "operator_execution_policy": {
+    "policy": "structural_rewrite_fixed_operator_execution",
+    "nested_v1_optimizer_invoked": false,
+    "fixed_default_model": "Qwen3.5-397B-A17B",
+    "unchanged_operations": [
+      "filter_ford_airbag_complaints",
+      "filter_ford_airbag_recalls",
+      "flatten_ford_airbag_recall_fields",
+      "match_ford_airbag_complaints_to_recalls",
+      "classify_recall_remedy_style",
+      "aggregate_ford_airbag_campaign_metrics",
+      "order_limit_and_rank_ford_campaigns",
+      "unnest_ranked_ford_campaigns"
+    ],
+    "new_or_replaced_operations": [
+      {
+        "name": "classify_complaints_parallel",
+        "type": "parallel_map",
+        "runtime_template_operation": "classify_complaint_severity",
+        "inherited_execution_fields": []
+      }
+    ],
+    "restored_fields": {},
+    "unchanged_operation_count": 8,
+    "new_or_replaced_operation_count": 1
+  },
+  "input_plan_signature": {
+    "definitions": {
+      "filter_ford_airbag_complaints": "code_filter",
+      "filter_ford_airbag_recalls": "code_filter",
+      "flatten_ford_airbag_recall_fields": "code_map",
+      "match_ford_airbag_complaints_to_recalls": "equijoin",
+      "classify_concrete_airbag_safety_event": "filter",
+      "classify_complaint_severity": "map",
+      "classify_recall_remedy_style": "map",
+      "aggregate_ford_airbag_campaign_metrics": "code_reduce",
+      "order_limit_and_rank_ford_campaigns": "code_reduce",
+      "unnest_ranked_ford_campaigns": "unnest"
+    },
+    "logical_operations": [
+      {
+        "name": "filter_ford_airbag_complaints",
+        "type": "code_filter",
+        "logical_config_sha256": "0aa6f0667932f8b28ef0d31404aff72f6dee3e00fbdeac86da9880609f5d28c5"
+      },
+      {
+        "name": "filter_ford_airbag_recalls",
+        "type": "code_filter",
+        "logical_config_sha256": "7c2d65e5bfd3ac89ac9141b6c6c54118988d15c679f87ebdbc8806e68518872b"
+      },
+      {
+        "name": "flatten_ford_airbag_recall_fields",
+        "type": "code_map",
+        "logical_config_sha256": "17a766aa09149fe95d3a4de83408b398d364334ee89fc633592a0b410a27974c"
+      },
+      {
+        "name": "match_ford_airbag_complaints_to_recalls",
+        "type": "equijoin",
+        "logical_config_sha256": "08583698137266655084f57ce8a36a8b809513dfa36448459de0890bd67bba49"
+      },
+      {
+        "name": "classify_concrete_airbag_safety_event",
+        "type": "filter",
+        "logical_config_sha256": "dfee4d5d9e3c94b461be07d3da7c124b54cfd6a8480fa793dfb88f5e1456ed86"
+      },
+      {
+        "name": "classify_complaint_severity",
+        "type": "map",
+        "logical_config_sha256": "f524858f79bff45c4cc750144ae102a515d1e516c599ebad741d9311214df03c"
+      },
+      {
+        "name": "classify_recall_remedy_style",
+        "type": "map",
+        "logical_config_sha256": "e20245718690768908f7507d9234429267f04abde55ed761b59202ddb0dbd048"
+      },
+      {
+        "name": "aggregate_ford_airbag_campaign_metrics",
+        "type": "code_reduce",
+        "logical_config_sha256": "f4562814eb96de267490a7bfec2599aaad3ea3692688bdf6ef7d4da250a70edb"
+      },
+      {
+        "name": "order_limit_and_rank_ford_campaigns",
+        "type": "code_reduce",
+        "logical_config_sha256": "a85472dc2d73cbe8ec9022c491ebdc186d4125172ffac322d721454bd750abb3"
+      },
+      {
+        "name": "unnest_ranked_ford_campaigns",
+        "type": "unnest",
+        "logical_config_sha256": "cf9bd9f0c4423c0dc28150ad72d2baef8db55bbbfbf900624919e4ebbd301fe0"
+      }
+    ],
+    "steps": [
+      {
+        "name": "ford_airbag_complaints",
+        "input": "nhtsa_complaints",
+        "operations": [
+          {
+            "name": "filter_ford_airbag_complaints",
+            "type": "code_filter"
+          }
+        ]
+      },
+      {
+        "name": "ford_airbag_recalls",
+        "input": "nhtsa_recalls",
+        "operations": [
+          {
+            "name": "filter_ford_airbag_recalls",
+            "type": "code_filter"
+          },
+          {
+            "name": "flatten_ford_airbag_recall_fields",
+            "type": "code_map"
+          }
+        ]
+      },
+      {
+        "name": "matching_ford_airbag_pairs",
+        "input": null,
+        "operations": [
+          {
+            "name": "match_ford_airbag_complaints_to_recalls",
+            "type": "equijoin",
+            "inputs": {
+              "left": "ford_airbag_complaints",
+              "right": "ford_airbag_recalls"
+            }
+          }
+        ]
+      },
+      {
+        "name": "classified_ford_airbag_pairs",
+        "input": "matching_ford_airbag_pairs",
+        "operations": [
+          {
+            "name": "classify_concrete_airbag_safety_event",
+            "type": "filter"
+          },
+          {
+            "name": "classify_complaint_severity",
+            "type": "map"
+          },
+          {
+            "name": "classify_recall_remedy_style",
+            "type": "map"
+          },
+          {
+            "name": "aggregate_ford_airbag_campaign_metrics",
+            "type": "code_reduce"
+          },
+          {
+            "name": "order_limit_and_rank_ford_campaigns",
+            "type": "code_reduce"
+          },
+          {
+            "name": "unnest_ranked_ford_campaigns",
+            "type": "unnest"
+          }
+        ]
+      }
+    ]
+  },
+  "selected_plan_signature": {
+    "definitions": {
+      "filter_ford_airbag_complaints": "code_filter",
+      "filter_ford_airbag_recalls": "code_filter",
+      "flatten_ford_airbag_recall_fields": "code_map",
+      "match_ford_airbag_complaints_to_recalls": "equijoin",
+      "classify_complaints_parallel": "parallel_map",
+      "classify_recall_remedy_style": "map",
+      "aggregate_ford_airbag_campaign_metrics": "code_reduce",
+      "order_limit_and_rank_ford_campaigns": "code_reduce",
+      "unnest_ranked_ford_campaigns": "unnest"
+    },
+    "logical_operations": [
+      {
+        "name": "filter_ford_airbag_complaints",
+        "type": "code_filter",
+        "logical_config_sha256": "0aa6f0667932f8b28ef0d31404aff72f6dee3e00fbdeac86da9880609f5d28c5"
+      },
+      {
+        "name": "filter_ford_airbag_recalls",
+        "type": "code_filter",
+        "logical_config_sha256": "7c2d65e5bfd3ac89ac9141b6c6c54118988d15c679f87ebdbc8806e68518872b"
+      },
+      {
+        "name": "flatten_ford_airbag_recall_fields",
+        "type": "code_map",
+        "logical_config_sha256": "17a766aa09149fe95d3a4de83408b398d364334ee89fc633592a0b410a27974c"
+      },
+      {
+        "name": "match_ford_airbag_complaints_to_recalls",
+        "type": "equijoin",
+        "logical_config_sha256": "08583698137266655084f57ce8a36a8b809513dfa36448459de0890bd67bba49"
+      },
+      {
+        "name": "classify_complaints_parallel",
+        "type": "parallel_map",
+        "logical_config_sha256": "4fcd66e13baf84a3f6626e5f2f164dd4616cc1b29c2ec4a9741342aaf7014b0b"
+      },
+      {
+        "name": "classify_recall_remedy_style",
+        "type": "map",
+        "logical_config_sha256": "e20245718690768908f7507d9234429267f04abde55ed761b59202ddb0dbd048"
+      },
+      {
+        "name": "aggregate_ford_airbag_campaign_metrics",
+        "type": "code_reduce",
+        "logical_config_sha256": "f4562814eb96de267490a7bfec2599aaad3ea3692688bdf6ef7d4da250a70edb"
+      },
+      {
+        "name": "order_limit_and_rank_ford_campaigns",
+        "type": "code_reduce",
+        "logical_config_sha256": "a85472dc2d73cbe8ec9022c491ebdc186d4125172ffac322d721454bd750abb3"
+      },
+      {
+        "name": "unnest_ranked_ford_campaigns",
+        "type": "unnest",
+        "logical_config_sha256": "cf9bd9f0c4423c0dc28150ad72d2baef8db55bbbfbf900624919e4ebbd301fe0"
+      }
+    ],
+    "steps": [
+      {
+        "name": "ford_airbag_complaints",
+        "input": "nhtsa_complaints",
+        "operations": [
+          {
+            "name": "filter_ford_airbag_complaints",
+            "type": "code_filter"
+          }
+        ]
+      },
+      {
+        "name": "ford_airbag_recalls",
+        "input": "nhtsa_recalls",
+        "operations": [
+          {
+            "name": "filter_ford_airbag_recalls",
+            "type": "code_filter"
+          },
+          {
+            "name": "flatten_ford_airbag_recall_fields",
+            "type": "code_map"
+          }
+        ]
+      },
+      {
+        "name": "matching_ford_airbag_pairs",
+        "input": null,
+        "operations": [
+          {
+            "name": "match_ford_airbag_complaints_to_recalls",
+            "type": "equijoin",
+            "inputs": {
+              "left": "ford_airbag_complaints",
+              "right": "ford_airbag_recalls"
+            }
+          }
+        ]
+      },
+      {
+        "name": "classified_ford_airbag_pairs",
+        "input": "matching_ford_airbag_pairs",
+        "operations": [
+          {
+            "name": "classify_complaints_parallel",
+            "type": "parallel_map"
+          },
+          {
+            "name": "classify_recall_remedy_style",
+            "type": "map"
+          },
+          {
+            "name": "aggregate_ford_airbag_campaign_metrics",
+            "type": "code_reduce"
+          },
+          {
+            "name": "order_limit_and_rank_ford_campaigns",
+            "type": "code_reduce"
+          },
+          {
+            "name": "unnest_ranked_ford_campaigns",
+            "type": "unnest"
+          }
+        ]
+      }
+    ]
+  },
+  "plan_changed": true
+}

@@ -1,0 +1,18 @@
+{
+  "task_id": "finance-025",
+  "answer": [
+    {"company_name": "Centene Corporation", "industry_sector": "Managed Healthcare", "employee_count": 56600},
+    {"company_name": "Genesis Healthcare, Inc.", "industry_sector": "Post-Acute Care", "employee_count": 55000},
+    {"company_name": "BWX Technologies, Inc.", "industry_sector": "Nuclear Components and Services", "employee_count": 6450},
+    {"company_name": "Cincinnati Bell Inc.", "industry_sector": "Telecommunications", "employee_count": 4400},
+    {"company_name": "Seattle Genetics, Inc.", "industry_sector": "Biotechnology", "employee_count": 1605},
+    {"company_name": "Tandem Diabetes Care, Inc.", "industry_sector": "Medical Devices", "employee_count": 1043},
+    {"company_name": "Health Catalyst, Inc.", "industry_sector": "Healthcare Technology", "employee_count": 900},
+    {"company_name": "Ambarella, Inc.", "industry_sector": "Semiconductors", "employee_count": 750},
+    {"company_name": "Overseas Shipholding Group, Inc.", "industry_sector": "Marine Transportation", "employee_count": 713},
+    {"company_name": "Pacira BioSciences, Inc.", "industry_sector": "Pharmaceuticals and Medical Devices", "employee_count": 606}
+  ],
+  "elapsed_seconds": 11635.6,
+  "cost_usd": 116.3454,
+  "total_tokens": 299046717
+}

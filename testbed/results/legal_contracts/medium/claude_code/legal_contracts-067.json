@@ -1,0 +1,93 @@
+{
+  "task_id": "legal_contracts-067",
+  "answer": [
+    {
+      "company": "Acuity Inc.",
+      "trigger_pattern": "restatement only",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "Alpine Income Property Trust, Inc.",
+      "trigger_pattern": "restatement only",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "CIPHER MINING INC.",
+      "trigger_pattern": "restatement only",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "Cavco Industries, Inc.",
+      "trigger_pattern": "restatement and misconduct",
+      "coverage_extends_beyond_executive_officers": false
+    },
+    {
+      "company": "Cocrystal Pharma, Inc.",
+      "trigger_pattern": "restatement only",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "El Pollo Loco Holdings, Inc.",
+      "trigger_pattern": "restatement and misconduct",
+      "coverage_extends_beyond_executive_officers": false
+    },
+    {
+      "company": "Evofem Biosciences, Inc.",
+      "trigger_pattern": "restatement and misconduct",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "Geospace Technologies Corporation",
+      "trigger_pattern": "restatement only",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "Globalstar, Inc.",
+      "trigger_pattern": "restatement and misconduct",
+      "coverage_extends_beyond_executive_officers": false
+    },
+    {
+      "company": "H.B. Fuller Company",
+      "trigger_pattern": "restatement and misconduct",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "New Horizon Aircraft Ltd.",
+      "trigger_pattern": "restatement only",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "Pentair plc",
+      "trigger_pattern": "restatement only",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "Skyworks Solutions, Inc.",
+      "trigger_pattern": "restatement and misconduct",
+      "coverage_extends_beyond_executive_officers": false
+    },
+    {
+      "company": "Strategic Education, Inc.",
+      "trigger_pattern": "restatement and misconduct",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "TPG Inc.",
+      "trigger_pattern": "restatement and misconduct",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "Voya Financial, Inc.",
+      "trigger_pattern": "restatement and misconduct",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "zSpace, Inc.",
+      "trigger_pattern": "restatement and misconduct",
+      "coverage_extends_beyond_executive_officers": false
+    }
+  ],
+  "elapsed_seconds": 73.575,
+  "cost_usd": 0.29360271,
+  "total_tokens": 616911
+}

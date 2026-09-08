@@ -1,0 +1,363 @@
+datasets:
+  asrs_aircraft_attributes:
+    type: file
+    path: data/asrs/aircraft_attributes.csv
+  asrs_events:
+    type: file
+    path: data/asrs/events.csv
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_ifr_flight_plan
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("attribute") == "flight_plan"
+              and doc.get("value") == "IFR"
+          )
+
+  - name: deduplicate_ifr_incidents
+    type: code_reduce
+    reduce_key: incident_id
+    code: |
+      def transform(items):
+          return {"has_ifr_flight_plan": bool(items)}
+
+  - name: attach_clearance_event_labels
+    type: code_map
+    code: |
+      import csv
+      import os
+      import threading
+
+      _clearance_event_index = None
+      _clearance_event_lock = threading.Lock()
+
+      def load_clearance_event_index():
+          global _clearance_event_index
+          if _clearance_event_index is None:
+              with _clearance_event_lock:
+                  if _clearance_event_index is None:
+                      target_labels = {
+                          "ATC Issue All Types",
+                          "Deviation / Discrepancy - Procedural Clearance",
+                      }
+                      index = {}
+                      path = os.path.abspath(
+                          os.path.join("data", "asrs", "events.csv")
+                      )
+                      with open(
+                          path, "r", encoding="utf-8", errors="replace", newline=""
+                      ) as handle:
+                          for row in csv.DictReader(handle):
+                              label = row.get("label")
+                              if (
+                                  row.get("event_type") == "anomaly"
+                                  and label in target_labels
+                              ):
+                                  index.setdefault(
+                                      str(row.get("incident_id", "")), []
+                                  ).append(label)
+                      _clearance_event_index = {
+                          incident_id: list(dict.fromkeys(labels))
+                          for incident_id, labels in index.items()
+                      }
+          return _clearance_event_index
+
+      def transform(doc):
+          labels = load_clearance_event_index().get(
+              str(doc.get("incident_id", "")), []
+          )
+          return {"clearance_event_labels": labels}
+
+  - name: inner_join_clearance_events
+    type: code_filter
+    code: |
+      def transform(doc):
+          return bool(doc.get("clearance_event_labels"))
+
+  - name: attach_incident_record
+    type: code_map
+    code: |
+      import csv
+      import os
+      import threading
+
+      _incident_record_index = None
+      _incident_record_lock = threading.Lock()
+
+      def load_incident_record_index():
+          global _incident_record_index
+          if _incident_record_index is None:
+              with _incident_record_lock:
+                  if _incident_record_index is None:
+                      index = {}
+                      path = os.path.abspath(
+                          os.path.join("data", "asrs", "incidents.csv")
+                      )
+                      with open(
+                          path, "r", encoding="utf-8", errors="replace", newline=""
+                      ) as handle:
+                          for row in csv.DictReader(handle):
+                              incident_id = str(row.get("incident_id", ""))
+                              text_file = str(row.get("text_file", ""))
+                              if incident_id and text_file:
+                                  index.setdefault(
+                                      incident_id,
+                                      {
+                                          "text_file": text_file,
+                                          "flight_phase": row.get("flight_phase"),
+                                      },
+                                  )
+                      _incident_record_index = index
+          return _incident_record_index
+
+      def transform(doc):
+          values = load_incident_record_index().get(
+              str(doc.get("incident_id", ""))
+          )
+          if values is None:
+              return {
+                  "has_incident_record": False,
+                  "text_file": None,
+                  "flight_phase": None,
+              }
+          return {"has_incident_record": True, **values}
+
+  - name: inner_join_incident_records
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("has_incident_record") is True
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: filter_problematic_atc_clearance
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this NASA ASRS report only when an ATC clearance or instruction in the
+      narrative was late, changed too late, confusing, ambiguous, incomplete,
+      misunderstood, or involved an incorrect readback/hearback that was not
+      corrected.
+
+      The clearance problem must be an actual part of the reported episode. Mere
+      presence of a structured clearance-anomaly label, a routine clearance change,
+      or a clearly communicated instruction that the crew independently failed to
+      follow does not qualify.
+
+      Structured clearance-event labels: {{ input.clearance_event_labels }}
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_clearance_triggered_actual_deviation
+    type: filter
+    optimize: true
+    prompt: |
+      This report has already been identified as involving a problematic ATC
+      clearance or instruction. Keep it only when that clearance problem
+      subsequently triggered an actual deviation from at least one of:
+
+      - an assigned altitude or level;
+      - an assigned heading or track; or
+      - an airspace boundary.
+
+      The deviation must actually occur after and because of the clearance problem.
+      Exclude potential deviations corrected before occurrence, deviations with an
+      independent primary cause, and cases where ATC merely detected, reported, or
+      corrected a deviation that the clearance problem did not cause.
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: extract_clearance_conflict_type
+    type: map
+    optimize: true
+    prompt: |
+      Assign exactly one primary clearance_conflict_type for this NASA ASRS report:
+
+      - late_or_changed_clearance: the clearance or a material change arrived too
+        late for normal comprehension or compliance and triggered the deviation;
+      - ambiguous_or_incomplete_clearance: the clearance wording or content was
+        ambiguous, internally unclear, missing necessary information, or incomplete;
+      - misunderstood_clearance: a clearly issued clearance was interpreted with
+        the wrong meaning or scope, excluding a direct readback/hearback failure;
+      - readback_hearback_failure: an incorrect, incomplete, or ambiguous readback
+        was not detected or corrected through the controller hearback process.
+
+      These labels are not a precedence list. Select the mechanism that most
+      directly triggered the actual deviation. Return evidence as a concise
+      narrative-grounded explanation identifying the clearance problem and its
+      connection to the deviation.
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        clearance_conflict_type: enum[late_or_changed_clearance, ambiguous_or_incomplete_clearance, misunderstood_clearance, readback_hearback_failure]
+        evidence: string
+    validate:
+      - len(output["evidence"].strip()) > 0
+    num_retries_on_validate_failure: 2
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: project_flight_phase_group
+    type: code_map
+    code: |
+      def transform(doc):
+          raw_phase = str(doc.get("flight_phase", ""))
+          if any(
+              phase in raw_phase
+              for phase in ("Parked", "Taxi", "Takeoff", "Initial Climb")
+          ):
+              phase_group = "ground_or_departure"
+          elif any(phase in raw_phase for phase in ("Climb", "Cruise")):
+              phase_group = "climb_or_cruise"
+          elif any(phase in raw_phase for phase in ("Descent", "Approach")):
+              phase_group = "descent_or_approach"
+          else:
+              phase_group = "landing_or_other"
+          return {"flight_phase": phase_group}
+
+  - name: aggregate_phase_conflict_counts
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          phase_order = [
+              "ground_or_departure",
+              "climb_or_cruise",
+              "descent_or_approach",
+              "landing_or_other",
+          ]
+          conflict_order = [
+              "late_or_changed_clearance",
+              "ambiguous_or_incomplete_clearance",
+              "misunderstood_clearance",
+              "readback_hearback_failure",
+          ]
+          incident_ids = {
+              (phase, conflict): set()
+              for phase in phase_order
+              for conflict in conflict_order
+          }
+
+          for item in items:
+              incident_id = str(item.get("incident_id", ""))
+              key = (item.get("flight_phase"), item.get("clearance_conflict_type"))
+              if incident_id and key in incident_ids:
+                  incident_ids[key].add(incident_id)
+
+          rows = []
+          for phase in phase_order:
+              for conflict in conflict_order:
+                  ids = incident_ids[(phase, conflict)]
+                  if not ids:
+                      continue
+                  rows.append(
+                      {
+                          "flight_phase": phase,
+                          "clearance_conflict_type": conflict,
+                          "incident_count": len(ids),
+                      }
+                  )
+          return {"rows": rows}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - flight_phase
+      - clearance_conflict_type
+      - incident_count
+
+pipeline:
+  steps:
+    - name: process
+      input: asrs_aircraft_attributes
+      operations:
+        - filter_ifr_flight_plan
+        - deduplicate_ifr_incidents
+        - attach_clearance_event_labels
+        - inner_join_clearance_events
+        - attach_incident_record
+        - inner_join_incident_records
+        - load_asrs_narrative
+        - filter_problematic_atc_clearance
+        - filter_clearance_triggered_actual_deviation
+        - extract_clearance_conflict_type
+        - project_flight_phase_group
+        - aggregate_phase_conflict_counts
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-041.json

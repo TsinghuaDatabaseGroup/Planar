@@ -1,0 +1,87 @@
+datasets:
+  disruption_candidates:
+    type: file
+    path: data/operator_implement/inputs/OP-SEM_GROUP_BY-003.jsonl
+operations:
+- name: unnest_answer_rows
+  type: unnest
+  unnest_key: rows
+  recursive: true
+  depth: 2
+  expand_fields:
+  - disruption_reason
+  - incident_count
+  model: Qwen3.5-397B-A17B
+- name: aggregate_disruption_reasons
+  type: code_reduce
+  reduce_key: _all
+  code: "def transform(items):\n    label_order = [\n        \"predeparture_component_discrepancy\",\n\
+    \        \"mel_or_deferred_item\",\n        \"maintenance_documentation_or_release\",\n        \"\
+    inflight_component_or_system_problem\",\n        \"postflight_inspection_or_repair\",\n        \"\
+    not_target\",\n    ]\n    incident_ids = {label: set() for label in label_order}\n    for item in\
+    \ items:\n        label = item.get(\"disruption_reason\")\n        incident_id = str(item.get(\"incident_id\"\
+    ) or \"\")\n        if label in incident_ids and incident_id:\n            incident_ids[label].add(incident_id)\n\
+    \    return {\n        \"rows\": [\n            {\n                \"disruption_reason\": label,\n\
+    \                \"incident_count\": len(incident_ids[label]),\n            }\n            for label\
+    \ in label_order\n            if incident_ids[label]\n        ]\n    }\n"
+  model: Qwen3.5-397B-A17B
+- name: assign_primary_disruption_reason
+  type: map
+  prompt: 'Assign exactly one primary disruption_reason to this incident from:
+
+    predeparture_component_discrepancy, mel_or_deferred_item,
+
+    maintenance_documentation_or_release, inflight_component_or_system_problem,
+
+    postflight_inspection_or_repair, or not_target when none clearly fits.
+
+
+    Result labels: {{ input.result_labels }}
+
+    Contributing-factor labels: {{ input.contributing_labels }}
+
+
+    Report:
+
+    {{ input.text }}
+
+    '
+  output:
+    mode: structured_output
+    schema:
+      disruption_reason: enum[predeparture_component_discrepancy, mel_or_deferred_item, maintenance_documentation_or_release,
+        inflight_component_or_system_problem, postflight_inspection_or_repair, not_target]
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 128
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  model: Qwen3.5-397B-A17B
+pipeline:
+  steps:
+  - name: process
+    operations:
+    - assign_primary_disruption_reason
+    - aggregate_disruption_reasons
+    - unnest_answer_rows
+    input: disruption_candidates
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-020.json
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  num_plans_to_evaluate_in_parallel: 1

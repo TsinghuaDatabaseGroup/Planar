@@ -1,0 +1,79 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_subsidiary_list_filings
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is a genuine subsidiary-list filing.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_subsidiary_list_filing: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_parent_and_subsidiaries
+    type: map
+    optimize: true
+    prompt: |
+      Extract the identified parent company and every listed subsidiary with its
+      stated incorporation jurisdiction. Return subsidiary_names and
+      subsidiary_jurisdictions as equal-length, positionally aligned lists; use an
+      empty jurisdiction string when a subsidiary has no stated jurisdiction.
+      Canonicalize Cayman Islands, British Virgin Islands, Mauritius, and
+      Luxembourg to those exact names. Set parent_company_available=false when no
+      parent is identified and use an empty placeholder.
+
+      Filing:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        parent_company_available: boolean
+        parent_company_value: string
+        subsidiary_names: list[string]
+        subsidiary_jurisdictions: list[string]
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: mark_target_jurisdictions
+    type: code_map
+    code: |
+      def transform(doc):
+          targets = {"cayman islands", "british virgin islands", "mauritius", "luxembourg"}
+          jurisdictions = [str(value or "").strip() for value in (doc.get("subsidiary_jurisdictions") or [])]
+          return {"parent_company": str(doc.get("parent_company_value") or "") if doc.get("parent_company_available") is True else None, "normalized_jurisdictions": jurisdictions, "has_target_jurisdiction": any(value.casefold() in targets for value in jurisdictions)}
+  - name: filter_parent_and_target_jurisdiction
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("parent_company") is not None and doc.get("has_target_jurisdiction") is True
+  - name: project_subsidiary_statistics
+    type: code_map
+    code: |
+      def transform(doc):
+          from collections import Counter
+          names = list(doc.get("subsidiary_names") or [])
+          jurisdictions = list(doc.get("normalized_jurisdictions") or [])
+          counts = Counter(value for value in jurisdictions if value)
+          top = sorted(counts.items(), key=lambda pair: (-pair[1], pair[0]))[:3]
+          return {
+              "document_id": str(doc.get("doc_id") or ""),
+              "parent_company": doc.get("parent_company"),
+              "subsidiary_count": len(names),
+              "distinct_jurisdiction_count": len(counts),
+              "top_jurisdictions": [{"jurisdiction": name, "subsidiary_count": count} for name, count in top],
+          }
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations: [filter_subsidiary_list_filings, extract_parent_and_subsidiaries, mark_target_jurisdictions, filter_parent_and_target_jurisdiction, project_subsidiary_statistics]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-051.json

@@ -1,0 +1,112 @@
+{
+  "task_id": "finance-018",
+  "answer": {
+    "advertising": {
+      "filing_count": 66,
+      "average_employee_count": 9213
+    },
+    "asset liquidation": {
+      "filing_count": 1,
+      "average_employee_count": 0
+    },
+    "build-operate-transfer (bot)": {
+      "filing_count": 1,
+      "average_employee_count": 2
+    },
+    "insurance": {
+      "filing_count": 2,
+      "average_employee_count": 350
+    },
+    "insurance premiums": {
+      "filing_count": 5,
+      "average_employee_count": 2358
+    },
+    "insurance premiums and investment income": {
+      "filing_count": 2,
+      "average_employee_count": 25000
+    },
+    "insurance premiums and reinsurance": {
+      "filing_count": 1,
+      "average_employee_count": 782
+    },
+    "investment": {
+      "filing_count": 1,
+      "average_employee_count": 91
+    },
+    "investment income": {
+      "filing_count": 32,
+      "average_employee_count": 229
+    },
+    "lease-to-own": {
+      "filing_count": 1,
+      "average_employee_count": 12970
+    },
+    "leasing": {
+      "filing_count": 32,
+      "average_employee_count": 278
+    },
+    "leasing/rental income": {
+      "filing_count": 4,
+      "average_employee_count": 408
+    },
+    "licensing": {
+      "filing_count": 1041,
+      "average_employee_count": 346
+    },
+    "marketplace/platform": {
+      "filing_count": 395,
+      "average_employee_count": 13484
+    },
+    "other": {
+      "filing_count": 10,
+      "average_employee_count": 1
+    },
+    "other specific model": {
+      "filing_count": 590,
+      "average_employee_count": 54
+    },
+    "product sales": {
+      "filing_count": 2610,
+      "average_employee_count": 11251
+    },
+    "professional services": {
+      "filing_count": 441,
+      "average_employee_count": 21486
+    },
+    "regulated utility": {
+      "filing_count": 2,
+      "average_employee_count": 10171
+    },
+    "regulated utility sales": {
+      "filing_count": 5,
+      "average_employee_count": 1560
+    },
+    "royalty": {
+      "filing_count": 1,
+      "average_employee_count": 29
+    },
+    "royalty and mineral interests": {
+      "filing_count": 1,
+      "average_employee_count": 108
+    },
+    "royalty trust": {
+      "filing_count": 1,
+      "average_employee_count": 0
+    },
+    "royalty/mineral interests": {
+      "filing_count": 1,
+      "average_employee_count": 0
+    },
+    "subscription/saas": {
+      "filing_count": 728,
+      "average_employee_count": 7365
+    },
+    "transaction-based": {
+      "filing_count": 746,
+      "average_employee_count": 8594
+    }
+  },
+  "elapsed_seconds": 5586.238,
+  "cost_usd": 62.03426433,
+  "total_tokens": 157829257
+}

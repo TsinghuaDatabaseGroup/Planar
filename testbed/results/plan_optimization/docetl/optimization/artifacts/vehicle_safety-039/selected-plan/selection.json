@@ -1,0 +1,415 @@
+{
+  "node_id": 26,
+  "sample_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-039/moar-search/pipeline_vehicle_safety-039_input_sample_openai_Qwen3.5-397B-A17B.yaml",
+  "sample_output_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-039/moar-search/pipeline_vehicle_safety-039_input_sample_openai_Qwen3.5-397B-A17B.json",
+  "semantic_fidelity": 1.0,
+  "sample_execution_cost_usd": 0.16812666000000004,
+  "fidelity_threshold": 0.9,
+  "selection_reason": "lowest_cost_meeting_fidelity_threshold",
+  "optimization_path": "ROOT → change to Qwen3.5-397B-A17B(extract_cited_recall_cores)",
+  "sample_execution_metrics_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-039/moar-search/candidate-metrics/execution_0001_node-26.json",
+  "full_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-039/selected-plan/pipeline_vehicle_safety-039_optimized_full.yaml",
+  "input_plan_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/pipeline-all/pipeline_vehicle_safety-039.yaml",
+  "input_plan_kind": "reference-plan translation used as the MOAR input plan",
+  "operator_execution_policy": {
+    "policy": "structural_rewrite_fixed_operator_execution",
+    "nested_v1_optimizer_invoked": false,
+    "fixed_default_model": "Qwen3.5-397B-A17B",
+    "unchanged_operations": [
+      "extract_cited_recall_cores",
+      "normalize_extracted_recall_cores",
+      "collect_investigation_cited_cores",
+      "filter_ford_recalls",
+      "flatten_ford_recall_fields",
+      "deduplicate_ford_recall_campaigns",
+      "filter_ford_complaints",
+      "match_ford_recalls_to_complaints",
+      "aggregate_ford_campaign_corroboration",
+      "cross_join_campaigns_with_investigation_cores",
+      "mark_campaign_investigation_citation",
+      "order_limit_and_rank_ford_corroboration",
+      "unnest_ranked_ford_corroboration"
+    ],
+    "new_or_replaced_operations": [],
+    "restored_fields": {},
+    "unchanged_operation_count": 13,
+    "new_or_replaced_operation_count": 0
+  },
+  "input_plan_signature": {
+    "definitions": {
+      "extract_cited_recall_cores": "map",
+      "normalize_extracted_recall_cores": "code_map",
+      "collect_investigation_cited_cores": "code_reduce",
+      "filter_ford_recalls": "code_filter",
+      "flatten_ford_recall_fields": "code_map",
+      "deduplicate_ford_recall_campaigns": "code_reduce",
+      "filter_ford_complaints": "code_filter",
+      "match_ford_recalls_to_complaints": "equijoin",
+      "aggregate_ford_campaign_corroboration": "code_reduce",
+      "cross_join_campaigns_with_investigation_cores": "equijoin",
+      "mark_campaign_investigation_citation": "code_map",
+      "order_limit_and_rank_ford_corroboration": "code_reduce",
+      "unnest_ranked_ford_corroboration": "unnest"
+    },
+    "logical_operations": [
+      {
+        "name": "extract_cited_recall_cores",
+        "type": "map",
+        "logical_config_sha256": "65d139d5fd4d0ba1c96817730ef3fe385a1338919cac5ae3a7f1e2779e4a350c"
+      },
+      {
+        "name": "normalize_extracted_recall_cores",
+        "type": "code_map",
+        "logical_config_sha256": "5f09792183616efbc98b6ec02964469eed11c18679c822f23440f0d17d52957a"
+      },
+      {
+        "name": "collect_investigation_cited_cores",
+        "type": "code_reduce",
+        "logical_config_sha256": "9ea4252b829569fc2bd0ba78141098ebc041e2837bef78e9bfb26053b5798852"
+      },
+      {
+        "name": "filter_ford_recalls",
+        "type": "code_filter",
+        "logical_config_sha256": "e5f4ae7f2fc713d2b366c9c8f3be84ccd20e46f2dc2c34296e21a336eeac3350"
+      },
+      {
+        "name": "flatten_ford_recall_fields",
+        "type": "code_map",
+        "logical_config_sha256": "41401f72b3c37c38e4546a6d0189412561a5b77873c5f03b4175a6ac01154fe0"
+      },
+      {
+        "name": "deduplicate_ford_recall_campaigns",
+        "type": "code_reduce",
+        "logical_config_sha256": "ef641d738bc438cb7361f9a1013a275105d6d3bb12573c4b27cf1b822095486d"
+      },
+      {
+        "name": "filter_ford_complaints",
+        "type": "code_filter",
+        "logical_config_sha256": "4e22f5fc476761241baf8277b90f821c2ca0517d0766cd81144c6bb4e6d34427"
+      },
+      {
+        "name": "match_ford_recalls_to_complaints",
+        "type": "equijoin",
+        "logical_config_sha256": "fb359d273bcb21fcab6d65025365fc5c2c98876fe8db94ca5d9c860313d8d4f1"
+      },
+      {
+        "name": "aggregate_ford_campaign_corroboration",
+        "type": "code_reduce",
+        "logical_config_sha256": "ee4adadb1b5b3d14aa305d036ce020fae47aec141e95fe3c08b9400ae1e2d0be"
+      },
+      {
+        "name": "cross_join_campaigns_with_investigation_cores",
+        "type": "equijoin",
+        "logical_config_sha256": "ca3230ec67beb100cb070937ef3fee3445c0fc509a28b728d5fa7cec84f3c510"
+      },
+      {
+        "name": "mark_campaign_investigation_citation",
+        "type": "code_map",
+        "logical_config_sha256": "78e3e82cd42d3b299023fc5fc9782c39eeb14d88d96cbebc8a044f6474f3aa12"
+      },
+      {
+        "name": "order_limit_and_rank_ford_corroboration",
+        "type": "code_reduce",
+        "logical_config_sha256": "99d86e73457e9c158babdfaaa5c66e3e1bb5e174ef449fd2796375883ab55c51"
+      },
+      {
+        "name": "unnest_ranked_ford_corroboration",
+        "type": "unnest",
+        "logical_config_sha256": "266bcd922eec55d45b66f9919659dfbee95165bbd30d4ebdb4d468011f8063ab"
+      }
+    ],
+    "steps": [
+      {
+        "name": "investigation_citation_set",
+        "input": "nhtsa_investigation_reports",
+        "operations": [
+          {
+            "name": "extract_cited_recall_cores",
+            "type": "map"
+          },
+          {
+            "name": "normalize_extracted_recall_cores",
+            "type": "code_map"
+          },
+          {
+            "name": "collect_investigation_cited_cores",
+            "type": "code_reduce"
+          }
+        ]
+      },
+      {
+        "name": "ford_recall_campaigns",
+        "input": "nhtsa_recalls",
+        "operations": [
+          {
+            "name": "filter_ford_recalls",
+            "type": "code_filter"
+          },
+          {
+            "name": "flatten_ford_recall_fields",
+            "type": "code_map"
+          },
+          {
+            "name": "deduplicate_ford_recall_campaigns",
+            "type": "code_reduce"
+          }
+        ]
+      },
+      {
+        "name": "ford_complaints",
+        "input": "nhtsa_complaints",
+        "operations": [
+          {
+            "name": "filter_ford_complaints",
+            "type": "code_filter"
+          }
+        ]
+      },
+      {
+        "name": "matched_ford_recall_complaints",
+        "input": null,
+        "operations": [
+          {
+            "name": "match_ford_recalls_to_complaints",
+            "type": "equijoin",
+            "inputs": {
+              "left": "ford_recall_campaigns",
+              "right": "ford_complaints"
+            }
+          }
+        ]
+      },
+      {
+        "name": "ford_campaign_corroboration",
+        "input": "matched_ford_recall_complaints",
+        "operations": [
+          {
+            "name": "aggregate_ford_campaign_corroboration",
+            "type": "code_reduce"
+          }
+        ]
+      },
+      {
+        "name": "ford_campaigns_with_citation_status",
+        "input": null,
+        "operations": [
+          {
+            "name": "cross_join_campaigns_with_investigation_cores",
+            "type": "equijoin",
+            "inputs": {
+              "left": "ford_campaign_corroboration",
+              "right": "investigation_citation_set"
+            }
+          }
+        ]
+      },
+      {
+        "name": "ranked_ford_campaign_corroboration",
+        "input": "ford_campaigns_with_citation_status",
+        "operations": [
+          {
+            "name": "mark_campaign_investigation_citation",
+            "type": "code_map"
+          },
+          {
+            "name": "order_limit_and_rank_ford_corroboration",
+            "type": "code_reduce"
+          },
+          {
+            "name": "unnest_ranked_ford_corroboration",
+            "type": "unnest"
+          }
+        ]
+      }
+    ]
+  },
+  "selected_plan_signature": {
+    "definitions": {
+      "extract_cited_recall_cores": "map",
+      "normalize_extracted_recall_cores": "code_map",
+      "collect_investigation_cited_cores": "code_reduce",
+      "filter_ford_recalls": "code_filter",
+      "flatten_ford_recall_fields": "code_map",
+      "deduplicate_ford_recall_campaigns": "code_reduce",
+      "filter_ford_complaints": "code_filter",
+      "match_ford_recalls_to_complaints": "equijoin",
+      "aggregate_ford_campaign_corroboration": "code_reduce",
+      "cross_join_campaigns_with_investigation_cores": "equijoin",
+      "mark_campaign_investigation_citation": "code_map",
+      "order_limit_and_rank_ford_corroboration": "code_reduce",
+      "unnest_ranked_ford_corroboration": "unnest"
+    },
+    "logical_operations": [
+      {
+        "name": "extract_cited_recall_cores",
+        "type": "map",
+        "logical_config_sha256": "65d139d5fd4d0ba1c96817730ef3fe385a1338919cac5ae3a7f1e2779e4a350c"
+      },
+      {
+        "name": "normalize_extracted_recall_cores",
+        "type": "code_map",
+        "logical_config_sha256": "5f09792183616efbc98b6ec02964469eed11c18679c822f23440f0d17d52957a"
+      },
+      {
+        "name": "collect_investigation_cited_cores",
+        "type": "code_reduce",
+        "logical_config_sha256": "9ea4252b829569fc2bd0ba78141098ebc041e2837bef78e9bfb26053b5798852"
+      },
+      {
+        "name": "filter_ford_recalls",
+        "type": "code_filter",
+        "logical_config_sha256": "e5f4ae7f2fc713d2b366c9c8f3be84ccd20e46f2dc2c34296e21a336eeac3350"
+      },
+      {
+        "name": "flatten_ford_recall_fields",
+        "type": "code_map",
+        "logical_config_sha256": "41401f72b3c37c38e4546a6d0189412561a5b77873c5f03b4175a6ac01154fe0"
+      },
+      {
+        "name": "deduplicate_ford_recall_campaigns",
+        "type": "code_reduce",
+        "logical_config_sha256": "ef641d738bc438cb7361f9a1013a275105d6d3bb12573c4b27cf1b822095486d"
+      },
+      {
+        "name": "filter_ford_complaints",
+        "type": "code_filter",
+        "logical_config_sha256": "4e22f5fc476761241baf8277b90f821c2ca0517d0766cd81144c6bb4e6d34427"
+      },
+      {
+        "name": "match_ford_recalls_to_complaints",
+        "type": "equijoin",
+        "logical_config_sha256": "fb359d273bcb21fcab6d65025365fc5c2c98876fe8db94ca5d9c860313d8d4f1"
+      },
+      {
+        "name": "aggregate_ford_campaign_corroboration",
+        "type": "code_reduce",
+        "logical_config_sha256": "ee4adadb1b5b3d14aa305d036ce020fae47aec141e95fe3c08b9400ae1e2d0be"
+      },
+      {
+        "name": "cross_join_campaigns_with_investigation_cores",
+        "type": "equijoin",
+        "logical_config_sha256": "ca3230ec67beb100cb070937ef3fee3445c0fc509a28b728d5fa7cec84f3c510"
+      },
+      {
+        "name": "mark_campaign_investigation_citation",
+        "type": "code_map",
+        "logical_config_sha256": "78e3e82cd42d3b299023fc5fc9782c39eeb14d88d96cbebc8a044f6474f3aa12"
+      },
+      {
+        "name": "order_limit_and_rank_ford_corroboration",
+        "type": "code_reduce",
+        "logical_config_sha256": "99d86e73457e9c158babdfaaa5c66e3e1bb5e174ef449fd2796375883ab55c51"
+      },
+      {
+        "name": "unnest_ranked_ford_corroboration",
+        "type": "unnest",
+        "logical_config_sha256": "266bcd922eec55d45b66f9919659dfbee95165bbd30d4ebdb4d468011f8063ab"
+      }
+    ],
+    "steps": [
+      {
+        "name": "investigation_citation_set",
+        "input": "nhtsa_investigation_reports",
+        "operations": [
+          {
+            "name": "extract_cited_recall_cores",
+            "type": "map"
+          },
+          {
+            "name": "normalize_extracted_recall_cores",
+            "type": "code_map"
+          },
+          {
+            "name": "collect_investigation_cited_cores",
+            "type": "code_reduce"
+          }
+        ]
+      },
+      {
+        "name": "ford_recall_campaigns",
+        "input": "nhtsa_recalls",
+        "operations": [
+          {
+            "name": "filter_ford_recalls",
+            "type": "code_filter"
+          },
+          {
+            "name": "flatten_ford_recall_fields",
+            "type": "code_map"
+          },
+          {
+            "name": "deduplicate_ford_recall_campaigns",
+            "type": "code_reduce"
+          }
+        ]
+      },
+      {
+        "name": "ford_complaints",
+        "input": "nhtsa_complaints",
+        "operations": [
+          {
+            "name": "filter_ford_complaints",
+            "type": "code_filter"
+          }
+        ]
+      },
+      {
+        "name": "matched_ford_recall_complaints",
+        "input": null,
+        "operations": [
+          {
+            "name": "match_ford_recalls_to_complaints",
+            "type": "equijoin",
+            "inputs": {
+              "left": "ford_recall_campaigns",
+              "right": "ford_complaints"
+            }
+          }
+        ]
+      },
+      {
+        "name": "ford_campaign_corroboration",
+        "input": "matched_ford_recall_complaints",
+        "operations": [
+          {
+            "name": "aggregate_ford_campaign_corroboration",
+            "type": "code_reduce"
+          }
+        ]
+      },
+      {
+        "name": "ford_campaigns_with_citation_status",
+        "input": null,
+        "operations": [
+          {
+            "name": "cross_join_campaigns_with_investigation_cores",
+            "type": "equijoin",
+            "inputs": {
+              "left": "ford_campaign_corroboration",
+              "right": "investigation_citation_set"
+            }
+          }
+        ]
+      },
+      {
+        "name": "ranked_ford_campaign_corroboration",
+        "input": "ford_campaigns_with_citation_status",
+        "operations": [
+          {
+            "name": "mark_campaign_investigation_citation",
+            "type": "code_map"
+          },
+          {
+            "name": "order_limit_and_rank_ford_corroboration",
+            "type": "code_reduce"
+          },
+          {
+            "name": "unnest_ranked_ford_corroboration",
+            "type": "unnest"
+          }
+        ]
+      }
+    ]
+  },
+  "plan_changed": false
+}

@@ -1,0 +1,18 @@
+{
+  "task_id": "legal_contracts-103",
+  "answer": [
+    {
+      "trigger_type": "restatement_and_misconduct",
+      "matched_company_count": 2,
+      "avg_largest_subsidiary_count": 74.08
+    },
+    {
+      "trigger_type": "restatement_only",
+      "matched_company_count": 9,
+      "avg_largest_subsidiary_count": 84.94
+    }
+  ],
+  "elapsed_seconds": 833.35,
+  "cost_usd": 8.192381,
+  "total_tokens": 15371562
+}

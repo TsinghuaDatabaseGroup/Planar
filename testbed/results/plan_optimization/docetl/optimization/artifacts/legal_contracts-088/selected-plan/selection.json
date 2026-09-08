@@ -1,0 +1,308 @@
+{
+  "node_id": 34,
+  "sample_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-088/moar-search/pipeline_legal_contracts-088_input_sample_openai_Qwen3.5-397B-A17B.yaml",
+  "sample_output_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-088/moar-search/pipeline_legal_contracts-088_input_sample_openai_Qwen3.5-397B-A17B.json",
+  "semantic_fidelity": 1.0,
+  "sample_execution_cost_usd": 0.63705066,
+  "fidelity_threshold": 0.9,
+  "selection_reason": "lowest_cost_meeting_fidelity_threshold",
+  "optimization_path": "ROOT → change to Qwen3.5-397B-A17B(filter_ex31_sox_certifications)",
+  "sample_execution_metrics_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-088/moar-search/candidate-metrics/execution_0001_node-34.json",
+  "full_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-088/selected-plan/pipeline_legal_contracts-088_optimized_full.yaml",
+  "input_plan_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/pipeline-all/pipeline_legal_contracts-088.yaml",
+  "input_plan_kind": "reference-plan translation used as the MOAR input plan",
+  "operator_execution_policy": {
+    "policy": "structural_rewrite_fixed_operator_execution",
+    "nested_v1_optimizer_invoked": false,
+    "fixed_default_model": "Qwen3.5-397B-A17B",
+    "unchanged_operations": [
+      "filter_ex31_sox_certifications",
+      "extract_ex31_company_and_officer",
+      "group_ex31_officers_by_company",
+      "filter_ex97_clawback_policies",
+      "filter_restatement_and_misconduct_recovery",
+      "extract_ex97_company_and_covered_category",
+      "deduplicate_ex97_company_categories",
+      "join_ex31_and_ex97_companies",
+      "format_ex31_ex97_matches",
+      "unnest_ex31_ex97_matches"
+    ],
+    "new_or_replaced_operations": [],
+    "restored_fields": {},
+    "unchanged_operation_count": 10,
+    "new_or_replaced_operation_count": 0
+  },
+  "input_plan_signature": {
+    "definitions": {
+      "filter_ex31_sox_certifications": "filter",
+      "extract_ex31_company_and_officer": "map",
+      "group_ex31_officers_by_company": "code_reduce",
+      "filter_ex97_clawback_policies": "filter",
+      "filter_restatement_and_misconduct_recovery": "filter",
+      "extract_ex97_company_and_covered_category": "map",
+      "deduplicate_ex97_company_categories": "code_reduce",
+      "join_ex31_and_ex97_companies": "equijoin",
+      "format_ex31_ex97_matches": "code_reduce",
+      "unnest_ex31_ex97_matches": "unnest"
+    },
+    "logical_operations": [
+      {
+        "name": "filter_ex31_sox_certifications",
+        "type": "filter",
+        "logical_config_sha256": "d7f86e5425d5761a81381a4132866c325afb590658690c1a0a0e3f2b646f1cad"
+      },
+      {
+        "name": "extract_ex31_company_and_officer",
+        "type": "map",
+        "logical_config_sha256": "65893aee7bb413c0cccf07c3da716f362f7bf27d5d593538fbd358b8ba5c780a"
+      },
+      {
+        "name": "group_ex31_officers_by_company",
+        "type": "code_reduce",
+        "logical_config_sha256": "f18b83fb096122e2f04d94d0a8ffebcd726da406ae7bb0f51a1b7ed0c90d1a25"
+      },
+      {
+        "name": "filter_ex97_clawback_policies",
+        "type": "filter",
+        "logical_config_sha256": "328d7530548558ffeb482d1f3a50184cdbbb9eaa29e25f839b5ee70a099e3cb9"
+      },
+      {
+        "name": "filter_restatement_and_misconduct_recovery",
+        "type": "filter",
+        "logical_config_sha256": "a086934b6cd9991c6a71ef63e8d184f7f76556d7021fb52e1009ab49a7a7a60f"
+      },
+      {
+        "name": "extract_ex97_company_and_covered_category",
+        "type": "map",
+        "logical_config_sha256": "3995664799e5abbab0e5391fe29571edc234175ae8fc7814a650eb133e598732"
+      },
+      {
+        "name": "deduplicate_ex97_company_categories",
+        "type": "code_reduce",
+        "logical_config_sha256": "3c9e92bf5a942150a687fef894d354a489e7247391c9aee6630fe55cbb871def"
+      },
+      {
+        "name": "join_ex31_and_ex97_companies",
+        "type": "equijoin",
+        "logical_config_sha256": "0c533c9422c87e69d8fa269aadd85a19e2889404ba253b90cd90edc96721824a"
+      },
+      {
+        "name": "format_ex31_ex97_matches",
+        "type": "code_reduce",
+        "logical_config_sha256": "941672a0371ed657d31d9d4dd0761a8e276eb8a9d52af16f9a140ad3ef4e1076"
+      },
+      {
+        "name": "unnest_ex31_ex97_matches",
+        "type": "unnest",
+        "logical_config_sha256": "7bb79a47e384e94f419c476bee0a935b1a2aff5921b18b4ade6f133c1059861b"
+      }
+    ],
+    "steps": [
+      {
+        "name": "ex31_company_groups",
+        "input": "contract_exhibits",
+        "operations": [
+          {
+            "name": "filter_ex31_sox_certifications",
+            "type": "filter"
+          },
+          {
+            "name": "extract_ex31_company_and_officer",
+            "type": "map"
+          },
+          {
+            "name": "group_ex31_officers_by_company",
+            "type": "code_reduce"
+          }
+        ]
+      },
+      {
+        "name": "ex97_company_categories",
+        "input": "contract_exhibits",
+        "operations": [
+          {
+            "name": "filter_ex97_clawback_policies",
+            "type": "filter"
+          },
+          {
+            "name": "filter_restatement_and_misconduct_recovery",
+            "type": "filter"
+          },
+          {
+            "name": "extract_ex97_company_and_covered_category",
+            "type": "map"
+          },
+          {
+            "name": "deduplicate_ex97_company_categories",
+            "type": "code_reduce"
+          }
+        ]
+      },
+      {
+        "name": "ex31_ex97_company_matches",
+        "input": null,
+        "operations": [
+          {
+            "name": "join_ex31_and_ex97_companies",
+            "type": "equijoin",
+            "inputs": {
+              "left": "ex31_company_groups",
+              "right": "ex97_company_categories"
+            }
+          }
+        ]
+      },
+      {
+        "name": "answer",
+        "input": "ex31_ex97_company_matches",
+        "operations": [
+          {
+            "name": "format_ex31_ex97_matches",
+            "type": "code_reduce"
+          },
+          {
+            "name": "unnest_ex31_ex97_matches",
+            "type": "unnest"
+          }
+        ]
+      }
+    ]
+  },
+  "selected_plan_signature": {
+    "definitions": {
+      "filter_ex31_sox_certifications": "filter",
+      "extract_ex31_company_and_officer": "map",
+      "group_ex31_officers_by_company": "code_reduce",
+      "filter_ex97_clawback_policies": "filter",
+      "filter_restatement_and_misconduct_recovery": "filter",
+      "extract_ex97_company_and_covered_category": "map",
+      "deduplicate_ex97_company_categories": "code_reduce",
+      "join_ex31_and_ex97_companies": "equijoin",
+      "format_ex31_ex97_matches": "code_reduce",
+      "unnest_ex31_ex97_matches": "unnest"
+    },
+    "logical_operations": [
+      {
+        "name": "filter_ex31_sox_certifications",
+        "type": "filter",
+        "logical_config_sha256": "d7f86e5425d5761a81381a4132866c325afb590658690c1a0a0e3f2b646f1cad"
+      },
+      {
+        "name": "extract_ex31_company_and_officer",
+        "type": "map",
+        "logical_config_sha256": "65893aee7bb413c0cccf07c3da716f362f7bf27d5d593538fbd358b8ba5c780a"
+      },
+      {
+        "name": "group_ex31_officers_by_company",
+        "type": "code_reduce",
+        "logical_config_sha256": "f18b83fb096122e2f04d94d0a8ffebcd726da406ae7bb0f51a1b7ed0c90d1a25"
+      },
+      {
+        "name": "filter_ex97_clawback_policies",
+        "type": "filter",
+        "logical_config_sha256": "328d7530548558ffeb482d1f3a50184cdbbb9eaa29e25f839b5ee70a099e3cb9"
+      },
+      {
+        "name": "filter_restatement_and_misconduct_recovery",
+        "type": "filter",
+        "logical_config_sha256": "a086934b6cd9991c6a71ef63e8d184f7f76556d7021fb52e1009ab49a7a7a60f"
+      },
+      {
+        "name": "extract_ex97_company_and_covered_category",
+        "type": "map",
+        "logical_config_sha256": "3995664799e5abbab0e5391fe29571edc234175ae8fc7814a650eb133e598732"
+      },
+      {
+        "name": "deduplicate_ex97_company_categories",
+        "type": "code_reduce",
+        "logical_config_sha256": "3c9e92bf5a942150a687fef894d354a489e7247391c9aee6630fe55cbb871def"
+      },
+      {
+        "name": "join_ex31_and_ex97_companies",
+        "type": "equijoin",
+        "logical_config_sha256": "0c533c9422c87e69d8fa269aadd85a19e2889404ba253b90cd90edc96721824a"
+      },
+      {
+        "name": "format_ex31_ex97_matches",
+        "type": "code_reduce",
+        "logical_config_sha256": "941672a0371ed657d31d9d4dd0761a8e276eb8a9d52af16f9a140ad3ef4e1076"
+      },
+      {
+        "name": "unnest_ex31_ex97_matches",
+        "type": "unnest",
+        "logical_config_sha256": "7bb79a47e384e94f419c476bee0a935b1a2aff5921b18b4ade6f133c1059861b"
+      }
+    ],
+    "steps": [
+      {
+        "name": "ex31_company_groups",
+        "input": "contract_exhibits",
+        "operations": [
+          {
+            "name": "filter_ex31_sox_certifications",
+            "type": "filter"
+          },
+          {
+            "name": "extract_ex31_company_and_officer",
+            "type": "map"
+          },
+          {
+            "name": "group_ex31_officers_by_company",
+            "type": "code_reduce"
+          }
+        ]
+      },
+      {
+        "name": "ex97_company_categories",
+        "input": "contract_exhibits",
+        "operations": [
+          {
+            "name": "filter_ex97_clawback_policies",
+            "type": "filter"
+          },
+          {
+            "name": "filter_restatement_and_misconduct_recovery",
+            "type": "filter"
+          },
+          {
+            "name": "extract_ex97_company_and_covered_category",
+            "type": "map"
+          },
+          {
+            "name": "deduplicate_ex97_company_categories",
+            "type": "code_reduce"
+          }
+        ]
+      },
+      {
+        "name": "ex31_ex97_company_matches",
+        "input": null,
+        "operations": [
+          {
+            "name": "join_ex31_and_ex97_companies",
+            "type": "equijoin",
+            "inputs": {
+              "left": "ex31_company_groups",
+              "right": "ex97_company_categories"
+            }
+          }
+        ]
+      },
+      {
+        "name": "answer",
+        "input": "ex31_ex97_company_matches",
+        "operations": [
+          {
+            "name": "format_ex31_ex97_matches",
+            "type": "code_reduce"
+          },
+          {
+            "name": "unnest_ex31_ex97_matches",
+            "type": "unnest"
+          }
+        ]
+      }
+    ]
+  },
+  "plan_changed": false
+}

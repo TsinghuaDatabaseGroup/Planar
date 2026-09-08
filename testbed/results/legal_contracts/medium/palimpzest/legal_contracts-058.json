@@ -1,0 +1,11 @@
+{
+  "task_id": "legal_contracts-058",
+  "answer": [
+    {"non_disclosure_direction": "mutual", "recognized_exceptions": ["public_information", "prior_knowledge", "independent_development", "lawful_third_party_receipt", "legally_compelled_disclosure", "disclosure_with_consent"], "agreement_count": 137},
+    {"non_disclosure_direction": "unilateral", "recognized_exceptions": [], "agreement_count": 32},
+    {"non_disclosure_direction": "mutual", "recognized_exceptions": ["public_information", "prior_knowledge", "independent_development", "lawful_third_party_receipt", "legally_compelled_disclosure"], "agreement_count": 25}
+  ],
+  "elapsed_seconds": 1706.24,
+  "cost_usd": 2.211177,
+  "total_tokens": 4184673
+}

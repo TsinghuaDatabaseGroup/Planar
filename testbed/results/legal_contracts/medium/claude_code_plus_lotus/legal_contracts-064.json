@@ -1,0 +1,68 @@
+{
+  "task_id": "legal_contracts-064",
+  "answer": [
+    {
+      "document_id": "Non-Disclosure-Agreement-NDA.pdf",
+      "word_count": 693
+    },
+    {
+      "document_id": "RFP_Telephony-NDA_Attachment-F.pdf",
+      "word_count": 704
+    },
+    {
+      "document_id": "MutualNonDisclosureAgreement0104.pdf",
+      "word_count": 732
+    },
+    {
+      "document_id": "2_waycda.pdf",
+      "word_count": 749
+    },
+    {
+      "document_id": "non-disclosure-agreement-mutual-generic-blank.pdf",
+      "word_count": 820
+    },
+    {
+      "document_id": "MUTUAL_NDA.pdf",
+      "word_count": 885
+    },
+    {
+      "document_id": "resources-non-disclosure-agreement.pdf",
+      "word_count": 998
+    },
+    {
+      "document_id": "Roundhouse-Creative-Mutual-NDA.pdf",
+      "word_count": 999
+    },
+    {
+      "document_id": "US-Non-Disclosure-Agreement.pdf",
+      "word_count": 1012
+    },
+    {
+      "document_id": "1424657_0001213900-16-016691_f8k082516ex99iii_nextgroup.htm",
+      "word_count": 1022
+    },
+    {
+      "document_id": "1501697_0001193125-19-145463_d944716dex108.htm",
+      "word_count": 1025
+    },
+    {
+      "document_id": "1011344_0001193125-08-097987_dex99d5.htm",
+      "word_count": 1083
+    },
+    {
+      "document_id": "1101204_0001085037-00-000208_0015.txt",
+      "word_count": 1084
+    },
+    {
+      "document_id": "922237_0000950005-02-000645_p15515_ex10-19.txt",
+      "word_count": 1193
+    },
+    {
+      "document_id": "1105503_0000950123-00-006736_ex10-14.txt",
+      "word_count": 1240
+    }
+  ],
+  "elapsed_seconds": 579.588,
+  "cost_usd": 4.54461654,
+  "total_tokens": 10863911
+}

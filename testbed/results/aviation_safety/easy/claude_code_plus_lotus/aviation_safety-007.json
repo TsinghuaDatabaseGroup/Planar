@@ -1,0 +1,56 @@
+{
+  "task_id": "aviation_safety-007",
+  "answer": [
+    {
+      "decision_label": "attempt_approach",
+      "incident_count": 25,
+      "with_numeric_fuel_value_count": 22,
+      "with_numeric_time_value_count": 10
+    },
+    {
+      "decision_label": "divert",
+      "incident_count": 124,
+      "with_numeric_fuel_value_count": 106,
+      "with_numeric_time_value_count": 72
+    },
+    {
+      "decision_label": "return",
+      "incident_count": 42,
+      "with_numeric_fuel_value_count": 39,
+      "with_numeric_time_value_count": 21
+    },
+    {
+      "decision_label": "hold",
+      "incident_count": 42,
+      "with_numeric_fuel_value_count": 35,
+      "with_numeric_time_value_count": 25
+    },
+    {
+      "decision_label": "leave_holding",
+      "incident_count": 7,
+      "with_numeric_fuel_value_count": 6,
+      "with_numeric_time_value_count": 4
+    },
+    {
+      "decision_label": "continue",
+      "incident_count": 84,
+      "with_numeric_fuel_value_count": 76,
+      "with_numeric_time_value_count": 38
+    },
+    {
+      "decision_label": "declare_minimum_fuel",
+      "incident_count": 46,
+      "with_numeric_fuel_value_count": 44,
+      "with_numeric_time_value_count": 31
+    },
+    {
+      "decision_label": "declare_fuel_emergency",
+      "incident_count": 26,
+      "with_numeric_fuel_value_count": 26,
+      "with_numeric_time_value_count": 13
+    }
+  ],
+  "elapsed_seconds": 448.269,
+  "cost_usd": 0.95183694,
+  "total_tokens": 1915279
+}

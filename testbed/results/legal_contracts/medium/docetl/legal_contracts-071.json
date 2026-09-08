@@ -1,0 +1,80 @@
+{
+  "task_id": "legal_contracts-071",
+  "answer": [
+    {
+      "document_id": "1335239_0001019687-14-003760_epazz_ex1034.htm",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 1,
+      "noncompete_duration_years": 1,
+      "governing_law": "State of Illinois",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "BaconNon-Disclosure.pdf",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 3,
+      "noncompete_duration_years": 3,
+      "governing_law": "Tennessee",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "LMS_Non_Disclosure_Agreement.pdf",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 5,
+      "noncompete_duration_years": 3,
+      "governing_law": "the jurisdiction in which the Disclosing Party is located (or if the Disclosing Party is based in more than one country, the country in which its headquarters are located)",
+      "duration_comparison": "confidentiality_term_longer"
+    },
+    {
+      "document_id": "a1029trv2025restrictedstoc.htm",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 3,
+      "noncompete_duration_years": 1,
+      "governing_law": "Participant's Employment Jurisdiction",
+      "duration_comparison": "confidentiality_term_longer"
+    },
+    {
+      "document_id": "a1033trv2025mcmperfsharesa.htm",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 3,
+      "noncompete_duration_years": 1,
+      "governing_law": "Participant's Employment Jurisdiction",
+      "duration_comparison": "confidentiality_term_longer"
+    },
+    {
+      "document_id": "dal9302024ex101.htm",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 5,
+      "noncompete_duration_years": 1,
+      "governing_law": "State of Georgia",
+      "duration_comparison": "confidentiality_term_longer"
+    },
+    {
+      "document_id": "exhibit1012-consultingagre.htm",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 7,
+      "noncompete_duration_years": 0.5,
+      "governing_law": "State of California",
+      "duration_comparison": "confidentiality_term_longer"
+    },
+    {
+      "document_id": "larsenemploymentagreement.htm",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 3,
+      "noncompete_duration_years": 1,
+      "governing_law": "State of Washington",
+      "duration_comparison": "confidentiality_term_longer"
+    },
+    {
+      "document_id": "voorheesemploymentagreement.htm",
+      "nda_direction": "unilateral",
+      "confidentiality_term_years": 3,
+      "noncompete_duration_years": 1,
+      "governing_law": "State of Washington",
+      "duration_comparison": "confidentiality_term_longer"
+    }
+  ],
+  "elapsed_seconds": 436.57,
+  "cost_usd": 4.096281,
+  "total_tokens": 7794591
+}

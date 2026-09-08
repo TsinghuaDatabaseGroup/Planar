@@ -1,0 +1,123 @@
+{
+  "task_id": "aviation_safety-046",
+  "answer": [
+    {
+      "rank": 1,
+      "left_incident_id": "asrs_150233",
+      "right_incident_id": "asrs_150254",
+      "incident_date": 202512,
+      "shared_primary_event_type": "weather_event",
+      "differing_structured_fields": [
+        "flight_phase",
+        "anomaly_summary",
+        "result_summary",
+        "aircraft_component",
+        "primary_problem"
+      ]
+    },
+    {
+      "rank": 2,
+      "left_incident_id": "asrs_139691",
+      "right_incident_id": "asrs_139824",
+      "incident_date": 202403,
+      "shared_primary_event_type": "equipment_failure",
+      "differing_structured_fields": [
+        "flight_phase",
+        "anomaly_summary",
+        "result_summary"
+      ]
+    },
+    {
+      "rank": 3,
+      "left_incident_id": "asrs_139386",
+      "right_incident_id": "asrs_139501",
+      "incident_date": 202402,
+      "shared_primary_event_type": "equipment_failure",
+      "differing_structured_fields": [
+        "flight_phase",
+        "anomaly_summary",
+        "result_summary"
+      ]
+    },
+    {
+      "rank": 4,
+      "left_incident_id": "asrs_129590",
+      "right_incident_id": "asrs_129606",
+      "incident_date": 202203,
+      "shared_primary_event_type": "equipment_failure",
+      "differing_structured_fields": [
+        "anomaly_summary",
+        "result_summary"
+      ]
+    },
+    {
+      "rank": 5,
+      "left_incident_id": "asrs_124179",
+      "right_incident_id": "asrs_124335",
+      "incident_date": 202101,
+      "shared_primary_event_type": "clearance_deviation",
+      "differing_structured_fields": [
+        "anomaly_summary",
+        "result_summary"
+      ]
+    },
+    {
+      "rank": 6,
+      "left_incident_id": "asrs_117457",
+      "right_incident_id": "asrs_117492",
+      "incident_date": 201910,
+      "shared_primary_event_type": "equipment_failure",
+      "differing_structured_fields": [
+        "flight_phase",
+        "anomaly_summary",
+        "result_summary"
+      ]
+    },
+    {
+      "rank": 7,
+      "left_incident_id": "asrs_107892",
+      "right_incident_id": "asrs_107920",
+      "incident_date": 201802,
+      "shared_primary_event_type": "equipment_failure",
+      "differing_structured_fields": [
+        "result_summary"
+      ]
+    },
+    {
+      "rank": 8,
+      "left_incident_id": "asrs_095021",
+      "right_incident_id": "asrs_095022",
+      "incident_date": 201510,
+      "shared_primary_event_type": "equipment_failure",
+      "differing_structured_fields": [
+        "anomaly_summary",
+        "result_summary"
+      ]
+    },
+    {
+      "rank": 9,
+      "left_incident_id": "asrs_078757",
+      "right_incident_id": "asrs_078758",
+      "incident_date": 201206,
+      "shared_primary_event_type": "weather_event",
+      "differing_structured_fields": [
+        "flight_phase",
+        "result_summary"
+      ]
+    },
+    {
+      "rank": 10,
+      "left_incident_id": "asrs_062903",
+      "right_incident_id": "asrs_062944",
+      "incident_date": 200907,
+      "shared_primary_event_type": "weather_event",
+      "differing_structured_fields": [
+        "anomaly_summary",
+        "result_summary"
+      ]
+    }
+  ],
+  "elapsed_seconds": 322.56,
+  "cost_usd": 1.27769,
+  "total_tokens": 2284258
+}

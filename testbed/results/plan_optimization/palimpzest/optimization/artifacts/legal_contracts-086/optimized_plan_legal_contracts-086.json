@@ -1,0 +1,668 @@
+{
+  "format_version": 1,
+  "purpose": "human_review_of_selected_palimpzest_physical_plan",
+  "task_id": "legal_contracts-086",
+  "optimization_status": "optimized_only",
+  "selected_plan_id": "62dbda71d7",
+  "executable_plan": {
+    "file": "optimized_plan_legal_contracts-086.plan.pkl",
+    "format": "cloudpickle",
+    "version": 1,
+    "sha256": "ea24ab3931ad88e707f898da697e931109e6f4a4e87cd6a014c9d21e200d0f80",
+    "size_bytes": 123615,
+    "selected_plan_id": "62dbda71d7",
+    "datasources": {
+      "legal_contracts-086-semantic-input": {
+        "id": "legal_contracts-086-semantic-input",
+        "row_count": 2793,
+        "schema_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ]
+      }
+    },
+    "scan_datasource_records_included": false,
+    "sentinel_record_payloads_included": false
+  },
+  "input_plan": {
+    "task_id": "legal_contracts-086",
+    "query": "Among documents classified as NDAs, including dual-labelled exhibits, with effective dates after 2010-01-01, which stated governing-law jurisdictions occur in agreements that define confidential information to include electronic data or records, email, software or code, metadata, or other computer-readable material; require destruction of at least some confidential materials or copies rather than only their return; and expressly continue confidentiality or non-use duties beyond termination or expiry? Report the matching NDA count by jurisdiction, ordered by count descending and then jurisdiction alphabetically.",
+    "inputs": [
+      {
+        "source_id": "data/contract-exhibit",
+        "dataset": "CONTRACTEXHIBIT",
+        "source_type": "document",
+        "role": "primary"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all) -> SEM_FILTER('Is this document classified as an NDA, including a dual-labelled NDA exhibit, with an effective date strictly after 2010-01-01?') -> SEM_FILTER('Does the confidential-information definition explicitly include electronic data or records, email, software or code, metadata, or other computer-readable material?') -> SEM_FILTER('Does the agreement require destruction of at least some confidential materials or copies, excluding clauses that only require return or merely allow an unrestricted choice between return and destruction?') -> SEM_FILTER('Do confidentiality or non-use obligations expressly survive termination or expiry or continue beyond the stated term?') -> SEM_EXTRACT('Extract and canonicalize the expressly stated governing-law jurisdiction; return null when unstated', {governing_law: str|null}) -> FILTER(governing_law IS NOT NULL) -> GROUP_BY(governing_law, matching_count = COUNT(*)) -> ORDER_BY(matching_count DESC, governing_law ASC)"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "governing_law",
+        "matching_count"
+      ],
+      "types": [
+        "string",
+        "integer"
+      ]
+    }
+  },
+  "input_bad_plan": null,
+  "input_logical_plan": {
+    "root_dataset_id": "af8f6e8ed1",
+    "nodes": [
+      {
+        "dataset_id": "legal_contracts-086-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "18cd8e0245",
+        "unique_logical_op_id": "0-18cd8e0245",
+        "depends_on": [],
+        "generated_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ]
+      },
+      {
+        "dataset_id": "312d89c69e",
+        "source_dataset_ids": [
+          "legal_contracts-086-semantic-input"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "5987a33ba0",
+        "unique_logical_op_id": "1-5987a33ba0",
+        "depends_on": [
+          "text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "filter": "Keep this document only if it is an NDA, including a dual-labelled NDA exhibit, with an effective date strictly after 2010-01-01."
+      },
+      {
+        "dataset_id": "81bb1c247c",
+        "source_dataset_ids": [
+          "312d89c69e"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "fccd28cc6d",
+        "unique_logical_op_id": "2-fccd28cc6d",
+        "depends_on": [
+          "text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "filter": "Keep this NDA only if its confidential-information definition explicitly includes electronic data or records, email, software or code, metadata, or other computer-readable material."
+      },
+      {
+        "dataset_id": "80635f5c1d",
+        "source_dataset_ids": [
+          "81bb1c247c"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "0284b0a88a",
+        "unique_logical_op_id": "3-0284b0a88a",
+        "depends_on": [
+          "text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "filter": "Keep this NDA only if it requires destruction of at least some confidential materials or copies. Exclude clauses requiring only return or merely allowing an unrestricted choice between return and destruction."
+      },
+      {
+        "dataset_id": "e707b3c87b",
+        "source_dataset_ids": [
+          "80635f5c1d"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "e1bb51552e",
+        "unique_logical_op_id": "4-e1bb51552e",
+        "depends_on": [
+          "text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "filter": "Keep this NDA only if confidentiality or non-use obligations expressly survive termination or expiry or continue beyond the stated term."
+      },
+      {
+        "dataset_id": "03d5fc3abf",
+        "source_dataset_ids": [
+          "e707b3c87b"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "54735881f7",
+        "unique_logical_op_id": "5-54735881f7",
+        "depends_on": [
+          "text"
+        ],
+        "generated_fields": [
+          "governing_law"
+        ],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "governing_law",
+          "text",
+          "word_count"
+        ],
+        "desc": "Extract and canonicalize the governing-law jurisdiction.",
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "72af089fbf",
+        "source_dataset_ids": [
+          "03d5fc3abf"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "7b0020386c",
+        "unique_logical_op_id": "6-7b0020386c",
+        "depends_on": [
+          "governing_law"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "governing_law",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "governing_law",
+          "text",
+          "word_count"
+        ],
+        "filter": "has_governing_law"
+      },
+      {
+        "dataset_id": "af8f6e8ed1",
+        "source_dataset_ids": [
+          "72af089fbf"
+        ],
+        "logical_operator": "GroupByAggregate",
+        "logical_op_id": "f7f0cc9591",
+        "unique_logical_op_id": "7-f7f0cc9591",
+        "depends_on": [],
+        "generated_fields": [
+          "count(document_id)"
+        ],
+        "input_fields": [
+          "document_id",
+          "governing_law",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "count(document_id)",
+          "governing_law"
+        ],
+        "group_by": "GroupBy({'group_by_fields': ['governing_law'], 'agg_funcs': ['count'], 'agg_fields': ['document_id']})"
+      }
+    ],
+    "topological_logical_sequence": [
+      "0-18cd8e0245",
+      "1-5987a33ba0",
+      "2-fccd28cc6d",
+      "3-0284b0a88a",
+      "4-e1bb51552e",
+      "5-54735881f7",
+      "6-7b0020386c",
+      "7-f7f0cc9591"
+    ]
+  },
+  "selected_physical_plan": {
+    "plan_id": "62dbda71d7",
+    "plan_string": "0. Schema['document_id', 'governing_law', 'text', 'word_count'] -> ApplyGroupByOp -> Schema['count(document_id)', 'governing_law']\n    (document_id, governing_law, te) -> (count(document_id), governing_)\n    Group-by Signature: GroupBy({'group_by_fields': ['governing_law'], 'agg_funcs': ['count'], 'agg_fields': ['document_id']})\n\n  1. Schema['document_id', 'governing_law', 'text', 'word_count'] -> NonLLMFilter -> Schema['document_id', 'governing_law', 'text', 'word_count']\n    (document_id, governing_law, te) -> (document_id, governing_law, te)\n    Filter: has_governing_law\n\n    2. Schema['document_id', 'text', 'word_count'] -> MixtureOfAgentsConvert -> Schema['document_id', 'governing_law', 'text', 'word_count']\n    (document_id, text, word_count) -> (document_id, governing_law, te)\n    Prompt Strategy: None\n    Reasoning Effort: default\n    Proposer Models: [Qwen3.5-397B-A17B]\n    Temperatures: [0.8]\n    Aggregator Model: Qwen3.5-397B-A17B\n\n      3. Schema['document_id', 'text', 'word_count'] -> CritiqueAndRefineFilter -> Schema['document_id', 'text', 'word_count']\n    (document_id, text, word_count) -> (document_id, text, word_count)\n    Model: Qwen3.5-397B-A17B\n    Filter: Keep this NDA only if its confidential-information definition explicitly includes electronic data or records, email, software or code, metadata, or other computer-readable material.\n    Critic Model: Qwen3.5-397B-A17B\n    Refine Model: Qwen3.5-397B-A17B\n\n        4. Schema['document_id', 'text', 'word_count'] -> LLMFilter -> Schema['document_id', 'text', 'word_count']\n    (document_id, text, word_count) -> (document_id, text, word_count)\n    Model: Qwen3.5-397B-A17B\n    Filter: Keep this document only if it is an NDA, including a dual-labelled NDA exhibit, with an effective date strictly after 2010-01-01.\n\n          5. Schema['document_id', 'text', 'word_count'] -> LLMFilter -> Schema['document_id', 'text', 'word_count']\n    (document_id, text, word_count) -> (document_id, text, word_count)\n    Model: Qwen3.5-397B-A17B\n    Filter: Keep this NDA only if confidentiality or non-use obligations expressly survive termination or expiry or continue beyond the stated term.\n\n            6. Schema['document_id', 'text', 'word_count'] -> LLMFilter -> Schema['document_id', 'text', 'word_count']\n    (document_id, text, word_count) -> (document_id, text, word_count)\n    Model: Qwen3.5-397B-A17B\n    Filter: Keep this NDA only if it requires destruction of at least some confidential materials or copies. Exclude clauses requiring only return or merely allowing an unrestricted choice between return and destruction.\n\n              7. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['document_id', 'text', 'word_count']'>, id=legal_contracts-086-semantic-input, op_id=18cd8e0245)) -> <class 'palimpzest.core.lib.schemas.Schema['document_id', 'text', 'word_count']'>\n    (document_id, text, word_count)\n\n",
+    "root_operator_index": 7,
+    "operators": [
+      {
+        "topological_index": 0,
+        "physical_operator": "MarshalAndScanDataOp",
+        "logical_operator": "BaseScan",
+        "logical_op_id": "18cd8e0245",
+        "unique_logical_op_id": "0-18cd8e0245",
+        "full_op_id": "18cd8e0245-0a8d72fb85",
+        "model": null,
+        "depends_on": [],
+        "generated_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "source_operator_indices": []
+      },
+      {
+        "topological_index": 1,
+        "physical_operator": "LLMFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "0284b0a88a",
+        "unique_logical_op_id": "3-0284b0a88a",
+        "full_op_id": "0284b0a88a-420070bc0c",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-086-semantic-input.text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "source_operator_indices": [
+          0
+        ]
+      },
+      {
+        "topological_index": 2,
+        "physical_operator": "LLMFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "e1bb51552e",
+        "unique_logical_op_id": "4-e1bb51552e",
+        "full_op_id": "e1bb51552e-dfea5d57c2",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-086-semantic-input.text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "source_operator_indices": [
+          1
+        ]
+      },
+      {
+        "topological_index": 3,
+        "physical_operator": "LLMFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "5987a33ba0",
+        "unique_logical_op_id": "1-5987a33ba0",
+        "full_op_id": "5987a33ba0-4aa080fd6b",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-086-semantic-input.text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "source_operator_indices": [
+          2
+        ]
+      },
+      {
+        "topological_index": 4,
+        "physical_operator": "CritiqueAndRefineFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "fccd28cc6d",
+        "unique_logical_op_id": "2-fccd28cc6d",
+        "full_op_id": "fccd28cc6d-52290783e2",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-086-semantic-input.text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "source_operator_indices": [
+          3
+        ]
+      },
+      {
+        "topological_index": 5,
+        "physical_operator": "MixtureOfAgentsConvert",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "54735881f7",
+        "unique_logical_op_id": "5-54735881f7",
+        "full_op_id": "54735881f7-4e1255eef7",
+        "model": null,
+        "depends_on": [
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-086-semantic-input.text"
+        ],
+        "generated_fields": [
+          "governing_law"
+        ],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "governing_law",
+          "text",
+          "word_count"
+        ],
+        "source_operator_indices": [
+          4
+        ]
+      },
+      {
+        "topological_index": 6,
+        "physical_operator": "NonLLMFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "7b0020386c",
+        "unique_logical_op_id": "6-7b0020386c",
+        "full_op_id": "7b0020386c-f169fc6247",
+        "model": null,
+        "depends_on": [
+          "Schema['document_id', 'governing_law', 'text', 'word_count'].03d5fc3abf.governing_law"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "governing_law",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "governing_law",
+          "text",
+          "word_count"
+        ],
+        "source_operator_indices": [
+          5
+        ]
+      },
+      {
+        "topological_index": 7,
+        "physical_operator": "ApplyGroupByOp",
+        "logical_operator": "GroupByAggregate",
+        "logical_op_id": "f7f0cc9591",
+        "unique_logical_op_id": "7-f7f0cc9591",
+        "full_op_id": "f7f0cc9591-0df3981324",
+        "model": null,
+        "depends_on": [
+          "Schema['document_id', 'governing_law', 'text', 'word_count'].03d5fc3abf.document_id",
+          "Schema['document_id', 'governing_law', 'text', 'word_count'].03d5fc3abf.governing_law",
+          "Schema['document_id', 'governing_law', 'text', 'word_count'].03d5fc3abf.text",
+          "Schema['document_id', 'governing_law', 'text', 'word_count'].03d5fc3abf.word_count",
+          "Schema['document_id', 'governing_law', 'text', 'word_count'].72af089fbf.document_id",
+          "Schema['document_id', 'governing_law', 'text', 'word_count'].72af089fbf.governing_law",
+          "Schema['document_id', 'governing_law', 'text', 'word_count'].72af089fbf.text",
+          "Schema['document_id', 'governing_law', 'text', 'word_count'].72af089fbf.word_count",
+          "Schema['document_id', 'text', 'word_count'].312d89c69e.document_id",
+          "Schema['document_id', 'text', 'word_count'].312d89c69e.text",
+          "Schema['document_id', 'text', 'word_count'].312d89c69e.word_count",
+          "Schema['document_id', 'text', 'word_count'].80635f5c1d.document_id",
+          "Schema['document_id', 'text', 'word_count'].80635f5c1d.text",
+          "Schema['document_id', 'text', 'word_count'].80635f5c1d.word_count",
+          "Schema['document_id', 'text', 'word_count'].81bb1c247c.document_id",
+          "Schema['document_id', 'text', 'word_count'].81bb1c247c.text",
+          "Schema['document_id', 'text', 'word_count'].81bb1c247c.word_count",
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-086-semantic-input.document_id",
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-086-semantic-input.text",
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-086-semantic-input.word_count",
+          "Schema['document_id', 'text', 'word_count'].e707b3c87b.document_id",
+          "Schema['document_id', 'text', 'word_count'].e707b3c87b.text",
+          "Schema['document_id', 'text', 'word_count'].e707b3c87b.word_count"
+        ],
+        "generated_fields": [
+          "count(document_id)"
+        ],
+        "input_fields": [
+          "document_id",
+          "governing_law",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "count(document_id)",
+          "governing_law"
+        ],
+        "source_operator_indices": [
+          6
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "source": 0,
+        "target": 1
+      },
+      {
+        "source": 1,
+        "target": 2
+      },
+      {
+        "source": 2,
+        "target": 3
+      },
+      {
+        "source": 3,
+        "target": 4
+      },
+      {
+        "source": 4,
+        "target": 5
+      },
+      {
+        "source": 5,
+        "target": 6
+      },
+      {
+        "source": 6,
+        "target": 7
+      }
+    ],
+    "estimated_plan_cost": {
+      "cost": 3.0055178183333333,
+      "time": 2186.999204475879,
+      "quality": 0.676836152,
+      "op_estimates": {
+        "cardinality": 3.0,
+        "time_per_record": 0.0,
+        "cost_per_record": 0.0,
+        "quality": 1.0,
+        "cardinality_lower_bound": 3.0,
+        "cardinality_upper_bound": 3.0,
+        "time_per_record_lower_bound": 0.0,
+        "time_per_record_upper_bound": 0.0,
+        "cost_per_record_lower_bound": 0.0,
+        "cost_per_record_upper_bound": 0.0,
+        "quality_lower_bound": 1.0,
+        "quality_upper_bound": 1.0
+      },
+      "cost_lower_bound": 3.0055178183333333,
+      "cost_upper_bound": 3.0055178183333333,
+      "time_lower_bound": 2186.999204475879,
+      "time_upper_bound": 2186.999204475879,
+      "quality_lower_bound": 0.676836152,
+      "quality_upper_bound": 0.676836152
+    },
+    "topological_logical_sequence": [
+      "0-18cd8e0245",
+      "3-0284b0a88a",
+      "4-e1bb51552e",
+      "1-5987a33ba0",
+      "2-fccd28cc6d",
+      "5-54735881f7",
+      "6-7b0020386c",
+      "7-f7f0cc9591"
+    ]
+  },
+  "optimizer_configuration": {
+    "strategy": "pareto",
+    "policy": "MaxQuality",
+    "physical_implementation_candidates": {
+      "allow_bonded_query": true,
+      "allow_model_selection": false,
+      "allow_rag_reduction": false,
+      "allow_mixtures": true,
+      "allow_critic": true,
+      "allow_split_merge": false,
+      "force_rag": false,
+      "execution_strategy": "parallel",
+      "max_workers": 64,
+      "join_parallelism": 64
+    },
+    "dynamic_learning_requested": true,
+    "dynamic_learning_pipeline_supported": true,
+    "dynamic_learning": true,
+    "dynamic_learning_support": {
+      "supported": true,
+      "reason": null,
+      "terminal_only_operator_violations": []
+    },
+    "allow_unsupported_sentinel_plans": true,
+    "dynamic_learning_fallback": null,
+    "sentinel_execution_strategy": "mab",
+    "sentinel_k": 6,
+    "sentinel_j": 4,
+    "sentinel_sample_budget": 100,
+    "sentinel_seed": 42,
+    "available_models": [
+      "Qwen3.5-397B-A17B",
+      "openai/Qwen3-Embedding-8B"
+    ]
+  },
+  "optimizer_search_space": {
+    "group_count": 19,
+    "logical_expression_count": 36,
+    "physical_expression_count": 168,
+    "transformation_rules_explored": [
+      "PushDownFilter",
+      "ReorderConverts"
+    ],
+    "implementation_rules_explored": [
+      "BasicSubstitutionRule",
+      "CritiqueAndRefineRule",
+      "LLMConvertBondedRule",
+      "LLMFilterRule",
+      "MixtureOfAgentsRule",
+      "NonLLMFilterRule"
+    ]
+  },
+  "optimization_metrics": {
+    "elapsed_seconds": 183.42894316,
+    "sentinel_sampling_seconds": 183.1714406,
+    "optimizer_search_and_bookkeeping_seconds": 0.25750256,
+    "cost_usd": 0.29005665,
+    "text_llm_calls": 228,
+    "embedding_calls": 0,
+    "input_text_tokens": 488183,
+    "output_text_tokens": 42592,
+    "total_text_tokens": 530775,
+    "embedding_input_tokens": 0,
+    "cache_read_tokens": 0,
+    "cache_creation_tokens": 0,
+    "sampled_operators": {
+      "text_llm_calls": 200,
+      "embedding_calls": 0,
+      "input_text_tokens": 394546,
+      "output_text_tokens": 35408,
+      "embedding_input_tokens": 0,
+      "cost_usd": 0.23672766
+    },
+    "validator": {
+      "text_llm_calls": 28,
+      "input_text_tokens": 93637,
+      "output_text_tokens": 7184,
+      "total_text_tokens": 100821,
+      "cost_usd": 0.05332899
+    },
+    "model_usage_by_model": {
+      "Qwen3.5-397B-A17B": {
+        "roles": [
+          "text",
+          "validator"
+        ],
+        "calls": 228,
+        "input_tokens": 488183,
+        "output_tokens": 42592,
+        "total_tokens": 530775,
+        "cost_usd": 0.29005665
+      }
+    }
+  },
+  "sentinel_join_sampling": [],
+  "sentinel_sampling_exhaustion": null,
+  "recovery": null
+}

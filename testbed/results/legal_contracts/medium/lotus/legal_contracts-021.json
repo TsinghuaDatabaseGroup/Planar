@@ -1,0 +1,60 @@
+{
+  "task_id": "legal_contracts-021",
+  "answer": [
+    {
+      "document_id": "1002276_0001036050-99-002047_document_13.txt",
+      "governing_law": "State of California"
+    },
+    {
+      "document_id": "1011671_0000936392-99-000246_document_46.txt",
+      "governing_law": "California"
+    },
+    {
+      "document_id": "1012459_0000912057-97-027209_document_4.txt",
+      "governing_law": "Tennessee"
+    },
+    {
+      "document_id": "1014959_0000950116-96-000618_document_7.txt",
+      "governing_law": "State of Washington"
+    },
+    {
+      "document_id": "1016503_0000929624-00-000894_0010.txt",
+      "governing_law": "New York"
+    },
+    {
+      "document_id": "1017358_0001017358-97-000002_document_4.txt",
+      "governing_law": "Missouri"
+    },
+    {
+      "document_id": "1029445_0000940180-97-000212_document_12.txt",
+      "governing_law": "State of New York"
+    },
+    {
+      "document_id": "1030471_0001012870-01-501268_dex1065.txt",
+      "governing_law": "State of California"
+    },
+    {
+      "document_id": "1062579_0000950123-99-005018_document_3.txt",
+      "governing_law": "New York"
+    },
+    {
+      "document_id": "1065748_0000950131-00-004465_0016.txt",
+      "governing_law": "California"
+    },
+    {
+      "document_id": "1067797_0001032210-99-000668_document_8.txt",
+      "governing_law": "State of Washington; United States"
+    },
+    {
+      "document_id": "1077050_0000950147-99-000049_document_10.txt",
+      "governing_law": "California"
+    },
+    {
+      "document_id": "1089717_0000898430-99-004004_document_2.txt",
+      "governing_law": "United States of America; Commonwealth of Virginia"
+    }
+  ],
+  "elapsed_seconds": 36.91,
+  "cost_usd": 0.162071,
+  "total_tokens": 409859
+}

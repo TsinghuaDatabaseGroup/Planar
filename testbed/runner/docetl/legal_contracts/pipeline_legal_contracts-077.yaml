@@ -1,0 +1,162 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_finite_term_nda_records
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is a mutual NDA, unilateral NDA, or
+      confidentiality-and-standstill agreement with a finite stated
+      confidentiality term.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_finite_term_nda: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_nda_party_records
+    type: map
+    optimize: true
+    prompt: |
+      Return the input document ID, all stated corporate party names, and the
+      finite confidentiality duration normalized to years.
+
+      Input document ID: {{ input.doc_id }}
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        nda_document_id: string
+        nda_company_parties: "list[string]"
+        nda_duration_years: float
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: normalize_nda_company_names
+    type: code_map
+    code: |
+      def transform(doc):
+          import re
+
+          suffixes = {"inc", "incorporated", "corporation", "corp", "company", "co", "limited", "ltd", "llc", "plc", "lp", "llp"}
+          def normalize(value):
+              tokens = re.findall(r"[a-z0-9]+", str(value).casefold())
+              while tokens and tokens[-1] in suffixes:
+                  tokens.pop()
+              return " ".join(tokens)
+
+          index = {}
+          for stated in doc.get("nda_company_parties") or []:
+              key = normalize(stated)
+              if key:
+                  index.setdefault(key, []).append(str(stated))
+          return {"nda_company_index": index, "nda_company_keys": sorted(index)}
+  - name: drop_nda_document_text
+    type: map
+    drop_keys: [contents]
+
+  - name: filter_restrictive_agreements
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is an employment agreement or a standalone
+      restrictive-covenant agreement.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_restrictive_agreement: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: filter_finite_non_compete
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this agreement only if it contains an operative non-compete clause
+      with a finite stated duration.
+
+      Agreement:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {has_finite_non_compete: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_restrictive_party_records
+    type: map
+    optimize: true
+    prompt: |
+      Return the input document ID, all stated corporate party names, and the
+      finite operative non-compete duration normalized to years.
+
+      Input document ID: {{ input.doc_id }}
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        restrictive_document_id: string
+        restrictive_company_parties: "list[string]"
+        noncompete_duration_years: float
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: normalize_restrictive_company_names
+    type: code_map
+    code: |
+      def transform(doc):
+          import re
+
+          suffixes = {"inc", "incorporated", "corporation", "corp", "company", "co", "limited", "ltd", "llc", "plc", "lp", "llp"}
+          def normalize(value):
+              tokens = re.findall(r"[a-z0-9]+", str(value).casefold())
+              while tokens and tokens[-1] in suffixes:
+                  tokens.pop()
+              return " ".join(tokens)
+
+          index = {}
+          for stated in doc.get("restrictive_company_parties") or []:
+              key = normalize(stated)
+              if key:
+                  index.setdefault(key, []).append(str(stated))
+          return {"restrictive_company_index": index, "restrictive_company_keys": sorted(index)}
+  - name: drop_restrictive_document_text
+    type: map
+    drop_keys: [contents]
+
+  - name: join_on_normalized_company
+    type: equijoin
+    deterministic: true
+    blocking_conditions:
+      - bool(set(left["nda_company_keys"]) & set(right["restrictive_company_keys"])) and left["nda_document_id"] != right["restrictive_document_id"]
+  - name: project_matched_company_pair
+    type: code_map
+    code: |
+      def transform(doc):
+          nda_index = doc.get("nda_company_index") or {}
+          restrictive_index = doc.get("restrictive_company_index") or {}
+          common = set(nda_index) & set(restrictive_index)
+          stated_variants = [value for key in common for value in (nda_index.get(key, []) + restrictive_index.get(key, []))]
+          return {
+              "company_name": min(stated_variants),
+              "nda_document_id": doc.get("nda_document_id"),
+              "restrictive_document_id": doc.get("restrictive_document_id"),
+              "nda_duration_years": doc.get("nda_duration_years"),
+              "noncompete_duration_years": doc.get("noncompete_duration_years"),
+          }
+pipeline:
+  steps:
+    - name: nda_records
+      input: contract_exhibits
+      operations: [filter_finite_term_nda_records, extract_nda_party_records, normalize_nda_company_names, drop_nda_document_text]
+    - name: restrictive_records
+      input: contract_exhibits
+      operations: [filter_restrictive_agreements, filter_finite_non_compete, extract_restrictive_party_records, normalize_restrictive_company_names, drop_restrictive_document_text]
+    - name: matched_company_pairs
+      operations:
+        - join_on_normalized_company: {left: nda_records, right: restrictive_records}
+    - name: projected_company_pairs
+      input: matched_company_pairs
+      operations: [project_matched_company_pair]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-077.json

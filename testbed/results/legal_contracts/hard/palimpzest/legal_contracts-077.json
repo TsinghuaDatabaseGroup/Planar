@@ -1,0 +1,9 @@
+{
+  "task_id": "legal_contracts-077",
+  "answer": [
+    {"company_name": "CVS Pharmacy, Inc.", "nda_document_id": "Mutual%20Non%20Disclosure%20Agreement_0.pdf", "restrictive_document_id": "a03312024ex101.htm", "nda_duration_years": 3, "noncompete_duration_years": 1.5}
+  ],
+  "elapsed_seconds": 3569.50,
+  "cost_usd": 5.762078,
+  "total_tokens": 10904789
+}

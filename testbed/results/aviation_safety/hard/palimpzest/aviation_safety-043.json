@@ -1,0 +1,92 @@
+{
+  "task_id": "aviation_safety-043",
+  "answer": [
+    {
+      "rank": 1,
+      "weather_mechanism": "convective_weather",
+      "recorded_decision": "new_clearance",
+      "incident_count": 5
+    },
+    {
+      "rank": 2,
+      "weather_mechanism": "icing",
+      "recorded_decision": "diversion",
+      "incident_count": 4
+    },
+    {
+      "rank": 3,
+      "weather_mechanism": "strong_or_gusty_wind",
+      "recorded_decision": "diversion",
+      "incident_count": 3
+    },
+    {
+      "rank": 4,
+      "weather_mechanism": "convective_weather",
+      "recorded_decision": "diversion",
+      "incident_count": 2
+    },
+    {
+      "rank": 5,
+      "weather_mechanism": "low_visibility",
+      "recorded_decision": "diversion",
+      "incident_count": 2
+    },
+    {
+      "rank": 6,
+      "weather_mechanism": "turbulence",
+      "recorded_decision": "new_clearance",
+      "incident_count": 2
+    },
+    {
+      "rank": 7,
+      "weather_mechanism": "windshear",
+      "recorded_decision": "diversion",
+      "incident_count": 2
+    },
+    {
+      "rank": 8,
+      "weather_mechanism": "icing",
+      "recorded_decision": "emergency_declaration",
+      "incident_count": 1
+    },
+    {
+      "rank": 9,
+      "weather_mechanism": "icing",
+      "recorded_decision": "new_clearance",
+      "incident_count": 1
+    },
+    {
+      "rank": 10,
+      "weather_mechanism": "low_ceiling",
+      "recorded_decision": "diversion",
+      "incident_count": 1
+    },
+    {
+      "rank": 11,
+      "weather_mechanism": "low_ceiling",
+      "recorded_decision": "emergency_declaration",
+      "incident_count": 1
+    },
+    {
+      "rank": 12,
+      "weather_mechanism": "low_ceiling",
+      "recorded_decision": "new_clearance",
+      "incident_count": 1
+    },
+    {
+      "rank": 13,
+      "weather_mechanism": "low_visibility",
+      "recorded_decision": "new_clearance",
+      "incident_count": 1
+    },
+    {
+      "rank": 14,
+      "weather_mechanism": "windshear",
+      "recorded_decision": "new_clearance",
+      "incident_count": 1
+    }
+  ],
+  "elapsed_seconds": 1895.55,
+  "cost_usd": 4.6818,
+  "total_tokens": 4986971
+}

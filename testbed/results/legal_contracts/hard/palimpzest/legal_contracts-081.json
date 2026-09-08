@@ -1,0 +1,10 @@
+{
+  "task_id": "legal_contracts-081",
+  "answer": [
+    {"company": "Voya Financial"},
+    {"company": "H.B. Fuller Company"}
+  ],
+  "elapsed_seconds": 890.04,
+  "cost_usd": 0.890032,
+  "total_tokens": 1684393
+}

@@ -1,0 +1,287 @@
+datasets:
+  sec_2019_filings:
+    type: file
+    path: data/SEC/CSV/2019.csv
+  sec_2023_filings:
+    type: file
+    path: data/SEC/CSV/2023.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: select_longest_2019_filing_by_cik
+    type: code_reduce
+    reduce_key: cik
+    code: |
+      def transform(items):
+          def word_count(item):
+              try:
+                  return int(item.get("word_count", 0))
+              except (TypeError, ValueError):
+                  return 0
+
+          selected = max(items, key=word_count)
+          return {"primary_text_2019": selected.get("text")}
+
+  - name: load_2019_primary_filing_document
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          text_path = os.path.abspath(
+              os.path.join(
+                  base_dir,
+                  str(doc.get("primary_text_2019", "")),
+              )
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("SEC text path escapes data/SEC")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              document_2019 = handle.read()
+          return {"document_2019": document_2019}
+
+  - name: classify_2019_primary_revenue_model
+    type: map
+    optimize: true
+    prompt: |
+      Assign this 2019 SEC 10-K filing to exactly one primary revenue-model
+      category:
+
+      - advertising: revenue primarily from advertising;
+      - commission: revenue primarily from commissions;
+      - interest_income: revenue primarily from interest income;
+      - investment_returns: revenue primarily from investment returns;
+      - licensing_royalties: revenue primarily from licensing or royalties;
+      - mixed: multiple listed models are material with no single primary model;
+      - product_sales: revenue primarily from product sales;
+      - rental_income: revenue primarily from rentals or leases;
+      - service_fees: revenue primarily from non-subscription service fees;
+      - subscription: revenue primarily from subscriptions or memberships;
+      - undetermined: the filing does not support a reliable assignment.
+
+      Base the category on how the reporting company earns revenue.
+
+      2019 filing:
+      {{ input.document_2019 }}
+    output:
+      mode: structured_output
+      schema:
+        revenue_model_2019: enum[advertising, commission, interest_income, investment_returns, licensing_royalties, mixed, product_sales, rental_income, service_fees, subscription, undetermined]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 256
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: select_longest_2023_filing_by_cik
+    type: code_reduce
+    reduce_key: cik
+    code: |
+      def transform(items):
+          def word_count(item):
+              try:
+                  return int(item.get("word_count", 0))
+              except (TypeError, ValueError):
+                  return 0
+
+          selected = max(items, key=word_count)
+          return {"primary_text_2023": selected.get("text")}
+
+  - name: load_2023_primary_filing_document
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          text_path = os.path.abspath(
+              os.path.join(
+                  base_dir,
+                  str(doc.get("primary_text_2023", "")),
+              )
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("SEC text path escapes data/SEC")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              document_2023 = handle.read()
+          return {"document_2023": document_2023}
+
+  - name: classify_2023_primary_revenue_model
+    type: map
+    optimize: true
+    prompt: |
+      Assign this 2023 SEC 10-K filing to exactly one primary revenue-model
+      category:
+
+      - advertising: revenue primarily from advertising;
+      - commission: revenue primarily from commissions;
+      - interest_income: revenue primarily from interest income;
+      - investment_returns: revenue primarily from investment returns;
+      - licensing_royalties: revenue primarily from licensing or royalties;
+      - mixed: multiple listed models are material with no single primary model;
+      - product_sales: revenue primarily from product sales;
+      - rental_income: revenue primarily from rentals or leases;
+      - service_fees: revenue primarily from non-subscription service fees;
+      - subscription: revenue primarily from subscriptions or memberships;
+      - undetermined: the filing does not support a reliable assignment.
+
+      Base the category on how the reporting company earns revenue.
+
+      2023 filing:
+      {{ input.document_2023 }}
+    output:
+      mode: structured_output
+      schema:
+        revenue_model_2023: enum[advertising, commission, interest_income, investment_returns, licensing_royalties, mixed, product_sales, rental_income, service_fees, subscription, undetermined]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 256
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: join_2019_and_2023_models
+    type: equijoin
+    deterministic: true
+    blocking_conditions:
+      - left["cik"] == right["cik"]
+
+  - name: filter_changed_determined_models
+    type: code_filter
+    code: |
+      def transform(doc):
+          model_2019 = doc.get("revenue_model_2019")
+          model_2023 = doc.get("revenue_model_2023")
+          return (
+              model_2019 != "undetermined"
+              and model_2023 != "undetermined"
+              and model_2019 != model_2023
+          )
+
+  - name: project_revenue_model_transitions
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {
+              "rows": [
+                  {
+                      "transition": (
+                          f"{item.get('revenue_model_2019')}"
+                          f" -> {item.get('revenue_model_2023')}"
+                      )
+                  }
+                  for item in items
+              ]
+          }
+
+  - name: unnest_revenue_model_transitions
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - transition
+
+  - name: count_companies_by_transition
+    type: code_reduce
+    reduce_key: transition
+    code: |
+      def transform(items):
+          return {"count": len(items)}
+
+  - name: order_transitions_by_count
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          rows = sorted(
+              items,
+              key=lambda item: (
+                  -int(item.get("count", 0)),
+                  str(item.get("transition", "")),
+              ),
+          )
+          return {"rows": rows}
+
+  - name: unnest_ordered_transitions
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - transition
+      - count
+
+  - name: limit_to_10_transitions
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {"rows": items[:10]}
+
+  - name: unnest_limited_transitions
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - transition
+      - count
+
+pipeline:
+  steps:
+    - name: models_2019
+      input: sec_2019_filings
+      operations:
+        - select_longest_2019_filing_by_cik
+        - load_2019_primary_filing_document
+        - classify_2019_primary_revenue_model
+    - name: models_2023
+      input: sec_2023_filings
+      operations:
+        - select_longest_2023_filing_by_cik
+        - load_2023_primary_filing_document
+        - classify_2023_primary_revenue_model
+    - name: paired_models
+      operations:
+        - join_2019_and_2023_models:
+            left: models_2019
+            right: models_2023
+    - name: process
+      input: paired_models
+      operations:
+        - filter_changed_determined_models
+        - project_revenue_model_transitions
+        - unnest_revenue_model_transitions
+        - count_companies_by_transition
+        - order_transitions_by_count
+        - unnest_ordered_transitions
+        - limit_to_10_transitions
+        - unnest_limited_transitions
+  output:
+    type: file
+    path: raw_outputs/finance/output_finance-021.json

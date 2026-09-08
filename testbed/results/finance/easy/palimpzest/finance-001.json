@@ -1,0 +1,23 @@
+{
+  "task_id": "finance-001",
+  "answer": [
+    {
+      "company_name": "Walmart Inc.",
+      "employee_count": 2100000,
+      "retail_subsector": "Discount and Department Stores"
+    },
+    {
+      "company_name": "Target Corporation",
+      "employee_count": 415000,
+      "retail_subsector": "general merchandise retailer"
+    },
+    {
+      "company_name": "The TJX Companies, Inc.",
+      "employee_count": 349000,
+      "retail_subsector": "off-price apparel and home fashions"
+    }
+  ],
+  "elapsed_seconds": 1826.53,
+  "cost_usd": 11.094945,
+  "total_tokens": 27770327
+}

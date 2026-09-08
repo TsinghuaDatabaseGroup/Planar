@@ -1,0 +1,58 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_ndas
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is a non-disclosure or confidentiality
+      agreement.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_nda: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: filter_perpetual_law_without_survival_clause
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this agreement only if it states a perpetual confidentiality term and
+      a governing law but contains no separate express clause stating that
+      confidentiality duties survive termination.
+
+      Agreement:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {has_required_term_and_clause_pattern: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_law_and_direction
+    type: map
+    optimize: true
+    prompt: |
+      Extract the expressly stated governing law and classify the nondisclosure
+      obligation as exactly mutual or unilateral.
+
+      Agreement:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {governing_law: string, non_disclosure_direction: string}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: project_answer_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          return {"document_id": str(doc.get("doc_id") or ""), "governing_law": str(doc.get("governing_law") or ""), "non_disclosure_direction": str(doc.get("non_disclosure_direction") or "")}
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations: [filter_ndas, filter_perpetual_law_without_survival_clause, extract_law_and_direction, project_answer_fields]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-048.json

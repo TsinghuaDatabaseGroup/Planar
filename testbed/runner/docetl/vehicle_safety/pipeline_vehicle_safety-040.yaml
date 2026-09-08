@@ -1,0 +1,313 @@
+datasets:
+  nhtsa_complaints:
+    type: file
+    path: data/nhtsa_vehicle_safety/complaints.csv
+  nhtsa_recalls:
+    type: file
+    path: data/nhtsa_vehicle_safety/recalls.jsonl
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_jeep_engine_complaints
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("make") == "JEEP"
+              and doc.get("component_id") == "ENGINE"
+          )
+
+  - name: filter_jeep_engine_recalls
+    type: code_filter
+    code: |
+      def transform(doc):
+          vehicle = doc.get("vehicle") or {}
+          component = doc.get("component") or {}
+          return (
+              vehicle.get("make") == "JEEP"
+              and component.get("component_id") == "ENGINE"
+          )
+
+  - name: flatten_jeep_engine_recall_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          campaign = doc.get("campaign") or {}
+          vehicle = doc.get("vehicle") or {}
+          component = doc.get("component") or {}
+          risk = doc.get("risk") or {}
+          return {
+              "campaign_number": campaign.get("number"),
+              "report_received_date": campaign.get(
+                  "report_received_date"
+              ),
+              "make": vehicle.get("make"),
+              "component_id": component.get("component_id"),
+              "defect_summary": risk.get("defect_summary") or "",
+          }
+
+  - name: match_jeep_engine_complaints_to_recalls
+    type: equijoin
+    comparison_prompt: |
+      Determine whether this Jeep engine complaint and Jeep engine recall
+      describe the same engine failure mechanism.
+
+      Match only when the complaint narrative and recall defect identify the same
+      concrete causal failure or directly equivalent engine mechanism. A shared
+      ENGINE category, broad stalling or loss-of-power symptom, warning light, or
+      general safety consequence alone is not sufficient.
+
+      COMPLAINT:
+      {{ left.summary_text }}
+
+      RECALL DEFECT:
+      {{ right.defect_summary }}
+    blocking_conditions:
+      - left["component_id"] == right["component_id"]
+    comparison_model: Qwen3.5-397B-A17B
+    timeout: 120
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: extract_jeep_engine_failure_mode
+    type: map
+    optimize: true
+    prompt: |
+      Extract a normalized engine failure mode shared by this matched complaint
+      and recall in no more than 6 words.
+
+      Return only the common causal failure mechanism. Do not return the vehicle
+      identity, campaign number, a downstream consequence, repair, or explanatory
+      sentence. Use a concise generic form that groups equivalent descriptions,
+      while retaining only details supported by both texts.
+
+      Complaint:
+      {{ input.summary_text }}
+
+      Recall defect:
+      {{ input.defect_summary }}
+    output:
+      mode: structured_output
+      schema:
+        failure_mode: string
+    validate:
+      - len(output["failure_mode"].strip()) > 0
+      - len(output["failure_mode"].strip().split()) <= 6
+    num_retries_on_validate_failure: 2
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: classify_driving_safety_engine_failure
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether this matched evidence describes an engine failure that
+      can affect driving safety, such as stalling, loss of motive power, fire
+      risk, seizure, or another concrete impairment of safe vehicle operation.
+
+      Use both texts. Do not qualify a warning light, maintenance concern, noise,
+      emissions-only issue, or defect without a stated or clearly described
+      driving-safety effect.
+
+      Complaint:
+      {{ input.summary_text }}
+
+      Recall defect:
+      {{ input.defect_summary }}
+    output:
+      mode: structured_output
+      schema:
+        affects_driving_safety: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: classify_jeep_engine_complaint_sentiment
+    type: map
+    optimize: true
+    prompt: |
+      Assign this complaint to exactly one complaint-sentiment label:
+
+      - acute_safety_event: a concrete urgent event such as a stall in traffic,
+        sudden power loss, fire, seizure, loss of control, crash exposure, or
+        injury.
+      - intermittent_issue: a recurring, sporadic, or unresolved engine problem
+        without a concrete acute event in the narrative.
+      - cosmetic_or_minor: a cosmetic, convenience, maintenance, or otherwise
+        minor concern.
+
+      Base the label only on the complaint narrative.
+
+      Complaint:
+      {{ input.summary_text }}
+    output:
+      mode: structured_output
+      schema:
+        complaint_sentiment: string
+    validate:
+      - output["complaint_sentiment"] in ["acute_safety_event", "intermittent_issue", "cosmetic_or_minor"]
+    num_retries_on_validate_failure: 2
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: aggregate_jeep_engine_failure_modes
+    type: code_reduce
+    reduce_key: failure_mode
+    code: |
+      def transform(items):
+          from collections import Counter
+
+          complaint_ids = {
+              item.get("complaint_id")
+              for item in items
+              if item.get("complaint_id")
+          }
+          campaign_numbers = {
+              item.get("campaign_number")
+              for item in items
+              if item.get("campaign_number")
+          }
+          complaint_dates = [
+              str(item.get("received_date"))
+              for item in items
+              if item.get("received_date")
+          ]
+          recall_dates = [
+              str(item.get("report_received_date"))
+              for item in items
+              if item.get("report_received_date")
+          ]
+          earliest_complaint_date = (
+              min(complaint_dates) if complaint_dates else None
+          )
+          earliest_recall_date = (
+              min(recall_dates) if recall_dates else None
+          )
+          pre_recall_complaint_ids = {
+              item.get("complaint_id")
+              for item in items
+              if (
+                  item.get("complaint_id")
+                  and item.get("received_date")
+                  and earliest_recall_date
+                  and str(item.get("received_date"))
+                  < earliest_recall_date
+              )
+          }
+
+          sentiment_counts = Counter(
+              str(item.get("complaint_sentiment") or "").strip()
+              for item in items
+              if str(item.get("complaint_sentiment") or "").strip()
+          )
+          dominant_sentiment = (
+              sorted(
+                  sentiment_counts,
+                  key=lambda value: (
+                      -sentiment_counts[value],
+                      value,
+                  ),
+              )[0]
+              if sentiment_counts
+              else ""
+          )
+          return {
+              "matched_complaint_count": len(complaint_ids),
+              "distinct_campaign_count": len(campaign_numbers),
+              "earliest_complaint_date": earliest_complaint_date,
+              "earliest_recall_date": earliest_recall_date,
+              "pre_recall_complaint_count": len(
+                  pre_recall_complaint_ids
+              ),
+              "dominant_complaint_sentiment": dominant_sentiment,
+          }
+
+  - name: project_jeep_engine_failure_mode_summary
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "failure_mode": doc.get("failure_mode"),
+              "matched_complaint_count": doc.get(
+                  "matched_complaint_count"
+              ),
+              "distinct_campaign_count": doc.get(
+                  "distinct_campaign_count"
+              ),
+              "earliest_complaint_date": doc.get(
+                  "earliest_complaint_date"
+              ),
+              "earliest_recall_date": doc.get(
+                  "earliest_recall_date"
+              ),
+              "pre_recall_complaint_count": doc.get(
+                  "pre_recall_complaint_count"
+              ),
+              "dominant_complaint_sentiment": doc.get(
+                  "dominant_complaint_sentiment"
+              ),
+          }
+
+pipeline:
+  steps:
+    - name: jeep_engine_complaints
+      input: nhtsa_complaints
+      operations:
+        - filter_jeep_engine_complaints
+    - name: jeep_engine_recalls
+      input: nhtsa_recalls
+      operations:
+        - filter_jeep_engine_recalls
+        - flatten_jeep_engine_recall_fields
+    - name: matched_jeep_engine_pairs
+      operations:
+        - match_jeep_engine_complaints_to_recalls:
+            left: jeep_engine_complaints
+            right: jeep_engine_recalls
+    - name: jeep_engine_failure_mode_summaries
+      input: matched_jeep_engine_pairs
+      operations:
+        - extract_jeep_engine_failure_mode
+        - classify_driving_safety_engine_failure
+        - classify_jeep_engine_complaint_sentiment
+        - aggregate_jeep_engine_failure_modes
+        - project_jeep_engine_failure_mode_summary
+  output:
+    type: file
+    path: raw_outputs/vehicle_safety/output_vehicle_safety-040.json

@@ -1,0 +1,29 @@
+{
+  "task_id": "vehicle_safety-038",
+  "answer": [
+    {
+      "campaign_number": "19V576000",
+      "matched_complaint_count": 1,
+      "dominant_complaint_sentiment": "acute_safety_event",
+      "dominant_recall_severity": "moderate",
+      "shared_defect_phrase": "rearview camera fails to activate"
+    },
+    {
+      "campaign_number": "25V744000",
+      "matched_complaint_count": 1,
+      "dominant_complaint_sentiment": "acute_safety_event",
+      "dominant_recall_severity": "moderate",
+      "shared_defect_phrase": "Rearview camera freeze or quit"
+    },
+    {
+      "campaign_number": "26V256000",
+      "matched_complaint_count": 1,
+      "dominant_complaint_sentiment": "cosmetic_or_minor",
+      "dominant_recall_severity": "severe",
+      "shared_defect_phrase": "improperly welded front seat brackets"
+    }
+  ],
+  "elapsed_seconds": 318.603,
+  "cost_usd": 0.22016043,
+  "total_tokens": 397842
+}

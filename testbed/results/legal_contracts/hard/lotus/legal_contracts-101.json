@@ -1,0 +1,14 @@
+{
+  "task_id": "legal_contracts-101",
+  "answer": [
+    {
+      "company": "Hudson Pacific Properties, Inc.",
+      "individual": "Victor J. Coleman",
+      "employment_document": "a2024ex1070thirdamendedand.htm",
+      "non_solicitation_duration_years": 1.0
+    }
+  ],
+  "elapsed_seconds": 4853.73,
+  "cost_usd": 16.725836,
+  "total_tokens": 31383089
+}

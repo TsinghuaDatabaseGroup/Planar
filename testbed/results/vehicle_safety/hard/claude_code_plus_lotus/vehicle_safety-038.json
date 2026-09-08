@@ -1,0 +1,22 @@
+{
+  "task_id": "vehicle_safety-038",
+  "answer": [
+    {
+      "campaign_number": "25V744000",
+      "matched_complaint_count": 1,
+      "dominant_complaint_sentiment": "acute_safety_event",
+      "dominant_recall_severity": "severe",
+      "shared_defect_phrase": "Rearview camera freezing or quitting"
+    },
+    {
+      "campaign_number": "26V256000",
+      "matched_complaint_count": 1,
+      "dominant_complaint_sentiment": "cosmetic_or_minor",
+      "dominant_recall_severity": "critical",
+      "shared_defect_phrase": "Improperly welded front seat brackets"
+    }
+  ],
+  "elapsed_seconds": 423.598,
+  "cost_usd": 0.88518762,
+  "total_tokens": 864814
+}

@@ -1,0 +1,18 @@
+{
+  "task_id": "vehicle_safety-037",
+  "answer": [
+    {
+      "root_cause_theme": "Connecting rod bearing seizure",
+      "matched_complaint_count": 29,
+      "distinct_campaign_count": 1,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_638ded8941573dd0.txt",
+        "investigation_reports/txt_investigation_b1b8105af73ec4fe.txt"
+      ],
+      "odi_evidence_summary": "ODI analysis of 414 reports confirms that connecting rod bearing failures in 3.5L V6 engines across specific 2016–2020 Honda and Acura models exhibit a failure mechanism similar to a known recall but are not caused by the same crankshaft manufacturing defect. Consequently, while the previous recall query was closed due to the distinct root cause, the high volume of out-of-scope failures has prompted a new Preliminary Evaluation to assess the potential safety risk."
+    }
+  ],
+  "elapsed_seconds": 856.474,
+  "cost_usd": 0.87957216,
+  "total_tokens": 2002460
+}

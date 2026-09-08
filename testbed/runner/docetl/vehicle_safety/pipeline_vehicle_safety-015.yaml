@@ -1,0 +1,142 @@
+datasets:
+  nhtsa_complaints:
+    type: file
+    path: data/nhtsa_vehicle_safety/complaints.csv
+  nhtsa_recalls:
+    type: file
+    path: data/nhtsa_vehicle_safety/recalls.jsonl
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+
+operations:
+  - name: filter_dodge_electrical_complaints
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("make") == "DODGE"
+              and doc.get("component_id") == "ELECTRICAL"
+          )
+
+  - name: filter_dodge_electrical_recalls
+    type: code_filter
+    code: |
+      def transform(doc):
+          vehicle = doc.get("vehicle") or {}
+          component = doc.get("component") or {}
+          return (
+              vehicle.get("make") == "DODGE"
+              and component.get("component_id") == "ELECTRICAL"
+          )
+
+  - name: flatten_electrical_recall_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          campaign = doc.get("campaign") or {}
+          risk = doc.get("risk") or {}
+          return {
+              "recall_row_id": doc.get("recall_id"),
+              "campaign_number": campaign.get("number"),
+              "defect_summary": risk.get("defect_summary") or "",
+          }
+
+  - name: match_electrical_complaints_to_recalls
+    type: equijoin
+    comparison_prompt: |
+      Keep this complaint-recall pair only when both texts describe the same
+      concrete electrical failure and that shared failure has a safety consequence,
+      such as stall, fire risk, loss of motive power, loss of lighting or warnings,
+      unintended cruise behavior, or warning-system failure. Broad overlap in the
+      ELECTRICAL category is insufficient.
+
+      COMPLAINT:
+      {{ left.summary_text }}
+
+      RECALL DEFECT SUMMARY:
+      {{ right.defect_summary }}
+    blocking_conditions:
+      - "True"
+    embedding_model: Qwen3-Embedding-8B
+    comparison_model: Qwen3.5-397B-A17B
+    timeout: 120
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 128
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: aggregate_and_order_campaign_matches
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          grouped = {}
+          for item in items:
+              campaign = str(item.get("campaign_number") or "")
+              complaint_id = str(item.get("complaint_id") or "")
+              recall_row_id = str(item.get("recall_row_id") or "")
+              if campaign and complaint_id and recall_row_id:
+                  grouped.setdefault(campaign, set()).add(
+                      (complaint_id, recall_row_id)
+                  )
+          rows = [
+              {
+                  "campaign_number": campaign,
+                  "matched_pair_count": len(pairs),
+              }
+              for campaign, pairs in grouped.items()
+          ]
+          rows.sort(
+              key=lambda row: (-row["matched_pair_count"], row["campaign_number"])
+          )
+          return {"rows": rows}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - campaign_number
+      - matched_pair_count
+
+pipeline:
+  steps:
+    - name: complaints
+      input: nhtsa_complaints
+      operations:
+        - filter_dodge_electrical_complaints
+    - name: recalls
+      input: nhtsa_recalls
+      operations:
+        - filter_dodge_electrical_recalls
+        - flatten_electrical_recall_fields
+    - name: matched_pairs
+      operations:
+        - match_electrical_complaints_to_recalls:
+            left: complaints
+            right: recalls
+    - name: answer
+      input: matched_pairs
+      operations:
+        - aggregate_and_order_campaign_matches
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/vehicle_safety/output_vehicle_safety-015.json

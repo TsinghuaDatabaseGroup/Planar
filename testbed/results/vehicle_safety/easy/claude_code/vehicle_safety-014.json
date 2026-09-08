@@ -1,0 +1,24 @@
+{
+  "task_id": "vehicle_safety-014",
+  "answer": [
+    {
+      "campaign_number": "15V467000",
+      "matched_pair_count": 18
+    },
+    {
+      "campaign_number": "24V198000",
+      "matched_pair_count": 14
+    },
+    {
+      "campaign_number": "19V018000",
+      "matched_pair_count": 5
+    },
+    {
+      "campaign_number": "21V280000",
+      "matched_pair_count": 2
+    }
+  ],
+  "elapsed_seconds": 158.73,
+  "cost_usd": 0.18582789,
+  "total_tokens": 344290
+}

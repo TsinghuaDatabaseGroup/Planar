@@ -1,0 +1,101 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_standalone_ndas
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is a standalone NDA, not an NDA|EX-10
+      agreement.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_standalone_nda: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: filter_all_six_exceptions
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this agreement only if it includes all six standard confidentiality
+      exceptions: public information, prior knowledge, independent development,
+      lawful third-party receipt, legal compulsion, and consent.
+
+      Agreement:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {has_all_six_exceptions: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_finite_term_and_law
+    type: map
+    optimize: true
+    prompt: |
+      Return the finite confidentiality term normalized to years and the stated
+      governing law. Set each availability flag to false if its field is absent,
+      and also set term_years_available=false for a perpetual term. Use 0 or an
+      empty string only as a placeholder.
+
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        term_years_available: boolean
+        term_years_value: float
+        governing_law_available: boolean
+        governing_law_value: string
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: normalize_term_and_law
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "term_years": float(doc.get("term_years_value") or 0) if doc.get("term_years_available") is True else None,
+              "governing_law": str(doc.get("governing_law_value") or "") if doc.get("governing_law_available") is True else None,
+          }
+  - name: filter_complete_term_and_law
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("term_years") is not None and doc.get("governing_law") is not None
+  - name: aggregate_governing_laws
+    type: code_reduce
+    reduce_key: governing_law
+    code: |
+      def transform(items):
+          return {
+              "agreement_count": len(items),
+              "term_lengths_years": sorted({round(float(item["term_years"]), 4) for item in items}),
+          }
+  - name: filter_common_governing_laws
+    type: code_filter
+    code: |
+      def transform(doc):
+          return int(doc.get("agreement_count") or 0) >= 3
+  - name: order_governing_laws
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          ordered = sorted(items, key=lambda item: (-int(item.get("agreement_count") or 0), str(item.get("governing_law") or "")))
+          return {"rows": [{"governing_law": item.get("governing_law"), "agreement_count": item.get("agreement_count"), "term_lengths_years": item.get("term_lengths_years") or []} for item in ordered]}
+  - name: unnest_governing_laws
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields: [governing_law, agreement_count, term_lengths_years]
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations: [filter_standalone_ndas, filter_all_six_exceptions, extract_finite_term_and_law, normalize_term_and_law, filter_complete_term_and_law, aggregate_governing_laws, filter_common_governing_laws, order_governing_laws, unnest_governing_laws]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-083.json

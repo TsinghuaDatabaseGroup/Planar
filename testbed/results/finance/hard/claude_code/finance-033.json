@@ -1,0 +1,62 @@
+{
+  "task_id": "finance-033",
+  "answer": {
+    "top_5_growth": {
+      "924805_2019.htm": {
+        "employee_count_2019": 1141,
+        "employee_count_2023": 3689,
+        "employee_change_percent": 223.3
+      },
+      "1601548_2019.htm": {
+        "employee_count_2019": 7200,
+        "employee_count_2023": 16000,
+        "employee_change_percent": 122.2
+      },
+      "946581_2019.htm": {
+        "employee_count_2019": 4894,
+        "employee_count_2023": 8894,
+        "employee_change_percent": 81.7
+      },
+      "1381197_2019.htm": {
+        "employee_count_2019": 1643,
+        "employee_count_2023": 2932,
+        "employee_change_percent": 78.5
+      },
+      "1696558_2019.htm": {
+        "employee_count_2019": 3000,
+        "employee_count_2023": 5000,
+        "employee_change_percent": 66.7
+      }
+    },
+    "top_5_decline": {
+      "1585101_2019.htm": {
+        "employee_count_2019": 4500,
+        "employee_count_2023": 0,
+        "employee_change_percent": -100.0
+      },
+      "102752_2019.htm": {
+        "employee_count_2019": 2776,
+        "employee_count_2023": 1200,
+        "employee_change_percent": -56.8
+      },
+      "315709_2019.htm": {
+        "employee_count_2019": 3314,
+        "employee_count_2023": 2292,
+        "employee_change_percent": -30.8
+      },
+      "28917_2019.htm": {
+        "employee_count_2019": 39000,
+        "employee_count_2023": 29900,
+        "employee_change_percent": -23.3
+      },
+      "1320461_2019.htm": {
+        "employee_count_2019": 28000,
+        "employee_count_2023": 23000,
+        "employee_change_percent": -17.9
+      }
+    }
+  },
+  "elapsed_seconds": 2327.006,
+  "cost_usd": 13.82987277,
+  "total_tokens": 35186001
+}

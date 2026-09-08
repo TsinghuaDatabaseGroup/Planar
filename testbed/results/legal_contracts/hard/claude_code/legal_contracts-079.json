@@ -1,0 +1,53 @@
+{
+  "task_id": "legal_contracts-079",
+  "answer": [
+    {
+      "document_id": "1274644_0001193125-17-338759_d485523dex99d2.htm",
+      "governing_law": "",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "426-2017_Appendix_C-Sample_Non-Disclosure_Agreement.pdf",
+      "governing_law": "Manitoba",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "916457_0000916457-14-000028_exhibit104-confidentiality.htm",
+      "governing_law": "",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Clause-de-non-divulgation.pdf",
+      "governing_law": "",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Confidentiality_and_Non-Disclosure_Agreement.pdf",
+      "governing_law": "",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "NDA_6.pdf",
+      "governing_law": "",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "NDA_7.pdf",
+      "governing_law": "Spain",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "SINTEC-UK-LTD-Non-disclosure-agreement-2017.pdf",
+      "governing_law": "",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "cfoconfidentialityandnon-c.htm",
+      "governing_law": "",
+      "allows_single_archival_copy": false
+    }
+  ],
+  "elapsed_seconds": 515.325,
+  "cost_usd": 1.43978415,
+  "total_tokens": 3484822
+}

@@ -1,0 +1,17 @@
+{
+  "task_id": "vehicle_safety-040",
+  "answer": [
+    {
+      "failure_mode": "发动机熄火",
+      "matched_complaint_count": 26,
+      "distinct_campaign_count": 2,
+      "earliest_complaint_date": "2017-08-06",
+      "earliest_recall_date": "2022-11-23",
+      "pre_recall_complaint_count": 4,
+      "dominant_complaint_sentiment": "negative"
+    }
+  ],
+  "elapsed_seconds": 82.06,
+  "cost_usd": 0.09432486,
+  "total_tokens": 110322
+}

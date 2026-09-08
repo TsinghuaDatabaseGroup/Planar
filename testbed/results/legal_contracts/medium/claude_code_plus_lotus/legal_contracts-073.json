@@ -1,0 +1,32 @@
+{
+  "task_id": "legal_contracts-073",
+  "answer": [
+    {
+      "document_name": "a2023q4voyaex97voyafinanci.htm",
+      "policy_title": "Voya Financial Compensation Recoupment Policy",
+      "lookback_period": "Three completed fiscal years immediately preceding the Restatement Date, plus any transition period of less than nine months within or immediately following those years",
+      "expanded_covered_group": "All employees, including employee and non-employee directors and officers"
+    },
+    {
+      "document_name": "a2024q4voyaex97voyafinanci.htm",
+      "policy_title": "Voya Financial Compensation Recoupment Policy",
+      "lookback_period": "Three completed fiscal years immediately preceding the Restatement Date, plus any transition period of less than nine months within or immediately following those years",
+      "expanded_covered_group": "All employees, including employee and non-employee directors and officers"
+    },
+    {
+      "document_name": "ex971globalstarincclawback.htm",
+      "policy_title": "Globalstar, Inc. Clawback Policy",
+      "lookback_period": "three completed fiscal years immediately preceding the Restatement Date, plus any transition period of less than nine months within or immediately following those three years",
+      "expanded_covered_group": "senior executives designated by the Committee or the Board beyond Section 16 Officers"
+    },
+    {
+      "document_name": "ex_612612.htm",
+      "policy_title": "Executive and Key Manager Compensation Recovery Policy",
+      "lookback_period": "Three completed fiscal years immediately preceding the date the Company is required to prepare a restatement; or any fiscal year in which intentional misconduct occurred.",
+      "expanded_covered_group": "Key managers (employees at grade level 32 or above)"
+    }
+  ],
+  "elapsed_seconds": 219.464,
+  "cost_usd": 0.33070146,
+  "total_tokens": 164844
+}

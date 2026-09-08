@@ -1,0 +1,243 @@
+[
+  {
+    "task_id": "aviation_safety-001",
+    "operator_complexity": "easy",
+    "query": "Among Part 121 passenger reports, how many distinct incidents describe a go-around or missed approach primarily triggered by each of unstable_approach, traffic_spacing, and runway_occupancy, and which crew or ATC role most often initiated the maneuver in each category? Exclude maneuvers whose primary trigger was an aircraft equipment failure. Each represented trigger should occupy one row."
+  },
+  {
+    "task_id": "aviation_safety-002",
+    "operator_complexity": "easy",
+    "query": "How are Human Factors reports distributed across the primary non-equipment reasons that an ATC clearance or restriction could not be followed: late_clearance, confusing_or_ambiguous, workload_or_timing_pressure, and expectation_or_readback_error? For each represented reason, include the distinct-incident count and the numbers of incidents that state a numeric amount of available time or distance. Mechanical limitations do not qualify."
+  },
+  {
+    "task_id": "aviation_safety-003",
+    "operator_complexity": "easy",
+    "query": "Among Aircraft-primary reports in which smoke, fumes, or odor prompted a crew response without visible fire, how many distinct incidents involved each response in oxygen_masks_used, emergency_declared, diverted, returned, and precautionary_landing? For every represented response, also identify the most common suspected-source category from electrical, oil_or_hydraulic, air_conditioning_or_bleed, engine_or_apu, and unknown_or_other. An incident may contribute to more than one response row."
+  },
+  {
+    "task_id": "aviation_safety-004",
+    "operator_complexity": "easy",
+    "query": "For reports in the 1201-1800 local-time period, how many distinct incidents describe a crew-versus-ATC, automation, or procedure mismatch for each of altitude, heading, speed, and runway when that mismatch contributed to a deviation? For each represented field, also give the most common resulting consequence from altitude_deviation, heading_or_route_deviation, speed_deviation, runway_deviation, and other_operational_consequence."
+  },
+  {
+    "task_id": "aviation_safety-005",
+    "operator_complexity": "easy",
+    "query": "How many US-reference reports state both horizontal and vertical separation for the same closest-approach event, with both dimensions recoverable in feet after converting any stated yards, nautical miles, or statute miles?"
+  },
+  {
+    "task_id": "aviation_safety-006",
+    "operator_complexity": "easy",
+    "query": "How many Air Carrier reports associated with an airport describe a taxi, crossing, or hold-short clearance conflict that was explicitly caught or stopped before the threatened aircraft entered the conflicting runway?"
+  },
+  {
+    "task_id": "aviation_safety-007",
+    "operator_complexity": "easy",
+    "query": "Among passenger Air Carrier reports where a stated fuel quantity, reserve, burn estimate, or remaining-flight-time calculation directly shaped an operational decision, how many distinct incidents involved each decision in attempt_approach, divert, return, hold, leave_holding, continue, declare_minimum_fuel, and declare_fuel_emergency? For every represented decision, also show how many incidents state a numeric fuel value and how many state a numeric time value. An incident may contribute to more than one decision row."
+  },
+  {
+    "task_id": "aviation_safety-008",
+    "operator_complexity": "easy",
+    "query": "Among Part 121 passenger reports, how many describe an ATC clearance, readback, or hearback problem that the crew detected or corrected before it caused a loss of separation, altitude deviation, runway incursion, or another operational consequence?"
+  },
+  {
+    "task_id": "aviation_safety-009",
+    "operator_complexity": "easy",
+    "query": "Among Air Carrier reports associated with an airport where a taxiway, runway, ramp, or gate conflict was resolved before the threatened aircraft entered the runway, how are the incidents distributed by the first correcting actor and prevention action? Use actors atc, flight_crew, and ground_vehicle_operator, and actions stop_or_hold, reroute_or_turnoff, and clearance_or_instruction_correction. Cases where either is unclear do not count."
+  },
+  {
+    "task_id": "aviation_safety-010",
+    "operator_complexity": "easy",
+    "query": "Among Human Factors-primary reports, how many distinct incidents describe a flight-deck decision affected by each primary cabin-side source: medical_event, security_issue, policy_issue, door_issue, slide_issue, cabin_equipment_issue, passenger_behavior, boarding_issue, deplaning_issue, and flight_attendant_communication? When several sources appear, use the listed order as precedence; cabin issues that did not affect a flight-deck decision do not count."
+  },
+  {
+    "task_id": "aviation_safety-011",
+    "operator_complexity": "easy",
+    "query": "For Part 121 reports whose anomaly summary includes Aircraft Equipment Problem Critical, what are the distinct-incident counts for airborne engine, pressurization_or_bleed_or_pack, hydraulic, and flight_control problems in each response category? Apply this priority when several responses are recorded: return_to_departure, emergency_or_divert, continue_after_troubleshooting, then maintenance_action_only. Exclude ground-only problems and show one row for every represented system-response combination."
+  },
+  {
+    "task_id": "aviation_safety-012",
+    "operator_complexity": "easy",
+    "query": "Among reports whose anomaly summary includes an Aircraft Equipment Problem and whose narratives describe active crew or maintenance troubleshooting, how many distinct incidents ended as resolved, intermittent, or still_unsafe? Use still_unsafe when the problem persisted or left the aircraft unsafe, intermittent when it disappeared but remained uncertain or later recurred, and resolved when corrective action clearly cleared it; apply that order when more than one status is supported."
+  },
+  {
+    "task_id": "aviation_safety-013",
+    "operator_complexity": "easy",
+    "query": "Among Aircraft-primary reports, which engine-symptom categories are most common: thrust_loss, oil_indication, temperature, vibration, flameout, and other_engine_indication? List the represented categories in descending incident count, with the most common immediate crew action and most common outcome for each; ties follow the category names alphabetically."
+  },
+  {
+    "task_id": "aviation_safety-014",
+    "operator_complexity": "easy",
+    "query": "How many US-reference reports both record an emergency declaration and explicitly state that the flight neither diverted nor returned, instead continuing to the planned destination or completing a normal landing?"
+  },
+  {
+    "task_id": "aviation_safety-015",
+    "operator_complexity": "easy",
+    "query": "Among Part 121 passenger reports where a fuel quantity, reserve, calculation, or dispatch-release decision directly affected the operation, which five incidents rank highest under this consequence order: emergency_declaration, diversion, return, holding, then continued_with_concern? When several consequences appear, use the highest-priority one. Within a category, incidents with a numeric fuel or time value rank first, followed by lower incident ID. Keep fuel and time values in separate short normalized lists."
+  },
+  {
+    "task_id": "aviation_safety-016",
+    "operator_complexity": "easy",
+    "query": "Among Human Factors-primary reports whose communication-breakdown records involve flight crew with ATC or flight crew with flight crew, how many distinct incidents in each participant group primarily involve phraseology, timing_or_late_information, assumption_or_expectation, task_division_or_role, or failure_to_challenge? Count a participant-group and mechanism combination only when the narrative clearly supports both; the same incident may contribute to both participant groups."
+  },
+  {
+    "task_id": "aviation_safety-017",
+    "operator_complexity": "easy",
+    "query": "How many reports whose anomaly summary includes an Aircraft Equipment Problem describe active crew or maintenance troubleshooting and end in a clearly classifiable status of resolved, intermittent, or still unsafe?"
+  },
+  {
+    "task_id": "aviation_safety-018",
+    "operator_complexity": "easy",
+    "query": "Among Aircraft-primary reports, how many distinct incidents fall into each engine-symptom category: thrust_loss, oil_indication, temperature, vibration, flameout, and other_engine_indication? List the represented categories by incident count descending, with the most common outcome for each; ties follow the category names alphabetically."
+  },
+  {
+    "task_id": "aviation_safety-019",
+    "operator_complexity": "easy",
+    "query": "Among Part 121 passenger reports where a fuel quantity, reserve, calculation, or dispatch-release decision directly affected the operation, how many distinct incidents had each primary consequence: emergency_declaration, diversion, return, holding, or continued_with_concern? Use that precedence when several apply, and for each consequence also count incidents that state a numeric fuel value and incidents that state a numeric time value."
+  },
+  {
+    "task_id": "aviation_safety-020",
+    "operator_complexity": "easy",
+    "query": "Among incidents with a General Maintenance Action, General Flight Cancelled / Delayed, or Flight Crew Returned To Departure Airport result and an Aircraft or MEL contributing-factor label, how many distinct incidents belong to each primary disruption reason: predeparture_component_discrepancy, mel_or_deferred_item, maintenance_documentation_or_release, inflight_component_or_system_problem, postflight_inspection_or_repair, or not_target when none clearly fits?"
+  },
+  {
+    "task_id": "aviation_safety-021",
+    "operator_complexity": "easy",
+    "query": "Among incidents carrying an ATC assistance or advisory, evasive-action, reorientation, equipment-problem recovery, or go-around result, how many are successful_barrier versus not_fully_supported? A successful barrier must clearly show hazard detection, an intervention, and either avoidance of a worse consequence or stabilization of the situation."
+  },
+  {
+    "task_id": "aviation_safety-022",
+    "operator_complexity": "easy",
+    "query": "Among flight-phase and aircraft-operator combinations with at least twenty candidate incidents carrying an ATC assistance or advisory, evasive-action, reorientation, equipment-problem recovery, or go-around result, which five have the highest successful safety-barrier rate? A report is successful only when its narrative clearly describes a hazard being detected, an intervention being made, and a worse consequence being avoided or the situation being stabilized. Rank by higher rate, higher successful-incident count, flight phase alphabetically, and aircraft operator alphabetically; include both counts and the rate."
+  },
+  {
+    "task_id": "aviation_safety-023",
+    "operator_complexity": "easy",
+    "query": "Among Human Factors-primary incidents with structured Communication Breakdown, Workload, Confusion, or Situational Awareness records, how many incident-factor pairs are causally supported by the incident narrative for each factor?"
+  },
+  {
+    "task_id": "aviation_safety-024",
+    "operator_complexity": "easy",
+    "query": "Which pairs of different ASRS incident IDs most likely describe the same underlying occurrence? Compare only reports sharing incident month, state reference, locale-reference type, and primary problem, and require agreement on a distinctive event sequence, measurements, actions, and outcome rather than generic topic similarity. List every matched pair by incident month descending and then both incident IDs ascending."
+  },
+  {
+    "task_id": "aviation_safety-025",
+    "operator_complexity": "medium",
+    "query": "Among Human Factors-primary reports, how many distinct incidents primarily involve each automation-confusion mechanism: data_entry_or_programming, alert_interpretation, automation_disengagement, unexpected_capture_or_leveloff, and mode_awareness? Count only reports where automation misunderstanding materially contributed and the issue was not primarily an equipment failure or ordinary manual-flying error. When several mechanisms apply, use the listed order as precedence."
+  },
+  {
+    "task_id": "aviation_safety-026",
+    "operator_complexity": "medium",
+    "query": "Among US-reference reports that state numeric cleared-versus-flown or expected-versus-actual values, how many distinct comparisons concern each of altitude, speed, heading, and runway, and what resulting deviation is most common for each represented measurement type? Expected and actual values must refer to the same comparison, and nonnumeric or unmatched mentions do not qualify."
+  },
+  {
+    "task_id": "aviation_safety-027",
+    "operator_complexity": "medium",
+    "query": "Among reports from the 1201-1800 local-time period, how many distinct incidents describe weather as the primary reason for each operational decision change in diversion, airport_change, holding, approach_change, altitude_change, and route_change? Weather must have caused the change rather than being incidental, and turbulence mentioned only for passenger comfort does not qualify. When several changes occur, use the listed order as precedence."
+  },
+  {
+    "task_id": "aviation_safety-028",
+    "operator_complexity": "medium",
+    "query": "Among Part 121 airport-associated reports whose navigation-in-use records name FMS/FMC or GPS and whose event rows contain an automation detector or result, how many distinct incidents have each primary crew response: followed_automation, overrode_or_disconnected, or sought_atc_clarification? Use that order as precedence when several responses occur. A clear narrative action may establish the response; when it is absent, an unambiguous structured automation result may do so."
+  },
+  {
+    "task_id": "aviation_safety-029",
+    "operator_complexity": "medium",
+    "query": "For reports from the 1201-1800 local-time period, how are approach or landing incidents distributed by flight condition and recorded result when weather or visibility, rather than traffic spacing, runway occupancy, or equipment, caused a go-around, missed approach, or new clearance? Flight conditions are IMC, Marginal, and Mixed; results are go_around_or_missed_approach and new_clearance. Show one row for every represented combination."
+  },
+  {
+    "task_id": "aviation_safety-030",
+    "operator_complexity": "medium",
+    "query": "Which twenty US-reference incidents with structured horizontal and vertical miss distances have the smallest recorded horizontal separation, breaking ties by smaller vertical separation and then incident ID? For each incident, identify the involved parties in a short phrase, show both structured distances in feet, and compare any corresponding narrative values as matches, differs, or not_stated."
+  },
+  {
+    "task_id": "aviation_safety-031",
+    "operator_complexity": "medium",
+    "query": "Among Human Factors-primary incidents that were operated IFR and carry an ATC Issue All Types or Procedural Clearance anomaly, how do distinct-incident counts vary across four flight-phase groups and five primary clearance-conflict mechanisms? Phase groups are ground_or_departure, climb_or_cruise, descent_or_approach, and landing_or_other; mechanisms are late_or_changed_clearance, misunderstood_clearance, readback_hearback_failure, route_or_heading_confusion, and altitude_or_speed_restriction. Count a report only when one mechanism is clearly primary."
+  },
+  {
+    "task_id": "aviation_safety-032",
+    "operator_complexity": "medium",
+    "query": "Among Part 121 passenger reports with a passengers-involved Y event, which ten cabin-issue and changed-decision combinations occur most often when the cabin issue directly caused a flight-deck operational change? Issue categories are passenger_medical, security_or_behavior, cabin_equipment_or_door, boarding_or_deplaning, and flight_attendant_communication; decision categories are delay_or_cancel, return_or_divert, continue_changed, and other_operational_change. Cabin-service-only details do not qualify. Rank by distinct-incident count, then the two category names."
+  },
+  {
+    "task_id": "aviation_safety-033",
+    "operator_complexity": "medium",
+    "query": "Among incidents with a General Maintenance Action, General Flight Cancelled / Delayed, or Flight Crew Returned To Departure Airport result and an Aircraft or MEL contributing-factor label, how many distinct incidents are primarily attributable to each disruption reason: predeparture_component_discrepancy, mel_or_deferred_item, maintenance_documentation_or_release, inflight_component_or_system_problem, and postflight_inspection_or_repair? Assign one primary reason and omit reports that do not clearly fit."
+  },
+  {
+    "task_id": "aviation_safety-034",
+    "operator_complexity": "medium",
+    "query": "Among Part 121 airport-associated reports, which five incidents with an Automation Aircraft RA or TA detector and both horizontal and vertical miss distances show the most difficult conflict between automation guidance and an ATC instruction in the same episode? Rank direct_conflict above modified_or_delayed_compliance and clarification_required; within a pattern, use smaller horizontal separation, smaller vertical separation, then lower incident ID. Include short phrases for the automation guidance and ATC instruction."
+  },
+  {
+    "task_id": "aviation_safety-035",
+    "operator_complexity": "medium",
+    "query": "Among Air Carrier airport-associated incidents with a Ground Conflict, Ground Incursion, or Ground Excursion event, how many distinct reports in low_light versus daylight explicitly describe each visual factor as materially contributing? Treat Night, Dusk, and Dawn as low_light; factors are reduced_visibility, inadequate_or_confusing_lighting, glare, missed_visual_scan, and obscured_signage_or_markings. An incident may count for more than one supported factor, but incidental mentions do not count."
+  },
+  {
+    "task_id": "aviation_safety-036",
+    "operator_complexity": "medium",
+    "query": "Among Human Factors- or Procedure-primary incidents with flight-crew experience records, how are structured people distributed by crew function and the narrative role of their experience? Normalize crew function to captain, first_officer, single_pilot, instructor, or other_flight_crew, and classify experience as causal, incidental, or not_mentioned. For each represented combination, include the person count and medians of total, aircraft-type, and last-90-days flight hours when recorded."
+  },
+  {
+    "task_id": "aviation_safety-037",
+    "operator_complexity": "medium",
+    "query": "Among flight-phase and aircraft-operator combinations with at least twenty candidate incidents carrying an ATC assistance or advisory, evasive-action, reorientation, equipment-problem recovery, or go-around result, which five have the highest successful safety-barrier rate? A report is successful only when its narrative clearly describes a hazard being detected, an intervention being made, and a worse consequence being avoided or the situation being stabilized. Rank by higher rate, higher successful-incident count, flight phase alphabetically, and aircraft operator alphabetically; include both counts and the rate."
+  },
+  {
+    "task_id": "aviation_safety-038",
+    "operator_complexity": "medium",
+    "query": "Among Human Factors-primary reports whose person-factor records contain Communication Breakdown, Workload, Confusion, or Situational Awareness, how many distinct incidents have narratives that causally support each recorded factor? Narrative wording should be matched to the global factor vocabulary by meaning rather than exact text or incident ID. For every represented factor, include the most common actor and operational effect as phrases of at most six words; a structured factor without narrative causal support does not count."
+  },
+  {
+    "task_id": "aviation_safety-039",
+    "operator_complexity": "hard",
+    "query": "Among Aircraft-primary reports with a maintenance records-complete or required-correct-document status and a component problem record, which documentation-issue and status combinations occur most often, up to fifteen combinations in total? Documentation types are incomplete_or_inaccurate_logbook, missing_or_incomplete_work_card, incorrect_or_incomplete_mel_procedure, missing_required_document, and release_or_signoff_error. Count only actual documentation problems rather than mechanical discrepancies alone. Rank by distinct-incident count, then documentation type and the two status values, and include a canonical affected item as a short phrase."
+  },
+  {
+    "task_id": "aviation_safety-040",
+    "operator_complexity": "hard",
+    "query": "Within Part 121 airport-associated reports that contain a recorded automation detector or result, which ten cross-incident pairs describe similar alerts and operational contexts but contrasting first crew responses? A pair qualifies only when one response is follow_advisory and the other is override_advisory or seek_clarification_before_acting. Rank pairs first by the more consequential reported outcome using emergency_or_diversion, go_around_or_evasive_action, then continued_operation, and break ties by the two incident IDs in ascending order. For each pair, identify the shared alert or advisory in at most six words and the two response labels."
+  },
+  {
+    "task_id": "aviation_safety-041",
+    "operator_complexity": "hard",
+    "query": "Among IFR flights that received a late, confusing, or ambiguous ATC clearance and subsequently deviated from their assigned altitude, heading, or airspace boundary, what type of clearance conflict triggered the deviation, and how do these incidents break down by flight phase?"
+  },
+  {
+    "task_id": "aviation_safety-042",
+    "operator_complexity": "hard",
+    "query": "Across reports carrying an Aircraft Equipment Problem event, which twenty narrative component terms are most frequently matched to canonical aircraft-component labels found anywhere in components? Rank by distinct-incident count, then canonical component and narrative term alphabetically; for each mapping, include the most common first detection cue as a phrase of at most six words."
+  },
+  {
+    "task_id": "aviation_safety-043",
+    "operator_complexity": "hard",
+    "query": "In reports from the 1201-1800 local-time period, which twenty weather-mechanism and recorded-decision pairs occur most often when the narrative explicitly connects the two? Weather mechanisms are convective_weather, turbulence, windshear, icing, low_visibility, low_ceiling, strong_or_gusty_wind, and precipitation; recorded decisions are diversion, emergency_declaration, and new_clearance. Incidental weather and passenger-comfort-only turbulence do not qualify. Rank by distinct-incident count, then mechanism and decision alphabetically."
+  },
+  {
+    "task_id": "aviation_safety-044",
+    "operator_complexity": "hard",
+    "query": "Among Aircraft-primary reports that have both a pressurization, pack, bleed-air, or air-conditioning component record and a smoke, fumes, odor, or aircraft-equipment-problem event, how many distinct incidents are primarily attributable to equipment_malfunction, maintenance_or_release_decision, environmental_contamination, or crew_procedure? Include only reports with one clearly primary cause and an operational consequence beyond a maintenance-record entry. For each cause, summarize the canonical system and dominant operational outcome in at most six words each."
+  },
+  {
+    "task_id": "aviation_safety-045",
+    "operator_complexity": "hard",
+    "query": "Among Aircraft-primary reports, which twelve combinations of maintenance status, discovery phase, and causal chain occur most often when an earlier deferral or release-to-service decision is explicitly connected to a later component discrepancy? Maintenance status is deferred, released_to_service, or both; discovery phase is before_departure, after_takeoff, or after_landing; chain category is deferred_item_recurred, released_item_failed, incomplete_repair_or_signoff, or maintenance_limitation_escalated. Rank by distinct-incident count and then the three labels. Each row should include a canonical affected item and recurring discrepancy as short phrases."
+  },
+  {
+    "task_id": "aviation_safety-046",
+    "operator_complexity": "hard",
+    "query": "Which pairs of different ASRS incident IDs, up to twenty in total, most likely describe the same underlying occurrence? Compare only reports sharing incident month, state reference, locale-reference type, and primary problem, but require the narratives to agree on a distinctive event sequence, measurements, actions, and outcome rather than merely discussing the same topic. Rank matched pairs by incident month descending and then both incident IDs ascending. For each pair, give the shared primary event type and list which of flight phase, anomaly summary, and result summary differ between the two structured records."
+  },
+  {
+    "task_id": "aviation_safety-047",
+    "operator_complexity": "hard",
+    "query": "Among reports with both Aircraft and Human Factors contributing-factor labels, how many distinct incidents are mainly_equipment_driven, mainly_human_factor_driven, or mixed_equipment_human_factor after considering the narrative causal order together with recorded component and person-factor information? Omit reports without a clear weighting. For each category, summarize the dominant initiating factor and intervention in at most six words each."
+  },
+  {
+    "task_id": "aviation_safety-048",
+    "operator_complexity": "hard",
+    "query": "Among incidents with a General Flight Cancelled / Delayed, Flight Crew Returned To Departure Airport, or General Maintenance Action result, which fifteen maintenance-driver and canonical-component combinations occur most often when maintenance was the primary disruption driver and an affected component can be identified? Driver categories are component_discrepancy_or_failure, mel_or_deferred_item, troubleshooting_or_repair, documentation_or_release_to_service, and required_inspection. Match narrative item names to the global component vocabulary semantically rather than by incident ID or exact spelling. Rank by distinct-incident count, then driver and component, and include the recorded result labels represented in each row."
+  }
+]
+

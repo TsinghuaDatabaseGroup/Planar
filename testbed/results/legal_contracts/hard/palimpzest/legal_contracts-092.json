@@ -1,0 +1,36 @@
+{
+  "task_id": "legal_contracts-092",
+  "answer": [
+    {
+      "prohibits_hedging": false,
+      "prohibits_short_sales": false,
+      "prohibits_pledging": false,
+      "company_count": 3,
+      "median_subsidiary_count": 22
+    },
+    {
+      "prohibits_hedging": true,
+      "prohibits_short_sales": false,
+      "prohibits_pledging": true,
+      "company_count": 1,
+      "median_subsidiary_count": 74
+    },
+    {
+      "prohibits_hedging": true,
+      "prohibits_short_sales": true,
+      "prohibits_pledging": false,
+      "company_count": 6,
+      "median_subsidiary_count": 2.5
+    },
+    {
+      "prohibits_hedging": true,
+      "prohibits_short_sales": true,
+      "prohibits_pledging": true,
+      "company_count": 48,
+      "median_subsidiary_count": 30
+    }
+  ],
+  "elapsed_seconds": 2068.22,
+  "cost_usd": 3.626752,
+  "total_tokens": 6889755
+}

@@ -1,0 +1,51 @@
+{
+  "task_id": "vehicle_safety-041",
+  "answer": [
+    {
+      "campaign_number": "21V00D000",
+      "matched_complaint_count": 1,
+      "related_report_ids": [
+        "txt_investigation_0dc6b216b5a52248.txt",
+        "txt_investigation_296104e62e50bc98.txt",
+        "txt_investigation_77da89c8ed63ed47.txt",
+        "txt_investigation_b47da6c1e6001de4.txt",
+        "txt_investigation_cf5067e3ac47ef78.txt",
+        "txt_investigation_f45e16878882572f.txt"
+      ],
+      "dominant_defect_mechanism": "rearview camera cable harness damaged by trunk lid operation",
+      "odi_risk_summary": "Loss of rear visibility"
+    },
+    {
+      "campaign_number": "23V838000",
+      "matched_complaint_count": 1,
+      "related_report_ids": [
+        "txt_investigation_0dc6b216b5a52248.txt",
+        "txt_investigation_1fac4e5d7de1a68a.txt",
+        "txt_investigation_3e540e709b495d53.txt",
+        "txt_investigation_5d9e89bac1b4e3f6.txt",
+        "txt_investigation_62c81aa5a162e7e4.txt",
+        "txt_investigation_b47da6c1e6001de4.txt",
+        "txt_investigation_cf5067e3ac47ef78.txt",
+        "txt_investigation_da22923fc5523800.txt",
+        "txt_investigation_ef731290c14111ae.txt"
+      ],
+      "dominant_defect_mechanism": "insufficient autosteer software controls preventing driver misuse",
+      "odi_risk_summary": "Foreseeable driver misuse due to insufficient Autopilot controls"
+    },
+    {
+      "campaign_number": "25V690000",
+      "matched_complaint_count": 1,
+      "related_report_ids": [
+        "txt_investigation_0dc6b216b5a52248.txt",
+        "txt_investigation_b47da6c1e6001de4.txt",
+        "txt_investigation_de1f0bf1e029a8b2.txt",
+        "txt_investigation_ef731290c14111ae.txt"
+      ],
+      "dominant_defect_mechanism": "battery pack contactors failure causing blown fuse",
+      "odi_risk_summary": "Recall issued, investigation closed"
+    }
+  ],
+  "elapsed_seconds": 120.95,
+  "cost_usd": 0.153692,
+  "total_tokens": 204375
+}

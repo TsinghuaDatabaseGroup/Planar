@@ -1,0 +1,70 @@
+datasets:
+  contract_exhibits:
+    type: file
+    path: contract_exhibit_full.json
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: https://llm-endpoint.example/v1
+
+operations:
+  - name: filter_sox_302_material_changes_clause
+    type: filter
+    prompt: |
+      Determine whether this document is a genuine SOX Section 302 certification
+      containing the material-changes disclosure clause for internal control over
+      financial reporting.
+
+      Document:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        is_matching_certification: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_no_specific_control_change
+    type: filter
+    prompt: |
+      Determine whether this certification uses only generic certification
+      language for the material-changes clause and does not describe any specific
+      change to internal control over financial reporting.
+
+      Document:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        has_no_specific_control_change: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: count_matching_certifications
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {"certification_count": len(items)}
+
+pipeline:
+  steps:
+    - name: matching_certifications
+      input: contract_exhibits
+      operations:
+        - filter_sox_302_material_changes_clause
+        - filter_no_specific_control_change
+        - count_matching_certifications
+  output:
+    type: file
+    path: plan-optimization-moar/standalone/outputs/output_legal_contracts-012.json
+    intermediate_dir: plan-optimization-moar/standalone/intermediates/legal_contracts-012

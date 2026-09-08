@@ -1,0 +1,23 @@
+{
+  "task_id": "finance-005",
+  "answer": [
+    {
+      "industry": "Cannabis",
+      "going_concern_rate": 0.75,
+      "count": 32
+    },
+    {
+      "industry": "Automotive",
+      "going_concern_rate": 0.6,
+      "count": 20
+    },
+    {
+      "industry": "Biotechnology",
+      "going_concern_rate": 0.5769230769230769,
+      "count": 26
+    }
+  ],
+  "elapsed_seconds": 4168.742,
+  "cost_usd": 23.98874979,
+  "total_tokens": 60648802
+}

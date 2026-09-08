@@ -1,0 +1,44 @@
+{
+  "task_id": "aviation_safety-034",
+  "answer": [
+    {
+      "rank": 1,
+      "incident_id": "asrs_060926",
+      "reconciliation_pattern": "direct_conflict",
+      "automation_guidance": "TCAS RA commanded 2000-2500 VVI descent",
+      "atc_instruction": "Clearance to level off at 10000 FT",
+      "horizontal_separation_ft": 3000,
+      "vertical_separation_ft": 200
+    },
+    {
+      "rank": 2,
+      "incident_id": "asrs_053566",
+      "reconciliation_pattern": "direct_conflict",
+      "automation_guidance": "TCAS RA commanded climb",
+      "atc_instruction": "Maintain 10000 feet",
+      "horizontal_separation_ft": 7000,
+      "vertical_separation_ft": 300
+    },
+    {
+      "rank": 3,
+      "incident_id": "asrs_027994",
+      "reconciliation_pattern": "modified_or_delayed_compliance",
+      "automation_guidance": "commanded descent of about 4000 FPM",
+      "atc_instruction": "climb immediately",
+      "horizontal_separation_ft": 3000,
+      "vertical_separation_ft": 300
+    },
+    {
+      "rank": 4,
+      "incident_id": "asrs_026973",
+      "reconciliation_pattern": "clarification_required",
+      "automation_guidance": "ILS approach configured for runway 4L",
+      "atc_instruction": "Cleared for approach without runway specified",
+      "horizontal_separation_ft": 4500,
+      "vertical_separation_ft": 400
+    }
+  ],
+  "elapsed_seconds": 257.16,
+  "cost_usd": 1.222031,
+  "total_tokens": 2752667
+}

@@ -1,0 +1,69 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_acquisition_control_standstill
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this agreement only if it contains a contractual
+      acquisition-or-control standstill. Exclude insider-trading rules,
+      statutory anti-takeover descriptions, securities-transfer lock-ups,
+      instrument-exercise blockers, and no-shop duties.
+
+      Agreement:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {has_acquisition_control_standstill: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_standstill_details
+    type: map
+    optimize: true
+    prompt: |
+      Extract the document ID, agreement type, acquisition-or-control
+      standstill duration normalized to years, and governing law. Set
+      duration_available=false if the duration is unstated or cannot be
+      quantified, and use 0 only as a placeholder in that case. Use the input
+      document ID as document_id.
+
+      Input document ID: {{ input.doc_id }}
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        document_id: string
+        agreement_type: string
+        duration_available: boolean
+        standstill_duration_years_value: float
+        governing_law: string
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: normalize_nullable_duration
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "document_id": doc.get("document_id"),
+              "agreement_type": doc.get("agreement_type"),
+              "standstill_duration_years": float(doc.get("standstill_duration_years_value") or 0) if doc.get("duration_available") is True else None,
+              "governing_law": doc.get("governing_law"),
+          }
+  - name: filter_at_least_two_years
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("standstill_duration_years") is not None and float(doc["standstill_duration_years"]) >= 2
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations: [filter_acquisition_control_standstill, extract_standstill_details, normalize_nullable_duration, filter_at_least_two_years]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-013.json

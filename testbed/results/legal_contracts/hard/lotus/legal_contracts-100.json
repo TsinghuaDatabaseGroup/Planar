@@ -1,0 +1,26 @@
+{
+  "task_id": "legal_contracts-100",
+  "answer": [
+    {
+      "internal_controls_asserted": false,
+      "fraud_disclosure_asserted": true,
+      "material_changes_asserted": true,
+      "certification_document_count": 26,
+      "distinct_company_count": 17,
+      "companies_with_clawback_count": 13,
+      "beyond_sec_minimum_company_count": 0
+    },
+    {
+      "internal_controls_asserted": true,
+      "fraud_disclosure_asserted": true,
+      "material_changes_asserted": true,
+      "certification_document_count": 435,
+      "distinct_company_count": 196,
+      "companies_with_clawback_count": 74,
+      "beyond_sec_minimum_company_count": 7
+    }
+  ],
+  "elapsed_seconds": 816.47,
+  "cost_usd": 8.143258,
+  "total_tokens": 15279391
+}

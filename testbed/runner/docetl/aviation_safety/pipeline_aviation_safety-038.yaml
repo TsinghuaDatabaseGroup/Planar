@@ -1,0 +1,377 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+  asrs_person_factors:
+    type: file
+    path: data/asrs/person_factors.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_human_factors_primary_incidents
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("primary_problem") == "Human Factors"
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: extract_causal_human_factors
+    type: map
+    optimize: true
+    prompt: |
+      Identify every human-factor phrase that this NASA ASRS narrative explicitly
+      portrays as contributing to the reported event. A factor must play a causal
+      or contributing role; do not emit background traits, unsupported structured
+      labels, consequences described as causes, or factors explicitly ruled out.
+
+      For each supported factor return:
+      - narrative_factor_phrase: the factor wording or a concise faithful phrase;
+      - actor: the person or operational role exhibiting or affected by the factor;
+      - operational_effect: the concrete operational effect attributed to it.
+
+      Each of these three values must be a nonempty phrase of at most six words.
+      Return one compact JSON object with a causal_human_factors array containing
+      one narrative_factor_phrase, actor, and operational_effect object per causal
+      factor. Emit a supported row at most once and return an empty array when none
+      qualifies. Do not map the phrase to a canonical structured label in this
+      extraction step.
+
+      Incident ID: {{ input.incident_id }}
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        causal_human_factors: "list[{narrative_factor_phrase: string, actor: string, operational_effect: string}]"
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 512
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: build_extracted_factor_rows
+    type: code_map
+    code: |
+      def transform(doc):
+          rows = []
+          seen = set()
+          for factor in doc.get("causal_human_factors") or []:
+              if not isinstance(factor, dict):
+                  continue
+              values = tuple(
+                  " ".join(str(value).strip().split()[:6])
+                  for value in (
+                      factor.get("narrative_factor_phrase", ""),
+                      factor.get("actor", ""),
+                      factor.get("operational_effect", ""),
+                  )
+              )
+              normalized_values = tuple(value.casefold() for value in values)
+              if not all(values) or normalized_values in seen:
+                  continue
+              seen.add(normalized_values)
+              rows.append(
+                  {
+                      "narrative_factor_phrase": values[0],
+                      "actor": values[1],
+                      "operational_effect": values[2],
+                  }
+              )
+          return {"extracted_factor_rows": rows}
+
+  - name: unnest_extracted_factor_rows
+    type: unnest
+    unnest_key: extracted_factor_rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - narrative_factor_phrase
+      - actor
+      - operational_effect
+
+  - name: attach_incident_factor_records
+    type: code_map
+    code: |
+      import csv
+      import os
+      import threading
+
+      _incident_factor_index = None
+      _incident_factor_lock = threading.Lock()
+      _target_factor_labels = {
+          "Communication Breakdown": "communication_breakdown",
+          "Workload": "workload",
+          "Confusion": "confusion",
+          "Situational Awareness": "situational_awareness",
+      }
+
+      def load_incident_factor_index():
+          global _incident_factor_index
+          if _incident_factor_index is None:
+              with _incident_factor_lock:
+                  if _incident_factor_index is None:
+                      index = {}
+                      path = os.path.abspath(
+                          os.path.join("data", "asrs", "person_factors.csv")
+                      )
+                      with open(
+                          path, "r", encoding="utf-8", errors="replace", newline=""
+                      ) as handle:
+                          for row in csv.DictReader(handle):
+                              if row.get("factor_type") != "human_factors":
+                                  continue
+                              raw_value = str(row.get("value", ""))
+                              incident_id = str(row.get("incident_id", ""))
+                              if not incident_id:
+                                  continue
+                              for label, canonical in _target_factor_labels.items():
+                                  if label in raw_value:
+                                      index.setdefault(incident_id, []).append(
+                                          {
+                                              "structured_factor_value": raw_value,
+                                              "recorded_canonical_factor": canonical,
+                                          }
+                                      )
+                      _incident_factor_index = index
+          return _incident_factor_index
+
+      def transform(doc):
+          return {
+              "incident_factor_rows": load_incident_factor_index().get(
+                  str(doc.get("incident_id", "")), []
+              )
+          }
+
+  - name: unnest_incident_factor_records
+    type: unnest
+    unnest_key: incident_factor_rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - structured_factor_value
+      - recorded_canonical_factor
+
+  - name: filter_target_human_factor_vocabulary
+    type: code_filter
+    code: |
+      def transform(doc):
+          value = str(doc.get("value", ""))
+          return (
+              doc.get("factor_type") == "human_factors"
+              and any(
+                  label in value
+                  for label in (
+                      "Communication Breakdown",
+                      "Workload",
+                      "Confusion",
+                      "Situational Awareness",
+                  )
+              )
+          )
+
+  - name: atomize_factor_vocabulary
+    type: code_map
+    code: |
+      def transform(doc):
+          value = str(doc.get("value", ""))
+          labels = {
+              "Communication Breakdown": "communication_breakdown",
+              "Workload": "workload",
+              "Confusion": "confusion",
+              "Situational Awareness": "situational_awareness",
+          }
+          rows = [
+              {
+                  "factor_vocabulary": label,
+                  "canonical_human_factor": canonical,
+              }
+              for label, canonical in labels.items()
+              if label in value
+          ]
+          return {"factor_vocabulary_rows": rows}
+
+  - name: unnest_factor_vocabulary
+    type: unnest
+    unnest_key: factor_vocabulary_rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - factor_vocabulary
+      - canonical_human_factor
+
+  - name: deduplicate_factor_vocabulary
+    type: code_reduce
+    reduce_key: canonical_human_factor
+    code: |
+      def transform(items):
+          return {"factor_vocabulary": items[0]["factor_vocabulary"]}
+
+  - name: semantic_factor_join
+    type: equijoin
+    comparison_prompt: |
+      Determine whether the narrative factor phrase semantically expresses the
+      canonical human factor on the right and portrays that factor as contributing
+      to the event.
+
+      Use these distinctions:
+      - communication_breakdown: failed, missing, delayed, or incorrect information
+        exchange between people or organizations;
+      - workload: excessive or competing task demand;
+      - confusion: uncertainty, misunderstanding, or mistaken interpretation;
+      - situational_awareness: failure to perceive, comprehend, or anticipate the
+        operational situation.
+
+      The match must be compatible with the joined incident's structured factor
+      record. Exact wording is unnecessary, and the global vocabulary row's source
+      incident is irrelevant. Return false for merely related concepts, unsupported
+      structured labels, or a phrase too ambiguous to assign to this one canonical
+      factor.
+
+      NARRATIVE FACTOR: {{ left.narrative_factor_phrase }}
+      ACTOR: {{ left.actor }}
+      OPERATIONAL EFFECT: {{ left.operational_effect }}
+      INCIDENT STRUCTURED VALUE: {{ left.structured_factor_value }}
+      INCIDENT RECORDED FACTOR: {{ left.recorded_canonical_factor }}
+      GLOBAL FACTOR VOCABULARY: {{ right.factor_vocabulary }}
+      CANONICAL FACTOR: {{ right.canonical_human_factor }}
+    blocking_conditions:
+      - left["recorded_canonical_factor"] == right["canonical_human_factor"]
+    comparison_model: Qwen3.5-397B-A17B
+    timeout: 120
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: aggregate_factor_attribution
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          from collections import Counter
+
+          grouped = {}
+          for item in items:
+              factor = item.get("canonical_human_factor")
+              incident_id = str(item.get("incident_id", ""))
+              actor = str(item.get("actor", "")).strip()
+              effect = str(item.get("operational_effect", "")).strip()
+              if not factor or not incident_id or not actor or not effect:
+                  continue
+              values = grouped.setdefault(
+                  factor,
+                  {
+                      "incident_ids": set(),
+                      "actor_counts": Counter(),
+                      "effect_counts": Counter(),
+                  },
+              )
+              values["incident_ids"].add(incident_id)
+              values["actor_counts"][actor] += 1
+              values["effect_counts"][effect] += 1
+
+          rows = []
+          for factor, values in grouped.items():
+              actor = sorted(
+                  values["actor_counts"],
+                  key=lambda value: (-values["actor_counts"][value], value),
+              )[0]
+              effect = sorted(
+                  values["effect_counts"],
+                  key=lambda value: (-values["effect_counts"][value], value),
+              )[0]
+              rows.append(
+                  {
+                      "canonical_human_factor": factor,
+                      "incident_count": len(values["incident_ids"]),
+                      "most_common_actor": actor,
+                      "most_common_operational_effect": effect,
+                  }
+              )
+          rows.sort(key=lambda row: row["canonical_human_factor"])
+          return {"rows": rows}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - canonical_human_factor
+      - incident_count
+      - most_common_actor
+      - most_common_operational_effect
+
+pipeline:
+  steps:
+    - name: extracted_factors
+      input: asrs_incidents
+      operations:
+        - filter_human_factors_primary_incidents
+        - load_asrs_narrative
+        - extract_causal_human_factors
+        - build_extracted_factor_rows
+        - unnest_extracted_factor_rows
+    - name: factor_candidates
+      input: extracted_factors
+      operations:
+        - attach_incident_factor_records
+        - unnest_incident_factor_records
+    - name: factor_vocabulary
+      input: asrs_person_factors
+      operations:
+        - filter_target_human_factor_vocabulary
+        - atomize_factor_vocabulary
+        - unnest_factor_vocabulary
+        - deduplicate_factor_vocabulary
+    - name: semantic_factor_matches
+      operations:
+        - semantic_factor_join:
+            left: factor_candidates
+            right: factor_vocabulary
+    - name: factor_attribution
+      input: semantic_factor_matches
+      operations:
+        - aggregate_factor_attribution
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-038.json

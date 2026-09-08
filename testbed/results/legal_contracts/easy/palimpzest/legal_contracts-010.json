@@ -1,0 +1,547 @@
+{
+  "task_id": "legal_contracts-010",
+  "answer": [
+    {
+      "document_id": "gatesconsultantagreementfi.htm",
+      "disclosing_parties": [
+        "Key Tronic Corporation"
+      ],
+      "receiving_parties": [
+        "Craig D. Gates"
+      ],
+      "term_duration_years": 2,
+      "governing_law": "State of Washington"
+    },
+    {
+      "document_id": "801338_0000950134-07-015617_c16542toexv99wxdyx5y.htm",
+      "disclosing_parties": [
+        "GUIDELINE, Inc."
+      ],
+      "receiving_parties": [
+        "info USA Inc."
+      ],
+      "term_duration_years": 1.5,
+      "governing_law": "State of Delaware"
+    },
+    {
+      "document_id": "912263_0001047469-12-006662_a2209873zex-99_d2.htm",
+      "disclosing_parties": [
+        "The Talbots, Inc."
+      ],
+      "receiving_parties": [
+        "Sycamore Partners Management, L.L.C."
+      ],
+      "term_duration_years": 1.5,
+      "governing_law": "State of New York"
+    },
+    {
+      "document_id": "912263_0001193125-12-285724_d371520dex99e4.htm",
+      "disclosing_parties": [
+        "The Talbots, Inc."
+      ],
+      "receiving_parties": [
+        "Sycamore Partners Management, L.L.C."
+      ],
+      "term_duration_years": 1.5,
+      "governing_law": "State of New York"
+    },
+    {
+      "document_id": "a03312024ex101.htm",
+      "disclosing_parties": [
+        "CVS Pharmacy, Inc."
+      ],
+      "receiving_parties": [
+        "Samrat Khichi"
+      ],
+      "term_duration_years": 1.5,
+      "governing_law": "Rhode Island"
+    },
+    {
+      "document_id": "a03312025ex101.htm",
+      "disclosing_parties": [
+        "CVS Pharmacy, Inc."
+      ],
+      "receiving_parties": [
+        "John Joyner"
+      ],
+      "term_duration_years": 1.5,
+      "governing_law": "Rhode Island"
+    },
+    {
+      "document_id": "a03312025ex103.htm",
+      "disclosing_parties": [
+        "CVS Pharmacy, Inc."
+      ],
+      "receiving_parties": [
+        "Heidi B. Capozzi"
+      ],
+      "term_duration_years": 1.5,
+      "governing_law": "Rhode Island"
+    },
+    {
+      "document_id": "1096147_0001193125-08-206038_dex4.htm",
+      "disclosing_parties": [
+        "Taylor Capital Group, Inc."
+      ],
+      "receiving_parties": [
+        "Financial Investments Corporation"
+      ],
+      "term_duration_years": 1.5,
+      "governing_law": "State of Illinois"
+    },
+    {
+      "document_id": "d828431dex101.htm",
+      "disclosing_parties": [
+        "CVS Health Corporation"
+      ],
+      "receiving_parties": [
+        "Glenview Capital Management, LLC"
+      ],
+      "term_duration_years": 1.5,
+      "governing_law": "the State of Delaware"
+    },
+    {
+      "document_id": "exhibit1012-consultingagre.htm",
+      "disclosing_parties": [
+        "CareDx, Inc."
+      ],
+      "receiving_parties": [
+        "Alexander Johnson"
+      ],
+      "term_duration_years": 0.5,
+      "governing_law": "State of California"
+    },
+    {
+      "document_id": "simply-fashion---standard-nda.pdf",
+      "disclosing_parties": [
+        "Simply Fashions Stores, Ltd., and Adinath Corp."
+      ],
+      "receiving_parties": [
+        "Potential Purchaser"
+      ],
+      "term_duration_years": 0.5,
+      "governing_law": "United States Bankruptcy Court for the Southern District of Florida (Miami Division)"
+    },
+    {
+      "document_id": "Annex E_Non-Disclosure and Confidentiality Agreement.pdf",
+      "disclosing_parties": [
+        "Office of the United Nations High Commissioner for Refugees"
+      ],
+      "receiving_parties": [
+        "Bidder"
+      ],
+      "term_duration_years": 0.25,
+      "governing_law": "UNCITRAL Arbitration Rules"
+    },
+    {
+      "document_id": "703339_0001387308-13-000090_ex101.htm",
+      "disclosing_parties": [
+        "Capital Group Holdings, Inc."
+      ],
+      "receiving_parties": [
+        "Tailor Made Business Solutions, PLLC"
+      ],
+      "term_duration_years": 2,
+      "governing_law": "State of California"
+    },
+    {
+      "document_id": "NEW_moi_ndform.pdf",
+      "disclosing_parties": [
+        "the person identified in and/or executing the required invention disclosure form"
+      ],
+      "receiving_parties": [
+        "American Broadcasting Companies, Inc., the law offices of West & Associates, A Professional Corporation, and Mom Inventors, Inc."
+      ],
+      "term_duration_years": 2,
+      "governing_law": "State of New York"
+    },
+    {
+      "document_id": "814457_0000950137-04-009790_c89545exv99wxdyx6y.htm",
+      "disclosing_parties": [
+        "Home Products International, Inc."
+      ],
+      "receiving_parties": [
+        "Triyar Companies, Inc."
+      ],
+      "term_duration_years": 2,
+      "governing_law": "State of Illinois"
+    },
+    {
+      "document_id": "Non-disclosure%20Agreement_1.pdf",
+      "disclosing_parties": [
+        "FTI Consulting Canada Inc."
+      ],
+      "receiving_parties": [
+        "Potential Bidder"
+      ],
+      "term_duration_years": 2,
+      "governing_law": "Province of Alberta and the federal laws of Canada applicable in the Province of Alberta"
+    },
+    {
+      "document_id": "1372664_0001193125-12-159071_d333885dex99d9.htm",
+      "disclosing_parties": [
+        "COMVERGE, Inc."
+      ],
+      "receiving_parties": [
+        "H.I.G. Middle Market, LLC"
+      ],
+      "term_duration_years": 2,
+      "governing_law": "State of Georgia"
+    },
+    {
+      "document_id": "14803_0001047469-04-012846_a2134202zex-99_e3.htm",
+      "disclosing_parties": [
+        "Tom Brown, Inc."
+      ],
+      "receiving_parties": [
+        "EnCana Oil & Gas (USA) Inc."
+      ],
+      "term_duration_years": 2,
+      "governing_law": "State of Colorado"
+    },
+    {
+      "document_id": "1485469_0001193125-19-222469_d760929dex99d3.htm",
+      "disclosing_parties": [
+        "Tower International, Inc."
+      ],
+      "receiving_parties": [
+        "Autokiniton Global Group, Inc."
+      ],
+      "term_duration_years": 2,
+      "governing_law": "State of New York"
+    },
+    {
+      "document_id": "1487101_0001140361-19-008970_nc10001202x4_ex-d2.htm",
+      "disclosing_parties": [
+        "The KeyW Holding Corporation"
+      ],
+      "receiving_parties": [
+        "Jacobs Engineering Group Inc."
+      ],
+      "term_duration_years": 2,
+      "governing_law": "State of Maryland"
+    },
+    {
+      "document_id": "1102301_0001094328-04-000141_freesarex23052004.txt",
+      "disclosing_parties": [
+        "UNICOMP, INC."
+      ],
+      "receiving_parties": [
+        "FREESTAR TECHNOLOGY CORPORATION"
+      ],
+      "term_duration_years": 2,
+      "governing_law": "State of New York"
+    },
+    {
+      "document_id": "NDA-Template-Media-News-Group-inc.pdf",
+      "disclosing_parties": [
+        "Media News Group, Inc."
+      ],
+      "receiving_parties": [
+        "[NAME OF COMPANY]"
+      ],
+      "term_duration_years": 1,
+      "governing_law": "State of New York"
+    },
+    {
+      "document_id": "NDA_118.pdf",
+      "disclosing_parties": [
+        "MAGNET FORENSICS, INC."
+      ],
+      "receiving_parties": [
+        "XXXX"
+      ],
+      "term_duration_years": 1,
+      "governing_law": "Province of Ontario"
+    },
+    {
+      "document_id": "881790_0001104659-12-052730_a12-17284_1ex99d1.htm",
+      "disclosing_parties": [
+        "HF Financial Corp."
+      ],
+      "receiving_parties": [
+        "Jacobs Asset Management, L.L.C."
+      ],
+      "term_duration_years": 1,
+      "governing_law": "State of Delaware"
+    },
+    {
+      "document_id": "888953_0001193125-13-044630_d480503dex99e6.htm",
+      "disclosing_parties": [
+        "Online Resources Corporation"
+      ],
+      "receiving_parties": [
+        "ACI Worldwide, Inc."
+      ],
+      "term_duration_years": 1,
+      "governing_law": "State of Delaware"
+    },
+    {
+      "document_id": "1046880_0001193125-11-323050_d262064dex992.htm",
+      "disclosing_parties": [
+        "Central European Distribution Corporation"
+      ],
+      "receiving_parties": [
+        "Russian Standard Vodka"
+      ],
+      "term_duration_years": 1,
+      "governing_law": "State of New York"
+    },
+    {
+      "document_id": "1049210_0001047469-13-009461_a2216846zex-99_d3.htm",
+      "disclosing_parties": [
+        "Verenium Corporation"
+      ],
+      "receiving_parties": [
+        "BASF Corporation"
+      ],
+      "term_duration_years": 1,
+      "governing_law": "State of California"
+    },
+    {
+      "document_id": "1077150_0001077048-99-000003_document_23.txt",
+      "disclosing_parties": [
+        "Anonymous Data Corporation"
+      ],
+      "receiving_parties": [
+        "BATTELLE MEMORIAL INSTITUTE, PACIFIC NORTHWEST DIVISION"
+      ],
+      "term_duration_years": 1,
+      "governing_law": "State of Washington"
+    },
+    {
+      "document_id": "catx-ex10_1.htm",
+      "disclosing_parties": [
+        "Perspective Therapeutics, Inc."
+      ],
+      "receiving_parties": [
+        "Mark Austin"
+      ],
+      "term_duration_years": 1,
+      "governing_law": "State of Delaware"
+    },
+    {
+      "document_id": "ex103consultingservicesagr.htm",
+      "disclosing_parties": [
+        "Establishment Labs Holdings Inc."
+      ],
+      "receiving_parties": [
+        "Juan José Chacón Quirós"
+      ],
+      "term_duration_years": 1,
+      "governing_law": "State of Texas"
+    },
+    {
+      "document_id": "vrdr_ex1020.htm",
+      "disclosing_parties": [
+        "Verde Resources, Inc."
+      ],
+      "receiving_parties": [
+        "Karl Strahl"
+      ],
+      "term_duration_years": 1,
+      "governing_law": "State of Missouri"
+    },
+    {
+      "document_id": "nistmodelndareceiptofproprietaryinformationv20162fillableforwebsitedoc003pdf.pdf",
+      "disclosing_parties": [
+        "[Name of Disclosing Party]"
+      ],
+      "receiving_parties": [
+        "National Institute of Standards and Technology"
+      ],
+      "term_duration_years": 1,
+      "governing_law": "the United States"
+    },
+    {
+      "document_id": "tpst-ex10_2.htm",
+      "disclosing_parties": [
+        "Tempest Therapeutics, Inc."
+      ],
+      "receiving_parties": [
+        "Consultant"
+      ],
+      "term_duration_years": 1,
+      "governing_law": "California"
+    },
+    {
+      "document_id": "912263_0001104659-12-004811_a12-3671_1ex2.htm",
+      "disclosing_parties": [
+        "The Talbots, Inc."
+      ],
+      "receiving_parties": [
+        "Sycamore Partners Management, L.L.C."
+      ],
+      "term_duration_years": 1.5,
+      "governing_law": "State of New York"
+    },
+    {
+      "document_id": "103884_0001193125-12-338104_d390544dex99d3.htm",
+      "disclosing_parties": [
+        "American Blue Ribbon Holdings, LLC"
+      ],
+      "receiving_parties": [
+        "J. Alexander's Corporation"
+      ],
+      "term_duration_years": 2,
+      "governing_law": "State of Colorado"
+    },
+    {
+      "document_id": "1163932_0001193125-13-394191_d606730dex99d2.htm",
+      "disclosing_parties": [
+        "The Active Network, Inc."
+      ],
+      "receiving_parties": [
+        "Vista Equity Partners III, LLC"
+      ],
+      "term_duration_years": 2,
+      "governing_law": "the State of Delaware"
+    },
+    {
+      "document_id": "925942_0001047469-98-029396_document_13.txt",
+      "disclosing_parties": [
+        "Zeigler Coal Holding Company"
+      ],
+      "receiving_parties": [
+        "Addington Enterprises, Inc."
+      ],
+      "term_duration_years": 2,
+      "governing_law": "State of New York"
+    },
+    {
+      "document_id": "931784_0001104659-07-068716_a07-23871_1ex2.htm",
+      "disclosing_parties": [
+        "Captaris, Inc."
+      ],
+      "receiving_parties": [
+        "Vector Capital Corporation"
+      ],
+      "term_duration_years": 2,
+      "governing_law": "State of New York"
+    },
+    {
+      "document_id": "1277090_0001104659-05-057084_a05-20673_1ex10.htm",
+      "disclosing_parties": [
+        "Serena Software, Inc."
+      ],
+      "receiving_parties": [
+        "Silver Lake Management Company, L.L.C."
+      ],
+      "term_duration_years": 2,
+      "governing_law": "State of California"
+    },
+    {
+      "document_id": "96238_0000950103-97-000583_document_4.txt",
+      "disclosing_parties": [
+        "Talley Industries, Inc."
+      ],
+      "receiving_parties": [
+        "Carpenter Technology Corporation"
+      ],
+      "term_duration_years": 2,
+      "governing_law": "State of New York"
+    },
+    {
+      "document_id": "1332602_0001193125-12-512465_d454990dex99d2.htm",
+      "disclosing_parties": [
+        "Caribou Coffee Company, Inc."
+      ],
+      "receiving_parties": [
+        "JAB Beech Inc."
+      ],
+      "term_duration_years": 2,
+      "governing_law": "State of Minnesota"
+    },
+    {
+      "document_id": "1329919_0001193125-14-149149_d701401dex99d6.htm",
+      "disclosing_parties": [
+        "Vocus, Inc."
+      ],
+      "receiving_parties": [
+        "GTCR LLC"
+      ],
+      "term_duration_years": 2,
+      "governing_law": "State of Delaware"
+    },
+    {
+      "document_id": "1334303_0001193125-10-204560_dex99e5.htm",
+      "disclosing_parties": [
+        "ICx Technologies, Inc."
+      ],
+      "receiving_parties": [
+        "FLIR Systems, Inc."
+      ],
+      "term_duration_years": 2,
+      "governing_law": "State of New York"
+    },
+    {
+      "document_id": "1366649_0001193125-14-380778_d808213dex99d2.htm",
+      "disclosing_parties": [
+        "Dialogic Inc."
+      ],
+      "receiving_parties": [
+        "Novacap Technologies III, L.P."
+      ],
+      "term_duration_years": 1,
+      "governing_law": "Province of Québec and Canada"
+    },
+    {
+      "document_id": "NondisclosureAgreement_2.pdf",
+      "disclosing_parties": [
+        "Auditee"
+      ],
+      "receiving_parties": [
+        "Auditor"
+      ],
+      "term_duration_years": 1,
+      "governing_law": "India"
+    },
+    {
+      "document_id": "1592288_0001193125-17-306543_d469659dex99e2.htm",
+      "disclosing_parties": [
+        "Dimension Therapeutics, Inc."
+      ],
+      "receiving_parties": [
+        "Ultragenyx Pharmaceutical Inc."
+      ],
+      "term_duration_years": 2,
+      "governing_law": "State of Delaware"
+    },
+    {
+      "document_id": "Petrolube_NDA.pdf",
+      "disclosing_parties": [
+        "(Your Company Name)"
+      ],
+      "receiving_parties": [
+        "Petro-Lubricant Testing Laboratories, Inc."
+      ],
+      "term_duration_years": 1,
+      "governing_law": "the laws of the United States of America and the State of (Your State)"
+    },
+    {
+      "document_id": "SAMED%20confidentiality%20non%20disclosure%20and%20conflict%20of%20interest%20agreement%20for%20board%20and%20committee%20members%20ver%201.pdf",
+      "disclosing_parties": [
+        "South African Medical Devices Industry Association (SAMED)"
+      ],
+      "receiving_parties": [
+        "Member of the Board of SAMED and/or a member of SAMED Committee"
+      ],
+      "term_duration_years": 1,
+      "governing_law": "South Africa"
+    },
+    {
+      "document_id": "confagree.pdf",
+      "disclosing_parties": [
+        "Mergers & Acquisitions"
+      ],
+      "receiving_parties": [
+        "(Enter Recipients name)"
+      ],
+      "term_duration_years": 2,
+      "governing_law": "(Enter State)"
+    }
+  ],
+  "elapsed_seconds": 3605.86,
+  "cost_usd": 3.898714,
+  "total_tokens": 7406402
+}

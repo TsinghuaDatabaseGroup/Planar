@@ -1,0 +1,32 @@
+{
+  "task_id": "vehicle_safety-036",
+  "answer": [
+    {
+      "rank": 1,
+      "campaign_number": "17V398000",
+      "matched_complaint_count": 1,
+      "severe_indicator_rate": 1.0,
+      "dominant_complaint_severity": "severe_safety_event",
+      "dominant_recall_remedy_style": "part_replacement"
+    },
+    {
+      "rank": 2,
+      "campaign_number": "17V803000",
+      "matched_complaint_count": 1,
+      "severe_indicator_rate": 1.0,
+      "dominant_complaint_severity": "severe_safety_event",
+      "dominant_recall_remedy_style": "part_replacement"
+    },
+    {
+      "rank": 3,
+      "campaign_number": "20V415000",
+      "matched_complaint_count": 1,
+      "severe_indicator_rate": 1.0,
+      "dominant_complaint_severity": "severe_safety_event",
+      "dominant_recall_remedy_style": "part_replacement"
+    }
+  ],
+  "elapsed_seconds": 45.935,
+  "cost_usd": 0.032966,
+  "total_tokens": 40618
+}

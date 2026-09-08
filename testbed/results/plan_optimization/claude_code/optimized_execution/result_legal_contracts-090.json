@@ -1,0 +1,23 @@
+{
+  "task_id": "legal_contracts-090",
+  "answer": [
+    {
+      "class_label": "employee_restriction_longer",
+      "agreement_count": 1,
+      "average_exception_count": 6.0
+    },
+    {
+      "class_label": "equal",
+      "agreement_count": 1,
+      "average_exception_count": 6.0
+    },
+    {
+      "class_label": "standstill_longer",
+      "agreement_count": 1,
+      "average_exception_count": 4.0
+    }
+  ],
+  "elapsed_seconds": 769.584,
+  "cost_usd": 2.36054319,
+  "total_tokens": 4051580
+}

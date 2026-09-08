@@ -1,0 +1,11 @@
+{
+  "task_id": "legal_contracts-093",
+  "answer": [
+    {"company": "Aveanna Healthcare Holdings Inc.", "certifying_officer": "Matthew Buckhalter", "ex10_document": "avah-ex10_23.htm", "non_compete_duration_years": 1.0},
+    {"company": "CareDx, Inc.", "certifying_officer": "John W. Hanna", "ex10_document": "d822701dex103.htm", "non_compete_duration_years": 1.0},
+    {"company": "Kaival Brands Innovations Group, Inc.", "certifying_officer": "Barry Hopkins", "ex10_document": "e5407_ex10-29.htm", "non_compete_duration_years": 0.5}
+  ],
+  "elapsed_seconds": 7485.37,
+  "cost_usd": 14.336434,
+  "total_tokens": 27131842
+}

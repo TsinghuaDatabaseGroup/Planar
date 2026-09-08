@@ -1,0 +1,193 @@
+{
+  "task_id": "vehicle_safety-018",
+  "answer": [
+    {
+      "file_id": "investigation_reports/txt_investigation_0035ca0a5c3b107f.txt",
+      "cited_recall_numbers": [
+        "['24V-951",
+        "25V-695']"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_01f32e30ee9acd46.txt",
+      "cited_recall_numbers": [
+        "['24V635']"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_1b86083e3e94b94e.txt",
+      "cited_recall_numbers": [
+        "['15V-483']"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_296104e62e50bc98.txt",
+      "cited_recall_numbers": [
+        "['20V-575']"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_2fad9b440be659f1.txt",
+      "cited_recall_numbers": [
+        "['16V-643']"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_37c19cad492e19cb.txt",
+      "cited_recall_numbers": [
+        "['25V-455']"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_3e540e709b495d53.txt",
+      "cited_recall_numbers": [
+        "['23V838']"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_47fd41935c989692.txt",
+      "cited_recall_numbers": [
+        "['16V-668",
+        "18E-043",
+        "18V-137",
+        "18V-363",
+        "20V-024']"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_4f052d0a5f538055.txt",
+      "cited_recall_numbers": [
+        "['24V-896",
+        "24E-100']"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_54933417c6dc47ca.txt",
+      "cited_recall_numbers": [
+        "['25V552",
+        "25E052']"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_56098de53ffc2422.txt",
+      "cited_recall_numbers": [
+        "['15V-483']"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_6bb46cfa3c2aaa30.txt",
+      "cited_recall_numbers": [
+        "['23V-488']"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_77da89c8ed63ed47.txt",
+      "cited_recall_numbers": [
+        "['21V-035']"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_996f2f447f83f36f.txt",
+      "cited_recall_numbers": [
+        "['15V-483']"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_9f7934e5d65007b4.txt",
+      "cited_recall_numbers": [
+        "['16V-244']"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_a36dfd2642996e8a.txt",
+      "cited_recall_numbers": [
+        "['17V-821",
+        "18V-100']"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_a6116fefedb0f7c4.txt",
+      "cited_recall_numbers": [
+        "['21M05-S1",
+        "21M05-S2",
+        "21M05-S3']"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_a8a91c3c5ac6b4b7.txt",
+      "cited_recall_numbers": [
+        "['15V-568",
+        "17V-226",
+        "20V-746",
+        "21V-727",
+        "17V-224",
+        "19V-120",
+        "20V-750",
+        "21V-844",
+        "23V-877']"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_bb491b3d9a026ff0.txt",
+      "cited_recall_numbers": [
+        "['20V-797']"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_c56f72fc45a125b9.txt",
+      "cited_recall_numbers": [
+        "['23V-213",
+        "23V-312",
+        "24V-651']"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_ce8ff15c20e548af.txt",
+      "cited_recall_numbers": [
+        "['14V266",
+        "15V269",
+        "16V209",
+        "16V518']"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_cf5067e3ac47ef78.txt",
+      "cited_recall_numbers": [
+        "['23V838']"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_ddaa5a22b8dac784.txt",
+      "cited_recall_numbers": [
+        "['13V282",
+        "17V640']"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_de1f0bf1e029a8b2.txt",
+      "cited_recall_numbers": [
+        "['22V-412",
+        "23V-687']"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_fca5adff66b5638c.txt",
+      "cited_recall_numbers": [
+        "['21V-796",
+        "22V-069",
+        "22V-123",
+        "22V-127",
+        "22V-218",
+        "22V-354",
+        "22V-447",
+        "22V-458",
+        "22V-816",
+        "23V-094",
+        "23V-210']"
+      ]
+    }
+  ],
+  "elapsed_seconds": 201.798,
+  "cost_usd": 0.55862313,
+  "total_tokens": 336326
+}

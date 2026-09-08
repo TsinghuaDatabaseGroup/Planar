@@ -1,0 +1,113 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_ex19_insider_policies
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is an EX-19 insider-trading policy.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_ex19_insider_policy: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_policy_company_and_flags
+    type: map
+    optimize: true
+    prompt: |
+      Return a canonical company key and whether the policy prohibits hedging,
+      short sales, and pledging.
+
+      Policy:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        canonical_company_key: string
+        prohibits_hedging: boolean
+        prohibits_short_sales: boolean
+        prohibits_pledging: boolean
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+
+  - name: filter_ex21_parent_filings
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is an EX-21 subsidiary-list filing that
+      explicitly identifies its parent company.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_ex21_parent_filing: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_parent_key_and_count
+    type: map
+    optimize: true
+    prompt: |
+      Return a canonical parent-company key and the number of listed
+      subsidiaries.
+
+      Filing:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        canonical_parent_company_key: string
+        subsidiary_count: integer
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+
+  - name: join_canonical_company_keys
+    type: equijoin
+    deterministic: true
+    blocking_conditions:
+      - left["canonical_company_key"] == right["canonical_parent_company_key"]
+  - name: project_joined_company_profile
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "canonical_company_key": doc.get("canonical_company_key"),
+              "prohibits_hedging": doc.get("prohibits_hedging") is True,
+              "prohibits_short_sales": doc.get("prohibits_short_sales") is True,
+              "prohibits_pledging": doc.get("prohibits_pledging") is True,
+              "subsidiary_count": int(doc.get("subsidiary_count") or 0),
+          }
+  - name: deduplicate_company_profiles
+    type: code_reduce
+    reduce_key: [canonical_company_key, prohibits_hedging, prohibits_short_sales, prohibits_pledging]
+    code: |
+      def transform(items):
+          return {"subsidiary_count": max(int(item.get("subsidiary_count") or 0) for item in items)}
+  - name: aggregate_restriction_profiles
+    type: code_reduce
+    reduce_key: [prohibits_hedging, prohibits_short_sales, prohibits_pledging]
+    code: |
+      def transform(items):
+          import statistics
+          counts = [int(item.get("subsidiary_count") or 0) for item in items]
+          return {"company_count": len(items), "median_subsidiary_count": statistics.median(counts)}
+pipeline:
+  steps:
+    - name: policy_records
+      input: contract_exhibits
+      operations: [filter_ex19_insider_policies, extract_policy_company_and_flags]
+    - name: subsidiary_records
+      input: contract_exhibits
+      operations: [filter_ex21_parent_filings, extract_parent_key_and_count]
+    - name: matched_company_records
+      operations:
+        - join_canonical_company_keys: {left: policy_records, right: subsidiary_records}
+    - name: answer
+      input: matched_company_records
+      operations: [project_joined_company_profile, deduplicate_company_profiles, aggregate_restriction_profiles]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-092.json

@@ -1,0 +1,9 @@
+{
+  "task_id": "legal_contracts-070",
+  "answer": [
+    {"residual_information_present": false, "agreement_count": 560, "most_common_governing_law": "New York", "return_of_materials_rate": 0.4929, "injunctive_relief_rate": 0.5571}
+  ],
+  "elapsed_seconds": 1256.47,
+  "cost_usd": 1.766330,
+  "total_tokens": 3342796
+}

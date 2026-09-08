@@ -1,0 +1,28 @@
+{
+  "task_id": "vehicle_safety-045",
+  "answer": [
+    {
+      "rank": 1,
+      "defect_theme": "other brake defect",
+      "matched_complaint_count": 53,
+      "distinct_campaign_count": 2,
+      "related_report_ids": [
+        "4a0e2f4555b168e8"
+      ],
+      "odi_risk_summary": "Complaints allege persistent hydraulic brake failures in 2014–2016 Chevrolet Silverado trucks, including incidents where software updates failed to resolve the defect, leading to collisions and fatalities. This condition poses a critical safety risk by causing a sudden loss of braking capability, significantly increasing the likelihood of crashes and severe occupant injury."
+    },
+    {
+      "rank": 2,
+      "defect_theme": "brake booster failure",
+      "matched_complaint_count": 6,
+      "distinct_campaign_count": 2,
+      "related_report_ids": [
+        "8be18f99e74db448"
+      ],
+      "odi_risk_summary": "The defect involves a failure of the brake vacuum pump that reduces vacuum assist, causing the brake pedal to become hard or sink to the floor and significantly increasing stopping distances. This loss of braking power creates a high risk of rear-end collisions and property damage, particularly during low-speed traffic conditions where sudden stops are required."
+    }
+  ],
+  "elapsed_seconds": 73.056,
+  "cost_usd": 0.11096847,
+  "total_tokens": 97293
+}

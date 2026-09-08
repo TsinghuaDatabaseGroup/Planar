@@ -1,0 +1,9 @@
+{
+  "task_id": "legal_contracts-085",
+  "answer": [
+    {"company": "Voya Financial, Inc.", "certifying_officers": ["Donald C. Templin, Chief Financial Officer", "Heather H. Lavallee, Chief Executive Officer", "Michael R. Katz, Chief Financial Officer"], "auditor_firms": ["Ernst & Young LLP"], "covered_person_categories": ["executive_officers_employees_and_directors"], "largest_subsidiary_count": 110}
+  ],
+  "elapsed_seconds": 4180.50,
+  "cost_usd": 6.844814,
+  "total_tokens": 12953877
+}

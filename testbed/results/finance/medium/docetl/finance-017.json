@@ -1,0 +1,13 @@
+{
+  "task_id": "finance-017",
+  "answer": [
+    {"company_name": "Entergy Corporation", "word_count": 274768, "industry_sector": "Utilities"},
+    {"company_name": "Prospect Capital Corporation", "word_count": 188096, "industry_sector": "Financial Services"},
+    {"company_name": "Owl Rock Capital Corporation", "word_count": 183087, "industry_sector": "Financial Services"},
+    {"company_name": "Federal National Mortgage Association", "word_count": 179273, "industry_sector": "Financial Services"},
+    {"company_name": "Blackstone Private Credit Fund", "word_count": 172715, "industry_sector": "Financial Services"}
+  ],
+  "elapsed_seconds": 9413.6,
+  "cost_usd": 91.3741,
+  "total_tokens": 234797891
+}

@@ -1,0 +1,787 @@
+{
+  "format_version": 1,
+  "purpose": "human_review_of_selected_palimpzest_physical_plan",
+  "task_id": "legal_contracts-090",
+  "optimization_status": "optimized_only",
+  "selected_plan_id": "bb22c449dc",
+  "executable_plan": {
+    "file": "optimized_plan_legal_contracts-090.plan.pkl",
+    "format": "cloudpickle",
+    "version": 1,
+    "sha256": "7c193e317d3d45bb8e22c2f59d3ecc0b98d7f549c799f9eb1c13f1c07ee48b22",
+    "size_bytes": 147402,
+    "selected_plan_id": "bb22c449dc",
+    "datasources": {
+      "legal_contracts-090-semantic-input": {
+        "id": "legal_contracts-090-semantic-input",
+        "row_count": 2793,
+        "schema_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ]
+      }
+    },
+    "scan_datasource_records_included": false,
+    "sentinel_record_payloads_included": false
+  },
+  "input_plan": {
+    "task_id": "legal_contracts-090",
+    "query": "For non-disclosure agreements that expressly contain both a standstill provision and an employee non-solicitation clause and state both durations, how are the agreements distributed according to which restriction lasts longer? Report the duration comparison (employee restriction longer, equal, or standstill longer), the number of agreements, and the average number of the six standard confidentiality exceptions present—public information, prior knowledge, independent development, third-party receipt, legal compulsion, and written consent—rounded to two decimal places. Order the categories by agreement count descending.",
+    "inputs": [
+      {
+        "source_id": "CONTRACTEXHIBIT_corpus",
+        "dataset": "CONTRACTEXHIBIT",
+        "source_type": "document",
+        "role": "primary"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all) -> SEM_FILTER('document is a non-disclosure agreement, including dual-labeled NDA exhibits') -> SEM_FILTER('agreement expressly contains both a standstill provision and an employee non-solicitation clause') -> SEM_EXTRACT('standstill duration; employee non-solicitation duration; presence of each of the 6 named confidentiality exceptions') -> FILTER(standstill_duration IS NOT NULL AND employee_non_solicitation_duration IS NOT NULL) -> PROJECT(class_label = CASE WHEN employee_duration > standstill_duration THEN 'employee_restriction_longer' WHEN employee_duration = standstill_duration THEN 'equal' ELSE 'standstill_longer' END, exception_count = sum(six_exception_flags)) -> GROUP_BY(class_label, agreement_count = COUNT(*), average_exception_count = ROUND(AVG(exception_count), 2)) -> ORDER_BY(agreement_count DESC, class_label ASC)"
+      }
+    ],
+    "answer_schema": {
+      "columns": [
+        "class_label",
+        "agreement_count",
+        "average_exception_count"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "float"
+      ]
+    }
+  },
+  "input_bad_plan": null,
+  "input_logical_plan": {
+    "root_dataset_id": "5c9c03e9af",
+    "nodes": [
+      {
+        "dataset_id": "legal_contracts-090-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "9991d71981",
+        "unique_logical_op_id": "0-9991d71981",
+        "depends_on": [],
+        "generated_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ]
+      },
+      {
+        "dataset_id": "d780e01f49",
+        "source_dataset_ids": [
+          "legal_contracts-090-semantic-input"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "044e66a97c",
+        "unique_logical_op_id": "1-044e66a97c",
+        "depends_on": [
+          "text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "filter": "Keep the document only if it is a non-disclosure agreement, including a dual-labelled NDA exhibit."
+      },
+      {
+        "dataset_id": "18db316bb5",
+        "source_dataset_ids": [
+          "d780e01f49"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "c04406fad4",
+        "unique_logical_op_id": "2-c04406fad4",
+        "depends_on": [
+          "text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "filter": "Keep the agreement only if it expressly contains both an operative standstill provision and an operative employee non-solicitation clause."
+      },
+      {
+        "dataset_id": "af472379b4",
+        "source_dataset_ids": [
+          "18db316bb5"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "7d94f392b5",
+        "unique_logical_op_id": "3-7d94f392b5",
+        "depends_on": [
+          "text"
+        ],
+        "generated_fields": [
+          "employee_non_solicitation_duration",
+          "independent_development",
+          "legal_compulsion",
+          "prior_knowledge",
+          "public_information",
+          "standstill_duration",
+          "third_party_receipt",
+          "written_consent"
+        ],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "employee_non_solicitation_duration",
+          "independent_development",
+          "legal_compulsion",
+          "prior_knowledge",
+          "public_information",
+          "standstill_duration",
+          "text",
+          "third_party_receipt",
+          "word_count",
+          "written_consent"
+        ],
+        "desc": "Extract both restriction durations and determine the six named confidentiality-exception flags.",
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "9d0448d86d",
+        "source_dataset_ids": [
+          "af472379b4"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "37fc24b577",
+        "unique_logical_op_id": "4-37fc24b577",
+        "depends_on": [
+          "employee_non_solicitation_duration",
+          "standstill_duration"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "employee_non_solicitation_duration",
+          "independent_development",
+          "legal_compulsion",
+          "prior_knowledge",
+          "public_information",
+          "standstill_duration",
+          "text",
+          "third_party_receipt",
+          "word_count",
+          "written_consent"
+        ],
+        "output_fields": [
+          "document_id",
+          "employee_non_solicitation_duration",
+          "independent_development",
+          "legal_compulsion",
+          "prior_knowledge",
+          "public_information",
+          "standstill_duration",
+          "text",
+          "third_party_receipt",
+          "word_count",
+          "written_consent"
+        ],
+        "filter": "has_stated_durations",
+        "filter_fn_fingerprint": {
+          "name": "has_stated_durations",
+          "source_sha256": "3b42ee9d9c1eee58d8ad69e28c39cbe8b5c8c5b8593807715a8b5d3ede637086"
+        }
+      },
+      {
+        "dataset_id": "55402ee339",
+        "source_dataset_ids": [
+          "9d0448d86d"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "0f4eabbd15",
+        "unique_logical_op_id": "5-0f4eabbd15",
+        "depends_on": [
+          "employee_non_solicitation_duration",
+          "independent_development",
+          "legal_compulsion",
+          "prior_knowledge",
+          "public_information",
+          "standstill_duration",
+          "third_party_receipt",
+          "written_consent"
+        ],
+        "generated_fields": [
+          "class_label",
+          "exception_count"
+        ],
+        "input_fields": [
+          "document_id",
+          "employee_non_solicitation_duration",
+          "independent_development",
+          "legal_compulsion",
+          "prior_knowledge",
+          "public_information",
+          "standstill_duration",
+          "text",
+          "third_party_receipt",
+          "word_count",
+          "written_consent"
+        ],
+        "output_fields": [
+          "class_label",
+          "document_id",
+          "employee_non_solicitation_duration",
+          "exception_count",
+          "independent_development",
+          "legal_compulsion",
+          "prior_knowledge",
+          "public_information",
+          "standstill_duration",
+          "text",
+          "third_party_receipt",
+          "word_count",
+          "written_consent"
+        ],
+        "udf_fingerprint": {
+          "name": "comparison_fields",
+          "source_sha256": "b6845c9b23cc855a4f98a91a8bef5c4e0f5588eac1f2dd4c7b809e18a79b6565"
+        },
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "5c9c03e9af",
+        "source_dataset_ids": [
+          "55402ee339"
+        ],
+        "logical_operator": "GroupByAggregate",
+        "logical_op_id": "20e1bc9eb8",
+        "unique_logical_op_id": "6-20e1bc9eb8",
+        "depends_on": [],
+        "generated_fields": [
+          "average(exception_count)",
+          "count(class_label)"
+        ],
+        "input_fields": [
+          "class_label",
+          "document_id",
+          "employee_non_solicitation_duration",
+          "exception_count",
+          "independent_development",
+          "legal_compulsion",
+          "prior_knowledge",
+          "public_information",
+          "standstill_duration",
+          "text",
+          "third_party_receipt",
+          "word_count",
+          "written_consent"
+        ],
+        "output_fields": [
+          "average(exception_count)",
+          "class_label",
+          "count(class_label)"
+        ],
+        "group_by": "GroupBy({'group_by_fields': ['class_label'], 'agg_funcs': ['count', 'average'], 'agg_fields': ['class_label', 'exception_count']})"
+      }
+    ],
+    "topological_logical_sequence": [
+      "0-9991d71981",
+      "1-044e66a97c",
+      "2-c04406fad4",
+      "3-7d94f392b5",
+      "4-37fc24b577",
+      "5-0f4eabbd15",
+      "6-20e1bc9eb8"
+    ]
+  },
+  "selected_physical_plan": {
+    "plan_id": "bb22c449dc",
+    "plan_string": "0. Schema['class_label', 'document_id', 'employee_non_solicitation_duration', 'exception_count', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'] -> ApplyGroupByOp -> Schema['average(exception_count)', 'class_label', 'count(class_label)']\n    (class_label, document_id, empl) -> (average(exception_count), clas)\n    Group-by Signature: GroupBy({'group_by_fields': ['class_label'], 'agg_funcs': ['count', 'average'], 'agg_fields': ['class_label', 'exception_count']})\n\n  1. Schema['document_id', 'employee_non_solicitation_duration', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'] -> NonLLMConvert -> Schema['class_label', 'document_id', 'employee_non_solicitation_duration', 'exception_count', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent']\n    (document_id, employee_non_soli) -> (class_label, document_id, empl)\n    UDF: comparison_fields\n\n    2. Schema['document_id', 'employee_non_solicitation_duration', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'] -> NonLLMFilter -> Schema['document_id', 'employee_non_solicitation_duration', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent']\n    (document_id, employee_non_soli) -> (document_id, employee_non_soli)\n    Filter: has_stated_durations\n\n      3. Schema['document_id', 'text', 'word_count'] -> LLMConvertBonded -> Schema['document_id', 'employee_non_solicitation_duration', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent']\n    (document_id, text, word_count) -> (document_id, employee_non_soli)\n    Model: Qwen3.5-397B-A17B\n    Prompt Strategy: PromptStrategy.MAP\n    Reasoning Effort: default\n\n        4. Schema['document_id', 'text', 'word_count'] -> LLMFilter -> Schema['document_id', 'text', 'word_count']\n    (document_id, text, word_count) -> (document_id, text, word_count)\n    Model: Qwen3.5-397B-A17B\n    Filter: Keep the document only if it is a non-disclosure agreement, including a dual-labelled NDA exhibit.\n\n          5. Schema['document_id', 'text', 'word_count'] -> LLMFilter -> Schema['document_id', 'text', 'word_count']\n    (document_id, text, word_count) -> (document_id, text, word_count)\n    Model: Qwen3.5-397B-A17B\n    Filter: Keep the agreement only if it expressly contains both an operative standstill provision and an operative employee non-solicitation clause.\n\n            6. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['document_id', 'text', 'word_count']'>, id=legal_contracts-090-semantic-input, op_id=9991d71981)) -> <class 'palimpzest.core.lib.schemas.Schema['document_id', 'text', 'word_count']'>\n    (document_id, text, word_count)\n\n",
+    "root_operator_index": 6,
+    "operators": [
+      {
+        "topological_index": 0,
+        "physical_operator": "MarshalAndScanDataOp",
+        "logical_operator": "BaseScan",
+        "logical_op_id": "9991d71981",
+        "unique_logical_op_id": "0-9991d71981",
+        "full_op_id": "9991d71981-004ea0080e",
+        "model": null,
+        "depends_on": [],
+        "generated_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "source_operator_indices": []
+      },
+      {
+        "topological_index": 1,
+        "physical_operator": "LLMFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "c04406fad4",
+        "unique_logical_op_id": "2-c04406fad4",
+        "full_op_id": "c04406fad4-9999af3350",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-090-semantic-input.text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "source_operator_indices": [
+          0
+        ]
+      },
+      {
+        "topological_index": 2,
+        "physical_operator": "LLMFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "044e66a97c",
+        "unique_logical_op_id": "1-044e66a97c",
+        "full_op_id": "044e66a97c-8d11ad20dc",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-090-semantic-input.text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "source_operator_indices": [
+          1
+        ]
+      },
+      {
+        "topological_index": 3,
+        "physical_operator": "LLMConvertBonded",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "7d94f392b5",
+        "unique_logical_op_id": "3-7d94f392b5",
+        "full_op_id": "7d94f392b5-4d66031bd7",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-090-semantic-input.text"
+        ],
+        "generated_fields": [
+          "employee_non_solicitation_duration",
+          "independent_development",
+          "legal_compulsion",
+          "prior_knowledge",
+          "public_information",
+          "standstill_duration",
+          "third_party_receipt",
+          "written_consent"
+        ],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "employee_non_solicitation_duration",
+          "independent_development",
+          "legal_compulsion",
+          "prior_knowledge",
+          "public_information",
+          "standstill_duration",
+          "text",
+          "third_party_receipt",
+          "word_count",
+          "written_consent"
+        ],
+        "source_operator_indices": [
+          2
+        ]
+      },
+      {
+        "topological_index": 4,
+        "physical_operator": "NonLLMFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "37fc24b577",
+        "unique_logical_op_id": "4-37fc24b577",
+        "full_op_id": "37fc24b577-188d0f102a",
+        "model": null,
+        "depends_on": [
+          "Schema['document_id', 'employee_non_solicitation_duration', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].af472379b4.employee_non_solicitation_duration",
+          "Schema['document_id', 'employee_non_solicitation_duration', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].af472379b4.standstill_duration"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "employee_non_solicitation_duration",
+          "independent_development",
+          "legal_compulsion",
+          "prior_knowledge",
+          "public_information",
+          "standstill_duration",
+          "text",
+          "third_party_receipt",
+          "word_count",
+          "written_consent"
+        ],
+        "output_fields": [
+          "document_id",
+          "employee_non_solicitation_duration",
+          "independent_development",
+          "legal_compulsion",
+          "prior_knowledge",
+          "public_information",
+          "standstill_duration",
+          "text",
+          "third_party_receipt",
+          "word_count",
+          "written_consent"
+        ],
+        "source_operator_indices": [
+          3
+        ]
+      },
+      {
+        "topological_index": 5,
+        "physical_operator": "NonLLMConvert",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "0f4eabbd15",
+        "unique_logical_op_id": "5-0f4eabbd15",
+        "full_op_id": "0f4eabbd15-b6988f661f",
+        "model": null,
+        "depends_on": [
+          "Schema['class_label', 'document_id', 'employee_non_solicitation_duration', 'exception_count', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].55402ee339.employee_non_solicitation_duration",
+          "Schema['class_label', 'document_id', 'employee_non_solicitation_duration', 'exception_count', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].55402ee339.independent_development",
+          "Schema['class_label', 'document_id', 'employee_non_solicitation_duration', 'exception_count', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].55402ee339.legal_compulsion",
+          "Schema['class_label', 'document_id', 'employee_non_solicitation_duration', 'exception_count', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].55402ee339.prior_knowledge",
+          "Schema['class_label', 'document_id', 'employee_non_solicitation_duration', 'exception_count', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].55402ee339.public_information",
+          "Schema['class_label', 'document_id', 'employee_non_solicitation_duration', 'exception_count', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].55402ee339.standstill_duration",
+          "Schema['class_label', 'document_id', 'employee_non_solicitation_duration', 'exception_count', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].55402ee339.third_party_receipt",
+          "Schema['class_label', 'document_id', 'employee_non_solicitation_duration', 'exception_count', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].55402ee339.written_consent"
+        ],
+        "generated_fields": [
+          "class_label",
+          "exception_count"
+        ],
+        "input_fields": [
+          "document_id",
+          "employee_non_solicitation_duration",
+          "independent_development",
+          "legal_compulsion",
+          "prior_knowledge",
+          "public_information",
+          "standstill_duration",
+          "text",
+          "third_party_receipt",
+          "word_count",
+          "written_consent"
+        ],
+        "output_fields": [
+          "class_label",
+          "document_id",
+          "employee_non_solicitation_duration",
+          "exception_count",
+          "independent_development",
+          "legal_compulsion",
+          "prior_knowledge",
+          "public_information",
+          "standstill_duration",
+          "text",
+          "third_party_receipt",
+          "word_count",
+          "written_consent"
+        ],
+        "source_operator_indices": [
+          4
+        ]
+      },
+      {
+        "topological_index": 6,
+        "physical_operator": "ApplyGroupByOp",
+        "logical_operator": "GroupByAggregate",
+        "logical_op_id": "20e1bc9eb8",
+        "unique_logical_op_id": "6-20e1bc9eb8",
+        "full_op_id": "20e1bc9eb8-86f826f846",
+        "model": null,
+        "depends_on": [
+          "Schema['class_label', 'document_id', 'employee_non_solicitation_duration', 'exception_count', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].55402ee339.class_label",
+          "Schema['class_label', 'document_id', 'employee_non_solicitation_duration', 'exception_count', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].55402ee339.document_id",
+          "Schema['class_label', 'document_id', 'employee_non_solicitation_duration', 'exception_count', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].55402ee339.employee_non_solicitation_duration",
+          "Schema['class_label', 'document_id', 'employee_non_solicitation_duration', 'exception_count', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].55402ee339.exception_count",
+          "Schema['class_label', 'document_id', 'employee_non_solicitation_duration', 'exception_count', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].55402ee339.independent_development",
+          "Schema['class_label', 'document_id', 'employee_non_solicitation_duration', 'exception_count', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].55402ee339.legal_compulsion",
+          "Schema['class_label', 'document_id', 'employee_non_solicitation_duration', 'exception_count', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].55402ee339.prior_knowledge",
+          "Schema['class_label', 'document_id', 'employee_non_solicitation_duration', 'exception_count', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].55402ee339.public_information",
+          "Schema['class_label', 'document_id', 'employee_non_solicitation_duration', 'exception_count', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].55402ee339.standstill_duration",
+          "Schema['class_label', 'document_id', 'employee_non_solicitation_duration', 'exception_count', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].55402ee339.text",
+          "Schema['class_label', 'document_id', 'employee_non_solicitation_duration', 'exception_count', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].55402ee339.third_party_receipt",
+          "Schema['class_label', 'document_id', 'employee_non_solicitation_duration', 'exception_count', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].55402ee339.word_count",
+          "Schema['class_label', 'document_id', 'employee_non_solicitation_duration', 'exception_count', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].55402ee339.written_consent",
+          "Schema['document_id', 'employee_non_solicitation_duration', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].9d0448d86d.document_id",
+          "Schema['document_id', 'employee_non_solicitation_duration', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].9d0448d86d.employee_non_solicitation_duration",
+          "Schema['document_id', 'employee_non_solicitation_duration', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].9d0448d86d.independent_development",
+          "Schema['document_id', 'employee_non_solicitation_duration', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].9d0448d86d.legal_compulsion",
+          "Schema['document_id', 'employee_non_solicitation_duration', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].9d0448d86d.prior_knowledge",
+          "Schema['document_id', 'employee_non_solicitation_duration', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].9d0448d86d.public_information",
+          "Schema['document_id', 'employee_non_solicitation_duration', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].9d0448d86d.standstill_duration",
+          "Schema['document_id', 'employee_non_solicitation_duration', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].9d0448d86d.text",
+          "Schema['document_id', 'employee_non_solicitation_duration', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].9d0448d86d.third_party_receipt",
+          "Schema['document_id', 'employee_non_solicitation_duration', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].9d0448d86d.word_count",
+          "Schema['document_id', 'employee_non_solicitation_duration', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].9d0448d86d.written_consent",
+          "Schema['document_id', 'employee_non_solicitation_duration', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].af472379b4.document_id",
+          "Schema['document_id', 'employee_non_solicitation_duration', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].af472379b4.employee_non_solicitation_duration",
+          "Schema['document_id', 'employee_non_solicitation_duration', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].af472379b4.independent_development",
+          "Schema['document_id', 'employee_non_solicitation_duration', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].af472379b4.legal_compulsion",
+          "Schema['document_id', 'employee_non_solicitation_duration', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].af472379b4.prior_knowledge",
+          "Schema['document_id', 'employee_non_solicitation_duration', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].af472379b4.public_information",
+          "Schema['document_id', 'employee_non_solicitation_duration', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].af472379b4.standstill_duration",
+          "Schema['document_id', 'employee_non_solicitation_duration', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].af472379b4.text",
+          "Schema['document_id', 'employee_non_solicitation_duration', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].af472379b4.third_party_receipt",
+          "Schema['document_id', 'employee_non_solicitation_duration', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].af472379b4.word_count",
+          "Schema['document_id', 'employee_non_solicitation_duration', 'independent_development', 'legal_compulsion', 'prior_knowledge', 'public_information', 'standstill_duration', 'text', 'third_party_receipt', 'word_count', 'written_consent'].af472379b4.written_consent",
+          "Schema['document_id', 'text', 'word_count'].18db316bb5.document_id",
+          "Schema['document_id', 'text', 'word_count'].18db316bb5.text",
+          "Schema['document_id', 'text', 'word_count'].18db316bb5.word_count",
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-090-semantic-input.document_id",
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-090-semantic-input.text",
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-090-semantic-input.word_count",
+          "Schema['document_id', 'text', 'word_count'].d780e01f49.document_id",
+          "Schema['document_id', 'text', 'word_count'].d780e01f49.text",
+          "Schema['document_id', 'text', 'word_count'].d780e01f49.word_count"
+        ],
+        "generated_fields": [
+          "average(exception_count)",
+          "count(class_label)"
+        ],
+        "input_fields": [
+          "class_label",
+          "document_id",
+          "employee_non_solicitation_duration",
+          "exception_count",
+          "independent_development",
+          "legal_compulsion",
+          "prior_knowledge",
+          "public_information",
+          "standstill_duration",
+          "text",
+          "third_party_receipt",
+          "word_count",
+          "written_consent"
+        ],
+        "output_fields": [
+          "average(exception_count)",
+          "class_label",
+          "count(class_label)"
+        ],
+        "source_operator_indices": [
+          5
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "source": 0,
+        "target": 1
+      },
+      {
+        "source": 1,
+        "target": 2
+      },
+      {
+        "source": 2,
+        "target": 3
+      },
+      {
+        "source": 3,
+        "target": 4
+      },
+      {
+        "source": 4,
+        "target": 5
+      },
+      {
+        "source": 5,
+        "target": 6
+      }
+    ],
+    "estimated_plan_cost": {
+      "cost": 8.010347411911765,
+      "time": 15838.576016906429,
+      "quality": 1.0,
+      "op_estimates": {
+        "cardinality": 164.2941176470588,
+        "time_per_record": 0.00024175643920898438,
+        "cost_per_record": 0.0,
+        "quality": 1.0,
+        "cardinality_lower_bound": 164.2941176470588,
+        "cardinality_upper_bound": 164.2941176470588,
+        "time_per_record_lower_bound": 0.00024175643920898438,
+        "time_per_record_upper_bound": 0.00024175643920898438,
+        "cost_per_record_lower_bound": 0.0,
+        "cost_per_record_upper_bound": 0.0,
+        "quality_lower_bound": 1.0,
+        "quality_upper_bound": 1.0
+      },
+      "cost_lower_bound": 8.010347411911765,
+      "cost_upper_bound": 8.010347411911765,
+      "time_lower_bound": 15838.576016906429,
+      "time_upper_bound": 15838.576016906429,
+      "quality_lower_bound": 1.0,
+      "quality_upper_bound": 1.0
+    },
+    "topological_logical_sequence": [
+      "0-9991d71981",
+      "2-c04406fad4",
+      "1-044e66a97c",
+      "3-7d94f392b5",
+      "4-37fc24b577",
+      "5-0f4eabbd15",
+      "6-20e1bc9eb8"
+    ]
+  },
+  "optimizer_configuration": {
+    "strategy": "pareto",
+    "policy": "MaxQuality",
+    "physical_implementation_candidates": {
+      "allow_bonded_query": true,
+      "allow_model_selection": false,
+      "allow_rag_reduction": false,
+      "allow_mixtures": true,
+      "allow_critic": true,
+      "allow_split_merge": false,
+      "force_rag": false,
+      "execution_strategy": "parallel",
+      "max_workers": 64,
+      "join_parallelism": 64
+    },
+    "dynamic_learning_requested": true,
+    "dynamic_learning_pipeline_supported": true,
+    "dynamic_learning": true,
+    "dynamic_learning_support": {
+      "supported": true,
+      "reason": null,
+      "terminal_only_operator_violations": []
+    },
+    "allow_unsupported_sentinel_plans": true,
+    "dynamic_learning_fallback": null,
+    "sentinel_execution_strategy": "mab",
+    "sentinel_k": 6,
+    "sentinel_j": 4,
+    "sentinel_sample_budget": 100,
+    "sentinel_seed": 42,
+    "available_models": [
+      "Qwen3.5-397B-A17B",
+      "openai/Qwen3-Embedding-8B"
+    ],
+    "static_search_preflight": {
+      "status": "passed",
+      "elapsed_seconds": 0.04021425,
+      "candidate_plan_count": 1,
+      "text_llm_calls": 0,
+      "embedding_calls": 0,
+      "cost_usd": 0.0
+    }
+  },
+  "optimizer_search_space": {
+    "group_count": 8,
+    "logical_expression_count": 9,
+    "physical_expression_count": 29,
+    "transformation_rules_explored": [
+      "PushDownFilter",
+      "ReorderConverts"
+    ],
+    "implementation_rules_explored": [
+      "BasicSubstitutionRule",
+      "CritiqueAndRefineRule",
+      "LLMConvertBondedRule",
+      "LLMFilterRule",
+      "MixtureOfAgentsRule",
+      "NonLLMConvertRule",
+      "NonLLMFilterRule"
+    ]
+  },
+  "optimization_metrics": {
+    "elapsed_seconds": 193.13942146,
+    "sentinel_sampling_seconds": 193.05451369,
+    "optimizer_search_and_bookkeeping_seconds": 0.08490777,
+    "cost_usd": 0.30459858,
+    "text_llm_calls": 231,
+    "embedding_calls": 0,
+    "input_text_tokens": 498146,
+    "output_text_tokens": 47146,
+    "total_text_tokens": 545292,
+    "embedding_input_tokens": 0,
+    "cache_read_tokens": 0,
+    "cache_creation_tokens": 0,
+    "sampled_operators": {
+      "text_llm_calls": 203,
+      "embedding_calls": 0,
+      "input_text_tokens": 405255,
+      "output_text_tokens": 39139,
+      "embedding_input_tokens": 0,
+      "cost_usd": 0.24963471
+    },
+    "validator": {
+      "text_llm_calls": 28,
+      "input_text_tokens": 92891,
+      "output_text_tokens": 8007,
+      "total_text_tokens": 100898,
+      "cost_usd": 0.05496387
+    },
+    "model_usage_by_model": {
+      "Qwen3.5-397B-A17B": {
+        "roles": [
+          "text",
+          "validator"
+        ],
+        "calls": 231,
+        "input_tokens": 498146,
+        "output_tokens": 47146,
+        "total_tokens": 545292,
+        "cost_usd": 0.30459858
+      }
+    }
+  },
+  "sentinel_join_sampling": [],
+  "sentinel_sampling_exhaustion": null,
+  "recovery": null
+}

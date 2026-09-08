@@ -1,0 +1,991 @@
+[
+  {
+    "task_id": "aviation_safety-026",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, state_reference])\n-> FILTER(state_reference = 'US')\n-> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n-> SEM_EXTRACT(\"Extract only numeric expected-versus-actual pairs whose two values concern the same quantity and context. Return one document annotation with valid_comparisons as a list of {measurement_type, expected_value, actual_value, deviation}; normalize measurement_type to {altitude,speed,heading,runway}, summarize deviation in at most six words, and use an empty list when none qualify.\", {incident_id:string, valid_comparisons:list[{measurement_type:string, expected_value:string, actual_value:string, deviation:string}]}, {incident_id,text})\n-> FILTER(CARDINALITY(valid_comparisons) > 0)\n-> GROUP_BY([measurement_type], {comparison_count:COUNT_DISTINCT(incident_id,expected_value,actual_value), most_common_deviation:MODE(deviation)})"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "semantic_to_relational_rewrite"
+    ]
+  },
+  {
+    "task_id": "aviation_safety-029",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "BASE := SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id,text_file,local_time_of_day,flight_phase]) -> FILTER(local_time_of_day='1201-1800' AND (flight_phase CONTAINS 'Approach' OR flight_phase CONTAINS 'Landing'));\nENV := SCAN_TABLE(NASA_ASRS, environment_attributes.csv, [incident_id,attribute,value]) -> FILTER(attribute='flight_conditions' AND value IN ('IMC','Marginal','Mixed'));\nWITH_ENV := JOIN(left=BASE, right=ENV, condition=incident_id equality);\nRESULTS := SCAN_TABLE(NASA_ASRS, events.csv, [incident_id,event_type,label]) -> FILTER(event_type='result' AND label IN ('Flight Crew Executed Go Around / Missed Approach','Air Traffic Control Issued New Clearance'));\nSTRUCTURED := JOIN(left=WITH_ENV, right=RESULTS, condition=incident_id equality);\nSTRUCTURED -> SCAN_DOCS(NASA_ASRS, selector=STRUCTURED.text_file) -> SEM_FILTER('weather or visibility caused the target result') -> SEM_FILTER('traffic, runway occupancy, or equipment was not the primary cause') -> GROUP_BY([flight_conditions,recorded_result], incident_count=COUNT_DISTINCT(incident_id))"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "relational_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "aviation_safety-038",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "BASE := SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id,text_file,primary_problem]) -> FILTER(primary_problem='Human Factors');\nFACTORS := SCAN_TABLE(NASA_ASRS, person_factors.csv, [incident_id,factor_type,value]) -> FILTER(factor_type='human_factors' AND value CONTAINS ANY OF ['Communication Breakdown','Workload','Confusion','Situational Awareness']);\nCANDIDATES := JOIN(left=BASE, right=FACTORS, condition=incident_id equality) -> GROUP_BY([incident_id,text_file], recorded_factors=COLLECT(value));\nEXTRACTED := CANDIDATES -> SCAN_DOCS(NASA_ASRS, selector=CANDIDATES.text_file) -> SEM_EXTRACT('causally contributing human-factor phrases, actor, and effect');\nVOCAB := FACTORS -> PROJECT([value]) -> DEDUP([value]);\nSEM_JOIN(left=EXTRACTED, right=VOCAB, instruction='semantic factor match compatible with the incident structured factor') -> GROUP_BY([canonical_human_factor], incident_count=COUNT_DISTINCT(incident_id))"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "relational_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "aviation_safety-039",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "INCIDENTS := SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id,text_file,primary_problem])\n  -> FILTER(primary_problem='Aircraft');\nSTATUS := SCAN_TABLE(NASA_ASRS, aircraft_attributes.csv, [incident_id,attribute,value])\n  -> FILTER(attribute IN ('maintenance_status_records_complete','maintenance_status_required_correct_doc_on_board'))\n  -> GROUP_BY([incident_id], {records_complete:MAX_IF(value,attribute='maintenance_status_records_complete'),correct_document_on_board:MAX_IF(value,attribute='maintenance_status_required_correct_doc_on_board')});\nPROBLEMS := SCAN_TABLE(NASA_ASRS, components.csv, [incident_id,attribute,value])\n  -> FILTER(attribute='problem')\n  -> GROUP_BY([incident_id], {structured_problems:COLLECT(value)});\nWITH_STATUS := JOIN(left=INCIDENTS, right=STATUS, join_type=inner, condition=INCIDENTS.incident_id = STATUS.incident_id);\nSTRUCTURED := JOIN(left=WITH_STATUS, right=PROBLEMS, join_type=inner, condition=WITH_STATUS.incident_id = PROBLEMS.incident_id);\nEXTRACTED := STRUCTURED\n  -> SCAN_DOCS(NASA_ASRS, selector=STRUCTURED.text_file, [incident_id,text])\n  -> SEM_EXTRACT('Determine whether this is an actual maintenance-documentation problem rather than a mechanical discrepancy alone. Emit is_actual_documentation_issue; when true, assign documentation_issue_type from {incomplete_or_inaccurate_logbook,missing_or_incomplete_work_card,incorrect_or_incomplete_mel_procedure,missing_required_document,release_or_signoff_error} and extract the affected item in at most six words.', {incident_id:string,is_actual_documentation_issue:boolean,documentation_issue_type:string,affected_item:string}, {incident_id,text});\nEXTRACTED\n  -> FILTER(is_actual_documentation_issue=TRUE)\n  -> GROUP_BY([documentation_issue_type,records_complete,correct_document_on_board], {incident_count:COUNT_DISTINCT(incident_id),canonical_affected_item:MODE(affected_item)})\n  -> ORDER_BY([incident_count DESC,documentation_issue_type ASC,records_complete ASC,correct_document_on_board ASC])\n  -> LIMIT(15)\n  -> PROJECT([rank=ROW_NUMBER(),documentation_issue_type,records_complete,correct_document_on_board,incident_count,canonical_affected_item])"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "relational_semantic_reordering",
+      "semantic_to_relational_rewrite"
+    ]
+  },
+  {
+    "task_id": "aviation_safety-042",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "EQUIPMENT_EVENTS := SCAN_TABLE(NASA_ASRS, events.csv, [incident_id, event_type, label])\n  -> FILTER(label CONTAINS 'Aircraft Equipment Problem')\n  -> DEDUP([incident_id]);\nINCIDENTS := SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file]);\nEQUIPMENT_INCIDENTS := JOIN(left=EQUIPMENT_EVENTS, right=INCIDENTS, join_type=inner, condition=EQUIPMENT_EVENTS.incident_id = INCIDENTS.incident_id);\nNARRATIVE_COMPONENTS := EQUIPMENT_INCIDENTS\n  -> SCAN_DOCS(NASA_ASRS, selector=EQUIPMENT_INCIDENTS.text_file, [incident_id, text])\n  -> SEM_EXTRACT(\"Emit one row for each aircraft component actually involved in the reported problem. Extract narrative_component_term as used in the report and first_detection_cue in at most six words.\", {incident_id:string, narrative_component_term:string, first_detection_cue:string}, {incident_id,text});\nFREQUENT_TERMS := NARRATIVE_COMPONENTS\n  -> GROUP_BY([narrative_component_term], {incident_count:COUNT_DISTINCT(incident_id)})\n  -> FILTER(incident_count >= 5);\nCOMPONENT_VOCABULARY := SCAN_TABLE(NASA_ASRS, components.csv, [attribute, value])\n  -> FILTER(attribute = 'aircraft_component')\n  -> DEDUP([value]);\nTERM_MATCHES := SEM_JOIN(left=FREQUENT_TERMS, right=COMPONENT_VOCABULARY, instruction=\"Match each narrative component term to a canonical component label when they denote the same component or a clear part-to-system relationship. Exact spelling and incident ID are not required and generic topical similarity is insufficient.\", input_bindings_left={narrative_component_term}, input_bindings_right={canonical_component:value});\nMATCHED_OCCURRENCES := JOIN(left=NARRATIVE_COMPONENTS, right=TERM_MATCHES, join_type=inner, condition=NARRATIVE_COMPONENTS.narrative_component_term = TERM_MATCHES.narrative_component_term);\nMATCHED_OCCURRENCES\n-> GROUP_BY([canonical_component,narrative_component_term], {incident_count:COUNT_DISTINCT(incident_id), most_common_detection_cue:MODE(first_detection_cue)})\n-> ORDER_BY([incident_count DESC, canonical_component ASC, narrative_component_term ASC])\n-> LIMIT(20)\n-> PROJECT([rank=ROW_NUMBER(),canonical_component,narrative_component_term,incident_count,most_common_detection_cue])"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_join_reordering"
+    ]
+  },
+  {
+    "task_id": "aviation_safety-043",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "BASE := SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id,text_file,local_time_of_day]) -> FILTER(local_time_of_day='1201-1800');\nRESULTS := SCAN_TABLE(NASA_ASRS, events.csv, [incident_id,event_type,label]) -> FILTER(event_type='result' AND label IN ('Flight Crew Diverted','General Declared Emergency','Air Traffic Control Issued New Clearance')) -> GROUP_BY([incident_id], labels=COLLECT(label));\nCANDIDATES := JOIN(left=BASE, right=RESULTS, condition=incident_id equality);\nCANDIDATES -> SCAN_DOCS(NASA_ASRS, selector=CANDIDATES.text_file) -> SEM_FILTER('weather or visibility explicitly caused an operational decision') -> SEM_FILTER('exclude incidental weather and passenger-comfort-only turbulence') -> SEM_EXTRACT('one row per weather mechanism and recorded decision') -> GROUP_BY([weather_mechanism,recorded_decision], incident_count=COUNT_DISTINCT(incident_id)) -> ORDER_BY(incident_count DESC) -> LIMIT(20)"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "relational_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "aviation_safety-044",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "BASE := SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id,text_file,primary_problem]) -> FILTER(primary_problem='Aircraft');\nCOMP := SCAN_TABLE(NASA_ASRS, components.csv, [incident_id,attribute,value]) -> FILTER(attribute='aircraft_component' AND value CONTAINS ANY OF ['Pressurization','Pack','Bleed','Air Conditioning']) -> GROUP_BY([incident_id], components=COLLECT(value));\nWITH_COMP := JOIN(left=BASE, right=COMP, condition=incident_id equality);\nEVENTS := SCAN_TABLE(NASA_ASRS, events.csv, [incident_id,event_type,label]) -> FILTER(label='Flight Deck / Cabin / Aircraft Event Smoke / Fire / Fumes / Odor' OR label CONTAINS 'Aircraft Equipment Problem') -> GROUP_BY([incident_id], labels=COLLECT(label));\nSTRUCTURED := JOIN(left=WITH_COMP, right=EVENTS, condition=incident_id equality);\nSTRUCTURED -> SCAN_DOCS(NASA_ASRS, selector=STRUCTURED.text_file) -> SEM_FILTER('one clearly primary cause') -> SEM_FILTER('operational consequence beyond a maintenance record') -> SEM_EXTRACT('initiating condition, system, intervention, and outcome') -> SEM_CLASSIFY('primary cause category') -> GROUP_BY([cause_category], records=COLLECT(*)) -> SEM_AGGREGATE('canonical system and dominant outcome')"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "relational_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "aviation_safety-045",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "BASE := SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id,text_file,primary_problem]) -> FILTER(primary_problem='Aircraft');\nMAINTENANCE := SCAN_TABLE(NASA_ASRS, aircraft_attributes.csv, [incident_id,attribute,value]) -> FILTER((attribute='maintenance_status_maintenance_deferred' OR attribute='maintenance_status_released_for_service') AND value='Y') -> GROUP_BY([incident_id], maintenance_flags=COLLECT(attribute)) -> PROJECT([incident_id,maintenance_status=CASE WHEN maintenance_flags CONTAINS 'maintenance_status_maintenance_deferred' AND maintenance_flags CONTAINS 'maintenance_status_released_for_service' THEN 'both' WHEN maintenance_flags CONTAINS 'maintenance_status_maintenance_deferred' THEN 'deferred' ELSE 'released_to_service' END]);\nWITH_STATUS := JOIN(left=BASE, right=MAINTENANCE, condition=BASE.incident_id = MAINTENANCE.incident_id);\nCOMPONENTS := SCAN_TABLE(NASA_ASRS, components.csv, [incident_id,attribute,value]) -> FILTER(attribute IN ('aircraft_component','problem')) -> GROUP_BY([incident_id], structured_components=COLLECT_IF(value,attribute='aircraft_component'), structured_problems=COLLECT_IF(value,attribute='problem'));\nSTRUCTURED := JOIN(left=WITH_STATUS, right=COMPONENTS, condition=WITH_STATUS.incident_id = COMPONENTS.incident_id);\nCHAINS := STRUCTURED -> SCAN_DOCS(NASA_ASRS, selector=STRUCTURED.text_file, [incident_id,text]) -> SEM_FILTER('explicitly connects an earlier maintenance deferral or release-to-service decision to a later component discrepancy') -> SEM_FILTER('clearly places discovery in before_departure, after_takeoff, or after_landing') -> SEM_EXTRACT('earlier decision, affected item, later discrepancy, operational effect, and normalized discovery phase') -> SEM_CLASSIFY('chain category', target_labels=[deferred_item_recurred,released_item_failed,incomplete_repair_or_signoff,maintenance_limitation_escalated]);\nCHAINS -> GROUP_BY([maintenance_status,discovery_phase,chain_category], incident_count=COUNT_DISTINCT(incident_id), chain_records=COLLECT(affected_item,later_discrepancy,structured_components,structured_problems)) -> SEM_AGGREGATE('canonical affected item and recurring discrepancy, each at most six words') -> ORDER_BY([incident_count DESC,maintenance_status ASC,discovery_phase ASC,chain_category ASC]) -> LIMIT(12) -> PROJECT([rank=ROW_NUMBER(),maintenance_status,discovery_phase,chain_category,incident_count,canonical_affected_item,recurring_discrepancy])"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "relational_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "aviation_safety-046",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "LEFT := SCAN_TABLE(NASA_ASRS, incidents.csv AS L, [incident_id,incident_date,state_reference,locale_reference_type,primary_problem,text_file]);\nRIGHT := SCAN_TABLE(NASA_ASRS, incidents.csv AS R, [incident_id,incident_date,state_reference,locale_reference_type,primary_problem,text_file]);\nBLOCKED := JOIN(left=LEFT, right=RIGHT, condition=L.incident_id<R.incident_id AND date/state/locale/problem equality);\nLEFT_IDS := BLOCKED -> PROJECT([incident_id=L.incident_id,text_file=L.text_file]) -> DEDUP([incident_id]) -> SCAN_DOCS(NASA_ASRS, selector=text_file) -> SEM_EXTRACT('normalized event signature for left incident');\nRIGHT_IDS := BLOCKED -> PROJECT([incident_id=R.incident_id,text_file=R.text_file]) -> DEDUP([incident_id]) -> SCAN_DOCS(NASA_ASRS, selector=text_file) -> SEM_EXTRACT('normalized event signature for right incident');\nLEFT_PAIRS := JOIN(left=BLOCKED, right=LEFT_IDS, condition=L.incident_id=LEFT_IDS.incident_id);\nRIGHT_PAIRS := JOIN(left=BLOCKED, right=RIGHT_IDS, condition=R.incident_id=RIGHT_IDS.incident_id);\nMATCHED := SEM_JOIN(left=LEFT_PAIRS, right=RIGHT_PAIRS, instruction='same blocked pair and same distinctive occurrence');\nMATCHED -> ORDER_BY(incident_date DESC) -> LIMIT(20)"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_join_reordering"
+    ]
+  },
+  {
+    "task_id": "aviation_safety-048",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "RESULTS := SCAN_TABLE(NASA_ASRS, events.csv, [incident_id,event_type,label]) -> FILTER(event_type='result' AND label IN ('General Flight Cancelled / Delayed','Flight Crew Returned To Departure Airport','General Maintenance Action')) -> GROUP_BY([incident_id], recorded_results=COLLECT(label));\nINCIDENTS := SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id,text_file]);\nCANDIDATES := JOIN(left=RESULTS, right=INCIDENTS, condition=incident_id equality) -> SCAN_DOCS(NASA_ASRS, selector=text_file);\nPRIMARY := CANDIDATES -> SEM_FILTER('maintenance is the primary disruption driver');\nEXTRACTED := PRIMARY -> SEM_EXTRACT('narrative affected item and maintenance-driver phrase') -> FILTER(narrative_affected_item IS NOT NULL AND narrative_affected_item <> '');\nVOCAB := SCAN_TABLE(NASA_ASRS, components.csv, [attribute,value]) -> FILTER(attribute='aircraft_component') -> DEDUP([value]);\nMATCHED := SEM_JOIN(left=EXTRACTED, right=VOCAB, instruction='synonym, abbreviation, or clear part-to-system component match');\nSTATUS := SCAN_TABLE(NASA_ASRS, aircraft_attributes.csv, [incident_id,attribute,value]) -> FILTER(attribute IN maintenance_status_fields) -> GROUP_BY([incident_id], status=COLLECT(attribute,value));\nJOIN(left=MATCHED, right=STATUS, join_type=left, condition=incident_id equality) -> SEM_CLASSIFY('maintenance driver category') -> GROUP_BY([maintenance_driver,canonical_component], incident_count=COUNT_DISTINCT(incident_id)) -> ORDER_BY(incident_count DESC) -> LIMIT(15)"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "semantic_to_relational_rewrite"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-012",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> FILTER(REGEXP_LIKE(normalized_text, '(?is)disclosed\\s+in\\s+this(?:\\s+annual)?\\s+report\\s+any\\s+change.{0,500}?internal\\s+control\\s+over\\s+financ(?:ial|ing)\\s+reporting.{0,700}?(?:materially\\s+affected|reasonably\\s+likely\\s+to\\s+materially\\s+affect)'))\n-> SEM_FILTER('Keep certifications whose clause uses only generic certification language and describes no specific control change', input_bindings={document:text})\n-> GROUP_BY(keys=[], aggs=[COUNT(*) AS certification_count])"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "semantic_to_relational_rewrite"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-020",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> FILTER(word_count < 1500)\n-> SEM_FILTER('Keep agreements that expressly state a governing law, continue the confidentiality obligation indefinitely or perpetually, require return or destruction of confidential materials, and provide injunctive, equitable, or specific-performance relief', input_bindings={document: text})\n-> SEM_FILTER('Keep standalone non-disclosure or confidentiality agreements', input_bindings={document: text})\n-> SEM_EXTRACT('Return the document ID, governing-law jurisdiction, and nondisclosure direction as mutual or unilateral', out_schema={document_id: string, governing_law: string, direction: string}, input_bindings={document: text})"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-021",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> FILTER(file_extension = '.txt')\n-> SEM_FILTER('Keep agreements that expressly state a governing law, contain all six operative confidentiality carve-outs, and contain neither customer nor employee non-solicitation language', input_bindings={document: text})\n-> SEM_FILTER('Keep standalone non-disclosure or confidentiality agreements', input_bindings={document: text})\n-> SEM_EXTRACT('Return the document ID and every expressly named governing-law jurisdiction, normalized to full English names', out_schema={document_id: string, governing_law: string}, input_bindings={document: text})"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-022",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('Keep agreements that provide injunctive, equitable, or specific-performance relief; state a finite confidentiality term of no more than 36 months and a governing law; contain all six operative confidentiality carve-outs; and contain neither customer nor employee non-solicitation language', input_bindings={document: text})\n-> SEM_FILTER('Keep standalone non-disclosure or confidentiality agreements', input_bindings={document: text})\n-> SEM_EXTRACT('Return document ID, governing law, and the finite confidentiality term normalized to months', out_schema={document_id: string, governing_law: string, term_months: float}, input_bindings={document: text})"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-024",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('Keep agreements that require return or destruction of confidential materials, provide injunctive, equitable, or specific-performance relief, and contain exactly five of the six standard confidentiality carve-outs', input_bindings={document: text})\n-> SEM_FILTER('Keep standalone non-disclosure or confidentiality agreements governed by California, Delaware, or New York', input_bindings={document: text})\n-> SEM_EXTRACT('Return document ID, the qualifying governing state, the sole missing carve-out, and nondisclosure direction', out_schema={document_id: string, governing_state: string, missing_exception: string, direction: string}, input_bindings={document: text})"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-025",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('Keep agreements that expressly state a governing law and contain public-information, prior-knowledge, independent-development, legal-compulsion, and consent carve-outs, with lawful unrestricted third-party receipt as the sole missing standard carve-out', input_bindings={document: text})\n-> SEM_FILTER('Keep standalone non-disclosure or confidentiality agreements', input_bindings={document: text})\n-> SEM_EXTRACT('Return document ID and governing-law jurisdiction', out_schema={document_id: string, governing_law: string}, input_bindings={document: text})"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-026",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> FILTER(word_count < 750)\n-> SEM_FILTER('Keep agreements that expressly state a governing law, include an intellectual-property ownership clause, and contain no residual-information right permitting use of information retained in unaided memory', input_bindings={document: text})\n-> SEM_FILTER('Keep non-disclosure agreements', input_bindings={document: text})\n-> SEM_EXTRACT('Return document ID and governing law', out_schema={document_id: string, governing_law: string}, input_bindings={document: text})"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-027",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> FILTER(word_count < 750)\n-> SEM_FILTER('Keep agreements that expressly state a governing law, require return or destruction of confidential materials, and provide no injunctive or equitable relief for breach', input_bindings={document: text})\n-> SEM_FILTER('Keep non-disclosure agreements', input_bindings={document: text})\n-> SEM_EXTRACT('Return document ID, governing law, and agreement direction as mutual or one-way', out_schema={document_id: string, governing_law: string, agreement_direction: string}, input_bindings={document: text})"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-028",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('agreement contains operative standstill and employee non-solicitation restrictions and contains no operative non-compete restriction')\n-> SEM_FILTER('document is a mutual NDA, unilateral NDA, or confidentiality/standstill agreement')\n-> SEM_EXTRACT('document_id, governing_law, standstill_months, employee_non_solicitation_months; normalize years by *12 and fixed-date intervals by elapsed_days*12/365 rounded to 2 decimals; use null for unstated law or unquantifiable periods')\n-> FILTER(standstill_months IS NOT NULL AND employee_non_solicitation_months IS NOT NULL AND standstill_months <= employee_non_solicitation_months)"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-031",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('policy authorizes recovery for misconduct and limits the misconduct-triggered covered-person scope to current or former executive officers, excluding directors, key managers, other employees, and senior executives who are not executive officers')\n-> SEM_FILTER('document is a compensation recovery or clawback policy')\n-> SEM_EXTRACT('document_id, company_name')"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-032",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> FILTER(word_count < 1250)\n-> SEM_FILTER('Keep agreements that expressly state a governing law, provide injunctive or equitable relief, and contain no intellectual-property ownership clause', input_bindings={document: text})\n-> SEM_FILTER('Keep non-disclosure agreements', input_bindings={document: text})\n-> SEM_EXTRACT('Return document ID and governing law', out_schema={document_id: string, governing_law: string}, input_bindings={document: text})"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-034",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('Keep agreements that expressly state a governing law, provide injunctive or equitable relief, state that confidentiality obligations survive termination, and contain no return-or-destroy obligation', input_bindings={document: text})\n-> SEM_FILTER('Keep non-disclosure agreements', input_bindings={document: text})\n-> SEM_EXTRACT('Return document name and governing law', out_schema={document_name: string, governing_law: string}, input_bindings={document: text})"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-035",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('Keep agreements containing operative non-compete and employee non-solicitation clauses with quantifiable fixed periods and a stated governing-law provision', input_bindings={document: text})\n-> SEM_FILTER('Keep non-disclosure agreements', input_bindings={document: text})\n-> SEM_EXTRACT('Return document name, governing-law jurisdiction or rule, and both restriction periods normalized to months', out_schema={document_name: string, governing_law: string, non_compete_months: float, employee_non_solicitation_months: float}, input_bindings={document: text})\n-> PROJECT(document_name, governing_law, non_compete_months - employee_non_solicitation_months AS difference_months)"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-036",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> FILTER(word_count < 1000)\n-> SEM_FILTER('Keep agreements whose primary context is a potential merger, acquisition, or investment, that contain no operative standstill and expressly state a governing law', input_bindings={document: text})\n-> SEM_FILTER('Keep non-disclosure agreements', input_bindings={document: text})\n-> SEM_EXTRACT('Return document ID and governing law', out_schema={document_id: string, governing_law: string}, input_bindings={document: text})"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-039",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('Keep agreements that expressly state a governing law, contain operative return-of-materials and injunctive or equitable relief provisions, and have prior knowledge as the sole missing standard confidentiality carve-out', input_bindings={document: text})\n-> SEM_FILTER('Keep non-disclosure agreements', input_bindings={document: text})\n-> SEM_EXTRACT('Return document name and governing law', out_schema={document_name: string, governing_law: string}, input_bindings={document: text})"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-042",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('Keep agreements that expressly state a confidentiality term and governing law and contain an operative non-compete or employee non-solicitation clause', input_bindings={document: text})\n-> SEM_FILTER('Keep mutual non-disclosure agreements', input_bindings={document: text})\n-> SEM_EXTRACT('Return document ID, confidentiality term normalized to years or perpetual, governing law, and indicators for non-compete and employee non-solicitation clauses', out_schema={document_id: string, term_duration_years: 'float|string', governing_law: string, non_compete_present: boolean, non_solicitation_employees_present: boolean}, input_bindings={document: text})"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-043",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('Keep exhibits that are also mutual or unilateral non-disclosure agreements and explicitly state an effective date', input_bindings={document: text})\n-> SEM_FILTER('Keep EX-10 material contract exhibits', input_bindings={document: text})\n-> SEM_EXTRACT('Return document name, party names, agreement type, and effective date', out_schema={document_name: string, parties: 'list[string]', agreement_type: string, effective_date: date}, input_bindings={document: text})"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-044",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('Keep policies that treat intentional misconduct as a trigger, extend recovery beyond SEC minimum requirements, and explicitly state an effective date', input_bindings={document: text})\n-> SEM_FILTER('Keep EX-97 clawback or recoupment policies', input_bindings={document: text})\n-> SEM_EXTRACT('Return document name, company name, effective date, and concise covered-person scope', out_schema={document_name: string, company_name: string, effective_date: date, covered_persons: string}, input_bindings={document: text})"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-045",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('Keep agreements that include a standstill, recognize all six standard confidentiality carve-outs, state a confidentiality term, and state a quantifiable standstill period', input_bindings={document: text})\n-> SEM_FILTER('Keep non-disclosure agreements governed by Delaware or New York', input_bindings={document: text})\n-> SEM_EXTRACT('Return document name, governing state, confidentiality term normalized to years or perpetual, and standstill period normalized to years', out_schema={document_name: string, governing_state: string, term_duration_years: 'float|string', standstill_period_years: float}, input_bindings={document: text})"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-047",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('Keep agreements that expressly state a governing law, have a confidentiality term of at least 60 months or perpetual, and contain a residual-information clause', input_bindings={document: text})\n-> SEM_FILTER('Keep non-disclosure or confidentiality agreements', input_bindings={document: text})\n-> SEM_EXTRACT('Return document ID, governing law, term bucket as fixed_months or perpetual, and whether one archival copy may be retained after return or destruction', out_schema={document_id: string, governing_law: string, term_bucket: string, allows_one_copy_retention: boolean}, input_bindings={document: text})"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-048",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('Keep agreements that state a perpetual confidentiality term and governing law but contain no express clause stating that confidentiality duties survive termination', input_bindings={document: text})\n-> SEM_FILTER('Keep non-disclosure or confidentiality agreements', input_bindings={document: text})\n-> SEM_EXTRACT('Return document ID, governing law, and nondisclosure direction', out_schema={document_id: string, governing_law: string, non_disclosure_direction: string}, input_bindings={document: text})"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-054",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('Keep agreements that state a perpetual confidentiality term and governing law and contain none of the six standard confidentiality carve-outs', input_bindings={document: text})\n-> SEM_FILTER('Keep unilateral non-disclosure agreements', input_bindings={document: text})\n-> SEM_EXTRACT('Return document ID and governing law', out_schema={document_id: string, governing_law: string}, input_bindings={document: text})"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-057",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('Keep agreements with an operative non-compete lasting at least four years and an expressly stated geographic scope', input_bindings={document: text})\n-> SEM_FILTER('Keep employment agreements or standalone restrictive-covenant agreements', input_bindings={document: text})\n-> SEM_EXTRACT('Return document ID, non-compete duration normalized to years, geographic scope, and concise prohibited-activity scope', out_schema={document_id: string, duration_years: float, geographic_scope: string, prohibited_activity_scope: string}, input_bindings={document: text})"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-060",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('Keep agreements that contain a residual-information clause permitting use of information retained in unaided memory and expressly state a governing law', input_bindings={document: text})\n-> SEM_FILTER('Keep non-disclosure or confidentiality agreements', input_bindings={document: text})\n-> SEM_EXTRACT('Return document ID, nondisclosure direction, and governing law', out_schema={document_id: string, non_disclosure_direction: string, governing_law: string}, input_bindings={document: text})"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-063",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('Keep agreements containing an operative non-compete clause and at least one operative customer or employee non-solicitation clause', input_bindings={document: text})\n-> SEM_FILTER('Keep mutual NDAs, unilateral NDAs, and confidentiality-and-standstill agreements', input_bindings={document: text})\n-> SEM_EXTRACT('Return the non-compete duration and the presence and duration of each customer and employee non-solicitation restriction; if evaluated before the scope filter, return not_in_scope for other documents', out_schema={noncompete_duration_years: float|null, customers_present: boolean, customers_duration_years: float|null, employees_present: boolean, employees_duration_years: float|null}, input_bindings={document: text})\n-> PROJECT(CASE WHEN noncompete_duration_years IS NULL OR (customers_present AND customers_duration_years IS NULL) OR (employees_present AND employees_duration_years IS NULL) THEN 'Partially Unspecified' WHEN noncompete_duration_years > MAX_PRESENT(customers_duration_years, employees_duration_years) THEN 'NC Longer' WHEN noncompete_duration_years < MAX_PRESENT(customers_duration_years, employees_duration_years) THEN 'NS Longer' ELSE 'Equal' END AS duration_pattern)\n-> GROUP_BY(keys=[duration_pattern], aggs=[COUNT(*) AS document_count])"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-064",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('Keep agreements that also contain injunctive relief, an IP-ownership clause, and a survival clause', input_bindings={document: text})\n-> SEM_FILTER('Keep mutual NDAs, unilateral NDAs, and confidentiality-and-standstill agreements that contain all six operative confidentiality exceptions', input_bindings={document: text})\n-> PROJECT(document_id, WORD_COUNT(document_text) AS word_count)\n-> ORDER_BY(keys=[word_count ASC, document_id ASC])\n-> LIMIT(15)"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-067",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('Keep policies that go beyond baseline SEC requirements and identify a company', input_bindings={document: text})\n-> SEM_FILTER('Keep clawback or compensation-recovery policies', input_bindings={document: text})\n-> SEM_EXTRACT('Return document ID, primary stated company, latest identifiable policy version date, trigger pattern as restatement_only or restatement_and_misconduct, and whether covered persons extend beyond executive officers; if evaluated before the scope filter, return not_in_scope for other documents', out_schema={policy_document_id: string, company: string, policy_version_date: date|null, trigger_pattern: string, coverage_extends_beyond_executive_officers: boolean}, input_bindings={document: text})\n-> DEDUP(keys=[NORMALIZE_COMPANY_NAME(company)], keep=LATEST(policy_version_date, policy_document_id ASC))\n-> PROJECT(company, trigger_pattern, coverage_extends_beyond_executive_officers)"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-072",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> FILTER(REGEXP_LIKE(text, '(?i)(^|[^A-Za-z0-9])10\\s*b\\s*5\\s*[-‐‑‒–—−]\\s*1([^A-Za-z0-9]|$)'))\n-> SEM_FILTER('Is this an insider trading policy that covers family or household members?', input_bindings={document: text})\n-> SEM_EXTRACT('Extract the document name, policy title, whether short sales are prohibited, whether pledging is prohibited, and the stated approval or effective date', {document_name: str, policy_title: str, prohibits_short_sales: bool, prohibits_pledging: bool, policy_date: date|null})\n-> FILTER(prohibits_short_sales = TRUE AND prohibits_pledging = TRUE AND policy_date IS NOT NULL AND policy_date < DATE '2024-01-01')\n-> ORDER_BY(policy_date ASC, document_name ASC)"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "relational_semantic_reordering",
+      "semantic_to_relational_rewrite"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-075",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all) -> SEM_FILTER('agreement expressly contains a non-compete clause, an employee or customer non-solicitation clause, injunctive-relief language, and severability language') -> SEM_FILTER('document is an EX-10 material contract exhibit, including dual-labeled exhibits') -> SEM_EXTRACT('non-compete duration; employee non-solicitation duration; customer non-solicitation duration') -> FILTER(non_compete_duration IS NOT NULL AND (employee_non_solicitation_duration IS NOT NULL OR customer_non_solicitation_duration IS NOT NULL)) -> PROJECT(non_compete_months = normalize_to_months(non_compete_duration), longest_non_solicitation_months = MAX(normalize_to_months(employee_duration), normalize_to_months(customer_duration)), comparison_class = CASE WHEN non_compete_months > longest_non_solicitation_months THEN 'non_compete_longer' WHEN non_compete_months = longest_non_solicitation_months THEN 'equal' ELSE 'non_solicitation_longer' END) -> GROUP_BY(comparison_class, agreement_count = COUNT(*), average_non_compete_months = ROUND(AVG(non_compete_months), 2), average_longest_non_solicitation_months = ROUND(AVG(longest_non_solicitation_months), 2))"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-077",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all) AS nda_docs\n-> SEM_FILTER('document is a mutual NDA, unilateral NDA, or confidentiality-and-standstill agreement with a finite stated confidentiality term')\n-> SEM_EXTRACT('nda_document_id, stated corporate party names, and confidentiality duration normalized to years', {nda_document_id: string, nda_company_parties: list[string], nda_duration_years: float}) AS nda_records\nSCAN_DOCS(CONTRACTEXHIBIT, all) AS restrictive_docs\n-> SEM_FILTER('the agreement contains an operative non-compete clause with a finite stated duration')\n-> SEM_FILTER('document is an employment agreement or standalone restrictive-covenant agreement')\n-> SEM_EXTRACT('restrictive_document_id, stated corporate party names, and non-compete duration normalized to years', {restrictive_document_id: string, restrictive_company_parties: list[string], noncompete_duration_years: float}) AS restrictive_records\nJOIN(nda_records, restrictive_records, on=INTERSECT(NORMALIZE_COMPANY_NAMES(nda_company_parties, casefold=true, remove_punctuation=true, remove_legal_suffix=true), NORMALIZE_COMPANY_NAMES(restrictive_company_parties, casefold=true, remove_punctuation=true, remove_legal_suffix=true)) IS NOT EMPTY AND nda_document_id != restrictive_document_id)\n-> PROJECT(company_name := LEXICOGRAPHICALLY_SMALLEST_MATCHED_STATED_VARIANT, nda_document_id, restrictive_document_id, nda_duration_years, noncompete_duration_years)"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-078",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> FILTER(word_count > 5000)\n-> SEM_FILTER('Keep policies that discuss Rule 10b5-1 plans and expressly cover family or household members', input_bindings={document: text})\n-> SEM_FILTER('Keep policies that state no policy approval or adoption date', input_bindings={document: text})\n-> SEM_FILTER('Keep substantive insider-trading policies', input_bindings={document: text})\n-> SEM_EXTRACT('Return document ID and all stated company names, excluding individual officer names', out_schema={document_id: string, company_names: 'list[string]'}, input_bindings={document: text})"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-081",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('Keep policies that go beyond baseline SEC clawback requirements and include misconduct as a recovery trigger', input_bindings={document: text})\n-> SEM_FILTER('Keep genuine EX-97 clawback or compensation-recovery policies', input_bindings={document: text})\n-> SEM_FILTER('Keep policies that explicitly extend recovery beyond executive officers to non-executive employees, directors, or key managers', input_bindings={document: text})\n-> SEM_EXTRACT('Return the primary stated company name', out_schema={company: string}, input_bindings={document: text})\n-> DEDUP(keys=[NORMALIZE_COMPANY_NAME(company)])"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-082",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('Keep mutual NDAs, unilateral NDAs, and confidentiality-and-standstill agreements', input_bindings={document: text})\n-> SEM_FILTER('Keep agreements whose confidentiality obligation is expressly perpetual or indefinite', input_bindings={document: text})\n-> SEM_FILTER('Keep agreements with no severability clause', input_bindings={document: text})\n-> SEM_FILTER('Keep agreements with no operative exception for independently developed information', input_bindings={document: text})\n-> PROJECT(document_id)"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-083",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all) -> SEM_FILTER('Does the agreement include all six exceptions: public information, prior knowledge, independent development, third-party receipt, legal compulsion, and consent?') -> SEM_FILTER('Is this a standalone NDA, not an NDA|EX-10 agreement?') -> SEM_EXTRACT('Extract the finite confidentiality term in years and stated governing law; return null when either is absent or the term is perpetual', {term_years: float|null, governing_law: str|null}) -> FILTER(term_years IS NOT NULL AND governing_law IS NOT NULL) -> GROUP_BY(governing_law, agreement_count = COUNT(*), term_lengths_years = SORT_ASC(DISTINCT(ROUND(term_years, 4)))) -> FILTER(agreement_count >= 3) -> ORDER_BY(agreement_count DESC, governing_law ASC)"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-084",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SOX := SCAN_DOCS(CONTRACTEXHIBIT, all)\n  -> SEM_FILTER('Is this a SOX Section 302 certification document?')\n  -> SEM_EXTRACT('Extract the certified company entity and certifying officer with title', {company: str, certifying_officer: str})\n  -> GROUP_BY(company, certifying_officers=SORT_ASC(DISTINCT(certifying_officer)));\nCLAWBACK := SCAN_DOCS(CONTRACTEXHIBIT, all)\n  -> SEM_FILTER('Is this a clawback or compensation-recovery policy?')\n  -> SEM_FILTER('Does the policy permit recovery for misconduct?')\n  -> SEM_EXTRACT('Extract the company entity and normalize the covered-person category', {company: str, covered_person_category: str})\n  -> DEDUP(company, covered_person_category);\nSUBSIDIARIES := SCAN_DOCS(CONTRACTEXHIBIT, all)\n  -> SEM_FILTER('Is this a subsidiary-list filing?')\n  -> SEM_EXTRACT('Extract the parent company entity and number of listed subsidiaries', {company: str, subsidiary_count: integer})\n  -> FILTER(subsidiary_count >= 70)\n  -> GROUP_BY(company, largest_subsidiary_count=MAX(subsidiary_count));\nCLAWBACK_SUBSIDIARIES := SEM_JOIN(left=CLAWBACK, right=SUBSIDIARIES, instruction='match the same company entity despite naming, punctuation, or corporate-suffix variation');\nALL_THREE := SEM_JOIN(left=CLAWBACK_SUBSIDIARIES, right=SOX, instruction='match each company in the completed clawback-subsidiary relation to its SOX certification entity');\nALL_THREE\n  -> ORDER_BY(largest_subsidiary_count DESC, company ASC)"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_join_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-086",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all) -> SEM_FILTER('Is this document classified as an NDA, including a dual-labelled NDA exhibit, with an effective date strictly after 2010-01-01?') -> SEM_FILTER('Do confidentiality or non-use obligations expressly survive termination or expiry or continue beyond the stated term?') -> SEM_FILTER('Does the agreement require destruction of at least some confidential materials or copies, excluding clauses that only require return or merely allow an unrestricted choice between return and destruction?') -> SEM_FILTER('Does the confidential-information definition explicitly include electronic data or records, email, software or code, metadata, or other computer-readable material?') -> SEM_EXTRACT('Extract and canonicalize the expressly stated governing-law jurisdiction; return null when unstated', {governing_law: str|null}) -> FILTER(governing_law IS NOT NULL) -> GROUP_BY(governing_law, matching_count = COUNT(*)) -> ORDER_BY(matching_count DESC, governing_law ASC)"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-088",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SOX = SCAN_DOCS(CONTRACTEXHIBIT, all) -> SEM_FILTER('Is this an EX-31 SOX officer certification?') -> SEM_EXTRACT('Extract the certified company entity and certifying officer name with title', {company: str, certifying_officer: str}) -> GROUP_BY(company, certifying_officers = SORT_ASC(DISTINCT(certifying_officer))); CLAWBACK = SCAN_DOCS(CONTRACTEXHIBIT, all) -> SEM_FILTER('Does the policy provide financial-restatement recovery and also permit recovery for misconduct?') -> SEM_FILTER('Is this an EX-97 clawback policy?') -> SEM_EXTRACT('Extract the company entity and normalize the policy covered-person category', {company: str, covered_person_category: str}) -> DEDUP(company, covered_person_category); SEM_JOIN(SOX, CLAWBACK, on='same company entity despite naming, punctuation, or corporate-suffix variation') -> PROJECT(company, certifying_officers, covered_person_category)"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-090",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all) -> SEM_FILTER('agreement expressly contains both a standstill provision and an employee non-solicitation clause') -> SEM_FILTER('document is a non-disclosure agreement, including dual-labeled NDA exhibits') -> SEM_EXTRACT('standstill duration; employee non-solicitation duration; presence of each of the 6 named confidentiality exceptions') -> FILTER(standstill_duration IS NOT NULL AND employee_non_solicitation_duration IS NOT NULL) -> PROJECT(class_label = CASE WHEN employee_duration > standstill_duration THEN 'employee_restriction_longer' WHEN employee_duration = standstill_duration THEN 'equal' ELSE 'standstill_longer' END, exception_count = sum(six_exception_flags)) -> GROUP_BY(class_label, agreement_count = COUNT(*), average_exception_count = ROUND(AVG(exception_count), 2)) -> ORDER_BY(agreement_count DESC, class_label ASC)"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-091",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "left = SCAN_DOCS(CONTRACTEXHIBIT, all) -> SEM_FILTER('EX-21 subsidiary-list filing that explicitly identifies its parent company') -> SEM_EXTRACT('parent company; listed subsidiary entity names; subsidiary count'); right = SCAN_DOCS(CONTRACTEXHIBIT, all) -> SEM_FILTER('the agreement contains a non-compete clause and an employee or customer non-solicitation clause, with both restrictive durations stated') -> SEM_FILTER('EX-10 employment, offer, or separation agreement') -> SEM_EXTRACT('document ID; employer and company entity names'); left -> SEM_JOIN('an EX-10 employer or company entity is the EX-21 parent or an entity explicitly named in that EX-21 subsidiary list', right) -> GROUP_BY(parent_company, subsidiary_count = MAX(subsidiary_count), qualifying_agreement_count = COUNT(DISTINCT document_id))"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-094",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all) -> SEM_FILTER('agreement explicitly defines confidential information and contains both a return-or-destroy obligation and injunctive-relief language') -> SEM_FILTER('document is a non-disclosure agreement, including dual-labeled NDA exhibits') -> SEM_EXTRACT('normalized governing-law jurisdiction; NDA direction as mutual or unilateral; stated finite agreement term in years, with perpetual or unspecified terms as NULL') -> FILTER(governing_law IS NOT NULL AND nda_direction IN {'mutual', 'unilateral'}) -> GROUP_BY(governing_law, mutual_count = COUNT_IF(nda_direction = 'mutual'), unilateral_count = COUNT_IF(nda_direction = 'unilateral'), average_finite_term_years = ROUND(AVG(finite_term_years) IGNORE NULLS, 2)) -> ORDER_BY((mutual_count + unilateral_count) DESC, governing_law ASC) -> LIMIT(3)"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-095",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "POLICY19 := SCAN_DOCS(CONTRACTEXHIBIT, all) -> SEM_FILTER('EX-19 policy prohibiting hedging, short sales, and pledging') -> SEM_EXTRACT('canonical policy-company key');\nSUBS21 := SCAN_DOCS(CONTRACTEXHIBIT, all) -> SEM_FILTER('EX-21 subsidiary list with an identified parent') -> SEM_EXTRACT('canonical parent-company key and subsidiary count') -> GROUP_BY(company_key, MAX(subsidiary_count));\nCLAW97 := SCAN_DOCS(CONTRACTEXHIBIT, all) -> SEM_FILTER('policy provides both restatement and misconduct recovery') -> SEM_FILTER('document is an EX-97 clawback policy') -> SEM_EXTRACT('canonical policy-company key, company, and covered-person category');\nFIRST := JOIN(left=CLAW97, right=SUBS21, condition=CLAW97.company_key = SUBS21.company_key);\nALL_THREE := JOIN(left=FIRST, right=POLICY19, condition=FIRST.company_key = POLICY19.company_key);\nALL_THREE -> GROUP_BY([company, covered_person_category], subsidiary_count=MAX(subsidiary_count))"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "legal_contracts-104",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "RESTRICTIVE_NDAS = SCAN_DOCS(CONTRACTEXHIBIT, all) -> SEM_FILTER('document states a finite non-compete duration and contains a customer or employee non-solicitation clause') -> SEM_FILTER('document has NDA status') -> SEM_EXTRACT('NDA document ID, canonical key for each stated corporate party, and non-compete duration normalized to years', {nda_document_id: string, company_key: string, non_compete_duration_years: float}) -> PROJECT(nda_document_id, company_key, highly_restrictive = non_compete_duration_years > 3); POLICIES = SCAN_DOCS(CONTRACTEXHIBIT, all) -> SEM_FILTER('document is an EX-19 insider trading policy') -> SEM_EXTRACT('canonical policy-company key and whether the policy includes a blackout period, pre-clearance, and a Rule 10b5-1 provision', {company_key: string, has_blackout: boolean, has_preclearance: boolean, has_10b5_1: boolean}) -> PROJECT(company_key, comprehensive_policy = has_blackout AND has_preclearance AND has_10b5_1) -> DEDUP([company_key, comprehensive_policy]); JOIN(RESTRICTIVE_NDAS, POLICIES, RESTRICTIVE_NDAS.company_key = POLICIES.company_key) -> GROUP_BY([highly_restrictive, comprehensive_policy], matched_nda_company_pair_count = COUNT(DISTINCT [nda_document_id, company_key]), distinct_company_count = COUNT(DISTINCT company_key))"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "vehicle_safety-018",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(NHTSA, investigation_reports, selector='*.txt', columns=[file_id,body])\n-> FILTER(REGEXP_LIKE(body, '(?is)\\[?Tesla\\]?.{0,80}?\\bModel\\s+(3|S|X|Y)\\b'))\n-> PROJECT([file_id,body,cited_recall_numbers=NORMALIZE(REGEXP_EXTRACT_ALL(body,'(?i)(?<![A-Z0-9])[0-9]{2}\\s*[VE][-\\s]?[0-9]{3}(?:[0-9]{3})?(?![A-Z0-9])'))])\n-> FILTER(LENGTH(cited_recall_numbers)>=1)\n-> PROJECT([file_id,cited_recall_numbers])"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "semantic_to_relational_rewrite"
+    ]
+  },
+  {
+    "task_id": "vehicle_safety-019",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "REPORTS := SCAN_DOCS(NHTSA, investigation_reports, [file_id,body]);\nWITH_RECALLS := REPORTS -> SEM_EXTRACT('every normalized and deduplicated NHTSA recall number cited in the body') -> FILTER(LENGTH(cited_recall_numbers)>=1);\nCLOSED := WITH_RECALLS -> SEM_FILTER('investigation is closed, concluded, or ended');\nCLOSED -> SEM_CLASSIFY('primary defect topic') -> PROJECT([file_id,primary_topic,cited_recall_numbers])"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "relational_semantic_reordering",
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "vehicle_safety-021",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "COMPLAINTS := SCAN_TABLE(NHTSA, complaints, [complaint_id,vehicle_id,make,model,component_id,injury_count,death_count,summary_text]) -> FILTER(make='NISSAN' AND model='ALTIMA' AND component_id='AIRBAG' AND (injury_count>0 OR death_count>0));\nAIRBAG_RECALLS := SCAN_DOCS(NHTSA, recalls, [campaign.number,vehicle.vehicle_id,component.component_id]) -> FILTER(component.component_id='AIRBAG') -> DEDUP([vehicle_id,campaign.number]);\nCOVERED_VEHICLES := AIRBAG_RECALLS -> PROJECT([vehicle_id]) -> DEDUP([vehicle_id]);\nCANDIDATES := JOIN(left=COMPLAINTS, right=COVERED_VEHICLES, condition=COMPLAINTS.vehicle_id = COVERED_VEHICLES.vehicle_id);\nQUALIFIED := CANDIDATES -> SEM_FILTER('airbag inflator rupture, explosion, shrapnel, or metal fragments causing injury') -> SEM_EXTRACT('short canonical airbag failure mode');\nJOIN(left=QUALIFIED, right=AIRBAG_RECALLS, condition=QUALIFIED.vehicle_id = AIRBAG_RECALLS.vehicle_id) -> PROJECT([complaint_id,vehicle_id,campaign_number,airbag_failure_mode])"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "relational_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "vehicle_safety-023",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [state_of_incident, medical_attention_flag, summary_text])\n-> FILTER(medical_attention_flag='true' AND state_of_incident IN US_50_STATE_CODES)\n-> SEM_FILTER('summary_text describes an airbag deployment failure, unintended deployment, inflator rupture, or similar deployment hazard.', input_bindings={text: summary_text})\n-> SEM_FILTER('summary_text is airbag-related, including airbags, inflators, pretensioners, or supplemental restraint system behavior.', input_bindings={text: summary_text})\n-> GROUP_BY([state_of_incident AS state], aggs={complaint_count: count(*)})\n-> ORDER_BY([complaint_count DESC, state ASC])\n-> LIMIT(5)"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "relational_semantic_reordering",
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "vehicle_safety-025",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "COMPLAINT_BASE := SCAN_TABLE(NHTSA, complaints, [complaint_id,make,component_id,summary_text]) -> FILTER(component_id='ADAS');\nRECALL_BASE := SCAN_DOCS(NHTSA, recalls, [campaign.number,vehicle.make AS make,component.component_id,risk.defect_summary]) -> FILTER(component.component_id='ADAS');\nCOMPLAINT_MAKES := COMPLAINT_BASE -> PROJECT([make]) -> DEDUP([make]);\nRECALL_MAKES := RECALL_BASE -> PROJECT([make]) -> DEDUP([make]);\nCOMMON_MAKES := JOIN(left=COMPLAINT_MAKES, right=RECALL_MAKES, condition=make equality) -> PROJECT([make]) -> DEDUP([make]);\nCOMPLAINTS := JOIN(left=COMPLAINT_BASE, right=COMMON_MAKES, condition=make equality) -> SEM_FILTER('phantom braking by a driver-assist system') -> GROUP_BY([make], phantom_braking_complaint_count=COUNT_DISTINCT(complaint_id));\nRECALLS := JOIN(left=RECALL_BASE, right=COMMON_MAKES, condition=make equality) -> SEM_FILTER('automatic or driver-assist braking is the recall defect') -> GROUP_BY([make], matching_adas_recall_count=COUNT_DISTINCT(campaign.number));\nJOIN(left=COMPLAINTS, right=RECALLS, condition=make equality) -> ORDER_BY(phantom_braking_complaint_count DESC, make ASC) -> LIMIT(4)"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "relational_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "vehicle_safety-027",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [make, component_id, summary_text]) -> FILTER(make='TOYOTA' AND component_id='AIRBAG') -> SEM_FILTER('summary_text reports an occupant injury or burn caused by the airbag deployment', input_bindings={text: summary_text}) -> SEM_FILTER('summary_text describes an unintended airbag deployment (airbag deployed without a corresponding collision or impact)', input_bindings={text: summary_text}) -> SEM_CLASSIFY('Group each unintended-deployment complaint by likely root cause.', target_labels=['sensor_misfire','software_logic_error','inflator_defect','other'], input_bindings={text: summary_text}) -> GROUP_BY([group], aggs={count: count(*)}) -> PROJECT(format_as_dictionary, derive dominant_label = argmax_with_tiebreak(count, tiebreak='alpha_asc'), per_label_counts={group: {count}}, per_label_percentages = {group: round(100.0 * count / sum(count), 1) for each group})"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "vehicle_safety-028",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "COMPLAINT_BASE := SCAN_TABLE(NHTSA, complaints, [complaint_id,make,vehicle_id,summary_text]) -> FILTER(make IN ['TOYOTA','HONDA']);\nRECALL_BASE := SCAN_DOCS(NHTSA, recalls, [campaign.number,vehicle.vehicle_id AS vehicle_id,vehicle.make AS make,risk.defect_summary]) -> FILTER(vehicle.make IN ['TOYOTA','HONDA']);\nCOMPLAINT_KEYS := COMPLAINT_BASE -> PROJECT([vehicle_id]) -> DEDUP([vehicle_id]);\nRECALL_KEYS := RECALL_BASE -> PROJECT([vehicle_id]) -> DEDUP([vehicle_id]);\nCOMMON_KEYS := JOIN(left=COMPLAINT_KEYS, right=RECALL_KEYS, condition=vehicle_id equality) -> PROJECT([vehicle_id]) -> DEDUP([vehicle_id]);\nCOMPLAINTS := JOIN(left=COMPLAINT_BASE, right=COMMON_KEYS, condition=vehicle_id equality) -> SEM_FILTER('severe safety event while the vehicle was being driven');\nRECALLS := JOIN(left=RECALL_BASE, right=COMMON_KEYS, condition=vehicle_id equality) -> SEM_FILTER('safety-critical defect capable of crash, injury, fire, control loss, airbag or brake failure, or motive-power loss') -> DEDUP([campaign.number,vehicle_id]);\nJOIN(left=COMPLAINTS, right=RECALLS, condition=vehicle_id equality) -> GROUP_BY([make], matched_complaint_count=COUNT_DISTINCT(complaint_id))"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "relational_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "vehicle_safety-029",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [make, component_id, injury_count, summary_text]) -> FILTER(make='HONDA' AND component_id IN ['ADAS','BRAKES']) -> SEM_FILTER('summary_text indicates the problem manifested while the vehicle was being driven (not while parked or stationary)', input_bindings={text: summary_text}) -> SEM_FILTER('summary_text describes a tangible safety event, NOT a minor inconvenience like screen flicker or infotainment lag or cosmetic blemish.', input_bindings={text: summary_text}) -> GROUP_BY([component_id], aggs={avg_injury: avg(injury_count)}) -> PROJECT(label = case(avg_injury_ADAS - avg_injury_BRAKES > 0.01 -> 'ADAS_higher'; avg_injury_BRAKES - avg_injury_ADAS > 0.01 -> 'BRAKES_higher'; else 'tie'))"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "vehicle_safety-030",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "COMPLAINT_BASE := SCAN_TABLE(NHTSA, complaints, [complaint_id,make,model_year,summary_text]) -> FILTER(model_year IN [2023,2024,2025]);\nRECALL_BASE := SCAN_DOCS(NHTSA, recalls, [campaign.number,vehicle.make AS make,campaign.report_received_date,risk.defect_summary,remedy.corrective_action]) -> FILTER(campaign.report_received_date BETWEEN '2023-01-01' AND '2025-12-31');\nCOMPLAINT_MAKES := COMPLAINT_BASE -> PROJECT([make]) -> DEDUP([make]);\nRECALL_MAKES := RECALL_BASE -> PROJECT([make]) -> DEDUP([make]);\nCOMMON_MAKES := JOIN(left=COMPLAINT_MAKES, right=RECALL_MAKES, condition=make equality) -> PROJECT([make]) -> DEDUP([make]);\nCOMPLAINTS := JOIN(left=COMPLAINT_BASE, right=COMMON_MAKES, condition=make equality) -> SEM_FILTER('EV or hybrid battery, charging, BMS, electric-drive, high-voltage, hybrid-drivetrain, or control-software issue') -> GROUP_BY([make], ev_hybrid_complaint_count=COUNT_DISTINCT(complaint_id));\nRECALLS := JOIN(left=RECALL_BASE, right=COMMON_MAKES, condition=make equality) -> SEM_FILTER('EV or hybrid battery, charging, high-voltage, drive, drivetrain, or control-software recall') -> GROUP_BY([make], related_ev_hybrid_recall_count=COUNT_DISTINCT(campaign.number));\nJOIN(left=COMPLAINTS, right=RECALLS, condition=make equality) -> ORDER_BY(ev_hybrid_complaint_count DESC, make ASC) -> LIMIT(5)"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "relational_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "vehicle_safety-031",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "COMPLAINT_BASE := SCAN_TABLE(NHTSA, complaints, [complaint_id,vehicle_id,component_id,summary_text]) -> FILTER(component_id='AIRBAG');\nRECALL_BASE := SCAN_DOCS(NHTSA, recalls, [campaign.number,vehicle.vehicle_id AS vehicle_id,component.component_id,remedy.corrective_action]) -> FILTER(component.component_id='AIRBAG');\nCOMPLAINT_KEYS := COMPLAINT_BASE -> PROJECT([vehicle_id]) -> DEDUP([vehicle_id]);\nRECALL_KEYS := RECALL_BASE -> PROJECT([vehicle_id]) -> DEDUP([vehicle_id]);\nCOMMON_KEYS := JOIN(left=COMPLAINT_KEYS, right=RECALL_KEYS, condition=vehicle_id equality) -> PROJECT([vehicle_id]) -> DEDUP([vehicle_id]);\nCOMPLAINTS := JOIN(left=COMPLAINT_BASE, right=COMMON_KEYS, condition=vehicle_id equality) -> SEM_FILTER('serious airbag non-deployment, unintended deployment, inflator rupture, shrapnel, or deployment hazard');\nRECALLS := JOIN(left=RECALL_BASE, right=COMMON_KEYS, condition=vehicle_id equality) -> SEM_FILTER('remedy replaces an airbag inflator, module, or inflator assembly');\nJOIN(left=COMPLAINTS, right=RECALLS, condition=vehicle_id equality) -> GROUP_BY([], n=COUNT_DISTINCT(campaign.number))"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "relational_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "vehicle_safety-032",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "COMPLAINT_BASE := SCAN_TABLE(NHTSA, complaints, [complaint_id,make,model,model_year,vehicle_id,component_id,summary_text]) -> FILTER(make='TESLA' AND model='MODEL 3' AND model_year IN [2020,2021,2022]);\nRECALL_BASE := SCAN_DOCS(NHTSA, recalls, [recall_id,vehicle.vehicle_id AS vehicle_id,component.component_id AS component_id,risk.defect_summary]) -> FILTER(vehicle.make='TESLA' AND vehicle.model='MODEL 3' AND vehicle.model_year IN [2020,2021,2022]);\nCOMPLAINT_KEYS := COMPLAINT_BASE -> PROJECT([vehicle_id,component_id]) -> DEDUP([vehicle_id,component_id]);\nRECALL_KEYS := RECALL_BASE -> PROJECT([vehicle_id,component_id]) -> DEDUP([vehicle_id,component_id]);\nCOMMON_KEYS := JOIN(left=COMPLAINT_KEYS, right=RECALL_KEYS, condition=vehicle_id and component_id equality) -> PROJECT([vehicle_id,component_id]) -> DEDUP([vehicle_id,component_id]);\nCOMPLAINTS := JOIN(left=COMPLAINT_BASE, right=COMMON_KEYS, condition=vehicle_id and component_id equality) -> SEM_FILTER('unintended acceleration or stuck accelerator pedal event');\nRECALLS := JOIN(left=RECALL_BASE, right=COMMON_KEYS, condition=vehicle_id and component_id equality) -> SEM_FILTER('accelerator-pedal or speed-control defect');\nJOIN(left=COMPLAINTS, right=RECALLS, condition=vehicle_id and component_id equality) -> GROUP_BY([], n=COUNT_DISTINCT(complaint_id,recall_id))"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "relational_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "vehicle_safety-033",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "RECALLS := SCAN_DOCS(NHTSA, recalls, [recall_id,campaign.number,vehicle.vehicle_id AS vehicle_id,component.component_id AS component_id,campaign.report_received_date,risk.defect_summary]) -> FILTER(campaign.report_received_date IS NOT NULL AND campaign.report_received_date<>'');\nCOMPLAINTS := SCAN_TABLE(NHTSA, complaints, [complaint_id,vehicle_id,component_id,received_date,summary_text]);\nPAIRS := JOIN(left=COMPLAINTS, right=RECALLS, condition=vehicle_id and component_id equality AND complaint.received_date<recall.report_received_date AND date difference>=1500 days);\nNEEDED_RECALLS := PAIRS -> PROJECT([recall_id,campaign.number,risk.defect_summary]) -> DEDUP([recall_id]) -> SEM_EXTRACT('short recall root-cause phrase');\nWITH_CAUSE := JOIN(left=PAIRS, right=NEEDED_RECALLS, condition=recall_id equality);\nWITH_CAUSE -> SEM_FILTER('complaint and recall describe the same defect mechanism') -> PROJECT([complaint_id,campaign_number,days_between,defect_root_cause])"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "relational_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "vehicle_safety-036",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "PAIRS := SCAN_TABLE(NHTSA, complaints, [complaint_id,make,component_id,summary_text]) -> FILTER(make='FORD' AND component_id='AIRBAG') -> SEM_JOIN('same Ford airbag failure mechanism', right=(SCAN_DOCS(NHTSA, recalls, [campaign.number,vehicle.make,component.component_id,risk.defect_summary,remedy.corrective_action]) -> FILTER(vehicle.make='FORD' AND component.component_id='AIRBAG'))) -> SEM_FILTER('concrete airbag safety event');\nCOMPLAINTS := PAIRS -> PROJECT([complaint_id,summary_text]) -> DEDUP([complaint_id]) -> SEM_CLASSIFY('complaint severity');\nCAMPAIGNS := PAIRS -> PROJECT([campaign.number,remedy.corrective_action]) -> DEDUP([campaign.number]) -> SEM_CLASSIFY('recall remedy style');\nLABELED_PAIRS := JOIN(left=PAIRS, right=COMPLAINTS, condition=PAIRS.complaint_id = COMPLAINTS.complaint_id);\nJOIN(left=LABELED_PAIRS, right=CAMPAIGNS, condition=LABELED_PAIRS.campaign.number = CAMPAIGNS.campaign.number) -> GROUP_BY([campaign.number], matched_complaint_count=COUNT_DISTINCT(complaint_id)) -> ORDER_BY(matched_complaint_count DESC) -> LIMIT(5)"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "relational_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "vehicle_safety-039",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(NHTSA, investigation_reports, selector='*.txt', columns=[file_id, body]) -> PROJECT([file_id, body, cited_recall_cores=NORMALIZE(REGEXP_EXTRACT_ALL(body,'(?i)(?<![A-Z0-9])[0-9]{2}\\s*[VE][-\\s]?[0-9]{3}(?:[0-9]{3})?(?![A-Z0-9])'), format='canonical_core', deduplicate=TRUE)]) -> GROUP_BY([], aggs={investigation_cited_cores: collect_distinct(cited_recall_cores)}) -> JOIN(cross, right=( SCAN_DOCS(NHTSA, recalls, [campaign.number, vehicle.make, component.component_id AS component_id, risk.defect_summary AS defect_summary]) -> FILTER(vehicle.make='FORD') -> DEDUP([campaign.number]) -> SEM_JOIN('Within the same component_id block, match a Ford recall campaign to a Ford complaint only when the complaint narrative describes the same underlying defect as the recall defect summary.', input_bindings_left={component_id: component_id, defect_summary: defect_summary}, input_bindings_right={component_id: c.component_id, complaint_summary: c.summary_text}, right=( SCAN_TABLE(NHTSA, complaints AS c, [complaint_id, make, component_id, summary_text]) -> FILTER(make='FORD') )) -> GROUP_BY([campaign.number], aggs={component_id: any(component_id), corroborating_complaint_count: count_distinct(complaint_id)}) )) -> PROJECT([campaign_number: campaign.number, component_id, corroborating_complaint_count, cited_by_investigation: (core(campaign.number) IN investigation_cited_cores ? 'true' : 'false')]) -> ORDER_BY([corroborating_complaint_count DESC, campaign_number ASC]) -> LIMIT(5) -> PROJECT([rank: row_number(), campaign_number, component_id, corroborating_complaint_count, cited_by_investigation])"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "semantic_to_relational_rewrite"
+    ]
+  },
+  {
+    "task_id": "vehicle_safety-042",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "PAIRS := SCAN_TABLE(NHTSA, complaints, [complaint_id,make,component_id,summary_text]) -> FILTER(make='TESLA' AND component_id='ADAS') -> SEM_JOIN('same Tesla ADAS problem', right=(SCAN_DOCS(NHTSA, recalls, [campaign.number,vehicle.make,component.component_id,risk.defect_summary]) -> FILTER(vehicle.make='TESLA' AND component.component_id='ADAS'))) -> SEM_FILTER('driving-context ADAS safety issue') -> SEM_CLASSIFY('dominant ADAS defect topic');\nISSUES := PAIRS -> GROUP_BY([campaign.number,group], matched_complaint_count=COUNT_DISTINCT(complaint_id), complaint_texts=COLLECT(summary_text), recall_texts=COLLECT(risk.defect_summary));\nREPORTS := SCAN_DOCS(NHTSA, investigation_reports, [file_id,body]) -> FILTER(body CONTAINS 'Tesla' OR body CONTAINS 'Autopilot' OR body CONTAINS 'driver assistance');\nMATCHED := SEM_JOIN(left=ISSUES, right=REPORTS, instruction='same ADAS safety issue or ODI human-factors concern');\nMATCHED -> GROUP_BY([campaign.number], matched_complaint_count=MAX(matched_complaint_count), dominant_adas_topic=MODE(group), related_report_ids=COLLECT_DISTINCT(file_id))"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_join_reordering"
+    ]
+  },
+  {
+    "task_id": "vehicle_safety-043",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "REPORTS := SCAN_DOCS(NHTSA, investigation_reports, [file_id,body]) -> PROJECT(cited_recall_cores=NORMALIZE(REGEXP_EXTRACT_ALL(body,'NHTSA recall-number pattern'))) -> GROUP_BY([], cited=COLLECT_DISTINCT(cited_recall_cores));\nCOMPLAINTS := SCAN_TABLE(NHTSA, complaints, [complaint_id,make,component_id,summary_text]) -> FILTER(make IN ['FORD','JEEP','HONDA','TESLA']);\nRECALLS := SCAN_DOCS(NHTSA, recalls, [campaign.number,vehicle.make,component.component_id,risk.defect_summary]) -> FILTER(vehicle.make IN ['FORD','JEEP','HONDA','TESLA']);\nMATCHES := SEM_JOIN(left=COMPLAINTS, right=RECALLS, instruction='same make/component and same underlying defect');\nBY_MAKE := MATCHES -> GROUP_BY([make], corroborated_complaint_count=COUNT_DISTINCT(complaint_id));\nRECALL_COUNTS := RECALLS -> GROUP_BY([make], recall_campaign_count=COUNT_DISTINCT(campaign.number), cores=COLLECT_DISTINCT(core(campaign.number)));\nJOIN(left=BY_MAKE, right=RECALL_COUNTS, condition=make equality) -> JOIN(cross, right=REPORTS) -> PROJECT([make,corroborated_complaint_count,recall_campaign_count,alignment_label])"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "semantic_to_relational_rewrite"
+    ]
+  },
+  {
+    "task_id": "vehicle_safety-044",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "PAIRS := SCAN_TABLE(NHTSA, complaints, [complaint_id,make,component_id,summary_text]) -> FILTER(make='ACURA' AND component_id='BRAKES') -> SEM_JOIN('same Acura braking defect', right=(SCAN_DOCS(NHTSA, recalls, [campaign.number,vehicle.make,component.component_id,risk.defect_summary,risk.consequence_summary]) -> FILTER(vehicle.make='ACURA' AND component.component_id='BRAKES'))) -> SEM_FILTER('real braking-performance safety issue');\nFAILURES := PAIRS -> SEM_EXTRACT('dominant braking failure mode');\nCAMPAIGNS := PAIRS -> PROJECT([campaign.number,risk.consequence_summary]) -> DEDUP([campaign.number]) -> SEM_CLASSIFY('recall severity');\nJOIN(left=FAILURES, right=CAMPAIGNS, condition=FAILURES.campaign.number = CAMPAIGNS.campaign.number) -> GROUP_BY([campaign.number], matched_complaint_count=COUNT_DISTINCT(complaint_id)) -> ORDER_BY(matched_complaint_count DESC) -> LIMIT(3)"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "relational_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "vehicle_safety-045",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "COMPLAINTS := SCAN_TABLE(NHTSA, complaints, [complaint_id,make,component_id,summary_text])\n  -> FILTER(make='CHEVROLET' AND component_id='BRAKES');\nRECALLS := SCAN_DOCS(NHTSA, recalls, [campaign.number,vehicle.make AS make,component.component_id AS component_id,risk.defect_summary,risk.consequence_summary])\n  -> FILTER(vehicle.make='CHEVROLET' AND component.component_id='BRAKES');\nPAIRS := SEM_JOIN(left=COMPLAINTS, right=RECALLS, instruction='match a complaint and recall only when they describe the same Chevrolet braking defect or risk');\nQUALIFIED := PAIRS\n  -> SEM_EXTRACT('Extract the shared braking defect theme in at most eight words', {defect_theme:string})\n  -> SEM_FILTER('the matched evidence describes a braking safety risk with potential crash, loss-of-control, or extended-stopping consequence');\nTHEMES := QUALIFIED\n  -> GROUP_BY([defect_theme], {matched_complaint_count:COUNT_DISTINCT(complaint_id),distinct_campaign_count:COUNT_DISTINCT(campaign.number),complaint_texts:COLLECT_DISTINCT(summary_text),recall_texts:COLLECT_DISTINCT(risk.defect_summary)});\nREPORTS := SCAN_DOCS(NHTSA, investigation_reports, selector='*.txt', columns=[file_id,body])\n  -> FILTER(body CONTAINS 'Chevrolet' OR body CONTAINS 'GM' OR body CONTAINS 'brake');\nREPORT_MATCHES := SEM_JOIN(left=THEMES, right=REPORTS, instruction='match a canonical braking theme to a report only when the report discusses the same Chevrolet or GM braking issue or ODI risk');\nGROUPED := REPORT_MATCHES\n  -> GROUP_BY([defect_theme], {matched_complaint_count:MAX(matched_complaint_count),distinct_campaign_count:MAX(distinct_campaign_count),related_report_ids:COLLECT_DISTINCT_SORTED(file_id,'asc'),report_bodies:COLLECT_DISTINCT(body)});\nGROUPED\n  -> SEM_AGGREGATE('Summarize the ODI braking risk finding for this defect theme in one short phrase', {odi_risk_summary:string}, group_by=[defect_theme], input_bindings={reports:report_bodies})\n  -> ORDER_BY([matched_complaint_count DESC,defect_theme ASC])\n  -> LIMIT(5)\n  -> PROJECT([rank=ROW_NUMBER(),defect_theme,matched_complaint_count,distinct_campaign_count,related_report_ids,odi_risk_summary])"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_join_reordering"
+    ]
+  },
+  {
+    "task_id": "vehicle_safety-046",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "PAIRS := SCAN_TABLE(NHTSA, complaints, [complaint_id,make,component_id,summary_text]) -> FILTER(make='CHRYSLER' AND component_id='AIRBAG') -> SEM_JOIN('same Chrysler airbag defect', right=(SCAN_DOCS(NHTSA, recalls, [campaign.number,vehicle.make,component.component_id,risk.defect_summary,risk.consequence_summary,remedy.corrective_action]) -> FILTER(vehicle.make='CHRYSLER' AND component.component_id='AIRBAG'))) -> SEM_FILTER('airbag safety risk') -> SEM_CLASSIFY('dominant airbag failure mode');\nCAMPAIGNS := PAIRS -> GROUP_BY([campaign.number,group], matched_complaint_count=COUNT_DISTINCT(complaint_id), remedy=MIN(remedy.corrective_action), pair_evidence=COLLECT(summary_text,risk.defect_summary));\nREPORTS := SCAN_DOCS(NHTSA, investigation_reports, [file_id,body]) -> FILTER(body CONTAINS 'Chrysler' OR body CONTAINS 'airbag' OR body CONTAINS 'inflator');\nMATCHED := SEM_JOIN(left=CAMPAIGNS, right=REPORTS, instruction='same Chrysler airbag risk or ODI evidence');\nGROUPED := MATCHED -> GROUP_BY([campaign.number], matched_complaint_count=MAX(matched_complaint_count), failure_mode=MODE(group), reports=COLLECT(body), remedy=MIN(remedy));\nGROUPED -> SEM_AGGREGATE('dominant remedy style and short ODI evidence summary')"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_join_reordering"
+    ]
+  },
+  {
+    "task_id": "finance-021",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "Y2019 := SCAN_TABLE(SEC10K, CSV/2019.csv, [cik,text,word_count]) -> GROUP_BY([cik], primary_text_2019=MAX_BY(text,word_count));\nY2023 := SCAN_TABLE(SEC10K, CSV/2023.csv, [cik,text,word_count]) -> GROUP_BY([cik], primary_text_2023=MAX_BY(text,word_count));\nCOMMON := JOIN(left=Y2019, right=Y2023, condition=Y2019.cik = Y2023.cik);\nM2019 := COMMON -> SCAN_DOCS(SEC10K, primary_text_2019) -> SEM_CLASSIFY('2019 primary revenue model');\nM2023 := COMMON -> SCAN_DOCS(SEC10K, primary_text_2023) -> SEM_CLASSIFY('2023 primary revenue model');\nJOIN(left=M2019, right=M2023, condition=cik equality) -> FILTER(models are determined and changed) -> GROUP_BY([transition], count=COUNT(*)) -> ORDER_BY(count DESC) -> LIMIT(10)"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "relational_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "finance-022",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV, [year, text, word_count]) -> FILTER(year IN [2021, 2022, 2023] AND word_count > 90000) -> SCAN_DOCS(SEC10K, doc_ids=text) -> SEM_FILTER('Keep filings whose headquarters country is outside the United States', {filing_text: document_text}) -> SEM_FILTER('Keep filings for companies incorporated in one of the 50 U.S. states or the District of Columbia', {filing_text: document_text}) -> GROUP_BY([], [COUNT(*) AS count])"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "finance-023",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV, [year, text, word_count]) -> FILTER(year IN [2022, 2023] AND word_count > 80000) -> SCAN_DOCS(SEC10K, doc_ids=text) -> SEM_FILTER('Keep filings that do not mention environmental, social, governance, ESG, or sustainability topics', {filing_text: document_text}) -> SEM_FILTER('Keep filings that describe artificial-intelligence or machine-learning use in the company business', {filing_text: document_text}) -> GROUP_BY([], [COUNT(*) AS count])"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "finance-024",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV, [year, text, word_count]) -> FILTER(year IN [2019, 2020, 2021] AND word_count > 80000) -> SCAN_DOCS(SEC10K, doc_ids=text) -> SEM_FILTER('Keep filings that do not disclose foreign-currency risk', {filing_text: document_text}) -> SEM_FILTER('Keep filings that state the company has international operations', {filing_text: document_text}) -> GROUP_BY([], [COUNT(*) AS count])"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "finance-025",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2019.csv, [cik, text, word_count])\n-> FILTER(word_count > 45000)\n-> SCAN_DOCS(SEC10K, doc_ids=text)\n-> SEM_FILTER('Keep filings that do not disclose foreign-currency or exchange-rate risk', {filing_text: document_text})\n-> SEM_FILTER('Keep filings that describe operations outside the United States', {filing_text: document_text})\n-> SEM_FILTER('Keep filings that disclose dependence on a major customer or material customer concentration', {filing_text: document_text})\n-> SEM_EXTRACT('Extract the company legal name, industry sector, and reported employee count', {company_name: string, industry_sector: string, employee_count: integer|null}, {filing_text: document_text})\n-> FILTER(employee_count IS NOT NULL)\n-> DEDUP([company_name], keep=max_by(employee_count, word_count, cik))\n-> ORDER_BY([employee_count DESC, LOWER(company_name) ASC])\n-> LIMIT(10)\n-> PROJECT([company_name, industry_sector, employee_count])"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "multi_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "finance-027",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2021.csv, [text,word_count]) -> FILTER(word_count>60000) -> SCAN_DOCS(SEC10K, selector=text) -> SEM_FILTER('mentions artificial intelligence or machine learning') -> SEM_CLASSIFY('primary revenue-model category') -> FILTER(revenue_model<>'undetermined') -> SEM_CLASSIFY('competitive-position category') -> FILTER(competitive_position<>'undetermined') -> SEM_EXTRACT('ESG mention flag and total risk-factor count') -> GROUP_BY([revenue_model,competitive_position], filing_count=COUNT(*)) -> FILTER(filing_count>=10) -> ORDER_BY(filing_count DESC) -> LIMIT(5)"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "relational_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "finance-029",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "Y2019 := SCAN_TABLE(SEC10K, CSV/2019.csv, [cik,text]);\nY2023 := SCAN_TABLE(SEC10K, CSV/2023.csv, [cik,text,word_count]) -> GROUP_BY([cik], primary_text=MAX_BY(text,word_count));\nCOMMON := JOIN(left=Y2019, right=Y2023, condition=Y2019.cik = Y2023.cik);\nLEFT := COMMON -> SCAN_DOCS(SEC10K, Y2019.text) -> SEM_FILTER('challenger in 2019');\nRIGHT := COMMON -> SCAN_DOCS(SEC10K, Y2023.primary_text) -> SEM_FILTER('recognized leader in 2023') -> SEM_EXTRACT('2023 company legal name and industry sector');\nJOIN(left=LEFT, right=RIGHT, condition=cik equality) -> PROJECT([company_name,industry_sector])"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "relational_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "finance-032",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "Y2019 := SCAN_TABLE(SEC10K, CSV/2019.csv, [cik,text]);\nY2023 := SCAN_TABLE(SEC10K, CSV/2023.csv, [cik,text,word_count]) -> GROUP_BY([cik], primary_text=MAX_BY(text,word_count));\nCOMMON := JOIN(left=Y2019, right=Y2023, condition=Y2019.cik = Y2023.cik);\nLEFT := COMMON -> SCAN_DOCS(SEC10K, Y2019.text) -> SEM_FILTER('early-stage or emerging competitor in 2019') -> SEM_EXTRACT('2019 employee count');\nRIGHT := COMMON -> SCAN_DOCS(SEC10K, Y2023.primary_text) -> SEM_FILTER('recognized leader in 2023') -> SEM_EXTRACT('2023 company name, sector, and employee count');\nJOIN(left=LEFT, right=RIGHT, condition=cik equality) -> PROJECT([company_name,industry_sector,employee_count_2019,employee_count_2023])"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "relational_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "finance-033",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "Y2019 := SCAN_TABLE(SEC10K, CSV/2019.csv, [cik,text]);\nY2023 := SCAN_TABLE(SEC10K, CSV/2023.csv, [cik,text,word_count]) -> GROUP_BY([cik], primary_text=MAX_BY(text,word_count));\nCOMMON := JOIN(left=Y2019, right=Y2023, condition=Y2019.cik = Y2023.cik);\nLEFT := COMMON -> SCAN_DOCS(SEC10K, Y2019.text) -> SEM_EXTRACT('company-wide employee count in 2019') -> FILTER(employee_count_2019>=1000);\nRIGHT := COMMON -> SCAN_DOCS(SEC10K, Y2023.primary_text) -> SEM_EXTRACT('2023 company name and company-wide employee count');\nJOIN(left=LEFT, right=RIGHT, condition=cik equality) -> PROJECT(employee_change_percent) -> ORDER_BY(employee_change_percent) -> LIMIT(10)"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "relational_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "finance-035",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2023.csv, [cik,text,word_count]) -> FILTER(word_count>60000) -> SCAN_DOCS(SEC10K, selector=text) -> SEM_FILTER('acquisition-integration risk') -> SEM_FILTER('pending, threatened, or ongoing litigation or regulatory investigation') -> SEM_CLASSIFY('competitive-position category') -> FILTER(competitive_position<>'undetermined') -> SEM_EXTRACT('company name, sector, employee count, and distinct M&A transaction count') -> FILTER(ma_transaction_count>=3 AND employee_count IS NOT NULL) -> DEDUP([company_name]) -> ORDER_BY(employee_count DESC) -> LIMIT(10)"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "relational_semantic_reordering"
+    ]
+  },
+  {
+    "task_id": "finance-037",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "B2021 := SCAN_TABLE(SEC10K, CSV/2021.csv, [cik,text,word_count]) -> FILTER(word_count>60000) -> GROUP_BY([cik], text=MAX_BY(text,word_count));\nB2023 := SCAN_TABLE(SEC10K, CSV/2023.csv, [cik,text,word_count]) -> FILTER(word_count>60000) -> GROUP_BY([cik], text=MAX_BY(text,word_count));\nCOMMON := JOIN(left=B2021, right=B2023, condition=B2021.cik = B2023.cik);\nDOMESTIC := COMMON -> SCAN_DOCS(SEC10K, B2021.text) -> SEM_CLASSIFY('2021 geographic footprint') -> FILTER(footprint='domestic_only') -> SEM_FILTER('no foreign-currency risk');\nGLOBAL := COMMON -> SCAN_DOCS(SEC10K, B2023.text) -> SEM_FILTER('foreign-currency risk disclosed') -> SEM_CLASSIFY('2023 geographic footprint') -> FILTER(footprint='globally_diversified');\nTRANSITIONS := JOIN(left=DOMESTIC, right=GLOBAL, condition=cik equality);\nTRANSITIONS -> SEM_CLASSIFY('2023 growth strategy') -> SEM_EXTRACT('2023 company name, sector, countries') -> ORDER_BY(foreign_country_count DESC) -> LIMIT(10)"
+      }
+    ],
+    "plan_optimization_opportunity": [
+      "relational_semantic_reordering",
+      "multi_semantic_reordering"
+    ]
+  }
+]

@@ -1,0 +1,136 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+operations:
+- name: unnest_answer_rows
+  type: unnest
+  unnest_key: rows
+  recursive: true
+  depth: 2
+  expand_fields:
+  - symptom_category
+  - incident_count
+  - most_common_outcome
+  model: Qwen3.5-397B-A17B
+- name: aggregate_engine_symptoms
+  type: code_reduce
+  reduce_key: _all
+  code: "def transform(items):\n    from collections import Counter\n\n    grouped_ids = {}\n    outcomes\
+    \ = {}\n    seen = set()\n    for item in items:\n        incident_id = str(item.get(\"incident_id\"\
+    ) or \"\")\n        category = item.get(\"symptom_category\")\n        outcome = item.get(\"primary_outcome\"\
+    )\n        key = (incident_id, category)\n        if not incident_id or not category or key in seen:\n\
+    \            continue\n        seen.add(key)\n        grouped_ids.setdefault(category, set()).add(incident_id)\n\
+    \        outcomes.setdefault(category, Counter())[outcome] += 1\n\n    rows = []\n    for category,\
+    \ incident_ids in grouped_ids.items():\n        mode = sorted(\n            outcomes[category].items(),\n\
+    \            key=lambda pair: (-pair[1], str(pair[0])),\n        )[0][0]\n        rows.append(\n \
+    \           {\n                \"symptom_category\": category,\n                \"incident_count\"\
+    : len(incident_ids),\n                \"most_common_outcome\": mode,\n            }\n        )\n \
+    \   rows.sort(\n        key=lambda row: (-row[\"incident_count\"], row[\"symptom_category\"])\n  \
+    \  )\n    return {\"rows\": rows}\n"
+  model: Qwen3.5-397B-A17B
+- name: keep_engine_extractions
+  type: code_filter
+  code: "def transform(doc):\n    return (\n        doc.get(\"qualifies\") is True\n        and doc.get(\"\
+    symptom_category\")\n        in {\n            \"thrust_loss\",\n            \"oil_indication\",\n\
+    \            \"temperature\",\n            \"vibration\",\n            \"flameout\",\n           \
+    \ \"other_engine_indication\",\n        }\n        and doc.get(\"primary_outcome\")\n        in {\n\
+    \            \"emergency\",\n            \"diversion\",\n            \"return\",\n            \"continued_flight\"\
+    ,\n            \"maintenance_only\",\n        }\n    )\n"
+  model: Qwen3.5-397B-A17B
+- name: extract_engine_symptom_and_outcome
+  type: map
+  prompt: 'Extract one row only when this report describes an engine thrust, power, oil,
+
+    temperature, vibration, flameout, or other engine-indication problem.
+
+
+    Assign symptom_category to thrust_loss, oil_indication, temperature,
+
+    vibration, flameout, or other_engine_indication. Assign primary_outcome to
+
+    emergency, diversion, return, continued_flight, or maintenance_only according
+
+    to the principal outcome described. For a non-engine report, set
+
+    qualifies=false and use not_applicable for both labels.
+
+
+    Recorded result summary:
+
+    {{ input.result_summary }}
+
+
+    Report:
+
+    {{ input.text }}
+
+    '
+  output:
+    mode: structured_output
+    schema:
+      qualifies: boolean
+      symptom_category: enum[thrust_loss, oil_indication, temperature, vibration, flameout, other_engine_indication,
+        not_applicable]
+      primary_outcome: enum[emergency, diversion, return, continued_flight, maintenance_only, not_applicable]
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 256
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  model: Qwen3.5-397B-A17B
+  gleaning:
+    num_rounds: 1
+    validation_prompt: 'Review the extraction of engine symptoms and outcomes from the provided report.
+      First, verify recall and precision: Did the operation correctly identify all instances of engine-related
+      issues (thrust, oil, temperature, vibration, flameout, or other indications) described in the text,
+      and did it accurately assign the specific ''symptom_category'' and ''primary_outcome'' labels without
+      hallucinating issues where none exist or misclassifying non-engine reports as qualifying? Second,
+      assess the logical consistency and formatting: If the report was deemed non-engine related, are
+      ''qualifies'' set to false and both labels set to ''not_applicable'' as required, and if it was
+      an engine report, does the assigned ''primary_outcome'' (emergency, diversion, return, continued_flight,
+      or maintenance_only) strictly align with the principal outcome described in the narrative rather
+      than a minor detail?'
+- name: load_asrs_narrative
+  type: code_map
+  code: "def transform(doc):\n    import os\n\n    base_dir = os.path.abspath(os.path.join(\"data\", \"\
+    asrs\"))\n    text_path = os.path.abspath(\n        os.path.join(base_dir, str(doc.get(\"text_file\"\
+    , \"\")))\n    )\n    if os.path.commonpath([base_dir, text_path]) != base_dir:\n        raise ValueError(\"\
+    ASRS text path escapes data/asrs\")\n    with open(text_path, \"r\", encoding=\"utf-8\", errors=\"\
+    replace\") as handle:\n        return {\"text\": handle.read()}\n"
+  model: Qwen3.5-397B-A17B
+- name: filter_aircraft_primary_reports
+  type: code_filter
+  code: "def transform(doc):\n    return doc.get(\"primary_problem\") == \"Aircraft\"\n"
+  model: Qwen3.5-397B-A17B
+pipeline:
+  steps:
+  - name: process
+    operations:
+    - filter_aircraft_primary_reports
+    - load_asrs_narrative
+    - extract_engine_symptom_and_outcome
+    - keep_engine_extractions
+    - aggregate_engine_symptoms
+    - unnest_answer_rows
+    input: asrs_incidents
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-018.json
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  num_plans_to_evaluate_in_parallel: 1

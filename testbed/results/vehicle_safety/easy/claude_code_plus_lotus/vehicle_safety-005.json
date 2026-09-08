@@ -1,0 +1,23 @@
+{
+  "task_id": "vehicle_safety-005",
+  "answer": [
+    {
+      "campaign_number": "23V838000"
+    },
+    {
+      "campaign_number": "25V092000"
+    },
+    {
+      "campaign_number": "23V085000"
+    },
+    {
+      "campaign_number": "22V037000"
+    },
+    {
+      "campaign_number": "21V846000"
+    }
+  ],
+  "elapsed_seconds": 249.848,
+  "cost_usd": 0.75307191,
+  "total_tokens": 605844
+}

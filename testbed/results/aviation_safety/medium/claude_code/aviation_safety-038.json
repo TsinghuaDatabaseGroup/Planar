@@ -1,0 +1,32 @@
+{
+  "task_id": "aviation_safety-038",
+  "answer": [
+    {
+      "canonical_human_factor": "Communication Breakdown",
+      "incident_count": 316,
+      "most_common_actor": "Person Flight Crew",
+      "most_common_operational_effect": "General Maintenance Action"
+    },
+    {
+      "canonical_human_factor": "Confusion",
+      "incident_count": 57,
+      "most_common_actor": "Person Flight Crew",
+      "most_common_operational_effect": "Flight Crew Became Reoriented"
+    },
+    {
+      "canonical_human_factor": "Situational Awareness",
+      "incident_count": 413,
+      "most_common_actor": "Person Flight Crew",
+      "most_common_operational_effect": "Flight Crew Became Reoriented"
+    },
+    {
+      "canonical_human_factor": "Workload",
+      "incident_count": 102,
+      "most_common_actor": "Person Flight Crew",
+      "most_common_operational_effect": "Flight Crew Became Reoriented"
+    }
+  ],
+  "elapsed_seconds": 253.524,
+  "cost_usd": 0.3445917,
+  "total_tokens": 724577
+}

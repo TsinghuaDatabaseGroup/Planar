@@ -1,0 +1,27 @@
+{
+  "task_id": "legal_contracts-044",
+  "optimization_analysis": "Merged the two consecutive SEM_FILTER operators into a single operator. The first filter checks only document type (EX-97 clawback), while the second checks three substantive conditions. Combining them eliminates one full-document LM pass. The merged filter applies all four conditions (document type + three substantive requirements) in a single semantic evaluation, reducing LM cost by ~50% on the filtering stage while preserving correctness.",
+  "optimized_semantic_plan": [
+    {
+      "type": "operator_dag",
+      "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('Keep EX-97 clawback or recoupment policies that treat intentional misconduct as a trigger, extend recovery beyond SEC minimum requirements, and explicitly state an effective date', input_bindings={document: text})\n-> SEM_EXTRACT('Return document name, company name, effective date, and concise covered-person scope', out_schema={document_name: string, company_name: string, effective_date: date, covered_persons: string}, input_bindings={document: text})"
+    }
+  ],
+  "valid": true,
+  "validation_warnings": [],
+  "elapsed_secs": 9.004,
+  "cost_usd": 0.00804465,
+  "agent_cost_usd": 0.00804465,
+  "usage": {
+    "input": 3,
+    "output": 330,
+    "cacheRead": 3098,
+    "cacheWrite": 575
+  },
+  "agent_usage": {
+    "input": 3,
+    "output": 330,
+    "cacheRead": 3098,
+    "cacheWrite": 575
+  }
+}

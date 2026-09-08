@@ -1,0 +1,64 @@
+{
+  "task_id": "legal_contracts-021",
+  "answer": [
+    {
+      "document_id": "1016503_0000929624-00-000894_0010.txt",
+      "governing_law": "State of New York"
+    },
+    {
+      "document_id": "1017358_0001017358-97-000002_document_4.txt",
+      "governing_law": "State of Missouri"
+    },
+    {
+      "document_id": "1029445_0000940180-97-000212_document_12.txt",
+      "governing_law": "State of New York"
+    },
+    {
+      "document_id": "1077050_0000950147-99-000049_document_10.txt",
+      "governing_law": "California Law"
+    },
+    {
+      "document_id": "1096182_0001144204-06-021678_v043804_ex10-3.txt",
+      "governing_law": "State of Connecticut"
+    },
+    {
+      "document_id": "1100772_0001038838-02-000125_ex1032sb2no5.txt",
+      "governing_law": "None"
+    },
+    {
+      "document_id": "1105503_0000950123-00-006736_ex10-14.txt",
+      "governing_law": "State of Nebraska"
+    },
+    {
+      "document_id": "1120792_0001019687-05-002206_morgan_10qex5-2.txt",
+      "governing_law": "State of Florida"
+    },
+    {
+      "document_id": "1125576_0000928385-02-000738_dex991d2.txt",
+      "governing_law": "the United States and the State of California"
+    },
+    {
+      "document_id": "1420529_0001145549-08-000077_h00839a1exv10w4.txt",
+      "governing_law": "People's Republic of China"
+    },
+    {
+      "document_id": "69067_0000927016-00-002123_0010.txt",
+      "governing_law": "State of Minnesota"
+    },
+    {
+      "document_id": "828957_0000950109-98-001266_document_19.txt",
+      "governing_law": "State of California"
+    },
+    {
+      "document_id": "859119_0000950123-98-001418_document_15.txt",
+      "governing_law": "State of New York"
+    },
+    {
+      "document_id": "900091_0001047469-97-003029_document_4.txt",
+      "governing_law": "Japan"
+    }
+  ],
+  "elapsed_seconds": 225.44,
+  "cost_usd": 0.45386601,
+  "total_tokens": 618189
+}

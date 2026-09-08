@@ -1,0 +1,23 @@
+{
+  "task_id": "aviation_safety-029",
+  "answer": [
+    {
+      "flight_conditions": "IMC",
+      "recorded_result": "go_around_or_missed_approach",
+      "incident_count": 7
+    },
+    {
+      "flight_conditions": "Marginal",
+      "recorded_result": "go_around_or_missed_approach",
+      "incident_count": 2
+    },
+    {
+      "flight_conditions": "Mixed",
+      "recorded_result": "go_around_or_missed_approach",
+      "incident_count": 4
+    }
+  ],
+  "elapsed_seconds": 223.142,
+  "cost_usd": 0.28903344,
+  "total_tokens": 373499
+}

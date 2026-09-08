@@ -1,0 +1,38 @@
+{
+  "task_id": "legal_contracts-072",
+  "answer": [
+    {
+      "document_name": "exhibit191-insidertradin.htm",
+      "policy_title": "AUTOLUS THERAPEUTICS PLC INSIDER TRADING AND WINDOW PERIOD POLICY (revised policy)",
+      "policy_date": "2020-10-16"
+    },
+    {
+      "document_name": "exhibit191insidertradingco.htm",
+      "policy_title": "Insider Trading Compliance Policy",
+      "policy_date": "2023-02-27"
+    },
+    {
+      "document_name": "exhibit191aniinsidertradin.htm",
+      "policy_title": null,
+      "policy_date": "2023-05-07"
+    },
+    {
+      "document_name": "ino-12312024x10kex191.htm",
+      "policy_title": "Insider Trading Policy",
+      "policy_date": "2023-05-16"
+    },
+    {
+      "document_name": "hii-ex19202410xk.htm",
+      "policy_title": "Insider Trading",
+      "policy_date": "2023-08-24"
+    },
+    {
+      "document_name": "ex191insidertradingpolic.htm",
+      "policy_title": "Insider Trading Policy",
+      "policy_date": "2023-12-01"
+    }
+  ],
+  "elapsed_seconds": 1402.40,
+  "cost_usd": 1.971266,
+  "total_tokens": 3626927
+}

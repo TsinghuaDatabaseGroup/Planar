@@ -1,0 +1,23 @@
+{
+  "task_id": "legal_contracts-015",
+  "answer": [
+    {
+      "non_disclosure_direction": "mutual",
+      "agreement_count": 281,
+      "non_use_percentage": 59.43
+    },
+    {
+      "non_disclosure_direction": "unilateral",
+      "agreement_count": 347,
+      "non_use_percentage": 55.04
+    },
+    {
+      "non_disclosure_direction": "unclear",
+      "agreement_count": 81,
+      "non_use_percentage": 38.27
+    }
+  ],
+  "elapsed_seconds": 94.43,
+  "cost_usd": 0.814330,
+  "total_tokens": 1549545
+}

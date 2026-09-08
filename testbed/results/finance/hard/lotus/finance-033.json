@@ -1,0 +1,32 @@
+{
+  "task_id": "finance-033",
+  "answer": {
+    "top_5_growth": {
+      "ASGN Incorporated": {
+        "employee_count_2019": 4300,
+        "employee_count_2023": 27200,
+        "employee_change_percent": 532.6
+      },
+      "AdaptHealth Corp.": {
+        "employee_count_2019": 2590,
+        "employee_count_2023": 10700,
+        "employee_change_percent": 313.1
+      }
+    },
+    "top_5_decline": {
+      "Regis Corporation": {
+        "employee_count_2019": 20000,
+        "employee_count_2023": 435,
+        "employee_change_percent": -97.8
+      },
+      "KASPIEN HOLDINGS INC.": {
+        "employee_count_2019": 2564,
+        "employee_count_2023": 80,
+        "employee_change_percent": -96.4
+      }
+    }
+  },
+  "elapsed_seconds": 5624.50,
+  "cost_usd": 21.738111,
+  "total_tokens": 46736768
+}

@@ -1,0 +1,84 @@
+{
+  "task_id": "legal_contracts-054",
+  "answer": [
+    {
+      "document_id": "1013240_0001047469-04-010350_a2132633zex-10_22.htm",
+      "governing_law": "Colorado"
+    },
+    {
+      "document_id": "1023734_0000912057-96-023266_document_16.txt",
+      "governing_law": "State of Colorado"
+    },
+    {
+      "document_id": "1367408_0001367408-06-000002_risb2ex106.htm",
+      "governing_law": "Utah"
+    },
+    {
+      "document_id": "426-2017_Appendix_C-Sample_Non-Disclosure_Agreement.pdf",
+      "governing_law": "Manitoba and Canada"
+    },
+    {
+      "document_id": "703339_0001387308-13-000090_ex101.htm",
+      "governing_law": "California"
+    },
+    {
+      "document_id": "CBP%20Non-Disclosure%20Form_October2018.pdf",
+      "governing_law": "United States"
+    },
+    {
+      "document_id": "Data Use Agreement New York City.pdf",
+      "governing_law": "New York"
+    },
+    {
+      "document_id": "Facility-Tour-Confidentiality-and-Non-Disclosure.pdf",
+      "governing_law": "California"
+    },
+    {
+      "document_id": "NDA-CRG-ALL-2.pdf",
+      "governing_law": "Massachusetts"
+    },
+    {
+      "document_id": "Proctor_Agreement.pdf",
+      "governing_law": "England and Wales"
+    },
+    {
+      "document_id": "QSA_NDA.pdf",
+      "governing_law": "Victoria, Australia"
+    },
+    {
+      "document_id": "buyer_profile.pdf",
+      "governing_law": "Republic of South Africa"
+    },
+    {
+      "document_id": "dhs_form_11000-6.pdf",
+      "governing_law": "United States"
+    },
+    {
+      "document_id": "fs42021ex10-11_cmlifescien3.htm",
+      "governing_law": "Massachusetts"
+    },
+    {
+      "document_id": "non-disclosure_201302814_english_.pdf",
+      "governing_law": "Province of Ontario"
+    },
+    {
+      "document_id": "nue-ex10_xxii.htm",
+      "governing_law": "North Carolina"
+    },
+    {
+      "document_id": "nue-ex10_xxxiii.htm",
+      "governing_law": "North Carolina"
+    },
+    {
+      "document_id": "nue-ex10_xxxvii.htm",
+      "governing_law": "North Carolina"
+    },
+    {
+      "document_id": "tufts_confidentiality_agreement.pdf",
+      "governing_law": "Commonwealth of Massachusetts"
+    }
+  ],
+  "elapsed_seconds": 488.19,
+  "cost_usd": 4.536881,
+  "total_tokens": 8512659
+}

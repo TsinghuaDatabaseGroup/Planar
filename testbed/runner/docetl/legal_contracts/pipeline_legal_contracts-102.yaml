@@ -1,0 +1,103 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_delaware_nda_documents
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it has NDA status, including a dual-status SEC
+      exhibit, and expressly states Delaware as a governing-law jurisdiction.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_delaware_nda: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_delaware_nda_profile
+    type: map
+    optimize: true
+    prompt: |
+      Return the input NDA document ID, canonical key for a stated corporate
+      party, and whether each of the six standard confidentiality exceptions is
+      present.
+
+      Input document ID: {{ input.doc_id }}
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        nda_document_id: string
+        company_key: string
+        public_information_exception: boolean
+        prior_knowledge_exception: boolean
+        independent_development_exception: boolean
+        third_party_receipt_exception: boolean
+        legal_compulsion_exception: boolean
+        consent_exception: boolean
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+
+  - name: filter_ex31_certifications
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is an EX-31 SOX Section 302 certification.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_ex31_certification: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_certification_company_key
+    type: map
+    optimize: true
+    prompt: |
+      Return the canonical key for the company named in this certification.
+
+      Certification:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {company_key: string}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+
+  - name: join_nda_and_certification_companies
+    type: equijoin
+    deterministic: true
+    blocking_conditions:
+      - left["company_key"] == right["company_key"]
+  - name: aggregate_exception_profiles
+    type: code_reduce
+    reduce_key: [public_information_exception, prior_knowledge_exception, independent_development_exception, third_party_receipt_exception, legal_compulsion_exception, consent_exception]
+    code: |
+      def transform(items):
+          return {
+              "nda_document_count": len({str(item.get("nda_document_id") or "") for item in items if str(item.get("nda_document_id") or "")}),
+              "distinct_matched_company_count": len({str(item.get("company_key_left") or "") for item in items if str(item.get("company_key_left") or "")}),
+          }
+  - name: filter_repeated_exception_profiles
+    type: code_filter
+    code: |
+      def transform(doc):
+          return int(doc.get("nda_document_count") or 0) >= 2
+pipeline:
+  steps:
+    - name: delaware_nda_records
+      input: contract_exhibits
+      operations: [filter_delaware_nda_documents, extract_delaware_nda_profile]
+    - name: certification_records
+      input: contract_exhibits
+      operations: [filter_ex31_certifications, extract_certification_company_key]
+    - name: matched_records
+      operations:
+        - join_nda_and_certification_companies: {left: delaware_nda_records, right: certification_records}
+    - name: answer
+      input: matched_records
+      operations: [aggregate_exception_profiles, filter_repeated_exception_profiles]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-102.json

@@ -1,0 +1,85 @@
+{
+  "task_id": "legal_contracts-023",
+  "answer": [
+    {
+      "document_id": "1014552_0000950148-01-500497_v71961toex99-d3.txt",
+      "governing_law": "Texas",
+      "missing_exception": "consent",
+      "standstill_months": 15,
+      "longest_solicitation_months": 24
+    },
+    {
+      "document_id": "1049210_0001047469-13-009461_a2216846zex-99_d3.htm",
+      "governing_law": "California",
+      "missing_exception": "consent",
+      "standstill_months": 12,
+      "longest_solicitation_months": 12
+    },
+    {
+      "document_id": "1070052_0000950130-01-501801_dex99d2.txt",
+      "governing_law": "New York",
+      "missing_exception": "consent",
+      "standstill_months": 12,
+      "longest_solicitation_months": 12
+    },
+    {
+      "document_id": "1163932_0001193125-13-394191_d606730dex99d2.htm",
+      "governing_law": "Delaware",
+      "missing_exception": "consent",
+      "standstill_months": 12,
+      "longest_solicitation_months": 12
+    },
+    {
+      "document_id": "1167294_0001193125-15-218134_d933068dex99d3.htm",
+      "governing_law": "Delaware",
+      "missing_exception": "consent",
+      "standstill_months": 9,
+      "longest_solicitation_months": 12
+    },
+    {
+      "document_id": "1372664_0001193125-12-159071_d333885dex99d9.htm",
+      "governing_law": "Georgia",
+      "missing_exception": "legal_compulsion",
+      "standstill_months": 12,
+      "longest_solicitation_months": 24
+    },
+    {
+      "document_id": "1373671_0001193125-10-265249_dex99d3.htm",
+      "governing_law": "Delaware",
+      "missing_exception": "consent",
+      "standstill_months": 12,
+      "longest_solicitation_months": 12
+    },
+    {
+      "document_id": "1561604_0001193125-12-472390_d438799dex99d3.htm",
+      "governing_law": "Delaware",
+      "missing_exception": "consent",
+      "standstill_months": 12,
+      "longest_solicitation_months": 12
+    },
+    {
+      "document_id": "1592288_0001193125-17-306543_d469659dex99e2.htm",
+      "governing_law": "Delaware",
+      "missing_exception": "consent",
+      "standstill_months": 12,
+      "longest_solicitation_months": 12
+    },
+    {
+      "document_id": "354452_0000950123-99-011178_document_13.txt",
+      "governing_law": "State of Florida",
+      "missing_exception": "independent_development",
+      "standstill_months": 6,
+      "longest_solicitation_months": 6
+    },
+    {
+      "document_id": "931784_0001104659-07-068716_a07-23871_1ex2.htm",
+      "governing_law": "State of New York",
+      "missing_exception": "legal_compulsion",
+      "standstill_months": 6,
+      "longest_solicitation_months": 12
+    }
+  ],
+  "elapsed_seconds": 405.49,
+  "cost_usd": 3.778026,
+  "total_tokens": 7223396
+}

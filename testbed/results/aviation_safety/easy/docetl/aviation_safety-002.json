@@ -1,0 +1,32 @@
+{
+  "task_id": "aviation_safety-002",
+  "answer": [
+    {
+      "primary_reason": "late_clearance",
+      "incident_count": 5,
+      "with_numeric_time_count": 2,
+      "with_numeric_distance_count": 4
+    },
+    {
+      "primary_reason": "confusing_or_ambiguous",
+      "incident_count": 14,
+      "with_numeric_time_count": 0,
+      "with_numeric_distance_count": 2
+    },
+    {
+      "primary_reason": "workload_or_timing_pressure",
+      "incident_count": 27,
+      "with_numeric_time_count": 3,
+      "with_numeric_distance_count": 6
+    },
+    {
+      "primary_reason": "expectation_or_readback_error",
+      "incident_count": 61,
+      "with_numeric_time_count": 1,
+      "with_numeric_distance_count": 3
+    }
+  ],
+  "elapsed_seconds": 131.92,
+  "cost_usd": 0.910141,
+  "total_tokens": 2115171
+}

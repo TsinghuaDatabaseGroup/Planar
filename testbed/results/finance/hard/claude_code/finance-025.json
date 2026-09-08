@@ -1,0 +1,58 @@
+{
+  "task_id": "finance-025",
+  "answer": [
+    {
+      "company_name": "SYNNEX Corporation",
+      "industry_sector": "Business process services, distribution, logistics, and integration services for the technology industry; customer experience outsourcing services",
+      "employee_count": 240000
+    },
+    {
+      "company_name": "Tyson Foods, Inc.",
+      "industry_sector": "Food processing and protein production",
+      "employee_count": 141000
+    },
+    {
+      "company_name": "Genpact",
+      "industry_sector": "Global professional services firm providing digital-led innovation, intelligent operations, and business process outsourcing across banking, capital markets, insurance, consumer goods, retail, life sciences, healthcare, high tech, manufacturing, and services.",
+      "employee_count": 96500
+    },
+    {
+      "company_name": "American Express Company",
+      "industry_sector": "Globally integrated payments company providing credit and charge cards, merchant acquiring, and card network services",
+      "employee_count": 64500
+    },
+    {
+      "company_name": "Genesis Healthcare, Inc.",
+      "industry_sector": "Post-acute care provider offering skilled nursing, assisted/senior living, and rehabilitation therapy services",
+      "employee_count": 55000
+    },
+    {
+      "company_name": "Huntington Ingalls Industries, Inc.",
+      "industry_sector": "Military shipbuilding and professional services",
+      "employee_count": 42000
+    },
+    {
+      "company_name": "Quanta Services, Inc.",
+      "industry_sector": "Specialty contracting services for the electric power, energy and communications industries",
+      "employee_count": 40300
+    },
+    {
+      "company_name": "Kellogg Company",
+      "industry_sector": "Manufacture and marketing of ready-to-eat cereal and convenience foods",
+      "employee_count": 31000
+    },
+    {
+      "company_name": "Keurig Dr Pepper Inc.",
+      "industry_sector": "Leading beverage company in North America with a diverse portfolio of flavored non-cola carbonated soft drinks, non-carbonated beverages, and single serve brewing systems.",
+      "employee_count": 25500
+    },
+    {
+      "company_name": "MasTec",
+      "industry_sector": "Infrastructure construction company providing engineering, building, installation, maintenance and upgrade of communications, energy, utility and other infrastructure",
+      "employee_count": 21000
+    }
+  ],
+  "elapsed_seconds": 3490.467,
+  "cost_usd": 5.20173234,
+  "total_tokens": 11923760
+}

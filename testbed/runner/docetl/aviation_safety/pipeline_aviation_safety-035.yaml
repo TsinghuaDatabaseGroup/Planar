@@ -1,0 +1,311 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+  asrs_environment_attributes:
+    type: file
+    path: data/asrs/environment_attributes.csv
+  asrs_events:
+    type: file
+    path: data/asrs/events.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_air_carrier_airport_reports
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("aircraft_operator") == "Air Carrier"
+              and doc.get("locale_reference_type") == "Airport"
+          )
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: extract_material_visual_factors
+    type: map
+    optimize: true
+    prompt: |
+      Identify every visual factor that materially contributed to the ground
+      conflict, ground incursion, or ground excursion described in this NASA ASRS
+      narrative. A factor is material only when it impaired perception, recognition,
+      visual orientation, or visual decision-making in a way that helped cause or
+      worsen the ground event. Do not include incidental mentions or conditions
+      that had no demonstrated effect.
+
+      Normalize each supported factor to one of:
+      - reduced_visibility: fog, haze, precipitation, darkness, smoke, or another
+        atmospheric/ambient condition materially reduced what could be seen;
+      - inadequate_or_confusing_lighting: airport, runway, taxiway, vehicle, or
+        aircraft lighting was absent, inadequate, misleading, difficult to
+        distinguish, or otherwise confusing;
+      - glare: sun, reflected, artificial-light, windshield, or comparable glare
+        materially impaired vision;
+      - missed_visual_scan: a participant failed to look, scan, visually clear, or
+        notice a visible conflict/cue when that missed scan materially contributed;
+      - obscured_signage_or_markings: a sign, marking, line, surface indication, or
+        visual ground cue was hidden, blocked, covered, worn, contaminated, or
+        otherwise obscured.
+
+      Return visual_factors as an array containing every clearly supported factor,
+      at most once each. More than one factor may qualify. Return an empty array
+      when none is materially supported.
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        visual_factors: list[string]
+    validate:
+      - len(output["visual_factors"]) <= 5
+      - len(output["visual_factors"]) == len(set(output["visual_factors"]))
+      - all([value in ["reduced_visibility", "inadequate_or_confusing_lighting", "glare", "missed_visual_scan", "obscured_signage_or_markings"] for value in output["visual_factors"]])
+    num_retries_on_validate_failure: 2
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: build_visual_factor_rows
+    type: code_map
+    code: |
+      def transform(doc):
+          valid_factors = {
+              "reduced_visibility",
+              "inadequate_or_confusing_lighting",
+              "glare",
+              "missed_visual_scan",
+              "obscured_signage_or_markings",
+          }
+          rows = []
+          seen = set()
+          for factor in doc.get("visual_factors") or []:
+              if factor not in valid_factors or factor in seen:
+                  continue
+              seen.add(factor)
+              rows.append({"visual_factor": factor})
+          return {"visual_factor_rows": rows}
+
+  - name: unnest_visual_factor_rows
+    type: unnest
+    unnest_key: visual_factor_rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - visual_factor
+
+  - name: attach_light_group_records
+    type: code_map
+    code: |
+      import csv
+      import os
+      import threading
+
+      _light_group_index = None
+      _light_group_lock = threading.Lock()
+
+      def load_light_group_index():
+          global _light_group_index
+          if _light_group_index is None:
+              with _light_group_lock:
+                  if _light_group_index is None:
+                      index = {}
+                      path = os.path.abspath(
+                          os.path.join(
+                              "data", "asrs", "environment_attributes.csv"
+                          )
+                      )
+                      with open(
+                          path, "r", encoding="utf-8", errors="replace", newline=""
+                      ) as handle:
+                          for row in csv.DictReader(handle):
+                              value = row.get("value")
+                              if (
+                                  row.get("attribute") != "light"
+                                  or value
+                                  not in {"Night", "Dusk", "Dawn", "Daylight"}
+                              ):
+                                  continue
+                              light_group = (
+                                  "low_light"
+                                  if value in {"Night", "Dusk", "Dawn"}
+                                  else "daylight"
+                              )
+                              index.setdefault(
+                                  str(row.get("incident_id", "")), set()
+                              ).add(light_group)
+                      _light_group_index = {
+                          incident_id: sorted(groups)
+                          for incident_id, groups in index.items()
+                      }
+          return _light_group_index
+
+      def transform(doc):
+          groups = load_light_group_index().get(
+              str(doc.get("incident_id", "")), []
+          )
+          return {
+              "light_group_rows": [
+                  {"light_group": group} for group in groups
+              ]
+          }
+
+  - name: inner_join_and_unnest_light_groups
+    type: unnest
+    unnest_key: light_group_rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - light_group
+
+  - name: attach_ground_event_membership
+    type: code_map
+    code: |
+      import csv
+      import os
+      import threading
+
+      _ground_event_incidents = None
+      _ground_event_lock = threading.Lock()
+
+      def load_ground_event_incidents():
+          global _ground_event_incidents
+          if _ground_event_incidents is None:
+              with _ground_event_lock:
+                  if _ground_event_incidents is None:
+                      incident_ids = set()
+                      path = os.path.abspath(
+                          os.path.join("data", "asrs", "events.csv")
+                      )
+                      with open(
+                          path, "r", encoding="utf-8", errors="replace", newline=""
+                      ) as handle:
+                          for row in csv.DictReader(handle):
+                              label = str(row.get("label", ""))
+                              if (
+                                  label == "Conflict Ground Conflict"
+                                  or label.startswith("Ground Incursion ")
+                                  or label.startswith("Ground Excursion ")
+                              ):
+                                  incident_ids.add(str(row.get("incident_id", "")))
+                      _ground_event_incidents = incident_ids
+          return _ground_event_incidents
+
+      def transform(doc):
+          return {
+              "has_ground_event": str(doc.get("incident_id", ""))
+              in load_ground_event_incidents()
+          }
+
+  - name: inner_join_ground_events
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("has_ground_event") is True
+
+  - name: aggregate_light_visual_factors
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          light_order = ["low_light", "daylight"]
+          factor_order = [
+              "reduced_visibility",
+              "inadequate_or_confusing_lighting",
+              "glare",
+              "missed_visual_scan",
+              "obscured_signage_or_markings",
+          ]
+          incident_ids = {
+              (light, factor): set()
+              for light in light_order
+              for factor in factor_order
+          }
+
+          for item in items:
+              incident_id = str(item.get("incident_id", ""))
+              key = (item.get("light_group"), item.get("visual_factor"))
+              if incident_id and key in incident_ids:
+                  incident_ids[key].add(incident_id)
+
+          rows = []
+          for light in light_order:
+              for factor in factor_order:
+                  ids = incident_ids[(light, factor)]
+                  if not ids:
+                      continue
+                  rows.append(
+                      {
+                          "light_group": light,
+                          "visual_factor": factor,
+                          "incident_count": len(ids),
+                      }
+                  )
+          return {"rows": rows}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - light_group
+      - visual_factor
+      - incident_count
+
+pipeline:
+  steps:
+    - name: process
+      input: asrs_incidents
+      operations:
+        - filter_air_carrier_airport_reports
+        - load_asrs_narrative
+        - extract_material_visual_factors
+        - build_visual_factor_rows
+        - unnest_visual_factor_rows
+        - attach_light_group_records
+        - inner_join_and_unnest_light_groups
+        - attach_ground_event_membership
+        - inner_join_ground_events
+        - aggregate_light_visual_factors
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-035.json

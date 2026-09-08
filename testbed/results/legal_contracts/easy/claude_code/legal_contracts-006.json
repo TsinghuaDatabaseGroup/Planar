@@ -1,0 +1,64 @@
+{
+  "task_id": "legal_contracts-006",
+  "answer": [
+    {
+      "document_id": "1108906_0000889812-00-001212_document_45.txt",
+      "governing_law": "Connecticut",
+      "missing_exceptions": [
+        "approved_for_disclosure",
+        "required_by_law"
+      ]
+    },
+    {
+      "document_id": "1112999_0001193125-08-214471_dex105.htm",
+      "governing_law": "Korea",
+      "missing_exceptions": [
+        "approved_for_disclosure",
+        "required_by_law"
+      ]
+    },
+    {
+      "document_id": "883905_0001095811-01-000469_f68556ex99-d12.txt",
+      "governing_law": "California",
+      "missing_exceptions": [
+        "approved_for_disclosure",
+        "required_by_law"
+      ]
+    },
+    {
+      "document_id": "ICTSC-NDA-General-MandA-signed.pdf",
+      "governing_law": "New South Wales",
+      "missing_exceptions": [
+        "approved_for_disclosure",
+        "rightfully_received"
+      ]
+    },
+    {
+      "document_id": "NDA-M5-Systems.pdf",
+      "governing_law": "California",
+      "missing_exceptions": [
+        "independently_developed",
+        "rightfully_received"
+      ]
+    },
+    {
+      "document_id": "Non_Disclosure_Agreement_3.pdf",
+      "governing_law": "United Kingdom",
+      "missing_exceptions": [
+        "independently_developed",
+        "rightfully_received"
+      ]
+    },
+    {
+      "document_id": "modelnondisclosureagreement1.pdf",
+      "governing_law": "England and Wales",
+      "missing_exceptions": [
+        "approved_for_disclosure",
+        "required_by_law"
+      ]
+    }
+  ],
+  "elapsed_seconds": 67.565,
+  "cost_usd": 0.27065724,
+  "total_tokens": 590885
+}

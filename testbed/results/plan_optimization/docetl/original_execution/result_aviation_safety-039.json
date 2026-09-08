@@ -1,0 +1,24 @@
+{
+  "task_id": "aviation_safety-039",
+  "answer": [
+    {
+      "rank": 1,
+      "documentation_issue_type": "incorrect_or_incomplete_mel_procedure",
+      "records_complete": "Y",
+      "correct_document_on_board": "Y",
+      "incident_count": 2,
+      "canonical_affected_item": "air/ground system mel procedure"
+    },
+    {
+      "rank": 2,
+      "documentation_issue_type": "missing_or_incomplete_work_card",
+      "records_complete": "Y",
+      "correct_document_on_board": "Y",
+      "incident_count": 1,
+      "canonical_affected_item": "post-paint engine run checklist"
+    }
+  ],
+  "elapsed_seconds": 97.58,
+  "cost_usd": 0.824432,
+  "total_tokens": 2032953
+}

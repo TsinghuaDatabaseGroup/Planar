@@ -1,0 +1,177 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_human_factors_primary
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("primary_problem") == "Human Factors"
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: classify_cabin_side_decision_source
+    type: map
+    optimize: true
+    prompt: |
+      Classify this NASA ASRS narrative by the primary cabin-side source that
+      affected a flight-deck decision.
+
+      First determine whether a cabin-side event, condition, or communication
+      materially affected a decision by the pilots or flight deck, such as whether
+      or when to depart, continue, return, divert, land, hold, delay, reject, or
+      change an operational plan. A cabin issue that was merely reported or handled
+      in the cabin without affecting a flight-deck decision is not_target.
+
+      If one or more qualifying sources are present, assign exactly one category
+      using this precedence from highest to lowest:
+      1. medical_event: passenger or crew illness, injury, incapacitation, or need
+         for medical care;
+      2. security_issue: a security threat, suspected threat, violence, weapon,
+         unlawful interference, or security-driven response;
+      3. policy_issue: a cabin-related company, regulatory, or operational policy
+         dispute or requirement;
+      4. door_issue: a passenger/cabin door indication, closure, latching, arming,
+         or operation issue;
+      5. slide_issue: an evacuation slide deployment, arming, disarming, or slide
+         condition issue;
+      6. cabin_equipment_issue: a cabin, galley, seat, lavatory, cabin oxygen, or
+         other cabin-equipment problem not captured above;
+      7. passenger_behavior: disruptive, noncompliant, threatening, or otherwise
+         operationally consequential passenger conduct not classified as security;
+      8. boarding_issue: a passenger/cabin issue arising during or about boarding;
+      9. deplaning_issue: a passenger/cabin issue arising during or about
+         disembarkation;
+      10. flight_attendant_communication: flight-attendant communication failure,
+          misunderstanding, delay, or report that affected the decision and is not
+          explained by a higher-priority source.
+
+      Apply precedence among all supported sources; do not choose the most vivid or
+      most frequently mentioned source. Use not_target when no cabin-side source
+      affected a flight-deck decision.
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        cabin_side_source: enum[medical_event, security_issue, policy_issue, door_issue, slide_issue, cabin_equipment_issue, passenger_behavior, boarding_issue, deplaning_issue, flight_attendant_communication, not_target]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: keep_target_cabin_side_sources
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("cabin_side_source") in {
+              "medical_event",
+              "security_issue",
+              "policy_issue",
+              "door_issue",
+              "slide_issue",
+              "cabin_equipment_issue",
+              "passenger_behavior",
+              "boarding_issue",
+              "deplaning_issue",
+              "flight_attendant_communication",
+          }
+
+  - name: aggregate_by_cabin_side_source
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          source_order = [
+              "medical_event",
+              "security_issue",
+              "policy_issue",
+              "door_issue",
+              "slide_issue",
+              "cabin_equipment_issue",
+              "passenger_behavior",
+              "boarding_issue",
+              "deplaning_issue",
+              "flight_attendant_communication",
+          ]
+          incident_ids = {source: set() for source in source_order}
+
+          for item in items:
+              incident_id = str(item.get("incident_id", ""))
+              source = item.get("cabin_side_source")
+              if incident_id and source in incident_ids:
+                  incident_ids[source].add(incident_id)
+
+          rows = [
+              {
+                  "cabin_side_source": source,
+                  "incident_count": len(incident_ids[source]),
+              }
+              for source in source_order
+              if incident_ids[source]
+          ]
+          return {"rows": rows}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - cabin_side_source
+      - incident_count
+
+pipeline:
+  steps:
+    - name: process
+      input: asrs_incidents
+      operations:
+        - filter_human_factors_primary
+        - load_asrs_narrative
+        - classify_cabin_side_decision_source
+        - keep_target_cabin_side_sources
+        - aggregate_by_cabin_side_source
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-010.json

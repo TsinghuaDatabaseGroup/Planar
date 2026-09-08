@@ -1,0 +1,96 @@
+datasets:
+  contract_exhibit_root:
+    type: memory
+    path:
+    - root: data/contract-exhibit
+operations:
+- name: count_distinct_contracts
+  type: code_reduce
+  reduce_key: _all
+  code: "def transform(items):\n    return {\n        \"count\": len(\n            {\n               \
+    \ str(item.get(\"contract_id\"))\n                for item in items\n                if item.get(\"\
+    contract_id\") is not None\n            }\n        )\n    }\n"
+  model: Qwen3.5-397B-A17B
+- name: keep_genuine_sox_certifications
+  type: filter
+  prompt: 'Determine whether this HTML-format contract exhibit is a genuine
+
+    Sarbanes-Oxley officer certification under Section 302 or Section 906.
+
+    Exclude Regulation AB servicing certifications and other documents that only
+
+    resemble such an officer certification without actually being one.
+
+
+    Document:
+
+    {{ input.text }}
+
+    '
+  output:
+    mode: structured_output
+    schema:
+      is_genuine_sox_certification: boolean
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 128
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  model: Qwen3.5-397B-A17B
+- name: unnest_html_contract_documents
+  type: unnest
+  unnest_key: documents
+  recursive: true
+  depth: 2
+  expand_fields:
+  - contract_id
+  - doc_format
+  - text
+  model: Qwen3.5-397B-A17B
+- name: load_html_contract_documents
+  type: code_map
+  code: "def transform(doc):\n    import glob\n    import os\n    from html.parser import HTMLParser\n\
+    \n    class TextExtractor(HTMLParser):\n        def __init__(self):\n            super().__init__()\n\
+    \            self.parts = []\n            self.skip_depth = 0\n\n        def handle_starttag(self,\
+    \ tag, attrs):\n            if tag.lower() in {\"script\", \"style\"}:\n                self.skip_depth\
+    \ += 1\n\n        def handle_endtag(self, tag):\n            if tag.lower() in {\"script\", \"style\"\
+    } and self.skip_depth:\n                self.skip_depth -= 1\n\n        def handle_data(self, data):\n\
+    \            if not self.skip_depth:\n                value = \" \".join(data.split())\n         \
+    \       if value:\n                    self.parts.append(value)\n\n    root = os.path.abspath(str(doc.get(\"\
+    root\", \"\")))\n    paths = sorted(\n        path\n        for path in glob.glob(os.path.join(root,\
+    \ \"*\"))\n        if os.path.splitext(path)[1].lower() in {\".htm\", \".html\"}\n    )\n    documents\
+    \ = []\n    for path in paths:\n        with open(path, \"r\", encoding=\"utf-8\", errors=\"replace\"\
+    ) as handle:\n            parser = TextExtractor()\n            parser.feed(handle.read())\n     \
+    \   documents.append(\n            {\n                \"contract_id\": os.path.basename(path),\n \
+    \               \"doc_format\": \"htm\",\n                \"text\": \"\\n\".join(parser.parts),\n\
+    \            }\n        )\n    return {\"documents\": documents}\n"
+  model: Qwen3.5-397B-A17B
+pipeline:
+  steps:
+  - name: process
+    operations:
+    - load_html_contract_documents
+    - unnest_html_contract_documents
+    - keep_genuine_sox_certifications
+    - count_distinct_contracts
+    input: contract_exhibit_root
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-017.json
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  num_plans_to_evaluate_in_parallel: 1

@@ -1,0 +1,47 @@
+{
+  "task_id": "legal_contracts-106",
+  "answer": [
+    {
+      "jurisdiction": "New York",
+      "qualifying_nda_count": 30,
+      "most_common_restriction_profile": [
+        false,
+        false,
+        true,
+        true,
+        false
+      ],
+      "profile_nda_count": 14,
+      "profile_avg_duration_years": 2.29
+    },
+    {
+      "jurisdiction": "Delaware",
+      "qualifying_nda_count": 23,
+      "most_common_restriction_profile": [
+        false,
+        false,
+        true,
+        true,
+        false
+      ],
+      "profile_nda_count": 15,
+      "profile_avg_duration_years": 2.67
+    },
+    {
+      "jurisdiction": "California",
+      "qualifying_nda_count": 10,
+      "most_common_restriction_profile": [
+        false,
+        false,
+        true,
+        true,
+        false
+      ],
+      "profile_nda_count": 5,
+      "profile_avg_duration_years": 2.7
+    }
+  ],
+  "elapsed_seconds": 684.852,
+  "cost_usd": 5.74789371,
+  "total_tokens": 13843374
+}

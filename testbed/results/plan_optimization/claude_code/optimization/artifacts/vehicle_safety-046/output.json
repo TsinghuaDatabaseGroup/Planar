@@ -1,0 +1,27 @@
+{
+  "task_id": "vehicle_safety-046",
+  "optimization_analysis": "Three LM-cost reductions applied, all semantically safe. (1) SEM_FILTER removed: both inputs are already filtered to component_id='AIRBAG', and the SEM_JOIN already requires 'same airbag defect' — any row that survives the join necessarily describes an airbag safety risk, making the subsequent filter a no-op LM call on every matched row. (2) Per-row SEM_CLASSIFY replaced by per-campaign SEM_AGGREGATE: the original plan ran failure-mode classification once per matched (complaint, recall) pair (O(N) LM calls); by first doing a relational GROUP_BY that collects all complaint texts per campaign, we classify the dominant failure mode once per campaign (O(C) calls, where C << N). (3) Investigation-report SEM_JOIN deferred to campaign level: in the original plan the join runs on every (complaint, recall) row, giving O(N × R) LM comparisons; by moving it after the first GROUP_BY it runs once per campaign, giving O(C × R). The two formerly separate SEM_AGGREGATE calls are also merged into one per-campaign call, halving SEM_AGGREGATE invocations. All output columns, join predicates, grouping keys, and tiebreak rules are preserved.",
+  "optimized_semantic_plan": [
+    {
+      "type": "operator_dag",
+      "program": "SCAN_TABLE(NHTSA, complaints, [complaint_id, make, component_id, summary_text]) -> FILTER(make='CHRYSLER' AND component_id='AIRBAG') -> SEM_JOIN('Match a complaint to a recall only when the complaint narrative and recall defect summary describe the same airbag defect.', input_bindings_left={complaint_summary: summary_text}, input_bindings_right={recall_defect: r.risk.defect_summary}, right=( SCAN_DOCS(NHTSA, recalls AS r, [campaign.number, vehicle.make AS make, component.component_id AS component_id, risk.defect_summary, risk.consequence_summary, remedy.corrective_action]) -> FILTER(vehicle.make='CHRYSLER' AND component.component_id='AIRBAG') )) -> GROUP_BY([r.campaign.number AS campaign_number], aggs={matched_complaint_count: count_distinct(complaint_id), corrective_actions: collect_distinct(r.remedy.corrective_action), complaint_texts: collect_distinct(summary_text), recall_defect_summary: first(r.risk.defect_summary)}) -> SEM_JOIN('Match this Chrysler airbag campaign to an investigation report only when the report discusses the same airbag risk or ODI evidence as the campaign defect summary or complaint texts.', input_bindings_left={complaint_samples: complaint_texts, defect_summary: recall_defect_summary}, input_bindings_right={report_body: body}, right=( SCAN_DOCS(NHTSA, investigation_reports, selector='*.txt', columns=[file_id, body]) -> FILTER(body CONTAINS 'Chrysler' OR body CONTAINS 'airbag' OR body CONTAINS 'inflator') )) -> GROUP_BY([campaign_number], aggs={matched_complaint_count: first(matched_complaint_count), corrective_actions: first(corrective_actions), complaint_texts: first(complaint_texts), related_report_ids: collect_distinct_sorted(file_id, 'asc'), report_bodies: collect_distinct(body)}) -> SEM_AGGREGATE('For this Chrysler airbag campaign: (1) assign dominant_airbag_failure_mode from [non_deployment, unintended_deployment, inflator_rupture, warning_or_sensor_fault, other] by plurality across complaint_texts with alphabetical tiebreak; (2) assign dominant_remedy_style from [software_update, part_replacement, other] based on remedies; (3) write odi_evidence_summary as one short phrase summarizing the ODI evidence from reports.', out_schema={dominant_airbag_failure_mode: string, dominant_remedy_style: string, odi_evidence_summary: string}, group_by=[campaign_number], input_bindings={complaint_texts: complaint_texts, remedies: corrective_actions, reports: report_bodies}) -> PROJECT([campaign_number, matched_complaint_count, dominant_airbag_failure_mode, dominant_remedy_style, related_report_ids, odi_evidence_summary])"
+    }
+  ],
+  "valid": true,
+  "validation_warnings": [],
+  "elapsed_secs": 71.533,
+  "cost_usd": 0.05698275,
+  "agent_cost_usd": 0.05698275,
+  "usage": {
+    "input": 3,
+    "output": 2695,
+    "cacheRead": 0,
+    "cacheWrite": 4413
+  },
+  "agent_usage": {
+    "input": 3,
+    "output": 2695,
+    "cacheRead": 0,
+    "cacheWrite": 4413
+  }
+}

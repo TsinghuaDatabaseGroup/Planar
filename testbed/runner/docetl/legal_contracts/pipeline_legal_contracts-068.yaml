@@ -1,0 +1,100 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_titled_nda_agreements
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is a mutual NDA, unilateral NDA, or
+      confidentiality-and-standstill agreement with an identifiable agreement
+      title.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_titled_in_scope_agreement: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_title_protection_profile
+    type: map
+    optimize: true
+    prompt: |
+      Return the agreement title, whether each of the six standard
+      confidentiality exceptions is present, whether the agreement contains
+      return-or-destroy language, and whether it provides injunctive relief.
+
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        agreement_title: string
+        public_information: boolean
+        prior_knowledge: boolean
+        independent_development: boolean
+        lawful_third_party_receipt: boolean
+        legal_compulsion: boolean
+        consent: boolean
+        return_of_materials: boolean
+        injunctive_relief: boolean
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: project_normalized_title_metrics
+    type: code_map
+    code: |
+      def transform(doc):
+          import re
+          normalized_title = re.sub(r"[\W_]+", " ", str(doc.get("agreement_title") or "").casefold(), flags=re.UNICODE)
+          normalized_title = " ".join(normalized_title.split())
+          fields = ["public_information", "prior_knowledge", "independent_development", "lawful_third_party_receipt", "legal_compulsion", "consent"]
+          exception_count = sum(doc.get(field) is True for field in fields)
+          return {
+              "normalized_agreement_title": normalized_title,
+              "exception_count": exception_count,
+              "has_return_and_injunctive": int(doc.get("return_of_materials") is True and doc.get("injunctive_relief") is True),
+              "has_all_six": int(exception_count == 6),
+          }
+  - name: aggregate_title_families
+    type: code_reduce
+    reduce_key: normalized_agreement_title
+    code: |
+      def transform(items):
+          size = len(items)
+          return {
+              "family_size": size,
+              "avg_exception_count": round(sum(int(item.get("exception_count") or 0) for item in items) / size, 2),
+              "return_and_injunctive_share": round(sum(int(item.get("has_return_and_injunctive") or 0) for item in items) / size, 4),
+              "all_six_exceptions_share": round(sum(int(item.get("has_all_six") or 0) for item in items) / size, 4),
+          }
+  - name: filter_large_title_families
+    type: code_filter
+    code: |
+      def transform(doc):
+          return int(doc.get("family_size") or 0) >= 5
+  - name: order_title_families
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          ordered = sorted(items, key=lambda item: (-int(item.get("family_size") or 0), str(item.get("normalized_agreement_title") or "")))
+          fields = ["normalized_agreement_title", "family_size", "avg_exception_count", "return_and_injunctive_share", "all_six_exceptions_share"]
+          return {"rows": [{field: item.get(field) for field in fields} for item in ordered]}
+  - name: unnest_title_families
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields: [normalized_agreement_title, family_size, avg_exception_count, return_and_injunctive_share, all_six_exceptions_share]
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations: [filter_titled_nda_agreements, extract_title_protection_profile, project_normalized_title_metrics, aggregate_title_families, filter_large_title_families, order_title_families, unnest_title_families]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-068.json

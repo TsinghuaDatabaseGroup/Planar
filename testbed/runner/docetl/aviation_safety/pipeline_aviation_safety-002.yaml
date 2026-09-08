@@ -1,0 +1,176 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_human_factors_primary
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("primary_problem") == "Human Factors"
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: extract_clearance_noncompliance_reason
+    type: map
+    optimize: true
+    prompt: |
+      Classify this NASA ASRS report using only the narrative below.
+
+      Set qualifies=true only when the report identifies a specific ATC clearance
+      or restriction that could not be followed, and the primary reason was
+      non-mechanical. A delayed, difficult, or unusual clearance does not qualify
+      unless the narrative establishes that it could not be followed as issued.
+      Exclude aircraft equipment failures and other mechanical limitations.
+
+      Choose the single primary_reason that most directly caused the inability:
+      - late_clearance: ATC issued or changed it too late to comply;
+      - confusing_or_ambiguous: the clearance itself was unclear, incomplete,
+        contradictory, or reasonably open to multiple interpretations;
+      - workload_or_timing_pressure: workload, task saturation, interruption, or
+        insufficient execution time prevented compliance;
+      - expectation_or_readback_error: expectation bias, misunderstanding,
+        incorrect readback, or failed hearback led the crew to act on a different
+        clearance.
+
+      Set has_numeric_time=true only if an explicit numeric duration representing
+      time available to comply is stated. Set has_numeric_distance=true only if an
+      explicit numeric distance representing distance available to comply is
+      stated. Do not count assigned altitudes, speeds, headings, runway numbers,
+      clock times, or unrelated measurements. For a non-match, use not_applicable
+      and set both flags false.
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        qualifies: boolean
+        primary_reason: enum[late_clearance, confusing_or_ambiguous, workload_or_timing_pressure, expectation_or_readback_error, not_applicable]
+        has_numeric_time: boolean
+        has_numeric_distance: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: keep_qualifying_clearance_reports
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("qualifies") is True
+              and doc.get("primary_reason")
+              in {
+                  "late_clearance",
+                  "confusing_or_ambiguous",
+                  "workload_or_timing_pressure",
+                  "expectation_or_readback_error",
+              }
+          )
+
+  - name: aggregate_by_primary_reason
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          reason_order = [
+              "late_clearance",
+              "confusing_or_ambiguous",
+              "workload_or_timing_pressure",
+              "expectation_or_readback_error",
+          ]
+          incident_ids = {reason: set() for reason in reason_order}
+          numeric_time_ids = {reason: set() for reason in reason_order}
+          numeric_distance_ids = {reason: set() for reason in reason_order}
+
+          for item in items:
+              incident_id = str(item.get("incident_id", ""))
+              reason = item.get("primary_reason")
+              if not incident_id or reason not in incident_ids:
+                  continue
+              incident_ids[reason].add(incident_id)
+              if item.get("has_numeric_time") is True:
+                  numeric_time_ids[reason].add(incident_id)
+              if item.get("has_numeric_distance") is True:
+                  numeric_distance_ids[reason].add(incident_id)
+
+          rows = []
+          for reason in reason_order:
+              if not incident_ids[reason]:
+                  continue
+              rows.append(
+                  {
+                      "primary_reason": reason,
+                      "incident_count": len(incident_ids[reason]),
+                      "with_numeric_time_count": len(numeric_time_ids[reason]),
+                      "with_numeric_distance_count": len(
+                          numeric_distance_ids[reason]
+                      ),
+                  }
+              )
+          return {"rows": rows}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - primary_reason
+      - incident_count
+      - with_numeric_time_count
+      - with_numeric_distance_count
+
+pipeline:
+  steps:
+    - name: process
+      input: asrs_incidents
+      operations:
+        - filter_human_factors_primary
+        - load_asrs_narrative
+        - extract_clearance_noncompliance_reason
+        - keep_qualifying_clearance_reports
+        - aggregate_by_primary_reason
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-002.json

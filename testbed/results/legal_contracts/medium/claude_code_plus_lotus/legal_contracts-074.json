@@ -1,0 +1,176 @@
+{
+  "task_id": "legal_contracts-074",
+  "answer": [
+    {
+      "blackout_period": true,
+      "pre_clearance": true,
+      "rule_10b5_1": true,
+      "family_household_coverage": true,
+      "pledging_prohibited": true,
+      "policy_count": 75
+    },
+    {
+      "blackout_period": true,
+      "pre_clearance": true,
+      "rule_10b5_1": true,
+      "family_household_coverage": true,
+      "pledging_prohibited": false,
+      "policy_count": 62
+    },
+    {
+      "blackout_period": false,
+      "pre_clearance": false,
+      "rule_10b5_1": false,
+      "family_household_coverage": false,
+      "pledging_prohibited": false,
+      "policy_count": 29
+    },
+    {
+      "blackout_period": false,
+      "pre_clearance": false,
+      "rule_10b5_1": false,
+      "family_household_coverage": true,
+      "pledging_prohibited": false,
+      "policy_count": 18
+    },
+    {
+      "blackout_period": true,
+      "pre_clearance": false,
+      "rule_10b5_1": false,
+      "family_household_coverage": false,
+      "pledging_prohibited": true,
+      "policy_count": 8
+    },
+    {
+      "blackout_period": true,
+      "pre_clearance": false,
+      "rule_10b5_1": false,
+      "family_household_coverage": false,
+      "pledging_prohibited": false,
+      "policy_count": 7
+    },
+    {
+      "blackout_period": false,
+      "pre_clearance": false,
+      "rule_10b5_1": false,
+      "family_household_coverage": false,
+      "pledging_prohibited": true,
+      "policy_count": 6
+    },
+    {
+      "blackout_period": false,
+      "pre_clearance": false,
+      "rule_10b5_1": true,
+      "family_household_coverage": true,
+      "pledging_prohibited": true,
+      "policy_count": 5
+    },
+    {
+      "blackout_period": true,
+      "pre_clearance": true,
+      "rule_10b5_1": false,
+      "family_household_coverage": true,
+      "pledging_prohibited": false,
+      "policy_count": 4
+    },
+    {
+      "blackout_period": false,
+      "pre_clearance": false,
+      "rule_10b5_1": true,
+      "family_household_coverage": false,
+      "pledging_prohibited": true,
+      "policy_count": 2
+    },
+    {
+      "blackout_period": true,
+      "pre_clearance": false,
+      "rule_10b5_1": true,
+      "family_household_coverage": false,
+      "pledging_prohibited": true,
+      "policy_count": 2
+    },
+    {
+      "blackout_period": true,
+      "pre_clearance": false,
+      "rule_10b5_1": true,
+      "family_household_coverage": true,
+      "pledging_prohibited": false,
+      "policy_count": 2
+    },
+    {
+      "blackout_period": true,
+      "pre_clearance": true,
+      "rule_10b5_1": false,
+      "family_household_coverage": true,
+      "pledging_prohibited": true,
+      "policy_count": 2
+    },
+    {
+      "blackout_period": true,
+      "pre_clearance": true,
+      "rule_10b5_1": true,
+      "family_household_coverage": false,
+      "pledging_prohibited": true,
+      "policy_count": 2
+    },
+    {
+      "blackout_period": false,
+      "pre_clearance": false,
+      "rule_10b5_1": false,
+      "family_household_coverage": true,
+      "pledging_prohibited": true,
+      "policy_count": 1
+    },
+    {
+      "blackout_period": false,
+      "pre_clearance": false,
+      "rule_10b5_1": true,
+      "family_household_coverage": false,
+      "pledging_prohibited": false,
+      "policy_count": 1
+    },
+    {
+      "blackout_period": false,
+      "pre_clearance": false,
+      "rule_10b5_1": true,
+      "family_household_coverage": true,
+      "pledging_prohibited": false,
+      "policy_count": 1
+    },
+    {
+      "blackout_period": false,
+      "pre_clearance": true,
+      "rule_10b5_1": false,
+      "family_household_coverage": false,
+      "pledging_prohibited": false,
+      "policy_count": 1
+    },
+    {
+      "blackout_period": false,
+      "pre_clearance": true,
+      "rule_10b5_1": false,
+      "family_household_coverage": true,
+      "pledging_prohibited": false,
+      "policy_count": 1
+    },
+    {
+      "blackout_period": false,
+      "pre_clearance": true,
+      "rule_10b5_1": true,
+      "family_household_coverage": true,
+      "pledging_prohibited": false,
+      "policy_count": 1
+    },
+    {
+      "blackout_period": true,
+      "pre_clearance": false,
+      "rule_10b5_1": false,
+      "family_household_coverage": true,
+      "pledging_prohibited": true,
+      "policy_count": 1
+    }
+  ],
+  "elapsed_seconds": 229.244,
+  "cost_usd": 0.94496226,
+  "total_tokens": 1759804
+}

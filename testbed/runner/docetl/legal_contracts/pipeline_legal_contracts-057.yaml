@@ -1,0 +1,60 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_employment_or_restrictive_agreements
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is an employment agreement or a standalone
+      restrictive-covenant agreement.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_in_scope_agreement: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: filter_long_scoped_non_competes
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this agreement only if it contains an operative non-compete lasting
+      at least four years and expressly states a geographic scope.
+
+      Agreement:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {has_long_scoped_non_compete: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_non_compete_details
+    type: map
+    optimize: true
+    prompt: |
+      Return the input document ID, the operative non-compete duration
+      normalized to years, its geographic scope, and a concise description of
+      the prohibited activity scope.
+
+      Input document ID: {{ input.doc_id }}
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        document_id: string
+        duration_years: float
+        geographic_scope: string
+        prohibited_activity_scope: string
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations: [filter_employment_or_restrictive_agreements, filter_long_scoped_non_competes, extract_non_compete_details]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-057.json

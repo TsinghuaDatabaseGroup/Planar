@@ -1,0 +1,33 @@
+{
+  "task_id": "legal_contracts-067",
+  "answer": [
+    {
+      "company": "Acuity Inc.",
+      "trigger_pattern": "restatement_only",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "Cavco Industries, Inc.",
+      "trigger_pattern": "restatement_and_misconduct",
+      "coverage_extends_beyond_executive_officers": false
+    },
+    {
+      "company": "Globalstar, Inc.",
+      "trigger_pattern": "restatement_and_misconduct",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "H.B. Fuller Company",
+      "trigger_pattern": "restatement_and_misconduct",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "El Pollo Loco Holdings, Inc.",
+      "trigger_pattern": "restatement_and_misconduct",
+      "coverage_extends_beyond_executive_officers": false
+    }
+  ],
+  "elapsed_seconds": 451.02,
+  "cost_usd": 3.917602,
+  "total_tokens": 7350691
+}

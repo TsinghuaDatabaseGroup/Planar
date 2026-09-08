@@ -1,0 +1,23 @@
+{
+  "task_id": "aviation_safety-001",
+  "answer": [
+    {
+      "primary_trigger": "unstable_approach",
+      "incident_count": 64,
+      "most_common_initiating_role": "captain"
+    },
+    {
+      "primary_trigger": "traffic_spacing",
+      "incident_count": 18,
+      "most_common_initiating_role": "atc"
+    },
+    {
+      "primary_trigger": "runway_occupancy",
+      "incident_count": 10,
+      "most_common_initiating_role": "atc"
+    }
+  ],
+  "elapsed_seconds": 1605.41,
+  "cost_usd": 4.312008,
+  "total_tokens": 5718345
+}

@@ -1,0 +1,27 @@
+{
+  "task_id": "vehicle_safety-042",
+  "optimization_analysis": "Moved SEM_FILTER and SEM_CLASSIFY before the first SEM_JOIN to reduce complaint cardinality early. Most critically, grouped by campaign_number before the second SEM_JOIN with investigation reports, reducing the operation from O(complaints × recalls × reports) to O(campaigns × reports). The campaign-level join preserves semantics: complaints are first matched to recalls, then campaigns (with their defect summaries and aggregated matched complaints) are matched to reports.",
+  "optimized_semantic_plan": [
+    {
+      "type": "operator_dag",
+      "program": "SCAN_TABLE(NHTSA, complaints, [complaint_id, make, component_id, summary_text]) -> FILTER(make='TESLA' AND component_id='ADAS') -> SEM_FILTER('the complaint describes a driving-context ADAS safety issue rather than general infotainment or account software behavior', input_bindings={text: summary_text}) -> SEM_CLASSIFY('Assign the dominant Tesla ADAS defect topic.', target_labels=['autopilot_misuse','unexpected_braking','steering_control','warning_or_supervision_gap','other'], input_bindings={text: summary_text}) -> SEM_JOIN('Within Tesla ADAS records, match a complaint to a recall only when the complaint narrative and recall defect summary describe the same driver-assistance or automation-control problem.', input_bindings_left={complaint_summary: summary_text, component_id: component_id, complaint_topic: group}, input_bindings_right={recall_defect: r.risk.defect_summary, component_id: r.component_id}, right=( SCAN_DOCS(NHTSA, recalls AS r, [campaign.number, vehicle.make AS make, component.component_id AS component_id, risk.defect_summary, risk.consequence_summary]) -> FILTER(vehicle.make='TESLA' AND component.component_id='ADAS') )) -> GROUP_BY([r.campaign.number], aggs={matched_complaint_count: count_distinct(complaint_id), dominant_adas_topic: mode_with_tiebreak(group, tiebreak='alpha_asc'), recall_defect_summary: first(r.risk.defect_summary)}) -> SEM_JOIN('Match the Tesla ADAS campaign to an investigation report only when the report discusses the same driver-assistance safety issue or ODI human-factors concern as the recall defect summary.', input_bindings_left={recall_defect: recall_defect_summary, campaign_topic: dominant_adas_topic}, input_bindings_right={report_body: body}, right=( SCAN_DOCS(NHTSA, investigation_reports, selector='*.txt', columns=[file_id, body]) -> FILTER(body CONTAINS 'Tesla' OR body CONTAINS 'Autopilot' OR body CONTAINS 'driver assistance') )) -> GROUP_BY([campaign_number: r.campaign.number], aggs={matched_complaint_count: first(matched_complaint_count), dominant_adas_topic: first(dominant_adas_topic), related_report_ids: collect_distinct_sorted(file_id, 'asc')}) -> PROJECT([campaign_number, matched_complaint_count, dominant_adas_topic, related_report_ids])"
+    }
+  ],
+  "valid": true,
+  "validation_warnings": [],
+  "elapsed_secs": 52.521,
+  "cost_usd": 0.05671785,
+  "agent_cost_usd": 0.05671785,
+  "usage": {
+    "input": 3,
+    "output": 3440,
+    "cacheRead": 3092,
+    "cacheWrite": 1115
+  },
+  "agent_usage": {
+    "input": 3,
+    "output": 3440,
+    "cacheRead": 3092,
+    "cacheWrite": 1115
+  }
+}

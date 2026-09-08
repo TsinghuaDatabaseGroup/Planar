@@ -1,0 +1,83 @@
+{
+  "task_id": "legal_contracts-060",
+  "answer": [
+    {
+      "document_id": "contract-exhibit/1001113_0000950134-07-005231_f27921orexv99wxdyx3y.htm",
+      "non_disclosure_direction": "mutual",
+      "governing_law": ""
+    },
+    {
+      "document_id": "contract-exhibit/1011344_0001193125-08-097987_dex99d5.htm",
+      "non_disclosure_direction": "mutual",
+      "governing_law": ""
+    },
+    {
+      "document_id": "contract-exhibit/1013322_0000912057-00-023405_document_2.txt",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "United States of America and the State of California"
+    },
+    {
+      "document_id": "contract-exhibit/1042282_0000893220-02-000791_e61414toexv99wxdywx1y.txt",
+      "non_disclosure_direction": "mutual",
+      "governing_law": ""
+    },
+    {
+      "document_id": "contract-exhibit/1084817_0001193125-14-004957_d648340dex99e2.htm",
+      "non_disclosure_direction": "mutual",
+      "governing_law": ""
+    },
+    {
+      "document_id": "contract-exhibit/1094007_0001193125-10-258977_dex101.htm",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "State of Washington"
+    },
+    {
+      "document_id": "contract-exhibit/1112422_0000950153-08-001257_p75864exv99wxeyx4y.htm",
+      "non_disclosure_direction": "mutual",
+      "governing_law": ""
+    },
+    {
+      "document_id": "contract-exhibit/859119_0000950123-98-001418_document_15.txt",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "State of New York"
+    },
+    {
+      "document_id": "contract-exhibit/Acme%20Corporation%20Inc%20NDA%20template.pdf",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "State of California"
+    },
+    {
+      "document_id": "contract-exhibit/BCG-Mutual-NDA.pdf",
+      "non_disclosure_direction": "mutual",
+      "governing_law": ""
+    },
+    {
+      "document_id": "contract-exhibit/buyer_profile.pdf",
+      "non_disclosure_direction": "One-way (Aldes, Seller/s, and Business/es to Buyer)",
+      "governing_law": "Republic of South Africa"
+    },
+    {
+      "document_id": "contract-exhibit/epsteen_nda.pdf",
+      "non_disclosure_direction": "Seller and Broker to Buyer",
+      "governing_law": "State of California"
+    },
+    {
+      "document_id": "contract-exhibit/INFOMAGNET%20NDA.pdf",
+      "non_disclosure_direction": "mutual",
+      "governing_law": ""
+    },
+    {
+      "document_id": "contract-exhibit/Standard%20NDA%20by%20Axial.pdf",
+      "non_disclosure_direction": "Disclosing Party to Recipient",
+      "governing_law": ""
+    },
+    {
+      "document_id": "contract-exhibit/ttp-nda.pdf",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "Utah"
+    }
+  ],
+  "elapsed_seconds": 495.917,
+  "cost_usd": 1.12699167,
+  "total_tokens": 2574988
+}

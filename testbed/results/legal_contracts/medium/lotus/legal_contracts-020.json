@@ -1,0 +1,123 @@
+{
+  "task_id": "legal_contracts-020",
+  "answer": [
+    {
+      "document_id": "69067_0000927016-00-002123_0010.txt",
+      "governing_law": "State of Minnesota",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "925544_0000950144-00-010739_ex99-d4.txt",
+      "governing_law": "Commonwealth of Pennsylvania",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "Confidentiality-and-Nondisclosure-Agreement-Template.pdf",
+      "governing_law": "State of Arkansas",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "DBT%20Mutual%20NDA.pdf",
+      "governing_law": "State of Massachusetts",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "Florida-Non-Disclosure-Agreement-NDA-Template.pdf",
+      "governing_law": "Florida",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "Generic-NDA-Pitch-Deck-Fire.pdf",
+      "governing_law": "Colorado",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "NDA-for-Gar-Kenyon-Suppliers.pdf",
+      "governing_law": "Connecticut, USA",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "NDA_and_assgmnt_of_ipMar2011.pdf",
+      "governing_law": "State of California (Central District of California)",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "Non-Disclosure-Agreement-FORS-Cert-Body.pdf",
+      "governing_law": "Laws of England and Wales",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "Non-Disclosure-Agreement_3.pdf",
+      "governing_law": "State of Florida",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "Non-disclosure-Agreement_7.pdf",
+      "governing_law": "English law",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "Non_Disclosure_Agreement_1.pdf",
+      "governing_law": "State of Ohio",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "Pitch-Deck-Fire-Workshop-NDA-2.2017.pdf",
+      "governing_law": "Colorado",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "QSA_NDA.pdf",
+      "governing_law": "Commonwealth of Australia and the State of Victoria",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "RFP_Telephony-NDA_Attachment-F.pdf",
+      "governing_law": "State of California",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "Tazza-CAFFE-Confidentiality-Agreement.pdf",
+      "governing_law": "Laws of the province of New Brunswick",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "iastate_confidentiality_agreement_c5-81.pdf",
+      "governing_law": "State of [governing law] (placeholder stated in Section I)",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "mutual-non-disclosure-agreement.pdf",
+      "governing_law": "English Law",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "non-disclosure_201302814_english_.pdf",
+      "governing_law": "Laws of the Province of Ontario",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "oceaneering-non-disclosure-agreement.pdf",
+      "governing_law": "Texas",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "one-way_nda_ji_form.pdf",
+      "governing_law": "State of Washington",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "tufts_confidentiality_agreement.pdf",
+      "governing_law": "Commonwealth of Massachusetts",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "vmw-certification-conduct-policy.pdf",
+      "governing_law": "State of California",
+      "direction": "unilateral"
+    }
+  ],
+  "elapsed_seconds": 501.53,
+  "cost_usd": 4.48793,
+  "total_tokens": 8420811
+}

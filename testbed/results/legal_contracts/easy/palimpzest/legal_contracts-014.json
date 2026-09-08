@@ -1,0 +1,10 @@
+{
+  "task_id": "legal_contracts-014",
+  "answer": [
+    {"has_internal_controls_clause": true, "has_fraud_disclosure_clause": true, "has_material_changes_clause": false, "certification_count": 367},
+    {"has_internal_controls_clause": false, "has_fraud_disclosure_clause": false, "has_material_changes_clause": false, "certification_count": 19}
+  ],
+  "elapsed_seconds": 1891.96,
+  "cost_usd": 2.970281,
+  "total_tokens": 5621286
+}

@@ -1,0 +1,11 @@
+{
+  "task_id": "legal_contracts-087",
+  "answer": [
+    {"normalized_agreement_title": "non disclosure agreement", "family_size": 166, "qualifying_member_count": 68},
+    {"normalized_agreement_title": "mutual non disclosure agreement", "family_size": 79, "qualifying_member_count": 54},
+    {"normalized_agreement_title": "confidentiality and non disclosure agreement", "family_size": 38, "qualifying_member_count": 12}
+  ],
+  "elapsed_seconds": 3694.63,
+  "cost_usd": 6.468290,
+  "total_tokens": 12241301
+}

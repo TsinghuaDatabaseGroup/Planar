@@ -1,0 +1,352 @@
+{
+  "node_id": 50,
+  "sample_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-042/moar-search/pipeline_vehicle_safety-042_input_sample_openai_Qwen3.5-397B-A17B.yaml",
+  "sample_output_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-042/moar-search/pipeline_vehicle_safety-042_input_sample_openai_Qwen3.5-397B-A17B.json",
+  "semantic_fidelity": 1.0,
+  "sample_execution_cost_usd": 0.9194872699999996,
+  "fidelity_threshold": 0.9,
+  "selection_reason": "lowest_cost_meeting_fidelity_threshold",
+  "optimization_path": "ROOT → change to Qwen3.5-397B-A17B(filter_tesla_adas_complaints)",
+  "sample_execution_metrics_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-042/moar-search/candidate-metrics/execution_0001_node-50.json",
+  "full_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-042/selected-plan/pipeline_vehicle_safety-042_optimized_full.yaml",
+  "input_plan_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/pipeline-all/pipeline_vehicle_safety-042.yaml",
+  "input_plan_kind": "reference-plan translation used as the MOAR input plan",
+  "operator_execution_policy": {
+    "policy": "structural_rewrite_fixed_operator_execution",
+    "nested_v1_optimizer_invoked": false,
+    "fixed_default_model": "Qwen3.5-397B-A17B",
+    "unchanged_operations": [
+      "filter_tesla_adas_complaints",
+      "filter_tesla_adas_recalls",
+      "flatten_tesla_adas_recall_fields",
+      "match_tesla_adas_complaints_to_recalls",
+      "classify_driving_context_adas_safety_issue",
+      "classify_tesla_adas_defect_topic",
+      "filter_candidate_tesla_adas_investigation_reports",
+      "match_tesla_adas_issues_to_investigation_reports",
+      "aggregate_tesla_adas_campaigns",
+      "project_tesla_adas_campaign_summary"
+    ],
+    "new_or_replaced_operations": [],
+    "restored_fields": {},
+    "unchanged_operation_count": 10,
+    "new_or_replaced_operation_count": 0
+  },
+  "input_plan_signature": {
+    "definitions": {
+      "filter_tesla_adas_complaints": "code_filter",
+      "filter_tesla_adas_recalls": "code_filter",
+      "flatten_tesla_adas_recall_fields": "code_map",
+      "match_tesla_adas_complaints_to_recalls": "equijoin",
+      "classify_driving_context_adas_safety_issue": "filter",
+      "classify_tesla_adas_defect_topic": "map",
+      "filter_candidate_tesla_adas_investigation_reports": "code_filter",
+      "match_tesla_adas_issues_to_investigation_reports": "equijoin",
+      "aggregate_tesla_adas_campaigns": "code_reduce",
+      "project_tesla_adas_campaign_summary": "code_map"
+    },
+    "logical_operations": [
+      {
+        "name": "filter_tesla_adas_complaints",
+        "type": "code_filter",
+        "logical_config_sha256": "2993e5102c98df89a7cf59daed22c5f717d79aed0ecde014c5da4f268cd29668"
+      },
+      {
+        "name": "filter_tesla_adas_recalls",
+        "type": "code_filter",
+        "logical_config_sha256": "2ce1c5ddb3db9ae52fd0ff35f2b439c6e7531a30e31ee220eb4421a83801ff66"
+      },
+      {
+        "name": "flatten_tesla_adas_recall_fields",
+        "type": "code_map",
+        "logical_config_sha256": "46d7fb340e07a47d612edaf818b40a41d143cd013c3d39e2af6821704d9be03c"
+      },
+      {
+        "name": "match_tesla_adas_complaints_to_recalls",
+        "type": "equijoin",
+        "logical_config_sha256": "cae3867935fe6e4996e37ba0d606ba33f194716f3dbaf08c42ce540d503e62e3"
+      },
+      {
+        "name": "classify_driving_context_adas_safety_issue",
+        "type": "filter",
+        "logical_config_sha256": "91d08517e92b7797db3321661a078a6fffffda33fd29afdfb1822aedfd7afabd"
+      },
+      {
+        "name": "classify_tesla_adas_defect_topic",
+        "type": "map",
+        "logical_config_sha256": "8476da9924cf3e021f802d409aea75b57b29c70d4d5422bcdeceb762d06f9bd3"
+      },
+      {
+        "name": "filter_candidate_tesla_adas_investigation_reports",
+        "type": "code_filter",
+        "logical_config_sha256": "9e9348d3ef07d78268bc62af3fe92afdf9b9d1d1e3ed8651bb415f2d97d9dfda"
+      },
+      {
+        "name": "match_tesla_adas_issues_to_investigation_reports",
+        "type": "equijoin",
+        "logical_config_sha256": "4e73e32cdc3bbc644fd9b16800b8aa7231b6dace29243745e4fa0236f0d9671a"
+      },
+      {
+        "name": "aggregate_tesla_adas_campaigns",
+        "type": "code_reduce",
+        "logical_config_sha256": "f67a9daff9b01ecfbe80a82e4ae2719fefc77d7ce67fe37330f3c457da4880af"
+      },
+      {
+        "name": "project_tesla_adas_campaign_summary",
+        "type": "code_map",
+        "logical_config_sha256": "bb0d3c267862332e0a302c26c2f2676e9fe877922f54cf8b8a41a62a4699597e"
+      }
+    ],
+    "steps": [
+      {
+        "name": "tesla_adas_complaints",
+        "input": "nhtsa_complaints",
+        "operations": [
+          {
+            "name": "filter_tesla_adas_complaints",
+            "type": "code_filter"
+          }
+        ]
+      },
+      {
+        "name": "tesla_adas_recalls",
+        "input": "nhtsa_recalls",
+        "operations": [
+          {
+            "name": "filter_tesla_adas_recalls",
+            "type": "code_filter"
+          },
+          {
+            "name": "flatten_tesla_adas_recall_fields",
+            "type": "code_map"
+          }
+        ]
+      },
+      {
+        "name": "matched_tesla_adas_pairs",
+        "input": null,
+        "operations": [
+          {
+            "name": "match_tesla_adas_complaints_to_recalls",
+            "type": "equijoin",
+            "inputs": {
+              "left": "tesla_adas_complaints",
+              "right": "tesla_adas_recalls"
+            }
+          }
+        ]
+      },
+      {
+        "name": "qualified_tesla_adas_pairs",
+        "input": "matched_tesla_adas_pairs",
+        "operations": [
+          {
+            "name": "classify_driving_context_adas_safety_issue",
+            "type": "filter"
+          },
+          {
+            "name": "classify_tesla_adas_defect_topic",
+            "type": "map"
+          }
+        ]
+      },
+      {
+        "name": "candidate_tesla_adas_investigation_reports",
+        "input": "nhtsa_investigation_reports",
+        "operations": [
+          {
+            "name": "filter_candidate_tesla_adas_investigation_reports",
+            "type": "code_filter"
+          }
+        ]
+      },
+      {
+        "name": "matched_tesla_adas_investigation_reports",
+        "input": null,
+        "operations": [
+          {
+            "name": "match_tesla_adas_issues_to_investigation_reports",
+            "type": "equijoin",
+            "inputs": {
+              "left": "qualified_tesla_adas_pairs",
+              "right": "candidate_tesla_adas_investigation_reports"
+            }
+          }
+        ]
+      },
+      {
+        "name": "tesla_adas_campaign_summaries",
+        "input": "matched_tesla_adas_investigation_reports",
+        "operations": [
+          {
+            "name": "aggregate_tesla_adas_campaigns",
+            "type": "code_reduce"
+          },
+          {
+            "name": "project_tesla_adas_campaign_summary",
+            "type": "code_map"
+          }
+        ]
+      }
+    ]
+  },
+  "selected_plan_signature": {
+    "definitions": {
+      "filter_tesla_adas_complaints": "code_filter",
+      "filter_tesla_adas_recalls": "code_filter",
+      "flatten_tesla_adas_recall_fields": "code_map",
+      "match_tesla_adas_complaints_to_recalls": "equijoin",
+      "classify_driving_context_adas_safety_issue": "filter",
+      "classify_tesla_adas_defect_topic": "map",
+      "filter_candidate_tesla_adas_investigation_reports": "code_filter",
+      "match_tesla_adas_issues_to_investigation_reports": "equijoin",
+      "aggregate_tesla_adas_campaigns": "code_reduce",
+      "project_tesla_adas_campaign_summary": "code_map"
+    },
+    "logical_operations": [
+      {
+        "name": "filter_tesla_adas_complaints",
+        "type": "code_filter",
+        "logical_config_sha256": "2993e5102c98df89a7cf59daed22c5f717d79aed0ecde014c5da4f268cd29668"
+      },
+      {
+        "name": "filter_tesla_adas_recalls",
+        "type": "code_filter",
+        "logical_config_sha256": "2ce1c5ddb3db9ae52fd0ff35f2b439c6e7531a30e31ee220eb4421a83801ff66"
+      },
+      {
+        "name": "flatten_tesla_adas_recall_fields",
+        "type": "code_map",
+        "logical_config_sha256": "46d7fb340e07a47d612edaf818b40a41d143cd013c3d39e2af6821704d9be03c"
+      },
+      {
+        "name": "match_tesla_adas_complaints_to_recalls",
+        "type": "equijoin",
+        "logical_config_sha256": "cae3867935fe6e4996e37ba0d606ba33f194716f3dbaf08c42ce540d503e62e3"
+      },
+      {
+        "name": "classify_driving_context_adas_safety_issue",
+        "type": "filter",
+        "logical_config_sha256": "91d08517e92b7797db3321661a078a6fffffda33fd29afdfb1822aedfd7afabd"
+      },
+      {
+        "name": "classify_tesla_adas_defect_topic",
+        "type": "map",
+        "logical_config_sha256": "8476da9924cf3e021f802d409aea75b57b29c70d4d5422bcdeceb762d06f9bd3"
+      },
+      {
+        "name": "filter_candidate_tesla_adas_investigation_reports",
+        "type": "code_filter",
+        "logical_config_sha256": "9e9348d3ef07d78268bc62af3fe92afdf9b9d1d1e3ed8651bb415f2d97d9dfda"
+      },
+      {
+        "name": "match_tesla_adas_issues_to_investigation_reports",
+        "type": "equijoin",
+        "logical_config_sha256": "4e73e32cdc3bbc644fd9b16800b8aa7231b6dace29243745e4fa0236f0d9671a"
+      },
+      {
+        "name": "aggregate_tesla_adas_campaigns",
+        "type": "code_reduce",
+        "logical_config_sha256": "f67a9daff9b01ecfbe80a82e4ae2719fefc77d7ce67fe37330f3c457da4880af"
+      },
+      {
+        "name": "project_tesla_adas_campaign_summary",
+        "type": "code_map",
+        "logical_config_sha256": "bb0d3c267862332e0a302c26c2f2676e9fe877922f54cf8b8a41a62a4699597e"
+      }
+    ],
+    "steps": [
+      {
+        "name": "tesla_adas_complaints",
+        "input": "nhtsa_complaints",
+        "operations": [
+          {
+            "name": "filter_tesla_adas_complaints",
+            "type": "code_filter"
+          }
+        ]
+      },
+      {
+        "name": "tesla_adas_recalls",
+        "input": "nhtsa_recalls",
+        "operations": [
+          {
+            "name": "filter_tesla_adas_recalls",
+            "type": "code_filter"
+          },
+          {
+            "name": "flatten_tesla_adas_recall_fields",
+            "type": "code_map"
+          }
+        ]
+      },
+      {
+        "name": "matched_tesla_adas_pairs",
+        "input": null,
+        "operations": [
+          {
+            "name": "match_tesla_adas_complaints_to_recalls",
+            "type": "equijoin",
+            "inputs": {
+              "left": "tesla_adas_complaints",
+              "right": "tesla_adas_recalls"
+            }
+          }
+        ]
+      },
+      {
+        "name": "qualified_tesla_adas_pairs",
+        "input": "matched_tesla_adas_pairs",
+        "operations": [
+          {
+            "name": "classify_driving_context_adas_safety_issue",
+            "type": "filter"
+          },
+          {
+            "name": "classify_tesla_adas_defect_topic",
+            "type": "map"
+          }
+        ]
+      },
+      {
+        "name": "candidate_tesla_adas_investigation_reports",
+        "input": "nhtsa_investigation_reports",
+        "operations": [
+          {
+            "name": "filter_candidate_tesla_adas_investigation_reports",
+            "type": "code_filter"
+          }
+        ]
+      },
+      {
+        "name": "matched_tesla_adas_investigation_reports",
+        "input": null,
+        "operations": [
+          {
+            "name": "match_tesla_adas_issues_to_investigation_reports",
+            "type": "equijoin",
+            "inputs": {
+              "left": "qualified_tesla_adas_pairs",
+              "right": "candidate_tesla_adas_investigation_reports"
+            }
+          }
+        ]
+      },
+      {
+        "name": "tesla_adas_campaign_summaries",
+        "input": "matched_tesla_adas_investigation_reports",
+        "operations": [
+          {
+            "name": "aggregate_tesla_adas_campaigns",
+            "type": "code_reduce"
+          },
+          {
+            "name": "project_tesla_adas_campaign_summary",
+            "type": "code_map"
+          }
+        ]
+      }
+    ]
+  },
+  "plan_changed": false
+}

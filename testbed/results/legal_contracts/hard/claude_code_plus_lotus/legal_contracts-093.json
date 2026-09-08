@@ -1,0 +1,80 @@
+{
+  "task_id": "legal_contracts-093",
+  "answer": [
+    {
+      "company": "Aveanna Healthcare Holdings Inc.",
+      "certifying_officer": "Matthew Buckhalter",
+      "ex10_document": "avah-ex10_23.htm",
+      "non_compete_duration_years": 1.0
+    },
+    {
+      "company": "CareDx, Inc.",
+      "certifying_officer": "John W. Hanna",
+      "ex10_document": "d822701dex103.htm",
+      "non_compete_duration_years": 1.0
+    },
+    {
+      "company": "Kaival Brands Innovations Group, Inc.",
+      "certifying_officer": "Barry Hopkins",
+      "ex10_document": "e5407_ex10-29.htm",
+      "non_compete_duration_years": 0.5
+    },
+    {
+      "company": "Gryphon Digital Mining, Inc.",
+      "certifying_officer": "Simeon Salzman",
+      "ex10_document": "ea020224801ex10-23_gryphon.htm",
+      "non_compete_duration_years": 1.0
+    },
+    {
+      "company": "IDEXX Laboratories, Inc.",
+      "certifying_officer": "Jonathan J. Mazelsky",
+      "ex10_document": "idxx2024q210-qexhibit104.htm",
+      "non_compete_duration_years": 2.0
+    },
+    {
+      "company": "IDEXX Laboratories, Inc.",
+      "certifying_officer": "Jonathan J. Mazelsky",
+      "ex10_document": "idxx2024q310-qexhibit101.htm",
+      "non_compete_duration_years": 2.0
+    },
+    {
+      "company": "Nucor Corporation",
+      "certifying_officer": "Leon J. Topalian",
+      "ex10_document": "nue-ex10_xx.htm",
+      "non_compete_duration_years": 3.5
+    },
+    {
+      "company": "Nucor Corporation",
+      "certifying_officer": "Stephen D. Laxton",
+      "ex10_document": "nue-ex10_xxxi.htm",
+      "non_compete_duration_years": 3.5
+    },
+    {
+      "company": "Key Tronic Corporation",
+      "certifying_officer": "Brett R. Larsen",
+      "ex10_document": "larsenemploymentagreement.htm",
+      "non_compete_duration_years": 1.0
+    },
+    {
+      "company": "Key Tronic Corporation",
+      "certifying_officer": "Anthony G. Voorhees",
+      "ex10_document": "voorheesemploymentagreement.htm",
+      "non_compete_duration_years": 1.0
+    },
+    {
+      "company": "Trinity Capital Inc.",
+      "certifying_officer": "Kyle Brown",
+      "ex10_document": "ea023506301_ex10-1.htm",
+      "non_compete_duration_years": 1.0
+    },
+    {
+      "company": "Trinity Capital Inc.",
+      "certifying_officer": "Michael Testa",
+      "ex10_document": "ea023506301_ex10-4.htm",
+      "non_compete_duration_years": 1.0
+    }
+  ],
+  "elapsed_seconds": 1380.499,
+  "cost_usd": 10.16530125,
+  "total_tokens": 25207625
+}

@@ -1,0 +1,100 @@
+{
+  "task_id": "legal_contracts-039",
+  "answer": [
+    {
+      "document_name": "897730_0000950136-98-001457_document_7.txt",
+      "governing_law": "Commonwealth of Pennsylvania"
+    },
+    {
+      "document_name": "Non-Discl_Reciprocal_2.pdf",
+      "governing_law": "Province of Ontario, Canada"
+    },
+    {
+      "document_name": "1289434_0001047469-10-008010_a2200117zex-99_d3.htm",
+      "governing_law": "State of Minnesota"
+    },
+    {
+      "document_name": "814457_0000950137-04-009790_c89545exv99wxdyx6y.htm",
+      "governing_law": "State of Illinois"
+    },
+    {
+      "document_name": "96238_0000950116-97-001823_document_13.txt",
+      "governing_law": "State of New York"
+    },
+    {
+      "document_name": "NDA_for_Raffles_Translation_Website.pdf",
+      "governing_law": "Singapore"
+    },
+    {
+      "document_name": "Sony%20Pictures%20Television%20NDA%20(Executed).pdf",
+      "governing_law": "State of California"
+    },
+    {
+      "document_name": "899240_0000912057-01-007226_a2040095zex-99_9d1.txt",
+      "governing_law": "State of Florida"
+    },
+    {
+      "document_name": "Non-Disclosure-Agreement_3.pdf",
+      "governing_law": "State of Florida"
+    },
+    {
+      "document_name": "1020416_0001193125-16-701566_d250247dex99d2.htm",
+      "governing_law": "State of New York"
+    },
+    {
+      "document_name": "925942_0001047469-98-029396_document_13.txt",
+      "governing_law": "State of New York"
+    },
+    {
+      "document_name": "96238_0000950103-97-000583_document_4.txt",
+      "governing_law": "State of New York"
+    },
+    {
+      "document_name": "JB-Machine-LLC-NDA-1.pdf",
+      "governing_law": "US State of Florida Law"
+    },
+    {
+      "document_name": "HALO-NDA.pdf",
+      "governing_law": "State of California"
+    },
+    {
+      "document_name": "nda_8.pdf",
+      "governing_law": "England"
+    },
+    {
+      "document_name": "5bfbcabf0627e70bdcfc5b32_nda-ready4s.pdf",
+      "governing_law": "England"
+    },
+    {
+      "document_name": "804151_0000950144-97-007563_document_14.txt",
+      "governing_law": "State of New York"
+    },
+    {
+      "document_name": "cornell_non-disclosure_agreement.pdf",
+      "governing_law": "State of New York"
+    },
+    {
+      "document_name": "1061148_0001047469-98-018914_document_17.txt",
+      "governing_law": "District of Columbia"
+    },
+    {
+      "document_name": "namenyeseparationagreement.htm",
+      "governing_law": "Indiana"
+    },
+    {
+      "document_name": "nda-format-approved-by-legal-section.pdf",
+      "governing_law": "India"
+    },
+    {
+      "document_name": "oceaneering-non-disclosure-agreement.pdf",
+      "governing_law": "Texas"
+    },
+    {
+      "document_name": "non-disclosure-agreement_5.pdf",
+      "governing_law": "State of Minnesota"
+    }
+  ],
+  "elapsed_seconds": 4043.6,
+  "cost_usd": 7.686729,
+  "total_tokens": 14602509
+}

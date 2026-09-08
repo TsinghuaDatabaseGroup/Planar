@@ -1,0 +1,18 @@
+{
+  "task_id": "legal_contracts-102",
+  "answer": [
+    {
+      "public_information_exception": true,
+      "prior_knowledge_exception": true,
+      "independent_development_exception": true,
+      "third_party_receipt_exception": true,
+      "legal_compulsion_exception": true,
+      "consent_exception": true,
+      "nda_document_count": 2,
+      "distinct_matched_company_count": 2
+    }
+  ],
+  "elapsed_seconds": 5025.081,
+  "cost_usd": 10.80617124,
+  "total_tokens": 24274331
+}

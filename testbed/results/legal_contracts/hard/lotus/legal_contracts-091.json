@@ -1,0 +1,38 @@
+{
+  "task_id": "legal_contracts-091",
+  "answer": [
+    {
+      "parent_company": "Onconetix, Inc.",
+      "subsidiary_count": 1,
+      "qualifying_agreement_count": 1
+    },
+    {
+      "parent_company": "Ingevity Corporation",
+      "subsidiary_count": 14,
+      "qualifying_agreement_count": 2
+    },
+    {
+      "parent_company": "Geospace Technologies Corporation",
+      "subsidiary_count": 8,
+      "qualifying_agreement_count": 1
+    },
+    {
+      "parent_company": "ANI Pharmaceuticals, Inc.",
+      "subsidiary_count": 11,
+      "qualifying_agreement_count": 64
+    },
+    {
+      "parent_company": "Acuity Brands, Inc.",
+      "subsidiary_count": 41,
+      "qualifying_agreement_count": 71
+    },
+    {
+      "parent_company": "Acuity Inc.",
+      "subsidiary_count": 52,
+      "qualifying_agreement_count": 67
+    }
+  ],
+  "elapsed_seconds": 2182.21,
+  "cost_usd": 11.383707,
+  "total_tokens": 21359524
+}

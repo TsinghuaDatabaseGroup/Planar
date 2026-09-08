@@ -1,0 +1,27 @@
+{
+  "task_id": "vehicle_safety-043",
+  "optimization_analysis": "The original plan performs a SEM_JOIN over the full Cartesian product of complaints × recalls within each make, which is O(n×m) semantic comparisons per make. The key optimization is to push a GROUP_BY on component_id before the SEM_JOIN to partition both complaints and recalls by component category, then perform SEM_JOIN only within matching component partitions. This reduces semantic comparisons from O(complaints × recalls) to O(Σ_component complaints_c × recalls_c), exploiting the constraint that matches require same component category. Additionally, the SEM_EXTRACT on investigation reports processes every report's full body; we add a pre-filter to skip reports with no numeric recall patterns (year-digits pattern) before semantic extraction, reducing unnecessary LM calls. The cross join with investigation results is moved to the final stage and deduplicated once rather than cross-joining early.",
+  "optimized_semantic_plan": [
+    {
+      "type": "operator_dag",
+      "program": "SCAN_DOCS(NHTSA, investigation_reports, selector='*.txt', columns=[file_id, body]) -> FILTER(regex_contains(body, '\\d{2}[VE]\\d{3}')) -> SEM_EXTRACT('Extract every NHTSA recall number cited in the body; normalize to the NHTSA canonical core (2-digit year + 3-digit campaign sequence) and deduplicate.', out_schema={cited_recall_cores: list[string]}, input_bindings={text: body}) -> GROUP_BY([], aggs={investigation_cited_cores: collect_distinct(cited_recall_cores)}) -> JOIN(cross, right=( SCAN_DOCS(NHTSA, recalls, [campaign.number, vehicle.make AS make, component.component_id AS component_id, risk.defect_summary AS defect_summary]) -> FILTER(vehicle.make IN ['FORD','JEEP','HONDA','TESLA']) -> GROUP_BY([make, component_id], aggs={recall_cores_in_component: collect_distinct(core(campaign.number)), recall_defect_summaries: collect_list(defect_summary), recall_campaign_numbers: collect_distinct(campaign.number)}) -> JOIN(left, on=[make = c.make, component_id = c.component_id], right=( SCAN_TABLE(NHTSA, complaints AS c, [complaint_id, make, component_id, summary_text]) -> FILTER(make IN ['FORD','JEEP','HONDA','TESLA']) -> GROUP_BY([make, component_id], aggs={complaint_ids: collect_list(complaint_id), complaint_summaries: collect_list(summary_text)}) )) -> SEM_FILTER('For this make and component category, determine which complaint narratives describe the same underlying defect as any recall defect summary in the same category. Return only matched complaint IDs.', out_schema={matched_complaint_ids: list[string]}, input_bindings={make: make, component_id: component_id, complaint_summaries: complaint_summaries, complaint_ids: complaint_ids, recall_defect_summaries: recall_defect_summaries}) -> GROUP_BY([make], aggs={corroborated_complaint_count: count_distinct(matched_complaint_ids), recall_campaign_count: count_distinct(recall_campaign_numbers), all_recall_cores: collect_distinct(recall_cores_in_component)}) )) -> PROJECT(format_as_dictionary, key=make, value={corroborated_complaint_count: coalesce(corroborated_complaint_count, 0), recall_campaign_count, alignment_label: (intersects(all_recall_cores, investigation_cited_cores) ? 'cited' : 'not_cited')})"
+    }
+  ],
+  "valid": true,
+  "validation_warnings": [],
+  "elapsed_secs": 17.508,
+  "cost_usd": 0.01953285,
+  "agent_cost_usd": 0.01953285,
+  "usage": {
+    "input": 3,
+    "output": 962,
+    "cacheRead": 3092,
+    "cacheWrite": 1111
+  },
+  "agent_usage": {
+    "input": 3,
+    "output": 962,
+    "cacheRead": 3092,
+    "cacheWrite": 1111
+  }
+}

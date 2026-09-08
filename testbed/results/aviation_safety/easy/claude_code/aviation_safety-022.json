@@ -1,0 +1,48 @@
+{
+  "task_id": "aviation_safety-022",
+  "answer": [
+    {
+      "rank": 1,
+      "flight_phase": "Cruise",
+      "aircraft_operator": "Air Carrier",
+      "candidate_incident_count": 196,
+      "successful_barrier_count": 160,
+      "successful_barrier_rate": 0.8163265306122449
+    },
+    {
+      "rank": 2,
+      "flight_phase": "Takeoff / Launch",
+      "aircraft_operator": "Air Carrier",
+      "candidate_incident_count": 82,
+      "successful_barrier_count": 65,
+      "successful_barrier_rate": 0.7926829268292683
+    },
+    {
+      "rank": 3,
+      "flight_phase": "Climb; Initial Climb",
+      "aircraft_operator": "Air Carrier",
+      "candidate_incident_count": 24,
+      "successful_barrier_count": 19,
+      "successful_barrier_rate": 0.7916666666666666
+    },
+    {
+      "rank": 4,
+      "flight_phase": "Climb",
+      "aircraft_operator": "Air Carrier",
+      "candidate_incident_count": 162,
+      "successful_barrier_count": 128,
+      "successful_barrier_rate": 0.7901234567901234
+    },
+    {
+      "rank": 5,
+      "flight_phase": "Final Approach",
+      "aircraft_operator": "Air Carrier",
+      "candidate_incident_count": 76,
+      "successful_barrier_count": 60,
+      "successful_barrier_rate": 0.7894736842105263
+    }
+  ],
+  "elapsed_seconds": 339.283,
+  "cost_usd": 1.18937634,
+  "total_tokens": 2940176
+}

@@ -1,0 +1,16 @@
+{
+  "task_id": "vehicle_safety-042",
+  "answer": [
+    {
+      "campaign_number": "21V846000",
+      "matched_complaint_count": 17,
+      "dominant_adas_topic": "unexpected_braking",
+      "related_report_ids": [
+        "txt_investigation_ef731290c14111ae.txt"
+      ]
+    }
+  ],
+  "elapsed_seconds": 123.5,
+  "cost_usd": 0.739978,
+  "total_tokens": 1676069
+}

@@ -1,0 +1,9 @@
+{
+  "task_id": "legal_contracts-095",
+  "answer": [
+    {"company": "Globalstar, Inc.", "subsidiary_count": 68, "covered_person_category": "section_16_officer"}
+  ],
+  "elapsed_seconds": 3813.56,
+  "cost_usd": 6.356642,
+  "total_tokens": 12030007
+}

@@ -1,0 +1,74 @@
+{
+  "task_id": "legal_contracts-045",
+  "answer": [
+    {
+      "document_name": "1062478_0001193125-14-442753_d838170dex3.htm",
+      "governing_state": "New York",
+      "term_duration_years": 1.5,
+      "standstill_period_years": 0.83
+    },
+    {
+      "document_name": "1089786_0000912057-00-052660_a2032473zex-99_e2.txt",
+      "governing_state": "New York",
+      "term_duration_years": "perpetual",
+      "standstill_period_years": 1.38
+    },
+    {
+      "document_name": "1280058_0001193125-12-023311_d287213dex99d3.htm",
+      "governing_state": "Delaware",
+      "term_duration_years": 5.0,
+      "standstill_period_years": 1.17
+    },
+    {
+      "document_name": "1316898_0001047469-18-005618_a2236490zex-99_d2.htm",
+      "governing_state": "Delaware",
+      "term_duration_years": 2.0,
+      "standstill_period_years": 1.0
+    },
+    {
+      "document_name": "1485469_0001193125-19-222469_d760929dex99d3.htm",
+      "governing_state": "New York",
+      "term_duration_years": "perpetual",
+      "standstill_period_years": 1.5
+    },
+    {
+      "document_name": "1592288_0001193125-17-306543_d469659dex99e2.htm",
+      "governing_state": "Delaware",
+      "term_duration_years": 2.0,
+      "standstill_period_years": 1.0
+    },
+    {
+      "document_name": "55805_0001145443-10-001028_d26631_ex99-d3.htm",
+      "governing_state": "Delaware",
+      "term_duration_years": 2.0,
+      "standstill_period_years": 1.0
+    },
+    {
+      "document_name": "741696_0001193125-10-290887_dex99d9.htm",
+      "governing_state": "New York",
+      "term_duration_years": 2.0,
+      "standstill_period_years": 1.5
+    },
+    {
+      "document_name": "912263_0001047469-12-006662_a2209873zex-99_d2.htm",
+      "governing_state": "New York",
+      "term_duration_years": 1.5,
+      "standstill_period_years": 1.0
+    },
+    {
+      "document_name": "912263_0001104659-12-004811_a12-3671_1ex2.htm",
+      "governing_state": "New York",
+      "term_duration_years": 1.5,
+      "standstill_period_years": 1.0
+    },
+    {
+      "document_name": "912263_0001193125-12-285724_d371520dex99e4.htm",
+      "governing_state": "New York",
+      "term_duration_years": 1.5,
+      "standstill_period_years": 1.0
+    }
+  ],
+  "elapsed_seconds": 251.685,
+  "cost_usd": 0.57085746,
+  "total_tokens": 701994
+}

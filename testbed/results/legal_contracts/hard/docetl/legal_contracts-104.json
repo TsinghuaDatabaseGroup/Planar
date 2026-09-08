@@ -1,0 +1,14 @@
+{
+  "task_id": "legal_contracts-104",
+  "answer": [
+    {
+      "highly_restrictive": false,
+      "comprehensive_policy": true,
+      "matched_nda_company_pair_count": 6,
+      "distinct_company_count": 4
+    }
+  ],
+  "elapsed_seconds": 564.98,
+  "cost_usd": 5.348896,
+  "total_tokens": 10264507
+}

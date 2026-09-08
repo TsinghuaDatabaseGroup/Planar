@@ -1,0 +1,139 @@
+datasets:
+  nhtsa_complaints:
+    type: file
+    path: data/nhtsa_vehicle_safety/complaints.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_medical_attention_complaints_with_state
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("medical_attention_flag") == "true"
+              and str(doc.get("state_of_incident") or "").strip() != ""
+          )
+
+  - name: classify_airbag_related_narrative
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether this complaint narrative is airbag-related.
+
+      Airbag-related content includes airbags, airbag inflators, seat-belt
+      pretensioners when discussed as part of the restraint system, or supplemental
+      restraint system behavior. A passing mention with no relation to the reported
+      event, or a complaint solely about an unrelated vehicle system, does not
+      qualify.
+
+      Complaint narrative:
+      {{ input.summary_text }}
+    output:
+      mode: structured_output
+      schema:
+        is_airbag_related: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: classify_airbag_deployment_hazard
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether this airbag-related complaint describes an airbag
+      deployment failure, an unintended or unexpected deployment, an inflator
+      rupture, or a similar deployment hazard.
+
+      Deployment failure includes an airbag that failed to deploy or did not deploy
+      as expected in a relevant crash. Similar deployment hazards must concern the
+      operation or physical failure of deployment, an inflator, or deployment-linked
+      restraint behavior. An indicator light, diagnostic code, cosmetic issue, or
+      generic airbag concern without such a hazard does not qualify.
+
+      Complaint narrative:
+      {{ input.summary_text }}
+    output:
+      mode: structured_output
+      schema:
+        describes_airbag_deployment_hazard: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: count_deployment_hazards_by_state
+    type: code_reduce
+    reduce_key: state_of_incident
+    code: |
+      def transform(items):
+          return {"complaint_count": len(items)}
+
+  - name: order_and_limit_top_five_states
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          ordered = sorted(
+              items,
+              key=lambda item: (
+                  -int(item.get("complaint_count") or 0),
+                  str(item.get("state_of_incident") or ""),
+              ),
+          )
+          rows = [
+              {
+                  "state": item.get("state_of_incident"),
+                  "complaint_count": item.get("complaint_count"),
+              }
+              for item in ordered[:5]
+          ]
+          return {"rows": rows}
+
+  - name: unnest_top_five_states
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - state
+      - complaint_count
+
+pipeline:
+  steps:
+    - name: top_states_for_airbag_deployment_hazards
+      input: nhtsa_complaints
+      operations:
+        - filter_medical_attention_complaints_with_state
+        - classify_airbag_related_narrative
+        - classify_airbag_deployment_hazard
+        - count_deployment_hazards_by_state
+        - order_and_limit_top_five_states
+        - unnest_top_five_states
+  output:
+    type: file
+    path: raw_outputs/vehicle_safety/output_vehicle_safety-023.json

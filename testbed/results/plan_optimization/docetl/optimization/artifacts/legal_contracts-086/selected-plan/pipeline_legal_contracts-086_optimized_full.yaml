@@ -1,0 +1,174 @@
+datasets:
+  contract_exhibits:
+    type: file
+    path: contract_exhibit_full.json
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: https://llm-endpoint.example/v1
+operations:
+- name: filter_post_2010_nda_documents
+  type: filter
+  prompt: 'Determine whether this document is classified as a non-disclosure agreement,
+
+    including a dual-labelled NDA exhibit, with an effective date strictly after
+
+    2010-01-01.
+
+
+    Document:
+
+    {{ input.contents }}
+
+    '
+  output:
+    mode: structured_output
+    schema:
+      is_post_2010_nda: boolean
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 64
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: filter_computer_readable_confidential_information
+  type: filter
+  prompt: 'Determine whether the agreement''s definition of confidential information
+
+    explicitly includes electronic data or records, email, software or code,
+
+    metadata, or other computer-readable material.
+
+
+    Document:
+
+    {{ input.contents }}
+
+    '
+  output:
+    mode: structured_output
+    schema:
+      includes_computer_readable_material: boolean
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 64
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: filter_required_destruction
+  type: filter
+  prompt: 'Determine whether the agreement requires destruction of at least some
+
+    confidential materials or copies. Return false when it requires only return
+
+    or merely permits an unrestricted choice between return and destruction.
+
+
+    Document:
+
+    {{ input.contents }}
+
+    '
+  output:
+    mode: structured_output
+    schema:
+      requires_destruction: boolean
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 64
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: filter_surviving_confidentiality_duties
+  type: filter
+  prompt: 'Determine whether confidentiality or non-use obligations expressly survive
+
+    termination or expiry, or otherwise continue beyond the agreement''s stated
+
+    term.
+
+
+    Document:
+
+    {{ input.contents }}
+
+    '
+  output:
+    mode: structured_output
+    schema:
+      duties_survive_termination: boolean
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 64
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: extract_governing_law_jurisdiction
+  type: map
+  prompt: 'Extract and canonicalize the governing-law jurisdiction expressly stated in
+
+    this agreement. Return an empty string when no governing-law jurisdiction is
+
+    stated.
+
+
+    Document:
+
+    {{ input.contents }}
+
+    '
+  output:
+    mode: structured_output
+    schema:
+      governing_law: string
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 128
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: filter_stated_governing_law
+  type: code_filter
+  code: "def transform(doc):\n    return bool(str(doc.get(\"governing_law\") or \"\").strip())\n"
+- name: count_matching_ndas_by_jurisdiction
+  type: code_reduce
+  reduce_key: governing_law
+  code: "def transform(items):\n    return {\"matching_count\": len(items)}\n"
+- name: order_jurisdiction_counts
+  type: code_reduce
+  reduce_key: _all
+  code: "def transform(items):\n    rows = [\n        {\n            \"governing_law\": item.get(\"governing_law\"\
+    ),\n            \"matching_count\": int(item.get(\"matching_count\") or 0),\n        }\n        for\
+    \ item in items\n    ]\n    rows.sort(\n        key=lambda row: (\n            -row[\"matching_count\"\
+    ],\n            str(row[\"governing_law\"] or \"\").casefold(),\n        )\n    )\n    return {\"\
+    rows\": rows}\n"
+- name: unnest_jurisdiction_counts
+  type: unnest
+  unnest_key: rows
+  recursive: true
+  depth: 2
+  expand_fields:
+  - governing_law
+  - matching_count
+pipeline:
+  steps:
+  - name: matching_ndas
+    input: contract_exhibits
+    operations:
+    - filter_post_2010_nda_documents
+    - filter_computer_readable_confidential_information
+    - filter_required_destruction
+    - filter_surviving_confidentiality_duties
+    - extract_governing_law_jurisdiction
+    - filter_stated_governing_law
+    - count_matching_ndas_by_jurisdiction
+    - order_jurisdiction_counts
+    - unnest_jurisdiction_counts
+  output:
+    type: file
+    path: /home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-086/outputs/output_legal_contracts-086.json
+    intermediate_dir: /home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-086/intermediates
+bypass_cache: true

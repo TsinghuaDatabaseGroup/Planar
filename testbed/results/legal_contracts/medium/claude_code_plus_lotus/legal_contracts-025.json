@@ -1,0 +1,36 @@
+{
+  "task_id": "legal_contracts-025",
+  "answer": [
+    {
+      "document_id": "14803_0001047469-04-012846_a2134202zex-99_e3.htm",
+      "governing_law": "State of Colorado"
+    },
+    {
+      "document_id": "32251_0000950133-99-003991_document_17.txt",
+      "governing_law": "Commonwealth of Virginia"
+    },
+    {
+      "document_id": "Agency-Lending-Disclosure_A-Z-Guide_Appendix_Sample-Confidentiality-Agreements.pdf",
+      "governing_law": "State of New York"
+    },
+    {
+      "document_id": "Attachment%203%20-%20Confidentiality%20Release%20Form_201504131404512865.pdf",
+      "governing_law": "Commonwealth of Virginia"
+    },
+    {
+      "document_id": "EFCAConfidentialityAgreement.pdf",
+      "governing_law": "State of Victoria"
+    },
+    {
+      "document_id": "NDA_118.pdf",
+      "governing_law": "Province of Ontario"
+    },
+    {
+      "document_id": "NRSC_2015_NDAForm.pdf",
+      "governing_law": "State of New York"
+    }
+  ],
+  "elapsed_seconds": 794.441,
+  "cost_usd": 5.30796639,
+  "total_tokens": 12785821
+}

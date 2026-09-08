@@ -1,0 +1,20 @@
+{
+  "task_id": "legal_contracts-008",
+  "answer": [
+    {
+      "document_name": "e5407_ex10-29.htm",
+      "non_compete_months": 6.0,
+      "geographic_scope": "United States of America",
+      "governing_law": "Florida"
+    },
+    {
+      "document_name": "ea020224801ex10-24_gryphon.htm",
+      "non_compete_months": 6.0,
+      "geographic_scope": "any geographic area in which the Company is then conducting such business",
+      "governing_law": "Delaware"
+    }
+  ],
+  "elapsed_seconds": 525.98,
+  "cost_usd": 4.74366,
+  "total_tokens": 8900644
+}

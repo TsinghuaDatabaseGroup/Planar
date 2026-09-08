@@ -1,0 +1,162 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_sox_302_certifications
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is a SOX Section 302 certification.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_sox_302_certification: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_sox_company_and_officer
+    type: map
+    optimize: true
+    prompt: |
+      Return the certified company entity and certifying officer, including the
+      officer's stated title.
+
+      Certification:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema: {sox_company: string, certifying_officer: string}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: group_sox_officers
+    type: code_reduce
+    reduce_key: sox_company
+    code: |
+      def transform(items):
+          return {"certifying_officers": sorted({str(item.get("certifying_officer") or "").strip() for item in items if str(item.get("certifying_officer") or "").strip()})}
+
+  - name: filter_other_filing_families
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is an insider-trading policy, clawback
+      policy, auditor consent letter, or subsidiary-list filing.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_other_required_filing: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_other_filing_fields
+    type: map
+    optimize: true
+    prompt: |
+      Return the company entity and classify the filing family as
+      insider_trading, clawback, auditor_consent, or subsidiary_list. Also
+      return the auditor firm when applicable, whether misconduct triggers
+      clawback recovery when applicable, the normalized clawback covered-person
+      category when applicable, and subsidiary count when applicable. Set each
+      optional field's availability flag to false when not applicable or not
+      stated, using an empty string, false, or 0 only as a placeholder.
+
+      Document:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        other_company: string
+        filing_family: "enum[insider_trading, clawback, auditor_consent, subsidiary_list]"
+        auditor_firm_available: boolean
+        auditor_firm_value: string
+        misconduct_trigger_available: boolean
+        misconduct_trigger_value: boolean
+        covered_person_category_available: boolean
+        covered_person_category_value: string
+        subsidiary_count_available: boolean
+        subsidiary_count_value: integer
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: normalize_other_filing_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "auditor_firm": str(doc.get("auditor_firm_value") or "") if doc.get("auditor_firm_available") is True else None,
+              "misconduct_trigger": bool(doc.get("misconduct_trigger_value")) if doc.get("misconduct_trigger_available") is True else None,
+              "covered_person_category": str(doc.get("covered_person_category_value") or "") if doc.get("covered_person_category_available") is True else None,
+              "subsidiary_count": int(doc.get("subsidiary_count_value") or 0) if doc.get("subsidiary_count_available") is True else None,
+          }
+  - name: group_other_filing_families
+    type: code_reduce
+    reduce_key: other_company
+    code: |
+      def transform(items):
+          subsidiary_counts = [int(item["subsidiary_count"]) for item in items if item.get("subsidiary_count") is not None]
+          return {
+              "matched_families": sorted({str(item.get("filing_family") or "") for item in items}),
+              "auditor_firms": sorted({str(item["auditor_firm"]) for item in items if item.get("auditor_firm") is not None}),
+              "has_misconduct_trigger": any(item.get("misconduct_trigger") is True for item in items),
+              "covered_person_categories": sorted({str(item["covered_person_category"]) for item in items if item.get("covered_person_category") is not None}),
+              "largest_subsidiary_count": max(subsidiary_counts) if subsidiary_counts else None,
+          }
+  - name: filter_complete_other_families
+    type: code_filter
+    code: |
+      def transform(doc):
+          required = {"insider_trading", "clawback", "auditor_consent", "subsidiary_list"}
+          return required.issubset(set(doc.get("matched_families") or [])) and doc.get("has_misconduct_trigger") is True and doc.get("largest_subsidiary_count") is not None and int(doc["largest_subsidiary_count"]) >= 30
+
+  - name: join_sox_and_other_company
+    type: equijoin
+    comparison_prompt: |
+      Determine whether these names refer to the same company entity despite
+      naming, punctuation, abbreviation, or corporate-suffix variation.
+
+      SOX company: {{ left.sox_company }}
+      Other filings company: {{ right.other_company }}
+    blocking_keys: {left: [sox_company], right: [other_company]}
+    blocking_target_recall: 0.95
+    embedding_model: Qwen3-Embedding-8B
+    comparison_model: Qwen3.5-397B-A17B
+    timeout: 120
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: order_complete_company_families
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          rows = [{
+              "company": item.get("sox_company"),
+              "certifying_officers": item.get("certifying_officers") or [],
+              "auditor_firms": item.get("auditor_firms") or [],
+              "covered_person_categories": item.get("covered_person_categories") or [],
+              "largest_subsidiary_count": int(item.get("largest_subsidiary_count") or 0),
+          } for item in items]
+          rows.sort(key=lambda item: (-item["largest_subsidiary_count"], str(item.get("company") or "")))
+          return {"rows": rows}
+  - name: unnest_complete_company_families
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields: [company, certifying_officers, auditor_firms, covered_person_categories, largest_subsidiary_count]
+pipeline:
+  steps:
+    - name: sox_company_groups
+      input: contract_exhibits
+      operations: [filter_sox_302_certifications, extract_sox_company_and_officer, group_sox_officers]
+    - name: other_company_groups
+      input: contract_exhibits
+      operations: [filter_other_filing_families, extract_other_filing_fields, normalize_other_filing_fields, group_other_filing_families, filter_complete_other_families]
+    - name: matched_company_groups
+      operations:
+        - join_sox_and_other_company: {left: sox_company_groups, right: other_company_groups}
+    - name: answer
+      input: matched_company_groups
+      operations: [order_complete_company_families, unnest_complete_company_families]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-085.json

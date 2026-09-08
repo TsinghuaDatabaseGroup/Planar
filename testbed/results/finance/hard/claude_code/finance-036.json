@@ -1,0 +1,78 @@
+{
+  "task_id": "finance-036",
+  "answer": [
+    {
+      "company_name": "1847 Holdings LLC",
+      "industry_sector": "Diversified Conglomerate",
+      "entity_type": "Limited Liability Company",
+      "growth_strategy": "The company focuses on acquiring controlling interests in small North American businesses with enterprise values under $50 million that operate in industries with long-term growth opportunities. Post-acquisition, they aim to grow these businesses through organic expansion, add-on acquisitions, and operational improvements while maintaining low leverage to avoid stringent lender controls.",
+      "risk_factor_count": 1
+    },
+    {
+      "company_name": "3M Company",
+      "industry_sector": "Technology",
+      "entity_type": "Corporation",
+      "growth_strategy": "3M drives growth by managing operations across four diverse business segments that share common technologies to enhance innovative product development and efficiently share resources. The company also relies on strong relationships with a global network of distributors and dealers, supported by skilled marketing and sales representatives, to maintain its marketplace position.",
+      "risk_factor_count": 1
+    },
+    {
+      "company_name": "AB Holding and AB",
+      "industry_sector": "Finance",
+      "entity_type": "Corporation",
+      "growth_strategy": "The provided excerpt does not explicitly state a forward-looking growth strategy; it primarily describes the company's current business model of providing diversified investment management and research services globally through three buy-side distribution channels (Institutions, Retail, and Private Wealth Management) and a sell-side business, while noting risks related to market volatility and shifts toward lower-fee passive services.",
+      "risk_factor_count": 1
+    },
+    {
+      "company_name": "ACM Research, Inc.",
+      "industry_sector": "Semiconductor Equipment",
+      "entity_type": "Corporation",
+      "growth_strategy": "The company employs a 'demo-to-sales' approach to establish a referenceable base of leading chip manufacturers, leveraging these relationships to penetrate mature markets and build credibility. Additionally, they are expanding their global footprint beyond Asia into North America and Europe while broadening their product portfolio with new tools to address a larger share of the wafer equipment market.",
+      "risk_factor_count": 1
+    },
+    {
+      "company_name": "ADT Inc.",
+      "industry_sector": "Security and Automation",
+      "entity_type": "Corporation",
+      "growth_strategy": "ADT aims to drive its next phase of growth through a strategic partnership with Google to expand its do-it-for-me (DIFM) and do-it-yourself (DIY) smart home solutions, while simultaneously developing a next-generation professional security and automation technology platform.",
+      "risk_factor_count": 1
+    },
+    {
+      "company_name": "AES Corporation",
+      "industry_sector": "Energy",
+      "entity_type": "Corporation",
+      "growth_strategy": "The company intends to expand its business in developing countries where it already has an existing presence, focusing on generating revenue in these international markets despite associated risks.",
+      "risk_factor_count": 1
+    },
+    {
+      "company_name": "AG Mortgage Investment Trust, Inc.",
+      "industry_sector": "Finance",
+      "entity_type": "Corporation",
+      "growth_strategy": "The company employs an opportunistic investment strategy focused on building a diversified, risk-adjusted portfolio of Credit Investments (including residential and commercial assets) and Agency RMBS, while maintaining its qualification as a real estate investment trust (REIT).",
+      "risk_factor_count": 1
+    },
+    {
+      "company_name": "AT&T Inc.",
+      "industry_sector": "Telecommunications",
+      "entity_type": "Corporation",
+      "growth_strategy": "AT&T has historically expanded its footprint and operations through the strategic acquisition of various businesses, including wireline carriers, wireless providers, and major media and entertainment companies like DIRECTV and Time Warner. The company focuses on offering bundled product offerings that cut across product lines and utilize shared assets to serve businesses and consumers globally.",
+      "risk_factor_count": 1
+    },
+    {
+      "company_name": "AXIS Capital Holdings Limited",
+      "industry_sector": "Finance",
+      "entity_type": "Limited Company",
+      "growth_strategy": "The company pursues a multi-pronged strategy focused on offering a diversified range of specialty insurance and reinsurance products across global market segments and geographies while actively entering new regions and distribution channels. They aim to construct an optimum risk portfolio by modulating capital deployment based on market cycles and returning excess capital to shareholders when attractive investment opportunities are limited.",
+      "risk_factor_count": 1
+    },
+    {
+      "company_name": "AYRO, Inc.",
+      "industry_sector": "Automotive / Electric Vehicles",
+      "entity_type": "Corporation",
+      "growth_strategy": "The company focuses on designing and manufacturing compact, sustainable electric vehicles for specific vertical markets such as closed campuses, last-mile delivery, and government use. Their strategy involves expanding their fleet of purpose-engineered vehicles through partnerships (e.g., Club Car, Cenntro) and developing next-generation models, including an all-new three-wheeled vehicle and an all-electric e-delivery vehicle.",
+      "risk_factor_count": 1
+    }
+  ],
+  "elapsed_seconds": 860.464,
+  "cost_usd": 0.85586439,
+  "total_tokens": 1492772
+}

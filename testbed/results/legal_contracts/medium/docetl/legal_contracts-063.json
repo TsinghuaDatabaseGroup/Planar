@@ -1,0 +1,20 @@
+{
+  "task_id": "legal_contracts-063",
+  "answer": [
+    {
+      "duration_pattern": "Equal",
+      "document_count": 15
+    },
+    {
+      "duration_pattern": "Partially Unspecified",
+      "document_count": 4
+    },
+    {
+      "duration_pattern": "NS Longer",
+      "document_count": 1
+    }
+  ],
+  "elapsed_seconds": 448.68,
+  "cost_usd": 4.217064,
+  "total_tokens": 8076256
+}

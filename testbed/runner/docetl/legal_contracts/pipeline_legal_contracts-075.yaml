@@ -1,0 +1,96 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_ex10_material_contracts
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is an EX-10 material contract exhibit,
+      including a dual-labelled exhibit.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_ex10_material_contract: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: filter_required_restrictive_clauses
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this agreement only if it expressly contains a non-compete clause,
+      an employee or customer non-solicitation clause, injunctive-relief
+      language, and severability language.
+
+      Agreement:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {has_required_restrictive_clauses: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_restrictive_periods
+    type: map
+    optimize: true
+    prompt: |
+      Extract the stated non-compete, employee non-solicitation, and customer
+      non-solicitation durations. For each, return its numeric value and unit as
+      days, weeks, months, or years, and set its availability flag to false when
+      no duration is stated; use 0 and months only as placeholders then.
+
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        non_compete_available: boolean
+        non_compete_value: float
+        non_compete_unit: "enum[days, weeks, months, years]"
+        employee_non_solicitation_available: boolean
+        employee_non_solicitation_value: float
+        employee_non_solicitation_unit: "enum[days, weeks, months, years]"
+        customer_non_solicitation_available: boolean
+        customer_non_solicitation_value: float
+        customer_non_solicitation_unit: "enum[days, weeks, months, years]"
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: filter_required_stated_periods
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("non_compete_available") is True and (doc.get("employee_non_solicitation_available") is True or doc.get("customer_non_solicitation_available") is True)
+  - name: project_normalized_periods
+    type: code_map
+    code: |
+      def transform(doc):
+          factors = {"days": 12 / 365, "weeks": 12 / 52, "months": 1, "years": 12}
+          def months(prefix):
+              if doc.get(f"{prefix}_available") is not True:
+                  return None
+              return float(doc.get(f"{prefix}_value") or 0) * factors[doc.get(f"{prefix}_unit")]
+          non_compete = months("non_compete")
+          non_solicitation = [value for value in [months("employee_non_solicitation"), months("customer_non_solicitation")] if value is not None]
+          longest = max(non_solicitation)
+          comparison = "non_compete_longer" if non_compete > longest else "equal" if non_compete == longest else "non_solicitation_longer"
+          return {"comparison_class": comparison, "non_compete_months": non_compete, "longest_non_solicitation_months": longest}
+  - name: aggregate_period_comparisons
+    type: code_reduce
+    reduce_key: comparison_class
+    code: |
+      def transform(items):
+          count = len(items)
+          return {
+              "agreement_count": count,
+              "average_non_compete_months": round(sum(float(item["non_compete_months"]) for item in items) / count, 2),
+              "average_longest_non_solicitation_months": round(sum(float(item["longest_non_solicitation_months"]) for item in items) / count, 2),
+          }
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations: [filter_ex10_material_contracts, filter_required_restrictive_clauses, extract_restrictive_periods, filter_required_stated_periods, project_normalized_periods, aggregate_period_comparisons]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-075.json

@@ -1,0 +1,24 @@
+{
+  "task_id": "legal_contracts-054",
+  "answer": [
+    {
+      "document_id": "1013240_0001047469-04-010350_a2132633zex-10_22.htm",
+      "governing_law": "Colorado"
+    },
+    {
+      "document_id": "426-2017_Appendix_C-Sample_Non-Disclosure_Agreement.pdf",
+      "governing_law": "Manitoba and Canada"
+    },
+    {
+      "document_id": "703339_0001387308-13-000090_ex101.htm",
+      "governing_law": "California"
+    },
+    {
+      "document_id": "buyer_profile.pdf",
+      "governing_law": "Republic of South Africa"
+    }
+  ],
+  "elapsed_seconds": 1002.2,
+  "cost_usd": 1.80437673,
+  "total_tokens": 3802462
+}

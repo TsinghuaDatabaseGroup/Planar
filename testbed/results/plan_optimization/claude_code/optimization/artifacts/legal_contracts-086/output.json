@@ -1,0 +1,27 @@
+{
+  "task_id": "legal_contracts-086",
+  "optimization_analysis": "The original plan runs 4 sequential SEM_FILTERs plus 1 SEM_EXTRACT, costing 5 LLM calls per document in the worst case. The NDA+date filter is the most selective gate and should stay first to prune the corpus early. The three clause-existence filters (electronic data, destruction, survival) can be merged with the governing-law extraction into a single conditional SEM_EXTRACT that returns null when any condition fails: this fuses 4 separate LLM passes on the surviving documents into 1, reducing total semantic operations from 5 to 2 and cutting ~60% of LLM calls on documents that clear the initial filter. Correctness is preserved because the downstream FILTER(governing_law IS NOT NULL) already discards nulls, and the merged prompt carries identical truth conditions for all three clauses.",
+  "optimized_semantic_plan": [
+    {
+      "type": "operator_dag",
+      "program": "SCAN_DOCS(CONTRACTEXHIBIT, all) -> SEM_FILTER('Is this document classified as an NDA, including a dual-labelled NDA exhibit, with an effective date strictly after 2010-01-01?') -> SEM_EXTRACT('Return the canonicalized expressly stated governing-law jurisdiction if and only if ALL three conditions hold: (1) the confidential-information definition explicitly includes electronic data or records, email, software or code, metadata, or other computer-readable material; (2) the agreement requires destruction of at least some confidential materials or copies, where clauses that permit only return or give an unrestricted choice between return and destruction do not satisfy this condition; and (3) confidentiality or non-use obligations expressly survive termination or expiry or continue beyond the stated term. Return null if any condition is not satisfied or if no governing-law jurisdiction is expressly stated.', {governing_law: str|null}) -> FILTER(governing_law IS NOT NULL) -> GROUP_BY(governing_law, matching_count = COUNT(*)) -> ORDER_BY(matching_count DESC, governing_law ASC)"
+    }
+  ],
+  "valid": true,
+  "validation_warnings": [],
+  "elapsed_secs": 63.031,
+  "cost_usd": 0.0296547,
+  "agent_cost_usd": 0.0296547,
+  "usage": {
+    "input": 3,
+    "output": 1730,
+    "cacheRead": 3094,
+    "cacheWrite": 738
+  },
+  "agent_usage": {
+    "input": 3,
+    "output": 1730,
+    "cacheRead": 3094,
+    "cacheWrite": 738
+  }
+}

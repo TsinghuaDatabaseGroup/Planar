@@ -1,0 +1,71 @@
+{
+  "task_id": "vehicle_safety-040",
+  "answer": [
+    {
+      "failure_mode": "combustion inside the intake manifold",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 1,
+      "earliest_complaint_date": "2025-08-04",
+      "earliest_recall_date": "2020-12-11",
+      "pre_recall_complaint_count": 0,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "coolant intrusion into the engine",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 1,
+      "earliest_complaint_date": "2025-05-12",
+      "earliest_recall_date": "2020-12-11",
+      "pre_recall_complaint_count": 0,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "egr cooler crack causing engine fire",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 1,
+      "earliest_complaint_date": "2025-08-04",
+      "earliest_recall_date": "2020-12-11",
+      "pre_recall_complaint_count": 0,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "egr valve sticking open",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 1,
+      "earliest_complaint_date": "2026-04-03",
+      "earliest_recall_date": "2022-04-28",
+      "pre_recall_complaint_count": 0,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "engine fire due to egr cooler",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 1,
+      "earliest_complaint_date": "2025-08-04",
+      "earliest_recall_date": "2020-12-11",
+      "pre_recall_complaint_count": 0,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "engine stall",
+      "matched_complaint_count": 2,
+      "distinct_campaign_count": 2,
+      "earliest_complaint_date": "2025-02-10",
+      "earliest_recall_date": "2020-08-13",
+      "pre_recall_complaint_count": 0,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "nan",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 1,
+      "earliest_complaint_date": "2025-08-04",
+      "earliest_recall_date": "2020-12-11",
+      "pre_recall_complaint_count": 0,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    }
+  ],
+  "elapsed_seconds": 92.915,
+  "cost_usd": 0.126897,
+  "total_tokens": 134542
+}

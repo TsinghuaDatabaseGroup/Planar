@@ -1,0 +1,47 @@
+{
+  "task_id": "legal_contracts-106",
+  "answer": [
+    {
+      "jurisdiction": "Pennsylvania",
+      "qualifying_nda_count": 2,
+      "most_common_restriction_profile": [
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "profile_nda_count": 2,
+      "profile_avg_duration_years": 2.0
+    },
+    {
+      "jurisdiction": "Florida",
+      "qualifying_nda_count": 2,
+      "most_common_restriction_profile": [
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "profile_nda_count": 1,
+      "profile_avg_duration_years": 3.0
+    },
+    {
+      "jurisdiction": "Virginia",
+      "qualifying_nda_count": 1,
+      "most_common_restriction_profile": [
+        false,
+        false,
+        true,
+        true,
+        false
+      ],
+      "profile_nda_count": 1,
+      "profile_avg_duration_years": 2.0
+    }
+  ],
+  "elapsed_seconds": 2689.595,
+  "cost_usd": 2.55617916,
+  "total_tokens": 4778899
+}

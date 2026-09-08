@@ -1,0 +1,128 @@
+{
+  "task_id": "aviation_safety-039",
+  "answer": [
+    {
+      "rank": 1,
+      "documentation_issue_type": "incomplete_or_inaccurate_logbook",
+      "records_complete": "incomplete",
+      "correct_document_on_board": "yes",
+      "incident_count": 19,
+      "canonical_affected_item": "aircraft logbook"
+    },
+    {
+      "rank": 2,
+      "documentation_issue_type": "incomplete_or_inaccurate_logbook",
+      "records_complete": "incomplete",
+      "correct_document_on_board": "no",
+      "incident_count": 5,
+      "canonical_affected_item": "aircraft logbook"
+    },
+    {
+      "rank": 3,
+      "documentation_issue_type": "incomplete_or_inaccurate_logbook",
+      "records_complete": "incomplete",
+      "correct_document_on_board": null,
+      "incident_count": 5,
+      "canonical_affected_item": "aircraft logbook"
+    },
+    {
+      "rank": 4,
+      "documentation_issue_type": "incorrect_or_incomplete_mel_procedure",
+      "records_complete": "incomplete",
+      "correct_document_on_board": "yes",
+      "incident_count": 4,
+      "canonical_affected_item": "mel procedure"
+    },
+    {
+      "rank": 5,
+      "documentation_issue_type": "incorrect_or_incomplete_mel_procedure",
+      "records_complete": "signed off",
+      "correct_document_on_board": "yes",
+      "incident_count": 4,
+      "canonical_affected_item": "mel procedure"
+    },
+    {
+      "rank": 6,
+      "documentation_issue_type": "incorrect_or_incomplete_mel_procedure",
+      "records_complete": null,
+      "correct_document_on_board": "no",
+      "incident_count": 4,
+      "canonical_affected_item": "fms database and approach charts"
+    },
+    {
+      "rank": 7,
+      "documentation_issue_type": "incorrect_or_incomplete_mel_procedure",
+      "records_complete": "complete",
+      "correct_document_on_board": "yes",
+      "incident_count": 3,
+      "canonical_affected_item": "mel procedure"
+    },
+    {
+      "rank": 8,
+      "documentation_issue_type": "incorrect_or_incomplete_mel_procedure",
+      "records_complete": null,
+      "correct_document_on_board": "yes",
+      "incident_count": 3,
+      "canonical_affected_item": "fuselage doors mel"
+    },
+    {
+      "rank": 9,
+      "documentation_issue_type": "missing_required_document",
+      "records_complete": "incomplete",
+      "correct_document_on_board": "no",
+      "incident_count": 3,
+      "canonical_affected_item": "amended dispatch release"
+    },
+    {
+      "rank": 10,
+      "documentation_issue_type": "incomplete_or_inaccurate_logbook",
+      "records_complete": "inaccurate",
+      "correct_document_on_board": "yes",
+      "incident_count": 2,
+      "canonical_affected_item": "aircraft logbook"
+    },
+    {
+      "rank": 11,
+      "documentation_issue_type": "incomplete_or_inaccurate_logbook",
+      "records_complete": "incomplete",
+      "correct_document_on_board": "missing",
+      "incident_count": 2,
+      "canonical_affected_item": "deferred items checklist"
+    },
+    {
+      "rank": 12,
+      "documentation_issue_type": "incomplete_or_inaccurate_logbook",
+      "records_complete": "signed off",
+      "correct_document_on_board": "yes",
+      "incident_count": 2,
+      "canonical_affected_item": "aircraft logbook"
+    },
+    {
+      "rank": 13,
+      "documentation_issue_type": "incorrect_or_incomplete_mel_procedure",
+      "records_complete": "incomplete",
+      "correct_document_on_board": "no",
+      "incident_count": 2,
+      "canonical_affected_item": "flight release"
+    },
+    {
+      "rank": 14,
+      "documentation_issue_type": "incorrect_or_incomplete_mel_procedure",
+      "records_complete": null,
+      "correct_document_on_board": null,
+      "incident_count": 2,
+      "canonical_affected_item": "mel"
+    },
+    {
+      "rank": 15,
+      "documentation_issue_type": "incomplete_or_inaccurate_logbook",
+      "records_complete": "adjusted",
+      "correct_document_on_board": "yes",
+      "incident_count": 1,
+      "canonical_affected_item": "aircraft logbook"
+    }
+  ],
+  "elapsed_seconds": 439.791,
+  "cost_usd": 0.84257604,
+  "total_tokens": 1625529
+}

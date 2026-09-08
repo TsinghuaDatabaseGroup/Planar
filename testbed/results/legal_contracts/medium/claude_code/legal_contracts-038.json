@@ -1,0 +1,43 @@
+{
+  "task_id": "legal_contracts-038",
+  "answer": [
+    {
+      "document_id": "1100182_0001107049-00-000014_document_23.txt",
+      "exhibit_family": "Non-Disclosure Agreement",
+      "governing_law": "Pennsylvania",
+      "term_months": 24.0,
+      "longest_restriction_months": 24.0
+    },
+    {
+      "document_id": "1104332_0000950144-00-008876_ex10-26.txt",
+      "exhibit_family": "Non-Circumvention and Non-Disclosure Agreement",
+      "governing_law": "Pennsylvania",
+      "term_months": 24.0,
+      "longest_restriction_months": 24.0
+    },
+    {
+      "document_id": "1466739_0001002014-12-000470_exh10-4.htm",
+      "exhibit_family": "Non-Disclosure Agreement",
+      "governing_law": "Utah",
+      "term_months": 60.0,
+      "longest_restriction_months": 60.0
+    },
+    {
+      "document_id": "Confidentiality%20and%20Non-Disclosure%20Agreement%20%28CNA-1%29.pdf",
+      "exhibit_family": "Non-Disclosure Agreement",
+      "governing_law": "Florida",
+      "term_months": 12.0,
+      "longest_restriction_months": 12.0
+    },
+    {
+      "document_id": "Kerber_Non_Disclosure_Agreement.pdf",
+      "exhibit_family": "Confidentiality and Non-Disclosure Agreement",
+      "governing_law": "Ontario",
+      "term_months": 60.0,
+      "longest_restriction_months": 60.0
+    }
+  ],
+  "elapsed_seconds": 543.639,
+  "cost_usd": 1.8447426,
+  "total_tokens": 3935851
+}

@@ -1,0 +1,27 @@
+{
+  "task_id": "vehicle_safety-033",
+  "optimization_analysis": "In the original plan, SEM_EXTRACT runs over all recalls before the JOIN and SEM_FILTER, paying LLM cost for every recall document even though most will be eliminated by the deterministic join (vehicle_id + component_id + 1500-day lag) and then by SEM_FILTER (same defect mechanism). The fix is to (1) move SEM_EXTRACT after the JOIN so it only processes recalls that matched at least one complaint on the structural constraints, and (2) move SEM_EXTRACT after SEM_FILTER so it only processes pairs where the defect mechanism was confirmed to match. The root-cause phrase is only needed in the final output, so deferring SEM_EXTRACT to the very end is semantically equivalent but the LLM is invoked on the smallest possible set. SEM_FILTER is kept immediately after the JOIN where it eliminates non-matching pairs before the more targeted SEM_EXTRACT call.",
+  "optimized_semantic_plan": [
+    {
+      "type": "operator_dag",
+      "program": "SCAN_DOCS(NHTSA, recalls, [campaign.number, vehicle.vehicle_id AS vehicle_id, component.component_id AS component_id, campaign.report_received_date, risk.defect_summary]) -> FILTER(campaign.report_received_date IS NOT NULL AND campaign.report_received_date <> '') -> JOIN(inner, on=[vehicle_id, component_id, complaint.received_date < right.report_received_date AND date_diff(right.report_received_date, complaint.received_date) >= 1500], right=( SCAN_TABLE(NHTSA, complaints, [complaint_id, vehicle_id, component_id, received_date, summary_text]) )) -> SEM_FILTER('the complaint summary describes the same defect mechanism as the recall defect summary', input_bindings={complaint_text: summary_text, recall_text: risk.defect_summary}) -> SEM_EXTRACT('Extract a short (<=10 words) root-cause phrase from risk.defect_summary.', out_schema={defect_root_cause: string}, input_bindings={text: risk.defect_summary}) -> PROJECT([complaint_id, campaign.number AS campaign_number, date_diff(report_received_date, received_date) AS days_between, defect_root_cause])"
+    }
+  ],
+  "valid": true,
+  "validation_warnings": [],
+  "elapsed_secs": 32.514,
+  "cost_usd": 0.03476925,
+  "agent_cost_usd": 0.03476925,
+  "usage": {
+    "input": 3,
+    "output": 1995,
+    "cacheRead": 6630,
+    "cacheWrite": 759
+  },
+  "agent_usage": {
+    "input": 3,
+    "output": 1995,
+    "cacheRead": 6630,
+    "cacheWrite": 759
+  }
+}

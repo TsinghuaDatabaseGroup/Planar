@@ -1,0 +1,28 @@
+{
+  "task_id": "vehicle_safety-045",
+  "answer": [
+    {
+      "rank": 1,
+      "defect_theme": "other braking defect",
+      "matched_complaint_count": 29,
+      "distinct_campaign_count": 3,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_4a0e2f4555b168e8.txt"
+      ],
+      "odi_risk_summary": "Answer: The primary braking defect involves the electronic brake control module software failing to illuminate a warning light when brake fluid is lost, which prevents drivers from recognizing low fluid levels. This lack of notification can lead to reduced braking performance and significantly increase the risk of a crash. Additionally, a separate issue involves accessory sport bars on certain models that may block or disable the high-mounted brake light, further reducing visibility to other drivers."
+    },
+    {
+      "rank": 2,
+      "defect_theme": "brake booster failure",
+      "matched_complaint_count": 16,
+      "distinct_campaign_count": 2,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_8be18f99e74db448.txt"
+      ],
+      "odi_risk_summary": "The primary braking defect involves a gradual decrease in vacuum output from the vacuum pump, which reduces power brake assist and forces the driver to exert significantly more effort on the brake pedal. This loss of assist extends the distance required to bring the vehicle to a stop, thereby substantially increasing the risk of a crash. To mitigate this, GM dealers will reprogram the Electronic Brake Control Module free of charge."
+    }
+  ],
+  "elapsed_seconds": 439.551,
+  "cost_usd": 1.20992889,
+  "total_tokens": 714495
+}

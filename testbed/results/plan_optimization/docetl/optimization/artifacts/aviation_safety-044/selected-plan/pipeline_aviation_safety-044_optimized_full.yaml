@@ -1,0 +1,324 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: https://llm-endpoint.example/v1
+default_embedding_api_base: https://llm-endpoint.example/v1
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: https://llm-endpoint.example/v1
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types:
+    - chunk
+    - proj_synthesis
+    - glean
+  equijoin:
+    target_recall: 0.95
+operations:
+- name: filter_aircraft_primary_incidents
+  type: code_filter
+  code: "def transform(doc):\n    return doc.get(\"primary_problem\") == \"Aircraft\"\n"
+- name: load_asrs_narrative
+  type: code_map
+  code: "def transform(doc):\n    import os\n\n    base_dir = os.path.abspath(os.path.join(\"data\", \"\
+    asrs\"))\n    text_path = os.path.abspath(\n        os.path.join(base_dir, str(doc.get(\"text_file\"\
+    , \"\")))\n    )\n    if os.path.commonpath([base_dir, text_path]) != base_dir:\n        raise ValueError(\"\
+    ASRS text path escapes data/asrs\")\n    with open(text_path, \"r\", encoding=\"utf-8\", errors=\"\
+    replace\") as handle:\n        text = handle.read()\n    return {\"text\": text}\n"
+- name: filter_single_primary_event_cause
+  type: filter
+  optimize: true
+  prompt: 'Keep this NASA ASRS report only when its narrative identifies one clearly
+
+    primary cause for a smoke, fumes, odor, or aircraft-equipment event.
+
+
+    The primary cause may be an equipment malfunction, a maintenance or aircraft-
+
+    release decision, environmental contamination, or a crew procedure. Exclude
+
+    reports with no supported cause, two or more unresolved competing primary
+
+    causes, or only speculation without a clearly favored primary cause.
+
+
+    Narrative:
+
+    {{ input.text }}
+
+    '
+  output:
+    mode: structured_output
+    schema:
+      is_match: boolean
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 64
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: filter_operational_consequence
+  type: filter
+  optimize: true
+  prompt: 'This report has already been found to state one clearly primary cause. Keep
+
+    it only when the narrative describes an operational response or consequence
+
+    beyond a maintenance-record entry alone.
+
+
+    Qualifying examples include a flight crew action, checklist or procedural
+
+    response, return, diversion, landing, evacuation, declaration, ATC action,
+
+    operational delay, or another effect on flight operations. Exclude a report
+
+    whose only consequence is documenting, inspecting, or repairing an item in a
+
+    maintenance record with no operational response or consequence.
+
+
+    Narrative:
+
+    {{ input.text }}
+
+    '
+  output:
+    mode: structured_output
+    schema:
+      is_match: boolean
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 64
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: extract_event_causal_record
+  type: map
+  optimize: true
+  prompt: 'Extract the causal record for the smoke, fumes, odor, or equipment event from
+
+    this NASA ASRS narrative. Return all four fields as concise, narrative-
+
+    grounded phrases of at most eight words:
+
+
+    - initiating_condition: the condition that initiated the event;
+
+    - system_phrase: the affected or causally relevant aircraft system;
+
+    - intervention: the crew or maintenance intervention described;
+
+    - operational_outcome: the resulting operational response or consequence.
+
+
+    Preserve the distinction between the initiating condition and later
+
+    intervention. Do not classify the primary cause in this extraction step. If
+
+    no active intervention is described, state that fact in a short phrase rather
+
+    than inventing one.
+
+
+    Incident ID: {{ input.incident_id }}
+
+    Narrative:
+
+    {{ input.text }}
+
+    '
+  output:
+    mode: structured_output
+    schema:
+      initiating_condition: string
+      system_phrase: string
+      intervention: string
+      operational_outcome: string
+  validate:
+  - 1 <= len(output["initiating_condition"].split()) <= 8
+  - 1 <= len(output["system_phrase"].split()) <= 8
+  - 1 <= len(output["intervention"].split()) <= 8
+  - 1 <= len(output["operational_outcome"].split()) <= 8
+  num_retries_on_validate_failure: 2
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 256
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: classify_primary_cause
+  type: map
+  optimize: true
+  prompt: "Assign exactly one primary cause category for this qualifying NASA ASRS\nreport, based on the\
+    \ initiating condition and the full causal sequence:\n\n- equipment_malfunction: an aircraft component\
+    \ or system failure initiated\n  the event;\n- maintenance_or_release_decision: maintenance work,\
+    \ an unresolved or\n  deferred defect, configuration, inspection, or dispatch/release decision\n \
+    \ initiated the event;\n- environmental_contamination: external or ambient smoke, fumes, odor,\n \
+    \ fluid, residue, or another contaminant initiated the event rather than an\n  aircraft-system failure;\n\
+    - crew_procedure: a crew action, omission, configuration, or procedural use\n  of otherwise functioning\
+    \ equipment initiated the event.\n\nClassify the initiating primary cause, not a later response. Use\
+    \ the full\nnarrative to resolve wording that is ambiguous in the extracted phrases.\n\nINITIATING\
+    \ CONDITION: {{ input.initiating_condition }}\nSYSTEM: {{ input.system_phrase }}\nINTERVENTION: {{\
+    \ input.intervention }}\nOPERATIONAL OUTCOME: {{ input.operational_outcome }}\nNARRATIVE:\n{{ input.text\
+    \ }}\n"
+  output:
+    mode: structured_output
+    schema:
+      cause_category: enum[equipment_malfunction, maintenance_or_release_decision, environmental_contamination,
+        crew_procedure]
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 64
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: attach_component_records
+  type: code_map
+  code: "import csv\nimport os\nimport threading\n\n_component_index = None\n_component_lock = threading.Lock()\n\
+    _component_terms = (\n    \"Pressurization\",\n    \"Pack\",\n    \"Bleed\",\n    \"Air Conditioning\"\
+    ,\n)\n\ndef load_component_index():\n    global _component_index\n    if _component_index is None:\n\
+    \        with _component_lock:\n            if _component_index is None:\n                index =\
+    \ {}\n                path = os.path.abspath(\n                    os.path.join(\"data\", \"asrs\"\
+    , \"components.csv\")\n                )\n                with open(\n                    path, \"\
+    r\", encoding=\"utf-8\", errors=\"replace\", newline=\"\"\n                ) as handle:\n        \
+    \            for row in csv.DictReader(handle):\n                        value = str(row.get(\"value\"\
+    , \"\"))\n                        if (\n                            row.get(\"attribute\") != \"aircraft_component\"\
+    \n                            or not any(term in value for term in _component_terms)\n           \
+    \             ):\n                            continue\n                        incident_id = str(row.get(\"\
+    incident_id\", \"\"))\n                        if incident_id:\n                            index.setdefault(incident_id,\
+    \ []).append(value)\n                _component_index = index\n    return _component_index\n\ndef\
+    \ transform(doc):\n    return {\n        \"component_records\": load_component_index().get(\n    \
+    \        str(doc.get(\"incident_id\", \"\")), []\n        )\n    }\n"
+- name: inner_join_component_records
+  type: code_filter
+  code: "def transform(doc):\n    return bool(doc.get(\"component_records\"))\n"
+- name: attach_event_labels
+  type: code_map
+  code: "import csv\nimport os\nimport threading\n\n_event_index = None\n_event_lock = threading.Lock()\n\
+    _smoke_event_label = (\n    \"Flight Deck / Cabin / Aircraft Event Smoke / Fire / Fumes / Odor\"\n\
+    )\n\ndef load_event_index():\n    global _event_index\n    if _event_index is None:\n        with\
+    \ _event_lock:\n            if _event_index is None:\n                index = {}\n               \
+    \ path = os.path.abspath(\n                    os.path.join(\"data\", \"asrs\", \"events.csv\")\n\
+    \                )\n                with open(\n                    path, \"r\", encoding=\"utf-8\"\
+    , errors=\"replace\", newline=\"\"\n                ) as handle:\n                    for row in csv.DictReader(handle):\n\
+    \                        label = str(row.get(\"label\", \"\"))\n                        if (\n   \
+    \                         label != _smoke_event_label\n                            and \"Aircraft\
+    \ Equipment Problem\" not in label\n                        ):\n                            continue\n\
+    \                        incident_id = str(row.get(\"incident_id\", \"\"))\n                     \
+    \   if incident_id:\n                            index.setdefault(incident_id, []).append(\n     \
+    \                           {\n                                    \"event_type\": row.get(\"event_type\"\
+    ),\n                                    \"label\": label,\n                                }\n   \
+    \                         )\n                _event_index = index\n    return _event_index\n\ndef\
+    \ transform(doc):\n    return {\n        \"event_labels\": load_event_index().get(\n            str(doc.get(\"\
+    incident_id\", \"\")), []\n        )\n    }\n"
+- name: inner_join_event_labels
+  type: code_filter
+  code: "def transform(doc):\n    return bool(doc.get(\"event_labels\"))\n"
+- name: collect_causal_records_by_cause
+  type: code_reduce
+  reduce_key: cause_category
+  code: "def transform(items):\n    incident_ids = set()\n    records = []\n    for item in items:\n \
+    \       incident_id = str(item.get(\"incident_id\", \"\"))\n        if not incident_id or incident_id\
+    \ in incident_ids:\n            continue\n        incident_ids.add(incident_id)\n        records.append(\n\
+    \            {\n                \"incident_id\": incident_id,\n                \"initiating_condition\"\
+    : item.get(\"initiating_condition\"),\n                \"system_phrase\": item.get(\"system_phrase\"\
+    ),\n                \"intervention\": item.get(\"intervention\"),\n                \"operational_outcome\"\
+    : item.get(\"operational_outcome\"),\n                \"component_records\": item.get(\"component_records\"\
+    ) or [],\n                \"event_labels\": item.get(\"event_labels\") or [],\n            }\n   \
+    \     )\n    return {\n        \"incident_count\": len(incident_ids),\n        \"causal_records\"\
+    : records,\n    }\n"
+- name: summarize_cause_category
+  type: reduce
+  optimize: true
+  recursively_optimize: false
+  synthesize_resolve: false
+  synthesize_merge: true
+  reduce_key: cause_category
+  pass_through: true
+  prompt: "Summarize the following qualifying NASA ASRS causal records for cause category\n{{ inputs[0].cause_category\
+    \ }}.\n\nProduce:\n- canonical_system: one normalized system phrase that best represents the\n  causally\
+    \ relevant systems in this category;\n- dominant_operational_outcome: the most common or clearly dominant\n\
+    \  operational outcome across the records.\n\nEach output must be a nonempty phrase of at most six\
+    \ words. Use the narrative-\nextracted system and outcome together with the recorded component and\
+    \ event\nlabels. Do not change the cause category or incident count, and do not invent\ndetails absent\
+    \ from the records.\n\nDISTINCT INCIDENT COUNT: {{ inputs[0].incident_count }}\n{% for record in inputs[0].causal_records\
+    \ %}\nINCIDENT: {{ record.incident_id }}\nINITIATING CONDITION: {{ record.initiating_condition }}\n\
+    SYSTEM PHRASE: {{ record.system_phrase }}\nINTERVENTION: {{ record.intervention }}\nOPERATIONAL OUTCOME:\
+    \ {{ record.operational_outcome }}\nCOMPONENT RECORDS: {{ record.component_records }}\nEVENT LABELS:\
+    \ {{ record.event_labels }}\n---\n{% endfor %}\n"
+  output:
+    mode: structured_output
+    schema:
+      canonical_system: string
+      dominant_operational_outcome: string
+  validate:
+  - 1 <= len(output["canonical_system"].split()) <= 6
+  - 1 <= len(output["dominant_operational_outcome"].split()) <= 6
+  num_retries_on_validate_failure: 2
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 128
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: project_answer_fields
+  type: map
+  optimize: true
+  drop_keys:
+  - causal_records
+  - _counts_prereduce_collect_causal_records_by_cause
+  - _counts_prereduce_summarize_cause_category
+  litellm_completion_kwargs:
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+pipeline:
+  steps:
+  - name: causal_records
+    input: asrs_incidents
+    operations:
+    - filter_aircraft_primary_incidents
+    - load_asrs_narrative
+    - filter_single_primary_event_cause
+    - filter_operational_consequence
+    - extract_event_causal_record
+    - classify_primary_cause
+  - name: causes_with_components
+    input: causal_records
+    operations:
+    - attach_component_records
+    - inner_join_component_records
+  - name: joined_causal_records
+    input: causes_with_components
+    operations:
+    - attach_event_labels
+    - inner_join_event_labels
+  - name: grouped_causal_records
+    input: joined_causal_records
+    operations:
+    - collect_causal_records_by_cause
+  - name: cause_summary
+    input: grouped_causal_records
+    operations:
+    - summarize_cause_category
+    - project_answer_fields
+  output:
+    type: file
+    path: /home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-044/outputs/output_aviation_safety-044.json
+    intermediate_dir: /home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-044/intermediates
+bypass_cache: true

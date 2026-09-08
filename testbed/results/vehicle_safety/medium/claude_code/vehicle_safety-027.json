@@ -1,0 +1,37 @@
+{
+  "task_id": "vehicle_safety-027",
+  "answer": {
+    "dominant_label": "other",
+    "per_label_counts": {
+      "inflator_defect": {
+        "count": 0
+      },
+      "other": {
+        "count": 17
+      },
+      "sensor_misfire": {
+        "count": 0
+      },
+      "software_logic_error": {
+        "count": 0
+      }
+    },
+    "per_label_percentages": {
+      "inflator_defect": {
+        "percentage": 0.0
+      },
+      "other": {
+        "percentage": 100.0
+      },
+      "sensor_misfire": {
+        "percentage": 0.0
+      },
+      "software_logic_error": {
+        "percentage": 0.0
+      }
+    }
+  },
+  "elapsed_seconds": 48.515,
+  "cost_usd": 0.06040764,
+  "total_tokens": 46514
+}

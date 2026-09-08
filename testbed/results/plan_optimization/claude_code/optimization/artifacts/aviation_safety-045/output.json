@@ -1,0 +1,27 @@
+{
+  "task_id": "aviation_safety-045",
+  "optimization_analysis": "Merged two consecutive SEM_FILTER operators into one, reducing two LM calls to one per document. Moved the discovery_phase extraction constraint into the combined filter to enable early rejection. Reordered joins to filter by maintenance_flags earlier, reducing the semantic chain population before the expensive component join. These changes preserve semantics while cutting LM processing on non-matching documents.",
+  "optimized_semantic_plan": [
+    {
+      "type": "operator_dag",
+      "program": "maintenance_flags := (\n  SCAN_TABLE(NASA_ASRS, aircraft_attributes.csv, [incident_id, attribute, value])\n  -> FILTER((attribute = 'maintenance_status_maintenance_deferred' OR attribute = 'maintenance_status_released_for_service') AND value = 'Y')\n  -> GROUP_BY([incident_id], {maintenance_flags:COLLECT(attribute)})\n  -> PROJECT([incident_id,maintenance_status=CASE WHEN maintenance_flags CONTAINS 'maintenance_status_maintenance_deferred' AND maintenance_flags CONTAINS 'maintenance_status_released_for_service' THEN 'both' WHEN maintenance_flags CONTAINS 'maintenance_status_maintenance_deferred' THEN 'deferred' ELSE 'released_to_service' END])\n)\naircraft_with_status := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, primary_problem])\n  -> FILTER(primary_problem = 'Aircraft')\n  -> JOIN(right=maintenance_flags, join_type=inner, condition=incident_id = maintenance_flags.incident_id)\n)\nsemantic_chains := (\n  aircraft_with_status\n  -> SCAN_DOCS(NASA_ASRS, selector=aircraft_with_status.text_file, [incident_id, text])\n  -> SEM_FILTER(\"Keep reports that (1) explicitly connect an earlier maintenance deferral or release-to-service decision to a later component discrepancy, AND (2) clearly place discovery in before_departure, after_takeoff, or after_landing.\", {text})\n  -> SEM_EXTRACT(\"Extract the earlier maintenance decision, affected item, later discrepancy, operational effect, and discovery_phase from {before_departure,after_takeoff,after_landing}, using short phrases for free-text fields.\", {incident_id:string, earlier_decision:string, affected_item:string, later_discrepancy:string, operational_effect:string, discovery_phase:string}, {incident_id,text})\n  -> SEM_CLASSIFY(\"Assign chain_category to deferred_item_recurred, released_item_failed, incomplete_repair_or_signoff, or maintenance_limitation_escalated.\", target_labels=[deferred_item_recurred,released_item_failed,incomplete_repair_or_signoff,maintenance_limitation_escalated], input_bindings={earlier_decision,affected_item,later_discrepancy,operational_effect,text})\n)\ncomponent_records := (\n  SCAN_TABLE(NASA_ASRS, components.csv, [incident_id, attribute, value])\n  -> FILTER(attribute IN ('aircraft_component','problem'))\n  -> GROUP_BY([incident_id], {structured_components:COLLECT_IF(value,attribute='aircraft_component'), structured_problems:COLLECT_IF(value,attribute='problem')})\n)\njoined := JOIN(left=semantic_chains, right=component_records, join_type=inner, condition=semantic_chains.incident_id = component_records.incident_id)\njoined\n-> GROUP_BY([maintenance_status,discovery_phase,chain_category], {incident_count:COUNT_DISTINCT(incident_id), chain_records:COLLECT(affected_item,later_discrepancy,structured_components,structured_problems)})\n-> SEM_AGGREGATE(\"For each group, provide one canonical affected item and recurring discrepancy, each in at most six words.\", {canonical_affected_item:string, recurring_discrepancy:string}, group_by=[maintenance_status,discovery_phase,chain_category], input_bindings={chain_records})\n-> ORDER_BY([incident_count DESC, maintenance_status ASC, discovery_phase ASC, chain_category ASC])\n-> LIMIT(12)\n-> PROJECT([rank=ROW_NUMBER(),maintenance_status,discovery_phase,chain_category,incident_count,canonical_affected_item,recurring_discrepancy])"
+    }
+  ],
+  "valid": true,
+  "validation_warnings": [],
+  "elapsed_secs": 15.007,
+  "cost_usd": 0.0250182,
+  "agent_cost_usd": 0.0250182,
+  "usage": {
+    "input": 3,
+    "output": 1185,
+    "cacheRead": 3089,
+    "cacheWrite": 1682
+  },
+  "agent_usage": {
+    "input": 3,
+    "output": 1185,
+    "cacheRead": 3089,
+    "cacheWrite": 1682
+  }
+}

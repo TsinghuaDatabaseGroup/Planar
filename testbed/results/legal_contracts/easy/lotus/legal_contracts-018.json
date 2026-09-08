@@ -1,0 +1,60 @@
+{
+  "task_id": "legal_contracts-018",
+  "answer": [
+    {
+      "agreement_or_filing_type": "sox_certification",
+      "document_count": 813
+    },
+    {
+      "agreement_or_filing_type": "other",
+      "document_count": 602
+    },
+    {
+      "agreement_or_filing_type": "employment_agreement",
+      "document_count": 224
+    },
+    {
+      "agreement_or_filing_type": "insider_trading_policy",
+      "document_count": 147
+    },
+    {
+      "agreement_or_filing_type": "auditor_consent",
+      "document_count": 138
+    },
+    {
+      "agreement_or_filing_type": "subsidiary_list",
+      "document_count": 110
+    },
+    {
+      "agreement_or_filing_type": "clawback_policy",
+      "document_count": 81
+    },
+    {
+      "agreement_or_filing_type": "mutual_nda",
+      "document_count": 52
+    },
+    {
+      "agreement_or_filing_type": "confidentiality_standstill",
+      "document_count": 38
+    },
+    {
+      "agreement_or_filing_type": "supply_agreement",
+      "document_count": 18
+    },
+    {
+      "agreement_or_filing_type": "non_compete_agreement",
+      "document_count": 17
+    },
+    {
+      "agreement_or_filing_type": "unilateral_nda",
+      "document_count": 13
+    },
+    {
+      "agreement_or_filing_type": "non_solicitation_agreement",
+      "document_count": 7
+    }
+  ],
+  "elapsed_seconds": 335.15,
+  "cost_usd": 3.437377,
+  "total_tokens": 8766361
+}

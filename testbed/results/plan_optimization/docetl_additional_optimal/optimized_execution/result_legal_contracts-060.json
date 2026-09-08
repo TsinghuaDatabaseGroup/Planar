@@ -1,0 +1,194 @@
+{
+  "task_id": "legal_contracts-060",
+  "answer": [
+    {
+      "doc_id": "1001113_0000950134-07-005231_f27921orexv99wxdyx3y.htm",
+      "document_id": "1001113_0000950134-07-005231_f27921orexv99wxdyx3y.htm",
+      "non_disclosure_direction": "Mutual",
+      "governing_law": "California"
+    },
+    {
+      "doc_id": "1011344_0001193125-08-097987_dex99d5.htm",
+      "document_id": "1011344_0001193125-08-097987_dex99d5.htm",
+      "non_disclosure_direction": "Two-Way",
+      "governing_law": "State of California"
+    },
+    {
+      "doc_id": "1013322_0000912057-00-023405_document_2.txt",
+      "document_id": "1013322_0000912057-00-023405_document_2.txt",
+      "non_disclosure_direction": "Mutual",
+      "governing_law": "Laws of the United States of America and the laws of the State of California"
+    },
+    {
+      "doc_id": "1042282_0000893220-02-000791_e61414toexv99wxdywx1y.txt",
+      "document_id": "1042282_0000893220-02-000791_e61414toexv99wxdywx1y.txt",
+      "non_disclosure_direction": "Mutual",
+      "governing_law": "Utah"
+    },
+    {
+      "doc_id": "1084817_0001193125-14-004957_d648340dex99e2.htm",
+      "document_id": "1084817_0001193125-14-004957_d648340dex99e2.htm",
+      "non_disclosure_direction": "Mutual",
+      "governing_law": "State of Delaware"
+    },
+    {
+      "doc_id": "1094007_0001193125-10-258977_dex101.htm",
+      "document_id": "1094007_0001193125-10-258977_dex101.htm",
+      "non_disclosure_direction": "Mutual",
+      "governing_law": "State of Washington"
+    },
+    {
+      "doc_id": "1095563_0000950168-99-002585_document_2.txt",
+      "document_id": "1095563_0000950168-99-002585_document_2.txt",
+      "non_disclosure_direction": "Reciprocal",
+      "governing_law": "State of Washington"
+    },
+    {
+      "doc_id": "1109551_0000912057-02-024714_a2082535zex-99_d3.htm",
+      "document_id": "1109551_0000912057-02-024714_a2082535zex-99_d3.htm",
+      "non_disclosure_direction": "Mutual",
+      "governing_law": "State of Georgia"
+    },
+    {
+      "doc_id": "1112422_0000950153-08-001257_p75864exv99wxeyx4y.htm",
+      "document_id": "1112422_0000950153-08-001257_p75864exv99wxeyx4y.htm",
+      "non_disclosure_direction": "Mutual",
+      "governing_law": "State of New York"
+    },
+    {
+      "doc_id": "1125892_0000950133-00-004441_w41075a1ex10-7.txt",
+      "document_id": "1125892_0000950133-00-004441_w41075a1ex10-7.txt",
+      "non_disclosure_direction": "Reciprocal",
+      "governing_law": "State of Washington"
+    },
+    {
+      "doc_id": "1167294_0001193125-15-218134_d933068dex99d3.htm",
+      "document_id": "1167294_0001193125-15-218134_d933068dex99d3.htm",
+      "non_disclosure_direction": "Mutual",
+      "governing_law": "State of Delaware"
+    },
+    {
+      "doc_id": "1402305_0001193125-11-343865_d268167dex99d2.htm",
+      "document_id": "1402305_0001193125-11-343865_d268167dex99d2.htm",
+      "non_disclosure_direction": "Mutual",
+      "governing_law": "State of New York"
+    },
+    {
+      "doc_id": "1420529_0001145549-08-000077_h00839a1exv10w4.txt",
+      "document_id": "1420529_0001145549-08-000077_h00839a1exv10w4.txt",
+      "non_disclosure_direction": "Reciprocal",
+      "governing_law": "Laws of the People's Republic of China"
+    },
+    {
+      "doc_id": "1452751_0001193125-17-086167_d334994dex99e3.htm",
+      "document_id": "1452751_0001193125-17-086167_d334994dex99e3.htm",
+      "non_disclosure_direction": "Mutual",
+      "governing_law": "State of Delaware"
+    },
+    {
+      "doc_id": "1628908_0001193125-15-169530_d838828dex1016.htm",
+      "document_id": "1628908_0001193125-15-169530_d838828dex1016.htm",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "Laws of the Commonwealth of Pennsylvania"
+    },
+    {
+      "doc_id": "180314-March-14-2018-SOW-M.pdf",
+      "document_id": "180314-March-14-2018-SOW-M.pdf",
+      "non_disclosure_direction": "Mutual",
+      "governing_law": "Laws of the Province of Alberta"
+    },
+    {
+      "doc_id": "768262_0001193125-10-128597_dex99d2.htm",
+      "document_id": "768262_0001193125-10-128597_dex99d2.htm",
+      "non_disclosure_direction": "Mutual",
+      "governing_law": "State of New York"
+    },
+    {
+      "doc_id": "802724_0001193125-15-331613_d96542dex99d5.htm",
+      "document_id": "802724_0001193125-15-331613_d96542dex99d5.htm",
+      "non_disclosure_direction": "Mutual",
+      "governing_law": "State of Delaware"
+    },
+    {
+      "doc_id": "917639_0000912057-01-537118_a2062042zex-99_d7.htm",
+      "document_id": "917639_0000912057-01-537118_a2062042zex-99_d7.htm",
+      "non_disclosure_direction": "Mutual",
+      "governing_law": "State of Georgia"
+    },
+    {
+      "doc_id": "934545_0000891618-99-004640_document_2.txt",
+      "document_id": "934545_0000891618-99-004640_document_2.txt",
+      "non_disclosure_direction": "Mutual",
+      "governing_law": "State of Delaware"
+    },
+    {
+      "doc_id": "Acme%20Corporation%20Inc%20NDA%20template.pdf",
+      "document_id": "Acme%20Corporation%20Inc%20NDA%20template.pdf",
+      "non_disclosure_direction": "Mutual",
+      "governing_law": "State of California"
+    },
+    {
+      "doc_id": "BCG-Mutual-NDA.pdf",
+      "document_id": "BCG-Mutual-NDA.pdf",
+      "non_disclosure_direction": "Mutual",
+      "governing_law": "State of Florida"
+    },
+    {
+      "doc_id": "INFOMAGNET%20NDA.pdf",
+      "document_id": "INFOMAGNET%20NDA.pdf",
+      "non_disclosure_direction": "Two-Way",
+      "governing_law": "England and Wales"
+    },
+    {
+      "doc_id": "NDA_118.pdf",
+      "document_id": "NDA_118.pdf",
+      "non_disclosure_direction": "Mutual",
+      "governing_law": "Laws of the Province of Ontario"
+    },
+    {
+      "doc_id": "New_York_City_Bar_Association_Model_Form_of_Non-Disclosure_Agreement_2015.pdf",
+      "document_id": "New_York_City_Bar_Association_Model_Form_of_Non-Disclosure_Agreement_2015.pdf",
+      "non_disclosure_direction": "Unilateral (Company to Buyer)",
+      "governing_law": "State of New York"
+    },
+    {
+      "doc_id": "Non-Disclosure%20Agreement_5.pdf",
+      "document_id": "Non-Disclosure%20Agreement_5.pdf",
+      "non_disclosure_direction": "Unilateral (Black and White Inc is the Disclosing Party; the Company is the Receiving Party)",
+      "governing_law": "South African law (inferred from the address of Black and White Inc in Aldara Park, South Africa, and the explicit reference to restrictions issued by South African governments in Section 4(c); no explicit governing law clause specifying a jurisdiction for dispute resolution is present)."
+    },
+    {
+      "doc_id": "O00216-000899A.pdf",
+      "document_id": "O00216-000899A.pdf",
+      "non_disclosure_direction": "Mutual",
+      "governing_law": "State of California"
+    },
+    {
+      "doc_id": "OMA-TestFest-NDA-2017.pdf",
+      "document_id": "OMA-TestFest-NDA-2017.pdf",
+      "non_disclosure_direction": "Mutual",
+      "governing_law": "Laws of England"
+    },
+    {
+      "doc_id": "QEP-Williston-Form-of-Confidentiality-Agreement-BMO.pdf",
+      "document_id": "QEP-Williston-Form-of-Confidentiality-Agreement-BMO.pdf",
+      "non_disclosure_direction": "Unidirectional (Owner to Receiving Company)",
+      "governing_law": "State of Texas"
+    },
+    {
+      "doc_id": "Standard%20NDA%20by%20Axial.pdf",
+      "document_id": "Standard%20NDA%20by%20Axial.pdf",
+      "non_disclosure_direction": "Unilateral",
+      "governing_law": "State of Delaware"
+    },
+    {
+      "doc_id": "ttp-nda.pdf",
+      "document_id": "ttp-nda.pdf",
+      "non_disclosure_direction": "Mutual",
+      "governing_law": "Utah"
+    }
+  ],
+  "elapsed_seconds": 507.0,
+  "cost_usd": 3.703298,
+  "total_tokens": 9273181
+}

@@ -1,0 +1,21 @@
+{
+  "task_id": "finance-031",
+  "answer": {
+    "top_sectors": {
+      "Banking": 147,
+      "Real Estate": 131,
+      "Financial Services": 103,
+      "Software": 103,
+      "Utilities": 83,
+      "Biopharmaceuticals": 73,
+      "Biotechnology": 67,
+      "Pharmaceuticals": 55,
+      "Retail": 51,
+      "Mining": 39
+    },
+    "mean_risk_factor_count_change": -0.5
+  },
+  "elapsed_seconds": 9110.479,
+  "cost_usd": 100.61339175,
+  "total_tokens": 256874718
+}

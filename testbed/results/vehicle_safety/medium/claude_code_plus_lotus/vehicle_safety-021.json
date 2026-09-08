@@ -1,0 +1,74 @@
+{
+  "task_id": "vehicle_safety-021",
+  "answer": [
+    {
+      "complaint_id": "complaint_11092321",
+      "vehicle_id": "NISSAN__ALTIMA__2014",
+      "campaign_number": "16V244000",
+      "airbag_failure_mode": "airbag explosion with metal scraps"
+    },
+    {
+      "complaint_id": "complaint_11092321",
+      "vehicle_id": "NISSAN__ALTIMA__2014",
+      "campaign_number": "14V138000",
+      "airbag_failure_mode": "airbag explosion with metal scraps"
+    },
+    {
+      "complaint_id": "complaint_11092321",
+      "vehicle_id": "NISSAN__ALTIMA__2014",
+      "campaign_number": "15V681000",
+      "airbag_failure_mode": "airbag explosion with metal scraps"
+    },
+    {
+      "complaint_id": "complaint_11092321",
+      "vehicle_id": "NISSAN__ALTIMA__2014",
+      "campaign_number": "16V911000",
+      "airbag_failure_mode": "airbag explosion with metal scraps"
+    },
+    {
+      "complaint_id": "complaint_11083508",
+      "vehicle_id": "NISSAN__ALTIMA__2014",
+      "campaign_number": "16V244000",
+      "airbag_failure_mode": "airbag explosion spewed metal scraps"
+    },
+    {
+      "complaint_id": "complaint_11083508",
+      "vehicle_id": "NISSAN__ALTIMA__2014",
+      "campaign_number": "14V138000",
+      "airbag_failure_mode": "airbag explosion spewed metal scraps"
+    },
+    {
+      "complaint_id": "complaint_11083508",
+      "vehicle_id": "NISSAN__ALTIMA__2014",
+      "campaign_number": "15V681000",
+      "airbag_failure_mode": "airbag explosion spewed metal scraps"
+    },
+    {
+      "complaint_id": "complaint_11083508",
+      "vehicle_id": "NISSAN__ALTIMA__2014",
+      "campaign_number": "16V911000",
+      "airbag_failure_mode": "airbag explosion spewed metal scraps"
+    },
+    {
+      "complaint_id": "complaint_11476156",
+      "vehicle_id": "NISSAN__ALTIMA__2015",
+      "campaign_number": "16V244000",
+      "airbag_failure_mode": "airbag failed to deploy"
+    },
+    {
+      "complaint_id": "complaint_11476156",
+      "vehicle_id": "NISSAN__ALTIMA__2015",
+      "campaign_number": "15V681000",
+      "airbag_failure_mode": "airbag failed to deploy"
+    },
+    {
+      "complaint_id": "complaint_11476156",
+      "vehicle_id": "NISSAN__ALTIMA__2015",
+      "campaign_number": "16V911000",
+      "airbag_failure_mode": "airbag failed to deploy"
+    }
+  ],
+  "elapsed_seconds": 890.362,
+  "cost_usd": 2.02763019,
+  "total_tokens": 966652
+}

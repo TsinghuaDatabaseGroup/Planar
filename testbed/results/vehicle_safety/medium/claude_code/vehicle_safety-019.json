@@ -1,0 +1,176 @@
+{
+  "task_id": "vehicle_safety-019",
+  "answer": [
+    {
+      "file_id": "investigation_reports/txt_investigation_01f32e30ee9acd46.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "24V635"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_0c952e49c1e7a9dd.txt",
+      "primary_topic": "braking",
+      "cited_recall_numbers": [
+        "18V916"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_23cca884e0a0a76e.txt",
+      "primary_topic": "airbag",
+      "cited_recall_numbers": [
+        "16V288",
+        "16V290"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_30789e2407e33aa2.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "25V099"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_3e540e709b495d53.txt",
+      "primary_topic": "steering",
+      "cited_recall_numbers": [
+        "23V838"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_40efba00fd61b8a7.txt",
+      "primary_topic": "steering",
+      "cited_recall_numbers": [
+        "23V836"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_4a0e2f4555b168e8.txt",
+      "primary_topic": "electrical",
+      "cited_recall_numbers": [
+        "14V755",
+        "15V519"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_54933417c6dc47ca.txt",
+      "primary_topic": "electrical",
+      "cited_recall_numbers": [
+        "25V552"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_62d483d67c6ed8cf.txt",
+      "primary_topic": "airbag",
+      "cited_recall_numbers": [
+        "11V139",
+        "14V047",
+        "14V373"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_64fd85325481e592.txt",
+      "primary_topic": "steering",
+      "cited_recall_numbers": [
+        "22V089",
+        "24V097"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_71256379f06f885d.txt",
+      "primary_topic": "airbag",
+      "cited_recall_numbers": [
+        "16V056"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_74e6c7c0ae4bb88b.txt",
+      "primary_topic": "other",
+      "cited_recall_numbers": [
+        "16V647"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_7a397b1421fa512b.txt",
+      "primary_topic": "other",
+      "cited_recall_numbers": [
+        "24V099"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_a537d998ca815ea0.txt",
+      "primary_topic": "braking",
+      "cited_recall_numbers": [
+        "20V469"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_b3813da54ee3dda9.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "25V437"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_b8b862a9751c4144.txt",
+      "primary_topic": "other",
+      "cited_recall_numbers": [
+        "21V197"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_bec5f42242222b3d.txt",
+      "primary_topic": "other",
+      "cited_recall_numbers": [
+        "18V568"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_d58ed1b6bf651bf9.txt",
+      "primary_topic": "other",
+      "cited_recall_numbers": [
+        "06V181",
+        "09V491"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_d7dc58c50115c2c9.txt",
+      "primary_topic": "electrical",
+      "cited_recall_numbers": [
+        "24V267"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_ddaa5a22b8dac784.txt",
+      "primary_topic": "airbag",
+      "cited_recall_numbers": [
+        "13V282",
+        "17V640"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_ef12d2cfbf020527.txt",
+      "primary_topic": "airbag",
+      "cited_recall_numbers": [
+        "14V343",
+        "14V344",
+        "14V348",
+        "14V351",
+        "14V353",
+        "14V655",
+        "14V700",
+        "14V701",
+        "14V752",
+        "14V763",
+        "14V770",
+        "14V773",
+        "14V787",
+        "14V802",
+        "14V817"
+      ]
+    }
+  ],
+  "elapsed_seconds": 42.513,
+  "cost_usd": 0.05682735,
+  "total_tokens": 58899
+}

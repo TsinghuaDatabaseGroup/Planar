@@ -1,0 +1,196 @@
+datasets:
+  nhtsa_complaints:
+    type: file
+    path: data/nhtsa_vehicle_safety/complaints.csv
+  nhtsa_recalls:
+    type: file
+    path: data/nhtsa_vehicle_safety/recalls.jsonl
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_toyota_honda_complaints
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("make") in {"TOYOTA", "HONDA"}
+
+  - name: classify_severe_in_motion_safety_event
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether this complaint describes a severe safety event that
+      happened while the vehicle was being driven.
+
+      Qualifying events include a crash, injury, death, fire, airbag
+      non-deployment, loss of control, brake failure, loss of motive power, or
+      towing required after a driving incident. The narrative must indicate that
+      the event occurred while driving, moving, or in traffic, or that towing
+      followed such an event. Do not qualify a parked-only incident, routine
+      maintenance, a recall notice, a service complaint without an in-motion
+      event, or a hypothetical risk.
+
+      Complaint summary:
+      {{ input.summary_text }}
+    output:
+      mode: structured_output
+      schema:
+        describes_severe_in_motion_safety_event: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_toyota_honda_recalls
+    type: code_filter
+    code: |
+      def transform(doc):
+          vehicle = doc.get("vehicle") or {}
+          return vehicle.get("make") in {"TOYOTA", "HONDA"}
+
+  - name: flatten_toyota_honda_recall_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          campaign = doc.get("campaign") or {}
+          vehicle = doc.get("vehicle") or {}
+          risk = doc.get("risk") or {}
+          return {
+              "campaign_number": campaign.get("number"),
+              "vehicle_id": vehicle.get("vehicle_id"),
+              "make": vehicle.get("make"),
+              "defect_summary": risk.get("defect_summary") or "",
+          }
+
+  - name: classify_safety_critical_recall_defect
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether this recall defect summary describes a safety-critical
+      defect that can cause a crash, injury, fire, loss of control, airbag failure,
+      braking failure, or loss of motive power.
+
+      The defect summary must state one of those consequences or a direct
+      safety-critical failure mechanism. Do not qualify a cosmetic, convenience,
+      paperwork, notification, or routine-service issue without such a safety
+      consequence.
+
+      Recall defect summary:
+      {{ input.defect_summary }}
+    output:
+      mode: structured_output
+      schema:
+        describes_safety_critical_recall_defect: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: deduplicate_safety_critical_campaign_vehicles
+    type: code_reduce
+    reduce_key:
+      - campaign_number
+      - vehicle_id
+    code: |
+      def transform(items):
+          first = items[0]
+          return {
+              "make": first.get("make"),
+          }
+
+  - name: join_complaints_to_same_vehicle_recalls
+    type: equijoin
+    deterministic: true
+    blocking_conditions:
+      - left["vehicle_id"] == right["vehicle_id"]
+
+  - name: count_matched_complaints_by_make
+    type: code_reduce
+    reduce_key: make_left
+    code: |
+      def transform(items):
+          complaint_ids = {
+              item.get("complaint_id")
+              for item in items
+              if item.get("complaint_id")
+          }
+          return {
+              "matched_complaint_count": len(complaint_ids),
+          }
+
+  - name: format_toyota_honda_severity_comparison
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          counts = {"TOYOTA": 0, "HONDA": 0}
+          for item in items:
+              make = item.get("make_left")
+              if make in counts:
+                  counts[make] = int(
+                      item.get("matched_complaint_count") or 0
+                  )
+
+          if counts["TOYOTA"] > counts["HONDA"]:
+              higher_make = "TOYOTA"
+          elif counts["HONDA"] > counts["TOYOTA"]:
+              higher_make = "HONDA"
+          else:
+              higher_make = "tie"
+
+          return {
+              "toyota_matched_complaint_count": counts["TOYOTA"],
+              "honda_matched_complaint_count": counts["HONDA"],
+              "higher_matched_complaint_make": higher_make,
+          }
+
+pipeline:
+  steps:
+    - name: severe_in_motion_complaints
+      input: nhtsa_complaints
+      operations:
+        - filter_toyota_honda_complaints
+        - classify_severe_in_motion_safety_event
+    - name: safety_critical_recall_vehicles
+      input: nhtsa_recalls
+      operations:
+        - filter_toyota_honda_recalls
+        - flatten_toyota_honda_recall_fields
+        - classify_safety_critical_recall_defect
+        - deduplicate_safety_critical_campaign_vehicles
+    - name: matched_same_vehicle_complaints
+      operations:
+        - join_complaints_to_same_vehicle_recalls:
+            left: severe_in_motion_complaints
+            right: safety_critical_recall_vehicles
+    - name: make_severity_comparison
+      input: matched_same_vehicle_complaints
+      operations:
+        - count_matched_complaints_by_make
+        - format_toyota_honda_severity_comparison
+  output:
+    type: file
+    path: raw_outputs/vehicle_safety/output_vehicle_safety-028.json

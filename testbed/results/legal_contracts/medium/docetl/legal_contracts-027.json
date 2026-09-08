@@ -1,0 +1,23 @@
+{
+  "task_id": "legal_contracts-027",
+  "answer": [
+    {
+      "document_id": "1052946_0000950134-98-001627_document_4.txt",
+      "governing_law": "State of Texas",
+      "agreement_direction": "mutual"
+    },
+    {
+      "document_id": "Example-Mutual-Non-Disclosure-Agreement.pdf",
+      "governing_law": "English law",
+      "agreement_direction": "mutual"
+    },
+    {
+      "document_id": "Example-One-Way-Non-Disclosure-Agreement.pdf",
+      "governing_law": "English law",
+      "agreement_direction": "one-way"
+    }
+  ],
+  "elapsed_seconds": 7.57,
+  "cost_usd": 0.033256,
+  "total_tokens": 60978
+}

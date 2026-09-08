@@ -1,0 +1,169 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_local_time_1201_1800
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("local_time_of_day") == "1201-1800"
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: extract_value_mismatch_fields
+    type: map
+    optimize: true
+    prompt: |
+      Analyze this NASA ASRS narrative for a value mismatch that caused an actual
+      deviation. Set qualifies=true only when all of the following are supported:
+      1. the crew understood, selected, or used one value or identifier;
+      2. ATC, aircraft automation, or an applicable procedure expected a different
+         value or identifier for that same field; and
+      3. the mismatch contributed to an actual deviation.
+
+      Do not count a generic deviation, confusion without different values, a
+      corrected discrepancy that caused no deviation, or two values that refer to
+      different concepts.
+
+      Return exactly one field_compared from altitude, heading, speed, or runway,
+      selecting the mismatch that most directly contributed to the reported
+      deviation. If several fields are mentioned, do not use list precedence.
+      Choose its most direct resulting consequence from:
+      altitude_deviation, heading_or_route_deviation, speed_deviation,
+      runway_deviation, or other_operational_consequence. For a non-qualifying
+      report, return not_applicable for both labels.
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        qualifies: boolean
+        field_compared: enum[altitude, heading, speed, runway, not_applicable]
+        consequence_category: enum[altitude_deviation, heading_or_route_deviation, speed_deviation, runway_deviation, other_operational_consequence, not_applicable]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: keep_reports_with_value_mismatch
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("qualifies") is True
+              and doc.get("field_compared")
+              in {"altitude", "heading", "speed", "runway"}
+              and doc.get("consequence_category")
+              in {
+                  "altitude_deviation",
+                  "heading_or_route_deviation",
+                  "speed_deviation",
+                  "runway_deviation",
+                  "other_operational_consequence",
+              }
+          )
+
+  - name: aggregate_by_field_compared
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          from collections import Counter
+
+          field_order = ["altitude", "heading", "speed", "runway"]
+          incident_ids = {field: set() for field in field_order}
+          consequence_counts = {field: Counter() for field in field_order}
+          seen = set()
+
+          for item in items:
+              incident_id = str(item.get("incident_id", ""))
+              field = item.get("field_compared")
+              consequence = item.get("consequence_category")
+              key = (incident_id, field)
+              if not incident_id or field not in incident_ids or key in seen:
+                  continue
+              seen.add(key)
+              incident_ids[field].add(incident_id)
+              consequence_counts[field][consequence] += 1
+
+          rows = []
+          for field in field_order:
+              if not incident_ids[field]:
+                  continue
+              mode_consequence = sorted(
+                  consequence_counts[field].items(),
+                  key=lambda pair: (-pair[1], pair[0]),
+              )[0][0]
+              rows.append(
+                  {
+                      "field_compared": field,
+                      "incident_count": len(incident_ids[field]),
+                      "most_common_consequence": mode_consequence,
+                  }
+              )
+          return {"rows": rows}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - field_compared
+      - incident_count
+      - most_common_consequence
+
+pipeline:
+  steps:
+    - name: process
+      input: asrs_incidents
+      operations:
+        - filter_local_time_1201_1800
+        - load_asrs_narrative
+        - extract_value_mismatch_fields
+        - keep_reports_with_value_mismatch
+        - aggregate_by_field_compared
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-004.json

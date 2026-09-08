@@ -1,0 +1,88 @@
+{
+  "task_id": "aviation_safety-011",
+  "answer": [
+    {
+      "system_category": "engine",
+      "response_category": "return_to_departure",
+      "incident_count": 58
+    },
+    {
+      "system_category": "engine",
+      "response_category": "emergency_or_divert",
+      "incident_count": 88
+    },
+    {
+      "system_category": "engine",
+      "response_category": "continue_after_troubleshooting",
+      "incident_count": 5
+    },
+    {
+      "system_category": "engine",
+      "response_category": "maintenance_action_only",
+      "incident_count": 32
+    },
+    {
+      "system_category": "pressurization_or_bleed_or_pack",
+      "response_category": "return_to_departure",
+      "incident_count": 30
+    },
+    {
+      "system_category": "pressurization_or_bleed_or_pack",
+      "response_category": "emergency_or_divert",
+      "incident_count": 56
+    },
+    {
+      "system_category": "pressurization_or_bleed_or_pack",
+      "response_category": "continue_after_troubleshooting",
+      "incident_count": 10
+    },
+    {
+      "system_category": "pressurization_or_bleed_or_pack",
+      "response_category": "maintenance_action_only",
+      "incident_count": 12
+    },
+    {
+      "system_category": "hydraulic",
+      "response_category": "return_to_departure",
+      "incident_count": 8
+    },
+    {
+      "system_category": "hydraulic",
+      "response_category": "emergency_or_divert",
+      "incident_count": 37
+    },
+    {
+      "system_category": "hydraulic",
+      "response_category": "continue_after_troubleshooting",
+      "incident_count": 5
+    },
+    {
+      "system_category": "hydraulic",
+      "response_category": "maintenance_action_only",
+      "incident_count": 10
+    },
+    {
+      "system_category": "flight_control",
+      "response_category": "return_to_departure",
+      "incident_count": 36
+    },
+    {
+      "system_category": "flight_control",
+      "response_category": "emergency_or_divert",
+      "incident_count": 54
+    },
+    {
+      "system_category": "flight_control",
+      "response_category": "continue_after_troubleshooting",
+      "incident_count": 24
+    },
+    {
+      "system_category": "flight_control",
+      "response_category": "maintenance_action_only",
+      "incident_count": 22
+    }
+  ],
+  "elapsed_seconds": 1756.08,
+  "cost_usd": 4.409681,
+  "total_tokens": 5156154
+}

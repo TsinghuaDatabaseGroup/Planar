@@ -1,0 +1,96 @@
+{
+  "task_id": "legal_contracts-054",
+  "answer": [
+    {
+      "document_id": "NDD.pdf",
+      "governing_law": "Union law, complemented by the law of Slovenia"
+    },
+    {
+      "document_id": "1588052992CCTV%20Non%20Disclosure%20Agreement.pdf",
+      "governing_law": "India"
+    },
+    {
+      "document_id": "41629_1.pdf",
+      "governing_law": "England and Wales"
+    },
+    {
+      "document_id": "426-2017_Appendix_C-Sample_Non-Disclosure_Agreement.pdf",
+      "governing_law": "Manitoba and Canada"
+    },
+    {
+      "document_id": "Non-Disclosure-Agreement_11.pdf",
+      "governing_law": "Not explicitly stated"
+    },
+    {
+      "document_id": "703339_0001387308-13-000090_ex101.htm",
+      "governing_law": "State of California"
+    },
+    {
+      "document_id": "1089029_0000950123-07-007908_y31303a1exv10w13.htm",
+      "governing_law": "State of Florida"
+    },
+    {
+      "document_id": "BOMI%20Non-Disclosure%20Agreement.pdf",
+      "governing_law": "State of Maryland"
+    },
+    {
+      "document_id": "QSA_NDA.pdf",
+      "governing_law": "Commonwealth of Australia and State of Victoria"
+    },
+    {
+      "document_id": "Proctor_Agreement.pdf",
+      "governing_law": "England and Wales"
+    },
+    {
+      "document_id": "1113303_0000892917-12-000026_stilffnw13d120112am2ex3.htm",
+      "governing_law": "State of Washington"
+    },
+    {
+      "document_id": "Data Use Agreement New York City.pdf",
+      "governing_law": "State of New York"
+    },
+    {
+      "document_id": "Facility-Tour-Confidentiality-and-Non-Disclosure.pdf",
+      "governing_law": "State of California"
+    },
+    {
+      "document_id": "1074663_0001090002-01-500104_ex102.txt",
+      "governing_law": "Texas"
+    },
+    {
+      "document_id": "1367408_0001367408-06-000002_risb2ex106.htm",
+      "governing_law": "Utah"
+    },
+    {
+      "document_id": "Non-Disclosure_Agreement_oct2009.pdf",
+      "governing_law": "Ontario, Canada"
+    },
+    {
+      "document_id": "Tazza-CAFFE-Confidentiality-Agreement.pdf",
+      "governing_law": "province of New Brunswick"
+    },
+    {
+      "document_id": "buyer_profile.pdf",
+      "governing_law": "Republic of South Africa"
+    },
+    {
+      "document_id": "vrdr_ex1020.htm",
+      "governing_law": "State of Missouri"
+    },
+    {
+      "document_id": "tufts_confidentiality_agreement.pdf",
+      "governing_law": "Commonwealth of Massachusetts"
+    },
+    {
+      "document_id": "uwsp_confidentiality_agreement.pdf",
+      "governing_law": "state and federal laws"
+    },
+    {
+      "document_id": "ferc_gen-nda.pdf",
+      "governing_law": "United States Federal Law"
+    }
+  ],
+  "elapsed_seconds": 1948.61,
+  "cost_usd": 3.084749,
+  "total_tokens": 5860110
+}

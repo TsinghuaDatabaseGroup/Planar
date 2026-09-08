@@ -1,0 +1,26 @@
+{
+  "task_id": "vehicle_safety-040",
+  "answer": [
+    {
+      "failure_mode": "EGR cooler crack causing intake combustion",
+      "matched_complaint_count": 2,
+      "distinct_campaign_count": 1,
+      "earliest_complaint_date": "2025-02-27",
+      "earliest_recall_date": "2020-12-11",
+      "pre_recall_complaint_count": 0,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "EGR cooler crack causing combustion",
+      "matched_complaint_count": 8,
+      "distinct_campaign_count": 1,
+      "earliest_complaint_date": "2016-04-03",
+      "earliest_recall_date": "2020-12-11",
+      "pre_recall_complaint_count": 4,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    }
+  ],
+  "elapsed_seconds": 76.54,
+  "cost_usd": 0.416364,
+  "total_tokens": 911814
+}

@@ -1,0 +1,10 @@
+{
+  "task_id": "legal_contracts-073",
+  "answer": [
+    {"document_name": "a2023q4voyaex97voyafinanci.htm", "policy_title": "Voya Financial Compensation Recoupment Policy", "lookback_period": "Three completed fiscal years immediately preceding the Restatement Date, plus any transition period of less than nine months within or immediately following those years", "expanded_covered_group": "All employees, including employee and non-employee directors and officers"},
+    {"document_name": "a2024q4voyaex97voyafinanci.htm", "policy_title": "Voya Financial Compensation Recoupment Policy", "lookback_period": "Three completed fiscal years immediately preceding the Restatement Date, plus any transition period of less than nine months within or immediately following those years", "expanded_covered_group": "All employees, including employee and non-employee directors and officers"}
+  ],
+  "elapsed_seconds": 999.80,
+  "cost_usd": 1.046057,
+  "total_tokens": 1979674
+}

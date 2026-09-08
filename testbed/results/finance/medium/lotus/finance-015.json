@@ -1,0 +1,58 @@
+{
+  "task_id": "finance-015",
+  "answer": [
+    {
+      "company_name": "Roivant Sciences Ltd.",
+      "industry": "Biopharmaceutical",
+      "word_count": 130746
+    },
+    {
+      "company_name": "23ANDME HOLDING CO.",
+      "industry": "Direct-to-consumer genetic testing and precision health",
+      "word_count": 102522
+    },
+    {
+      "company_name": "ZeroFox Holdings, Inc.",
+      "industry": "Cybersecurity",
+      "word_count": 97527
+    },
+    {
+      "company_name": "StepStone Group Inc.",
+      "industry": "Private Markets Investment Firm",
+      "word_count": 92048
+    },
+    {
+      "company_name": "AUTODESK, INC.",
+      "industry": "3D design, engineering and entertainment technology solutions",
+      "word_count": 83517
+    },
+    {
+      "company_name": "Viasat, Inc.",
+      "industry": "Communications Technologies and Services",
+      "word_count": 82562
+    },
+    {
+      "company_name": "Planet Labs PBC",
+      "industry": "Earth Observation and Geospatial Data Analytics",
+      "word_count": 81367
+    },
+    {
+      "company_name": "Booz Allen Hamilton Holding Corporation",
+      "industry": "Management and Technology Consulting",
+      "word_count": 77726
+    },
+    {
+      "company_name": "E2open Parent Holdings, Inc.",
+      "industry": "Supply Chain Management (SCM) Software",
+      "word_count": 75852
+    },
+    {
+      "company_name": "AeroVironment, Inc.",
+      "industry": "Defense Technology",
+      "word_count": 75150
+    }
+  ],
+  "elapsed_seconds": 1144.48,
+  "cost_usd": 11.687768,
+  "total_tokens": 29955896
+}

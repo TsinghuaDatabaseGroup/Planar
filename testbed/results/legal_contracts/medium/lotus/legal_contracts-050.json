@@ -1,0 +1,410 @@
+{
+  "task_id": "legal_contracts-050",
+  "answer": [
+    {
+      "document_id": "1010471_0000950134-97-006281_document_5.txt",
+      "agreement_type": "non_competition_and_non_disclosure_agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 60
+    },
+    {
+      "document_id": "1021086_0000950162-99-000581_document_3.txt",
+      "agreement_type": "non_competition_agreement",
+      "matched_covenant_types": [
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "1094814_0001140361-18-017998_s002178x1_ex99d7.htm",
+      "agreement_type": "nda",
+      "matched_covenant_types": [
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "1167294_0001193125-15-218134_d933068dex99d3.htm",
+      "agreement_type": "nda",
+      "matched_covenant_types": [
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "1177845_0001193125-18-219243_d519554dex99d3.htm",
+      "agreement_type": "nda",
+      "matched_covenant_types": [
+        "employee_non_solicitation",
+        "standstill"
+      ],
+      "longest_period_months": 18
+    },
+    {
+      "document_id": "1277141_0001193125-15-184193_d923647dex99d2.htm",
+      "agreement_type": "nda",
+      "matched_covenant_types": [
+        "employee_non_solicitation",
+        "standstill"
+      ],
+      "longest_period_months": 24
+    },
+    {
+      "document_id": "1280058_0001193125-12-023311_d287213dex99d3.htm",
+      "agreement_type": "nda",
+      "matched_covenant_types": [
+        "employee_non_solicitation",
+        "standstill"
+      ],
+      "longest_period_months": 14
+    },
+    {
+      "document_id": "1316898_0001047469-18-005618_a2236490zex-99_d2.htm",
+      "agreement_type": "nda",
+      "matched_covenant_types": [
+        "employee_non_solicitation",
+        "standstill"
+      ],
+      "longest_period_months": 18
+    },
+    {
+      "document_id": "1329919_0001193125-14-149149_d701401dex99d6.htm",
+      "agreement_type": "nda",
+      "matched_covenant_types": [
+        "employee_non_solicitation",
+        "standstill"
+      ],
+      "longest_period_months": 18
+    },
+    {
+      "document_id": "1373671_0001193125-10-265249_dex99d3.htm",
+      "agreement_type": "nda",
+      "matched_covenant_types": [
+        "employee_non_solicitation",
+        "standstill"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "1475274_0001567619-17-000751_s001644x1_exd-2.htm",
+      "agreement_type": "nda",
+      "matched_covenant_types": [
+        "employee_non_solicitation",
+        "standstill"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "1561604_0001193125-12-472390_d438799dex99d3.htm",
+      "agreement_type": "nda",
+      "matched_covenant_types": [
+        "employee_non_solicitation",
+        "standstill"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "1592288_0001193125-17-306543_d469659dex99e2.htm",
+      "agreement_type": "nda",
+      "matched_covenant_types": [
+        "employee_non_solicitation",
+        "standstill"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "1693664_0001193125-18-171470_d426098dex99d3.htm",
+      "agreement_type": "nda",
+      "matched_covenant_types": [
+        "employee_non_solicitation",
+        "standstill"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "26820_0000936392-03-001111_a92217exv10w5.txt",
+      "agreement_type": "non_competition_and_non_disclosure_agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 29
+    },
+    {
+      "document_id": "55805_0001145443-10-001028_d26631_ex99-d3.htm",
+      "agreement_type": "nda",
+      "matched_covenant_types": [
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 24
+    },
+    {
+      "document_id": "736291_0000930661-99-001320_document_3.txt",
+      "agreement_type": "non_competition_agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "802724_0001193125-15-331613_d96542dex99d5.htm",
+      "agreement_type": "nda",
+      "matched_covenant_types": [
+        "employee_non_solicitation",
+        "standstill"
+      ],
+      "longest_period_months": 36
+    },
+    {
+      "document_id": "86115_0000930661-99-001321_document_3.txt",
+      "agreement_type": "non_competition_agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "888953_0001193125-13-044630_d480503dex99e6.htm",
+      "agreement_type": "nda",
+      "matched_covenant_types": [
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "918541_0001193125-14-328980_d785003dex105.htm",
+      "agreement_type": "noncompetition_and_nondisclosure_agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 36
+    },
+    {
+      "document_id": "Standard%20NDA%20by%20Axial.pdf",
+      "agreement_type": "nda",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "a20241231ex1023.htm",
+      "agreement_type": "equity_award_agreement",
+      "matched_covenant_types": [
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 0
+    },
+    {
+      "document_id": "a20241232ex1021.htm",
+      "agreement_type": "equity_award_agreement",
+      "matched_covenant_types": [
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 0
+    },
+    {
+      "document_id": "dvn-ex10_2.htm",
+      "agreement_type": "restricted_stock_award_agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "dvn-ex10_3.htm",
+      "agreement_type": "restricted_stock_agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "dvn-ex10_4.htm",
+      "agreement_type": "equity_award_agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 36
+    },
+    {
+      "document_id": "dvn-ex10_5.htm",
+      "agreement_type": "equity_award_agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 36
+    },
+    {
+      "document_id": "ea020170401ex10-4_natures.htm",
+      "agreement_type": "non_competition_and_non_solicitation_agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 24
+    },
+    {
+      "document_id": "ea020224801ex10-24_gryphon.htm",
+      "agreement_type": "director_agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation",
+        "standstill"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "ea191793ex10-10_newhorizon.htm",
+      "agreement_type": "non_competition_and_non_solicitation_agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 36
+    },
+    {
+      "document_id": "eh250596666_ex1001.htm",
+      "agreement_type": "management_agreement",
+      "matched_covenant_types": [
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 24
+    },
+    {
+      "document_id": "ex10-6_2.htm",
+      "agreement_type": "non_competition_and_non_solicitation_agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 60
+    },
+    {
+      "document_id": "ex10-9.htm",
+      "agreement_type": "equity_award_agreement",
+      "matched_covenant_types": [],
+      "longest_period_months": 6
+    },
+    {
+      "document_id": "ex1021restrictedstockunita.htm",
+      "agreement_type": "equity_award_agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 24
+    },
+    {
+      "document_id": "ex1023keytalentawardagreem.htm",
+      "agreement_type": "equity_award_agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 24
+    },
+    {
+      "document_id": "ex1024stockoptionagreement.htm",
+      "agreement_type": "stock_option_agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 24
+    },
+    {
+      "document_id": "ex1025performanceshareunit.htm",
+      "agreement_type": "equity_award_agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 24
+    },
+    {
+      "document_id": "ex1034-managementagreement.htm",
+      "agreement_type": "management_agreement",
+      "matched_covenant_types": [
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 24
+    },
+    {
+      "document_id": "exhibit101393025.htm",
+      "agreement_type": "award_agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "glp-20231231xex10d27.htm",
+      "agreement_type": "employment_agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "glp-20231231xex10d28.htm",
+      "agreement_type": "employment_agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "irtc-projectvoyagertechnol.htm",
+      "agreement_type": "technology_license_agreement",
+      "matched_covenant_types": [
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 60
+    },
+    {
+      "document_id": "usac202410-kex1020.htm",
+      "agreement_type": "equity_award_agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "usac202410-kex1024.htm",
+      "agreement_type": "equity_award_agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "voyaq4ex1023severanceplanf.htm",
+      "agreement_type": "severance_plan",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 12
+    }
+  ],
+  "elapsed_seconds": 452.12,
+  "cost_usd": 4.202224,
+  "total_tokens": 7884734
+}

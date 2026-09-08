@@ -1,0 +1,10 @@
+{
+  "task_id": "legal_contracts-098",
+  "answer": [
+    {"restriction_profile": [false, false, false, false, false], "member_count": 263, "avg_duration_years": 5.85},
+    {"restriction_profile": [false, false, true, true, false], "member_count": 46, "avg_duration_years": 3.25}
+  ],
+  "elapsed_seconds": 4497.23,
+  "cost_usd": 7.856160,
+  "total_tokens": 14867858
+}

@@ -1,0 +1,32 @@
+{
+  "task_id": "aviation_safety-044",
+  "answer": [
+    {
+      "canonical_system": "air conditioning and pressurization system",
+      "dominant_operational_outcome": "emergency descent and diversion landing",
+      "cause_category": "maintenance_or_release_decision",
+      "incident_count": 10
+    },
+    {
+      "canonical_system": "Aircraft pressurization and air conditioning packs",
+      "dominant_operational_outcome": "Emergency descent and diversion or return",
+      "cause_category": "equipment_malfunction",
+      "incident_count": 21
+    },
+    {
+      "canonical_system": "Air conditioning and pressurization packs",
+      "dominant_operational_outcome": "Diversion or normal landing after descent",
+      "cause_category": "crew_procedure",
+      "incident_count": 2
+    },
+    {
+      "canonical_system": "Aircraft air conditioning and pressurization system",
+      "dominant_operational_outcome": "Emergency diversion and medical evaluation",
+      "cause_category": "environmental_contamination",
+      "incident_count": 5
+    }
+  ],
+  "elapsed_seconds": 17.97,
+  "cost_usd": 0.152414,
+  "total_tokens": 365339
+}

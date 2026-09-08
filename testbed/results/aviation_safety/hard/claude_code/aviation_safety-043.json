@@ -1,0 +1,122 @@
+{
+  "task_id": "aviation_safety-043",
+  "answer": [
+    {
+      "rank": 1,
+      "weather_mechanism": "convective_weather",
+      "recorded_decision": "new_clearance",
+      "incident_count": 14
+    },
+    {
+      "rank": 2,
+      "weather_mechanism": "icing",
+      "recorded_decision": "new_clearance",
+      "incident_count": 14
+    },
+    {
+      "rank": 3,
+      "weather_mechanism": "icing",
+      "recorded_decision": "diversion",
+      "incident_count": 11
+    },
+    {
+      "rank": 4,
+      "weather_mechanism": "turbulence",
+      "recorded_decision": "new_clearance",
+      "incident_count": 10
+    },
+    {
+      "rank": 5,
+      "weather_mechanism": "windshear",
+      "recorded_decision": "new_clearance",
+      "incident_count": 10
+    },
+    {
+      "rank": 6,
+      "weather_mechanism": "windshear",
+      "recorded_decision": "diversion",
+      "incident_count": 7
+    },
+    {
+      "rank": 7,
+      "weather_mechanism": "low_ceiling",
+      "recorded_decision": "diversion",
+      "incident_count": 6
+    },
+    {
+      "rank": 8,
+      "weather_mechanism": "low_visibility",
+      "recorded_decision": "diversion",
+      "incident_count": 6
+    },
+    {
+      "rank": 9,
+      "weather_mechanism": "icing",
+      "recorded_decision": "emergency_declaration",
+      "incident_count": 5
+    },
+    {
+      "rank": 10,
+      "weather_mechanism": "convective_weather",
+      "recorded_decision": "diversion",
+      "incident_count": 4
+    },
+    {
+      "rank": 11,
+      "weather_mechanism": "precipitation",
+      "recorded_decision": "diversion",
+      "incident_count": 4
+    },
+    {
+      "rank": 12,
+      "weather_mechanism": "turbulence",
+      "recorded_decision": "diversion",
+      "incident_count": 4
+    },
+    {
+      "rank": 13,
+      "weather_mechanism": "strong_or_gusty_wind",
+      "recorded_decision": "new_clearance",
+      "incident_count": 3
+    },
+    {
+      "rank": 14,
+      "weather_mechanism": "low_ceiling",
+      "recorded_decision": "emergency_declaration",
+      "incident_count": 2
+    },
+    {
+      "rank": 15,
+      "weather_mechanism": "low_ceiling",
+      "recorded_decision": "new_clearance",
+      "incident_count": 2
+    },
+    {
+      "rank": 16,
+      "weather_mechanism": "strong_or_gusty_wind",
+      "recorded_decision": "diversion",
+      "incident_count": 2
+    },
+    {
+      "rank": 17,
+      "weather_mechanism": "convective_weather",
+      "recorded_decision": "emergency_declaration",
+      "incident_count": 1
+    },
+    {
+      "rank": 18,
+      "weather_mechanism": "low_visibility",
+      "recorded_decision": "emergency_declaration",
+      "incident_count": 1
+    },
+    {
+      "rank": 19,
+      "weather_mechanism": "windshear",
+      "recorded_decision": "emergency_declaration",
+      "incident_count": 1
+    }
+  ],
+  "elapsed_seconds": 241.464,
+  "cost_usd": 0.47616282,
+  "total_tokens": 1038934
+}

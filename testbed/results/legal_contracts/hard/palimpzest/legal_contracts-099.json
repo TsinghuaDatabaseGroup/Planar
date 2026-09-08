@@ -1,0 +1,9 @@
+{
+  "task_id": "legal_contracts-099",
+  "answer": [
+    {"nda_category": "unilateral_nda", "total_agreement_count": 278, "audit_linked_agreement_count": 3, "matched_audit_client_companies": ["AMETEK, Inc.", "Annexon, Inc.", "Sanmina Corporation"]}
+  ],
+  "elapsed_seconds": 2982.05,
+  "cost_usd": 4.898371,
+  "total_tokens": 9270214
+}

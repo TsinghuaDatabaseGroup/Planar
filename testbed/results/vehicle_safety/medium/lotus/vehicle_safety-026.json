@@ -1,0 +1,23 @@
+{
+  "task_id": "vehicle_safety-026",
+  "answer": {
+    "most_common_label": "spontaneous_glass_breakage",
+    "per_label_counts": {
+      "door_water_intrusion": {
+        "count": 5
+      },
+      "other": {
+        "count": 1
+      },
+      "spontaneous_glass_breakage": {
+        "count": 11
+      },
+      "visibility_distortion_or_defect": {
+        "count": 3
+      }
+    }
+  },
+  "elapsed_seconds": 7.8,
+  "cost_usd": 0.006096,
+  "total_tokens": 14466
+}

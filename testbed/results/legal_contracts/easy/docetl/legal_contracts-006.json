@@ -1,0 +1,387 @@
+{
+  "task_id": "legal_contracts-006",
+  "answer": [
+    {
+      "document_id": "1010552_0000912057-01-520246_a2051644zex-99_20.htm",
+      "governing_law": "Commonwealth of Massachusetts",
+      "missing_exceptions": [
+        "independent development",
+        "third-party receipt"
+      ]
+    },
+    {
+      "document_id": "1068874_0001068874-07-000012_ex10_2.htm",
+      "governing_law": "Massachusetts",
+      "missing_exceptions": [
+        "prior knowledge",
+        "independent development",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "1102301_0001094328-04-000141_freesarex23052004.txt",
+      "governing_law": "State of New York",
+      "missing_exceptions": [
+        "independent development",
+        "third-party receipt",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "1108906_0000889812-00-001212_document_45.txt",
+      "governing_law": "State of Connecticut",
+      "missing_exceptions": [
+        "legal compulsion",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "770461_0001144204-06-041516_v054278_ex10-7.txt",
+      "governing_law": "State of New York",
+      "missing_exceptions": [
+        "legal compulsion",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "88190_0000950144-96-003474_document_2.txt",
+      "governing_law": "State of New York",
+      "missing_exceptions": [
+        "prior knowledge",
+        "independent development",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "Attachment B - Intent to Propose and Non-Disclosure Agreement.pdf",
+      "governing_law": "State of Alaska",
+      "missing_exceptions": [
+        "prior knowledge",
+        "independent development"
+      ]
+    },
+    {
+      "document_id": "CON-NDA-PTL-01-2012-v1%20Non-Disclosure%20Agreement%20and%20Checklist.pdf",
+      "governing_law": "Province of Alberta",
+      "missing_exceptions": [
+        "independent development",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "Confidentiality%20Agreement.pdf",
+      "governing_law": "Province of Alberta",
+      "missing_exceptions": [
+        "prior knowledge",
+        "independent development",
+        "third-party receipt"
+      ]
+    },
+    {
+      "document_id": "Example-Mutual-Non-Disclosure-Agreement.pdf",
+      "governing_law": "English law",
+      "missing_exceptions": [
+        "independent development",
+        "third-party receipt",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "Example-One-Way-Non-Disclosure-Agreement.pdf",
+      "governing_law": "English law",
+      "missing_exceptions": [
+        "independent development",
+        "third-party receipt",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "Florida-Non-Disclosure-Agreement-NDA-Template.pdf",
+      "governing_law": "Florida",
+      "missing_exceptions": [
+        "third-party receipt",
+        "legal compulsion"
+      ]
+    },
+    {
+      "document_id": "FormEConfidentialityandNon.pdf",
+      "governing_law": "State of New Jersey",
+      "missing_exceptions": [
+        "independent development",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "Grindrod%20SA%20Confidentiality%20and%20Non-Disclosure%20Undertaking.pdf",
+      "governing_law": "Republic of South Africa",
+      "missing_exceptions": [
+        "third-party receipt",
+        "legal compulsion"
+      ]
+    },
+    {
+      "document_id": "ICTSC-NDA-General-MandA-signed.pdf",
+      "governing_law": "New South Wales, Australia",
+      "missing_exceptions": [
+        "third-party receipt",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "Model%20NDA%20(recommended%20by%20SWA).pdf",
+      "governing_law": "India",
+      "missing_exceptions": [
+        "independent development",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "NDA-Seeed.pdf",
+      "governing_law": "People's Republic of China",
+      "missing_exceptions": [
+        "independent development",
+        "legal compulsion"
+      ]
+    },
+    {
+      "document_id": "NDA-Urban_Wind_Turbines.pdf",
+      "governing_law": "England and Wales",
+      "missing_exceptions": [
+        "independent development",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "NDA-standard.pdf",
+      "governing_law": "English law",
+      "missing_exceptions": [
+        "legal compulsion",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "NDA_6.pdf",
+      "governing_law": "United States and the State of California",
+      "missing_exceptions": [
+        "independent development",
+        "legal compulsion"
+      ]
+    },
+    {
+      "document_id": "NDA_and_assgmnt_of_ipMar2011.pdf",
+      "governing_law": "State of California",
+      "missing_exceptions": [
+        "independent development",
+        "legal compulsion"
+      ]
+    },
+    {
+      "document_id": "NUSD-Non-Disclosure-Agreement.pdf",
+      "governing_law": "State of California",
+      "missing_exceptions": [
+        "independent development",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "Non%20Disclosure%20Agreement_1.pdf",
+      "governing_law": "State of Georgia",
+      "missing_exceptions": [
+        "legal compulsion",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "Non-disclosure-Agreement_7.pdf",
+      "governing_law": "English law",
+      "missing_exceptions": [
+        "prior knowledge",
+        "independent development"
+      ]
+    },
+    {
+      "document_id": "PSGT Agreement NDA New Supplier Non Disclosure Template DC.pdf",
+      "governing_law": "State of New York",
+      "missing_exceptions": [
+        "independent development",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "a03312024ex102.htm",
+      "governing_law": "Rhode Island",
+      "missing_exceptions": [
+        "prior knowledge",
+        "independent development",
+        "third-party receipt",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "a03312025ex102.htm",
+      "governing_law": "Rhode Island",
+      "missing_exceptions": [
+        "prior knowledge",
+        "independent development",
+        "third-party receipt",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "a03312025ex104.htm",
+      "governing_law": "Rhode Island",
+      "missing_exceptions": [
+        "prior knowledge",
+        "independent development",
+        "third-party receipt",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "a1028trv2025mcmoptionagree.htm",
+      "governing_law": "Participant's Employment Jurisdiction",
+      "missing_exceptions": [
+        "prior knowledge",
+        "independent development",
+        "third-party receipt"
+      ]
+    },
+    {
+      "document_id": "a1033trv2025mcmperfsharesa.htm",
+      "governing_law": "Participant's Employment Jurisdiction",
+      "missing_exceptions": [
+        "prior knowledge",
+        "independent development"
+      ]
+    },
+    {
+      "document_id": "augusta_non_disclosure_agreement_1.pdf",
+      "governing_law": "State of Georgia",
+      "missing_exceptions": [
+        "legal compulsion",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "dv-20250721xex10d1.htm",
+      "governing_law": "State of New York",
+      "missing_exceptions": [
+        "prior knowledge",
+        "independent development"
+      ]
+    },
+    {
+      "document_id": "dyn-ex10_1.htm",
+      "governing_law": "Massachusetts",
+      "missing_exceptions": [
+        "prior knowledge",
+        "independent development"
+      ]
+    },
+    {
+      "document_id": "ex10-3_1.htm",
+      "governing_law": "State of Texas",
+      "missing_exceptions": [
+        "prior knowledge",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "exhibit101393024.htm",
+      "governing_law": "Not explicitly specified as a single jurisdiction; contains specific provisions for California and New York based on residence.",
+      "missing_exceptions": [
+        "prior knowledge",
+        "independent development",
+        "third-party receipt"
+      ]
+    },
+    {
+      "document_id": "exhibit101393025.htm",
+      "governing_law": "Delaware",
+      "missing_exceptions": [
+        "prior knowledge",
+        "independent development",
+        "third-party receipt"
+      ]
+    },
+    {
+      "document_id": "gatesconsultantagreementfi.htm",
+      "governing_law": "State of Washington",
+      "missing_exceptions": [
+        "independent development",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "gbio-20241231xex10d30.htm",
+      "governing_law": "Commonwealth of Massachusetts",
+      "missing_exceptions": [
+        "prior knowledge",
+        "independent development",
+        "third-party receipt"
+      ]
+    },
+    {
+      "document_id": "modelnondisclosureagreement1.pdf",
+      "governing_law": "English Law",
+      "missing_exceptions": [
+        "legal compulsion",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "mutual-non-disclosure-agreement.pdf",
+      "governing_law": "English Law",
+      "missing_exceptions": [
+        "prior knowledge",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "namenyeseparationagreement.htm",
+      "governing_law": "State of Indiana",
+      "missing_exceptions": [
+        "prior knowledge",
+        "independent development",
+        "third-party receipt"
+      ]
+    },
+    {
+      "document_id": "nondisclosure-Engl.pdf",
+      "governing_law": "France",
+      "missing_exceptions": [
+        "independent development",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "phat-ex10_3.htm",
+      "governing_law": "Commonwealth of Massachusetts",
+      "missing_exceptions": [
+        "independent development",
+        "third-party receipt"
+      ]
+    },
+    {
+      "document_id": "standard_nda.pdf",
+      "governing_law": "India",
+      "missing_exceptions": [
+        "prior knowledge",
+        "independent development",
+        "third-party receipt",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "tpst-ex10_2.htm",
+      "governing_law": "California",
+      "missing_exceptions": [
+        "prior knowledge",
+        "independent development"
+      ]
+    }
+  ],
+  "elapsed_seconds": 425.71,
+  "cost_usd": 3.962655,
+  "total_tokens": 7540322
+}

@@ -1,0 +1,11 @@
+{
+  "task_id": "vehicle_safety-028",
+  "answer": {
+    "toyota_matched_complaint_count": 486,
+    "honda_matched_complaint_count": 426,
+    "higher_matched_complaint_make": "TOYOTA"
+  },
+  "elapsed_seconds": 190.85,
+  "cost_usd": 0.19965,
+  "total_tokens": 487714
+}

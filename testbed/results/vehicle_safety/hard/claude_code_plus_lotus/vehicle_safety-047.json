@@ -1,0 +1,40 @@
+{
+  "task_id": "vehicle_safety-047",
+  "answer": [
+    {
+      "campaign_number": "14V391000",
+      "matched_complaint_count": 1,
+      "median_days_complaint_to_recall": -3646,
+      "share_complaints_before_recall": 0.0,
+      "dominant_electrical_root_cause": "unknown",
+      "response_promptness_label": "fast"
+    },
+    {
+      "campaign_number": "15V461000",
+      "matched_complaint_count": 3,
+      "median_days_complaint_to_recall": -3775,
+      "share_complaints_before_recall": 0.0,
+      "dominant_electrical_root_cause": "unknown",
+      "response_promptness_label": "fast"
+    },
+    {
+      "campaign_number": "17V435000",
+      "matched_complaint_count": 39,
+      "median_days_complaint_to_recall": -2308,
+      "share_complaints_before_recall": 0.1538,
+      "dominant_electrical_root_cause": "unknown",
+      "response_promptness_label": "fast"
+    },
+    {
+      "campaign_number": "18V332000",
+      "matched_complaint_count": 10,
+      "median_days_complaint_to_recall": -1565,
+      "share_complaints_before_recall": 0.2,
+      "dominant_electrical_root_cause": "unknown",
+      "response_promptness_label": "fast"
+    }
+  ],
+  "elapsed_seconds": 2045.175,
+  "cost_usd": 1.17899427,
+  "total_tokens": 1706373
+}

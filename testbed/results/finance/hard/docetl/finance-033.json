@@ -1,0 +1,62 @@
+{
+  "task_id": "finance-033",
+  "answer": {
+    "top_5_growth": {
+      "ASGN Incorporated": {
+        "employee_count_2019": 4300,
+        "employee_count_2023": 27200,
+        "employee_change_percent": 532.6
+      },
+      "AdaptHealth Corp.": {
+        "employee_count_2019": 2590,
+        "employee_count_2023": 10700,
+        "employee_change_percent": 313.1
+      },
+      "ZSCALER, INC.": {
+        "employee_count_2019": 1480,
+        "employee_count_2023": 5962,
+        "employee_change_percent": 302.8
+      },
+      "RB Global, Inc.": {
+        "employee_count_2019": 2400,
+        "employee_count_2023": 9600,
+        "employee_change_percent": 300.0
+      },
+      "NRG Energy, Inc.": {
+        "employee_count_2019": 4577,
+        "employee_count_2023": 18131,
+        "employee_change_percent": 296.1
+      }
+    },
+    "top_5_decline": {
+      "Regis Corporation": {
+        "employee_count_2019": 20000,
+        "employee_count_2023": 435,
+        "employee_change_percent": -97.8
+      },
+      "KASPIEN HOLDINGS INC.": {
+        "employee_count_2019": 2200,
+        "employee_count_2023": 80,
+        "employee_change_percent": -96.4
+      },
+      "TD SYNNEX Corporation": {
+        "employee_count_2019": 240900,
+        "employee_count_2023": 23000,
+        "employee_change_percent": -90.5
+      },
+      "Wyndham Hotels & Resorts, Inc.": {
+        "employee_count_2019": 14200,
+        "employee_count_2023": 2300,
+        "employee_change_percent": -83.8
+      },
+      "Biglari Holdings": {
+        "employee_count_2019": 10906,
+        "employee_count_2023": 2466,
+        "employee_change_percent": -77.4
+      }
+    }
+  },
+  "elapsed_seconds": 4849.56,
+  "cost_usd": 44.496943,
+  "total_tokens": 112975108
+}

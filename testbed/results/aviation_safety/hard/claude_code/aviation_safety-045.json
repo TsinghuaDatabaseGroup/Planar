@@ -1,0 +1,116 @@
+{
+  "task_id": "aviation_safety-045",
+  "answer": [
+    {
+      "rank": 1,
+      "maintenance_status": "released_to_service",
+      "discovery_phase": "after_takeoff",
+      "chain_category": "released_item_failed",
+      "incident_count": 77,
+      "canonical_affected_item": "alternator",
+      "recurring_discrepancy": "low voltage alert"
+    },
+    {
+      "rank": 2,
+      "maintenance_status": "released_to_service",
+      "discovery_phase": "after_takeoff",
+      "chain_category": "incomplete_repair_or_signoff",
+      "incident_count": 36,
+      "canonical_affected_item": "landing gear extension system",
+      "recurring_discrepancy": "intermittent failure to extend requiring physical impact"
+    },
+    {
+      "rank": 3,
+      "maintenance_status": "released_to_service",
+      "discovery_phase": "before_departure",
+      "chain_category": "incomplete_repair_or_signoff",
+      "incident_count": 31,
+      "canonical_affected_item": "brake pads",
+      "recurring_discrepancy": "total loss of braking action during break-in"
+    },
+    {
+      "rank": 4,
+      "maintenance_status": "deferred",
+      "discovery_phase": "after_takeoff",
+      "chain_category": "deferred_item_recurred",
+      "incident_count": 28,
+      "canonical_affected_item": "auto pressurization controller",
+      "recurring_discrepancy": "dual auto pressurization controller failure"
+    },
+    {
+      "rank": 5,
+      "maintenance_status": "deferred",
+      "discovery_phase": "after_takeoff",
+      "chain_category": "maintenance_limitation_escalated",
+      "incident_count": 16,
+      "canonical_affected_item": "automatic pressurization control",
+      "recurring_discrepancy": "manual cabin altitude management required during descent"
+    },
+    {
+      "rank": 6,
+      "maintenance_status": "deferred",
+      "discovery_phase": "before_departure",
+      "chain_category": "maintenance_limitation_escalated",
+      "incident_count": 9,
+      "canonical_affected_item": "number 1 engine fan attrition liner",
+      "recurring_discrepancy": "excessive wear and multiple holes exceeding limits"
+    },
+    {
+      "rank": 7,
+      "maintenance_status": "released_to_service",
+      "discovery_phase": "before_departure",
+      "chain_category": "released_item_failed",
+      "incident_count": 8,
+      "canonical_affected_item": "#1 Generator electrical load system",
+      "recurring_discrepancy": "failure to take electrical load after engine start"
+    },
+    {
+      "rank": 8,
+      "maintenance_status": "deferred",
+      "discovery_phase": "before_departure",
+      "chain_category": "deferred_item_recurred",
+      "incident_count": 5,
+      "canonical_affected_item": "R HPSOV",
+      "recurring_discrepancy": "valve failure requiring placarding"
+    },
+    {
+      "rank": 9,
+      "maintenance_status": "released_to_service",
+      "discovery_phase": "after_landing",
+      "chain_category": "incomplete_repair_or_signoff",
+      "incident_count": 5,
+      "canonical_affected_item": "right nosewheel rim",
+      "recurring_discrepancy": "rim fracture and tire out-of-round"
+    },
+    {
+      "rank": 10,
+      "maintenance_status": "both",
+      "discovery_phase": "after_takeoff",
+      "chain_category": "incomplete_repair_or_signoff",
+      "incident_count": 3,
+      "canonical_affected_item": "cabin pressurization controller",
+      "recurring_discrepancy": "cabin altitude warning at cruise"
+    },
+    {
+      "rank": 11,
+      "maintenance_status": "released_to_service",
+      "discovery_phase": "after_landing",
+      "chain_category": "released_item_failed",
+      "incident_count": 3,
+      "canonical_affected_item": "nose landing gear hydraulic actuator rod end",
+      "recurring_discrepancy": "rod end separation causing gear collapse"
+    },
+    {
+      "rank": 12,
+      "maintenance_status": "both",
+      "discovery_phase": "after_takeoff",
+      "chain_category": "released_item_failed",
+      "incident_count": 2,
+      "canonical_affected_item": "FAC 2 (Flight Augmentation Computer)",
+      "recurring_discrepancy": "overhead warning light illuminated after engine start"
+    }
+  ],
+  "elapsed_seconds": 219.89,
+  "cost_usd": 0.5647107,
+  "total_tokens": 1196567
+}

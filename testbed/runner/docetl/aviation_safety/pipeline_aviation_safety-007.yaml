@@ -1,0 +1,236 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_passenger_air_carrier
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("mission") == "Passenger"
+              and doc.get("aircraft_operator") == "Air Carrier"
+          )
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: extract_fuel_shaped_decisions
+    type: map
+    optimize: true
+    prompt: |
+      Analyze this NASA ASRS report using the narrative and structured result
+      summary below.
+
+      Identify every operational decision directly shaped by a stated fuel
+      quantity, reserve, burn estimate, or remaining-flight-time calculation. Mere
+      mention of fuel or a decision that would have occurred for unrelated reasons
+      does not qualify.
+
+      Return all supported decision_labels:
+      - attempt_approach: initiate or try an approach;
+      - divert: change to an airport other than departure or intended destination;
+      - return: return to the departure airport;
+      - hold: enter or remain in holding;
+      - leave_holding: exit holding because of the fuel calculation;
+      - continue: continue the current flight, route, or plan;
+      - declare_minimum_fuel: explicitly declare minimum fuel;
+      - declare_fuel_emergency: explicitly declare a fuel emergency.
+
+      The structured result summary may establish diversion, return, or emergency
+      only when the narrative confirms that fuel directly shaped it. One report
+      may support multiple decisions.
+
+      Set has_numeric_fuel_value=true when the report states an explicit numeric
+      fuel quantity, reserve, or burn value. Set has_numeric_time_value=true when
+      it states an explicit numeric remaining-flight, holding, or endurance time.
+      These flags describe whether the qualifying incident states each kind of
+      numeric value; they do not require the number to be the sole reason for one
+      particular emitted decision. Return an empty decision list when no decision
+      qualifies.
+
+      Structured result summary:
+      {{ input.result_summary }}
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        decision_labels: list[enum[attempt_approach, divert, return, hold, leave_holding, continue, declare_minimum_fuel, declare_fuel_emergency]]
+        has_numeric_fuel_value: boolean
+        has_numeric_time_value: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: keep_reports_with_fuel_shaped_decisions
+    type: code_filter
+    code: |
+      def transform(doc):
+          valid_decisions = {
+              "attempt_approach",
+              "divert",
+              "return",
+              "hold",
+              "leave_holding",
+              "continue",
+              "declare_minimum_fuel",
+              "declare_fuel_emergency",
+          }
+          decisions = doc.get("decision_labels") or []
+          return any(value in valid_decisions for value in decisions)
+
+  - name: build_fuel_decision_rows
+    type: code_map
+    code: |
+      def transform(doc):
+          decision_order = [
+              "attempt_approach",
+              "divert",
+              "return",
+              "hold",
+              "leave_holding",
+              "continue",
+              "declare_minimum_fuel",
+              "declare_fuel_emergency",
+          ]
+          selected = set(doc.get("decision_labels") or [])
+          rows = [
+              {
+                  "decision_label": decision,
+                  "has_numeric_fuel_value": doc.get(
+                      "has_numeric_fuel_value"
+                  ) is True,
+                  "has_numeric_time_value": doc.get(
+                      "has_numeric_time_value"
+                  ) is True,
+              }
+              for decision in decision_order
+              if decision in selected
+          ]
+          return {"decision_rows": rows}
+
+  - name: unnest_fuel_decision_rows
+    type: unnest
+    unnest_key: decision_rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - decision_label
+      - has_numeric_fuel_value
+      - has_numeric_time_value
+
+  - name: aggregate_by_decision_label
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          decision_order = [
+              "attempt_approach",
+              "divert",
+              "return",
+              "hold",
+              "leave_holding",
+              "continue",
+              "declare_minimum_fuel",
+              "declare_fuel_emergency",
+          ]
+          incident_ids = {decision: set() for decision in decision_order}
+          numeric_fuel_ids = {decision: set() for decision in decision_order}
+          numeric_time_ids = {decision: set() for decision in decision_order}
+
+          for item in items:
+              incident_id = str(item.get("incident_id", ""))
+              decision = item.get("decision_label")
+              if not incident_id or decision not in incident_ids:
+                  continue
+              incident_ids[decision].add(incident_id)
+              if item.get("has_numeric_fuel_value") is True:
+                  numeric_fuel_ids[decision].add(incident_id)
+              if item.get("has_numeric_time_value") is True:
+                  numeric_time_ids[decision].add(incident_id)
+
+          rows = []
+          for decision in decision_order:
+              if not incident_ids[decision]:
+                  continue
+              rows.append(
+                  {
+                      "decision_label": decision,
+                      "incident_count": len(incident_ids[decision]),
+                      "with_numeric_fuel_value_count": len(
+                          numeric_fuel_ids[decision]
+                      ),
+                      "with_numeric_time_value_count": len(
+                          numeric_time_ids[decision]
+                      ),
+                  }
+              )
+          return {"rows": rows}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - decision_label
+      - incident_count
+      - with_numeric_fuel_value_count
+      - with_numeric_time_value_count
+
+pipeline:
+  steps:
+    - name: process
+      input: asrs_incidents
+      operations:
+        - filter_passenger_air_carrier
+        - load_asrs_narrative
+        - extract_fuel_shaped_decisions
+        - keep_reports_with_fuel_shaped_decisions
+        - build_fuel_decision_rows
+        - unnest_fuel_decision_rows
+        - aggregate_by_decision_label
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-007.json

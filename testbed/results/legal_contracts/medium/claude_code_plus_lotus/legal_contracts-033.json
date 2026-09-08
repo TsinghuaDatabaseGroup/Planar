@@ -1,0 +1,128 @@
+{
+  "task_id": "legal_contracts-033",
+  "answer": [
+    {
+      "document_id": "1062579_0000950123-99-005018_document_3.txt",
+      "governing_law": "New York",
+      "duration_months": 84
+    },
+    {
+      "document_id": "2_waycda.pdf",
+      "governing_law": "England",
+      "duration_months": 120
+    },
+    {
+      "document_id": "71297_0000071297-97-000059_document_6.txt",
+      "governing_law": "Massachusetts",
+      "duration_months": 84
+    },
+    {
+      "document_id": "Bio-FIP-EOI-NDA.pdf",
+      "governing_law": "England",
+      "duration_months": 84
+    },
+    {
+      "document_id": "CA-Nov14-Doc.5.14%20-%20Template%20Confidentiality%20Agreement.pdf",
+      "governing_law": "None",
+      "duration_months": 120
+    },
+    {
+      "document_id": "CCS-Salt-Cavern-RfP-NDA.pdf",
+      "governing_law": "England",
+      "duration_months": 84
+    },
+    {
+      "document_id": "ConfidentialityAgreement.pdf",
+      "governing_law": "Austria",
+      "duration_months": 84
+    },
+    {
+      "document_id": "Cyber Mutual Assistance NDA.pdf",
+      "governing_law": "New York",
+      "duration_months": 120
+    },
+    {
+      "document_id": "GSAOP0309-Non-disclosure-agreement.pdf",
+      "governing_law": "Belgium",
+      "duration_months": 120
+    },
+    {
+      "document_id": "IMOA%20Molybdenum%20Consortium%20NDA%20Agreement%20amended%20Jan%2008,%20valid%20March%2009%20onwards.pdf",
+      "governing_law": "England and Wales",
+      "duration_months": 144
+    },
+    {
+      "document_id": "MNDA.pdf",
+      "governing_law": "None",
+      "duration_months": 120
+    },
+    {
+      "document_id": "Mutual%20confidentiality%20and%20NDA%20-%20Final%20(2)%20(6)%2003%20July%202015.pdf",
+      "governing_law": "South Africa",
+      "duration_months": 120
+    },
+    {
+      "document_id": "NDA%20UDRC%203-way%20Final.pdf",
+      "governing_law": "England",
+      "duration_months": 84
+    },
+    {
+      "document_id": "NDA-STP-Performance-Coating-revC.pdf",
+      "governing_law": "Arizona",
+      "duration_months": 240
+    },
+    {
+      "document_id": "NDATC.pdf",
+      "governing_law": "Wisconsin",
+      "duration_months": 120
+    },
+    {
+      "document_id": "NDA_English.pdf",
+      "governing_law": "Quebec",
+      "duration_months": 300
+    },
+    {
+      "document_id": "Non-Disclosure%20Agreement_5.pdf",
+      "governing_law": "None",
+      "duration_months": 120
+    },
+    {
+      "document_id": "NonDisclosureAgreement_1.pdf",
+      "governing_law": "Slovenia",
+      "duration_months": 120
+    },
+    {
+      "document_id": "cifr-ex10_34.htm",
+      "governing_law": "Texas",
+      "duration_months": 120
+    },
+    {
+      "document_id": "ea020676201ex10-1_gamida.htm",
+      "governing_law": "New York",
+      "duration_months": 82
+    },
+    {
+      "document_id": "ex10-10_1.htm",
+      "governing_law": "Delaware",
+      "duration_months": 120
+    },
+    {
+      "document_id": "ex10-29.htm",
+      "governing_law": "China",
+      "duration_months": 240
+    },
+    {
+      "document_id": "ex1035llcagreement.htm",
+      "governing_law": "Delaware",
+      "duration_months": 120
+    },
+    {
+      "document_id": "nda_8.pdf",
+      "governing_law": "England",
+      "duration_months": 120
+    }
+  ],
+  "elapsed_seconds": 637.418,
+  "cost_usd": 3.60285426,
+  "total_tokens": 8392554
+}

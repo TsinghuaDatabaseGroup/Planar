@@ -1,0 +1,100 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_nda_status_documents
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it has NDA status, including documents with
+      dual NDA and SEC-exhibit status.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {has_nda_status: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_finite_confidentiality_duration
+    type: map
+    optimize: true
+    prompt: |
+      Return the stated finite confidentiality duration normalized to years.
+      Set duration_available=false when the term is missing or non-finite, using
+      0 only as a placeholder.
+
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema: {duration_available: boolean, duration_years_value: float}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: normalize_finite_duration
+    type: code_map
+    code: |
+      def transform(doc):
+          return {"duration_years": float(doc.get("duration_years_value") or 0) if doc.get("duration_available") is True else None}
+  - name: filter_finite_duration
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("duration_years") is not None
+  - name: extract_restriction_profile
+    type: map
+    optimize: true
+    prompt: |
+      Return the exact five-position boolean restriction profile in this order:
+      non-compete, customer non-solicitation, employee non-solicitation,
+      standstill, vendor non-solicitation.
+
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema: {restriction_profile: "list[boolean]"}
+    validate:
+      - len(output["restriction_profile"]) == 5
+    num_retries_on_validate_failure: 2
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: encode_restriction_profile
+    type: code_map
+    code: |
+      def transform(doc):
+          profile = [bool(value) for value in doc.get("restriction_profile") or []]
+          return {"restriction_profile": profile, "restriction_profile_key": "".join("1" if value else "0" for value in profile)}
+  - name: aggregate_restriction_profiles
+    type: code_reduce
+    reduce_key: restriction_profile_key
+    code: |
+      def transform(items):
+          return {
+              "restriction_profile": items[0].get("restriction_profile") or [],
+              "member_count": len(items),
+              "avg_duration_years": round(sum(float(item["duration_years"]) for item in items) / len(items), 2),
+          }
+  - name: select_top_five_profiles
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          ordered = sorted(items, key=lambda item: -int(item.get("member_count") or 0))
+          return {"rows": [{"restriction_profile": item.get("restriction_profile") or [], "member_count": item.get("member_count"), "avg_duration_years": item.get("avg_duration_years")} for item in ordered[:5]]}
+  - name: unnest_top_profiles
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields: [restriction_profile, member_count, avg_duration_years]
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations: [filter_nda_status_documents, extract_finite_confidentiality_duration, normalize_finite_duration, filter_finite_duration, extract_restriction_profile, encode_restriction_profile, aggregate_restriction_profiles, select_top_five_profiles, unnest_top_profiles]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-098.json

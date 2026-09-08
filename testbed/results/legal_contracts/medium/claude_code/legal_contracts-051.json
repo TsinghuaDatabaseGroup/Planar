@@ -1,0 +1,312 @@
+{
+  "task_id": "legal_contracts-051",
+  "answer": [
+    {
+      "document_id": "a2023q4voyaex211listofsubs.htm",
+      "parent_company": "Voya Financial, Inc.",
+      "subsidiary_count": 65,
+      "distinct_jurisdiction_count": 10,
+      "top_jurisdictions": [
+        {
+          "jurisdiction": "Delaware",
+          "subsidiary_count": 54
+        },
+        {
+          "jurisdiction": "South Carolina",
+          "subsidiary_count": 2
+        },
+        {
+          "jurisdiction": "United Kingdom",
+          "subsidiary_count": 2
+        }
+      ]
+    },
+    {
+      "document_id": "ea191291ex10-1_megamatrix.htm",
+      "parent_company": "Mega Matrix Corp.",
+      "subsidiary_count": 1,
+      "distinct_jurisdiction_count": 1,
+      "top_jurisdictions": [
+        {
+          "jurisdiction": "British Virgin Islands",
+          "subsidiary_count": 1
+        }
+      ]
+    },
+    {
+      "document_id": "ea191291ex99-1_megamatrix.htm",
+      "parent_company": "Mega Matrix Corp.",
+      "subsidiary_count": 6,
+      "distinct_jurisdiction_count": 4,
+      "top_jurisdictions": [
+        {
+          "jurisdiction": "Singapore",
+          "subsidiary_count": 3
+        },
+        {
+          "jurisdiction": "Cayman Islands",
+          "subsidiary_count": 1
+        },
+        {
+          "jurisdiction": "California",
+          "subsidiary_count": 1
+        }
+      ]
+    },
+    {
+      "document_id": "ex_781607.htm",
+      "parent_company": "Ceva, Inc.",
+      "subsidiary_count": 15,
+      "distinct_jurisdiction_count": 11,
+      "top_jurisdictions": [
+        {
+          "jurisdiction": "Republic of Ireland",
+          "subsidiary_count": 3
+        },
+        {
+          "jurisdiction": "Delaware",
+          "subsidiary_count": 2
+        },
+        {
+          "jurisdiction": "France",
+          "subsidiary_count": 2
+        }
+      ]
+    },
+    {
+      "document_id": "exhibit21-subsidiariesx123.htm",
+      "parent_company": "Polaris Inc.",
+      "subsidiary_count": 78,
+      "distinct_jurisdiction_count": 31,
+      "top_jurisdictions": [
+        {
+          "jurisdiction": "France",
+          "subsidiary_count": 16
+        },
+        {
+          "jurisdiction": "Delaware",
+          "subsidiary_count": 10
+        },
+        {
+          "jurisdiction": "Minnesota",
+          "subsidiary_count": 9
+        }
+      ]
+    },
+    {
+      "document_id": "exhibit21106302025.htm",
+      "parent_company": "KLA Corporation",
+      "subsidiary_count": 69,
+      "distinct_jurisdiction_count": 24,
+      "top_jurisdictions": [
+        {
+          "jurisdiction": "Delaware",
+          "subsidiary_count": 13
+        },
+        {
+          "jurisdiction": "Israel",
+          "subsidiary_count": 7
+        },
+        {
+          "jurisdiction": "California",
+          "subsidiary_count": 6
+        }
+      ]
+    },
+    {
+      "document_id": "exhibit211subsidiariesofpr.htm",
+      "parent_company": "Primo Brands Corporation",
+      "subsidiary_count": 33,
+      "distinct_jurisdiction_count": 11,
+      "top_jurisdictions": [
+        {
+          "jurisdiction": "United Kingdom",
+          "subsidiary_count": 11
+        },
+        {
+          "jurisdiction": "Delaware",
+          "subsidiary_count": 10
+        },
+        {
+          "jurisdiction": "Canada",
+          "subsidiary_count": 2
+        }
+      ]
+    },
+    {
+      "document_id": "exhibit4ccdescriptionofsec.htm",
+      "parent_company": "Becton, Dickinson and Company",
+      "subsidiary_count": 1,
+      "distinct_jurisdiction_count": 1,
+      "top_jurisdictions": [
+        {
+          "jurisdiction": "Luxembourg",
+          "subsidiary_count": 1
+        }
+      ]
+    },
+    {
+      "document_id": "fy24exhibit21.htm",
+      "parent_company": "Skyworks",
+      "subsidiary_count": 31,
+      "distinct_jurisdiction_count": 22,
+      "top_jurisdictions": [
+        {
+          "jurisdiction": "Delaware",
+          "subsidiary_count": 6
+        },
+        {
+          "jurisdiction": "Japan",
+          "subsidiary_count": 2
+        },
+        {
+          "jurisdiction": "Korea",
+          "subsidiary_count": 2
+        }
+      ]
+    },
+    {
+      "document_id": "gsat-20241231xexx211.htm",
+      "parent_company": "Globalstar, Inc.",
+      "subsidiary_count": 74,
+      "distinct_jurisdiction_count": 49,
+      "top_jurisdictions": [
+        {
+          "jurisdiction": "Delaware",
+          "subsidiary_count": 15
+        },
+        {
+          "jurisdiction": "British Virgin Islands",
+          "subsidiary_count": 4
+        },
+        {
+          "jurisdiction": "Nicaragua",
+          "subsidiary_count": 3
+        }
+      ]
+    },
+    {
+      "document_id": "ip-20231231exhibit21.htm",
+      "parent_company": "International Paper Company",
+      "subsidiary_count": 89,
+      "distinct_jurisdiction_count": 28,
+      "top_jurisdictions": [
+        {
+          "jurisdiction": "Delaware",
+          "subsidiary_count": 32
+        },
+        {
+          "jurisdiction": "France",
+          "subsidiary_count": 8
+        },
+        {
+          "jurisdiction": "Spain",
+          "subsidiary_count": 6
+        }
+      ]
+    },
+    {
+      "document_id": "ip-20241231exhibit21.htm",
+      "parent_company": "International Paper Company",
+      "subsidiary_count": 85,
+      "distinct_jurisdiction_count": 29,
+      "top_jurisdictions": [
+        {
+          "jurisdiction": "Delaware",
+          "subsidiary_count": 33
+        },
+        {
+          "jurisdiction": "Spain",
+          "subsidiary_count": 7
+        },
+        {
+          "jurisdiction": "France",
+          "subsidiary_count": 7
+        }
+      ]
+    },
+    {
+      "document_id": "ithuf-ex21_1.htm",
+      "parent_company": "iAnthus",
+      "subsidiary_count": 39,
+      "distinct_jurisdiction_count": 13,
+      "top_jurisdictions": [
+        {
+          "jurisdiction": "Arizona, USA",
+          "subsidiary_count": 7
+        },
+        {
+          "jurisdiction": "Florida, USA",
+          "subsidiary_count": 4
+        },
+        {
+          "jurisdiction": "Illinois, USA",
+          "subsidiary_count": 4
+        }
+      ]
+    },
+    {
+      "document_id": "q4202410kexhibit211.htm",
+      "parent_company": "EMBECTA CORP.",
+      "subsidiary_count": 59,
+      "distinct_jurisdiction_count": 52,
+      "top_jurisdictions": [
+        {
+          "jurisdiction": "USA (Delaware)",
+          "subsidiary_count": 5
+        },
+        {
+          "jurisdiction": "Belgium",
+          "subsidiary_count": 2
+        },
+        {
+          "jurisdiction": "Ireland",
+          "subsidiary_count": 2
+        }
+      ]
+    },
+    {
+      "document_id": "sanm_09282024xex211x10k.htm",
+      "parent_company": "Sanmina Corporation",
+      "subsidiary_count": 56,
+      "distinct_jurisdiction_count": 30,
+      "top_jurisdictions": [
+        {
+          "jurisdiction": "Texas",
+          "subsidiary_count": 4
+        },
+        {
+          "jurisdiction": "Israel",
+          "subsidiary_count": 4
+        },
+        {
+          "jurisdiction": "Delaware",
+          "subsidiary_count": 3
+        }
+      ]
+    },
+    {
+      "document_id": "twi12312024ex21.htm",
+      "parent_company": "TITAN INTERNATIONAL, INC.",
+      "subsidiary_count": 29,
+      "distinct_jurisdiction_count": 18,
+      "top_jurisdictions": [
+        {
+          "jurisdiction": "Illinois",
+          "subsidiary_count": 5
+        },
+        {
+          "jurisdiction": "Delaware",
+          "subsidiary_count": 3
+        },
+        {
+          "jurisdiction": "Italy",
+          "subsidiary_count": 3
+        }
+      ]
+    }
+  ],
+  "elapsed_seconds": 239.786,
+  "cost_usd": 0.68225415,
+  "total_tokens": 871990
+}

@@ -1,0 +1,88 @@
+{
+  "task_id": "legal_contracts-035",
+  "answer": [
+    {
+      "document_name": "1013240_0001047469-04-010350_a2132633zex-10_22.htm",
+      "governing_law": "State of Colorado",
+      "difference_months": 0.0
+    },
+    {
+      "document_name": "1021096_0000914317-03-001205_ex2-2.txt",
+      "governing_law": "State of Ohio",
+      "difference_months": 0.0
+    },
+    {
+      "document_name": "1061148_0001047469-98-018914_document_17.txt",
+      "governing_law": "District of Columbia",
+      "difference_months": 0.0
+    },
+    {
+      "document_name": "1068874_0001068874-07-000012_ex10_2.htm",
+      "governing_law": "Massachusetts",
+      "difference_months": 0.0
+    },
+    {
+      "document_name": "1102301_0001094328-04-000141_freesarex23052004.txt",
+      "governing_law": "State of New York",
+      "difference_months": 0.0
+    },
+    {
+      "document_name": "1335239_0001019687-14-003760_epazz_ex1034.htm",
+      "governing_law": "State of Illinois",
+      "difference_months": 0.0
+    },
+    {
+      "document_name": "24104_0000024104-96-000010_document_3.txt",
+      "governing_law": "State of Colorado",
+      "difference_months": 96.0
+    },
+    {
+      "document_name": "26820_0000936392-03-001111_a92217exv10w5.txt",
+      "governing_law": "State of Delaware",
+      "difference_months": 0.0
+    },
+    {
+      "document_name": "770461_0001144204-06-041516_v054278_ex10-7.txt",
+      "governing_law": "State of New York",
+      "difference_months": 0.0
+    },
+    {
+      "document_name": "817516_0001014909-05-000102_exh99_4sept2005.txt",
+      "governing_law": "State of Delaware",
+      "difference_months": 0.0
+    },
+    {
+      "document_name": "88190_0000950144-96-003474_document_2.txt",
+      "governing_law": "State of New York",
+      "difference_months": 24.0
+    },
+    {
+      "document_name": "912592_0000929624-98-000842_document_20.txt",
+      "governing_law": "State of Utah",
+      "difference_months": 0.0
+    },
+    {
+      "document_name": "918541_0001193125-14-328980_d785003dex105.htm",
+      "governing_law": "Delaware",
+      "difference_months": 0.0
+    },
+    {
+      "document_name": "930796_0000950123-05-001407_y05539exv99w5.txt",
+      "governing_law": "New York State",
+      "difference_months": 0.0
+    },
+    {
+      "document_name": "LMS_Non_Disclosure_Agreement.pdf",
+      "governing_law": "the jurisdiction in which the Disclosing Party is located (or if the Disclosing Party is based in more than one country, the country in which its headquarters are located)",
+      "difference_months": 18.0
+    },
+    {
+      "document_name": "cfoconfidentialityandnon-c.htm",
+      "governing_law": "STATE OF TEXAS",
+      "difference_months": -12.0
+    }
+  ],
+  "elapsed_seconds": 317.959,
+  "cost_usd": 0.93223785,
+  "total_tokens": 2054798
+}

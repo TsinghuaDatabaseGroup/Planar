@@ -1,0 +1,26 @@
+{
+  "task_id": "aviation_safety-044",
+  "answer": [
+    {
+      "cause_category": "equipment_malfunction",
+      "incident_count": 9,
+      "canonical_system": "Cabin pressurization and air conditioning systems",
+      "dominant_operational_outcome": "Precautionary landing or return without incident"
+    },
+    {
+      "cause_category": "maintenance_or_release_decision",
+      "incident_count": 1,
+      "canonical_system": "Engine bleed air and cabin ventilation",
+      "dominant_operational_outcome": "Flight completed with odor and headache"
+    },
+    {
+      "cause_category": "environmental_contamination",
+      "incident_count": 2,
+      "canonical_system": "Aircraft air-conditioning PACK system",
+      "dominant_operational_outcome": "Aircraft landed safely and returned to service"
+    }
+  ],
+  "elapsed_seconds": 138.149,
+  "cost_usd": 0.31240899,
+  "total_tokens": 458212
+}

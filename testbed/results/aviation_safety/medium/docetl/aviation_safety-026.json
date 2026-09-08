@@ -1,0 +1,28 @@
+{
+  "task_id": "aviation_safety-026",
+  "answer": [
+    {
+      "measurement_type": "altitude",
+      "comparison_count": 271,
+      "most_common_deviation": "descended below cleared altitude"
+    },
+    {
+      "measurement_type": "speed",
+      "comparison_count": 105,
+      "most_common_deviation": "10 kts below required speed"
+    },
+    {
+      "measurement_type": "heading",
+      "comparison_count": 30,
+      "most_common_deviation": "40 degrees right of assigned heading"
+    },
+    {
+      "measurement_type": "runway",
+      "comparison_count": 21,
+      "most_common_deviation": "landed on different runway"
+    }
+  ],
+  "elapsed_seconds": 269.46,
+  "cost_usd": 1.662849,
+  "total_tokens": 3970521
+}

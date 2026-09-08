@@ -1,0 +1,20 @@
+{
+  "task_id": "vehicle_safety-037",
+  "answer": [
+    {
+      "root_cause_theme": "Connecting rod bearing wear and seizure",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 1,
+      "related_report_ids": [
+        "txt_investigation_05d6cbe9e6c0ccd2.txt",
+        "txt_investigation_1b098a0985679fa0.txt",
+        "txt_investigation_638ded8941573dd0.txt",
+        "txt_investigation_b1b8105af73ec4fe.txt"
+      ],
+      "odi_evidence_summary": "Answer: Persistent engine failures and Auto Idle Stop restart issues in Honda and Acura 3.5L V6 vehicles, prompting ongoing NHTSA investigations due to safety concerns despite prior recalls and service campaigns."
+    }
+  ],
+  "elapsed_seconds": 464.34,
+  "cost_usd": 0.473915,
+  "total_tokens": 1058713
+}

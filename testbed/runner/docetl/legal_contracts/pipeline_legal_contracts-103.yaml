@@ -1,0 +1,156 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_normalized_ex97_clawbacks
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is an EX-97 clawback policy whose trigger is
+      either financial restatement only or financial restatement plus
+      misconduct.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_normalized_ex97_clawback: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_clawback_company_trigger
+    type: map
+    optimize: true
+    prompt: |
+      Return the canonical policy-company key and normalized trigger type as
+      restatement_only or restatement_and_misconduct.
+
+      Policy:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema: {company_key: string, trigger_type: "enum[restatement_only, restatement_and_misconduct]"}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: deduplicate_clawback_triggers
+    type: code_reduce
+    reduce_key: [company_key, trigger_type]
+    code: |
+      def transform(items):
+          return {}
+
+  - name: filter_ex31_certifications
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is an EX-31 SOX Section 302 certification.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_ex31_certification: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_certification_company_key
+    type: map
+    optimize: true
+    prompt: |
+      Return the canonical key for the company named in this certification.
+
+      Certification:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {company_key: string}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: deduplicate_certification_companies
+    type: code_reduce
+    reduce_key: company_key
+    code: |
+      def transform(items):
+          return {}
+
+  - name: filter_ex21_parent_counts
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is an EX-21 subsidiary list with an
+      explicitly identified parent company and stated subsidiary count.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_ex21_parent_count: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_subsidiary_company_count
+    type: map
+    optimize: true
+    prompt: |
+      Return the canonical parent-company key and subsidiary count.
+
+      Filing:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema: {company_key: string, subsidiary_count: integer}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: select_largest_subsidiary_count
+    type: code_reduce
+    reduce_key: company_key
+    code: |
+      def transform(items):
+          return {"largest_subsidiary_count": max(int(item.get("subsidiary_count") or 0) for item in items)}
+
+  - name: join_clawback_and_subsidiaries
+    type: equijoin
+    deterministic: true
+    blocking_conditions:
+      - left["company_key"] == right["company_key"]
+  - name: project_clawback_subsidiary_match
+    type: code_map
+    code: |
+      def transform(doc):
+          return {"company_key": doc.get("company_key_left"), "trigger_type": doc.get("trigger_type"), "largest_subsidiary_count": doc.get("largest_subsidiary_count")}
+  - name: join_to_certification_companies
+    type: equijoin
+    deterministic: true
+    blocking_conditions:
+      - left["company_key"] == right["company_key"]
+  - name: aggregate_trigger_types
+    type: code_reduce
+    reduce_key: trigger_type
+    code: |
+      def transform(items):
+          companies = {}
+          for item in items:
+              key = str(item.get("company_key_left") or "")
+              if key:
+                  companies[key] = int(item.get("largest_subsidiary_count") or 0)
+          values = list(companies.values())
+          return {
+              "matched_company_count": len(companies),
+              "avg_largest_subsidiary_count": round(sum(values) / len(values), 2) if values else None,
+          }
+pipeline:
+  steps:
+    - name: clawback_records
+      input: contract_exhibits
+      operations: [filter_normalized_ex97_clawbacks, extract_clawback_company_trigger, deduplicate_clawback_triggers]
+    - name: certification_companies
+      input: contract_exhibits
+      operations: [filter_ex31_certifications, extract_certification_company_key, deduplicate_certification_companies]
+    - name: subsidiary_companies
+      input: contract_exhibits
+      operations: [filter_ex21_parent_counts, extract_subsidiary_company_count, select_largest_subsidiary_count]
+    - name: clawback_subsidiary_matches
+      operations:
+        - join_clawback_and_subsidiaries: {left: clawback_records, right: subsidiary_companies}
+    - name: projected_clawback_subsidiary_matches
+      input: clawback_subsidiary_matches
+      operations: [project_clawback_subsidiary_match]
+    - name: complete_company_matches
+      operations:
+        - join_to_certification_companies: {left: projected_clawback_subsidiary_matches, right: certification_companies}
+    - name: answer
+      input: complete_company_matches
+      operations: [aggregate_trigger_types]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-103.json

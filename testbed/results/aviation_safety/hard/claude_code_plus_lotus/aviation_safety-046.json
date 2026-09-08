@@ -1,0 +1,74 @@
+{
+  "task_id": "aviation_safety-046",
+  "answer": [
+    {
+      "rank": 1,
+      "left_incident_id": "asrs_150233",
+      "right_incident_id": "asrs_150254",
+      "incident_date": 202512,
+      "shared_primary_event_type": "Engine oil quantity loss",
+      "differing_structured_fields": [
+        "anomaly_summary",
+        "result_summary"
+      ]
+    },
+    {
+      "rank": 2,
+      "left_incident_id": "asrs_117457",
+      "right_incident_id": "asrs_117492",
+      "incident_date": 201910,
+      "shared_primary_event_type": "Cabin air quality event with noxious odor",
+      "differing_structured_fields": [
+        "flight_phase",
+        "anomaly_summary",
+        "result_summary"
+      ]
+    },
+    {
+      "rank": 3,
+      "left_incident_id": "asrs_107892",
+      "right_incident_id": "asrs_107920",
+      "incident_date": 201802,
+      "shared_primary_event_type": "Runway excursion due to flash freeze",
+      "differing_structured_fields": [
+        "result_summary"
+      ]
+    },
+    {
+      "rank": 4,
+      "left_incident_id": "asrs_095021",
+      "right_incident_id": "asrs_095022",
+      "incident_date": 201510,
+      "shared_primary_event_type": "Improper flight planning for depressurization",
+      "differing_structured_fields": [
+        "anomaly_summary",
+        "result_summary"
+      ]
+    },
+    {
+      "rank": 5,
+      "left_incident_id": "asrs_078757",
+      "right_incident_id": "asrs_078758",
+      "incident_date": 201206,
+      "shared_primary_event_type": "engine failure",
+      "differing_structured_fields": [
+        "flight_phase",
+        "result_summary"
+      ]
+    },
+    {
+      "rank": 6,
+      "left_incident_id": "asrs_062903",
+      "right_incident_id": "asrs_062944",
+      "incident_date": 200907,
+      "shared_primary_event_type": "severe turbulence and windshear encounter",
+      "differing_structured_fields": [
+        "anomaly_summary",
+        "result_summary"
+      ]
+    }
+  ],
+  "elapsed_seconds": 377.928,
+  "cost_usd": 2.0692608,
+  "total_tokens": 4906430
+}

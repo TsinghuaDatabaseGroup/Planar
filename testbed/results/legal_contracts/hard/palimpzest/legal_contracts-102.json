@@ -1,0 +1,10 @@
+{
+  "task_id": "legal_contracts-102",
+  "answer": [
+    {"public_information_exception": true, "prior_knowledge_exception": false, "independent_development_exception": false, "third_party_receipt_exception": false, "legal_compulsion_exception": true, "consent_exception": true, "nda_document_count": 6, "distinct_matched_company_count": 5},
+    {"public_information_exception": true, "prior_knowledge_exception": true, "independent_development_exception": true, "third_party_receipt_exception": true, "legal_compulsion_exception": true, "consent_exception": true, "nda_document_count": 3, "distinct_matched_company_count": 3}
+  ],
+  "elapsed_seconds": 2275.40,
+  "cost_usd": 2.858247,
+  "total_tokens": 5409261
+}

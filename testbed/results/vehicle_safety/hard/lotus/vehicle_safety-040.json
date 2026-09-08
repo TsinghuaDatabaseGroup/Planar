@@ -1,0 +1,305 @@
+{
+  "task_id": "vehicle_safety-040",
+  "answer": [
+    {
+      "failure_mode": "coolant intrusion causing engine failure",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 4,
+      "earliest_complaint_date": "2025-05-12",
+      "earliest_recall_date": "2020-08-13",
+      "pre_recall_complaint_count": 0,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "cracked cooler causing fire risk",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 1,
+      "earliest_complaint_date": "2018-01-06",
+      "earliest_recall_date": "2020-12-11",
+      "pre_recall_complaint_count": 1,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "cracked plastic oil cooler leaking oil",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 1,
+      "earliest_complaint_date": "2021-03-17",
+      "earliest_recall_date": "2020-12-11",
+      "pre_recall_complaint_count": 0,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "crankshaft position sensor tone wheel delamination",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 5,
+      "earliest_complaint_date": "2016-12-30",
+      "earliest_recall_date": "2020-08-13",
+      "pre_recall_complaint_count": 1,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "crankshaft tone wheel delamination",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 1,
+      "earliest_complaint_date": "2023-05-01",
+      "earliest_recall_date": "2020-12-11",
+      "pre_recall_complaint_count": 0,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "cylinder head failure",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 4,
+      "earliest_complaint_date": "2021-08-10",
+      "earliest_recall_date": "2020-08-13",
+      "pre_recall_complaint_count": 1,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "ecm or bcm failure due to water intrusion",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 3,
+      "earliest_complaint_date": "2022-01-10",
+      "earliest_recall_date": "2020-08-13",
+      "pre_recall_complaint_count": 1,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "egr cooler crack causing combustion",
+      "matched_complaint_count": 2,
+      "distinct_campaign_count": 3,
+      "earliest_complaint_date": "2021-03-29",
+      "earliest_recall_date": "2020-12-11",
+      "pre_recall_complaint_count": 1,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "egr cooler crack causing fire",
+      "matched_complaint_count": 2,
+      "distinct_campaign_count": 1,
+      "earliest_complaint_date": "2020-11-08",
+      "earliest_recall_date": "2020-12-11",
+      "pre_recall_complaint_count": 1,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "egr valve sticks open",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 4,
+      "earliest_complaint_date": "2023-03-14",
+      "earliest_recall_date": "2020-08-13",
+      "pre_recall_complaint_count": 1,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "egr valve stuck open",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 1,
+      "earliest_complaint_date": "2025-12-11",
+      "earliest_recall_date": "2022-04-28",
+      "pre_recall_complaint_count": 0,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "egr valve stuck open causing stall",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 4,
+      "earliest_complaint_date": "2023-02-01",
+      "earliest_recall_date": "2020-08-13",
+      "pre_recall_complaint_count": 1,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "engine fire and shutdown",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 1,
+      "earliest_complaint_date": "2025-08-27",
+      "earliest_recall_date": "2022-11-23",
+      "pre_recall_complaint_count": 0,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "engine fire causing vehicle destruction",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 3,
+      "earliest_complaint_date": "2025-09-16",
+      "earliest_recall_date": "2020-12-11",
+      "pre_recall_complaint_count": 0,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "engine fire due to sensor delamination",
+      "matched_complaint_count": 2,
+      "distinct_campaign_count": 4,
+      "earliest_complaint_date": "2021-07-17",
+      "earliest_recall_date": "2020-08-13",
+      "pre_recall_complaint_count": 1,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "engine fire from thrown rod",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 3,
+      "earliest_complaint_date": "2016-12-15",
+      "earliest_recall_date": "2020-08-13",
+      "pre_recall_complaint_count": 1,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "engine fire while driving",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 3,
+      "earliest_complaint_date": "2017-10-27",
+      "earliest_recall_date": "2020-12-11",
+      "pre_recall_complaint_count": 1,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "engine overheating and stalling",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 2,
+      "earliest_complaint_date": "2022-02-28",
+      "earliest_recall_date": "2020-12-11",
+      "pre_recall_complaint_count": 1,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "engine seizure and shutdown",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 5,
+      "earliest_complaint_date": "2024-07-09",
+      "earliest_recall_date": "2020-08-13",
+      "pre_recall_complaint_count": 0,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "engine seizure and stall",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 5,
+      "earliest_complaint_date": "2025-10-31",
+      "earliest_recall_date": "2020-08-13",
+      "pre_recall_complaint_count": 0,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "engine shutdown and fire",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 1,
+      "earliest_complaint_date": "2025-02-27",
+      "earliest_recall_date": "2022-11-23",
+      "pre_recall_complaint_count": 0,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "engine shutdown and power loss",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 5,
+      "earliest_complaint_date": "2026-04-24",
+      "earliest_recall_date": "2020-08-13",
+      "pre_recall_complaint_count": 0,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "engine shutdown due to communication loss",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 2,
+      "earliest_complaint_date": "2026-01-15",
+      "earliest_recall_date": "2020-08-13",
+      "pre_recall_complaint_count": 0,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "engine shutdown with fire",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 5,
+      "earliest_complaint_date": "2025-08-04",
+      "earliest_recall_date": "2020-08-13",
+      "pre_recall_complaint_count": 0,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "engine stall and loss of power",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 5,
+      "earliest_complaint_date": "2025-02-10",
+      "earliest_recall_date": "2020-08-13",
+      "pre_recall_complaint_count": 0,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "engine stall due to communication loss",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 5,
+      "earliest_complaint_date": "2019-10-16",
+      "earliest_recall_date": "2020-08-13",
+      "pre_recall_complaint_count": 1,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "engine stall due to electrical system drain",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 3,
+      "earliest_complaint_date": "2023-10-20",
+      "earliest_recall_date": "2020-08-13",
+      "pre_recall_complaint_count": 0,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "engine stall due to sensor delamination",
+      "matched_complaint_count": 8,
+      "distinct_campaign_count": 5,
+      "earliest_complaint_date": "2020-08-19",
+      "earliest_recall_date": "2020-08-13",
+      "pre_recall_complaint_count": 2,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "oil cooler leak causing fire",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 1,
+      "earliest_complaint_date": "2020-10-24",
+      "earliest_recall_date": "2020-12-11",
+      "pre_recall_complaint_count": 1,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "unexpected deceleration and engine shutoff",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 3,
+      "earliest_complaint_date": "2025-11-10",
+      "earliest_recall_date": "2022-04-28",
+      "pre_recall_complaint_count": 0,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "unexpected engine shutdown and loss of propulsion",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 5,
+      "earliest_complaint_date": "2025-09-14",
+      "earliest_recall_date": "2020-08-13",
+      "pre_recall_complaint_count": 0,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "unintended acceleration and engine shutdown",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 1,
+      "earliest_complaint_date": "2023-10-18",
+      "earliest_recall_date": "2020-08-13",
+      "pre_recall_complaint_count": 0,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    },
+    {
+      "failure_mode": "unintended engine revving and lurching",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 1,
+      "earliest_complaint_date": "2020-02-24",
+      "earliest_recall_date": "2023-08-06",
+      "pre_recall_complaint_count": 1,
+      "dominant_complaint_sentiment": "acute_safety_event"
+    }
+  ],
+  "elapsed_seconds": 176.33,
+  "cost_usd": 0.4539,
+  "total_tokens": 1054654
+}

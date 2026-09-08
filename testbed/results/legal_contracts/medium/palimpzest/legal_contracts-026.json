@@ -1,0 +1,23 @@
+{
+  "task_id": "legal_contracts-026",
+  "answer": [
+    {"document_id": "1077150_0001077048-99-000003_document_23.txt", "governing_law": "Washington"},
+    {"document_id": "1125576_0000928385-02-000738_dex991d2.txt", "governing_law": "California"},
+    {"document_id": "118.3-Non-disclosure-agreement.pdf", "governing_law": "English law"},
+    {"document_id": "1285543_0001013762-05-000550_may52005sb2ex1019.txt", "governing_law": "New Jersey"},
+    {"document_id": "1367408_0001367408-06-000002_risb2ex105.htm", "governing_law": "California"},
+    {"document_id": "801338_0000950134-07-015617_c16542toexv99wxdyx5y.htm", "governing_law": "Delaware"},
+    {"document_id": "913949_0000950149-96-000782_document_6.txt", "governing_law": "California"},
+    {"document_id": "Confidentiality_Agreement_1.pdf", "governing_law": "German law"},
+    {"document_id": "Example-Mutual-Non-Disclosure-Agreement.pdf", "governing_law": "English law"},
+    {"document_id": "Example-One-Way-Non-Disclosure-Agreement.pdf", "governing_law": "English law"},
+    {"document_id": "FNHA-2019RFP-02-NDA-form.pdf", "governing_law": "British Columbia"},
+    {"document_id": "Generic-NDA-Pitch-Deck-Fire.pdf", "governing_law": "Colorado"},
+    {"document_id": "HALO-NDA.pdf", "governing_law": "California"},
+    {"document_id": "Non-Disclosure-Agreement-1.pdf", "governing_law": "Belgian law"},
+    {"document_id": "modelnondisclosureagreement1.pdf", "governing_law": "English Law"}
+  ],
+  "elapsed_seconds": 1066.81,
+  "cost_usd": 1.523100,
+  "total_tokens": 2882482
+}

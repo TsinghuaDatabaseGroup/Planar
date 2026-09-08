@@ -1,0 +1,53 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_insider_trading_policies
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is a substantive insider-trading policy.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_insider_trading_policy: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_covered_persons_and_family_scope
+    type: map
+    optimize: true
+    prompt: |
+      Return a concise description of the policy's covered-person categories and
+      determine whether its trading restrictions explicitly extend to covered
+      persons' family or household members.
+
+      Policy:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema: {covered_persons: string, extends_to_family: boolean}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: filter_no_family_extension
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("extends_to_family") is False
+  - name: project_answer_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          return {"document_id": str(doc.get("doc_id") or ""), "covered_persons": str(doc.get("covered_persons") or "")}
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations: [filter_insider_trading_policies, extract_covered_persons_and_family_scope, filter_no_family_extension, project_answer_fields]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-041.json

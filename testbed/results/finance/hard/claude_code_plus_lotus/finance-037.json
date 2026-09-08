@@ -1,0 +1,32 @@
+{
+  "task_id": "finance-037",
+  "answer": [
+    {
+      "company_name": "Digital Media Solutions, Inc.",
+      "industry_sector": "Digital Marketing",
+      "growth_strategy": "Expand via acquisitions and international markets",
+      "foreign_country_count": 3
+    },
+    {
+      "company_name": "Rithm Capital Corp.",
+      "industry_sector": "Asset Management",
+      "growth_strategy": "Diversify via strategic acquisitions",
+      "foreign_country_count": 3
+    },
+    {
+      "company_name": "VICI Properties Inc.",
+      "industry_sector": "Real Estate Investment Trust (REIT)",
+      "growth_strategy": "Acquire experiential real estate assets",
+      "foreign_country_count": 2
+    },
+    {
+      "company_name": "Republic Services, Inc.",
+      "industry_sector": "Waste Management",
+      "growth_strategy": "Organic growth and strategic acquisitions",
+      "foreign_country_count": 0
+    }
+  ],
+  "elapsed_seconds": 903.153,
+  "cost_usd": 8.97967578,
+  "total_tokens": 22673492
+}

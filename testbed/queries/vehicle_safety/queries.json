@@ -1,0 +1,238 @@
+[
+  {
+    "task_id": "vehicle_safety-001",
+    "operator_complexity": "easy",
+    "query": "Among 2022 model-year Tesla Model 3 complaints that reported a crash but no fire, how many describe phantom braking or sudden unintended acceleration?"
+  },
+  {
+    "task_id": "vehicle_safety-002",
+    "operator_complexity": "easy",
+    "query": "Looking at every recall in the seatbelt component category, is it true that each one describes a defect that could prevent the belt from restraining an occupant during a crash and that none describes a purely cosmetic or comfort-only issue?"
+  },
+  {
+    "task_id": "vehicle_safety-003",
+    "operator_complexity": "easy",
+    "query": "For Dodge airbag complaints involving at least one injury and no fire, what primary airbag failure mode is described in each case? For every complaint ID, I want to know the model year and a short canonical failure-mode phrase."
+  },
+  {
+    "task_id": "vehicle_safety-004",
+    "operator_complexity": "easy",
+    "query": "For each distinct Kia recall campaign number in the OTHER component category without a Park Outside consumer warning, what underlying failure mechanism does its defect summary describe?"
+  },
+  {
+    "task_id": "vehicle_safety-005",
+    "operator_complexity": "easy",
+    "query": "Which Tesla recall campaign numbers have no Park Outside or Do Not Drive consumer warning, use an over-the-air software update as the corrective action, and describe a steering or motion-control issue in the defect summary?"
+  },
+  {
+    "task_id": "vehicle_safety-006",
+    "operator_complexity": "easy",
+    "query": "Among Subaru Outback complaints from the 2024 model year onward where no crash was reported, how many distinct model years are represented in records describing an unintended brake activation or sudden brake hold event?"
+  },
+  {
+    "task_id": "vehicle_safety-007",
+    "operator_complexity": "easy",
+    "query": "Among Hyundai Elantra complaints where at least one occupant was injured but no fire was reported, how many describe a loss of vehicle control while driving?"
+  },
+  {
+    "task_id": "vehicle_safety-008",
+    "operator_complexity": "easy",
+    "query": "For distinct Tesla recall campaigns in the steering component category that do not include a Park Outside or Do Not Drive consumer warning, what primary failure cause does each defect summary identify? I want to know the campaign number and a canonical cause phrase of at most six words for each one."
+  },
+  {
+    "task_id": "vehicle_safety-009",
+    "operator_complexity": "easy",
+    "query": "Among Subaru Outback complaints from the 2024 model year onward where no crash was reported, which failure mode is dominant: electrical, mechanical, or software? Outout 'mixed' when the dominant mode is unclear or tied."
+  },
+  {
+    "task_id": "vehicle_safety-010",
+    "operator_complexity": "easy",
+    "query": "Do at least ten Toyota RAV4 complaints from the 2021 through 2024 model years, with at least one occupant injured and no fire reported, describe a loss of braking ability or unexpected brake failure?"
+  },
+  {
+    "task_id": "vehicle_safety-011",
+    "operator_complexity": "easy",
+    "query": "For recalls reported from January 2022 through December 2025, which corrective-action style is most common for each manufacturer: software update, part replacement, dealer inspection only, or other? Alongside the dominant style, how many recalls and distinct recalled components does each manufacturer have?"
+  },
+  {
+    "task_id": "vehicle_safety-012",
+    "operator_complexity": "easy",
+    "query": "For each Hyundai or Kia recall campaign that includes a Park Outside warning, how many complaints from the same make and component category describe fire, smoke, burning, melting, or an electrical short? I also want to know the campaign number, make, component category, and recall defect summary associated with each count."
+  },
+  {
+    "task_id": "vehicle_safety-013",
+    "operator_complexity": "easy",
+    "query": "How many complaint-recall pairs involve the same vehicle make, model, model year, and component category, have a recall reported at least 90 days after the complaint, and describe the same underlying defect mechanism?"
+  },
+  {
+    "task_id": "vehicle_safety-014",
+    "operator_complexity": "easy",
+    "query": "For Dodge airbag recalls, how many complaint-recall pairs match each campaign because the complaint narrative and recall summary describe the same concrete airbag failure or deployment hazard? List represented campaigns by matched-pair count descending, then campaign number ascending."
+  },
+  {
+    "task_id": "vehicle_safety-015",
+    "operator_complexity": "easy",
+    "query": "For Dodge electrical recalls, how many complaint-recall pairs match each campaign because both texts describe the same electrical failure with a safety consequence? List represented campaigns by matched-pair count descending, then campaign number ascending."
+  },
+  {
+    "task_id": "vehicle_safety-016",
+    "operator_complexity": "medium",
+    "query": "Among all engine-component complaints that describe an engine stall or loss of power, what fraction say the problem happened while the vehicle was moving or in traffic rather than while parked or idling? Express the result as a decimal rounded to three places."
+  },
+  {
+    "task_id": "vehicle_safety-017",
+    "operator_complexity": "medium",
+    "query": "Among all airbag complaints that describe an unintended airbag deployment, what fraction say the deployment happened before any collision impact or without a collision? Express the result as a decimal rounded to three places."
+  },
+  {
+    "task_id": "vehicle_safety-018",
+    "operator_complexity": "medium",
+    "query": "Which NHTSA investigation reports that both mention a Tesla model, such as Model 3, Model S, Model Y, or Model X, and cite at least one NHTSA recall number? For each file, which deduplicated and normalized recall numbers are cited?"
+  },
+  {
+    "task_id": "vehicle_safety-019",
+    "operator_complexity": "medium",
+    "query": "Among investigation reports whose body indicates that the investigation is closed and that cite at least one NHTSA recall number, what is the primary defect topic for each file ID, and which normalized recall numbers does it cite? Describe the topic as one of {steering, braking, airbag, electrical, powertrain, other}."
+  },
+  {
+    "task_id": "vehicle_safety-020",
+    "operator_complexity": "medium",
+    "query": "Which NHTSA investigation reports discuss an airbag inflator defect or an unintended airbag deployment while also citing at least one NHTSA recall number? For each file, which deduplicated and normalized recall numbers are cited?"
+  },
+  {
+    "task_id": "vehicle_safety-021",
+    "operator_complexity": "medium",
+    "query": "Among Nissan Altima airbag complaints with injury or death allegations that describe an inflator rupture, airbag explosion, shrapnel, or metal fragments, which ones involve vehicles covered by an airbag recall? For each match, I want to know the complaint ID, affected vehicle ID, matching recall campaign number, and a short failure-mode phrase."
+  },
+  {
+    "task_id": "vehicle_safety-022",
+    "operator_complexity": "medium",
+    "query": "Among complaints where the consumer received medical attention and the narrative describes a concrete vehicle malfunction or crash sequence, which three primary safety-event topics in {steering, braking, airbag, electrical, powertrain, other} have the highest complaint counts? Topics with equal counts are ordered alphabetically."
+  },
+  {
+    "task_id": "vehicle_safety-023",
+    "operator_complexity": "medium",
+    "query": "Among complaints where the consumer received medical attention and a state is recorded, which five US states have the highest counts of airbag-related complaints describing a deployment failure, unintended deployment, or inflator rupture? States with equal counts are ordered by state code ascending."
+  },
+  {
+    "task_id": "vehicle_safety-024",
+    "operator_complexity": "medium",
+    "query": "For 2024 and 2025 model-year complaints whose narratives describe a tangible safety event, how do component categories compare in complaint count, towed rate, average injury count, and dominant short failure-mode label? Alphabetical order determines the dominant label when failure modes are tied."
+  },
+  {
+    "task_id": "vehicle_safety-025",
+    "operator_complexity": "medium",
+    "query": "Among vehicle makes with at least one ADAS recall whose defect summary discusses automatic braking, driver-assist braking, or speed-control behavior, which four rank highest by the number of ADAS complaints specifically describing phantom braking? For each make, how many qualifying complaints and matching ADAS recalls are there? Make ascending breaks ties in complaint count."
+  },
+  {
+    "task_id": "vehicle_safety-026",
+    "operator_complexity": "medium",
+    "query": "For Toyota RAV4 body complaints that describe safety-relevant glass, window, windshield, sunroof/moonroof, or water-in-door visibility defects, how are the cases distributed across {spontaneous_glass_breakage, door_water_intrusion, visibility_distortion_or_defect, other}, and which root-cause label is most common? Alphabetical order breaks a tie for the most common label."
+  },
+  {
+    "task_id": "vehicle_safety-027",
+    "operator_complexity": "medium",
+    "query": "For Toyota airbag complaints that describe an unintended deployment and an injury or burn caused by that deployment, how are the cases distributed across {sensor_misfire, software_logic_error, inflator_defect, other}, and which root-cause label is dominant? For each label, what are its complaint count and percentage? Alphabetical order breaks a tie for the dominant label."
+  },
+  {
+    "task_id": "vehicle_safety-028",
+    "operator_complexity": "medium",
+    "query": "Between Toyota and Honda, which make has more severe in-motion complaints for vehicles covered by a same-vehicle recall whose defect summary describes a safety-critical crash, injury, fire, loss-of-control, airbag, braking, or loss-of-power risk? How many matched complaints does each make have? If the counts are equal, the comparison result is tie."
+  },
+  {
+    "task_id": "vehicle_safety-029",
+    "operator_complexity": "medium",
+    "query": "For Honda ADAS and BRAKES complaints that describe a tangible safety event while the vehicle was being driven, which component has the higher average injury count? Ignore minor inconveniences such as screen flicker or infotainment lag and exclude problems that occurred while parked or stationary. Output ADAS_higher if ADAS exceeds BRAKES, BRAKES_higher if BRAKES exceeds ADAS, otherwise tie."
+  },
+  {
+    "task_id": "vehicle_safety-030",
+    "operator_complexity": "medium",
+    "query": "For 2023 through 2025 model-year complaints, which five makes rank highest by EV or hybrid component complaint count among makes that also have a recent recall discussing EV batteries, charging, high-voltage systems, electric drive, hybrid drivetrain, or powertrain-control software in its defect or remedy? For each make, how many qualifying complaints and related recalls are there? Make ascending breaks ties in complaint count."
+  },
+  {
+    "task_id": "vehicle_safety-031",
+    "operator_complexity": "medium",
+    "query": "Across airbag complaints and airbag recalls, how many distinct recall campaigns have a corrective action involving replacement of an airbag inflator or airbag module and at least one same-vehicle complaint describing airbag non-deployment, unintended deployment, or inflator rupture?"
+  },
+  {
+    "task_id": "vehicle_safety-032",
+    "operator_complexity": "medium",
+    "query": "Are there at least two complaint-recall pairs involving 2020 through 2022 model-year Tesla Model 3 complaints that describe unintended acceleration or a stuck accelerator pedal, where the recall addresses an accelerator-pedal or speed-control issue for the same make, model, model year, and component category?"
+  },
+  {
+    "task_id": "vehicle_safety-033",
+    "operator_complexity": "medium",
+    "query": "Which complaint-recall pairs involve the same vehicle make, model, model year, and component category, have a recall reported at least 1,500 days after the complaint, and describe the same defect mechanism in the complaint and recall summaries? For each long-lag pair, I want to know the complaint ID, recall campaign number, elapsed days, and a short root-cause phrase from the recall defect summary."
+  },
+  {
+    "task_id": "vehicle_safety-034",
+    "operator_complexity": "hard",
+    "query": "Within component categories whose ODI investigation reports explicitly identify at least one Jeep model in the investigated or reviewed vehicle population, how many distinct Jeep complaints describe a genuine safety defect that matches the underlying defect in at least one Jeep recall from the same component category? Exclude cosmetic and convenience-only complaints."
+  },
+  {
+    "task_id": "vehicle_safety-035",
+    "operator_complexity": "hard",
+    "query": "For Dodge airbag recall campaigns whose defect summaries describe the same safety problem as Dodge complaint narratives and at least one NHTSA investigation report, what campaign number, distinct matching complaint count, related investigation report IDs, short root-cause phrase, and ODI safety conclusion characterize each campaign?"
+  },
+  {
+    "task_id": "vehicle_safety-036",
+    "operator_complexity": "hard",
+    "query": "Which five Ford airbag recall campaigns rank highest by the number of complaints describing the same defect as the campaign's defect summary? For each campaign, what are the matched complaint count, the share involving crash, injury, or towing indicators, the dominant complaint severity in {minor_inconvenience, moderate_safety_event, severe_safety_event}, and the dominant remedy style in {software_update, part_replacement, other}? Sort by campaign number ascending if there is a tie."
+  },
+  {
+    "task_id": "vehicle_safety-037",
+    "operator_complexity": "hard",
+    "query": "For Acura engine issues, which root-cause theme has the highest matched complaint count when a complaint and recall describe the same engine failure mechanism, the complaint describes loss of motive power, stalling, or another driving-safety consequence, and at least one investigation report discusses the same engine-failure scope or ODI finding? For that leading theme, how many distinct campaigns are involved, which investigation report IDs are related, and what short ODI evidence summary captures the finding?"
+  },
+  {
+    "task_id": "vehicle_safety-038",
+    "operator_complexity": "hard",
+    "query": "For Toyota recall campaigns in the broad OTHER component category whose defect summaries describe the same problem as Toyota OTHER-category complaint narratives, what's the distinct matching complaint count, dominant complaint sentiment in {acute_safety_event, intermittent_issue, cosmetic_or_minor}, dominant recall severity in {critical, severe, moderate, minor}, and short shared-defect phrase correspond to each campaign number?"
+  },
+  {
+    "task_id": "vehicle_safety-039",
+    "operator_complexity": "hard",
+    "query": "Across Ford complaints and recalls, which five distinct recall campaigns rank highest by corroborating complaint count, where corroboration means that the complaint is in the same component category and describes the same underlying defect as the recall summary? For each campaign, what are its rank, campaign number, component ID, distinct corroborating complaint count, and whether an NHTSA investigation report cites the recall number? Campaign number ascending breaks ties in corroborating complaint count."
+  },
+  {
+    "task_id": "vehicle_safety-040",
+    "operator_complexity": "hard",
+    "query": "For Jeep engine complaints and recalls that describe the same engine failure mechanism, how do the matches group by shared failure mode? For each mode, what are the matched complaint count, distinct campaign count, earliest complaint date, earliest recall report date, number of complaints received before the earliest matched recall, and dominant complaint sentiment?"
+  },
+  {
+    "task_id": "vehicle_safety-041",
+    "operator_complexity": "hard",
+    "query": "For Tesla electrical recall campaigns whose summaries describe the same electrical or software-control defect as complaint narratives and whose matched defects are also discussed in investigation reports as the same control, warning, or electrical-failure risk, what matched complaint count, related investigation report IDs, dominant defect mechanism, and short ODI risk summary correspond to each campaign number?"
+  },
+  {
+    "task_id": "vehicle_safety-042",
+    "operator_complexity": "hard",
+    "query": "For Tesla ADAS recall campaigns whose defect summaries describe the same driver-assistance or automation-control problem as complaint narratives and an investigation report, what's the matched complaint count, dominant defect topic in {autopilot_misuse, unexpected_braking, steering_control, warning_or_supervision_gap, other}, and related investigation report IDs correspond to each campaign number?"
+  },
+  {
+    "task_id": "vehicle_safety-043",
+    "operator_complexity": "hard",
+    "query": "For Ford, Jeep, Honda, and Tesla, how well do complaints, recalls, and NHTSA investigation reports align for each make? I want to know the number of distinct recall campaigns, the number of distinct complaints that match one of the make's recalls in the same component category and describe the same underlying defect, and whether any campaign is cited by an investigation report, labeled as cited or not_cited."
+  },
+  {
+    "task_id": "vehicle_safety-044",
+    "operator_complexity": "hard",
+    "query": "Which three Acura brake recall campaigns have the most complaint narratives describing the same braking defect and a real braking-performance safety issue? For each campaign, what are the matched complaint count, severe complaint rate, dominant braking failure mode, and dominant recall severity in {critical, severe, moderate, minor}? Use campaign number ascending as tie-break."
+  },
+  {
+    "task_id": "vehicle_safety-045",
+    "operator_complexity": "hard",
+    "query": "Which two shared braking-defect themes have the highest matched complaint counts across Chevrolet complaint narratives, recall defect summaries, and investigation reports when all three describe the same defect or risk? For each ranked theme, how many distinct recall campaigns are involved, which investigation report IDs are related, and what short ODI risk summary captures the issue?"
+  },
+  {
+    "task_id": "vehicle_safety-046",
+    "operator_complexity": "hard",
+    "query": "For Chrysler airbag recall campaigns whose summaries describe the same defect as complaint narratives and whose matched defects are also discussed in investigation reports as the same airbag risk, what matched complaint count, dominant airbag failure mode, dominant remedy style in {software_update, part_replacement, other}, related investigation report IDs, and short ODI evidence summary correspond to each campaign number?"
+  },
+  {
+    "task_id": "vehicle_safety-047",
+    "operator_complexity": "hard",
+    "query": "For Dodge electrical recall campaigns whose defect summaries describe the same electrical failure as complaint narratives, what matched complaint count, median number of days from complaint receipt to recall report, share of matched complaints received before the recall, dominant electrical root-cause phrase, and response promptness in {fast, typical, slow} correspond to each campaign number?"
+  }
+]
+

@@ -1,0 +1,50 @@
+{
+  "task_id": "legal_contracts-044",
+  "answer": [
+    {
+      "document_name": "Clawback Policy",
+      "company_name": "Cavco Industries, Inc.",
+      "effective_date": "2023-12-01",
+      "covered_persons": "Current or former executive officers, including the president, principal financial and accounting officers, vice-presidents of principal business units, and other policy-making officers."
+    },
+    {
+      "document_name": "Globalstar, Inc. Clawback Policy",
+      "company_name": "Globalstar, Inc.",
+      "effective_date": "2025-02-25",
+      "covered_persons": "Section 16 Officers and Covered Executives (officers and designated senior executives)"
+    },
+    {
+      "document_name": "ex_612612.htm",
+      "company_name": "H.B. Fuller Company",
+      "effective_date": "2023-10-02",
+      "covered_persons": "All current and former executive officers and key managers (employees at grade level 32 or above)"
+    },
+    {
+      "document_name": "exhibit971-clawbackpolicy.htm",
+      "company_name": "Skyworks Solutions, Inc.",
+      "effective_date": "2023-10-02",
+      "covered_persons": "Persons who served as Executive Officers during the performance period for applicable Incentive-Based Compensation"
+    },
+    {
+      "document_name": "El Pollo Loco Holdings, Inc. Clawback Policy",
+      "company_name": "El Pollo Loco Holdings, Inc.",
+      "effective_date": "2023-10-31",
+      "covered_persons": "Current or former officers subject to Section 16 of the Securities Exchange Act of 1934 during the applicable performance period."
+    },
+    {
+      "document_name": "Recoupment Policy",
+      "company_name": "Strategic Education, Inc.",
+      "effective_date": "2016-02-02",
+      "covered_persons": "Current and former Executive Officers and employees covered by the Incentive Payment Rule"
+    },
+    {
+      "document_name": "zspc-20241231xex97d1.htm",
+      "company_name": "zSpace, Inc.",
+      "effective_date": "2024-06-18",
+      "covered_persons": "Current and former Executive Officers"
+    }
+  ],
+  "elapsed_seconds": 433.64,
+  "cost_usd": 4.160623,
+  "total_tokens": 10606084
+}

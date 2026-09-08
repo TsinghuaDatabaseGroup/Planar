@@ -1,0 +1,80 @@
+{
+  "task_id": "legal_contracts-078",
+  "answer": [
+    {
+      "document_id": "avah-ex19_1.htm",
+      "company_names": [
+        "Aveanna Healthcare Holdings Inc.",
+        "Nasdaq Stock Market LLC",
+        "Dow Jones Broad Tape",
+        "Associated Press"
+      ]
+    },
+    {
+      "document_id": "ex191evercommerce_-xinside.htm",
+      "company_names": [
+        "EverCommerce Inc.",
+        "Dow Jones",
+        "Business Wire",
+        "Reuters",
+        "The Wall Street Journal",
+        "Associated Press",
+        "United Press International",
+        "Securities and Exchange Commission",
+        "SEC",
+        "Department of Justice",
+        "X Corporation"
+      ]
+    },
+    {
+      "document_id": "ex_775611.htm",
+      "company_names": [
+        "Byrna Technologies Inc."
+      ]
+    },
+    {
+      "document_id": "exhibit19-insidertradingpo.htm",
+      "company_names": [
+        "Skyworks Solutions, Inc."
+      ]
+    },
+    {
+      "document_id": "exhibit19-insidertradingpo_1.htm",
+      "company_names": [
+        "Skyworks Solutions, Inc."
+      ]
+    },
+    {
+      "document_id": "icfi-ex19_0.htm",
+      "company_names": [
+        "ICF International, Inc.",
+        "ICF"
+      ]
+    },
+    {
+      "document_id": "prdo-ex19_1.htm",
+      "company_names": [
+        "Perdoceo Education Corporation",
+        "PEC",
+        "The Nasdaq Global Select Market",
+        "National Association of Securities Dealers",
+        "Securities and Exchange Commission",
+        "SEC",
+        "Department of Education"
+      ]
+    },
+    {
+      "document_id": "rh-20250201xex19d1.htm",
+      "company_names": [
+        "RH",
+        "Waterworks",
+        "Securities and Exchange Commission",
+        "Financial Industry Regulatory Authority, Inc.",
+        "NYSE"
+      ]
+    }
+  ],
+  "elapsed_seconds": 228.19,
+  "cost_usd": 2.470619,
+  "total_tokens": 4807969
+}

@@ -1,0 +1,176 @@
+{
+  "task_id": "finance-032",
+  "answer": [
+    {
+      "company_name": "Advantage Solutions Inc.",
+      "industry_sector": "Sales and Marketing Services",
+      "employee_count_2019": 0,
+      "employee_count_2023": 70000
+    },
+    {
+      "company_name": "BLUE OWL CAPITAL CORPORATION",
+      "industry_sector": "Specialty Finance / Direct Lending",
+      "employee_count_2019": 0,
+      "employee_count_2023": 0
+    },
+    {
+      "company_name": "BLUE OWL CAPITAL CORPORATION II",
+      "industry_sector": "Business Development Company (BDC) / Private Credit",
+      "employee_count_2019": 0,
+      "employee_count_2023": 0
+    },
+    {
+      "company_name": "BeiGene, Ltd.",
+      "industry_sector": "Biopharmaceuticals",
+      "employee_count_2019": 0,
+      "employee_count_2023": 10000
+    },
+    {
+      "company_name": "Blackstone Secured Lending Fund",
+      "industry_sector": "Business Development Company (BDC) / Private Credit",
+      "employee_count_2019": 0,
+      "employee_count_2023": 0
+    },
+    {
+      "company_name": "ChargePoint Holdings, Inc.",
+      "industry_sector": "Electric Vehicle Charging Infrastructure",
+      "employee_count_2019": 0,
+      "employee_count_2023": 1777
+    },
+    {
+      "company_name": "Cheniere Corpus Christi Holdings, LLC",
+      "industry_sector": "Liquefied Natural Gas (LNG)",
+      "employee_count_2019": 0,
+      "employee_count_2023": 0
+    },
+    {
+      "company_name": "Corcept Therapeutics Incorporated",
+      "industry_sector": "Pharmaceuticals",
+      "employee_count_2019": 206,
+      "employee_count_2023": 0
+    },
+    {
+      "company_name": "DIGIMARC CORPORATION",
+      "industry_sector": "Digital Watermarking and Product Authentication Technology",
+      "employee_count_2019": 216,
+      "employee_count_2023": 248
+    },
+    {
+      "company_name": "GOLDMAN SACHS PHYSICAL GOLD ETF",
+      "industry_sector": "Exchange-Traded Fund (Gold)",
+      "employee_count_2019": 0,
+      "employee_count_2023": 0
+    },
+    {
+      "company_name": "Goldman Sachs Private Middle Market Credit II LLC",
+      "industry_sector": "Specialty Finance / Business Development Company",
+      "employee_count_2019": 0,
+      "employee_count_2023": 0
+    },
+    {
+      "company_name": "HALOZYME THERAPEUTICS, INC.",
+      "industry_sector": "Biopharmaceuticals",
+      "employee_count_2019": 132,
+      "employee_count_2023": 0
+    },
+    {
+      "company_name": "Hannon Armstrong Sustainable Infrastructure Capital, Inc.",
+      "industry_sector": "Sustainable Infrastructure Finance",
+      "employee_count_2019": 0,
+      "employee_count_2023": 0
+    },
+    {
+      "company_name": "Innovative Industrial Properties, Inc.",
+      "industry_sector": "Cannabis-focused Real Estate Investment Trust (REIT)",
+      "employee_count_2019": 13,
+      "employee_count_2023": 21
+    },
+    {
+      "company_name": "Leafly Holdings, Inc.",
+      "industry_sector": "Cannabis Digital Marketplace",
+      "employee_count_2019": 0,
+      "employee_count_2023": 131
+    },
+    {
+      "company_name": "Marathon Digital Holdings, Inc.",
+      "industry_sector": "Bitcoin Mining",
+      "employee_count_2019": 3,
+      "employee_count_2023": 60
+    },
+    {
+      "company_name": "Moderna, Inc.",
+      "industry_sector": "Biotechnology",
+      "employee_count_2019": 0,
+      "employee_count_2023": 0
+    },
+    {
+      "company_name": "NEUROCRINE BIOSCIENCES, INC.",
+      "industry_sector": "Biopharmaceuticals",
+      "employee_count_2019": 0,
+      "employee_count_2023": 0
+    },
+    {
+      "company_name": "POSTAL REALTY TRUST, INC.",
+      "industry_sector": "Real Estate Investment Trust (REIT)",
+      "employee_count_2019": 21,
+      "employee_count_2023": 46
+    },
+    {
+      "company_name": "RIOT PLATFORMS, INC.",
+      "industry_sector": "Bitcoin Mining",
+      "employee_count_2019": 6,
+      "employee_count_2023": 534
+    },
+    {
+      "company_name": "RumbleOn, Inc.",
+      "industry_sector": "Powersports Retail and Vehicle Transportation Services",
+      "employee_count_2019": 304,
+      "employee_count_2023": 2412
+    },
+    {
+      "company_name": "Seres Therapeutics, Inc.",
+      "industry_sector": "Biopharmaceuticals",
+      "employee_count_2019": 0,
+      "employee_count_2023": 0
+    },
+    {
+      "company_name": "Skillsoft Corp.",
+      "industry_sector": "Corporate E-Learning and Digital Training",
+      "employee_count_2019": 0,
+      "employee_count_2023": 0
+    },
+    {
+      "company_name": "TOMI ENVIRONMENTAL SOLUTIONS, INC.",
+      "industry_sector": "Environmental Disinfection and Decontamination",
+      "employee_count_2019": 21,
+      "employee_count_2023": 0
+    },
+    {
+      "company_name": "UWM HOLDINGS CORPORATION",
+      "industry_sector": "Residential Mortgage Lending",
+      "employee_count_2019": 0,
+      "employee_count_2023": 6700
+    },
+    {
+      "company_name": "WM TECHNOLOGY, INC.",
+      "industry_sector": "Cannabis Technology and Marketplace",
+      "employee_count_2019": 0,
+      "employee_count_2023": 0
+    },
+    {
+      "company_name": "Whole Earth Brands, Inc.",
+      "industry_sector": "Food and Beverage Ingredients",
+      "employee_count_2019": 0,
+      "employee_count_2023": 590
+    },
+    {
+      "company_name": "ZSCALER, INC.",
+      "industry_sector": "Cloud Security",
+      "employee_count_2019": 1480,
+      "employee_count_2023": 5962
+    }
+  ],
+  "elapsed_seconds": 6879.02,
+  "cost_usd": 64.807406,
+  "total_tokens": 163595608
+}

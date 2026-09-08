@@ -1,0 +1,156 @@
+datasets:
+  safety_barrier_candidates:
+    type: file
+    path: data/operator_implement/inputs/NASA_ASRS-030_safety_barrier_candidates.jsonl
+operations:
+- name: unnest_answer_rows
+  type: unnest
+  unnest_key: rows
+  recursive: true
+  depth: 2
+  expand_fields:
+  - rank
+  - flight_phase
+  - aircraft_operator
+  - candidate_incident_count
+  - successful_barrier_count
+  - successful_barrier_rate
+  model: Qwen3.5-397B-A17B
+- name: aggregate_and_rank_safety_barrier_groups_bs_36_fp_0
+  type: reduce
+  synthesize_merge: true
+  embedding_model: Qwen3-Embedding-8B
+  reduce_key:
+  - _all
+  prompt: 'Across all input records, count an incident as a successful barrier only when
+
+    its narrative clearly establishes hazard detection, a concrete intervention,
+
+    and avoidance of a worse consequence or stabilization of the situation.
+
+
+    Return the five flight-phase and aircraft-operator combinations with at least
+
+    twenty distinct candidate incidents and the highest successful-barrier rates.
+
+    Rank by rate descending, successful incident count descending, flight phase
+
+    ascending, and aircraft operator ascending. Include each combination''s
+
+    distinct candidate count, distinct successful count, rate, and rank beginning
+
+    at one.
+
+
+    {% for record in inputs %}
+
+    INCIDENT_ID: {{ record.incident_id }}
+
+    FLIGHT_PHASE: {{ record.flight_phase }}
+
+    AIRCRAFT_OPERATOR: {{ record.aircraft_operator }}
+
+    REPORT:
+
+    {{ record.text }}
+
+    ---
+
+    {% endfor %}
+
+    '
+  output:
+    mode: structured_output
+    schema:
+      rows: 'list[{rank: integer, flight_phase: string, aircraft_operator: string, candidate_incident_count:
+        integer, successful_barrier_count: integer, successful_barrier_rate: float}]'
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 8096
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  model: Qwen3.5-397B-A17B
+  fold_prompt: "You are updating an existing aggregation of flight safety incidents. \n\nCurrent Aggregated\
+    \ State:\n{{ output | tojson(indent=2) }}\n\nNew Input Records to Process:\n{% for record in inputs\
+    \ %}\nINCIDENT_ID: {{ record.incident_id }}\nFLIGHT_PHASE: {{ record.flight_phase }}\nAIRCRAFT_OPERATOR:\
+    \ {{ record.aircraft_operator }}\nREPORT:\n{{ record.text }}\n---\n{% endfor %}\n\nInstructions:\n\
+    1. Analyze the 'New Input Records' using the original criteria: Count an incident as a 'successful\
+    \ barrier' ONLY if its narrative clearly establishes hazard detection, a concrete intervention, and\
+    \ avoidance of a worse consequence or stabilization of the situation.\n2. Group these new records\
+    \ by the combination of `flight_phase` and `aircraft_operator` (the {{ reduce_key }}).\n3. For each\
+    \ group in the new inputs, calculate:\n   - `new_candidate_count`: Total distinct incidents in this\
+    \ batch.\n   - `new_successful_count`: Distinct incidents meeting the 'successful barrier' criteria.\n\
+    4. Merge these new counts into the 'Current Aggregated State':\n   - If a (`flight_phase`, `aircraft_operator`)\
+    \ combination exists in the current state, add `new_candidate_count` to its `candidate_incident_count`\
+    \ and `new_successful_count` to its `successful_barrier_count`.\n   - If a combination does not exist\
+    \ in the current state, create a new entry with the new counts.\n5. Recalculate the `successful_barrier_rate`\
+    \ for ALL entries as: `successful_barrier_count` / `candidate_incident_count`.\n6. Filter the list\
+    \ to include ONLY combinations where `candidate_incident_count` >= 20.\n7. Re-rank the filtered list\
+    \ based on:\n   - Primary: `successful_barrier_rate` (Descending)\n   - Secondary: `successful_barrier_count`\
+    \ (Descending)\n   - Tertiary: `flight_phase` (Ascending)\n   - Quaternary: `aircraft_operator` (Ascending)\n\
+    8. Assign new ranks starting from 1.\n9. Return ONLY the top 5 rows in the exact JSON schema format:\
+    \ {\"rows\": [{\"rank\": int, \"flight_phase\": str, \"aircraft_operator\": str, \"candidate_incident_count\"\
+    : int, \"successful_barrier_count\": int, \"successful_barrier_rate\": float}, ...]}."
+  fold_batch_size: 36
+  associative: true
+  merge_prompt: "You are merging multiple partial aggregation results from parallel fold operations into\
+    \ a single, final result. This step simulates running the original reduction logic on the entire dataset\
+    \ at once by combining the counts from independent batches.\n\nContext:\n- The original task identifies\
+    \ \"successful barrier\" incidents based on specific narrative criteria (hazard detection, concrete\
+    \ intervention, avoidance/stabilization).\n- Parallel fold operations have already processed disjoint\
+    \ sets of input records. Each fold output contains the top 5 combinations of (`flight_phase`, `aircraft_operator`)\
+    \ found in that specific batch, along with their aggregated counts.\n- Your goal is to merge these\
+    \ partial states, recalculate global statistics, filter, re-rank, and return the final top 5.\n\n\
+    Inputs:\nYou will receive a list of JSON objects under the variable `outputs`. Each object follows\
+    \ the schema: {\"rows\": [{\"rank\": int, \"flight_phase\": str, \"aircraft_operator\": str, \"candidate_incident_count\"\
+    : int, \"successful_barrier_count\": int, \"successful_barrier_rate\": float}, ...]}.\n\nInstructions:\n\
+    1. Initialize an empty map to store global aggregates, keyed by the tuple (`flight_phase`, `aircraft_operator`).\n\
+    2. Iterate through every `output` in the provided `outputs` list:\n   - For each `row` in `output[\"\
+    rows\"]`:\n     - Extract `flight_phase`, `aircraft_operator`, `candidate_incident_count`, and `successful_barrier_count`.\n\
+    \     - If the key (`flight_phase`, `aircraft_operator`) exists in your global map, add the current\
+    \ row's counts to the existing totals.\n     - If the key does not exist, create a new entry with\
+    \ the current row's counts.\n   - Note: Since each fold only returns the top 5 of its batch, some\
+    \ combinations with >= 20 incidents globally might be missing from individual fold outputs if they\
+    \ ranked lower than 5 in that specific batch. However, proceed by merging only the data provided in\
+    \ these `outputs`. (Assumption: The pipeline architecture ensures all relevant groups appear in at\
+    \ least one fold output or the sum of visible counts is sufficient for the final top 5).\n3. After\
+    \ aggregating all counts from all inputs:\n   - Calculate the `successful_barrier_rate` for every\
+    \ entry in the global map: `successful_barrier_count` / `candidate_incident_count`.\n4. Filter the\
+    \ global list to include ONLY combinations where `candidate_incident_count` >= 20.\n5. Re-rank the\
+    \ filtered list based on the original criteria:\n   - Primary: `successful_barrier_rate` (Descending)\n\
+    \   - Secondary: `successful_barrier_count` (Descending)\n   - Tertiary: `flight_phase` (Ascending,\
+    \ alphabetical)\n   - Quaternary: `aircraft_operator` (Ascending, alphabetical)\n6. Assign new ranks\
+    \ starting from 1.\n7. Select ONLY the top 5 rows.\n8. Return the result strictly in the following\
+    \ JSON format:\n{\"rows\": [{\"rank\": int, \"flight_phase\": str, \"aircraft_operator\": str, \"\
+    candidate_incident_count\": int, \"successful_barrier_count\": int, \"successful_barrier_rate\": float},\
+    \ ...]}\n\nInput Data:\n{% for output in outputs %}\nFold Output {{ loop.index }}:\n{{ output | tojson(indent=2)\
+    \ }}\n---\n{% endfor %}"
+  merge_batch_size: 2
+pipeline:
+  steps:
+  - name: process
+    operations:
+    - aggregate_and_rank_safety_barrier_groups_bs_36_fp_0
+    - unnest_answer_rows
+    input: safety_barrier_candidates
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-022.json
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+default_embedding_model: Qwen3-Embedding-8B
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  num_plans_to_evaluate_in_parallel: 1

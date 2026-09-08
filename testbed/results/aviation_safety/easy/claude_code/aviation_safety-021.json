@@ -1,0 +1,16 @@
+{
+  "task_id": "aviation_safety-021",
+  "answer": [
+    {
+      "barrier_status": "successful_barrier",
+      "incident_count": 1201
+    },
+    {
+      "barrier_status": "not_fully_supported",
+      "incident_count": 554
+    }
+  ],
+  "elapsed_seconds": 378.347,
+  "cost_usd": 1.21603086,
+  "total_tokens": 3007003
+}

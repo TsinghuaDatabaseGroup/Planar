@@ -1,0 +1,48 @@
+{
+  "task_id": "finance-016",
+  "answer": [
+    {
+      "industry": "Finance",
+      "count": 202
+    },
+    {
+      "industry": "Healthcare",
+      "count": 165
+    },
+    {
+      "industry": "Technology",
+      "count": 146
+    },
+    {
+      "industry": "Energy",
+      "count": 119
+    },
+    {
+      "industry": "Real Estate",
+      "count": 78
+    },
+    {
+      "industry": "Consumer Goods",
+      "count": 66
+    },
+    {
+      "industry": "Manufacturing",
+      "count": 64
+    },
+    {
+      "industry": "Insurance",
+      "count": 38
+    },
+    {
+      "industry": "Transportation",
+      "count": 26
+    },
+    {
+      "industry": "Telecommunications",
+      "count": 16
+    }
+  ],
+  "elapsed_seconds": 1311.355,
+  "cost_usd": 9.91225707,
+  "total_tokens": 25070545
+}

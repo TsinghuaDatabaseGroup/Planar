@@ -1,0 +1,12 @@
+{
+  "task_id": "legal_contracts-076",
+  "answer": [
+    {"company_name": "Adagio Medical Holdings, Inc.", "reporting_period_type": "quarterly", "reporting_period_end_date": "2024-06-30", "section_302_document_ids": ["tmb-20240630xex31d1.htm", "tmb-20240630xex31d2.htm"], "section_302_certifying_officers": ["John Dahldorf", "Olav Bergheim"], "section_906_document_ids": ["tmb-20240630xex32d1.htm", "tmb-20240630xex32d2.htm"], "section_906_certifying_officers": ["John Dahldorf", "Olav Bergheim"]},
+    {"company_name": "Alpha Star Acquisition Corp.", "reporting_period_type": "annual", "reporting_period_end_date": "2024-12-31", "section_302_document_ids": ["ex31-1_10.htm", "ex31-2_10.htm"], "section_302_certifying_officers": ["Guojian Chen", "Zhe Zhang"], "section_906_document_ids": ["ex32-1_10.htm", "ex32-2_9.htm"], "section_906_certifying_officers": ["Guojian Chen", "Ming Zhang"]},
+    {"company_name": "APPlife Digital Solutions, Inc.", "reporting_period_type": "annual", "reporting_period_end_date": "2024-06-30", "section_302_document_ids": ["alds_ex31z1.htm", "alds_ex31z2.htm"], "section_302_certifying_officers": ["Matt Reid"], "section_906_document_ids": ["alds_ex32z1.htm"], "section_906_certifying_officers": ["Matt Reid"]},
+    {"company_name": "Aveanna Healthcare Holdings Inc.", "reporting_period_type": "annual", "reporting_period_end_date": "2024-12-28", "section_302_document_ids": ["avah-ex31_1.htm", "avah-ex31_2.htm", "avah-ex31_3.htm"], "section_302_certifying_officers": ["Deborah Stewart", "Jeff Shaner", "Matthew Buckhalter"], "section_906_document_ids": ["avah-ex32_1.htm", "avah-ex32_2.htm", "avah-ex32_3.htm"], "section_906_certifying_officers": ["Deborah Stewart", "Jeff Shaner", "Matthew Buckhalter"]}
+  ],
+  "elapsed_seconds": 3115.17,
+  "cost_usd": 4.736916,
+  "total_tokens": 8964659
+}

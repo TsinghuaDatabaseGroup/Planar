@@ -1,0 +1,214 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_human_factors_primary
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("primary_problem") == "Human Factors"
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: filter_material_automation_confusion
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this NASA ASRS report only when misunderstanding, incorrect expectation,
+      loss of awareness, or genuine surprise about aircraft automation materially
+      contributed to the event.
+
+      Automation includes an FMS/FMC, autopilot, flight director, autothrottle,
+      navigation or approach mode, automated alert/advisory, mode capture, or
+      comparable flight-deck automation. The misunderstanding must affect an
+      action, aircraft trajectory, regulatory/ATC compliance, or operational
+      decision. Mere use or mention of automation, routine monitoring, or an
+      automation issue with no material effect does not qualify.
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_non_equipment_non_manual_primary_issue
+    type: filter
+    optimize: true
+    prompt: |
+      This report has already been identified as involving material automation
+      confusion. Keep it only if the primary issue was not an aircraft equipment
+      failure and not an ordinary manual-flying error without meaningful automation
+      confusion.
+
+      Keep human misunderstanding, programming, mode-selection, monitoring, or
+      interpretation errors involving normally functioning automation, even if an
+      equipment issue is mentioned secondarily. Exclude cases primarily caused by
+      failed or malfunctioning automation/equipment and cases whose real cause was
+      basic manual control, visual judgment, or hand-flying technique without
+      automation misunderstanding as a primary issue.
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: classify_automation_confusion_mechanism
+    type: map
+    optimize: true
+    prompt: |
+      Assign exactly one primary automation-confusion mechanism for this NASA ASRS
+      narrative. Apply the following precedence from highest to lowest whenever
+      multiple mechanisms materially contributed:
+
+      1. data_entry_or_programming: incorrect, incomplete, or misunderstood entry,
+         programming, loading, modification, or verification of automation data;
+      2. alert_interpretation: misunderstanding, misidentifying, dismissing, or
+         acting incorrectly on an automated warning, advisory, annunciation, or
+         alert;
+      3. automation_disengagement: failure to recognize, understand, or respond to
+         automation disengaging, disconnecting, reverting, or no longer controlling;
+      4. unexpected_capture_or_leveloff: surprise that automation unexpectedly
+         captured a course, localizer, glideslope, or altitude, or unexpectedly
+         leveled off;
+      5. mode_awareness: confusion about the active, armed, selected, or expected
+         automation mode not already covered above.
+
+      Use not_target if no listed mechanism clearly explains the material
+      automation misunderstanding. Return only the earliest supported category in
+      the precedence list.
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        confusion_mechanism: enum[data_entry_or_programming, alert_interpretation, automation_disengagement, unexpected_capture_or_leveloff, mode_awareness, not_target]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: keep_classified_automation_mechanisms
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("confusion_mechanism") in {
+              "data_entry_or_programming",
+              "alert_interpretation",
+              "automation_disengagement",
+              "unexpected_capture_or_leveloff",
+              "mode_awareness",
+          }
+
+  - name: aggregate_by_confusion_mechanism
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          mechanism_order = [
+              "data_entry_or_programming",
+              "alert_interpretation",
+              "automation_disengagement",
+              "unexpected_capture_or_leveloff",
+              "mode_awareness",
+          ]
+          incident_ids = {mechanism: set() for mechanism in mechanism_order}
+          for item in items:
+              incident_id = str(item.get("incident_id", ""))
+              mechanism = item.get("confusion_mechanism")
+              if incident_id and mechanism in incident_ids:
+                  incident_ids[mechanism].add(incident_id)
+
+          rows = []
+          for mechanism in mechanism_order:
+              if not incident_ids[mechanism]:
+                  continue
+              rows.append(
+                  {
+                      "confusion_mechanism": mechanism,
+                      "incident_count": len(incident_ids[mechanism]),
+                  }
+              )
+          return {"rows": rows}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - confusion_mechanism
+      - incident_count
+
+pipeline:
+  steps:
+    - name: process
+      input: asrs_incidents
+      operations:
+        - filter_human_factors_primary
+        - load_asrs_narrative
+        - filter_material_automation_confusion
+        - filter_non_equipment_non_manual_primary_issue
+        - classify_automation_confusion_mechanism
+        - keep_classified_automation_mechanisms
+        - aggregate_by_confusion_mechanism
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-025.json

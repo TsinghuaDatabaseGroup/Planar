@@ -1,0 +1,48 @@
+{
+  "task_id": "legal_contracts-086",
+  "answer": [
+    {
+      "governing_law": "Texas",
+      "matching_count": 4
+    },
+    {
+      "governing_law": "Alberta",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "Delaware",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "England and Wales",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "Florida",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "Manitoba",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "New Hampshire",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "New York",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "Province of Nova Scotia",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "Washington",
+      "matching_count": 1
+    }
+  ],
+  "elapsed_seconds": 2349.07,
+  "cost_usd": 7.162170,
+  "total_tokens": 14363044
+}

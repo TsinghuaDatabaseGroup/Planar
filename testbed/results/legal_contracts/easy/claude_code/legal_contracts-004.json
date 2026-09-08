@@ -1,0 +1,16 @@
+{
+  "task_id": "legal_contracts-004",
+  "answer": {
+    "most_prevalent_jurisdictions": [
+      "Delaware"
+    ],
+    "jurisdiction_filing_count": 409,
+    "min_subsidiary_count": 1,
+    "median_subsidiary_count": 6.0,
+    "max_subsidiary_count": 887,
+    "offshore_filing_percentage": 10.6
+  },
+  "elapsed_seconds": 135.212,
+  "cost_usd": 0.07042155,
+  "total_tokens": 35919
+}

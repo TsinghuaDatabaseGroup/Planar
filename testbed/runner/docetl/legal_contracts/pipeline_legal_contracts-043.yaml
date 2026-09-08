@@ -1,0 +1,58 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_ex10_material_contracts
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is an EX-10 material contract exhibit.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_ex10_material_contract: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: filter_nda_with_effective_date
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this exhibit only if it is also a mutual or unilateral non-disclosure
+      agreement and explicitly states an effective date.
+
+      Exhibit:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_nda_with_effective_date: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_parties_type_and_date
+    type: map
+    optimize: true
+    prompt: |
+      Extract all party names, the agreement type, and the explicitly stated
+      effective date normalized to YYYY-MM-DD.
+
+      Exhibit:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema: {parties: "list[string]", agreement_type: string, effective_date: string}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: project_answer_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          return {"document_name": str(doc.get("doc_id") or ""), "parties": doc.get("parties") or [], "agreement_type": str(doc.get("agreement_type") or ""), "effective_date": str(doc.get("effective_date") or "")}
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations: [filter_ex10_material_contracts, filter_nda_with_effective_date, extract_parties_type_and_date, project_answer_fields]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-043.json

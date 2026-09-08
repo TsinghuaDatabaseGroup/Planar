@@ -1,0 +1,11 @@
+{
+  "task_id": "finance-001",
+  "answer": [
+    {"company_name": "WALMART INC.", "employee_count": 2100000, "retail_subsector": "mass merchandising retail"},
+    {"company_name": "TARGET CORPORATION", "employee_count": 415000, "retail_subsector": "general merchandise retail"},
+    {"company_name": "THE KROGER CO.", "employee_count": 414000, "retail_subsector": "grocery retail"}
+  ],
+  "elapsed_seconds": 1154.0,
+  "cost_usd": 11.7259,
+  "total_tokens": 30129200
+}

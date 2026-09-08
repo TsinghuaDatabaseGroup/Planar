@@ -1,0 +1,93 @@
+{
+  "task_id": "legal_contracts-020",
+  "answer": [
+    {
+      "document_id": "1089717_0000898430-99-004004_document_2.txt",
+      "governing_law": "United States of America and the Commonwealth of Virginia",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "1108906_0000889812-00-001212_document_45.txt",
+      "governing_law": "Connecticut",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "BOMI%20Non-Disclosure%20Agreement.pdf",
+      "governing_law": "Maryland",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "Confidentiality%20Non-Disclosure%20and%20Appropriate%20Use%20Agreement%20-%20FAU.01082016.pdf",
+      "governing_law": "Florida",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "Confidentiality.pdf",
+      "governing_law": "Michigan",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "NDA.pdf",
+      "governing_law": "New York",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "NDA_17.pdf",
+      "governing_law": "New Zealand",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "Non-Disclosure-Agreement-9-1-2018.pdf",
+      "governing_law": "State of Utah",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "Non-Disclosure-Agreement_3.pdf",
+      "governing_law": "Florida",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "Non-disclosure-Agreement_7.pdf",
+      "governing_law": "English law",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "QSA_NDA.pdf",
+      "governing_law": "Commonwealth of Australia and State of Victoria",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "ingram-non-disclosure.pdf",
+      "governing_law": "England and Wales",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "mutual-non-disclosure-agreement.pdf",
+      "governing_law": "English Law",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "nda_1.pdf",
+      "governing_law": "California",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "non-disclosure_201302814_english_.pdf",
+      "governing_law": "Ontario",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "one-way_nda_ji_form.pdf",
+      "governing_law": "Washington",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "tufts_confidentiality_agreement.pdf",
+      "governing_law": "Massachusetts",
+      "direction": "unilateral"
+    }
+  ],
+  "elapsed_seconds": 244.212,
+  "cost_usd": 0.60058608,
+  "total_tokens": 927177
+}

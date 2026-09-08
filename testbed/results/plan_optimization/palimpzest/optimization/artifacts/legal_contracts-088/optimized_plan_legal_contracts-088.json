@@ -1,0 +1,851 @@
+{
+  "format_version": 1,
+  "purpose": "human_review_of_selected_palimpzest_physical_plan",
+  "task_id": "legal_contracts-088",
+  "optimization_status": "optimized_only",
+  "selected_plan_id": "c1c860c0c7",
+  "executable_plan": {
+    "file": "optimized_plan_legal_contracts-088.plan.pkl",
+    "format": "cloudpickle",
+    "version": 1,
+    "sha256": "1472a7996db7dc4c668eef582e0f21b35dfd471b726d6cfebd8786074fe81195",
+    "size_bytes": 240928,
+    "selected_plan_id": "c1c860c0c7",
+    "datasources": {
+      "legal_contracts-088-sox-semantic-input": {
+        "id": "legal_contracts-088-sox-semantic-input",
+        "row_count": 2793,
+        "schema_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ]
+      },
+      "legal_contracts-088-clawback-semantic-input": {
+        "id": "legal_contracts-088-clawback-semantic-input",
+        "row_count": 2793,
+        "schema_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ]
+      }
+    },
+    "scan_datasource_records_included": false,
+    "sentinel_record_payloads_included": false
+  },
+  "input_plan": {
+    "task_id": "legal_contracts-088",
+    "query": "Which companies have both an EX-31 SOX officer certification and an EX-97 clawback policy that permits recovery for misconduct in addition to financial-restatement recovery? For each company, report its alphabetically sorted distinct certifying officers, including each officer's title, and the normalized covered-person category stated by the clawback policy.",
+    "inputs": [
+      {
+        "source_id": "data/contract-exhibit",
+        "dataset": "CONTRACTEXHIBIT",
+        "source_type": "document",
+        "role": "primary"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SOX = SCAN_DOCS(CONTRACTEXHIBIT, all) -> SEM_FILTER('Is this an EX-31 SOX officer certification?') -> SEM_EXTRACT('Extract the certified company entity and certifying officer name with title', {company: str, certifying_officer: str}) -> GROUP_BY(company, certifying_officers = SORT_ASC(DISTINCT(certifying_officer))); CLAWBACK = SCAN_DOCS(CONTRACTEXHIBIT, all) -> SEM_FILTER('Is this an EX-97 clawback policy?') -> SEM_FILTER('Does the policy provide financial-restatement recovery and also permit recovery for misconduct?') -> SEM_EXTRACT('Extract the company entity and normalize the policy covered-person category', {company: str, covered_person_category: str}) -> DEDUP(company, covered_person_category); SEM_JOIN(SOX, CLAWBACK, on='same company entity despite naming, punctuation, or corporate-suffix variation') -> PROJECT(company, certifying_officers, covered_person_category)"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "company",
+        "certifying_officers",
+        "covered_person_category"
+      ],
+      "types": [
+        "string",
+        "list[string]",
+        "string"
+      ]
+    }
+  },
+  "input_bad_plan": null,
+  "input_logical_plan": {
+    "root_dataset_id": "af23763e42",
+    "nodes": [
+      {
+        "dataset_id": "legal_contracts-088-sox-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "c000a0ed71",
+        "unique_logical_op_id": "0-c000a0ed71",
+        "depends_on": [],
+        "generated_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ]
+      },
+      {
+        "dataset_id": "70610c613d",
+        "source_dataset_ids": [
+          "legal_contracts-088-sox-semantic-input"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "b2fd912d0b",
+        "unique_logical_op_id": "1-b2fd912d0b",
+        "depends_on": [
+          "text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "filter": "Keep this document only if it is an EX-31 SOX officer certification."
+      },
+      {
+        "dataset_id": "763dc50431",
+        "source_dataset_ids": [
+          "70610c613d"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "f15beebcb5",
+        "unique_logical_op_id": "2-f15beebcb5",
+        "depends_on": [
+          "text"
+        ],
+        "generated_fields": [
+          "certifying_officer",
+          "sox_company"
+        ],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "certifying_officer",
+          "document_id",
+          "sox_company",
+          "text",
+          "word_count"
+        ],
+        "desc": "Extract the certified company and certifying officer with title.",
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "ea6c5de591",
+        "source_dataset_ids": [
+          "763dc50431"
+        ],
+        "logical_operator": "GroupByAggregate",
+        "logical_op_id": "564e380333",
+        "unique_logical_op_id": "3-564e380333",
+        "depends_on": [],
+        "generated_fields": [
+          "set(certifying_officer)"
+        ],
+        "input_fields": [
+          "certifying_officer",
+          "document_id",
+          "sox_company",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "set(certifying_officer)",
+          "sox_company"
+        ],
+        "group_by": "GroupBy({'group_by_fields': ['sox_company'], 'agg_funcs': ['set'], 'agg_fields': ['certifying_officer']})"
+      },
+      {
+        "dataset_id": "legal_contracts-088-clawback-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "3bd9aacaee",
+        "unique_logical_op_id": "4-3bd9aacaee",
+        "depends_on": [],
+        "generated_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ]
+      },
+      {
+        "dataset_id": "046330be7c",
+        "source_dataset_ids": [
+          "legal_contracts-088-clawback-semantic-input"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "4d5fcc00fa",
+        "unique_logical_op_id": "5-4d5fcc00fa",
+        "depends_on": [
+          "text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "filter": "Keep this document only if it is an EX-97 clawback policy."
+      },
+      {
+        "dataset_id": "3e868568fe",
+        "source_dataset_ids": [
+          "046330be7c"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "959a730a0b",
+        "unique_logical_op_id": "6-959a730a0b",
+        "depends_on": [
+          "text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "filter": "Keep this policy only if it provides financial-restatement recovery and also permits recovery for misconduct."
+      },
+      {
+        "dataset_id": "a79c7bc71b",
+        "source_dataset_ids": [
+          "3e868568fe"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "06049411a5",
+        "unique_logical_op_id": "7-06049411a5",
+        "depends_on": [
+          "text"
+        ],
+        "generated_fields": [
+          "clawback_company",
+          "covered_person_category"
+        ],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "clawback_company",
+          "covered_person_category",
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "desc": "Extract the company and normalize its covered-person category.",
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "1b43b6caee",
+        "source_dataset_ids": [
+          "a79c7bc71b"
+        ],
+        "logical_operator": "Distinct",
+        "logical_op_id": "2426256b73",
+        "unique_logical_op_id": "8-2426256b73",
+        "depends_on": [],
+        "generated_fields": [],
+        "input_fields": [
+          "clawback_company",
+          "covered_person_category",
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "clawback_company",
+          "covered_person_category",
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "distinct_cols": "['clawback_company', 'covered_person_category']"
+      },
+      {
+        "dataset_id": "af23763e42",
+        "source_dataset_ids": [
+          "ea6c5de591",
+          "1b43b6caee"
+        ],
+        "logical_operator": "JoinOp",
+        "logical_op_id": "9153ea0d07",
+        "unique_logical_op_id": "9-9153ea0d07",
+        "depends_on": [
+          "clawback_company",
+          "sox_company"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "clawback_company",
+          "covered_person_category",
+          "document_id",
+          "set(certifying_officer)",
+          "sox_company",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "clawback_company",
+          "covered_person_category",
+          "document_id",
+          "set(certifying_officer)",
+          "sox_company",
+          "text",
+          "word_count"
+        ],
+        "condition": "Match records only when sox_company and clawback_company denote the same company entity despite naming, punctuation, or corporate-suffix variation.",
+        "how": "inner"
+      }
+    ],
+    "topological_logical_sequence": [
+      "0-c000a0ed71",
+      "1-b2fd912d0b",
+      "2-f15beebcb5",
+      "3-564e380333",
+      "4-3bd9aacaee",
+      "5-4d5fcc00fa",
+      "6-959a730a0b",
+      "7-06049411a5",
+      "8-2426256b73",
+      "9-9153ea0d07"
+    ]
+  },
+  "selected_physical_plan": {
+    "plan_id": "c1c860c0c7",
+    "plan_string": "0. Schema['clawback_company', 'covered_person_category', 'document_id', 'set(certifying_officer)', 'sox_company', 'text', 'word_count'] -> EmbeddingJoin -> Schema['clawback_company', 'covered_person_category', 'document_id', 'set(certifying_officer)', 'sox_company', 'text', 'word_count']\n    (clawback_company, covered_pers) -> (clawback_company, covered_pers)\n    Model: Qwen3.5-397B-A17B\n    Condition: Match records only when sox_company and clawback_company denote the same company entity despite naming, punctuation, or corporate-suffix variation.\n    How: inner\n    On: None\n    Model: Qwen3.5-397B-A17B\n    Reasoning Effort: default\n    Prompt Strategy: join\n    Embedding Model: openai/Qwen3-Embedding-8B\n    Num Samples: 10\n\n  1. Schema['certifying_officer', 'document_id', 'sox_company', 'text', 'word_count'] -> ApplyGroupByOp -> Schema['set(certifying_officer)', 'sox_company']\n    (certifying_officer, document_i) -> (set(certifying_officer), sox_c)\n    Group-by Signature: GroupBy({'group_by_fields': ['sox_company'], 'agg_funcs': ['set'], 'agg_fields': ['certifying_officer']})\n\n    2. Schema['document_id', 'text', 'word_count'] -> LLMConvertBonded -> Schema['certifying_officer', 'document_id', 'sox_company', 'text', 'word_count']\n    (document_id, text, word_count) -> (certifying_officer, document_i)\n    Model: Qwen3.5-397B-A17B\n    Prompt Strategy: PromptStrategy.MAP\n    Reasoning Effort: default\n\n      3. Schema['document_id', 'text', 'word_count'] -> LLMFilter -> Schema['document_id', 'text', 'word_count']\n    (document_id, text, word_count) -> (document_id, text, word_count)\n    Model: Qwen3.5-397B-A17B\n    Filter: Keep this document only if it is an EX-31 SOX officer certification.\n\n        4. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['document_id', 'text', 'word_count']'>, id=legal_contracts-088-sox-semantic-input, op_id=c000a0ed71)) -> <class 'palimpzest.core.lib.schemas.Schema['document_id', 'text', 'word_count']'>\n    (document_id, text, word_count)\n\n  1. Schema['clawback_company', 'covered_person_category', 'document_id', 'text', 'word_count'] -> DistinctOp -> Schema['clawback_company', 'covered_person_category', 'document_id', 'text', 'word_count']\n    (clawback_company, covered_pers) -> (clawback_company, covered_pers)\n    Distinct Cols: ['clawback_company', 'covered_person_category']\n\n    2. Schema['document_id', 'text', 'word_count'] -> LLMConvertBonded -> Schema['clawback_company', 'covered_person_category', 'document_id', 'text', 'word_count']\n    (document_id, text, word_count) -> (clawback_company, covered_pers)\n    Model: Qwen3.5-397B-A17B\n    Prompt Strategy: PromptStrategy.MAP\n    Reasoning Effort: default\n\n      3. Schema['document_id', 'text', 'word_count'] -> MixtureOfAgentsFilter -> Schema['document_id', 'text', 'word_count']\n    (document_id, text, word_count) -> (document_id, text, word_count)\n    Filter: Keep this policy only if it provides financial-restatement recovery and also permits recovery for misconduct.\n    Proposer Models: [Qwen3.5-397B-A17B]\n    Temperatures: [0.0]\n    Aggregator Model: Qwen3.5-397B-A17B\n\n        4. Schema['document_id', 'text', 'word_count'] -> LLMFilter -> Schema['document_id', 'text', 'word_count']\n    (document_id, text, word_count) -> (document_id, text, word_count)\n    Model: Qwen3.5-397B-A17B\n    Filter: Keep this document only if it is an EX-97 clawback policy.\n\n          5. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['document_id', 'text', 'word_count']'>, id=legal_contracts-088-clawback-semantic-input, op_id=3bd9aacaee)) -> <class 'palimpzest.core.lib.schemas.Schema['document_id', 'text', 'word_count']'>\n    (document_id, text, word_count)\n\n",
+    "root_operator_index": 9,
+    "operators": [
+      {
+        "topological_index": 0,
+        "physical_operator": "MarshalAndScanDataOp",
+        "logical_operator": "BaseScan",
+        "logical_op_id": "c000a0ed71",
+        "unique_logical_op_id": "0-c000a0ed71",
+        "full_op_id": "c000a0ed71-28c9b720c8",
+        "model": null,
+        "depends_on": [],
+        "generated_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "source_operator_indices": []
+      },
+      {
+        "topological_index": 1,
+        "physical_operator": "LLMFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "b2fd912d0b",
+        "unique_logical_op_id": "1-b2fd912d0b",
+        "full_op_id": "b2fd912d0b-43aa012985",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-088-sox-semantic-input.text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "source_operator_indices": [
+          0
+        ]
+      },
+      {
+        "topological_index": 2,
+        "physical_operator": "LLMConvertBonded",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "f15beebcb5",
+        "unique_logical_op_id": "2-f15beebcb5",
+        "full_op_id": "f15beebcb5-cf6fe7e00f",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-088-sox-semantic-input.text"
+        ],
+        "generated_fields": [
+          "certifying_officer",
+          "sox_company"
+        ],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "certifying_officer",
+          "document_id",
+          "sox_company",
+          "text",
+          "word_count"
+        ],
+        "source_operator_indices": [
+          1
+        ]
+      },
+      {
+        "topological_index": 3,
+        "physical_operator": "ApplyGroupByOp",
+        "logical_operator": "GroupByAggregate",
+        "logical_op_id": "564e380333",
+        "unique_logical_op_id": "3-564e380333",
+        "full_op_id": "564e380333-de1d0ad709",
+        "model": null,
+        "depends_on": [
+          "Schema['certifying_officer', 'document_id', 'sox_company', 'text', 'word_count'].763dc50431.certifying_officer",
+          "Schema['certifying_officer', 'document_id', 'sox_company', 'text', 'word_count'].763dc50431.document_id",
+          "Schema['certifying_officer', 'document_id', 'sox_company', 'text', 'word_count'].763dc50431.sox_company",
+          "Schema['certifying_officer', 'document_id', 'sox_company', 'text', 'word_count'].763dc50431.text",
+          "Schema['certifying_officer', 'document_id', 'sox_company', 'text', 'word_count'].763dc50431.word_count",
+          "Schema['document_id', 'text', 'word_count'].70610c613d.document_id",
+          "Schema['document_id', 'text', 'word_count'].70610c613d.text",
+          "Schema['document_id', 'text', 'word_count'].70610c613d.word_count",
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-088-sox-semantic-input.document_id",
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-088-sox-semantic-input.text",
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-088-sox-semantic-input.word_count"
+        ],
+        "generated_fields": [
+          "set(certifying_officer)"
+        ],
+        "input_fields": [
+          "certifying_officer",
+          "document_id",
+          "sox_company",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "set(certifying_officer)",
+          "sox_company"
+        ],
+        "source_operator_indices": [
+          2
+        ]
+      },
+      {
+        "topological_index": 4,
+        "physical_operator": "MarshalAndScanDataOp",
+        "logical_operator": "BaseScan",
+        "logical_op_id": "3bd9aacaee",
+        "unique_logical_op_id": "4-3bd9aacaee",
+        "full_op_id": "3bd9aacaee-1c60145278",
+        "model": null,
+        "depends_on": [],
+        "generated_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "source_operator_indices": []
+      },
+      {
+        "topological_index": 5,
+        "physical_operator": "LLMFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "4d5fcc00fa",
+        "unique_logical_op_id": "5-4d5fcc00fa",
+        "full_op_id": "4d5fcc00fa-47a4433f32",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-088-sox-semantic-input.text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "source_operator_indices": [
+          4
+        ]
+      },
+      {
+        "topological_index": 6,
+        "physical_operator": "MixtureOfAgentsFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "959a730a0b",
+        "unique_logical_op_id": "6-959a730a0b",
+        "full_op_id": "959a730a0b-8e5568b11f",
+        "model": null,
+        "depends_on": [
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-088-sox-semantic-input.text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "source_operator_indices": [
+          5
+        ]
+      },
+      {
+        "topological_index": 7,
+        "physical_operator": "LLMConvertBonded",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "06049411a5",
+        "unique_logical_op_id": "7-06049411a5",
+        "full_op_id": "06049411a5-c266241017",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-088-sox-semantic-input.text"
+        ],
+        "generated_fields": [
+          "clawback_company",
+          "covered_person_category"
+        ],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "clawback_company",
+          "covered_person_category",
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "source_operator_indices": [
+          6
+        ]
+      },
+      {
+        "topological_index": 8,
+        "physical_operator": "DistinctOp",
+        "logical_operator": "Distinct",
+        "logical_op_id": "2426256b73",
+        "unique_logical_op_id": "8-2426256b73",
+        "full_op_id": "2426256b73-795ddd8139",
+        "model": null,
+        "depends_on": [
+          "Schema['clawback_company', 'covered_person_category', 'document_id', 'text', 'word_count'].a79c7bc71b.clawback_company",
+          "Schema['clawback_company', 'covered_person_category', 'document_id', 'text', 'word_count'].a79c7bc71b.covered_person_category",
+          "Schema['clawback_company', 'covered_person_category', 'document_id', 'text', 'word_count'].a79c7bc71b.document_id",
+          "Schema['clawback_company', 'covered_person_category', 'document_id', 'text', 'word_count'].a79c7bc71b.text",
+          "Schema['clawback_company', 'covered_person_category', 'document_id', 'text', 'word_count'].a79c7bc71b.word_count",
+          "Schema['document_id', 'text', 'word_count'].046330be7c.document_id",
+          "Schema['document_id', 'text', 'word_count'].046330be7c.text",
+          "Schema['document_id', 'text', 'word_count'].046330be7c.word_count",
+          "Schema['document_id', 'text', 'word_count'].3e868568fe.document_id",
+          "Schema['document_id', 'text', 'word_count'].3e868568fe.text",
+          "Schema['document_id', 'text', 'word_count'].3e868568fe.word_count",
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-088-clawback-semantic-input.document_id",
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-088-clawback-semantic-input.text",
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-088-clawback-semantic-input.word_count"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "clawback_company",
+          "covered_person_category",
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "clawback_company",
+          "covered_person_category",
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "source_operator_indices": [
+          7
+        ]
+      },
+      {
+        "topological_index": 9,
+        "physical_operator": "EmbeddingJoin",
+        "logical_operator": "JoinOp",
+        "logical_op_id": "9153ea0d07",
+        "unique_logical_op_id": "9-9153ea0d07",
+        "full_op_id": "9153ea0d07-73d7772089",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['certifying_officer', 'document_id', 'sox_company', 'text', 'word_count'].763dc50431.sox_company",
+          "Schema['clawback_company', 'covered_person_category', 'document_id', 'text', 'word_count'].a79c7bc71b.clawback_company"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "clawback_company",
+          "covered_person_category",
+          "document_id",
+          "set(certifying_officer)",
+          "sox_company",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "clawback_company",
+          "covered_person_category",
+          "document_id",
+          "set(certifying_officer)",
+          "sox_company",
+          "text",
+          "word_count"
+        ],
+        "source_operator_indices": [
+          3,
+          8
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "source": 0,
+        "target": 1
+      },
+      {
+        "source": 1,
+        "target": 2
+      },
+      {
+        "source": 2,
+        "target": 3
+      },
+      {
+        "source": 4,
+        "target": 5
+      },
+      {
+        "source": 5,
+        "target": 6
+      },
+      {
+        "source": 6,
+        "target": 7
+      },
+      {
+        "source": 7,
+        "target": 8
+      },
+      {
+        "source": 3,
+        "target": 9
+      },
+      {
+        "source": 8,
+        "target": 9
+      }
+    ],
+    "estimated_plan_cost": {
+      "cost": 17.941473123745503,
+      "time": 77454.31912788817,
+      "quality": 0.878,
+      "op_estimates": {
+        "cardinality": 155860.96302000002,
+        "time_per_record": 0.01666625,
+        "cost_per_record": 2e-05,
+        "quality": 0.878,
+        "cardinality_lower_bound": 155860.96302000002,
+        "cardinality_upper_bound": 155860.96302000002,
+        "time_per_record_lower_bound": 0.01666625,
+        "time_per_record_upper_bound": 0.01666625,
+        "cost_per_record_lower_bound": 2e-05,
+        "cost_per_record_upper_bound": 2e-05,
+        "quality_lower_bound": 0.878,
+        "quality_upper_bound": 0.878
+      },
+      "cost_lower_bound": 17.941473123745503,
+      "cost_upper_bound": 17.941473123745503,
+      "time_lower_bound": 77454.31912788817,
+      "time_upper_bound": 77454.31912788817,
+      "quality_lower_bound": 0.878,
+      "quality_upper_bound": 0.878
+    },
+    "topological_logical_sequence": [
+      "0-c000a0ed71",
+      "1-b2fd912d0b",
+      "2-f15beebcb5",
+      "3-564e380333",
+      "4-3bd9aacaee",
+      "5-4d5fcc00fa",
+      "6-959a730a0b",
+      "7-06049411a5",
+      "8-2426256b73",
+      "9-9153ea0d07"
+    ]
+  },
+  "optimizer_configuration": {
+    "strategy": "pareto",
+    "policy": "MaxQuality",
+    "physical_implementation_candidates": {
+      "allow_bonded_query": true,
+      "allow_model_selection": false,
+      "allow_rag_reduction": false,
+      "allow_mixtures": true,
+      "allow_critic": true,
+      "allow_split_merge": false,
+      "force_rag": false,
+      "execution_strategy": "parallel",
+      "max_workers": 64,
+      "join_parallelism": 64
+    },
+    "dynamic_learning_requested": true,
+    "dynamic_learning_pipeline_supported": true,
+    "dynamic_learning": true,
+    "dynamic_learning_support": {
+      "supported": false,
+      "reason": "Palimpzest Sentinel/MAB does not preserve source indices after non-final aggregate or limit operators",
+      "terminal_only_operator_violations": [
+        {
+          "dataset_id": "ea6c5de591",
+          "unique_logical_op_id": "3-564e380333",
+          "logical_operator": "GroupByAggregate",
+          "direct_downstream": [
+            {
+              "dataset_id": "af23763e42",
+              "unique_logical_op_id": "9-9153ea0d07",
+              "logical_operator": "JoinOp"
+            }
+          ]
+        }
+      ]
+    },
+    "allow_unsupported_sentinel_plans": true,
+    "dynamic_learning_fallback": null,
+    "sentinel_execution_strategy": "mab",
+    "sentinel_k": 6,
+    "sentinel_j": 4,
+    "sentinel_sample_budget": 100,
+    "sentinel_seed": 42,
+    "available_models": [
+      "Qwen3.5-397B-A17B",
+      "openai/Qwen3-Embedding-8B"
+    ]
+  },
+  "optimizer_search_space": {
+    "group_count": 10,
+    "logical_expression_count": 10,
+    "physical_expression_count": 31,
+    "transformation_rules_explored": [
+      "PushDownFilter",
+      "ReorderConverts"
+    ],
+    "implementation_rules_explored": [
+      "BasicSubstitutionRule",
+      "CritiqueAndRefineRule",
+      "EmbeddingJoinRule",
+      "LLMConvertBondedRule",
+      "LLMFilterRule",
+      "MixtureOfAgentsRule",
+      "NestedLoopsJoinRule"
+    ]
+  },
+  "optimization_metrics": {
+    "elapsed_seconds": 189.11490154,
+    "sentinel_sampling_seconds": 189.00401878,
+    "optimizer_search_and_bookkeeping_seconds": 0.11088276,
+    "cost_usd": 0.63201645,
+    "text_llm_calls": 511,
+    "embedding_calls": 0,
+    "input_text_tokens": 1091061,
+    "output_text_tokens": 88249,
+    "total_text_tokens": 1179310,
+    "embedding_input_tokens": 0,
+    "cache_read_tokens": 0,
+    "cache_creation_tokens": 0,
+    "sampled_operators": {
+      "text_llm_calls": 460,
+      "embedding_calls": 0,
+      "input_text_tokens": 922312,
+      "output_text_tokens": 79863,
+      "embedding_input_tokens": 0,
+      "cost_usd": 0.5465811
+    },
+    "validator": {
+      "text_llm_calls": 51,
+      "input_text_tokens": 168749,
+      "output_text_tokens": 8386,
+      "total_text_tokens": 177135,
+      "cost_usd": 0.08543535
+    },
+    "model_usage_by_model": {
+      "Qwen3.5-397B-A17B": {
+        "roles": [
+          "text",
+          "validator"
+        ],
+        "calls": 511,
+        "input_tokens": 1091061,
+        "output_tokens": 88249,
+        "total_tokens": 1179310,
+        "cost_usd": 0.63201645
+      }
+    }
+  },
+  "sentinel_join_sampling": [
+    {
+      "unique_logical_op_id": "9-9153ea0d07",
+      "frontier_representative_operator_class": "EmbeddingJoin",
+      "root_dataset_count": 2,
+      "left_available_source_indices": 2793,
+      "right_available_source_indices": 2793,
+      "theoretical_combination_count": 7800849,
+      "available_combination_count": 7800849,
+      "sample_limit": 100,
+      "sampled_combination_count": 100,
+      "sampling_method": "seeded_uniform_without_replacement_flat_indices",
+      "seed": 42
+    }
+  ],
+  "sentinel_sampling_exhaustion": null,
+  "recovery": null
+}

@@ -1,0 +1,78 @@
+{
+  "task_id": "finance-035",
+  "answer": [
+    {
+      "company_name": "19617",
+      "industry_sector": "Not Specified",
+      "competitive_position": "Market Leader",
+      "employee_count": 309926,
+      "ma_transaction_count": 201
+    },
+    {
+      "company_name": "820313",
+      "industry_sector": "Not Specified",
+      "competitive_position": "Mid-Tier Competitor",
+      "employee_count": 95000,
+      "ma_transaction_count": 333
+    },
+    {
+      "company_name": "1071739",
+      "industry_sector": "Not Specified",
+      "competitive_position": "Major Player",
+      "employee_count": 67700,
+      "ma_transaction_count": 134
+    },
+    {
+      "company_name": "United States Securities and Exchange Co",
+      "industry_sector": "Not Specified",
+      "competitive_position": "Market Leader",
+      "employee_count": 60000,
+      "ma_transaction_count": 170
+    },
+    {
+      "company_name": "UNITED STATESSECURITIES AND EXCHANGE CO",
+      "industry_sector": "Not Specified",
+      "competitive_position": "Major Player",
+      "employee_count": 54600,
+      "ma_transaction_count": 86
+    },
+    {
+      "company_name": "1140536",
+      "industry_sector": "Not Specified",
+      "competitive_position": "Market Leader",
+      "employee_count": 48000,
+      "ma_transaction_count": 143
+    },
+    {
+      "company_name": "823768",
+      "industry_sector": "Not Specified",
+      "competitive_position": "Market Leader",
+      "employee_count": 48000,
+      "ma_transaction_count": 142
+    },
+    {
+      "company_name": "885725",
+      "industry_sector": "Not Specified",
+      "competitive_position": "Market Leader",
+      "employee_count": 48000,
+      "ma_transaction_count": 218
+    },
+    {
+      "company_name": "1099219",
+      "industry_sector": "Not Specified",
+      "competitive_position": "Major Player",
+      "employee_count": 45000,
+      "ma_transaction_count": 119
+    },
+    {
+      "company_name": "1792044",
+      "industry_sector": "Not Specified",
+      "competitive_position": "Major Player",
+      "employee_count": 38000,
+      "ma_transaction_count": 228
+    }
+  ],
+  "elapsed_seconds": 245.177,
+  "cost_usd": 0.24214509,
+  "total_tokens": 307132
+}

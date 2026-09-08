@@ -1,0 +1,68 @@
+{
+  "task_id": "aviation_safety-032",
+  "answer": [
+    {
+      "rank": 1,
+      "issue_category": "cabin_equipment_or_door",
+      "decision_category": "return_or_divert",
+      "incident_count": 12
+    },
+    {
+      "rank": 2,
+      "issue_category": "passenger_medical",
+      "decision_category": "return_or_divert",
+      "incident_count": 9
+    },
+    {
+      "rank": 3,
+      "issue_category": "cabin_equipment_or_door",
+      "decision_category": "delay_or_cancel",
+      "incident_count": 8
+    },
+    {
+      "rank": 4,
+      "issue_category": "cabin_equipment_or_door",
+      "decision_category": "other_operational_change",
+      "incident_count": 5
+    },
+    {
+      "rank": 5,
+      "issue_category": "cabin_equipment_or_door",
+      "decision_category": "continue_changed",
+      "incident_count": 4
+    },
+    {
+      "rank": 6,
+      "issue_category": "passenger_medical",
+      "decision_category": "continue_changed",
+      "incident_count": 3
+    },
+    {
+      "rank": 7,
+      "issue_category": "security_or_behavior",
+      "decision_category": "continue_changed",
+      "incident_count": 3
+    },
+    {
+      "rank": 8,
+      "issue_category": "boarding_or_deplaning",
+      "decision_category": "delay_or_cancel",
+      "incident_count": 2
+    },
+    {
+      "rank": 9,
+      "issue_category": "passenger_medical",
+      "decision_category": "delay_or_cancel",
+      "incident_count": 2
+    },
+    {
+      "rank": 10,
+      "issue_category": "security_or_behavior",
+      "decision_category": "delay_or_cancel",
+      "incident_count": 2
+    }
+  ],
+  "elapsed_seconds": 5310.9,
+  "cost_usd": 9.776105,
+  "total_tokens": 9136656
+}

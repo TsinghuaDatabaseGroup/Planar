@@ -1,0 +1,11 @@
+{
+  "task_id": "legal_contracts-083",
+  "answer": [
+    {"governing_law": "New York", "agreement_count": 18, "term_lengths_years": [1.0, 1.5, 2.0, 3.0, 5.0, 10.0]},
+    {"governing_law": "Delaware", "agreement_count": 17, "term_lengths_years": [1.0, 1.5, 2.0, 3.0, 4.0, 5.0]},
+    {"governing_law": "California", "agreement_count": 11, "term_lengths_years": [1.0, 1.5, 2.0, 3.0, 5.0]}
+  ],
+  "elapsed_seconds": 3743.61,
+  "cost_usd": 6.290926,
+  "total_tokens": 11905639
+}

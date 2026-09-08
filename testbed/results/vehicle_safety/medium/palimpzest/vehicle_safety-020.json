@@ -1,0 +1,48 @@
+{
+  "task_id": "vehicle_safety-020",
+  "answer": [
+    {
+      "file_id": "txt_investigation_8dd794de1b4ea239.txt",
+      "cited_recall_numbers": [
+        "15V665000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_49e1ff012e25233c.txt",
+      "cited_recall_numbers": [
+        "17V144000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_3bbbb3e89f1dc774.txt",
+      "cited_recall_numbers": [
+        "12V527000",
+        "15V046000",
+        "15V673000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_ef12d2cfbf020527.txt",
+      "cited_recall_numbers": [
+        "14V343000",
+        "14V344000",
+        "14V348000",
+        "14V351000",
+        "14V353000",
+        "14V655000",
+        "14V700000",
+        "14V701000",
+        "14V752000",
+        "14V763000",
+        "14V770000",
+        "14V773000",
+        "14V787000",
+        "14V802000",
+        "14V817000"
+      ]
+    }
+  ],
+  "elapsed_seconds": 86.05,
+  "cost_usd": 0.238591,
+  "total_tokens": 398381
+}

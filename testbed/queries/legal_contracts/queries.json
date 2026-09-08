@@ -1,0 +1,533 @@
+[
+  {
+    "task_id": "legal_contracts-001",
+    "operator_complexity": "easy",
+    "query": "How many independent auditor consent letters authorizing the use or incorporation of an auditor’s report in an SEC filing contain fewer than 200 words?"
+  },
+  {
+    "task_id": "legal_contracts-002",
+    "operator_complexity": "easy",
+    "query": "Across the contract-exhibit corpus, how many documents are Sarbanes-Oxley certifications under either Section 302 or Section 906?"
+  },
+  {
+    "task_id": "legal_contracts-003",
+    "operator_complexity": "easy",
+    "query": "Which genuine SOX Section 302 certifications explicitly state a reporting-period end date of June 30, 2025? Report the document ID, certifying officer names, and reporting-period type."
+  },
+  {
+    "task_id": "legal_contracts-004",
+    "operator_complexity": "easy",
+    "query": "Across all subsidiary list filings, which incorporation or organization jurisdiction appears in the largest number of filings? Also report the minimum, median, and maximum number of listed subsidiaries. And what's the percentage of offshore jurisdictions such as the Cayman Islands, the British Virgin Islands (BVI), or Luxembourg? Rounded to one decimal place. If jurisdictions tie for the highest filing count, return all tied names in ascending lexicographic order."
+  },
+  {
+    "task_id": "legal_contracts-005",
+    "operator_complexity": "easy",
+    "query": "Which non-disclosure agreements expressly state a governing law and a fixed confidentiality duration of 12 months or less, excluding perpetual or indefinite terms? Report the document ID, originally stated duration, normalized duration in months, and governing law."
+  },
+  {
+    "task_id": "legal_contracts-006",
+    "operator_complexity": "easy",
+    "query": "Which non-disclosure agreements with a perpetual or indefinite confidentiality term expressly state a governing law and contain exactly four of the six standard confidentiality exceptions? Report the document ID, governing law, and the two missing exceptions."
+  },
+  {
+    "task_id": "legal_contracts-007",
+    "operator_complexity": "easy",
+    "query": "Which insider-trading policies longer than 7,500 words explicitly extend their trading restrictions to family or household members? Report the document ID and company name."
+  },
+  {
+    "task_id": "legal_contracts-008",
+    "operator_complexity": "easy",
+    "query": "Which agreements state an operative non-compete period of six months or less together with both a geographic scope and governing law? Report the document name, non-compete period in months, geographic scope, and governing law."
+  },
+  {
+    "task_id": "legal_contracts-009",
+    "operator_complexity": "easy",
+    "query": "Across all EX-97 clawback policy documents, what fraction include employee misconduct as a trigger separate from an accounting restatement? Report the fraction and total number of policies separately for policies that extend recovery beyond SEC minimum requirements and those that do not."
+  },
+  {
+    "task_id": "legal_contracts-010",
+    "operator_complexity": "easy",
+    "query": "Which unilateral non-disclosure agreements name both the disclosing and receiving parties, state a governing law, and have a fixed confidentiality term of no more than two years? Report the document ID, both party lists, normalized term in years, and governing law."
+  },
+  {
+    "task_id": "legal_contracts-011",
+    "operator_complexity": "easy",
+    "query": "Which SOX Section 302 certifications explicitly cover an annual reporting period ended December 31, 2024? Report the document ID and certifying officer names."
+  },
+  {
+    "task_id": "legal_contracts-012",
+    "operator_complexity": "easy",
+    "query": "How many SOX Section 302 certifications contain the material-changes clause for internal control over financial reporting but do not describe any specific control change?"
+  },
+  {
+    "task_id": "legal_contracts-013",
+    "operator_complexity": "easy",
+    "query": "Which agreements contain a contractual acquisition-or-control standstill lasting at least two years? Report the document ID, agreement type, standstill duration in years, and governing law."
+  },
+  {
+    "task_id": "legal_contracts-014",
+    "operator_complexity": "easy",
+    "query": "How are SOX Section 302 certifications distributed across the presence or absence of the internal-controls responsibility, management-fraud disclosure, and material-changes clauses? For each observed clause profile, report the three clause indicators and certification count."
+  },
+  {
+    "task_id": "legal_contracts-015",
+    "operator_complexity": "easy",
+    "query": "How do NDA and confidentiality agreements differ by non-disclosure direction—mutual, unilateral, or unclear? For each direction represented in the corpus, report the agreement count and the percentage containing an explicit non-use restriction, rounded to two decimal places."
+  },
+  {
+    "task_id": "legal_contracts-016",
+    "operator_complexity": "easy",
+    "query": "Among HTML-format contract exhibits, how many substantively function as an NDA or confidentiality document, including dual-purpose SEC exhibits?"
+  },
+  {
+    "task_id": "legal_contracts-017",
+    "operator_complexity": "easy",
+    "query": "Among HTML-format contract exhibits, how many are genuine Sarbanes-Oxley officer certifications under Section 302 or Section 906?"
+  },
+  {
+    "task_id": "legal_contracts-018",
+    "operator_complexity": "easy",
+    "query": "How are HTML-format contract exhibits distributed among sox_certification, employment_agreement, insider_trading_policy, auditor_consent, subsidiary_list, clawback_policy, mutual_nda, unilateral_nda, confidentiality_standstill, non_compete_agreement, supply_agreement, non_solicitation_agreement, and other? Order the categories by document count descending, then alphabetically."
+  },
+  {
+    "task_id": "legal_contracts-019",
+    "operator_complexity": "easy",
+    "query": "Which five categories are most common among HTML-format contract exhibits when each document is assigned to sox_certification, employment_agreement, insider_trading_policy, auditor_consent, subsidiary_list, clawback_policy, mutual_nda, unilateral_nda, confidentiality_standstill, non_compete_agreement, supply_agreement, non_solicitation_agreement, or other? Give each category's document count and order by count descending, then category alphabetically."
+  },
+  {
+    "task_id": "legal_contracts-020",
+    "operator_complexity": "medium",
+    "query": "Which standalone non-disclosure or confidentiality agreements contain fewer than 1,500 words, expressly state a governing law, continue the confidentiality obligation indefinitely or perpetually, require confidential materials to be returned or destroyed, and provide injunctive, equitable, or specific-performance relief? Report the document ID, governing law, and whether the nondisclosure obligation is mutual or unilateral."
+  },
+  {
+    "task_id": "legal_contracts-021",
+    "operator_complexity": "medium",
+    "query": "Which text-format non-disclosure agreements expressly state a governing law, include all six standard confidentiality exceptions—publicly available information, prior knowledge, independent development, third-party receipt, legal compulsion, and consent—and contain no customer or employee non-solicitation language? Report the document ID and governing law."
+  },
+  {
+    "task_id": "legal_contracts-022",
+    "operator_complexity": "medium",
+    "query": "Which non-disclosure agreements provide injunctive or equitable relief, state a finite confidentiality term of no more than 36 months, expressly state a governing law, include all six standard confidentiality exceptions, and contain no customer or employee non-solicitation language? Report the document ID, governing law, and confidentiality term normalized to months."
+  },
+  {
+    "task_id": "legal_contracts-023",
+    "operator_complexity": "medium",
+    "query": "Which standalone non-disclosure or confidentiality agreements contain a standstill provision, contain exactly five of these six operative confidentiality carve-outs—public information, prior knowledge, independent development, lawful unrestricted third-party receipt, legally compelled disclosure, and disclosure authorized by the disclosing party—and have a standstill period no longer than the longer of their customer- and employee-non-solicitation periods? At least one of those two non-solicitation periods and the standstill period must be stated as a determinate duration. For each qualifying agreement, report the document ID, governing law, the single missing carve-out, the standstill period in months, and the longest applicable non-solicitation period in months, using 30 days per month and 12 months per year."
+  },
+  {
+    "task_id": "legal_contracts-024",
+    "operator_complexity": "medium",
+    "query": "Which standalone non-disclosure or confidentiality agreements are governed by California, Delaware, or New York law, require confidential materials to be returned or destroyed, provide injunctive or equitable relief, and omit exactly one of the six standard confidentiality exceptions? Report the document ID, governing state, missing exception, and whether the nondisclosure obligation is mutual or unilateral."
+  },
+  {
+    "task_id": "legal_contracts-025",
+    "operator_complexity": "medium",
+    "query": "Which standalone non-disclosure or confidentiality agreements expressly state a governing law and contain all six standard confidentiality exceptions except lawful unrestricted third-party receipt? Report the document ID and governing law."
+  },
+  {
+    "task_id": "legal_contracts-026",
+    "operator_complexity": "medium",
+    "query": "Which non-disclosure agreements containing fewer than 750 words expressly state a governing law, include an intellectual-property ownership clause, and do not grant a residual-information right for information retained in unaided memory? Report the document ID and governing law."
+  },
+  {
+    "task_id": "legal_contracts-027",
+    "operator_complexity": "medium",
+    "query": "Which non-disclosure agreements containing fewer than 750 words expressly state a governing law, require confidential materials to be returned or destroyed, and do not provide injunctive or equitable relief for breach? Report the document ID, governing law, and whether each agreement is mutual or one-way."
+  },
+  {
+    "task_id": "legal_contracts-028",
+    "operator_complexity": "medium",
+    "query": "Among non-disclosure agreements that include a standstill provision and do not include a non-compete clause, which ones also include employee non-solicitation language and make the standstill period no longer than the employee non-solicitation period after converting all durations to months? Report the document ID, governing law, and both normalized periods."
+  },
+  {
+    "task_id": "legal_contracts-029",
+    "operator_complexity": "medium",
+    "query": "Which agreements expressly state a governing law and a quantifiable non-compete duration of six months or less, but contain no standstill provision? Report the document ID, governing law, and non-compete duration in months."
+  },
+  {
+    "task_id": "legal_contracts-030",
+    "operator_complexity": "medium",
+    "query": "Which confidentiality-and-standstill agreements expressly state a governing law and include exactly five of the six standard confidentiality exceptions: publicly available information, prior knowledge, independent development, third-party receipt, legal compulsion, and consent? Report the document ID, governing law, and single missing exception."
+  },
+  {
+    "task_id": "legal_contracts-031",
+    "operator_complexity": "medium",
+    "query": "Which compensation recovery policies list employee misconduct as a recovery trigger and limit coverage to current and former executive officers, excluding key managers and other employee categories? Report the document ID and company name."
+  },
+  {
+    "task_id": "legal_contracts-032",
+    "operator_complexity": "medium",
+    "query": "Which non-disclosure agreements containing fewer than 1,250 words expressly state a governing law, provide injunctive or equitable relief, and contain no intellectual-property ownership clause? Report the document ID and governing law."
+  },
+  {
+    "task_id": "legal_contracts-033",
+    "operator_complexity": "medium",
+    "query": "Which non-disclosure agreements expressly state a governing law and a finite confidentiality duration longer than 60 months, while containing no non-compete, non-solicitation, or standstill provision? Report the document ID, governing law, and duration in months."
+  },
+  {
+    "task_id": "legal_contracts-034",
+    "operator_complexity": "medium",
+    "query": "Which non-disclosure agreements expressly state a governing law, provide injunctive or equitable relief, and state that confidentiality obligations survive termination, but do not require confidential materials to be returned or destroyed? Report the document name and governing law."
+  },
+  {
+    "task_id": "legal_contracts-035",
+    "operator_complexity": "medium",
+    "query": "For each non-disclosure agreement that states a governing-law provision and has quantifiable non-compete and employee non-solicitation periods, what is the signed difference in months between those periods (non-compete minus employee non-solicitation)? Report the document name, governing-law, and difference months."
+  },
+  {
+    "task_id": "legal_contracts-036",
+    "operator_complexity": "medium",
+    "query": "Which non-disclosure agreements containing fewer than 1,000 words were signed for a potential merger, acquisition, or investment, contain no standstill provision, and expressly state a governing law? Report the document ID and governing law."
+  },
+  {
+    "task_id": "legal_contracts-037",
+    "operator_complexity": "medium",
+    "query": "How many non-disclosure agreements fall into each confidentiality-term type—fixed_short (a quantifiable fixed duration of 36 months or less), fixed_long (a quantifiable fixed duration exceeding 36 months), perpetual (an indefinite or perpetual duration), and unspecified (neither perpetual nor reducible to one quantifiable fixed duration)—and what is the most common stated governing-law jurisdiction in each type?"
+  },
+  {
+    "task_id": "legal_contracts-038",
+    "operator_complexity": "medium",
+    "query": "Which non-disclosure agreements or material contract exhibits expressly state a governing law, a finite confidentiality term, and at least one quantifiable non-compete or non-solicitation restriction whose longest period exactly equals the confidentiality term? Report the document ID, exhibit family, governing law, and both periods in months."
+  },
+  {
+    "task_id": "legal_contracts-039",
+    "operator_complexity": "medium",
+    "query": "Which non-disclosure agreements expressly state a governing law, contain return-of-materials and injunctive-relief provisions, and include all six standard confidentiality exceptions except prior knowledge? Report the document name and governing law."
+  },
+  {
+    "task_id": "legal_contracts-040",
+    "operator_complexity": "medium",
+    "query": "Is there any mutual non-disclosure agreement whose definition of confidential information explicitly includes source code or software and that allows the recipient to retain at least one archival copy of materials after termination?"
+  },
+  {
+    "task_id": "legal_contracts-041",
+    "operator_complexity": "medium",
+    "query": "Which insider-trading policies do not explicitly extend their trading restrictions to covered persons’ family or household members? Report the document ID and covered-person categories."
+  },
+  {
+    "task_id": "legal_contracts-042",
+    "operator_complexity": "medium",
+    "query": "Which mutual non-disclosure agreements expressly state a confidentiality term and governing law and contain either a non-compete or employee non-solicitation clause? Report the document ID, normalized confidentiality term in years or perpetual, governing law, and both clause indicators."
+  },
+  {
+    "task_id": "legal_contracts-043",
+    "operator_complexity": "medium",
+    "query": "Which EX-10 material contract exhibits are also mutual or unilateral non-disclosure agreements and explicitly state an effective date? Report the document name, party names, agreement type, and effective date."
+  },
+  {
+    "task_id": "legal_contracts-044",
+    "operator_complexity": "medium",
+    "query": "Which EX-97 compensation clawback or recoupment policies treat intentional misconduct as a trigger, extend recovery beyond SEC minimum requirements, and state an effective date? Report the document name, company name, effective date, and covered persons."
+  },
+  {
+    "task_id": "legal_contracts-045",
+    "operator_complexity": "medium",
+    "query": "Which Delaware- or New York-governed non-disclosure agreements include a standstill provision, recognize all six standard confidentiality exceptionss(publicly available information, prior knowledge, independent development, third-party receipt, legal compulsion, and consent), state a confidentiality term, and state a quantifiable standstill period? Report the document name, governing state, confidentiality term in years or perpetual, and standstill period in years."
+  },
+  {
+    "task_id": "legal_contracts-046",
+    "operator_complexity": "medium",
+    "query": "Which Delaware-governed non-disclosure or confidentiality agreements have a confidentiality term of at least three years or perpetual and recognize all six standard confidentiality exceptions? Report the document ID, normalized term in years or perpetual, and whether the nondisclosure obligation is mutual or unilateral."
+  },
+  {
+    "task_id": "legal_contracts-047",
+    "operator_complexity": "medium",
+    "query": "Which NDA or confidentiality agreements expressly state a governing law, have a confidentiality term of at least 60 months or perpetual, and contain a residual-information clause? Report the document ID, governing law, whether the term is fixed or perpetual, and whether one archival copy may be retained."
+  },
+  {
+    "task_id": "legal_contracts-048",
+    "operator_complexity": "medium",
+    "query": "Which NDA or confidentiality agreements state a perpetual confidentiality term and a governing law but contain no express survival clause? Report the document ID, governing law, and whether the nondisclosure obligation is mutual or unilateral."
+  },
+  {
+    "task_id": "legal_contracts-049",
+    "operator_complexity": "medium",
+    "query": "Which NDA or confidentiality agreement has the longest specified non-perpetual confidentiality term? If several agreements tie, choose the one with the lexicographically smallest document ID. Report the document ID and term in years."
+  },
+  {
+    "task_id": "legal_contracts-050",
+    "operator_complexity": "medium",
+    "query": "Which Delaware-governed agreements contain a customer non-solicitation covenant, also contain an employee non-solicitation covenant or standstill provision, and state a duration for at least one matched covenant? Report the document ID, agreement type, applicable covenant types, and longest stated duration in months."
+  },
+  {
+    "task_id": "legal_contracts-051",
+    "operator_complexity": "medium",
+    "query": "Which subsidiary-list filings identify a parent company and include at least one subsidiary incorporated in the Cayman Islands, British Virgin Islands, Mauritius, or Luxembourg? Report the document ID, parent company, total subsidiary count, number of distinct stated jurisdictions, and up to three most frequent stated jurisdictions with subsidiary counts."
+  },
+  {
+    "task_id": "legal_contracts-052",
+    "operator_complexity": "medium",
+    "query": "How many NDA or confidentiality agreements both permit assignment to a corporate affiliate without the counterparty's consent and specify a U.S. federal court as a venue for disputes?"
+  },
+  {
+    "task_id": "legal_contracts-053",
+    "operator_complexity": "medium",
+    "query": "Among insider trading policies with a specified approval or adoption date, which document has the most recent date, and what is that date? If several tie, choose the lexicographically smallest document ID."
+  },
+  {
+    "task_id": "legal_contracts-054",
+    "operator_complexity": "medium",
+    "query": "Which unilateral non-disclosure agreements state a perpetual confidentiality term and governing law but recognize none of the six standard confidentiality exceptions? Report the document ID and governing law."
+  },
+  {
+    "task_id": "legal_contracts-055",
+    "operator_complexity": "medium",
+    "query": "Which agreements expressly state a governing law and contain both an intellectual-property ownership clause and a residual-information clause? Report the document ID, exhibit type, agreement type, and governing law."
+  },
+  {
+    "task_id": "legal_contracts-056",
+    "operator_complexity": "medium",
+    "query": "How do mutual NDAs, unilateral NDAs, and confidentiality-and-standstill agreements compare in document length? For each agreement type, report the number of documents and average word count, ordered by document count descending and then agreement type ascending."
+  },
+  {
+    "task_id": "legal_contracts-057",
+    "operator_complexity": "medium",
+    "query": "Which employment agreements or standalone restrictive-covenant agreements state a non-compete duration of at least four years and a geographic scope? Report the document ID, duration in years, geographic scope, and prohibited activity scope."
+  },
+  {
+    "task_id": "legal_contracts-058",
+    "operator_complexity": "medium",
+    "query": "What are the five most common confidentiality-protection profiles among NDA and confidentiality agreements? Define a profile by nondisclosure direction and the presence of the six standard confidentiality exceptions. Report the direction, present exception categories, and agreement count for each profile, ordered by count descending, then direction and the exception list ascending."
+  },
+  {
+    "task_id": "legal_contracts-059",
+    "operator_complexity": "medium",
+    "query": "How are SOX Section 906 certifications distributed by the number of certifying officers named in each certification? For every observed officer count, report the number of certifications, ordered by officer count ascending."
+  },
+  {
+    "task_id": "legal_contracts-060",
+    "operator_complexity": "medium",
+    "query": "Which NDA or confidentiality agreements contain a residual-information clause permitting use of information retained in unaided memory and expressly state a governing law? Report the document ID, nondisclosure direction, and governing law."
+  },
+  {
+    "task_id": "legal_contracts-061",
+    "operator_complexity": "medium",
+    "query": "How are documents categorized as mutual NDAs, unilateral NDAs, or confidentiality-and-standstill agreements distributed by their operative nondisclosure direction? Report each observed agreement-type and direction combination with its document count, from most to least common; break count ties alphabetically by agreement type and then direction."
+  },
+  {
+    "task_id": "legal_contracts-062",
+    "operator_complexity": "medium",
+    "query": "Among employment and standalone restrictive-covenant agreements containing customer or employee non-solicitation clauses, how do the Customers Only, Employees Only, and Both categories compare? For each category, report the agreement count, average effective duration in years among agreements with the required duration stated, and most common governing-law jurisdiction. For Both, use the longer duration only when both durations are stated; break governing-law frequency ties alphabetically."
+  },
+  {
+    "task_id": "legal_contracts-063",
+    "operator_complexity": "medium",
+    "query": "Among mutual NDAs, unilateral NDAs, and confidentiality-and-standstill agreements that contain both a non-compete clause and a customer or employee non-solicitation clause, which relative-duration patterns occur and how many documents fall into each? Compare the non-compete duration with the longest stated non-solicitation duration and use NC Longer, NS Longer, or Equal; classify a document as Partially Unspecified whenever any required duration is missing."
+  },
+  {
+    "task_id": "legal_contracts-064",
+    "operator_complexity": "medium",
+    "query": "Which 15 mutual NDAs, unilateral NDAs, or confidentiality-and-standstill agreements provide the complete protection profile with the fewest words? The complete profile requires all six standard exceptions—public information, prior knowledge, independent development, lawful third-party receipt, legal compulsion, and consent—plus injunctive relief, an IP-ownership clause, and a survival clause. Report document ID and word count, ordered by word count ascending and then document ID ascending."
+  },
+  {
+    "task_id": "legal_contracts-065",
+    "operator_complexity": "medium",
+    "query": "How do dated mutual NDAs, unilateral NDAs, and confidentiality-and-standstill agreements compare across the 1990s, 2000s, 2010s, and 2020s? For each decade with data, report the agreement count, average number of the six standard confidentiality exceptions present—public information, prior knowledge, independent development, lawful third-party receipt, legal compulsion, and consent—most common governing-law jurisdiction, and perpetual-term rate in chronological order. Break governing-law frequency ties alphabetically; round the average to two decimals and the rate to four decimals."
+  },
+  {
+    "task_id": "legal_contracts-066",
+    "operator_complexity": "medium",
+    "query": "How do confidentiality-exception breadth, finite term length, and return-of-materials provisions vary across mutual NDAs, unilateral NDAs, and confidentiality-and-standstill agreements? Group agreements by whether they recognize 0–1, 2–3, 4–5, or all 6 standard exceptions: public information, prior knowledge, independent development, lawful third-party receipt, legal compulsion, and consent. For each bracket, report the agreement count, average finite confidentiality term in years, and return-of-materials rate; exclude perpetual and unspecified terms from the average and round the average to two decimals and the rate to four decimals."
+  },
+  {
+    "task_id": "legal_contracts-067",
+    "operator_complexity": "medium",
+    "query": "Which companies have a clawback or compensation-recovery policy that goes beyond baseline SEC clawback requirements? For the latest identifiable policy version from each company, report the company, whether recovery is triggered by restatement only or by restatement and misconduct, and whether coverage extends beyond executive officers. If version dates tie, use the policy with the lexicographically smallest document ID."
+  },
+  {
+    "task_id": "legal_contracts-068",
+    "operator_complexity": "medium",
+    "query": "Which normalized agreement-title families contain at least five mutual NDAs, unilateral NDAs, or confidentiality-and-standstill agreements? Normalize titles by case-folding, replacing punctuation with spaces, and collapsing whitespace. For each family, report its normalized title, size, average number of the six standard confidentiality exceptions—public information, prior knowledge, independent development, lawful third-party receipt, legal compulsion, and consent—share containing both return-or-destroy language and injunctive relief, and share containing all six exceptions. Order by family size descending and then normalized title ascending; round the average to two decimals and both shares to four decimals."
+  },
+  {
+    "task_id": "legal_contracts-069",
+    "operator_complexity": "medium",
+    "query": "Among normalized agreement-title families containing at least five mutual NDAs, unilateral NDAs, or confidentiality-and-standstill agreements, how diverse are the stated confidentiality terms and governing laws? Normalize titles by case-folding, replacing punctuation with spaces, and collapsing whitespace. For each family, report its normalized title, size, sorted distinct finite term durations in years, number of perpetual-term members, and number of distinct expressly stated governing-law values. Order by family size descending and then normalized title ascending; round finite durations to four decimals."
+  },
+  {
+    "task_id": "legal_contracts-070",
+    "operator_complexity": "medium",
+    "query": "How do mutual NDAs, unilateral NDAs, and confidentiality-and-standstill agreements with an IP-ownership clause differ depending on whether they also grant a residual-information right? For each group, report the agreement count, most common expressly stated governing-law jurisdiction, return-or-destroy rate, and injunctive-relief rate. Break governing-law frequency ties alphabetically and round both rates to four decimals."
+  },
+  {
+    "task_id": "legal_contracts-071",
+    "operator_complexity": "medium",
+    "query": "Which documents that are both NDA and employment/restrictive covenant agreement state a finite confidentiality term, a finite non-compete duration, and a governing law? For each document, report its ID, NDA direction, both durations in years, governing law, and whether the durations are equal or which one is longer."
+  },
+  {
+    "task_id": "legal_contracts-072",
+    "operator_complexity": "medium",
+    "query": "Which insider trading policies that cover family or household members discuss Rule 10b5-1 plans, prohibit both short sales and pledging, and state an approval or effective date before 2024-01-01? Report the document name, policy title, and policy date, ordered chronologically; for equal dates, order by document name."
+  },
+  {
+    "task_id": "legal_contracts-073",
+    "operator_complexity": "medium",
+    "query": "Which clawback or compensation-recovery policies permit recovery for both a financial restatement and misconduct, and extend recovery beyond current or former Rule 10D-1/Section 16 executive officers to groups such as employees, directors, key managers, or other designated senior executives? Report the document name, policy title, lookback period, and expanded covered group."
+  },
+  {
+    "task_id": "legal_contracts-074",
+    "operator_complexity": "medium",
+    "query": "Across insider trading policies with a definite yes-or-no value for each of blackout periods, pre-clearance, Rule 10b5-1 plan discussion, family or household coverage, and pledging prohibition, which five-feature combinations occur? Report the five flags and policy count, ordered by count descending; break ties lexicographically with false before true in the listed feature order."
+  },
+  {
+    "task_id": "legal_contracts-075",
+    "operator_complexity": "medium",
+    "query": "For material contract exhibits that contain a non-compete clause, an employee or customer non-solicitation clause, injunctive-relief language, and severability language, how do the stated restrictive periods compare? Include only agreements that state the non-compete duration and at least one employee or customer non-solicitation duration. For each comparison category—non-compete longer, equal, or non-solicitation longer—report the number of agreements and the average non-compete and longest non-solicitation durations in months, rounded to two decimal places."
+  },
+  {
+    "task_id": "legal_contracts-076",
+    "operator_complexity": "hard",
+    "query": "Which company and reporting-period combinations are explicitly stated in both SOX §302 and SOX §906 certifications? For each combination, report the company name, period type and end date, and the document IDs and certifying officers for each certification family. Include a combination only when both families state the same period type and end date; when equivalent company-name variants differ, use the lexicographically smallest stated variant."
+  },
+  {
+    "task_id": "legal_contracts-077",
+    "operator_complexity": "hard",
+    "query": "Which pairs of distinct documents link an NDA or confidentiality agreement with a finite stated confidentiality term to an employment or standalone restrictive-covenant agreement with a finite stated non-compete term because the same stated corporate party appears in both? Ignore capitalization, punctuation, and legal suffixes when matching company names. Report the lexicographically smallest matching stated company name, both document IDs, and both durations in years."
+  },
+  {
+    "task_id": "legal_contracts-078",
+    "operator_complexity": "hard",
+    "query": "Which insider-trading policies longer than 5,000 words discuss Rule 10b5-1 plans, cover family or household members, and state no policy approval or adoption date? Report the document ID and stated company name or names."
+  },
+  {
+    "task_id": "legal_contracts-079",
+    "operator_complexity": "hard",
+    "query": "Which NDA or confidentiality agreements have an effective date after 2010, explicitly include electronic or computer-related material in the protected-information definition, allow the recipient to return or destroy protected material, and keep confidentiality obligations in force after termination or return or destruction? Report the document ID, governing law, and whether the agreement expressly permits retention of a single archival or record copy."
+  },
+  {
+    "task_id": "legal_contracts-080",
+    "operator_complexity": "hard",
+    "query": "Which companies have both an SOX §302 certification and an insider-trading policy whose latest identifiable version requires pre-clearance, prohibits hedging, short selling, and pledging, and explicitly covers at least five of these six categories: directors, officers or executives, employees or personnel, external service providers, family or household members, and controlled entities or accounts? Match company names after normalizing capitalization, punctuation, and legal suffixes. Report the company and its covered categories, ordered by the number of covered categories descending and then company name ascending; break policy-version date ties by document ID."
+  },
+  {
+    "task_id": "legal_contracts-081",
+    "operator_complexity": "hard",
+    "query": "Which companies have an EX-97 clawback or compensation-recovery policy that goes beyond baseline SEC requirements, treats misconduct as a recovery trigger, and explicitly extends recovery beyond executive officers to non-executive employees, directors, or key managers? Report the company names."
+  },
+  {
+    "task_id": "legal_contracts-082",
+    "operator_complexity": "hard",
+    "query": "Which mutual NDAs, unilateral NDAs, or confidentiality-and-standstill agreements have a perpetual or indefinite confidentiality term, contain no independently-developed-information exception, and lack a severability clause? Report the document IDs."
+  },
+  {
+    "task_id": "legal_contracts-083",
+    "operator_complexity": "hard",
+    "query": "Among standalone NDAs that include all six standard confidentiality exceptions—public information, prior knowledge, independent development, third-party receipt, legal compulsion, and consent—and state both a finite confidentiality term and governing law, which governing laws occur in at least three agreements? Report each law, agreement count, and distinct term lengths in years, ordered by count descending; break ties alphabetically by governing law and round term lengths to four decimals where needed."
+  },
+  {
+    "task_id": "legal_contracts-084",
+    "operator_complexity": "hard",
+    "query": "Which companies have a SOX Section 302 certification, a clawback policy that permits recovery for misconduct, and at least one subsidiary-list filing naming 70 or more subsidiaries? For each company, report its distinct certifying officers, normalized covered-person category, and largest subsidiary count in the corpus. Order by the largest subsidiary count descending; break ties by company name."
+  },
+  {
+    "task_id": "legal_contracts-085",
+    "operator_complexity": "hard",
+    "query": "Which companies have a SOX Section 302 certification and all four of these additional filing families: an insider trading policy, a clawback policy, an auditor consent letter, and a subsidiary list—where the clawback policy permits recovery for misconduct and at least one subsidiary list names 30 or more subsidiaries? Report the company, distinct certifying officers, distinct auditor firms, normalized clawback covered-person categories, and largest subsidiary count. Order by the largest subsidiary count descending; break ties by company name."
+  },
+  {
+    "task_id": "legal_contracts-086",
+    "operator_complexity": "hard",
+    "query": "Among documents classified as NDAs, including dual-labelled exhibits, with effective dates after 2010-01-01, which stated governing-law jurisdictions occur in agreements that define confidential information to include electronic data or records, email, software or code, metadata, or other computer-readable material; require destruction of at least some confidential materials or copies rather than only their return; and expressly continue confidentiality or non-use duties beyond termination or expiry? Report the matching NDA count by jurisdiction, ordered by count descending and then jurisdiction alphabetically."
+  },
+  {
+    "task_id": "legal_contracts-087",
+    "operator_complexity": "hard",
+    "query": "Among documents whose exhibit type is exactly NDA, that state an agreement title and explicitly define confidential information, which normalized title families have at least five members and at least one member that includes return-or-destroy language, injunctive or equitable relief, and all six standard exceptions: public information, prior knowledge, independent development, third-party receipt, legal compulsion, and consent? Normalize titles by case-folding, replacing punctuation with spaces, and collapsing whitespace. Report the normalized title, family size, and qualifying-member count, ordered by qualifying-member count descending, family size descending, and then title alphabetically."
+  },
+  {
+    "task_id": "legal_contracts-088",
+    "operator_complexity": "hard",
+    "query": "Which companies have both an EX-31 SOX officer certification and an EX-97 clawback policy that permits recovery for misconduct in addition to financial-restatement recovery? For each company, report its alphabetically sorted distinct certifying officers, including each officer's title, and the normalized covered-person category stated by the clawback policy."
+  },
+  {
+    "task_id": "legal_contracts-089",
+    "operator_complexity": "hard",
+    "query": "How are normalized agreement-title families distributed by exception coverage among pure NDA documents that state a title and explicitly define confidential information? Normalize titles by case-folding, replacing punctuation with spaces, and collapsing whitespace, and include only families with at least three documents. Based on each family's average number of the six standard exceptions—public information, prior knowledge, independent development, third-party receipt, legal compulsion, and consent—use high_5_to_6 for averages of at least 5, medium_3_to_4 for averages from 3 up to but not including 5, and low_0_to_2 for averages below 3. Report each non-empty bucket's family count and average family size rounded to two decimals, ordered high, medium, then low."
+  },
+  {
+    "task_id": "legal_contracts-090",
+    "operator_complexity": "hard",
+    "query": "For non-disclosure agreements that expressly contain both a standstill provision and an employee non-solicitation clause and state both durations, how are the agreements distributed according to which restriction lasts longer? Report the duration comparison (employee restriction longer, equal, or standstill longer), the number of agreements, and the average number of the six standard confidentiality exceptions present—public information, prior knowledge, independent development, third-party receipt, legal compulsion, and written consent—rounded to two decimal places. Order the categories by agreement count descending."
+  },
+  {
+    "task_id": "legal_contracts-091",
+    "operator_complexity": "hard",
+    "query": "Which parent companies have both an EX-21 filing that explicitly identifies the parent and its subsidiaries and an EX-10 employment, offer, or separation agreement involving that parent or one of its listed subsidiaries? Count only EX-10 agreements that contain a non-compete clause and an employee or customer non-solicitation clause and state both restrictive durations. Report the parent company, its subsidiary count, and the number of distinct qualifying EX-10 agreements. If a parent has multiple EX-21 filings, use the largest stated subsidiary count."
+  },
+  {
+    "task_id": "legal_contracts-092",
+    "operator_complexity": "hard",
+    "query": "Among companies with both an EX-19 insider trading policy and an EX-21 subsidiary list that explicitly identifies the parent company, how does corporate scale vary across the observed combinations of hedging, short-sale, and pledging prohibitions? For each restriction profile, report the three prohibition flags, the number of distinct companies, and the median subsidiary count. Treat duplicate policies with the same profile as one company, and use the largest stated subsidiary count when a company has multiple EX-21 lists."
+  },
+  {
+    "task_id": "legal_contracts-093",
+    "operator_complexity": "hard",
+    "query": "Which SOX §302 certifying officers also appear as named employees in an EX-10 employment or restrictive-covenant agreement for the same company that states a non-compete duration? Report the company, certifying officer, EX-10 document, and non-compete duration in years. Treat clear middle-name, nickname, and shortened-name variants as the same person, and list each distinct officer–agreement pair once."
+  },
+  {
+    "task_id": "legal_contracts-094",
+    "operator_complexity": "hard",
+    "query": "Which governing-law jurisdictions contain the most non-disclosure agreements that explicitly define confidential information and include both a return-or-destroy obligation and injunctive-relief language? For the top three jurisdictions by combined mutual and unilateral NDA count, report the jurisdiction, the mutual and unilateral counts, and the average stated finite agreement term in years, excluding perpetual or unspecified terms and rounding to two decimal places. Order by the combined count descending, breaking ties alphabetically by jurisdiction."
+  },
+  {
+    "task_id": "legal_contracts-095",
+    "operator_complexity": "hard",
+    "query": "Which companies have all three of the following filings: an EX-19 insider trading policy that prohibits hedging, short sales, and pledging; an EX-21 subsidiary list that explicitly identifies the parent company; and an EX-97 clawback policy that permits misconduct-based recovery in addition to financial-restatement recovery? Report the company, its subsidiary count, and the normalized covered-person category in the clawback policy. If a company has multiple EX-21 lists, use the largest stated subsidiary count."
+  },
+  {
+    "task_id": "legal_contracts-096",
+    "operator_complexity": "hard",
+    "query": "Which SOX §906 certifying officers also appear as named employees in an EX-10 employment or restrictive-covenant agreement for the same company that states a non-compete duration? For each distinct officer–agreement pair, report the company, certifying officer, EX-10 document, number of distinct EX-32 certifications signed by that officer in the dataset, and non-compete duration in years. Treat clear middle-name, nickname, and shortened-name variants as the same person."
+  },
+  {
+    "task_id": "legal_contracts-097",
+    "operator_complexity": "hard",
+    "query": "Which companies have both an EX-19 insider trading policy in which none of the prohibitions against hedging, short sales, or pledging is present and EX-31 SOX §302 certifications signed by at least two distinct officers? Report the company, its certifying officers, and the number of EX-31 certification documents."
+  },
+  {
+    "task_id": "legal_contracts-098",
+    "operator_complexity": "hard",
+    "query": "Among NDAs with a finite stated confidentiality term, what are the five most common exact restriction profiles, where each profile records, in order, the presence of a non-compete, customer non-solicitation, employee non-solicitation, standstill, and vendor non-solicitation clause? Report each profile, its NDA count, and its average confidentiality duration in years rounded to two decimals."
+  },
+  {
+    "task_id": "legal_contracts-099",
+    "operator_complexity": "hard",
+    "query": "Among mutual NDAs, unilateral NDAs, and confidentiality-and-standstill agreements, which categories include at least one agreement whose corporate party is also named as the audit client in an EX-23 auditor consent letter? Report the category, total number of agreements, number of audit-linked agreements, and matched audit-client companies."
+  },
+  {
+    "task_id": "legal_contracts-100",
+    "operator_complexity": "hard",
+    "query": "Among EX-31 SOX §302 certifications, which exact combinations of the internal-controls, fraud-disclosure, and material-changes assertions are represented by at least one company that also has an EX-97 clawback policy? For each combination, report its certification-document count, distinct-company count, number of those companies with a clawback policy, and number whose policy goes beyond the SEC minimum."
+  },
+  {
+    "task_id": "legal_contracts-101",
+    "operator_complexity": "hard",
+    "query": "Which individuals are named employees in an EX-10 employment agreement with a finite employee non-solicitation period, also sign an EX-31 SOX §302 certification for the same company, and are covered by that company's EX-19 insider trading policy? Report the company, individual, employment-agreement document, and non-solicitation duration in years."
+  },
+  {
+    "task_id": "legal_contracts-102",
+    "operator_complexity": "hard",
+    "query": "Among Delaware-governed documents with NDA status whose corporate party also appears as a company in an EX-31 SOX §302 certification, which exact combinations of the public-information, prior-knowledge, independent-development, third-party-receipt, legal-compulsion, and consent exceptions occur in at least two NDA documents? Report each combination, its NDA document count, and its distinct matched-company count."
+  },
+  {
+    "task_id": "legal_contracts-103",
+    "operator_complexity": "hard",
+    "query": "For companies that have an EX-97 clawback policy, an EX-31 SOX §302 certification, and an EX-21 subsidiary list with an explicit parent and subsidiary count, how do the results differ by clawback trigger type? Report the matched-company count and the average of each company's largest stated subsidiary count, rounded to two decimals, for restatement-only and restatement-and-misconduct policies."
+  },
+  {
+    "task_id": "legal_contracts-104",
+    "operator_complexity": "hard",
+    "query": "Among documents with NDA status that state a finite non-compete period and contain either a customer or employee non-solicitation clause, how are the matched NDA-company pairs distributed by whether the non-compete exceeds three years and whether the same company's EX-19 policy includes a blackout period, pre-clearance, and a Rule 10b5-1 provision? For each observed combination, report the matched-pair count and distinct-company count."
+  },
+  {
+    "task_id": "legal_contracts-105",
+    "operator_complexity": "hard",
+    "query": "Among documents with NDA status, an effective date on or after 2010-01-01, and exactly one stated governing-law jurisdiction, which three jurisdictions occur most often? For each, report the NDA count; the count containing all five core clauses—confidential-information definition, nondisclosure, non-use, return of materials, and survival; the count containing all six standard exceptions—public information, prior knowledge, independent development, third-party receipt, legal compulsion, and consent; and the count with a perpetual confidentiality term."
+  },
+  {
+    "task_id": "legal_contracts-106",
+    "operator_complexity": "hard",
+    "query": "Among documents with NDA status, a finite confidentiality term, exactly one governing-law jurisdiction, and at least one restrictive covenant, which three jurisdictions contain the most documents? For each jurisdiction, report its qualifying NDA count and its most common exact five-covenant profile—non-compete, customer non-solicitation, employee non-solicitation, standstill, and vendor non-solicitation—together with that profile's document count and average duration in years rounded to two decimals."
+  }
+]
+

@@ -1,0 +1,64 @@
+{
+  "task_id": "vehicle_safety-047",
+  "answer": [
+    {
+      "campaign_number": "14V391000",
+      "matched_complaint_count": 3,
+      "median_days_complaint_to_recall": -2828,
+      "share_complaints_before_recall": 0.0,
+      "dominant_electrical_root_cause": "wiring short circuit in sun visor vanity lamp",
+      "response_promptness_label": "slow"
+    },
+    {
+      "campaign_number": "14V634000",
+      "matched_complaint_count": 12,
+      "median_days_complaint_to_recall": -2913,
+      "share_complaints_before_recall": 0.0,
+      "dominant_electrical_root_cause": "Answer: {\"response_promptness_label\": \"slow\", \"dominant_electrical_root_cause\": \"alternator may suddenly fail\"}",
+      "response_promptness_label": ""
+    },
+    {
+      "campaign_number": "17V435000",
+      "matched_complaint_count": 16,
+      "median_days_complaint_to_recall": -2308,
+      "share_complaints_before_recall": 0.2222222222,
+      "dominant_electrical_root_cause": "Answer: {\"response_promptness_label\": \"slow\", \"dominant_electrical_root_cause\": \"alternator may suddenly fail\"}",
+      "response_promptness_label": ""
+    },
+    {
+      "campaign_number": "17V741000",
+      "matched_complaint_count": 15,
+      "median_days_complaint_to_recall": -1714,
+      "share_complaints_before_recall": 0.1481481481,
+      "dominant_electrical_root_cause": "Answer: {\"response_promptness_label\": \"slow\", \"dominant_electrical_root_cause\": \"alternator may suddenly fail\"}",
+      "response_promptness_label": ""
+    },
+    {
+      "campaign_number": "18V332000",
+      "matched_complaint_count": 3,
+      "median_days_complaint_to_recall": 296,
+      "share_complaints_before_recall": 0.6666666667,
+      "dominant_electrical_root_cause": "Context: The provided data includes a list of 15 entries for days distribution, root causes, and complaint summaries. The `Days_distribution` list contains four negative values (-2746), one moderately negative value (-1537), and ten positive values (296). The `Root_causes` list identifies \"alternator may suddenly fail\" for the first five entries and \"short circuit within the vehicle's wiring\" for the remaining ten entries. The `Complaint_summaries` describe various electrical failures including dashboard glitches, loss of motive power, and unintended acceleration, with multiple mentions of wiring harness issues and short",
+      "response_promptness_label": ""
+    },
+    {
+      "campaign_number": "18V524000",
+      "matched_complaint_count": 27,
+      "median_days_complaint_to_recall": -2312,
+      "share_complaints_before_recall": 0.1153846154,
+      "dominant_electrical_root_cause": "Answer: {\"response_promptness_label\": \"slow\", \"dominant_electrical_root_cause\": \"alternator may suddenly fail\"}",
+      "response_promptness_label": ""
+    },
+    {
+      "campaign_number": "19V203000",
+      "matched_complaint_count": 7,
+      "median_days_complaint_to_recall": -2347,
+      "share_complaints_before_recall": 0.1428571429,
+      "dominant_electrical_root_cause": "Answer: {\"response_promptness_label\": \"slow\", \"dominant_electrical_root_cause\": \"instrument cluster fails to illuminate warnings\"}",
+      "response_promptness_label": ""
+    }
+  ],
+  "elapsed_seconds": 120.08,
+  "cost_usd": 0.321325,
+  "total_tokens": 767328
+}

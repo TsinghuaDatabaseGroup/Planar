@@ -1,0 +1,81 @@
+datasets:
+  nhtsa_complaints:
+    type: file
+    path: data/nhtsa_vehicle_safety/complaints.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_target_vehicle_crash_without_fire
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("vehicle_id") == "TESLA__MODEL_3__2022"
+              and str(doc.get("crash_flag", "")).lower() == "true"
+              and str(doc.get("fire_flag", "")).lower() == "false"
+          )
+
+  - name: classify_phantom_braking_or_unintended_acceleration
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether this NHTSA complaint describes at least one of these events:
+      - phantom braking: the subject vehicle braked or decelerated unexpectedly when
+        there was no valid obstacle, hazard, or driver command requiring it;
+      - sudden unintended acceleration: the subject vehicle accelerated, surged, or
+        increased speed unexpectedly without the driver's intended accelerator input.
+
+      Base the decision only on an event actually described in the complaint. Mere
+      discussion of a possibility, recall, warning, unrelated vehicle, or condition
+      explicitly ruled out does not qualify.
+
+      Complaint:
+      {{ input.summary_text }}
+    output:
+      mode: structured_output
+      schema:
+        matches_semantic_condition: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: count_matching_complaints
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {"count": len(items)}
+
+pipeline:
+  steps:
+    - name: matching_complaints
+      input: nhtsa_complaints
+      operations:
+        - filter_target_vehicle_crash_without_fire
+        - classify_phantom_braking_or_unintended_acceleration
+        - count_matching_complaints
+  output:
+    type: file
+    path: raw_outputs/vehicle_safety/output_vehicle_safety-001.json

@@ -1,0 +1,327 @@
+{
+  "node_id": 1,
+  "sample_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-029/moar-search/pipeline_aviation_safety-029_input_sample_openai_Qwen3.5-397B-A17B.yaml",
+  "sample_output_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-029/moar-search/pipeline_aviation_safety-029_input_sample_openai_Qwen3.5-397B-A17B.json",
+  "semantic_fidelity": 1.0,
+  "sample_execution_cost_usd": 0.06990009,
+  "fidelity_threshold": 0.9,
+  "selection_reason": "lowest_cost_meeting_fidelity_threshold",
+  "optimization_path": "ROOT → change to Qwen3.5-397B-A17B(filter_afternoon_local_time)",
+  "sample_execution_metrics_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-029/moar-search/candidate-metrics/execution_0001_node-1.json",
+  "full_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-029/selected-plan/pipeline_aviation_safety-029_optimized_full.yaml",
+  "input_plan_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/pipeline-all/pipeline_aviation_safety-029.yaml",
+  "input_plan_kind": "reference-plan translation used as the MOAR input plan",
+  "operator_execution_policy": {
+    "policy": "structural_rewrite_fixed_operator_execution",
+    "nested_v1_optimizer_invoked": false,
+    "fixed_default_model": "Qwen3.5-397B-A17B",
+    "unchanged_operations": [
+      "filter_afternoon_local_time",
+      "load_asrs_narrative",
+      "filter_weather_caused_target_result",
+      "filter_nonexcluded_primary_cause",
+      "attach_target_flight_conditions",
+      "inner_join_environment_records",
+      "attach_target_result_events",
+      "inner_join_result_events",
+      "filter_approach_or_landing_phase",
+      "build_condition_result_combinations",
+      "unnest_condition_result_combinations",
+      "aggregate_condition_result_distribution",
+      "unnest_answer_rows"
+    ],
+    "new_or_replaced_operations": [],
+    "restored_fields": {},
+    "unchanged_operation_count": 13,
+    "new_or_replaced_operation_count": 0
+  },
+  "input_plan_signature": {
+    "definitions": {
+      "filter_afternoon_local_time": "code_filter",
+      "load_asrs_narrative": "code_map",
+      "filter_weather_caused_target_result": "filter",
+      "filter_nonexcluded_primary_cause": "filter",
+      "attach_target_flight_conditions": "code_map",
+      "inner_join_environment_records": "code_filter",
+      "attach_target_result_events": "code_map",
+      "inner_join_result_events": "code_filter",
+      "filter_approach_or_landing_phase": "code_filter",
+      "build_condition_result_combinations": "code_map",
+      "unnest_condition_result_combinations": "unnest",
+      "aggregate_condition_result_distribution": "code_reduce",
+      "unnest_answer_rows": "unnest"
+    },
+    "logical_operations": [
+      {
+        "name": "filter_afternoon_local_time",
+        "type": "code_filter",
+        "logical_config_sha256": "4913f79a64778cdc75fc72869f0e0e4019b45a92797b77fd5221f77d239e2df4"
+      },
+      {
+        "name": "load_asrs_narrative",
+        "type": "code_map",
+        "logical_config_sha256": "22704ad225c76497658f97dc72d7fd2e6af23d702a4068895817ea53c0f3aa87"
+      },
+      {
+        "name": "filter_weather_caused_target_result",
+        "type": "filter",
+        "logical_config_sha256": "f38af5c39f1e0d2ca9e3b23f33bc6310ab148a2749d04c0aa31f5866d08c22f1"
+      },
+      {
+        "name": "filter_nonexcluded_primary_cause",
+        "type": "filter",
+        "logical_config_sha256": "7bc7b07ab19dc5657df512ae25598644716d017b09e063287e23c8ea42ecb933"
+      },
+      {
+        "name": "attach_target_flight_conditions",
+        "type": "code_map",
+        "logical_config_sha256": "3a88dfec73d8721d548640a5fb7207a553bd445110aac6311f15016052d0275a"
+      },
+      {
+        "name": "inner_join_environment_records",
+        "type": "code_filter",
+        "logical_config_sha256": "49f5d3a816c249ea7737422ba3a1542d3476bb7f27a06cf8ac23fb4a2a9e5153"
+      },
+      {
+        "name": "attach_target_result_events",
+        "type": "code_map",
+        "logical_config_sha256": "88753682e800e6e4ad08dc5bc21808fd0ecc3591e952c26988cfe99b946c4f8e"
+      },
+      {
+        "name": "inner_join_result_events",
+        "type": "code_filter",
+        "logical_config_sha256": "e4c0720560feb47c1dd8b71623dd0d5b1fc942dca6e0f0de8461ef9e49b8f8a5"
+      },
+      {
+        "name": "filter_approach_or_landing_phase",
+        "type": "code_filter",
+        "logical_config_sha256": "6ecf2705994a0c2068078c224c58a201bb61444ee5dd2572aeb4ab217e8bb41e"
+      },
+      {
+        "name": "build_condition_result_combinations",
+        "type": "code_map",
+        "logical_config_sha256": "121f135d51be3bfd817aa57676c12b92b5f580d6132602c24f02868a9c002fb7"
+      },
+      {
+        "name": "unnest_condition_result_combinations",
+        "type": "unnest",
+        "logical_config_sha256": "b18db0c4afd4e0693916fd37a6e70f523a6251e1289b37da21d515228b56abdc"
+      },
+      {
+        "name": "aggregate_condition_result_distribution",
+        "type": "code_reduce",
+        "logical_config_sha256": "f6a83528615ae8c6a3217c7a9121f3845413b6694d526c20eab05ebf27694b9d"
+      },
+      {
+        "name": "unnest_answer_rows",
+        "type": "unnest",
+        "logical_config_sha256": "0eb54aaf8940c28e0102f6b8f7badcba9347ba17d86774197537763904ea3005"
+      }
+    ],
+    "steps": [
+      {
+        "name": "process",
+        "input": "asrs_incidents",
+        "operations": [
+          {
+            "name": "filter_afternoon_local_time",
+            "type": "code_filter"
+          },
+          {
+            "name": "load_asrs_narrative",
+            "type": "code_map"
+          },
+          {
+            "name": "filter_weather_caused_target_result",
+            "type": "filter"
+          },
+          {
+            "name": "filter_nonexcluded_primary_cause",
+            "type": "filter"
+          },
+          {
+            "name": "attach_target_flight_conditions",
+            "type": "code_map"
+          },
+          {
+            "name": "inner_join_environment_records",
+            "type": "code_filter"
+          },
+          {
+            "name": "attach_target_result_events",
+            "type": "code_map"
+          },
+          {
+            "name": "inner_join_result_events",
+            "type": "code_filter"
+          },
+          {
+            "name": "filter_approach_or_landing_phase",
+            "type": "code_filter"
+          },
+          {
+            "name": "build_condition_result_combinations",
+            "type": "code_map"
+          },
+          {
+            "name": "unnest_condition_result_combinations",
+            "type": "unnest"
+          },
+          {
+            "name": "aggregate_condition_result_distribution",
+            "type": "code_reduce"
+          },
+          {
+            "name": "unnest_answer_rows",
+            "type": "unnest"
+          }
+        ]
+      }
+    ]
+  },
+  "selected_plan_signature": {
+    "definitions": {
+      "filter_afternoon_local_time": "code_filter",
+      "load_asrs_narrative": "code_map",
+      "filter_weather_caused_target_result": "filter",
+      "filter_nonexcluded_primary_cause": "filter",
+      "attach_target_flight_conditions": "code_map",
+      "inner_join_environment_records": "code_filter",
+      "attach_target_result_events": "code_map",
+      "inner_join_result_events": "code_filter",
+      "filter_approach_or_landing_phase": "code_filter",
+      "build_condition_result_combinations": "code_map",
+      "unnest_condition_result_combinations": "unnest",
+      "aggregate_condition_result_distribution": "code_reduce",
+      "unnest_answer_rows": "unnest"
+    },
+    "logical_operations": [
+      {
+        "name": "filter_afternoon_local_time",
+        "type": "code_filter",
+        "logical_config_sha256": "4913f79a64778cdc75fc72869f0e0e4019b45a92797b77fd5221f77d239e2df4"
+      },
+      {
+        "name": "load_asrs_narrative",
+        "type": "code_map",
+        "logical_config_sha256": "22704ad225c76497658f97dc72d7fd2e6af23d702a4068895817ea53c0f3aa87"
+      },
+      {
+        "name": "filter_weather_caused_target_result",
+        "type": "filter",
+        "logical_config_sha256": "f38af5c39f1e0d2ca9e3b23f33bc6310ab148a2749d04c0aa31f5866d08c22f1"
+      },
+      {
+        "name": "filter_nonexcluded_primary_cause",
+        "type": "filter",
+        "logical_config_sha256": "7bc7b07ab19dc5657df512ae25598644716d017b09e063287e23c8ea42ecb933"
+      },
+      {
+        "name": "attach_target_flight_conditions",
+        "type": "code_map",
+        "logical_config_sha256": "3a88dfec73d8721d548640a5fb7207a553bd445110aac6311f15016052d0275a"
+      },
+      {
+        "name": "inner_join_environment_records",
+        "type": "code_filter",
+        "logical_config_sha256": "49f5d3a816c249ea7737422ba3a1542d3476bb7f27a06cf8ac23fb4a2a9e5153"
+      },
+      {
+        "name": "attach_target_result_events",
+        "type": "code_map",
+        "logical_config_sha256": "88753682e800e6e4ad08dc5bc21808fd0ecc3591e952c26988cfe99b946c4f8e"
+      },
+      {
+        "name": "inner_join_result_events",
+        "type": "code_filter",
+        "logical_config_sha256": "e4c0720560feb47c1dd8b71623dd0d5b1fc942dca6e0f0de8461ef9e49b8f8a5"
+      },
+      {
+        "name": "filter_approach_or_landing_phase",
+        "type": "code_filter",
+        "logical_config_sha256": "6ecf2705994a0c2068078c224c58a201bb61444ee5dd2572aeb4ab217e8bb41e"
+      },
+      {
+        "name": "build_condition_result_combinations",
+        "type": "code_map",
+        "logical_config_sha256": "121f135d51be3bfd817aa57676c12b92b5f580d6132602c24f02868a9c002fb7"
+      },
+      {
+        "name": "unnest_condition_result_combinations",
+        "type": "unnest",
+        "logical_config_sha256": "b18db0c4afd4e0693916fd37a6e70f523a6251e1289b37da21d515228b56abdc"
+      },
+      {
+        "name": "aggregate_condition_result_distribution",
+        "type": "code_reduce",
+        "logical_config_sha256": "f6a83528615ae8c6a3217c7a9121f3845413b6694d526c20eab05ebf27694b9d"
+      },
+      {
+        "name": "unnest_answer_rows",
+        "type": "unnest",
+        "logical_config_sha256": "0eb54aaf8940c28e0102f6b8f7badcba9347ba17d86774197537763904ea3005"
+      }
+    ],
+    "steps": [
+      {
+        "name": "process",
+        "input": "asrs_incidents",
+        "operations": [
+          {
+            "name": "filter_afternoon_local_time",
+            "type": "code_filter"
+          },
+          {
+            "name": "load_asrs_narrative",
+            "type": "code_map"
+          },
+          {
+            "name": "filter_weather_caused_target_result",
+            "type": "filter"
+          },
+          {
+            "name": "filter_nonexcluded_primary_cause",
+            "type": "filter"
+          },
+          {
+            "name": "attach_target_flight_conditions",
+            "type": "code_map"
+          },
+          {
+            "name": "inner_join_environment_records",
+            "type": "code_filter"
+          },
+          {
+            "name": "attach_target_result_events",
+            "type": "code_map"
+          },
+          {
+            "name": "inner_join_result_events",
+            "type": "code_filter"
+          },
+          {
+            "name": "filter_approach_or_landing_phase",
+            "type": "code_filter"
+          },
+          {
+            "name": "build_condition_result_combinations",
+            "type": "code_map"
+          },
+          {
+            "name": "unnest_condition_result_combinations",
+            "type": "unnest"
+          },
+          {
+            "name": "aggregate_condition_result_distribution",
+            "type": "code_reduce"
+          },
+          {
+            "name": "unnest_answer_rows",
+            "type": "unnest"
+          }
+        ]
+      }
+    ]
+  },
+  "plan_changed": false
+}

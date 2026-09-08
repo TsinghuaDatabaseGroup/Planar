@@ -1,0 +1,480 @@
+{
+  "node_id": 81,
+  "sample_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-043/moar-search/pipeline_vehicle_safety-043_input_sample_openai_Qwen3.5-397B-A17B.yaml",
+  "sample_output_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-043/moar-search/pipeline_vehicle_safety-043_input_sample_openai_Qwen3.5-397B-A17B.json",
+  "semantic_fidelity": 1.0,
+  "sample_execution_cost_usd": 0.64575888,
+  "fidelity_threshold": 0.9,
+  "selection_reason": "lowest_cost_meeting_fidelity_threshold",
+  "optimization_path": "ROOT → change to Qwen3.5-397B-A17B(extract_cited_recall_cores)",
+  "sample_execution_metrics_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-043/moar-search/candidate-metrics/execution_0001_node-81.json",
+  "full_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-043/selected-plan/pipeline_vehicle_safety-043_optimized_full.yaml",
+  "input_plan_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/pipeline-all/pipeline_vehicle_safety-043.yaml",
+  "input_plan_kind": "reference-plan translation used as the MOAR input plan",
+  "operator_execution_policy": {
+    "policy": "structural_rewrite_fixed_operator_execution",
+    "nested_v1_optimizer_invoked": false,
+    "fixed_default_model": "Qwen3.5-397B-A17B",
+    "unchanged_operations": [
+      "extract_cited_recall_cores",
+      "normalize_extracted_recall_cores",
+      "collect_investigation_cited_cores",
+      "filter_selected_make_recalls",
+      "flatten_selected_make_recall_fields",
+      "aggregate_recall_statistics_by_make",
+      "filter_selected_make_complaints",
+      "match_selected_make_complaints_to_recalls",
+      "collect_corroborated_complaint_counts",
+      "cross_join_recall_stats_with_complaint_counts",
+      "coalesce_corroborated_complaint_count",
+      "cross_join_make_stats_with_investigation_cores",
+      "assign_make_alignment_label",
+      "format_make_alignment_dictionary"
+    ],
+    "new_or_replaced_operations": [],
+    "restored_fields": {},
+    "unchanged_operation_count": 14,
+    "new_or_replaced_operation_count": 0
+  },
+  "input_plan_signature": {
+    "definitions": {
+      "extract_cited_recall_cores": "map",
+      "normalize_extracted_recall_cores": "code_map",
+      "collect_investigation_cited_cores": "code_reduce",
+      "filter_selected_make_recalls": "code_filter",
+      "flatten_selected_make_recall_fields": "code_map",
+      "aggregate_recall_statistics_by_make": "code_reduce",
+      "filter_selected_make_complaints": "code_filter",
+      "match_selected_make_complaints_to_recalls": "equijoin",
+      "collect_corroborated_complaint_counts": "code_reduce",
+      "cross_join_recall_stats_with_complaint_counts": "equijoin",
+      "coalesce_corroborated_complaint_count": "code_map",
+      "cross_join_make_stats_with_investigation_cores": "equijoin",
+      "assign_make_alignment_label": "code_map",
+      "format_make_alignment_dictionary": "code_reduce"
+    },
+    "logical_operations": [
+      {
+        "name": "extract_cited_recall_cores",
+        "type": "map",
+        "logical_config_sha256": "65d139d5fd4d0ba1c96817730ef3fe385a1338919cac5ae3a7f1e2779e4a350c"
+      },
+      {
+        "name": "normalize_extracted_recall_cores",
+        "type": "code_map",
+        "logical_config_sha256": "5f09792183616efbc98b6ec02964469eed11c18679c822f23440f0d17d52957a"
+      },
+      {
+        "name": "collect_investigation_cited_cores",
+        "type": "code_reduce",
+        "logical_config_sha256": "9ea4252b829569fc2bd0ba78141098ebc041e2837bef78e9bfb26053b5798852"
+      },
+      {
+        "name": "filter_selected_make_recalls",
+        "type": "code_filter",
+        "logical_config_sha256": "2dfaca3cecfec85255c170ff9546a5ab2dcc372e107a608325a5f39707e9d543"
+      },
+      {
+        "name": "flatten_selected_make_recall_fields",
+        "type": "code_map",
+        "logical_config_sha256": "148ad9ddecb00bf389f299f8a657e7fcc20e868eba32e7ae179e77f02022f895"
+      },
+      {
+        "name": "aggregate_recall_statistics_by_make",
+        "type": "code_reduce",
+        "logical_config_sha256": "9758179e527b8053370c7119861de246d0ef2ae788926ae9668b22ae97099d04"
+      },
+      {
+        "name": "filter_selected_make_complaints",
+        "type": "code_filter",
+        "logical_config_sha256": "5e1fe78759132fcbb23a04b0ecc1acfa512f1d64069ea8d85800498b959d550a"
+      },
+      {
+        "name": "match_selected_make_complaints_to_recalls",
+        "type": "equijoin",
+        "logical_config_sha256": "1fd7b663b3afc1a5074aeeb410a96377c53fa4fee2d4396932118cce41395ded"
+      },
+      {
+        "name": "collect_corroborated_complaint_counts",
+        "type": "code_reduce",
+        "logical_config_sha256": "77574ff795feabed1782cbd7d095023c3123353ad35e4911ce0448143f796356"
+      },
+      {
+        "name": "cross_join_recall_stats_with_complaint_counts",
+        "type": "equijoin",
+        "logical_config_sha256": "413bb6d094c93829c94146d868c7f873b1eba615d4b54b10756d742546b55108"
+      },
+      {
+        "name": "coalesce_corroborated_complaint_count",
+        "type": "code_map",
+        "logical_config_sha256": "002ed8bda90f23f46e54b63944eb72af01a3168eab495b19c0a15082ea7f2e94"
+      },
+      {
+        "name": "cross_join_make_stats_with_investigation_cores",
+        "type": "equijoin",
+        "logical_config_sha256": "4b0f3784df9f01546662e005501d31d310bff595f5bf107abd9e1245b193582f"
+      },
+      {
+        "name": "assign_make_alignment_label",
+        "type": "code_map",
+        "logical_config_sha256": "d1187b6b20150c0a288e27d76babb2d5d87c0deaead3b633c59b15af0d3c3782"
+      },
+      {
+        "name": "format_make_alignment_dictionary",
+        "type": "code_reduce",
+        "logical_config_sha256": "b53be83049076d71174c244938ab5cf204e0ba35315aa46976237e63d0fa45c7"
+      }
+    ],
+    "steps": [
+      {
+        "name": "investigation_citation_set",
+        "input": "nhtsa_investigation_reports",
+        "operations": [
+          {
+            "name": "extract_cited_recall_cores",
+            "type": "map"
+          },
+          {
+            "name": "normalize_extracted_recall_cores",
+            "type": "code_map"
+          },
+          {
+            "name": "collect_investigation_cited_cores",
+            "type": "code_reduce"
+          }
+        ]
+      },
+      {
+        "name": "selected_make_recalls",
+        "input": "nhtsa_recalls",
+        "operations": [
+          {
+            "name": "filter_selected_make_recalls",
+            "type": "code_filter"
+          },
+          {
+            "name": "flatten_selected_make_recall_fields",
+            "type": "code_map"
+          }
+        ]
+      },
+      {
+        "name": "recall_statistics_by_make",
+        "input": "selected_make_recalls",
+        "operations": [
+          {
+            "name": "aggregate_recall_statistics_by_make",
+            "type": "code_reduce"
+          }
+        ]
+      },
+      {
+        "name": "selected_make_complaints",
+        "input": "nhtsa_complaints",
+        "operations": [
+          {
+            "name": "filter_selected_make_complaints",
+            "type": "code_filter"
+          }
+        ]
+      },
+      {
+        "name": "matched_selected_make_complaints",
+        "input": null,
+        "operations": [
+          {
+            "name": "match_selected_make_complaints_to_recalls",
+            "type": "equijoin",
+            "inputs": {
+              "left": "selected_make_complaints",
+              "right": "selected_make_recalls"
+            }
+          }
+        ]
+      },
+      {
+        "name": "corroborated_complaint_counts",
+        "input": "matched_selected_make_complaints",
+        "operations": [
+          {
+            "name": "collect_corroborated_complaint_counts",
+            "type": "code_reduce"
+          }
+        ]
+      },
+      {
+        "name": "make_stats_with_complaint_counts",
+        "input": null,
+        "operations": [
+          {
+            "name": "cross_join_recall_stats_with_complaint_counts",
+            "type": "equijoin",
+            "inputs": {
+              "left": "recall_statistics_by_make",
+              "right": "corroborated_complaint_counts"
+            }
+          }
+        ]
+      },
+      {
+        "name": "make_stats_with_citation_set",
+        "input": "make_stats_with_complaint_counts",
+        "operations": [
+          {
+            "name": "coalesce_corroborated_complaint_count",
+            "type": "code_map"
+          }
+        ]
+      },
+      {
+        "name": "complete_make_alignment_rows",
+        "input": null,
+        "operations": [
+          {
+            "name": "cross_join_make_stats_with_investigation_cores",
+            "type": "equijoin",
+            "inputs": {
+              "left": "make_stats_with_citation_set",
+              "right": "investigation_citation_set"
+            }
+          }
+        ]
+      },
+      {
+        "name": "make_alignment_dictionary",
+        "input": "complete_make_alignment_rows",
+        "operations": [
+          {
+            "name": "assign_make_alignment_label",
+            "type": "code_map"
+          },
+          {
+            "name": "format_make_alignment_dictionary",
+            "type": "code_reduce"
+          }
+        ]
+      }
+    ]
+  },
+  "selected_plan_signature": {
+    "definitions": {
+      "extract_cited_recall_cores": "map",
+      "normalize_extracted_recall_cores": "code_map",
+      "collect_investigation_cited_cores": "code_reduce",
+      "filter_selected_make_recalls": "code_filter",
+      "flatten_selected_make_recall_fields": "code_map",
+      "aggregate_recall_statistics_by_make": "code_reduce",
+      "filter_selected_make_complaints": "code_filter",
+      "match_selected_make_complaints_to_recalls": "equijoin",
+      "collect_corroborated_complaint_counts": "code_reduce",
+      "cross_join_recall_stats_with_complaint_counts": "equijoin",
+      "coalesce_corroborated_complaint_count": "code_map",
+      "cross_join_make_stats_with_investigation_cores": "equijoin",
+      "assign_make_alignment_label": "code_map",
+      "format_make_alignment_dictionary": "code_reduce"
+    },
+    "logical_operations": [
+      {
+        "name": "extract_cited_recall_cores",
+        "type": "map",
+        "logical_config_sha256": "65d139d5fd4d0ba1c96817730ef3fe385a1338919cac5ae3a7f1e2779e4a350c"
+      },
+      {
+        "name": "normalize_extracted_recall_cores",
+        "type": "code_map",
+        "logical_config_sha256": "5f09792183616efbc98b6ec02964469eed11c18679c822f23440f0d17d52957a"
+      },
+      {
+        "name": "collect_investigation_cited_cores",
+        "type": "code_reduce",
+        "logical_config_sha256": "9ea4252b829569fc2bd0ba78141098ebc041e2837bef78e9bfb26053b5798852"
+      },
+      {
+        "name": "filter_selected_make_recalls",
+        "type": "code_filter",
+        "logical_config_sha256": "2dfaca3cecfec85255c170ff9546a5ab2dcc372e107a608325a5f39707e9d543"
+      },
+      {
+        "name": "flatten_selected_make_recall_fields",
+        "type": "code_map",
+        "logical_config_sha256": "148ad9ddecb00bf389f299f8a657e7fcc20e868eba32e7ae179e77f02022f895"
+      },
+      {
+        "name": "aggregate_recall_statistics_by_make",
+        "type": "code_reduce",
+        "logical_config_sha256": "9758179e527b8053370c7119861de246d0ef2ae788926ae9668b22ae97099d04"
+      },
+      {
+        "name": "filter_selected_make_complaints",
+        "type": "code_filter",
+        "logical_config_sha256": "5e1fe78759132fcbb23a04b0ecc1acfa512f1d64069ea8d85800498b959d550a"
+      },
+      {
+        "name": "match_selected_make_complaints_to_recalls",
+        "type": "equijoin",
+        "logical_config_sha256": "1fd7b663b3afc1a5074aeeb410a96377c53fa4fee2d4396932118cce41395ded"
+      },
+      {
+        "name": "collect_corroborated_complaint_counts",
+        "type": "code_reduce",
+        "logical_config_sha256": "77574ff795feabed1782cbd7d095023c3123353ad35e4911ce0448143f796356"
+      },
+      {
+        "name": "cross_join_recall_stats_with_complaint_counts",
+        "type": "equijoin",
+        "logical_config_sha256": "413bb6d094c93829c94146d868c7f873b1eba615d4b54b10756d742546b55108"
+      },
+      {
+        "name": "coalesce_corroborated_complaint_count",
+        "type": "code_map",
+        "logical_config_sha256": "002ed8bda90f23f46e54b63944eb72af01a3168eab495b19c0a15082ea7f2e94"
+      },
+      {
+        "name": "cross_join_make_stats_with_investigation_cores",
+        "type": "equijoin",
+        "logical_config_sha256": "4b0f3784df9f01546662e005501d31d310bff595f5bf107abd9e1245b193582f"
+      },
+      {
+        "name": "assign_make_alignment_label",
+        "type": "code_map",
+        "logical_config_sha256": "d1187b6b20150c0a288e27d76babb2d5d87c0deaead3b633c59b15af0d3c3782"
+      },
+      {
+        "name": "format_make_alignment_dictionary",
+        "type": "code_reduce",
+        "logical_config_sha256": "b53be83049076d71174c244938ab5cf204e0ba35315aa46976237e63d0fa45c7"
+      }
+    ],
+    "steps": [
+      {
+        "name": "investigation_citation_set",
+        "input": "nhtsa_investigation_reports",
+        "operations": [
+          {
+            "name": "extract_cited_recall_cores",
+            "type": "map"
+          },
+          {
+            "name": "normalize_extracted_recall_cores",
+            "type": "code_map"
+          },
+          {
+            "name": "collect_investigation_cited_cores",
+            "type": "code_reduce"
+          }
+        ]
+      },
+      {
+        "name": "selected_make_recalls",
+        "input": "nhtsa_recalls",
+        "operations": [
+          {
+            "name": "filter_selected_make_recalls",
+            "type": "code_filter"
+          },
+          {
+            "name": "flatten_selected_make_recall_fields",
+            "type": "code_map"
+          }
+        ]
+      },
+      {
+        "name": "recall_statistics_by_make",
+        "input": "selected_make_recalls",
+        "operations": [
+          {
+            "name": "aggregate_recall_statistics_by_make",
+            "type": "code_reduce"
+          }
+        ]
+      },
+      {
+        "name": "selected_make_complaints",
+        "input": "nhtsa_complaints",
+        "operations": [
+          {
+            "name": "filter_selected_make_complaints",
+            "type": "code_filter"
+          }
+        ]
+      },
+      {
+        "name": "matched_selected_make_complaints",
+        "input": null,
+        "operations": [
+          {
+            "name": "match_selected_make_complaints_to_recalls",
+            "type": "equijoin",
+            "inputs": {
+              "left": "selected_make_complaints",
+              "right": "selected_make_recalls"
+            }
+          }
+        ]
+      },
+      {
+        "name": "corroborated_complaint_counts",
+        "input": "matched_selected_make_complaints",
+        "operations": [
+          {
+            "name": "collect_corroborated_complaint_counts",
+            "type": "code_reduce"
+          }
+        ]
+      },
+      {
+        "name": "make_stats_with_complaint_counts",
+        "input": null,
+        "operations": [
+          {
+            "name": "cross_join_recall_stats_with_complaint_counts",
+            "type": "equijoin",
+            "inputs": {
+              "left": "recall_statistics_by_make",
+              "right": "corroborated_complaint_counts"
+            }
+          }
+        ]
+      },
+      {
+        "name": "make_stats_with_citation_set",
+        "input": "make_stats_with_complaint_counts",
+        "operations": [
+          {
+            "name": "coalesce_corroborated_complaint_count",
+            "type": "code_map"
+          }
+        ]
+      },
+      {
+        "name": "complete_make_alignment_rows",
+        "input": null,
+        "operations": [
+          {
+            "name": "cross_join_make_stats_with_investigation_cores",
+            "type": "equijoin",
+            "inputs": {
+              "left": "make_stats_with_citation_set",
+              "right": "investigation_citation_set"
+            }
+          }
+        ]
+      },
+      {
+        "name": "make_alignment_dictionary",
+        "input": "complete_make_alignment_rows",
+        "operations": [
+          {
+            "name": "assign_make_alignment_label",
+            "type": "code_map"
+          },
+          {
+            "name": "format_make_alignment_dictionary",
+            "type": "code_reduce"
+          }
+        ]
+      }
+    ]
+  },
+  "plan_changed": false
+}

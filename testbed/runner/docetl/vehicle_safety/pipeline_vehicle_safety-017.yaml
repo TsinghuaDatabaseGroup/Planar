@@ -1,0 +1,115 @@
+datasets:
+  nhtsa_complaints:
+    type: file
+    path: data/nhtsa_vehicle_safety/complaints.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_airbag_component_complaints
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("component_id") == "AIRBAG"
+
+  - name: classify_unintended_airbag_deployment
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether this NHTSA complaint describes an airbag that actually
+      deployed unintentionally or unexpectedly.
+
+      The airbag must have inflated or deployed when the occupant or driver did not
+      expect it. Do not qualify a warning-light issue, a concern about possible
+      deployment, a non-deployment, or an expected deployment caused by a collision
+      unless the complaint itself describes the deployment as unintended or
+      unexpected.
+
+      Complaint:
+      {{ input.summary_text }}
+    output:
+      mode: structured_output
+      schema:
+        describes_unintended_deployment: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: classify_deployment_collision_timing
+    type: map
+    optimize: true
+    prompt: |
+      Classify the unintended airbag deployment using exactly one label:
+
+      - pre_impact_or_no_collision: the airbag deployed before any collision impact,
+        or it deployed while no collision or impact occurred.
+      - during_or_after_collision: the airbag deployed during a collision impact or
+        after the impact had occurred.
+
+      Require support from the sequence of events in the complaint. Do not classify
+      an event as pre-impact merely because the deployment was unexpected.
+
+      Complaint:
+      {{ input.summary_text }}
+    output:
+      mode: structured_output
+      schema:
+        deployment_timing: enum[pre_impact_or_no_collision, during_or_after_collision]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: calculate_pre_impact_deployment_fraction
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          total = len(items)
+          pre_impact_or_no_collision = sum(
+              item.get("deployment_timing") == "pre_impact_or_no_collision"
+              for item in items
+          )
+          ratio = (
+              round(pre_impact_or_no_collision / total, 3)
+              if total
+              else 0.0
+          )
+          return {"ratio": ratio}
+
+pipeline:
+  steps:
+    - name: pre_impact_deployment_fraction
+      input: nhtsa_complaints
+      operations:
+        - filter_airbag_component_complaints
+        - classify_unintended_airbag_deployment
+        - classify_deployment_collision_timing
+        - calculate_pre_impact_deployment_fraction
+  output:
+    type: file
+    path: raw_outputs/vehicle_safety/output_vehicle_safety-017.json

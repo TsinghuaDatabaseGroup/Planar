@@ -1,0 +1,12 @@
+{
+  "task_id": "legal_contracts-041",
+  "answer": [
+    {
+      "document_id": "mrccinsidertradingpolicyex.htm",
+      "covered_persons": "Access Persons"
+    }
+  ],
+  "elapsed_seconds": 425.61,
+  "cost_usd": 3.931476,
+  "total_tokens": 7480992
+}

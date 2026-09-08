@@ -1,0 +1,62 @@
+{
+  "task_id": "legal_contracts-057",
+  "answer": [
+    {
+      "document_id": "1010471_0000950134-97-006281_document_5.txt",
+      "duration_years": 5,
+      "geographic_scope": "United States, Canada, Mexico, and the Caribbean (specifically within a 10-mile radius of any hotel operated under the 'Wyndham,' 'ClubHouse,' or 'Homegate' brand), plus worldwide restrictions for specific brands (Hilton Garden, Courtyard by Marriott, Doubletree Club).",
+      "prohibited_activity_scope": "Soliciting customers or suppliers; hiring employees; and owning, operating, managing, investing in, or advising competitors in the upscale or extended-stay hotel business, subject to specific brand and location exceptions."
+    },
+    {
+      "document_id": "1068874_0001068874-07-000012_ex10_2.htm",
+      "duration_years": 5,
+      "geographic_scope": "Worldwide",
+      "prohibited_activity_scope": "Engaging in, managing, owning, financing, or controlling any business that competes with the Seller's restricted business; soliciting or entering into orders with current customers, clients, or active prospects; and soliciting or employing current employees or sales representatives of the Buyer or its affiliates."
+    },
+    {
+      "document_id": "25895_0000950134-07-023464_d51356exv10w1.htm",
+      "duration_years": 4,
+      "geographic_scope": "United States",
+      "prohibited_activity_scope": "Directly or indirectly owning, managing, operating, controlling, investing in, or participating in any Competitive Business that designs, markets, imports, sells, or distributes Competitive Products (bedding, blanket, and bath products for children ages 0-4) to consumers within the United States."
+    },
+    {
+      "document_id": "26820_0000936392-03-001111_a92217exv10w5.txt",
+      "duration_years": 2.41,
+      "geographic_scope": "United States",
+      "prohibited_activity_scope": "Creating, seeking, or accepting employment, compensation, or engaging in any capacity (excluding passive minority investments and roles solely as a salesman/sales representative) with any enterprise involved in the manufacture, sale, marketing, or promotion of products in the brown shoe market segment of the men's footwear business. Additionally, prohibits hiring or soliciting company officers/employees, and diverting company customers, suppliers, or vendors."
+    },
+    {
+      "document_id": "817516_0001014909-05-000102_exh99_4sept2005.txt",
+      "duration_years": 4,
+      "geographic_scope": "Worldwide",
+      "prohibited_activity_scope": "Directly or indirectly engaging in, owning an interest in, managing, operating, joining, controlling, lending money to, or assisting any person that competes with the Company's Business (defined as any business anywhere in the world providing products or services of the kind provided by the Company as of the Closing Date), excluding passive ownership of less than 1% of publicly traded competitors."
+    },
+    {
+      "document_id": "880458_0001021408-01-510269_dex1087.txt",
+      "duration_years": 4,
+      "geographic_scope": "United States (all states and territories), Argentina, Australia, Austria, Belgium, Brazil, Canada, Denmark, Ecuador, England, Finland, France, Germany, Hong Kong, Israel, Italy, Japan, Korea, Netherlands, New Zealand, Nigeria, Norway, Singapore, South Africa, Spain, Sweden, Switzerland, Taiwan, Thailand, and Venezuela.",
+      "prohibited_activity_scope": "Developing, making, selling, distributing, importing, or sub-licensing network management software tools utilizing CORBA as the development platform, or providing related consulting services."
+    },
+    {
+      "document_id": "935703_0001047469-98-030238_document_4.txt",
+      "duration_years": 5,
+      "geographic_scope": "If the Selling Shareholder is a resident of California: all counties and cities in California and Nevada where Step Ahead Investments, Inc. (SAI) conducted business as of the Effective Time. If the Selling Shareholder ceases to be a resident of California: each state in which either Dollar Tree or SAI had a store or carried on business as of the Effective Time.",
+      "prohibited_activity_scope": "Operating wholesale or retail businesses where at least 80% of goods are sold at or below $2.00; operating single-price point stores (or dedicated areas within stores) selling goods at or below $2.00; operating variety, clearance, or close-out stores in the same shopping center as existing SAI locations (or within one-quarter mile if not in a shopping center); using specific trade names containing '98 CENTS', 'Tree', or 'Super Dollar'; and soliciting or hiring Dollar Tree or SAI employees."
+    },
+    {
+      "document_id": "ex10-6_2.htm",
+      "duration_years": 5,
+      "geographic_scope": "United States and any other jurisdictions in which the Company is engaged, or is actively contemplating to become engaged, in the Business as of the Closing Date",
+      "prohibited_activity_scope": "Directly or indirectly engaging in, owning, managing, financing, controlling, or serving as an officer, director, employee, consultant, or advisor to any business that competes with the Company's clinical-stage specialty immunotherapy business (harnessing CD8+ CTLs for infectious diseases, cancers, and neurological disorders), excluding passive investments of up to 2% in publicly traded competitors without management involvement."
+    },
+    {
+      "document_id": "nue-ex10_xxxvii.htm",
+      "duration_years": 3.5,
+      "geographic_scope": "Worldwide (specifically defined as Western Europe, the Middle East, South America, Central America, and North America, with fallback provisions narrowing to specific countries or the contiguous United States if deemed overbroad).",
+      "prohibited_activity_scope": "Engaging in, owning, financing, or endorsing any business activity involving steel products, steel inputs, or overhead doors that competes with Nucor's business and in which the Executive was previously involved; soliciting Nucor's customers, suppliers, or prospective clients to alter or cease business relationships; soliciting or hiring Nucor employees with whom the Executive had regular contact; and performing work that would require the use or disclosure of Nucor's confidential or secret information."
+    }
+  ],
+  "elapsed_seconds": 449.57,
+  "cost_usd": 4.241282,
+  "total_tokens": 8140648
+}

@@ -1,0 +1,13 @@
+{
+  "task_id": "legal_contracts-095",
+  "answer": [
+    {
+      "company": "Globalstar, Inc.",
+      "subsidiary_count": 68,
+      "covered_person_category": "board and executives"
+    }
+  ],
+  "elapsed_seconds": 287.192,
+  "cost_usd": 1.1274576,
+  "total_tokens": 2255840
+}

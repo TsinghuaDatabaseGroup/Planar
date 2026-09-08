@@ -1,0 +1,28 @@
+{
+  "task_id": "legal_contracts-061",
+  "answer": [
+    {
+      "agreement_type": "mutual_nda",
+      "non_disclosure_direction": "mutual",
+      "document_count": 296
+    },
+    {
+      "agreement_type": "unilateral_nda",
+      "non_disclosure_direction": "unilateral",
+      "document_count": 244
+    },
+    {
+      "agreement_type": "confidentiality_standstill",
+      "non_disclosure_direction": "mutual",
+      "document_count": 32
+    },
+    {
+      "agreement_type": "confidentiality_standstill",
+      "non_disclosure_direction": "unilateral",
+      "document_count": 11
+    }
+  ],
+  "elapsed_seconds": 547.45,
+  "cost_usd": 4.787876,
+  "total_tokens": 8534427
+}

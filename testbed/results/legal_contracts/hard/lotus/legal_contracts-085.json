@@ -1,0 +1,23 @@
+{
+  "task_id": "legal_contracts-085",
+  "answer": [
+    {
+      "company": "Globalstar, Inc.",
+      "certifying_officers": [
+        "Dr. Paul E. Jacobs",
+        "Rebecca S. Clary"
+      ],
+      "auditor_firms": [
+        "Ernst & Young LLP"
+      ],
+      "covered_person_categories": [
+        "covered_executives",
+        "section_16_officers"
+      ],
+      "largest_subsidiary_count": 68
+    }
+  ],
+  "elapsed_seconds": 8898.94,
+  "cost_usd": 20.091937,
+  "total_tokens": 35814036
+}

@@ -1,0 +1,215 @@
+datasets:
+  sec_2019_filings:
+    type: file
+    path: data/SEC/CSV/2019.csv
+  sec_2023_filings:
+    type: file
+    path: data/SEC/CSV/2023.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: load_2019_filing_document
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("SEC text path escapes data/SEC")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              document_2019 = handle.read()
+          return {"document_2019": document_2019}
+
+  - name: filter_2019_challenger_position
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this 2019 SEC 10-K filing only if it describes the reporting company
+      as holding a challenger competitive position in its industry or primary
+      market in 2019.
+      A challenger is a company positioned as competing to gain ground relative
+      to established market leaders.
+
+      2019 filing:
+      {{ input.document_2019 }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: project_2019_challenger_ciks
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {
+              "rows": [{"cik": item.get("cik")} for item in items]
+          }
+
+  - name: unnest_2019_challenger_ciks
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - cik
+
+  - name: load_2023_filing_document
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("SEC text path escapes data/SEC")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              document_2023 = handle.read()
+          return {"document_2023": document_2023}
+
+  - name: filter_2023_recognized_leaders
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this 2023 SEC 10-K filing only if it describes the reporting company
+      as a recognized industry or market leader in 2023.
+
+      2023 filing:
+      {{ input.document_2023 }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: deduplicate_2023_leaders_by_cik
+    type: code_reduce
+    reduce_key: cik
+    code: |
+      def transform(items):
+          first = items[0]
+          return {"document_2023": first.get("document_2023")}
+
+  - name: extract_2023_company_and_industry
+    type: map
+    optimize: true
+    prompt: |
+      Extract the reporting company's legal name and industry sector from this
+      2023 SEC 10-K filing.
+      Use the legal registrant name stated in the filing. Return a concise,
+      conventional industry-sector name grounded in the filing rather than a
+      business description or explanation.
+
+      2023 filing:
+      {{ input.document_2023 }}
+    output:
+      mode: structured_output
+      schema:
+        company_name: string
+        industry_sector: string
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 256
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: join_challengers_to_leaders
+    type: equijoin
+    deterministic: true
+    blocking_conditions:
+      - left["cik"] == right["cik"]
+
+  - name: project_company_and_industry
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {
+              "rows": [
+                  {
+                      "company_name": item.get("company_name"),
+                      "industry_sector": item.get("industry_sector"),
+                  }
+                  for item in items
+              ]
+          }
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - company_name
+      - industry_sector
+
+pipeline:
+  steps:
+    - name: challengers_2019
+      input: sec_2019_filings
+      operations:
+        - load_2019_filing_document
+        - filter_2019_challenger_position
+        - project_2019_challenger_ciks
+        - unnest_2019_challenger_ciks
+    - name: leaders_2023
+      input: sec_2023_filings
+      operations:
+        - load_2023_filing_document
+        - filter_2023_recognized_leaders
+        - deduplicate_2023_leaders_by_cik
+        - extract_2023_company_and_industry
+    - name: matched_companies
+      operations:
+        - join_challengers_to_leaders:
+            left: challengers_2019
+            right: leaders_2023
+    - name: process
+      input: matched_companies
+      operations:
+        - project_company_and_industry
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/finance/output_finance-029.json

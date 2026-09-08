@@ -1,0 +1,506 @@
+{
+  "task_id": "legal_contracts-043",
+  "answer": [
+    {
+      "document_name": "1013240_0001047469-04-010350_a2132633zex-10_22.htm",
+      "parties": [
+        "Level 3 Communications",
+        "LLC",
+        "ICG Communications",
+        "Inc.",
+        "ICG Telecom Group",
+        "Inc."
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2004-04-01"
+    },
+    {
+      "document_name": "1031896_0000950147-01-501725_ex10-8.txt",
+      "parties": [
+        "AMERICAN SOIL TECHNOLOGIES INC. AGRIBLEND DIVISION",
+        "BioPlusNutrients"
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "2001-07-25"
+    },
+    {
+      "document_name": "1039399_0000891618-02-001883_f80848orex10-19.txt",
+      "parties": [
+        "FormFactor",
+        "Inc.",
+        "Recipient"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "________________________"
+    },
+    {
+      "document_name": "1041550_0001104659-19-001346_a18-42231_6ex10d8.htm",
+      "parties": [
+        "First Financial Corporation",
+        "First Financial Bank",
+        "N.A.",
+        "HopFed Bancorp",
+        "Inc.",
+        "Heritage Bank USA",
+        "Inc.",
+        "Billy C. Duvall"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2019-01-07"
+    },
+    {
+      "document_name": "1041550_0001193125-19-004977_d663808dex106.htm",
+      "parties": [
+        "First Financial Corporation",
+        "First Financial Bank",
+        "N.A.",
+        "HopFed Bancorp",
+        "Inc.",
+        "Heritage Bank USA",
+        "Inc.",
+        "John E. Peck"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2019-01-07"
+    },
+    {
+      "document_name": "1053352_0001104659-07-049383_a07-17151_1ex10d5.htm",
+      "parties": [
+        "Heritage Commerce Corp",
+        "Heritage Bank of Commerce",
+        "James Mayer",
+        "Diablo Valley Bank"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2007-02-08"
+    },
+    {
+      "document_name": "1061148_0001047469-98-018914_document_17.txt",
+      "parties": [
+        "Kevin Bennis",
+        "Pathnet",
+        "Inc."
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "1998-02-02"
+    },
+    {
+      "document_name": "1068874_0001068874-07-000012_ex10_2.htm",
+      "parties": [
+        "Accurel Systems International Corporation",
+        "Implant Sciences Corporation",
+        "Evans Analytical Group LLC"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2007-04-30"
+    },
+    {
+      "document_name": "1073090_0001356564-06-000012_sorell10ksbamend2x102.txt",
+      "parties": [
+        "S-CAM Co.",
+        "LTD",
+        "ANUBIS Electrinc GmbH",
+        "ANUBIS DIGITAL TECHNOLOGY CO.",
+        "LTD"
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "2005-09-21"
+    },
+    {
+      "document_name": "1084000_0001144204-06-046785_v056501_ex10-16.txt",
+      "parties": [
+        "Nanolution",
+        "LLC",
+        "NaturalNano Inc."
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "2005-05-25"
+    },
+    {
+      "document_name": "109261_0000950172-02-002217_los283194.txt",
+      "parties": [
+        "Meritage Corporation",
+        "MTH-Homes Nevada",
+        "Inc.",
+        "Zenith National Insurance Corp.",
+        "Perma-Bilt"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2002-10-07"
+    },
+    {
+      "document_name": "1094007_0001193125-10-258977_dex101.htm",
+      "parties": [
+        "Rainmaker Systems",
+        "Microsoft Corporation"
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "2008-05-19"
+    },
+    {
+      "document_name": "1094038_0000950134-05-007541_d23996exv10w4.htm",
+      "parties": [
+        "THE UNIVERSITY OF BRITISH COLUMBIA",
+        "GENEMAX PHARMACEUTICALS INC."
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2002-10-03"
+    },
+    {
+      "document_name": "1095558_0000944209-00-000518_document_3.txt",
+      "parties": [
+        "TWENTIETH CENTURY FOX HOME ENTERTAINMENT",
+        "INC.",
+        "ARTISAN HOME ENTERTAINMENT",
+        "INC."
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "1998-03-01"
+    },
+    {
+      "document_name": "1104332_0000950144-00-008876_ex10-26.txt",
+      "parties": [
+        "High Speed Net Solutions",
+        "R. J. Seifert Enterprises"
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "1999-02-06"
+    },
+    {
+      "document_name": "1173495_0001047469-03-033872_a2118144zex-10_12.txt",
+      "parties": [
+        "DUNC",
+        "LLC",
+        "NORTHWEST AIRLINES",
+        "INC."
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "2000-03-06"
+    },
+    {
+      "document_name": "1175638_0000912057-02-024619_a2082526zex-10_3.htm",
+      "parties": [
+        "Accu-Tech Systems",
+        "Network Printing Solutions"
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "1999-11-16"
+    },
+    {
+      "document_name": "1240722_0001161697-03-000454_exhibit_10-12.txt",
+      "parties": [
+        "Solomon Technologies",
+        "Inc.",
+        "Pinetree (Barbados) Inc."
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2003-07-31"
+    },
+    {
+      "document_name": "1253176_0001193125-18-317778_d567323dex1024.htm",
+      "parties": [
+        "Vapotherm",
+        "Inc.",
+        "John Coolidge"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2014-01-28"
+    },
+    {
+      "document_name": "1277090_0001104659-05-057084_a05-20673_1ex10.htm",
+      "parties": [
+        "SERENA Software",
+        "Inc.",
+        "Silver Lake Management Company",
+        "L.L.C."
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2005-06-24"
+    },
+    {
+      "document_name": "1335239_0001019687-14-003760_epazz_ex1034.htm",
+      "parties": [
+        "TROY HOLDINGS INTERNATIONAL",
+        "INC.",
+        "EPAZZ",
+        "INC.",
+        "TELECORP PRODUCTS",
+        "INC.",
+        "Troy Inc.",
+        "ANA MISRA",
+        "SCOTT MacCANNELL"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2014-02-28"
+    },
+    {
+      "document_name": "1363033_0001144204-06-024852_v045245_ex10-8.htm",
+      "parties": [
+        "Yann Mellet",
+        "Sweetskinz",
+        "Inc."
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2006-04-06"
+    },
+    {
+      "document_name": "1367408_0001367408-06-000002_risb2ex105.htm",
+      "parties": [
+        "Raphael Industries",
+        "Inc",
+        "Marketing Software Company"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2005-11-22"
+    },
+    {
+      "document_name": "1473637_0001432093-12-000764_ex10-34.htm",
+      "parties": [
+        "KLEEN-FLO TUMBLER INDUSTRIES LIMITED",
+        "ECO-TEK GROUP INC."
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "2012-09-18"
+    },
+    {
+      "document_name": "26820_0000936392-03-001111_a92217exv10w5.txt",
+      "parties": [
+        "Harrison S. Trask",
+        "Phoenix Footwear Group",
+        "Inc.",
+        "PFG Acquisition",
+        "Inc.",
+        "H.S. Trask & Co."
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2003-08-06"
+    },
+    {
+      "document_name": "703339_0001387308-13-000090_ex101.htm",
+      "parties": [
+        "Capital Group Holdings",
+        "Inc.",
+        "Tailor Made Business Solutions",
+        "PLLC",
+        "Thomas P. Meola",
+        "Erik J. Cooper"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2013-05-06"
+    },
+    {
+      "document_name": "71297_0000071297-97-000059_document_6.txt",
+      "parties": [
+        "Granite State Energy",
+        "Inc.",
+        "New England Power Company"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "1996-05-21"
+    },
+    {
+      "document_name": "714562_0001104659-19-001345_a18-42231_6ex10d8.htm",
+      "parties": [
+        "First Financial Corporation",
+        "First Financial Bank",
+        "N.A.",
+        "HopFed Bancorp",
+        "Inc.",
+        "Heritage Bank USA",
+        "Inc.",
+        "Billy C. Duvall"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2019-01-07"
+    },
+    {
+      "document_name": "736291_0000930661-99-001320_document_3.txt",
+      "parties": [
+        "CompuCom Systems",
+        "Inc.",
+        "ENTEX Information Services",
+        "Inc."
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "1999-05-10"
+    },
+    {
+      "document_name": "770461_0001144204-06-041516_v054278_ex10-7.txt",
+      "parties": [
+        "THE LAMCO GROUP",
+        "INC.",
+        "Nicholas J. Lamoriello",
+        "National Investment Managers Inc."
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2006-10-03"
+    },
+    {
+      "document_name": "86115_0000930661-99-001321_document_3.txt",
+      "parties": [
+        "CompuCom Systems",
+        "Inc.",
+        "ENTEX Information Services",
+        "Inc."
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "1999-05-10"
+    },
+    {
+      "document_name": "880458_0001021408-01-510269_dex1087.txt",
+      "parties": [
+        "Hai-Perng",
+        "aka Alex Kuo",
+        "Vertel Corporation"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2001-05-30"
+    },
+    {
+      "document_name": "912643_0001045969-00-000244_document_3.txt",
+      "parties": [
+        "FieldWorks",
+        "Inc.",
+        "COMPANY"
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "date of execution"
+    },
+    {
+      "document_name": "916457_0000916457-14-000028_exhibit104-confidentiality.htm",
+      "parties": [
+        "Calpine Corporation",
+        "LS Power Equity Advisors",
+        "LLC"
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "2014-02-19"
+    },
+    {
+      "document_name": "918541_0001193125-14-328980_d785003dex105.htm",
+      "parties": [
+        "NN",
+        "Inc.",
+        "John C. Kennedy"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2014-07-18"
+    },
+    {
+      "document_name": "a18-42231_6ex10d8.htm",
+      "parties": [
+        "First Financial Corporation",
+        "First Financial Bank",
+        "N.A.",
+        "HopFed Bancorp",
+        "Inc.",
+        "Heritage Bank USA",
+        "Inc.",
+        "Billy C. Duvall"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2019-01-07"
+    },
+    {
+      "document_name": "catx-ex10_1.htm",
+      "parties": [
+        "Perspective Therapeutics",
+        "Inc.",
+        "Mark Austin"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2024-08-26"
+    },
+    {
+      "document_name": "d828431dex101.htm",
+      "parties": [
+        "CVS Health Corporation",
+        "Glenview Capital Management",
+        "LLC"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2024-11-17"
+    },
+    {
+      "document_name": "ea021499501ex10-37_foxxdev.htm",
+      "parties": [
+        "Foxx Development Holdings Inc.",
+        "Employee"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "the earlier of (i) the date this Agreement is signed, or (ii) the date an employment agreement and non-disclosure agreement is entered into with Foxx Development Holdings Inc."
+    },
+    {
+      "document_name": "ex1010dormanproducts-execu.htm",
+      "parties": [
+        "Dorman Products",
+        "Inc.",
+        "Company Group"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2021-12-26"
+    },
+    {
+      "document_name": "ex103consultingservicesagr.htm",
+      "parties": [
+        "Establishment Labs Holdings Inc.",
+        "Juan José Chacón Quirós"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2025-06-01"
+    },
+    {
+      "document_name": "ex_612610.htm",
+      "parties": [
+        "H.B. Fuller Company",
+        "Executive"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "_____ day of _______________, 20"
+    },
+    {
+      "document_name": "ex_684281.htm",
+      "parties": [
+        "HG Holdings",
+        "Inc.",
+        "Justin H. Edenfield"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2024-06-01"
+    },
+    {
+      "document_name": "exhibit1025-amisraemployme.htm",
+      "parties": [
+        "Sprinklr India Private Limited",
+        "Sprinklr",
+        "Inc.",
+        "Amitabh Misra"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2024-04-01"
+    },
+    {
+      "document_name": "exhibit1027-jcorsoemployme.htm",
+      "parties": [
+        "Sprinklr",
+        "Inc.",
+        "Joy Corso"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2025-01-10"
+    },
+    {
+      "document_name": "greenrain_ex1001.htm",
+      "parties": [
+        "Allied Energy Corporation",
+        "Green Rain Energy Holdings Inc.",
+        "Green Rain Solar Inc."
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "2025-09-03"
+    }
+  ],
+  "elapsed_seconds": 251.705,
+  "cost_usd": 1.24048785,
+  "total_tokens": 2633660
+}

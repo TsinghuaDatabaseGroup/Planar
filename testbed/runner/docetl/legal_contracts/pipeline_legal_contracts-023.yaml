@@ -1,0 +1,143 @@
+datasets:
+  contract_exhibits:
+    type: file
+    path: contract_exhibit_full.json
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_nda_with_determinate_periods
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is a standalone non-disclosure or
+      confidentiality agreement that contains a standstill provision, states a
+      determinate standstill duration, and states at least one determinate
+      customer- or employee-non-solicitation duration. Incidental references not
+      governing the confidentiality relationship do not count.
+
+      Document:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        is_qualifying_nda_with_periods: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_exactly_five_carve_outs
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this agreement only if it contains exactly five of these six operative
+      confidentiality carve-outs: public information, prior knowledge,
+      independent development, lawful unrestricted third-party receipt, legally
+      compelled disclosure, and disclosure authorized by the disclosing party.
+
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        has_exactly_five_carve_outs: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: extract_law_exception_and_periods
+    type: map
+    optimize: true
+    prompt: |
+      Extract the governing law and the one missing standard carve-out. Normalize
+      missing_exception to exactly one of public_information, prior_knowledge,
+      independent_development, third_party_receipt, legal_compulsion, or consent.
+
+      Convert all stated durations using 30 days per month and 12 months per year.
+      Return the determinate standstill duration. For each customer and employee
+      non-solicitation duration, set its stated flag to true and return its month
+      value when determinate; otherwise set the flag to false and use 0 only as a
+      placeholder.
+
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        governing_law: string
+        missing_exception: string
+        standstill_months: integer
+        customer_non_solicitation_stated: boolean
+        customer_non_solicitation_months_value: integer
+        employee_non_solicitation_stated: boolean
+        employee_non_solicitation_months_value: integer
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: project_period_comparison_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          periods = []
+          if doc.get("customer_non_solicitation_stated") is True:
+              periods.append(int(doc.get("customer_non_solicitation_months_value") or 0))
+          if doc.get("employee_non_solicitation_stated") is True:
+              periods.append(int(doc.get("employee_non_solicitation_months_value") or 0))
+          return {
+              "document_id": str(doc.get("doc_id") or ""),
+              "governing_law": str(doc.get("governing_law") or ""),
+              "missing_exception": str(doc.get("missing_exception") or ""),
+              "standstill_months": int(doc.get("standstill_months") or 0),
+              "longest_solicitation_months": max(periods) if periods else None,
+          }
+
+  - name: filter_standstill_not_longer
+    type: code_filter
+    code: |
+      def transform(doc):
+          longest = doc.get("longest_solicitation_months")
+          return longest is not None and int(doc.get("standstill_months") or 0) <= int(longest)
+
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations:
+        - filter_nda_with_determinate_periods
+        - filter_exactly_five_carve_outs
+        - extract_law_exception_and_periods
+        - project_period_comparison_fields
+        - filter_standstill_not_longer
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-023.json

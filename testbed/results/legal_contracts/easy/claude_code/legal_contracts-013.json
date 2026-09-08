@@ -1,0 +1,68 @@
+{
+  "task_id": "legal_contracts-013",
+  "answer": [
+    {
+      "document_id": "1142512_0001193125-14-269726_d757168dex99e3.htm",
+      "agreement_type": "Mutual Nondisclosure Agreement",
+      "standstill_duration_years": 2.0,
+      "governing_law": "California"
+    },
+    {
+      "document_id": "1332602_0001193125-12-512465_d454990dex99d2.htm",
+      "agreement_type": "Confidentiality Agreement",
+      "standstill_duration_years": 2.0,
+      "governing_law": ""
+    },
+    {
+      "document_id": "1334303_0001193125-10-204560_dex99e5.htm",
+      "agreement_type": "Confidentiality Agreement",
+      "standstill_duration_years": 2.0,
+      "governing_law": "State of New York"
+    },
+    {
+      "document_id": "814457_0000950137-04-009790_c89545exv99wxdyx6y.htm",
+      "agreement_type": "Confidentiality Agreement",
+      "standstill_duration_years": 2.0,
+      "governing_law": "State of Illinois"
+    },
+    {
+      "document_id": "816955_0000899243-97-001962_document_4.txt",
+      "agreement_type": "Confidentiality Agreement",
+      "standstill_duration_years": 2.0,
+      "governing_law": "Louisiana"
+    },
+    {
+      "document_id": "913610_0001047469-03-027395_a2116567zex-99_e3.htm",
+      "agreement_type": "Confidentiality Agreement",
+      "standstill_duration_years": 2.0,
+      "governing_law": "New York"
+    },
+    {
+      "document_id": "925942_0001047469-98-029396_document_13.txt",
+      "agreement_type": "Confidentiality Agreement",
+      "standstill_duration_years": 2.0,
+      "governing_law": "New York"
+    },
+    {
+      "document_id": "96238_0000950103-97-000583_document_4.txt",
+      "agreement_type": "Confidentiality Agreement",
+      "standstill_duration_years": 2.0,
+      "governing_law": "State of New York"
+    },
+    {
+      "document_id": "96238_0000950116-97-001823_document_13.txt",
+      "agreement_type": "Confidentiality Agreement",
+      "standstill_duration_years": 2.0,
+      "governing_law": "New York"
+    },
+    {
+      "document_id": "Non-disclosure%20Agreement_1.pdf",
+      "agreement_type": "Non-disclosure Agreement",
+      "standstill_duration_years": 2.0,
+      "governing_law": "Alberta"
+    }
+  ],
+  "elapsed_seconds": 76.56,
+  "cost_usd": 0.15503748,
+  "total_tokens": 283469
+}

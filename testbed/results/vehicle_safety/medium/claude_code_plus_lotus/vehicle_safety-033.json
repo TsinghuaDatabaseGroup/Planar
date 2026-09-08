@@ -1,0 +1,230 @@
+{
+  "task_id": "vehicle_safety-033",
+  "answer": [
+    {
+      "complaint_id": "complaint_10918622",
+      "campaign_number": "nan",
+      "days_between": 1536,
+      "defect_root_cause": "RRAB inflator end cap detachment or sidewall rupture"
+    },
+    {
+      "complaint_id": "complaint_11119905",
+      "campaign_number": "nan",
+      "days_between": 1514,
+      "defect_root_cause": "Shifter cable bushing degradation or detachment"
+    },
+    {
+      "complaint_id": "complaint_11112485",
+      "campaign_number": "nan",
+      "days_between": 1540,
+      "defect_root_cause": "Shifter cable bushing degradation or detachment"
+    },
+    {
+      "complaint_id": "complaint_11390603",
+      "campaign_number": "nan",
+      "days_between": 1812,
+      "defect_root_cause": "Engine block heater cracking and leaking coolant"
+    },
+    {
+      "complaint_id": "complaint_11424739",
+      "campaign_number": "nan",
+      "days_between": 1880,
+      "defect_root_cause": "Loss of signal between sensor and PCM"
+    },
+    {
+      "complaint_id": "complaint_11421240",
+      "campaign_number": "nan",
+      "days_between": 1907,
+      "defect_root_cause": "Loss of signal between sensor and PCM"
+    },
+    {
+      "complaint_id": "complaint_10970121",
+      "campaign_number": "nan",
+      "days_between": 2040,
+      "defect_root_cause": "Brake master cylinder fluid leak into booster"
+    },
+    {
+      "complaint_id": "complaint_11109618",
+      "campaign_number": "nan",
+      "days_between": 2679,
+      "defect_root_cause": "Brake master cylinder fluid leak into booster"
+    },
+    {
+      "complaint_id": "complaint_11339784",
+      "campaign_number": "nan",
+      "days_between": 1937,
+      "defect_root_cause": "Brake master cylinder fluid leak into booster"
+    },
+    {
+      "complaint_id": "complaint_11208389",
+      "campaign_number": "nan",
+      "days_between": 2362,
+      "defect_root_cause": "Brake master cylinder fluid leak into booster"
+    },
+    {
+      "complaint_id": "complaint_11365925",
+      "campaign_number": "nan",
+      "days_between": 1708,
+      "defect_root_cause": "Software error causing rearview camera display failure"
+    },
+    {
+      "complaint_id": "complaint_11054399",
+      "campaign_number": "nan",
+      "days_between": 3081,
+      "defect_root_cause": "Front passenger seat weight sensor cracking and short circuiting"
+    },
+    {
+      "complaint_id": "complaint_10906014",
+      "campaign_number": "nan",
+      "days_between": 3531,
+      "defect_root_cause": "Driver air bag inflator rupture during deployment"
+    },
+    {
+      "complaint_id": "complaint_11426742",
+      "campaign_number": "nan",
+      "days_between": 1564,
+      "defect_root_cause": "Fuel injector cracking and leaking fuel"
+    },
+    {
+      "complaint_id": "complaint_11066101",
+      "campaign_number": "nan",
+      "days_between": 1806,
+      "defect_root_cause": "Improperly fitting replacement battery causing short circuit"
+    },
+    {
+      "complaint_id": "complaint_11114328",
+      "campaign_number": "nan",
+      "days_between": 1628,
+      "defect_root_cause": "Improperly fitting replacement battery causing short circuit"
+    },
+    {
+      "complaint_id": "complaint_11103656",
+      "campaign_number": "nan",
+      "days_between": 1668,
+      "defect_root_cause": "Internal transmission wiring connector short circuit"
+    },
+    {
+      "complaint_id": "complaint_11230535",
+      "campaign_number": "nan",
+      "days_between": 1710,
+      "defect_root_cause": "Manufacturing defect causing air bag inflator rupture"
+    },
+    {
+      "complaint_id": "complaint_10928871",
+      "campaign_number": "nan",
+      "days_between": 2661,
+      "defect_root_cause": "Debris contamination causing clockspring failure"
+    },
+    {
+      "complaint_id": "complaint_10939731",
+      "campaign_number": "nan",
+      "days_between": 2626,
+      "defect_root_cause": "Debris contamination causing clockspring failure"
+    },
+    {
+      "complaint_id": "complaint_10928584",
+      "campaign_number": "nan",
+      "days_between": 2662,
+      "defect_root_cause": "Debris contamination causing clockspring failure"
+    },
+    {
+      "complaint_id": "complaint_11279814",
+      "campaign_number": "nan",
+      "days_between": 2092,
+      "defect_root_cause": "Driver side air bag improperly connected"
+    },
+    {
+      "complaint_id": "complaint_11222482",
+      "campaign_number": "nan",
+      "days_between": 2233,
+      "defect_root_cause": "Driver side air bag improperly connected"
+    },
+    {
+      "complaint_id": "complaint_11340731",
+      "campaign_number": "nan",
+      "days_between": 1841,
+      "defect_root_cause": "Driver side air bag improperly connected"
+    },
+    {
+      "complaint_id": "complaint_11394876",
+      "campaign_number": "nan",
+      "days_between": 1642,
+      "defect_root_cause": "Driver side air bag improperly connected"
+    },
+    {
+      "complaint_id": "complaint_11329424",
+      "campaign_number": "nan",
+      "days_between": 1875,
+      "defect_root_cause": "Driver side air bag improperly connected"
+    },
+    {
+      "complaint_id": "complaint_11331097",
+      "campaign_number": "nan",
+      "days_between": 1866,
+      "defect_root_cause": "Driver side air bag improperly connected"
+    },
+    {
+      "complaint_id": "complaint_11255177",
+      "campaign_number": "nan",
+      "days_between": 2154,
+      "defect_root_cause": "Driver side air bag improperly connected"
+    },
+    {
+      "complaint_id": "complaint_11325862",
+      "campaign_number": "nan",
+      "days_between": 1898,
+      "defect_root_cause": "Driver side air bag improperly connected"
+    },
+    {
+      "complaint_id": "complaint_11319766",
+      "campaign_number": "nan",
+      "days_between": 1954,
+      "defect_root_cause": "Driver side air bag improperly connected"
+    },
+    {
+      "complaint_id": "complaint_11337818",
+      "campaign_number": "nan",
+      "days_between": 1855,
+      "defect_root_cause": "Driver side air bag improperly connected"
+    },
+    {
+      "complaint_id": "complaint_11130318",
+      "campaign_number": "nan",
+      "days_between": 1580,
+      "defect_root_cause": "Internal transmission wiring connector short circuit"
+    },
+    {
+      "complaint_id": "complaint_10818332",
+      "campaign_number": "nan",
+      "days_between": 2467,
+      "defect_root_cause": "Faulty automatic transmission shift lever assembly components"
+    },
+    {
+      "complaint_id": "complaint_11396939",
+      "campaign_number": "nan",
+      "days_between": 1525,
+      "defect_root_cause": "Manufacturing defects in connecting rod and crankshaft"
+    },
+    {
+      "complaint_id": "complaint_10896135",
+      "campaign_number": "nan",
+      "days_between": 2768,
+      "defect_root_cause": "Debris contamination causing clockspring failure"
+    },
+    {
+      "complaint_id": "complaint_11376005",
+      "campaign_number": "nan",
+      "days_between": 1802,
+      "defect_root_cause": "Internal high voltage battery failure"
+    },
+    {
+      "complaint_id": "complaint_11120933",
+      "campaign_number": "nan",
+      "days_between": 2832,
+      "defect_root_cause": "Front passenger seat weight sensor cracking and shorting"
+    }
+  ],
+  "elapsed_seconds": 240.941,
+  "cost_usd": 0.58737609,
+  "total_tokens": 474542
+}

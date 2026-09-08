@@ -1,0 +1,137 @@
+datasets:
+  contract_exhibits:
+    type: file
+    path: contract_exhibit_full.json
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_documents_over_5000_words
+    type: code_filter
+    code: |
+      def transform(doc):
+          return len(str(doc.get("contents") or "").split()) > 5000
+
+  - name: filter_substantive_insider_trading_policy
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether this document is a substantive insider-trading policy.
+
+      Document:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        is_insider_trading_policy: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_rule_10b5_1_and_family_coverage
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether this insider-trading policy both discusses Rule 10b5-1
+      plans and expressly covers family or household members.
+
+      Document:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        discusses_rule_and_covers_family: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_no_policy_approval_or_adoption_date
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether this policy states no policy approval date or adoption
+      date. Return true only when neither date is stated for the policy.
+
+      Document:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        has_no_policy_approval_or_adoption_date: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: extract_stated_company_names
+    type: map
+    optimize: true
+    prompt: |
+      Extract all company names stated by this insider-trading policy. Return legal
+      entity or company names only, excluding individual officer names.
+
+      Document:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        company_names: list[string]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: project_document_and_company_names
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "document_id": str(doc.get("doc_id") or ""),
+              "company_names": doc.get("company_names") or [],
+          }
+
+pipeline:
+  steps:
+    - name: matching_insider_trading_policies
+      input: contract_exhibits
+      operations:
+        - filter_documents_over_5000_words
+        - filter_substantive_insider_trading_policy
+        - filter_rule_10b5_1_and_family_coverage
+        - filter_no_policy_approval_or_adoption_date
+        - extract_stated_company_names
+        - project_document_and_company_names
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-078.json

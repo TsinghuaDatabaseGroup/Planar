@@ -1,0 +1,160 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+
+operations:
+  - name: load_left_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              return {"text": handle.read()}
+
+  - name: load_right_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              return {"text": handle.read()}
+
+  - name: match_duplicate_occurrence_reports
+    type: equijoin
+    comparison_prompt: |
+      Keep this pair only when every condition holds:
+      1. the left incident_id is lexicographically smaller than the right
+         incident_id;
+      2. incident month, state_reference, locale_reference_type, and
+         primary_problem are equal; and
+      3. both narratives most likely describe the same underlying occurrence,
+         with compatible distinctive event progression, measurements, actions, and
+         outcome. Generic topical similarity is insufficient.
+
+      LEFT INCIDENT_ID: {{ left.incident_id }}
+      LEFT INCIDENT MONTH: {{ left.incident_date }}
+      LEFT STATE_REFERENCE: {{ left.state_reference }}
+      LEFT LOCALE_REFERENCE_TYPE: {{ left.locale_reference_type }}
+      LEFT PRIMARY_PROBLEM: {{ left.primary_problem }}
+      LEFT REPORT:
+      {{ left.text }}
+
+      RIGHT INCIDENT_ID: {{ right.incident_id }}
+      RIGHT INCIDENT MONTH: {{ right.incident_date }}
+      RIGHT STATE_REFERENCE: {{ right.state_reference }}
+      RIGHT LOCALE_REFERENCE_TYPE: {{ right.locale_reference_type }}
+      RIGHT PRIMARY_PROBLEM: {{ right.primary_problem }}
+      RIGHT REPORT:
+      {{ right.text }}
+    blocking_conditions:
+      - >-
+        str(left.get("incident_id") or "") < str(right.get("incident_id") or "")
+        and left.get("incident_date") == right.get("incident_date")
+        and left.get("state_reference") == right.get("state_reference")
+        and left.get("locale_reference_type") == right.get("locale_reference_type")
+        and left.get("primary_problem") == right.get("primary_problem")
+    embedding_model: Qwen3-Embedding-8B
+    comparison_model: Qwen3.5-397B-A17B
+    timeout: 120
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 128
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: order_and_rank_matched_pairs
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          pairs = {}
+          for item in items:
+              left_id = str(item.get("incident_id_left") or "")
+              right_id = str(item.get("incident_id_right") or "")
+              incident_date = str(item.get("incident_date_left") or "")
+              if left_id and right_id and incident_date:
+                  pairs.setdefault(
+                      (left_id, right_id),
+                      {
+                          "incident_date": incident_date,
+                          "left_incident_id": left_id,
+                          "right_incident_id": right_id,
+                      },
+                  )
+          rows = list(pairs.values())
+          rows.sort(
+              key=lambda row: (
+                  row["left_incident_id"], row["right_incident_id"]
+              )
+          )
+          rows.sort(key=lambda row: row["incident_date"], reverse=True)
+          for rank, row in enumerate(rows, start=1):
+              row["rank"] = rank
+          return {"rows": rows}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - rank
+      - incident_date
+      - left_incident_id
+      - right_incident_id
+
+pipeline:
+  steps:
+    - name: left_reports
+      input: asrs_incidents
+      operations:
+        - load_left_asrs_narrative
+    - name: right_reports
+      input: asrs_incidents
+      operations:
+        - load_right_asrs_narrative
+    - name: matched_pairs
+      operations:
+        - match_duplicate_occurrence_reports:
+            left: left_reports
+            right: right_reports
+    - name: answer
+      input: matched_pairs
+      operations:
+        - order_and_rank_matched_pairs
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-024.json

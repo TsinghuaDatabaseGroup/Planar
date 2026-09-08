@@ -1,0 +1,116 @@
+{
+  "task_id": "aviation_safety-045",
+  "answer": [
+    {
+      "rank": 1,
+      "maintenance_status": "released_to_service",
+      "discovery_phase": "after_takeoff",
+      "chain_category": "released_item_failed",
+      "incident_count": 22,
+      "canonical_affected_item": "AHRS attitude indication system",
+      "recurring_discrepancy": "FCU failure and autopilot disconnect"
+    },
+    {
+      "rank": 2,
+      "maintenance_status": "deferred",
+      "discovery_phase": "after_takeoff",
+      "chain_category": "deferred_item_recurred",
+      "incident_count": 9,
+      "canonical_affected_item": "#2 engine EEC controller",
+      "recurring_discrepancy": "Pack 1 regulator fault"
+    },
+    {
+      "rank": 3,
+      "maintenance_status": "released_to_service",
+      "discovery_phase": "after_takeoff",
+      "chain_category": "incomplete_repair_or_signoff",
+      "incident_count": 7,
+      "canonical_affected_item": "aft lavatory toilet components",
+      "recurring_discrepancy": "engine oil loss in flight"
+    },
+    {
+      "rank": 4,
+      "maintenance_status": "deferred",
+      "discovery_phase": "after_takeoff",
+      "chain_category": "maintenance_limitation_escalated",
+      "incident_count": 5,
+      "canonical_affected_item": "PACK 2 air conditioning pack",
+      "recurring_discrepancy": "cargo door unlatched in flight"
+    },
+    {
+      "rank": 5,
+      "maintenance_status": "released_to_service",
+      "discovery_phase": "before_departure",
+      "chain_category": "incomplete_repair_or_signoff",
+      "incident_count": 5,
+      "canonical_affected_item": "#1 engine throttle interlock actuator",
+      "recurring_discrepancy": "aileron binding and heaviness"
+    },
+    {
+      "rank": 6,
+      "maintenance_status": "both",
+      "discovery_phase": "after_takeoff",
+      "chain_category": "released_item_failed",
+      "incident_count": 4,
+      "canonical_affected_item": "cabin air conditioning packs",
+      "recurring_discrepancy": "engine torque and propeller surging"
+    },
+    {
+      "rank": 7,
+      "maintenance_status": "released_to_service",
+      "discovery_phase": "before_departure",
+      "chain_category": "released_item_failed",
+      "incident_count": 4,
+      "canonical_affected_item": "Captain GPS navigation system",
+      "recurring_discrepancy": "RNP drift exceeding tolerance limits"
+    },
+    {
+      "rank": 8,
+      "maintenance_status": "both",
+      "discovery_phase": "before_departure",
+      "chain_category": "incomplete_repair_or_signoff",
+      "incident_count": 3,
+      "canonical_affected_item": "Blue Hydraulic System quantity indication",
+      "recurring_discrepancy": "inoperative cockpit chime"
+    },
+    {
+      "rank": 9,
+      "maintenance_status": "both",
+      "discovery_phase": "after_takeoff",
+      "chain_category": "maintenance_limitation_escalated",
+      "incident_count": 2,
+      "canonical_affected_item": "left air conditioning pack",
+      "recurring_discrepancy": "display black with smoke"
+    },
+    {
+      "rank": 10,
+      "maintenance_status": "both",
+      "discovery_phase": "before_departure",
+      "chain_category": "maintenance_limitation_escalated",
+      "incident_count": 2,
+      "canonical_affected_item": "number 1 engine attrition liner",
+      "recurring_discrepancy": "burnt contractor pins causing faults"
+    },
+    {
+      "rank": 11,
+      "maintenance_status": "released_to_service",
+      "discovery_phase": "before_departure",
+      "chain_category": "maintenance_limitation_escalated",
+      "incident_count": 2,
+      "canonical_affected_item": "auto ground spoiler system",
+      "recurring_discrepancy": "ARM light illuminates unexpectedly"
+    },
+    {
+      "rank": 12,
+      "maintenance_status": "both",
+      "discovery_phase": "after_takeoff",
+      "chain_category": "deferred_item_recurred",
+      "incident_count": 1,
+      "canonical_affected_item": "Flight Augmentation Computer 2",
+      "recurring_discrepancy": "FAC 2 overhead light illumination"
+    }
+  ],
+  "elapsed_seconds": 361.866,
+  "cost_usd": 1.06729698,
+  "total_tokens": 2164948
+}

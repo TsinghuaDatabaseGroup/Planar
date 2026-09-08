@@ -1,0 +1,120 @@
+datasets:
+  contract_exhibits:
+    type: file
+    path: contract_exhibit_full.json
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: https://llm-endpoint.example/v1
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: https://llm-endpoint.example/v1
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types:
+    - chunk
+    - proj_synthesis
+    - glean
+  equijoin:
+    target_recall: 0.95
+operations:
+- name: filter_ex97_clawback_policies
+  type: filter
+  optimize: true
+  prompt: 'Keep this document only if it is an EX-97 clawback or compensation
+
+    recoupment policy.
+
+
+    Document:
+
+    {{ input.contents }}
+
+    '
+  output:
+    mode: structured_output
+    schema:
+      is_ex97_clawback_policy: boolean
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 4096
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: filter_misconduct_extended_recovery_and_date
+  type: filter
+  optimize: true
+  prompt: 'Keep this policy only if it treats intentional misconduct as a recovery
+
+    trigger, extends recovery beyond SEC minimum requirements, and explicitly
+
+    states an effective date.
+
+
+    Policy:
+
+    {{ input.contents }}
+
+    '
+  output:
+    mode: structured_output
+    schema:
+      has_required_policy_features: boolean
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 4096
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: extract_company_date_and_covered_persons
+  type: map
+  optimize: true
+  prompt: 'Extract the company name, effective date normalized to YYYY-MM-DD, and a
+
+    concise description of the covered-person scope.
+
+
+    Policy:
+
+    {{ input.contents }}
+
+    '
+  output:
+    mode: structured_output
+    schema:
+      company_name: string
+      effective_date: string
+      covered_persons: string
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 4096
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: project_answer_fields
+  type: code_map
+  code: "def transform(doc):\n    return {\"document_name\": str(doc.get(\"doc_id\") or \"\"), \"company_name\"\
+    : str(doc.get(\"company_name\") or \"\"), \"effective_date\": str(doc.get(\"effective_date\") or \"\
+    \"), \"covered_persons\": str(doc.get(\"covered_persons\") or \"\")}\n"
+pipeline:
+  steps:
+  - name: process
+    input: contract_exhibits
+    operations:
+    - filter_ex97_clawback_policies
+    - filter_misconduct_extended_recovery_and_date
+    - extract_company_date_and_covered_persons
+    - project_answer_fields
+  output:
+    type: file
+    path: /home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-044/outputs/output_legal_contracts-044.json
+    intermediate_dir: /home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-044/intermediates
+bypass_cache: true

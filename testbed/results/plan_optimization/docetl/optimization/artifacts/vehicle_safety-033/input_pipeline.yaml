@@ -1,0 +1,184 @@
+datasets:
+  nhtsa_complaints:
+    type: file
+    path: data/nhtsa_vehicle_safety/complaints.csv
+  nhtsa_recalls:
+    type: file
+    path: data/nhtsa_vehicle_safety/recalls.jsonl
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: https://llm-endpoint.example/v1
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: https://llm-endpoint.example/v1
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_recalls_with_report_date
+    type: code_filter
+    code: |
+      def transform(doc):
+          campaign = doc.get("campaign") or {}
+          return str(campaign.get("report_received_date") or "").strip() != ""
+
+  - name: flatten_dated_recall_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          from datetime import date
+
+          campaign = doc.get("campaign") or {}
+          vehicle = doc.get("vehicle") or {}
+          component = doc.get("component") or {}
+          risk = doc.get("risk") or {}
+          report_date = str(campaign.get("report_received_date") or "")
+          try:
+              report_ordinal = date.fromisoformat(report_date).toordinal()
+          except ValueError:
+              report_ordinal = None
+          return {
+              "campaign_number": campaign.get("number"),
+              "vehicle_id": vehicle.get("vehicle_id"),
+              "component_id": component.get("component_id"),
+              "report_received_date": report_date,
+              "report_received_ordinal": report_ordinal,
+              "defect_summary": risk.get("defect_summary") or "",
+          }
+
+  - name: extract_recall_defect_root_cause
+    type: map
+    optimize: true
+    prompt: |
+      Extract the primary root cause of the defect described in this recall summary
+      as a short phrase of no more than 10 words.
+
+      Return only the causal failure mechanism. Do not include the affected vehicle,
+      campaign number, consequence, risk statement, remedy, or explanatory prose.
+
+      Recall defect summary:
+      {{ input.defect_summary }}
+    output:
+      mode: structured_output
+      schema:
+        defect_root_cause: string
+    validate:
+      - len(output["defect_root_cause"].strip()) > 0
+      - len(output["defect_root_cause"].strip().split()) <= 10
+    num_retries_on_validate_failure: 2
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: attach_complaint_received_ordinal
+    type: code_map
+    code: |
+      def transform(doc):
+          from datetime import date
+
+          received_date = str(doc.get("received_date") or "")
+          try:
+              received_ordinal = date.fromisoformat(received_date).toordinal()
+          except ValueError:
+              received_ordinal = None
+          return {
+              "complaint_received_ordinal": received_ordinal,
+          }
+
+  - name: join_long_lag_same_vehicle_component_pairs
+    type: equijoin
+    deterministic: true
+    blocking_conditions:
+      - >-
+        left["vehicle_id"] == right["vehicle_id"]
+        and left["component_id"] == right["component_id"]
+        and left["report_received_ordinal"] is not None
+        and right["complaint_received_ordinal"] is not None
+        and right["complaint_received_ordinal"] < left["report_received_ordinal"]
+        and left["report_received_ordinal"] - right["complaint_received_ordinal"] >= 1500
+
+  - name: classify_same_defect_mechanism
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether the complaint summary and recall defect summary describe
+      the same underlying defect mechanism.
+
+      Match when the failed part, causal mechanism, or concrete malfunction is the
+      same, even if the wording or resulting consequence differs. A shared vehicle
+      component, generic symptom, safety consequence, or broad topic alone is not
+      sufficient. Return false when the mechanisms conflict or are too vague to
+      establish equivalence.
+
+      Complaint summary:
+      {{ input.summary_text }}
+
+      Recall defect summary:
+      {{ input.defect_summary }}
+    output:
+      mode: structured_output
+      schema:
+        describes_same_defect_mechanism: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: project_long_lag_pair_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "complaint_id": doc.get("complaint_id"),
+              "campaign_number": doc.get("campaign_number"),
+              "days_between": (
+                  doc.get("report_received_ordinal")
+                  - doc.get("complaint_received_ordinal")
+              ),
+              "defect_root_cause": doc.get("defect_root_cause"),
+          }
+
+pipeline:
+  steps:
+    - name: dated_recall_root_causes
+      input: nhtsa_recalls
+      operations:
+        - filter_recalls_with_report_date
+        - flatten_dated_recall_fields
+        - extract_recall_defect_root_cause
+    - name: dated_complaints
+      input: nhtsa_complaints
+      operations:
+        - attach_complaint_received_ordinal
+    - name: long_lag_candidate_pairs
+      operations:
+        - join_long_lag_same_vehicle_component_pairs:
+            left: dated_recall_root_causes
+            right: dated_complaints
+    - name: matching_long_lag_pairs
+      input: long_lag_candidate_pairs
+      operations:
+        - classify_same_defect_mechanism
+        - project_long_lag_pair_fields
+  output:
+    type: file
+    path: plan-optimization-moar/standalone/outputs/output_vehicle_safety-033.json
+    intermediate_dir: plan-optimization-moar/standalone/intermediates/vehicle_safety-033

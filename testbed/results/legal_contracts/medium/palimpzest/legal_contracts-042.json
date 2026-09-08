@@ -1,0 +1,505 @@
+{
+  "task_id": "legal_contracts-042",
+  "answer": [
+    {
+      "document_id": "Agreement_6_28_07.pdf",
+      "term_duration_years": "perpetual",
+      "governing_law": "South Carolina",
+      "non_compete_present": true,
+      "non_solicitation_employees_present": false
+    },
+    {
+      "document_id": "BCG-Mutual-NDA.pdf",
+      "term_duration_years": "perpetual",
+      "governing_law": "Florida",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "Dealer-Pay-NDA-4.pdf",
+      "term_duration_years": "perpetual",
+      "governing_law": "Missouri",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "NON-DISCLOSURE-AGREEMENT_13.pdf",
+      "term_duration_years": "perpetual",
+      "governing_law": "South Africa",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1095558_0000944209-00-000518_document_3.txt",
+      "term_duration_years": "perpetual",
+      "governing_law": "California",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1089786_0000912057-00-052660_a2032473zex-99_e2.txt",
+      "term_duration_years": "perpetual",
+      "governing_law": "New York",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "TabunKitchenInvestments-NDA.pdf",
+      "term_duration_years": "perpetual",
+      "governing_law": "England & Wales",
+      "non_compete_present": true,
+      "non_solicitation_employees_present": false
+    },
+    {
+      "document_id": "41629_1.pdf",
+      "term_duration_years": "perpetual",
+      "governing_law": "England and Wales",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1109551_0000912057-02-024714_a2082535zex-99_d3.htm",
+      "term_duration_years": "perpetual",
+      "governing_law": "Georgia",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "non-disclosure-agreement-template-netherlands-may-2012.pdf",
+      "term_duration_years": "perpetual",
+      "governing_law": "England",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "938733_0000912057-99-002412_document_3.txt",
+      "term_duration_years": "perpetual",
+      "governing_law": "California",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "Annexure-3_Confidentiality-Agreement.pdf",
+      "term_duration_years": 5,
+      "governing_law": "Republic of South Africa",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "Kerber_Non_Disclosure_Agreement.pdf",
+      "term_duration_years": 5,
+      "governing_law": "Ontario",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1373671_0001193125-10-265249_dex99d3.htm",
+      "term_duration_years": 5,
+      "governing_law": "Delaware",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "804151_0000950144-97-007563_document_14.txt",
+      "term_duration_years": 5,
+      "governing_law": "New York",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1280058_0001193125-12-023311_d287213dex99d3.htm",
+      "term_duration_years": 5,
+      "governing_law": "Delaware",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1177845_0001193125-18-219243_d519554dex99d3.htm",
+      "term_duration_years": 4,
+      "governing_law": "Delaware",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1289434_0001047469-10-008010_a2200117zex-99_d3.htm",
+      "term_duration_years": 4,
+      "governing_law": "Minnesota",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "NDAMutualTemplateClientFill.pdf",
+      "term_duration_years": 3,
+      "governing_law": "Ontario",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "802724_0001193125-15-331613_d96542dex99d5.htm",
+      "term_duration_years": 3,
+      "governing_law": "Delaware",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "858452_0001193125-12-123549_d317599dex99d3.htm",
+      "term_duration_years": 3,
+      "governing_law": "Massachusetts",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1277141_0001193125-15-184193_d923647dex99d2.htm",
+      "term_duration_years": 3,
+      "governing_law": "Delaware",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "ea020415301ex99-2_nordstrom.htm",
+      "term_duration_years": 3,
+      "governing_law": "Washington",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "Non-disclosure%20Agreement_1.pdf",
+      "term_duration_years": 2,
+      "governing_law": "Alberta",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "792130_0001193125-18-326077_d601641dex99d3.htm",
+      "term_duration_years": 2,
+      "governing_law": "Delaware",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "799485_0000950136-00-001643_0013.txt",
+      "term_duration_years": 2,
+      "governing_law": "Maryland",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1372664_0001193125-12-159071_d333885dex99d9.htm",
+      "term_duration_years": 2,
+      "governing_law": "Georgia",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "803647_0001047469-17-006266_a2233487zex-99_d2.htm",
+      "term_duration_years": 2,
+      "governing_law": "Virginia",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1413447_0001193125-16-771498_d295023dex99d5.htm",
+      "term_duration_years": 2,
+      "governing_law": "New York",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "845818_0001193125-11-195725_dex99d8.htm",
+      "term_duration_years": 2,
+      "governing_law": "New York",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1475274_0001567619-17-000751_s001644x1_exd-2.htm",
+      "term_duration_years": 2,
+      "governing_law": "Delaware",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1487101_0001140361-19-008970_nc10001202x4_ex-d2.htm",
+      "term_duration_years": 2,
+      "governing_law": "Maryland",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1561604_0001193125-12-472390_d438799dex99d3.htm",
+      "term_duration_years": 2,
+      "governing_law": "Delaware",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1101204_0001085037-00-000208_0015.txt",
+      "term_duration_years": 2,
+      "governing_law": "California",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "880562_0001193125-15-346821_d93800dex3.htm",
+      "term_duration_years": 2,
+      "governing_law": "Texas",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1112422_0000950153-08-001257_p75864exv99wxeyx4y.htm",
+      "term_duration_years": 2,
+      "governing_law": "New York",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1043431_0000950133-00-000090_document_15.txt",
+      "term_duration_years": 2,
+      "governing_law": "Virginia",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1142512_0001193125-14-269726_d757168dex99e3.htm",
+      "term_duration_years": 2,
+      "governing_law": "California",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "32251_0000950133-99-003991_document_17.txt",
+      "term_duration_years": 2,
+      "governing_law": "Virginia",
+      "non_compete_present": true,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1163932_0001193125-13-394191_d606730dex99d2.htm",
+      "term_duration_years": 2,
+      "governing_law": "Delaware",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "55805_0001145443-10-001028_d26631_ex99-d3.htm",
+      "term_duration_years": 2,
+      "governing_law": "Delaware",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1316898_0001047469-18-005618_a2236490zex-99_d2.htm",
+      "term_duration_years": 2,
+      "governing_law": "Delaware",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "741696_0001193125-10-290887_dex99d9.htm",
+      "term_duration_years": 2,
+      "governing_law": "California",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "AfriGIS_Client-NDA_Template_2019.pdf",
+      "term_duration_years": 2,
+      "governing_law": "Republic of South Africa",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1096147_0001193125-08-206038_dex4.htm",
+      "term_duration_years": 1.5,
+      "governing_law": "Illinois",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "Standard%20NDA%20by%20Axial.pdf",
+      "term_duration_years": 1.5,
+      "governing_law": "Delaware",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "912263_0001193125-12-285724_d371520dex99e4.htm",
+      "term_duration_years": 1.5,
+      "governing_law": "New York",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1062478_0001193125-14-442753_d838170dex3.htm",
+      "term_duration_years": 1.5,
+      "governing_law": "California",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1010552_0000912057-01-520246_a2051644zex-99_20.htm",
+      "term_duration_years": 1.5,
+      "governing_law": "Massachusetts",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1014552_0000950148-01-500497_v71961toex99-d3.txt",
+      "term_duration_years": 1.25,
+      "governing_law": "Texas",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "832995_0000912057-00-054331_a2033550zex-99_d13.htm",
+      "term_duration_years": 1.25,
+      "governing_law": "Minnesota",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "v71961toex99-d3.txt",
+      "term_duration_years": 1.25,
+      "governing_law": "Texas",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "NondisclosureAgreement_2.pdf",
+      "term_duration_years": 1,
+      "governing_law": "India",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1402305_0001193125-11-343865_d268167dex99d2.htm",
+      "term_duration_years": 1,
+      "governing_law": "New York",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1094348_0001144204-18-026846_tv493416_exd2.htm",
+      "term_duration_years": 1,
+      "governing_law": "New York",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1094814_0001140361-18-017998_s002178x1_ex99d7.htm",
+      "term_duration_years": 1,
+      "governing_law": "Delaware",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "86115_0000930661-99-001321_document_3.txt",
+      "term_duration_years": 1,
+      "governing_law": "Delaware",
+      "non_compete_present": true,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1693664_0001193125-18-171470_d426098dex99d3.htm",
+      "term_duration_years": 1,
+      "governing_law": "Delaware",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "888953_0001193125-13-044630_d480503dex99e6.htm",
+      "term_duration_years": 1,
+      "governing_law": "Delaware",
+      "non_compete_present": true,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "899240_0000912057-01-007226_a2040095zex-99_9d1.txt",
+      "term_duration_years": 1,
+      "governing_law": "Florida",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "913610_0001047469-03-027395_a2116567zex-99_e3.htm",
+      "term_duration_years": 1,
+      "governing_law": "New York",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "915191_0001047469-17-003155_a2231967zex-99_8.htm",
+      "term_duration_years": 1,
+      "governing_law": "New York",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1167294_0001193125-15-218134_d933068dex99d3.htm",
+      "term_duration_years": 1,
+      "governing_law": "Delaware",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "874265_0001193125-05-138436_dex99d1.htm",
+      "term_duration_years": 1,
+      "governing_law": "New York",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "703361_0001193125-12-242586_d356019dex9910.htm",
+      "term_duration_years": 1,
+      "governing_law": "California",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1063085_0000950134-09-011390_f52580exv99wxeyx3y.htm",
+      "term_duration_years": 1,
+      "governing_law": "California",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1070052_0000950130-01-501801_dex99d2.txt",
+      "term_duration_years": 1,
+      "governing_law": "New York",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "917639_0000912057-01-537118_a2062042zex-99_d7.htm",
+      "term_duration_years": 1,
+      "governing_law": "Georgia",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "nondisclosureagreement.pdf",
+      "term_duration_years": 1,
+      "governing_law": "India",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "354452_0000950123-99-011178_document_13.txt",
+      "term_duration_years": 0.5,
+      "governing_law": "Florida",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    },
+    {
+      "document_id": "1001917_0000950123-08-007542_y61533exv99wdw3.htm",
+      "term_duration_years": 0.33,
+      "governing_law": "Washington",
+      "non_compete_present": false,
+      "non_solicitation_employees_present": true
+    }
+  ],
+  "elapsed_seconds": 5312.39,
+  "cost_usd": 2.967335,
+  "total_tokens": 5637058
+}

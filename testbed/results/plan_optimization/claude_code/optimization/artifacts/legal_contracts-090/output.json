@@ -1,0 +1,27 @@
+{
+  "task_id": "legal_contracts-090",
+  "optimization_analysis": "Merged two consecutive SEM_FILTER operations into a single combined filter checking all conditions (NDA classification, standstill provision presence, and employee non-solicitation clause presence) in one pass. This reduces language-model invocations from 2 to 1 per document while preserving identical query semantics.",
+  "optimized_semantic_plan": [
+    {
+      "type": "operator_dag",
+      "program": "SCAN_DOCS(CONTRACTEXHIBIT, all) -> SEM_FILTER('document is a non-disclosure agreement, including dual-labeled NDA exhibits, and expressly contains both a standstill provision and an employee non-solicitation clause') -> SEM_EXTRACT('standstill duration; employee non-solicitation duration; presence of each of the 6 named confidentiality exceptions') -> FILTER(standstill_duration IS NOT NULL AND employee_non_solicitation_duration IS NOT NULL) -> PROJECT(class_label = CASE WHEN employee_duration > standstill_duration THEN 'employee_restriction_longer' WHEN employee_duration = standstill_duration THEN 'equal' ELSE 'standstill_longer' END, exception_count = sum(six_exception_flags)) -> GROUP_BY(class_label, agreement_count = COUNT(*), average_exception_count = ROUND(AVG(exception_count), 2)) -> ORDER_BY(agreement_count DESC, class_label ASC)"
+    }
+  ],
+  "valid": true,
+  "validation_warnings": [],
+  "elapsed_secs": 21.511,
+  "cost_usd": 0.0200184,
+  "agent_cost_usd": 0.0200184,
+  "usage": {
+    "input": 3,
+    "output": 1088,
+    "cacheRead": 3098,
+    "cacheWrite": 736
+  },
+  "agent_usage": {
+    "input": 3,
+    "output": 1088,
+    "cacheRead": 3098,
+    "cacheWrite": 736
+  }
+}

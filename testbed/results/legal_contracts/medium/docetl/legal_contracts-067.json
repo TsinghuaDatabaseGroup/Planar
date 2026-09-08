@@ -1,0 +1,83 @@
+{
+  "task_id": "legal_contracts-067",
+  "answer": [
+    {
+      "company": "Voya Financial",
+      "trigger_pattern": "restatement_and_misconduct",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "TPG Inc.",
+      "trigger_pattern": "restatement_and_misconduct",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "Hudson Pacific Properties, Inc.",
+      "trigger_pattern": "restatement_only",
+      "coverage_extends_beyond_executive_officers": false
+    },
+    {
+      "company": "Acuity Inc.",
+      "trigger_pattern": "restatement_only",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "Cavco Industries, Inc.",
+      "trigger_pattern": "restatement_and_misconduct",
+      "coverage_extends_beyond_executive_officers": false
+    },
+    {
+      "company": "Trinity Capital Inc.",
+      "trigger_pattern": "restatement_and_misconduct",
+      "coverage_extends_beyond_executive_officers": false
+    },
+    {
+      "company": "Globalstar, Inc.",
+      "trigger_pattern": "restatement_and_misconduct",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "Pentair plc",
+      "trigger_pattern": "restatement_only",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "Galileo Financial Technologies, LLC",
+      "trigger_pattern": "restatement_and_misconduct",
+      "coverage_extends_beyond_executive_officers": false
+    },
+    {
+      "company": "Ingevity Corporation",
+      "trigger_pattern": "restatement_and_misconduct",
+      "coverage_extends_beyond_executive_officers": false
+    },
+    {
+      "company": "H.B. Fuller Company",
+      "trigger_pattern": "restatement_and_misconduct",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "SunOpta Inc.",
+      "trigger_pattern": "restatement_and_misconduct",
+      "coverage_extends_beyond_executive_officers": false
+    },
+    {
+      "company": "Franklin Resources, Inc.",
+      "trigger_pattern": "restatement_and_misconduct",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "Fulton Financial Corporation",
+      "trigger_pattern": "restatement_and_misconduct",
+      "coverage_extends_beyond_executive_officers": true
+    },
+    {
+      "company": "Strategic Education, Inc.",
+      "trigger_pattern": "restatement_and_misconduct",
+      "coverage_extends_beyond_executive_officers": true
+    }
+  ],
+  "elapsed_seconds": 406.48,
+  "cost_usd": 3.832601,
+  "total_tokens": 7353511
+}

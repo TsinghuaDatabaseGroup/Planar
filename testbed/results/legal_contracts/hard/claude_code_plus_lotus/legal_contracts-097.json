@@ -1,0 +1,48 @@
+{
+  "task_id": "legal_contracts-097",
+  "answer": [
+    {
+      "company": "Capitol Federal Financial, Inc.",
+      "certifying_officers": [
+        "Kent G. Townsend",
+        "John B. Dicus"
+      ],
+      "certification_document_count": 2
+    },
+    {
+      "company": "Evofem Biosciences, Inc.",
+      "certifying_officers": [
+        "Saundra Pelletier",
+        "Ivy Zhang"
+      ],
+      "certification_document_count": 4
+    },
+    {
+      "company": "Franklin Resources, Inc.",
+      "certifying_officers": [
+        "Matthew Nicholls",
+        "Jennifer M. Johnson"
+      ],
+      "certification_document_count": 4
+    },
+    {
+      "company": "iAnthus Capital Holdings, Inc.",
+      "certifying_officers": [
+        "Richard Proud",
+        "Justin Vu"
+      ],
+      "certification_document_count": 2
+    },
+    {
+      "company": "Monroe Capital Corporation",
+      "certifying_officers": [
+        "Lewis W. Solimene, Jr.",
+        "Theodore L. Koenig"
+      ],
+      "certification_document_count": 2
+    }
+  ],
+  "elapsed_seconds": 739.94,
+  "cost_usd": 1.14887229,
+  "total_tokens": 1331651
+}

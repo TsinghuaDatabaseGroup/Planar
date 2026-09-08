@@ -1,0 +1,82 @@
+{
+  "task_id": "legal_contracts-084",
+  "answer": [
+    {
+      "company": "TPG Inc.",
+      "certifying_officers": [
+        "Jack Weingart",
+        "Jon Winkelried"
+      ],
+      "covered_person_category": "Participant",
+      "largest_subsidiary_count": 374
+    },
+    {
+      "company": "TransDigm Group Incorporated",
+      "certifying_officers": [
+        "Kevin Stein",
+        "Sarah Wynne"
+      ],
+      "covered_person_category": "Named Executive Officers",
+      "largest_subsidiary_count": 175
+    },
+    {
+      "company": "Voya Financial, Inc.",
+      "certifying_officers": [
+        "Donald C. Templin",
+        "Heather H. Lavallee",
+        "Michael R. Katz"
+      ],
+      "covered_person_category": "Senior Managers",
+      "largest_subsidiary_count": 143
+    },
+    {
+      "company": "Peakstone Realty Trust",
+      "certifying_officers": [
+        "Javier F. Bitar",
+        "Michael J. Escalante"
+      ],
+      "covered_person_category": "full-time employees",
+      "largest_subsidiary_count": 134
+    },
+    {
+      "company": "Franklin Resources, Inc.",
+      "certifying_officers": [
+        "Jennifer M. Johnson",
+        "Matthew Nicholls"
+      ],
+      "covered_person_category": "employees and Consultants",
+      "largest_subsidiary_count": 126
+    },
+    {
+      "company": "H.B. Fuller Company",
+      "certifying_officers": [
+        "Celeste B. Mastin",
+        "John J. Corkrean"
+      ],
+      "covered_person_category": "Executive Officers",
+      "largest_subsidiary_count": 104
+    },
+    {
+      "company": "Hudson Pacific Properties, Inc.",
+      "certifying_officers": [
+        "Harout K. Diramerian",
+        "Victor J. Coleman"
+      ],
+      "covered_person_category": "senior executives",
+      "largest_subsidiary_count": 93
+    },
+    {
+      "company": "International Paper Company",
+      "certifying_officers": [
+        "Andrew K. Silvernail",
+        "Mark S. Sutton",
+        "Timothy S. Nicholls"
+      ],
+      "covered_person_category": "key employee",
+      "largest_subsidiary_count": 74
+    }
+  ],
+  "elapsed_seconds": 903.604,
+  "cost_usd": 7.56209445,
+  "total_tokens": 18382320
+}

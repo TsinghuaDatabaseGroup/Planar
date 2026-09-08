@@ -1,0 +1,48 @@
+{
+  "task_id": "finance-021",
+  "answer": [
+    {
+      "transition": "mixed -> service_revenue",
+      "count": 123
+    },
+    {
+      "transition": "product_sales -> mixed",
+      "count": 115
+    },
+    {
+      "transition": "mixed -> product_sales",
+      "count": 114
+    },
+    {
+      "transition": "service_revenue -> mixed",
+      "count": 97
+    },
+    {
+      "transition": "product_sales -> other",
+      "count": 58
+    },
+    {
+      "transition": "other -> transaction_fees",
+      "count": 53
+    },
+    {
+      "transition": "mixed -> other",
+      "count": 49
+    },
+    {
+      "transition": "other -> service_revenue",
+      "count": 39
+    },
+    {
+      "transition": "other -> mixed",
+      "count": 38
+    },
+    {
+      "transition": "other -> product_sales",
+      "count": 34
+    }
+  ],
+  "elapsed_seconds": 1845.308,
+  "cost_usd": 17.01009888,
+  "total_tokens": 42563944
+}

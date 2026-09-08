@@ -1,0 +1,44 @@
+{
+  "task_id": "legal_contracts-086",
+  "answer": [
+    {
+      "governing_law": "California",
+      "matching_count": 4
+    },
+    {
+      "governing_law": "Delaware",
+      "matching_count": 2
+    },
+    {
+      "governing_law": "New York",
+      "matching_count": 2
+    },
+    {
+      "governing_law": "England & Wales",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "Germany",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "Manitoba",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "New Hampshire",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "Singapore",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "Switzerland",
+      "matching_count": 1
+    }
+  ],
+  "elapsed_seconds": 538.718,
+  "cost_usd": 1.71120816,
+  "total_tokens": 3561400
+}

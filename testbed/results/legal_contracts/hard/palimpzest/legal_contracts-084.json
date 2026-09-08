@@ -1,0 +1,12 @@
+{
+  "task_id": "legal_contracts-084",
+  "answer": [
+    {"company": "Peakstone Realty Trust", "certifying_officers": ["Javier F. Bitar, Chief Financial Officer and Treasurer (Principal Financial Officer)", "Michael J. Escalante, Chief Executive Officer and President (Principal Executive Officer)"], "covered_person_category": "executive_officers", "largest_subsidiary_count": 173},
+    {"company": "Voya Financial, Inc.", "certifying_officers": ["Donald C. Templin, Chief Financial Officer", "Heather H. Lavallee, Chief Executive Officer", "Michael R. Katz, Chief Financial Officer"], "covered_person_category": "executive_officers_and_employees", "largest_subsidiary_count": 143},
+    {"company": "Voya Financial, Inc.", "certifying_officers": ["Donald C. Templin, Chief Financial Officer", "Heather H. Lavallee, Chief Executive Officer", "Michael R. Katz, Chief Financial Officer"], "covered_person_category": "executive_officers_directors_and_employees", "largest_subsidiary_count": 143},
+    {"company": "H.B. Fuller Company", "certifying_officers": ["Celeste B. Mastin, President and Chief Executive Officer", "John J. Corkrean, Executive Vice President, Chief Financial Officer"], "covered_person_category": "executive_officers_and_key_managers", "largest_subsidiary_count": 134}
+  ],
+  "elapsed_seconds": 3110.92,
+  "cost_usd": 5.473258,
+  "total_tokens": 10358195
+}

@@ -1,0 +1,197 @@
+{
+  "task_id": "vehicle_safety-041",
+  "answer": [
+    {
+      "campaign_number": "23V838000",
+      "matched_complaint_count": 50,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_3e540e709b495d53.txt"
+      ],
+      "dominant_defect_mechanism": "Insufficient driver monitoring controls for Autosteer engagement",
+      "odi_risk_summary": "The investigation highlights an increased crash risk when drivers fail to maintain responsibility or recognize Autosteer disengagement while the system is active. This safety concern stems from the potential for drivers to be unprepared to intervene immediately when the automated features are canceled or not engaged."
+    },
+    {
+      "campaign_number": "23V838000",
+      "matched_complaint_count": 50,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_3e540e709b495d53.txt"
+      ],
+      "dominant_defect_mechanism": "Insufficient driver monitoring controls for Autosteer engagement",
+      "odi_risk_summary": "The investigation highlights an increased crash risk when drivers fail to maintain responsibility or recognize Autosteer disengagement while the system is active. This safety concern stems from the potential for drivers to be unprepared to intervene immediately when the automated features are canceled or not engaged."
+    },
+    {
+      "campaign_number": "23V838000",
+      "matched_complaint_count": 50,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_3e540e709b495d53.txt"
+      ],
+      "dominant_defect_mechanism": "Insufficient driver monitoring controls for Autosteer engagement",
+      "odi_risk_summary": "The investigation highlights an increased crash risk when drivers fail to maintain responsibility or recognize Autosteer disengagement while the system is active. This safety concern stems from the potential for drivers to be unprepared to intervene immediately when the automated features are canceled or not engaged."
+    },
+    {
+      "campaign_number": "23V838000",
+      "matched_complaint_count": 50,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_3e540e709b495d53.txt"
+      ],
+      "dominant_defect_mechanism": "Insufficient driver monitoring controls for Autosteer engagement",
+      "odi_risk_summary": "The investigation highlights an increased crash risk when drivers fail to maintain responsibility or recognize Autosteer disengagement while the system is active. This safety concern stems from the potential for drivers to be unprepared to intervene immediately when the automated features are canceled or not engaged."
+    },
+    {
+      "campaign_number": "23V838000",
+      "matched_complaint_count": 50,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_3e540e709b495d53.txt"
+      ],
+      "dominant_defect_mechanism": "Insufficient driver monitoring controls for Autosteer engagement",
+      "odi_risk_summary": "The investigation highlights an increased crash risk when drivers fail to maintain responsibility or recognize Autosteer disengagement while the system is active. This safety concern stems from the potential for drivers to be unprepared to intervene immediately when the automated features are canceled or not engaged."
+    },
+    {
+      "campaign_number": "25V092000",
+      "matched_complaint_count": 6,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_0dc6b216b5a52248.txt"
+      ],
+      "dominant_defect_mechanism": "PCB overstress causing power steering assist loss",
+      "odi_risk_summary": "The loss of power steering assist in affected vehicles necessitates significantly greater steering effort, particularly at low speeds, which can impair driver control. This sudden increase in physical demand elevates the risk of a crash if the driver is unable to maneuver the vehicle effectively."
+    },
+    {
+      "campaign_number": "23V085000",
+      "matched_complaint_count": 34,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_3e540e709b495d53.txt"
+      ],
+      "dominant_defect_mechanism": "FSD Beta software failure in intersection navigation",
+      "odi_risk_summary": "The investigation highlights that Tesla's Autopilot and FSD Beta software pose a significant crash risk by enabling vehicles to exceed speed limits or navigate intersections in unlawful and unpredictable ways. Consequently, the ODI upgraded the inquiry to an Engineering Analysis to deepen the evaluation of these safety-critical control failures."
+    },
+    {
+      "campaign_number": "23V085000",
+      "matched_complaint_count": 34,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_3e540e709b495d53.txt"
+      ],
+      "dominant_defect_mechanism": "FSD Beta software failure in intersection navigation",
+      "odi_risk_summary": "The investigation highlights that Tesla's Autopilot and FSD Beta software pose a significant crash risk by enabling vehicles to exceed speed limits or navigate intersections in unlawful and unpredictable ways. Consequently, the ODI upgraded the inquiry to an Engineering Analysis to deepen the evaluation of these safety-critical control failures."
+    },
+    {
+      "campaign_number": "23V085000",
+      "matched_complaint_count": 34,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_3e540e709b495d53.txt"
+      ],
+      "dominant_defect_mechanism": "FSD Beta software failure in intersection navigation",
+      "odi_risk_summary": "The investigation highlights that Tesla's Autopilot and FSD Beta software pose a significant crash risk by enabling vehicles to exceed speed limits or navigate intersections in unlawful and unpredictable ways. Consequently, the ODI upgraded the inquiry to an Engineering Analysis to deepen the evaluation of these safety-critical control failures."
+    },
+    {
+      "campaign_number": "23V085000",
+      "matched_complaint_count": 34,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_3e540e709b495d53.txt"
+      ],
+      "dominant_defect_mechanism": "FSD Beta software failure in intersection navigation",
+      "odi_risk_summary": "The investigation highlights that Tesla's Autopilot and FSD Beta software pose a significant crash risk by enabling vehicles to exceed speed limits or navigate intersections in unlawful and unpredictable ways. Consequently, the ODI upgraded the inquiry to an Engineering Analysis to deepen the evaluation of these safety-critical control failures."
+    },
+    {
+      "campaign_number": "23V085000",
+      "matched_complaint_count": 34,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_3e540e709b495d53.txt"
+      ],
+      "dominant_defect_mechanism": "FSD Beta software failure in intersection navigation",
+      "odi_risk_summary": "The investigation highlights that Tesla's Autopilot and FSD Beta software pose a significant crash risk by enabling vehicles to exceed speed limits or navigate intersections in unlawful and unpredictable ways. Consequently, the ODI upgraded the inquiry to an Engineering Analysis to deepen the evaluation of these safety-critical control failures."
+    },
+    {
+      "campaign_number": "22V037000",
+      "matched_complaint_count": 4,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_3e540e709b495d53.txt"
+      ],
+      "dominant_defect_mechanism": "Software error in Full Self-Driving stop control",
+      "odi_risk_summary": "The investigation highlights that Tesla's Autopilot system may fail to recognize stop signs, causing vehicles to proceed through intersections without stopping. This critical control failure significantly increases the risk of collisions and poses a direct threat to occupant and public safety."
+    },
+    {
+      "campaign_number": "22V037000",
+      "matched_complaint_count": 4,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_3e540e709b495d53.txt"
+      ],
+      "dominant_defect_mechanism": "Software error in Full Self-Driving stop control",
+      "odi_risk_summary": "The investigation highlights that Tesla's Autopilot system may fail to recognize stop signs, causing vehicles to proceed through intersections without stopping. This critical control failure significantly increases the risk of collisions and poses a direct threat to occupant and public safety."
+    },
+    {
+      "campaign_number": "22V037000",
+      "matched_complaint_count": 4,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_3e540e709b495d53.txt"
+      ],
+      "dominant_defect_mechanism": "Software error in Full Self-Driving stop control",
+      "odi_risk_summary": "The investigation highlights that Tesla's Autopilot system may fail to recognize stop signs, causing vehicles to proceed through intersections without stopping. This critical control failure significantly increases the risk of collisions and poses a direct threat to occupant and public safety."
+    },
+    {
+      "campaign_number": "22V037000",
+      "matched_complaint_count": 4,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_3e540e709b495d53.txt"
+      ],
+      "dominant_defect_mechanism": "Software error in Full Self-Driving stop control",
+      "odi_risk_summary": "The investigation highlights that Tesla's Autopilot system may fail to recognize stop signs, causing vehicles to proceed through intersections without stopping. This critical control failure significantly increases the risk of collisions and poses a direct threat to occupant and public safety."
+    },
+    {
+      "campaign_number": "22V037000",
+      "matched_complaint_count": 4,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_3e540e709b495d53.txt"
+      ],
+      "dominant_defect_mechanism": "Software error in Full Self-Driving stop control",
+      "odi_risk_summary": "The investigation highlights that Tesla's Autopilot system may fail to recognize stop signs, causing vehicles to proceed through intersections without stopping. This critical control failure significantly increases the risk of collisions and poses a direct threat to occupant and public safety."
+    },
+    {
+      "campaign_number": "23V838000",
+      "matched_complaint_count": 50,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_3e540e709b495d53.txt"
+      ],
+      "dominant_defect_mechanism": "Insufficient driver monitoring controls for Autosteer engagement",
+      "odi_risk_summary": "The investigation highlights an increased crash risk when drivers fail to maintain responsibility or recognize Autosteer disengagement while the system is active. This safety concern stems from the potential for drivers to be unprepared to intervene immediately when the automated features are canceled or not engaged."
+    },
+    {
+      "campaign_number": "23V838000",
+      "matched_complaint_count": 50,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_3e540e709b495d53.txt"
+      ],
+      "dominant_defect_mechanism": "Insufficient driver monitoring controls for Autosteer engagement",
+      "odi_risk_summary": "The investigation highlights an increased crash risk when drivers fail to maintain responsibility or recognize Autosteer disengagement while the system is active. This safety concern stems from the potential for drivers to be unprepared to intervene immediately when the automated features are canceled or not engaged."
+    },
+    {
+      "campaign_number": "23V085000",
+      "matched_complaint_count": 34,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_3e540e709b495d53.txt"
+      ],
+      "dominant_defect_mechanism": "FSD Beta software failure in intersection navigation",
+      "odi_risk_summary": "The investigation highlights that Tesla's Autopilot and FSD Beta software pose a significant crash risk by enabling vehicles to exceed speed limits or navigate intersections in unlawful and unpredictable ways. Consequently, the ODI upgraded the inquiry to an Engineering Analysis to deepen the evaluation of these safety-critical control failures."
+    },
+    {
+      "campaign_number": "23V085000",
+      "matched_complaint_count": 34,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_3e540e709b495d53.txt"
+      ],
+      "dominant_defect_mechanism": "FSD Beta software failure in intersection navigation",
+      "odi_risk_summary": "The investigation highlights that Tesla's Autopilot and FSD Beta software pose a significant crash risk by enabling vehicles to exceed speed limits or navigate intersections in unlawful and unpredictable ways. Consequently, the ODI upgraded the inquiry to an Engineering Analysis to deepen the evaluation of these safety-critical control failures."
+    },
+    {
+      "campaign_number": "22V037000",
+      "matched_complaint_count": 4,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_3e540e709b495d53.txt"
+      ],
+      "dominant_defect_mechanism": "Software error in Full Self-Driving stop control",
+      "odi_risk_summary": "The investigation highlights that Tesla's Autopilot system may fail to recognize stop signs, causing vehicles to proceed through intersections without stopping. This critical control failure significantly increases the risk of collisions and poses a direct threat to occupant and public safety."
+    }
+  ],
+  "elapsed_seconds": 605.109,
+  "cost_usd": 1.01113587,
+  "total_tokens": 2370741
+}

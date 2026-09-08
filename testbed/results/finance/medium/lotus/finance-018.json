@@ -1,0 +1,18 @@
+{
+  "task_id": "finance-018",
+  "answer": {
+    "advertising": {"filing_count": 40, "average_employee_count": 5179},
+    "commission": {"filing_count": 70, "average_employee_count": 2445},
+    "interest_income": {"filing_count": 1526, "average_employee_count": 1016},
+    "investment_returns": {"filing_count": 97, "average_employee_count": 1457},
+    "licensing_royalties": {"filing_count": 312, "average_employee_count": 126},
+    "mixed": {"filing_count": 1031, "average_employee_count": 10707},
+    "product_sales": {"filing_count": 1827, "average_employee_count": 12420},
+    "rental_income": {"filing_count": 275, "average_employee_count": 2088},
+    "service_fees": {"filing_count": 773, "average_employee_count": 16300},
+    "subscription": {"filing_count": 234, "average_employee_count": 3121}
+  },
+  "elapsed_seconds": 6464.72,
+  "cost_usd": 24.985471,
+  "total_tokens": 53762415
+}

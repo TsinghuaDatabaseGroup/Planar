@@ -1,0 +1,948 @@
+{
+  "task_id": "legal_contracts-030",
+  "answer": [
+    {
+      "document_id": "1001113_0000950134-07-005231_f27921orexv99wxdyx3y.htm",
+      "governing_law": "California",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "1002276_0001036050-99-002047_document_13.txt",
+      "governing_law": "California",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "1006459_0000912057-97-027623_document_19.txt",
+      "governing_law": "Virginia",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "1010552_0000912057-01-520246_a2051644zex-99_20.htm",
+      "governing_law": "Massachusetts",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "1011671_0000936392-99-000246_document_46.txt",
+      "governing_law": "California",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "1012459_0000912057-97-027209_document_4.txt",
+      "governing_law": "Tennessee",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "1014959_0000950116-96-000618_document_7.txt",
+      "governing_law": "State of Washington",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "1020416_0001193125-16-701566_d250247dex99d2.htm",
+      "governing_law": "New York",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "1042282_0000893220-02-000791_e61414toexv99wxdywx1y.txt",
+      "governing_law": "Utah",
+      "missing_exception": "legal compulsion"
+    },
+    {
+      "document_id": "1043431_0000950133-00-000090_document_15.txt",
+      "governing_law": "Virginia",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "1045080_0001047469-02-004620_a2094681zex-99_d5.htm",
+      "governing_law": "Delaware",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "1049210_0001047469-13-009461_a2216846zex-99_d3.htm",
+      "governing_law": "California",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "1062579_0000950123-99-005018_document_3.txt",
+      "governing_law": "New York",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "1067797_0001032210-99-000668_document_8.txt",
+      "governing_law": "Washington",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "1070052_0000950130-01-501801_dex99d2.txt",
+      "governing_law": "New York",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "1082797_0000950131-01-501837_dex99d2.txt",
+      "governing_law": "Illinois",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "1084817_0001193125-14-004957_d648340dex99e2.htm",
+      "governing_law": "Delaware",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "1089717_0000898430-99-004004_document_2.txt",
+      "governing_law": "United States of America and the Commonwealth of Virginia",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "1094017_0000921895-00-000237_document_5.txt",
+      "governing_law": "Quebec",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "1095558_0000944209-00-000518_document_3.txt",
+      "governing_law": "California",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "1105503_0000950123-00-006736_ex10-14.txt",
+      "governing_law": "Nebraska",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "1123713_0001021408-00-003137_0016.txt",
+      "governing_law": "Province of New Brunswick",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "1125892_0000950133-00-004441_w41075a1ex10-7.txt",
+      "governing_law": "Washington",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "1142512_0001193125-14-269726_d757168dex99e3.htm",
+      "governing_law": "California",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "1240722_0001161697-03-000454_exhibit_10-12.txt",
+      "governing_law": "Maryland",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "130806ca141.pdf",
+      "governing_law": "Nova Scotia and Canada",
+      "missing_exception": "legal compulsion"
+    },
+    {
+      "document_id": "1329919_0001193125-14-149149_d701401dex99d6.htm",
+      "governing_law": "Delaware",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "1420529_0001145549-08-000077_h00839a1exv10w4.txt",
+      "governing_law": "People's Republic of China",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "1473637_0001432093-12-000764_ex10-34.htm",
+      "governing_law": "Province of Ontario",
+      "missing_exception": "third-party receipt"
+    },
+    {
+      "document_id": "14803_0001047469-04-012846_a2134202zex-99_e3.htm",
+      "governing_law": "Colorado",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "1485469_0001193125-19-222469_d760929dex99d3.htm",
+      "governing_law": "New York",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "180314-March-14-2018-SOW-M.pdf",
+      "governing_law": "Province of Alberta",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "2_waycda.pdf",
+      "governing_law": "English Law",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "313522_0000912057-02-040085_a2091647zex-99_d3.htm",
+      "governing_law": "Minnesota",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "32251_0000950133-99-003991_document_17.txt",
+      "governing_law": "Virginia",
+      "missing_exception": "third-party receipt"
+    },
+    {
+      "document_id": "3511_standard_nda.pdf",
+      "governing_law": "New York",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "354452_0000950123-99-011178_document_13.txt",
+      "governing_law": "Florida",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "71297_0000071297-97-000059_document_6.txt",
+      "governing_law": "Massachusetts",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "75448_0001193125-05-158309_dex99d4.htm",
+      "governing_law": "California",
+      "missing_exception": "legal compulsion"
+    },
+    {
+      "document_id": "792130_0001193125-18-326077_d601641dex99d3.htm",
+      "governing_law": "Delaware",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "801338_0000950134-07-015617_c16542toexv99wxdyx5y.htm",
+      "governing_law": "Delaware",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "804151_0000950144-97-007563_document_14.txt",
+      "governing_law": "New York",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "814457_0000950137-04-009790_c89545exv99wxdyx6y.htm",
+      "governing_law": "Illinois",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "816955_0000899243-97-001962_document_4.txt",
+      "governing_law": "Louisiana",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "845818_0001193125-11-195725_dex99d8.htm",
+      "governing_law": "New York",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "87814_0000930661-96-001456_document_4.txt",
+      "governing_law": "New York",
+      "missing_exception": "legal compulsion"
+    },
+    {
+      "document_id": "880562_0001193125-15-346821_d93800dex3.htm",
+      "governing_law": "Texas",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "88190_0000950144-96-003474_document_2.txt",
+      "governing_law": "New York",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "883905_0001095811-01-000469_f68556ex99-d12.txt",
+      "governing_law": "California",
+      "missing_exception": "legal compulsion"
+    },
+    {
+      "document_id": "897730_0000950136-98-001457_document_7.txt",
+      "governing_law": "Pennsylvania",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "899240_0000912057-01-007226_a2040095zex-99_9d1.txt",
+      "governing_law": "Florida",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "915191_0001047469-17-003155_a2231967zex-99_8.htm",
+      "governing_law": "New York",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "920729_0000891618-96-000819_document_6.txt",
+      "governing_law": "California",
+      "missing_exception": "legal compulsion"
+    },
+    {
+      "document_id": "925544_0000950144-00-010739_ex99-d4.txt",
+      "governing_law": "Commonwealth of Pennsylvania",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "925942_0001047469-98-029396_document_13.txt",
+      "governing_law": "New York",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "96238_0000950103-97-000583_document_4.txt",
+      "governing_law": "New York",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "96238_0000950116-97-001823_document_13.txt",
+      "governing_law": "New York",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "Agency-Lending-Disclosure_A-Z-Guide_Appendix_Sample-Confidentiality-Agreements.pdf",
+      "governing_law": "New York",
+      "missing_exception": "third-party receipt"
+    },
+    {
+      "document_id": "Agreement_6_28_07.pdf",
+      "governing_law": "South Carolina",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "Annex 18 - Non-Disclosure Agreement.pdf",
+      "governing_law": "The Netherlands",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "Annexure-3_Confidentiality-Agreement.pdf",
+      "governing_law": "Republic of South Africa",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "Attachment%203%20-%20Confidentiality%20Release%20Form_201504131404512865.pdf",
+      "governing_law": "Virginia",
+      "missing_exception": "third-party receipt"
+    },
+    {
+      "document_id": "BCG-Mutual-NDA.pdf",
+      "governing_law": "Florida",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "BT_NDA.pdf",
+      "governing_law": "Republic of South Africa",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "Bio-FIP-EOI-NDA.pdf",
+      "governing_law": "English law",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "CCS-Salt-Cavern-RfP-NDA.pdf",
+      "governing_law": "English law",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "Clause-de-non-divulgation.pdf",
+      "governing_law": "Buyer country laws (France)",
+      "missing_exception": "legal compulsion"
+    },
+    {
+      "document_id": "Confidentiality%20Agreement.pdf",
+      "governing_law": "Province of Alberta",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "ConfidentialityAgreement.pdf",
+      "governing_law": "Austrian law",
+      "missing_exception": "legal compulsion"
+    },
+    {
+      "document_id": "CopAcc_NDA-and-ToP-Mentors_2.0_2017.pdf",
+      "governing_law": "Federal Republic of Germany",
+      "missing_exception": "legal compulsion"
+    },
+    {
+      "document_id": "EFCAConfidentialityAgreement.pdf",
+      "governing_law": "State of Victoria",
+      "missing_exception": "third-party receipt"
+    },
+    {
+      "document_id": "EUNCL_NDA_2016.pdf",
+      "governing_law": "Belgian Law",
+      "missing_exception": "legal compulsion"
+    },
+    {
+      "document_id": "Evelozcity%20OESA%20NDA.pdf",
+      "governing_law": "California",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "FELLCNDAStandardAgreement-22015.pdf",
+      "governing_law": "Texas",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "FormEConfidentialityandNon.pdf",
+      "governing_law": "New Jersey",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "GSAOP0309-Non-disclosure-agreement.pdf",
+      "governing_law": "Belgium",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "GTC_CEII_Non_Disclosure_Agmt_05111_revised.pdf",
+      "governing_law": "Georgia",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "Geheimhaltungsvereinbarung_Abschlussarbeiten_HFU_englisch.pdf",
+      "governing_law": "German law",
+      "missing_exception": "third-party receipt"
+    },
+    {
+      "document_id": "IBC-PMS-NDA-agreement.pdf",
+      "governing_law": "Ontario",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "INFOMAGNET%20NDA.pdf",
+      "governing_law": "England and Wales",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "Inaturals_NDA.pdf",
+      "governing_law": "French Law",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "JB-Machine-LLC-NDA-1.pdf",
+      "governing_law": "Florida",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "LMS_Non_Disclosure_Agreement.pdf",
+      "governing_law": "laws of the jurisdiction in which the Disclosing Party is located",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "MNDA-V2-2-25-15.pdf",
+      "governing_law": "New York",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "MR_NON-DISCLOSURE-AGREEMENT.pdf",
+      "governing_law": "Austrian law",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "MUTUAL-CONFIDENTIAL-NON-DISCLOSURE.pdf",
+      "governing_law": "Ontario",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "MUTUAL-NDA-Form-2.pdf",
+      "governing_law": "New York",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "Model%20NDA%20(recommended%20by%20SWA).pdf",
+      "governing_law": "India",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "Mutual%20confidentiality%20and%20NDA%20-%20Final%20(2)%20(6)%2003%20July%202015.pdf",
+      "governing_law": "Republic of South Africa",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "Mutual-Non-Disclosure-Agreement-Inventor-Product-Development-Experts-Inc..pdf",
+      "governing_law": "Florida",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "Mutual_Nondisclosure_Agreement.pdf",
+      "governing_law": "Massachusetts",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "NDA-2015-2.pdf",
+      "governing_law": "Ontario, Canada",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "NDA-Prasad.pdf",
+      "governing_law": "New York",
+      "missing_exception": "legal compulsion"
+    },
+    {
+      "document_id": "NDA-Seeed.pdf",
+      "governing_law": "People's Republic of China",
+      "missing_exception": "legal compulsion"
+    },
+    {
+      "document_id": "NDA-SqillerBetaTesters.pdf",
+      "governing_law": "Luxembourg",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "NDA-Urban_Wind_Turbines.pdf",
+      "governing_law": "England and Wales",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "NDA_118.pdf",
+      "governing_law": "Province of Ontario",
+      "missing_exception": "third-party receipt"
+    },
+    {
+      "document_id": "NDA_13.pdf",
+      "governing_law": "Commonwealth of Australia and New South Wales",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "NDA_22.pdf",
+      "governing_law": "Republic of South Africa",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "NDA_5.pdf",
+      "governing_law": "California",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "NDA_6.pdf",
+      "governing_law": "California",
+      "missing_exception": "legal compulsion"
+    },
+    {
+      "document_id": "NDA_7.pdf",
+      "governing_law": "Spain",
+      "missing_exception": "legal compulsion"
+    },
+    {
+      "document_id": "NDA_Mutual_template2_5_2019.pdf",
+      "governing_law": "Tennessee",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "NDA_ResConnect.pdf",
+      "governing_law": "South African law",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "NRSC_2015_NDAForm.pdf",
+      "governing_law": "New York",
+      "missing_exception": "third-party receipt"
+    },
+    {
+      "document_id": "Non%20Disclosure%20Agreement_1.pdf",
+      "governing_law": "Georgia",
+      "missing_exception": "legal compulsion"
+    },
+    {
+      "document_id": "Non-Discl_Reciprocal_2.pdf",
+      "governing_law": "Ontario, Canada",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "Non-Disclosure-Agreement-9-1-2018.pdf",
+      "governing_law": "Utah",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "Non-Disclosure-Agreement-FORS-Cert-Body.pdf",
+      "governing_law": "England and Wales",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "Non-Disclosure-Agreement_3.pdf",
+      "governing_law": "Florida",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "Non-Disclosure-Agreement_ALL_englisch.pdf",
+      "governing_law": "Swiss substantive law",
+      "missing_exception": "legal compulsion"
+    },
+    {
+      "document_id": "Non-Disclosure-Agreement_PreviewOnly.pdf",
+      "governing_law": "South African law",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "Non-Disclosure-SmartCMS.pdf",
+      "governing_law": "Singapore",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "Non-disclosure-Agreement_9.pdf",
+      "governing_law": "German law",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "Non_Disclosure_Canada_BC.pdf",
+      "governing_law": "Alberta, Canada",
+      "missing_exception": "legal compulsion"
+    },
+    {
+      "document_id": "OMA-TestFest-NDA-2017.pdf",
+      "governing_law": "England",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "Sample NonDisclosure Agreement.pdf",
+      "governing_law": "Ukraine",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "Section%2013%20Non-Disclosure%20Agreement.pdf",
+      "governing_law": "South African law",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "Sony%20Pictures%20Television%20NDA%20(Executed).pdf",
+      "governing_law": "California",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "Standard%20NDA%20by%20Axial.pdf",
+      "governing_law": "Delaware",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "US-Non-Disclosure-Agreement.pdf",
+      "governing_law": "New Hampshire",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "US_Non-Disclosure_Agreement_v2_2015.pdf",
+      "governing_law": "New Hampshire",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "a1028trv2025mcmoptionagree.htm",
+      "governing_law": "Participant's Employment Jurisdiction",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "a1029trv2025restrictedstoc.htm",
+      "governing_law": "Participant's Employment Jurisdiction",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "a1033trv2025mcmperfsharesa.htm",
+      "governing_law": "Participant's Employment Jurisdiction",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "annex-iii---nda-agreement..pdf",
+      "governing_law": "English law",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "auburn_blank-nda_current.pdf",
+      "governing_law": "Alabama",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "augusta_non_disclosure_agreement_1.pdf",
+      "governing_law": "Georgia",
+      "missing_exception": "legal compulsion"
+    },
+    {
+      "document_id": "bbot-ex10_1.htm",
+      "governing_law": "California",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "bngo-ex1014qbiotechnologyc.htm",
+      "governing_law": "Germany",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "clearcenter-rnda.pdf",
+      "governing_law": "Utah",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "confidentiality_agreement.pdf",
+      "governing_law": "Sweden",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "cornell_non-disclosure_agreement.pdf",
+      "governing_law": "New York",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "d575512dex991.htm",
+      "governing_law": "New York",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "ea023506301_ex10-1.htm",
+      "governing_law": "Arizona",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "ea023506301_ex10-3.htm",
+      "governing_law": "Arizona",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "ea023506301_ex10-4.htm",
+      "governing_law": "Arizona",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "ea026206601ex10-18_cuentas.htm",
+      "governing_law": "Florida",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "eh250596666_ex1007.htm",
+      "governing_law": "Delaware",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "eh250596666_ex1008.htm",
+      "governing_law": "Delaware",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "eh250596666_ex1009.htm",
+      "governing_law": "Delaware",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "eulerhermes-nda.pdf",
+      "governing_law": "Maryland",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "ex10-1.htm",
+      "governing_law": "Texas",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "ex10-1_2.htm",
+      "governing_law": "Texas",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "ex1014-kblackwellconsultin.htm",
+      "governing_law": "Colorado",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "ex1016-brownsteincxzenta.htm",
+      "governing_law": "New York",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "ex1017-cgallagherconsultin.htm",
+      "governing_law": "Arizona",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "ex1041-davidmcotexarofferl.htm",
+      "governing_law": "Delaware",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "ex1042-thomasrknottxaroffe.htm",
+      "governing_law": "Delaware",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "ex10_2.htm",
+      "governing_law": "Delaware",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "ex4-2_2.htm",
+      "governing_law": "Delaware",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "ex42rivian6tharira.htm",
+      "governing_law": "Delaware",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "ex_684281.htm",
+      "governing_law": "North Carolina",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "ex_781816.htm",
+      "governing_law": "jurisdiction set forth in the Plan",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "exhibit10-1royaltypurchase.htm",
+      "governing_law": "New York",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "exhibit104-boardobserverag.htm",
+      "governing_law": "Delaware",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "f8k020218a1ex10-20_purple.htm",
+      "governing_law": "Utah",
+      "missing_exception": "legal compulsion"
+    },
+    {
+      "document_id": "f8k020218a2ex10-20_purpleinn.htm",
+      "governing_law": "Utah",
+      "missing_exception": "legal compulsion"
+    },
+    {
+      "document_id": "gatesconsultantagreementfi.htm",
+      "governing_law": "State of Washington",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "helpjuice_production%2Fuploads%2Fupload%2Fimage%2F2329%2Fdirect%2F1526996160411-FullStory+Mutual+Non-Disclosure+Agreement+2018.pdf",
+      "governing_law": "Delaware",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "iastate_confidentiality_agreement_c5-81.pdf",
+      "governing_law": "[governing law]",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "idya-ex10_4.htm",
+      "governing_law": "New York",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "inzy-ex10_11.htm",
+      "governing_law": "Connecticut",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "irtc-projectvoyagertechnol.htm",
+      "governing_law": "Delaware",
+      "missing_exception": "legal compulsion"
+    },
+    {
+      "document_id": "jmu_cise_mutual_nda.pdf",
+      "governing_law": "Virginia",
+      "missing_exception": "legal compulsion"
+    },
+    {
+      "document_id": "khronos-mutual-nda.pdf",
+      "governing_law": "California",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "mutual-non-disclosure-agreement.pdf",
+      "governing_law": "English Law",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "mutual_non_disclosure_agreement-20171020.pdf",
+      "governing_law": "California",
+      "missing_exception": "legal compulsion"
+    },
+    {
+      "document_id": "nda_1.pdf",
+      "governing_law": "California",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "nda_16.pdf",
+      "governing_law": "Danish law",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "nda_3.pdf",
+      "governing_law": "Virginia",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "nda_8.pdf",
+      "governing_law": "England",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "nistmodelndareceiptofproprietaryinformationv20162fillableforwebsitedoc003pdf.pdf",
+      "governing_law": "United States",
+      "missing_exception": "legal compulsion"
+    },
+    {
+      "document_id": "non-disclosure-agreement_5.pdf",
+      "governing_law": "Minnesota",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "non-disclosure_agreement_1.pdf",
+      "governing_law": "laws of the jurisdiction in which the Disclosing Party is located",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "non-disclosure_confidentiality_agreement.pdf",
+      "governing_law": "Republic of Austria",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "nondisclosureagreement.pdf",
+      "governing_law": "India",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "nydol_appendix-nda.pdf",
+      "governing_law": "New York",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "oceaneering-non-disclosure-agreement.pdf",
+      "governing_law": "Texas",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "phat-ex10_1.htm",
+      "governing_law": "Illinois",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "pp%2011%20-%20non-disclosure%20agreement%20mutual.pdf",
+      "governing_law": "Malaysia",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "resolution-2012-03-014r.pdf",
+      "governing_law": "Illinois",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "sample-nrel-bilateral-nda-template.pdf",
+      "governing_law": "U.S. law",
+      "missing_exception": "third-party receipt"
+    },
+    {
+      "document_id": "silk-20231231xex10_9.htm",
+      "governing_law": "Minnesota or California",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "tamu_receiving_party_nda.pdf",
+      "governing_law": "Texas",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "tpst-ex10_2.htm",
+      "governing_law": "California",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "trin-ex10_7.htm",
+      "governing_law": "Arizona",
+      "missing_exception": "prior knowledge"
+    },
+    {
+      "document_id": "vmw-certification-conduct-policy.pdf",
+      "governing_law": "California",
+      "missing_exception": "legal compulsion"
+    }
+  ],
+  "elapsed_seconds": 700.325,
+  "cost_usd": 2.5559172,
+  "total_tokens": 5554115
+}

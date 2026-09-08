@@ -1,0 +1,33 @@
+{
+  "task_id": "finance-017",
+  "answer": [
+    {
+      "company_name": "URANIUM ENERGY CORP",
+      "word_count": 157622,
+      "industry": "Uranium Mining"
+    },
+    {
+      "company_name": "URANIUM ENERGY CORP",
+      "word_count": 153828,
+      "industry": "Uranium Mining"
+    },
+    {
+      "company_name": "PROSPECT SUSTAINABLE INCOME FUND, INC.",
+      "word_count": 99306,
+      "industry": "Asset Management"
+    },
+    {
+      "company_name": "NATIONAL RURAL UTILITIES COOPERATIVE FINANCE CORPORATION",
+      "word_count": 98695,
+      "industry": "Rural Utilities Finance"
+    },
+    {
+      "company_name": "PSE&G",
+      "word_count": 87087,
+      "industry": "Electric Utilities"
+    }
+  ],
+  "elapsed_seconds": 3844.953,
+  "cost_usd": 4.1388285,
+  "total_tokens": 8820583
+}

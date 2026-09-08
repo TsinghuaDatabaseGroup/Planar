@@ -1,0 +1,23 @@
+{
+  "task_id": "finance-001",
+  "answer": [
+    {
+      "company_name": "Walmart Inc.",
+      "employee_count": 2100000,
+      "retail_subsector": "discount retail"
+    },
+    {
+      "company_name": "Target Corporation",
+      "employee_count": 415000,
+      "retail_subsector": "discount retail"
+    },
+    {
+      "company_name": "The Kroger Co.",
+      "employee_count": 414000,
+      "retail_subsector": "grocery"
+    }
+  ],
+  "elapsed_seconds": 1164.989,
+  "cost_usd": 10.53931062,
+  "total_tokens": 26761369
+}

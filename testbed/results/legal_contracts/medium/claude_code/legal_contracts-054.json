@@ -1,0 +1,76 @@
+{
+  "task_id": "legal_contracts-054",
+  "answer": [
+    {
+      "document_id": "1023734_0000912057-96-023266_document_16.txt",
+      "governing_law": "Colorado"
+    },
+    {
+      "document_id": "1089029_0000950123-07-007908_y31303a1exv10w13.htm",
+      "governing_law": "Florida"
+    },
+    {
+      "document_id": "1113303_0000892917-12-000026_stilffnw13d120112am2ex3.htm",
+      "governing_law": "Washington"
+    },
+    {
+      "document_id": "1367408_0001367408-06-000002_risb2ex106.htm",
+      "governing_law": "Utah"
+    },
+    {
+      "document_id": "41629_1.pdf",
+      "governing_law": "England and Wales"
+    },
+    {
+      "document_id": "426-2017_Appendix_C-Sample_Non-Disclosure_Agreement.pdf",
+      "governing_law": "Manitoba"
+    },
+    {
+      "document_id": "Attachment-I-Non-DisclosureAgreementContractor.pdf",
+      "governing_law": "Maryland"
+    },
+    {
+      "document_id": "BOMI%20Non-Disclosure%20Agreement.pdf",
+      "governing_law": "Maryland"
+    },
+    {
+      "document_id": "Facility-Tour-Confidentiality-and-Non-Disclosure.pdf",
+      "governing_law": "California"
+    },
+    {
+      "document_id": "NDD.pdf",
+      "governing_law": "Union law, Slovenia"
+    },
+    {
+      "document_id": "Non-Disclosure-Agreement.pdf",
+      "governing_law": "New York"
+    },
+    {
+      "document_id": "Proctor_Agreement.pdf",
+      "governing_law": "England and Wales"
+    },
+    {
+      "document_id": "QSA_NDA.pdf",
+      "governing_law": "Victoria"
+    },
+    {
+      "document_id": "buyer_profile.pdf",
+      "governing_law": "Republic of South Africa"
+    },
+    {
+      "document_id": "for-41-supplier-confidentiality-agreement-and-non-disclosure-agreement.pdf",
+      "governing_law": "Manitoba"
+    },
+    {
+      "document_id": "non-disclosure_201302814_english_.pdf",
+      "governing_law": "Ontario"
+    },
+    {
+      "document_id": "vrdr_ex1020.htm",
+      "governing_law": "Missouri"
+    }
+  ],
+  "elapsed_seconds": 563.888,
+  "cost_usd": 2.00771979,
+  "total_tokens": 4985952
+}

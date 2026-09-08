@@ -1,0 +1,103 @@
+{
+  "task_id": "aviation_safety-031",
+  "answer": [
+    {
+      "flight_phase_group": "ground_or_departure",
+      "clearance_conflict_type": "late_or_changed_clearance",
+      "incident_count": 8
+    },
+    {
+      "flight_phase_group": "ground_or_departure",
+      "clearance_conflict_type": "misunderstood_clearance",
+      "incident_count": 20
+    },
+    {
+      "flight_phase_group": "ground_or_departure",
+      "clearance_conflict_type": "readback_hearback_failure",
+      "incident_count": 15
+    },
+    {
+      "flight_phase_group": "ground_or_departure",
+      "clearance_conflict_type": "route_or_heading_confusion",
+      "incident_count": 30
+    },
+    {
+      "flight_phase_group": "ground_or_departure",
+      "clearance_conflict_type": "altitude_or_speed_restriction",
+      "incident_count": 7
+    },
+    {
+      "flight_phase_group": "climb_or_cruise",
+      "clearance_conflict_type": "late_or_changed_clearance",
+      "incident_count": 1
+    },
+    {
+      "flight_phase_group": "climb_or_cruise",
+      "clearance_conflict_type": "misunderstood_clearance",
+      "incident_count": 9
+    },
+    {
+      "flight_phase_group": "climb_or_cruise",
+      "clearance_conflict_type": "readback_hearback_failure",
+      "incident_count": 6
+    },
+    {
+      "flight_phase_group": "climb_or_cruise",
+      "clearance_conflict_type": "route_or_heading_confusion",
+      "incident_count": 23
+    },
+    {
+      "flight_phase_group": "climb_or_cruise",
+      "clearance_conflict_type": "altitude_or_speed_restriction",
+      "incident_count": 17
+    },
+    {
+      "flight_phase_group": "descent_or_approach",
+      "clearance_conflict_type": "late_or_changed_clearance",
+      "incident_count": 13
+    },
+    {
+      "flight_phase_group": "descent_or_approach",
+      "clearance_conflict_type": "misunderstood_clearance",
+      "incident_count": 17
+    },
+    {
+      "flight_phase_group": "descent_or_approach",
+      "clearance_conflict_type": "readback_hearback_failure",
+      "incident_count": 12
+    },
+    {
+      "flight_phase_group": "descent_or_approach",
+      "clearance_conflict_type": "route_or_heading_confusion",
+      "incident_count": 42
+    },
+    {
+      "flight_phase_group": "descent_or_approach",
+      "clearance_conflict_type": "altitude_or_speed_restriction",
+      "incident_count": 38
+    },
+    {
+      "flight_phase_group": "landing_or_other",
+      "clearance_conflict_type": "late_or_changed_clearance",
+      "incident_count": 1
+    },
+    {
+      "flight_phase_group": "landing_or_other",
+      "clearance_conflict_type": "misunderstood_clearance",
+      "incident_count": 1
+    },
+    {
+      "flight_phase_group": "landing_or_other",
+      "clearance_conflict_type": "route_or_heading_confusion",
+      "incident_count": 2
+    },
+    {
+      "flight_phase_group": "landing_or_other",
+      "clearance_conflict_type": "altitude_or_speed_restriction",
+      "incident_count": 1
+    }
+  ],
+  "elapsed_seconds": 101.61,
+  "cost_usd": 0.844872,
+  "total_tokens": 2068273
+}

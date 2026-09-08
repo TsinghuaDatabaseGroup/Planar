@@ -1,0 +1,50 @@
+{
+  "task_id": "legal_contracts-073",
+  "answer": [
+    {
+      "document_name": "a2023q4voyaex97voyafinanci.htm",
+      "policy_title": "Voya Financial Compensation Recoupment Policy",
+      "lookback_period": "Three completed fiscal years immediately preceding the Restatement Date, plus any transition period of less than nine months within or immediately following those three completed fiscal years.",
+      "expanded_covered_group": "All employees, including employee and non-employee directors and officers (beyond just current or former Rule 10D-1 or Section 16 executive officers), specifically regarding recovery of income resulting from or relating to misconduct."
+    },
+    {
+      "document_name": "a2024q4voyaex97voyafinanci.htm",
+      "policy_title": "Voya Financial Compensation Recoupment Policy",
+      "lookback_period": "Three completed fiscal years immediately preceding the Restatement Date, plus any transition period of less than nine months within or immediately following those three completed fiscal years.",
+      "expanded_covered_group": "All employees, including employee and non-employee directors and officers"
+    },
+    {
+      "document_name": "ex19-2.htm",
+      "policy_title": "Incentive Compensation Recoupment Policy",
+      "lookback_period": "one year following the filing of the financial report giving rise to the Restatement",
+      "expanded_covered_group": "executive officers of the Company as defined under the Securities Exchange Act of 1934, as amended, and such other senior executives as may be determined by the Committee"
+    },
+    {
+      "document_name": "ex19-2_1.htm",
+      "policy_title": "Incentive Compensation Recoupment Policy",
+      "lookback_period": "one year following the filing of the financial report giving rise to the Restatement",
+      "expanded_covered_group": "executive officers of the Company as defined under the Securities Exchange Act of 1934, as amended, and such other senior executives as may be determined by the Committee"
+    },
+    {
+      "document_name": "ex971globalstarincclawback.htm",
+      "policy_title": "Globalstar, Inc. Clawback Policy",
+      "lookback_period": "Three completed fiscal years immediately preceding the Restatement Date, plus any transition period of less than nine months within or immediately following those three years.",
+      "expanded_covered_group": "Covered Executives, defined as each 'officer' under Rule 16a-1 and any other senior executive designated by the Committee or Board."
+    },
+    {
+      "document_name": "ex_612612.htm",
+      "policy_title": "Executive and Key Manager Compensation Recovery Policy",
+      "lookback_period": "three completed fiscal years immediately preceding the date that the Company is required to prepare the restatement (and during any transition period that results from a change in the Company's fiscal year within or immediately following those three completed fiscal years)",
+      "expanded_covered_group": "current or former executive officers and key managers (defined as employees at grade level 32 or above)"
+    },
+    {
+      "document_name": "stra-20231231xex971.htm",
+      "policy_title": "STRATEGIC EDUCATION, INC. RECOUPMENT POLICY",
+      "lookback_period": "The last three (3) completed fiscal years preceding the Trigger Date; however, for cases involving fraud or intentional misconduct, or incorrectly calculated performance metrics, recovery may occur outside of the Recoupment Period.",
+      "expanded_covered_group": "The policy covers not only current and former Executive Officers (as defined by Rule 10D-1) but also extends to 'other Employees' in cases involving fraud, intentional misconduct, or incorrectly calculated performance metrics, as well as any 'Employee' covered by the Higher Education Act's Incentive Payment Rule."
+    }
+  ],
+  "elapsed_seconds": 44.65,
+  "cost_usd": 0.24884,
+  "total_tokens": 433895
+}

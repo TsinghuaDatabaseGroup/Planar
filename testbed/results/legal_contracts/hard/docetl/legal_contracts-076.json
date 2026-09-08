@@ -1,0 +1,26 @@
+{
+  "task_id": "legal_contracts-076",
+  "answer": [
+    {
+      "company_name": "Leafly Holdings, Inc.",
+      "reporting_period_type": "Annual",
+      "reporting_period_end_date": "2024-12-31",
+      "section_302_document_ids": [
+        "lfly-ex31_2.htm"
+      ],
+      "section_302_certifying_officers": [
+        "Suresh Krishnaswamy"
+      ],
+      "section_906_document_ids": [
+        "lfly-ex32_1.htm"
+      ],
+      "section_906_certifying_officers": [
+        "Suresh Krishnaswamy",
+        "Yoko Miyashita"
+      ]
+    }
+  ],
+  "elapsed_seconds": 963.17,
+  "cost_usd": 7.558332,
+  "total_tokens": 14119237
+}

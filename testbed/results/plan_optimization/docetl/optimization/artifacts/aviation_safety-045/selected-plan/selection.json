@@ -1,0 +1,408 @@
+{
+  "node_id": 1,
+  "sample_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-045/moar-search/pipeline_aviation_safety-045_input_sample_openai_Qwen3.5-397B-A17B.yaml",
+  "sample_output_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-045/moar-search/pipeline_aviation_safety-045_input_sample_openai_Qwen3.5-397B-A17B.json",
+  "semantic_fidelity": 1.0,
+  "sample_execution_cost_usd": 0.11013872999999995,
+  "fidelity_threshold": 0.9,
+  "selection_reason": "lowest_cost_meeting_fidelity_threshold",
+  "optimization_path": "ROOT → change to Qwen3.5-397B-A17B(filter_aircraft_primary_incidents)",
+  "sample_execution_metrics_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-045/moar-search/candidate-metrics/execution_0001_node-1.json",
+  "full_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-045/selected-plan/pipeline_aviation_safety-045_optimized_full.yaml",
+  "input_plan_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/pipeline-all/pipeline_aviation_safety-045.yaml",
+  "input_plan_kind": "reference-plan translation used as the MOAR input plan",
+  "operator_execution_policy": {
+    "policy": "structural_rewrite_fixed_operator_execution",
+    "nested_v1_optimizer_invoked": false,
+    "fixed_default_model": "Qwen3.5-397B-A17B",
+    "unchanged_operations": [
+      "filter_aircraft_primary_incidents",
+      "load_asrs_narrative",
+      "filter_maintenance_decision_causal_chain",
+      "filter_clear_discovery_phase",
+      "extract_maintenance_chain",
+      "classify_maintenance_chain",
+      "attach_maintenance_status",
+      "inner_join_maintenance_status",
+      "attach_structured_component_records",
+      "inner_join_structured_component_records",
+      "collect_chain_records_by_group",
+      "summarize_maintenance_chain_group",
+      "rank_maintenance_chain_groups",
+      "unnest_answer_rows"
+    ],
+    "new_or_replaced_operations": [],
+    "restored_fields": {},
+    "unchanged_operation_count": 14,
+    "new_or_replaced_operation_count": 0
+  },
+  "input_plan_signature": {
+    "definitions": {
+      "filter_aircraft_primary_incidents": "code_filter",
+      "load_asrs_narrative": "code_map",
+      "filter_maintenance_decision_causal_chain": "filter",
+      "filter_clear_discovery_phase": "filter",
+      "extract_maintenance_chain": "map",
+      "classify_maintenance_chain": "map",
+      "attach_maintenance_status": "code_map",
+      "inner_join_maintenance_status": "code_filter",
+      "attach_structured_component_records": "code_map",
+      "inner_join_structured_component_records": "code_filter",
+      "collect_chain_records_by_group": "code_reduce",
+      "summarize_maintenance_chain_group": "reduce",
+      "rank_maintenance_chain_groups": "code_reduce",
+      "unnest_answer_rows": "unnest"
+    },
+    "logical_operations": [
+      {
+        "name": "filter_aircraft_primary_incidents",
+        "type": "code_filter",
+        "logical_config_sha256": "96dabc5431d3303c390f2724b994c6078bb919045fd1f64ed9ab96e0b139ba6c"
+      },
+      {
+        "name": "load_asrs_narrative",
+        "type": "code_map",
+        "logical_config_sha256": "22704ad225c76497658f97dc72d7fd2e6af23d702a4068895817ea53c0f3aa87"
+      },
+      {
+        "name": "filter_maintenance_decision_causal_chain",
+        "type": "filter",
+        "logical_config_sha256": "553f19dfa889fd1dca86158be94664a2500e0fb8316e70ec896a4e19e32adf66"
+      },
+      {
+        "name": "filter_clear_discovery_phase",
+        "type": "filter",
+        "logical_config_sha256": "84b2eb38c81984571565ea1f273decdc24c2b1800423836f43c19c92b8922959"
+      },
+      {
+        "name": "extract_maintenance_chain",
+        "type": "map",
+        "logical_config_sha256": "b638645a3f1763df00ac380f699528fd2bf18bee3f8fc63453747fddc19ff23e"
+      },
+      {
+        "name": "classify_maintenance_chain",
+        "type": "map",
+        "logical_config_sha256": "af8c71f797e9db19101c1e3162fac72ed980f0eb78126f686d47026e14243dd0"
+      },
+      {
+        "name": "attach_maintenance_status",
+        "type": "code_map",
+        "logical_config_sha256": "bc217c38763954155df584fde7cab34e4b238b4ec613682e0881b891b09834e4"
+      },
+      {
+        "name": "inner_join_maintenance_status",
+        "type": "code_filter",
+        "logical_config_sha256": "3cef3d34a550f0418be3848b342fce09946733a34d27a1ac1a78cb3d68333bd1"
+      },
+      {
+        "name": "attach_structured_component_records",
+        "type": "code_map",
+        "logical_config_sha256": "e01fbbc8940049945132784e6ac2c8503cc70a4074a5c7292fa0cd73e07a8ae2"
+      },
+      {
+        "name": "inner_join_structured_component_records",
+        "type": "code_filter",
+        "logical_config_sha256": "eff4c1de63767120e32e7dcedafa7a5cc22f9e8522bd8b1f594b7d7d7d6bdfa2"
+      },
+      {
+        "name": "collect_chain_records_by_group",
+        "type": "code_reduce",
+        "logical_config_sha256": "87fb42d48c8501949248b5783afeb8e72471a40cfbf3499853abc6733c2a1560"
+      },
+      {
+        "name": "summarize_maintenance_chain_group",
+        "type": "reduce",
+        "logical_config_sha256": "84f893f8bc29c0e1a2670f635df75a306f872f9f66fc0586f535fd888b56479d"
+      },
+      {
+        "name": "rank_maintenance_chain_groups",
+        "type": "code_reduce",
+        "logical_config_sha256": "ad8e02ef076d589189e5b5224947ce0a44fc0575116b60abac07266cd408335f"
+      },
+      {
+        "name": "unnest_answer_rows",
+        "type": "unnest",
+        "logical_config_sha256": "94b0f3d8954c728e664c292c6dbf49c82c4281ac80b8bf02b79d561c4994a1d3"
+      }
+    ],
+    "steps": [
+      {
+        "name": "semantic_chains",
+        "input": "asrs_incidents",
+        "operations": [
+          {
+            "name": "filter_aircraft_primary_incidents",
+            "type": "code_filter"
+          },
+          {
+            "name": "load_asrs_narrative",
+            "type": "code_map"
+          },
+          {
+            "name": "filter_maintenance_decision_causal_chain",
+            "type": "filter"
+          },
+          {
+            "name": "filter_clear_discovery_phase",
+            "type": "filter"
+          },
+          {
+            "name": "extract_maintenance_chain",
+            "type": "map"
+          },
+          {
+            "name": "classify_maintenance_chain",
+            "type": "map"
+          }
+        ]
+      },
+      {
+        "name": "chains_with_status",
+        "input": "semantic_chains",
+        "operations": [
+          {
+            "name": "attach_maintenance_status",
+            "type": "code_map"
+          },
+          {
+            "name": "inner_join_maintenance_status",
+            "type": "code_filter"
+          }
+        ]
+      },
+      {
+        "name": "joined_chain_records",
+        "input": "chains_with_status",
+        "operations": [
+          {
+            "name": "attach_structured_component_records",
+            "type": "code_map"
+          },
+          {
+            "name": "inner_join_structured_component_records",
+            "type": "code_filter"
+          }
+        ]
+      },
+      {
+        "name": "grouped_chain_records",
+        "input": "joined_chain_records",
+        "operations": [
+          {
+            "name": "collect_chain_records_by_group",
+            "type": "code_reduce"
+          }
+        ]
+      },
+      {
+        "name": "summarized_chain_groups",
+        "input": "grouped_chain_records",
+        "operations": [
+          {
+            "name": "summarize_maintenance_chain_group",
+            "type": "reduce"
+          }
+        ]
+      },
+      {
+        "name": "ranked_chain_groups",
+        "input": "summarized_chain_groups",
+        "operations": [
+          {
+            "name": "rank_maintenance_chain_groups",
+            "type": "code_reduce"
+          },
+          {
+            "name": "unnest_answer_rows",
+            "type": "unnest"
+          }
+        ]
+      }
+    ]
+  },
+  "selected_plan_signature": {
+    "definitions": {
+      "filter_aircraft_primary_incidents": "code_filter",
+      "load_asrs_narrative": "code_map",
+      "filter_maintenance_decision_causal_chain": "filter",
+      "filter_clear_discovery_phase": "filter",
+      "extract_maintenance_chain": "map",
+      "classify_maintenance_chain": "map",
+      "attach_maintenance_status": "code_map",
+      "inner_join_maintenance_status": "code_filter",
+      "attach_structured_component_records": "code_map",
+      "inner_join_structured_component_records": "code_filter",
+      "collect_chain_records_by_group": "code_reduce",
+      "summarize_maintenance_chain_group": "reduce",
+      "rank_maintenance_chain_groups": "code_reduce",
+      "unnest_answer_rows": "unnest"
+    },
+    "logical_operations": [
+      {
+        "name": "filter_aircraft_primary_incidents",
+        "type": "code_filter",
+        "logical_config_sha256": "96dabc5431d3303c390f2724b994c6078bb919045fd1f64ed9ab96e0b139ba6c"
+      },
+      {
+        "name": "load_asrs_narrative",
+        "type": "code_map",
+        "logical_config_sha256": "22704ad225c76497658f97dc72d7fd2e6af23d702a4068895817ea53c0f3aa87"
+      },
+      {
+        "name": "filter_maintenance_decision_causal_chain",
+        "type": "filter",
+        "logical_config_sha256": "553f19dfa889fd1dca86158be94664a2500e0fb8316e70ec896a4e19e32adf66"
+      },
+      {
+        "name": "filter_clear_discovery_phase",
+        "type": "filter",
+        "logical_config_sha256": "84b2eb38c81984571565ea1f273decdc24c2b1800423836f43c19c92b8922959"
+      },
+      {
+        "name": "extract_maintenance_chain",
+        "type": "map",
+        "logical_config_sha256": "b638645a3f1763df00ac380f699528fd2bf18bee3f8fc63453747fddc19ff23e"
+      },
+      {
+        "name": "classify_maintenance_chain",
+        "type": "map",
+        "logical_config_sha256": "af8c71f797e9db19101c1e3162fac72ed980f0eb78126f686d47026e14243dd0"
+      },
+      {
+        "name": "attach_maintenance_status",
+        "type": "code_map",
+        "logical_config_sha256": "bc217c38763954155df584fde7cab34e4b238b4ec613682e0881b891b09834e4"
+      },
+      {
+        "name": "inner_join_maintenance_status",
+        "type": "code_filter",
+        "logical_config_sha256": "3cef3d34a550f0418be3848b342fce09946733a34d27a1ac1a78cb3d68333bd1"
+      },
+      {
+        "name": "attach_structured_component_records",
+        "type": "code_map",
+        "logical_config_sha256": "e01fbbc8940049945132784e6ac2c8503cc70a4074a5c7292fa0cd73e07a8ae2"
+      },
+      {
+        "name": "inner_join_structured_component_records",
+        "type": "code_filter",
+        "logical_config_sha256": "eff4c1de63767120e32e7dcedafa7a5cc22f9e8522bd8b1f594b7d7d7d6bdfa2"
+      },
+      {
+        "name": "collect_chain_records_by_group",
+        "type": "code_reduce",
+        "logical_config_sha256": "87fb42d48c8501949248b5783afeb8e72471a40cfbf3499853abc6733c2a1560"
+      },
+      {
+        "name": "summarize_maintenance_chain_group",
+        "type": "reduce",
+        "logical_config_sha256": "84f893f8bc29c0e1a2670f635df75a306f872f9f66fc0586f535fd888b56479d"
+      },
+      {
+        "name": "rank_maintenance_chain_groups",
+        "type": "code_reduce",
+        "logical_config_sha256": "ad8e02ef076d589189e5b5224947ce0a44fc0575116b60abac07266cd408335f"
+      },
+      {
+        "name": "unnest_answer_rows",
+        "type": "unnest",
+        "logical_config_sha256": "94b0f3d8954c728e664c292c6dbf49c82c4281ac80b8bf02b79d561c4994a1d3"
+      }
+    ],
+    "steps": [
+      {
+        "name": "semantic_chains",
+        "input": "asrs_incidents",
+        "operations": [
+          {
+            "name": "filter_aircraft_primary_incidents",
+            "type": "code_filter"
+          },
+          {
+            "name": "load_asrs_narrative",
+            "type": "code_map"
+          },
+          {
+            "name": "filter_maintenance_decision_causal_chain",
+            "type": "filter"
+          },
+          {
+            "name": "filter_clear_discovery_phase",
+            "type": "filter"
+          },
+          {
+            "name": "extract_maintenance_chain",
+            "type": "map"
+          },
+          {
+            "name": "classify_maintenance_chain",
+            "type": "map"
+          }
+        ]
+      },
+      {
+        "name": "chains_with_status",
+        "input": "semantic_chains",
+        "operations": [
+          {
+            "name": "attach_maintenance_status",
+            "type": "code_map"
+          },
+          {
+            "name": "inner_join_maintenance_status",
+            "type": "code_filter"
+          }
+        ]
+      },
+      {
+        "name": "joined_chain_records",
+        "input": "chains_with_status",
+        "operations": [
+          {
+            "name": "attach_structured_component_records",
+            "type": "code_map"
+          },
+          {
+            "name": "inner_join_structured_component_records",
+            "type": "code_filter"
+          }
+        ]
+      },
+      {
+        "name": "grouped_chain_records",
+        "input": "joined_chain_records",
+        "operations": [
+          {
+            "name": "collect_chain_records_by_group",
+            "type": "code_reduce"
+          }
+        ]
+      },
+      {
+        "name": "summarized_chain_groups",
+        "input": "grouped_chain_records",
+        "operations": [
+          {
+            "name": "summarize_maintenance_chain_group",
+            "type": "reduce"
+          }
+        ]
+      },
+      {
+        "name": "ranked_chain_groups",
+        "input": "summarized_chain_groups",
+        "operations": [
+          {
+            "name": "rank_maintenance_chain_groups",
+            "type": "code_reduce"
+          },
+          {
+            "name": "unnest_answer_rows",
+            "type": "unnest"
+          }
+        ]
+      }
+    ]
+  },
+  "plan_changed": false
+}

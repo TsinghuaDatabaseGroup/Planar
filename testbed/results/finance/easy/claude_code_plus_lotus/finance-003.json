@@ -1,0 +1,33 @@
+{
+  "task_id": "finance-003",
+  "answer": [
+    {
+      "industry": "Technology",
+      "avg_risk_factor_count": 28.125,
+      "filing_count": 32
+    },
+    {
+      "industry": "Real Estate",
+      "avg_risk_factor_count": 27.76923076923077,
+      "filing_count": 26
+    },
+    {
+      "industry": "Consumer Goods",
+      "avg_risk_factor_count": 26.76923076923077,
+      "filing_count": 13
+    },
+    {
+      "industry": "Healthcare",
+      "avg_risk_factor_count": 26.03030303030303,
+      "filing_count": 33
+    },
+    {
+      "industry": "Finance",
+      "avg_risk_factor_count": 24.689655172413794,
+      "filing_count": 29
+    }
+  ],
+  "elapsed_seconds": 1327.296,
+  "cost_usd": 5.78734065,
+  "total_tokens": 14805751
+}

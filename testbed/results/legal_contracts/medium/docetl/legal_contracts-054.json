@@ -1,0 +1,104 @@
+{
+  "task_id": "legal_contracts-054",
+  "answer": [
+    {
+      "document_id": "1013240_0001047469-04-010350_a2132633zex-10_22.htm",
+      "governing_law": "Laws of the State of Colorado"
+    },
+    {
+      "document_id": "1023734_0000912057-96-023266_document_16.txt",
+      "governing_law": "State of Colorado"
+    },
+    {
+      "document_id": "1074663_0001090002-01-500104_ex102.txt",
+      "governing_law": "Texas"
+    },
+    {
+      "document_id": "1367408_0001367408-06-000002_risb2ex106.htm",
+      "governing_law": "The State of Utah"
+    },
+    {
+      "document_id": "1588052992CCTV%20Non%20Disclosure%20Agreement.pdf",
+      "governing_law": "India"
+    },
+    {
+      "document_id": "41629_1.pdf",
+      "governing_law": "England and Wales"
+    },
+    {
+      "document_id": "426-2017_Appendix_C-Sample_Non-Disclosure_Agreement.pdf",
+      "governing_law": "Manitoba and the applicable laws of Canada"
+    },
+    {
+      "document_id": "703339_0001387308-13-000090_ex101.htm",
+      "governing_law": "State of California"
+    },
+    {
+      "document_id": "BOMI%20Non-Disclosure%20Agreement.pdf",
+      "governing_law": "State of Maryland"
+    },
+    {
+      "document_id": "Confidentiality_and_Non-Disclosure_Agreement_Rev_10-20-16.pdf",
+      "governing_law": "State of Kansas"
+    },
+    {
+      "document_id": "Data Use Agreement New York City.pdf",
+      "governing_law": "State of New York"
+    },
+    {
+      "document_id": "Focus-Group-APIC-Seattle-Confidentiality-Agreement-031115.pdf",
+      "governing_law": "Wisconsin"
+    },
+    {
+      "document_id": "Proctor_Agreement.pdf",
+      "governing_law": "England and Wales"
+    },
+    {
+      "document_id": "QSA_NDA.pdf",
+      "governing_law": "Commonwealth of Australia and the State of Victoria"
+    },
+    {
+      "document_id": "buyer_profile.pdf",
+      "governing_law": "Republic of South Africa"
+    },
+    {
+      "document_id": "exhibit191aniinsidertradin.htm",
+      "governing_law": "Federal securities laws (United States)"
+    },
+    {
+      "document_id": "ferc_gen-nda.pdf",
+      "governing_law": "United States Federal Regulations (18 C.F.R. § 388.113 et seq.)"
+    },
+    {
+      "document_id": "fs42021ex10-11_cmlifescien3.htm",
+      "governing_law": "Commonwealth of Massachusetts"
+    },
+    {
+      "document_id": "gbio-20241231xex10d29.htm",
+      "governing_law": "Commonwealth of Massachusetts"
+    },
+    {
+      "document_id": "irs_tj-attachment3-nda.pdf",
+      "governing_law": "United States Federal Law (including Executive Order 12356 and various U.S. Code titles)"
+    },
+    {
+      "document_id": "stevenson_confidentiality_agreement.pdf",
+      "governing_law": "Not explicitly specified (references FERPA and general federal/state laws)"
+    },
+    {
+      "document_id": "tufts_confidentiality_agreement.pdf",
+      "governing_law": "Commonwealth of Massachusetts"
+    },
+    {
+      "document_id": "uwsp_confidentiality_agreement.pdf",
+      "governing_law": "State and federal laws of the United States (specifically referencing Wisconsin state context via UW-Stevens Point)"
+    },
+    {
+      "document_id": "vrdr_ex1020.htm",
+      "governing_law": "State of Missouri"
+    }
+  ],
+  "elapsed_seconds": 412.05,
+  "cost_usd": 3.968543,
+  "total_tokens": 7551524
+}

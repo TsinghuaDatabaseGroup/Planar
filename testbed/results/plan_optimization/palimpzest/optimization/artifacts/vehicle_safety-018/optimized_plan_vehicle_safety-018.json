@@ -1,0 +1,538 @@
+{
+  "format_version": 1,
+  "purpose": "human_review_of_selected_palimpzest_physical_plan",
+  "task_id": "vehicle_safety-018",
+  "optimization_status": "optimized_only",
+  "selected_plan_id": "c3e53c638f",
+  "executable_plan": {
+    "file": "optimized_plan_vehicle_safety-018.plan.pkl",
+    "format": "cloudpickle",
+    "version": 1,
+    "sha256": "9a0058a0eef4b3634b8b2a4351595f634b978f831995cda458b3741d2c82891d",
+    "size_bytes": 120833,
+    "selected_plan_id": "c3e53c638f",
+    "datasources": {
+      "vehicle_safety-018-semantic-input": {
+        "id": "vehicle_safety-018-semantic-input",
+        "row_count": 297,
+        "schema_fields": [
+          "body",
+          "file_id"
+        ]
+      }
+    },
+    "scan_datasource_records_included": false,
+    "sentinel_record_payloads_included": false
+  },
+  "input_plan": {
+    "task_id": "vehicle_safety-018",
+    "query": "Which NHTSA investigation reports that both mention a Tesla model, such as Model 3, Model S, Model Y, or Model X, and cite at least one NHTSA recall number? For each file, which deduplicated and normalized recall numbers are cited?",
+    "inputs": [
+      {
+        "source_id": "investigation_reports_txt",
+        "dataset": "NHTSA Vehicle Safety",
+        "source_type": "document",
+        "role": "primary"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(NHTSA, investigation_reports, selector='*.txt', columns=[file_id, body]) -> SEM_FILTER('body explicitly mentions a Tesla model (e.g., Model 3, Model S, Model Y, Model X)', input_bindings={text: body}) -> SEM_EXTRACT('Extract every NHTSA recall number cited in the body. Accept formats like 12V-491, 23V085, 23V085000. Normalize to the long form and deduplicate.', out_schema={cited_recall_numbers: list[string]}, input_bindings={text: body}) -> FILTER(len(cited_recall_numbers) >= 1) -> PROJECT([file_id, cited_recall_numbers])"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "file_id",
+        "cited_recall_numbers"
+      ],
+      "types": [
+        "string",
+        "list[string]"
+      ]
+    }
+  },
+  "input_bad_plan": null,
+  "input_logical_plan": {
+    "root_dataset_id": "5b4c2a2ff5",
+    "nodes": [
+      {
+        "dataset_id": "vehicle_safety-018-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "ae239aa618",
+        "unique_logical_op_id": "0-ae239aa618",
+        "depends_on": [],
+        "generated_fields": [
+          "body",
+          "file_id"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "body",
+          "file_id"
+        ]
+      },
+      {
+        "dataset_id": "037a782bd4",
+        "source_dataset_ids": [
+          "vehicle_safety-018-semantic-input"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "d8cbdcdca1",
+        "unique_logical_op_id": "1-d8cbdcdca1",
+        "depends_on": [
+          "body"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "body",
+          "file_id"
+        ],
+        "output_fields": [
+          "body",
+          "file_id"
+        ],
+        "filter": "Keep this investigation report only if it explicitly names a Tesla Model 3, Model S, Model X, or Model Y. A generic mention of Tesla without one of those concrete models is insufficient."
+      },
+      {
+        "dataset_id": "5b9448420b",
+        "source_dataset_ids": [
+          "037a782bd4"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "74ff701984",
+        "unique_logical_op_id": "2-74ff701984",
+        "depends_on": [
+          "body"
+        ],
+        "generated_fields": [
+          "cited_recall_numbers"
+        ],
+        "input_fields": [
+          "body",
+          "file_id"
+        ],
+        "output_fields": [
+          "body",
+          "cited_recall_numbers",
+          "file_id"
+        ],
+        "desc": "Extract, normalize, and deduplicate all NHTSA recall numbers cited in the report.",
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "cf25ebd177",
+        "source_dataset_ids": [
+          "5b9448420b"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "138712b959",
+        "unique_logical_op_id": "3-138712b959",
+        "depends_on": [
+          "cited_recall_numbers"
+        ],
+        "generated_fields": [
+          "normalized_cited_recall_numbers"
+        ],
+        "input_fields": [
+          "body",
+          "cited_recall_numbers",
+          "file_id"
+        ],
+        "output_fields": [
+          "body",
+          "cited_recall_numbers",
+          "file_id",
+          "normalized_cited_recall_numbers"
+        ],
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "871a82b856",
+        "source_dataset_ids": [
+          "cf25ebd177"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "d2633a1942",
+        "unique_logical_op_id": "4-d2633a1942",
+        "depends_on": [
+          "normalized_cited_recall_numbers"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "body",
+          "cited_recall_numbers",
+          "file_id",
+          "normalized_cited_recall_numbers"
+        ],
+        "output_fields": [
+          "body",
+          "cited_recall_numbers",
+          "file_id",
+          "normalized_cited_recall_numbers"
+        ],
+        "filter": "has_recall_numbers"
+      },
+      {
+        "dataset_id": "5b4c2a2ff5",
+        "source_dataset_ids": [
+          "871a82b856"
+        ],
+        "logical_operator": "Project",
+        "logical_op_id": "9a1bf0437f",
+        "unique_logical_op_id": "5-9a1bf0437f",
+        "depends_on": [],
+        "generated_fields": [],
+        "input_fields": [
+          "body",
+          "cited_recall_numbers",
+          "file_id",
+          "normalized_cited_recall_numbers"
+        ],
+        "output_fields": [
+          "file_id",
+          "normalized_cited_recall_numbers"
+        ],
+        "project_cols": "['file_id', 'normalized_cited_recall_numbers']"
+      }
+    ],
+    "topological_logical_sequence": [
+      "0-ae239aa618",
+      "1-d8cbdcdca1",
+      "2-74ff701984",
+      "3-138712b959",
+      "4-d2633a1942",
+      "5-9a1bf0437f"
+    ]
+  },
+  "selected_physical_plan": {
+    "plan_id": "c3e53c638f",
+    "plan_string": "0. Schema['body', 'cited_recall_numbers', 'file_id', 'normalized_cited_recall_numbers'] -> ProjectOp -> Schema['file_id', 'normalized_cited_recall_numbers']\n    (body, cited_recall_numbers, fi) -> (file_id, normalized_cited_reca)\n    Project Columns: ['file_id', 'normalized_cited_recall_numbers']\n\n  1. Schema['body', 'cited_recall_numbers', 'file_id', 'normalized_cited_recall_numbers'] -> NonLLMFilter -> Schema['body', 'cited_recall_numbers', 'file_id', 'normalized_cited_recall_numbers']\n    (body, cited_recall_numbers, fi) -> (body, cited_recall_numbers, fi)\n    Filter: has_recall_numbers\n\n    2. Schema['body', 'cited_recall_numbers', 'file_id'] -> NonLLMConvert -> Schema['body', 'cited_recall_numbers', 'file_id', 'normalized_cited_recall_numbers']\n    (body, cited_recall_numbers, fi) -> (body, cited_recall_numbers, fi)\n    UDF: normalize_recall_number_record\n\n      3. Schema['body', 'file_id'] -> LLMConvertBonded -> Schema['body', 'cited_recall_numbers', 'file_id']\n    (body, file_id) -> (body, cited_recall_numbers, fi)\n    Model: Qwen3.5-397B-A17B\n    Prompt Strategy: PromptStrategy.MAP\n    Reasoning Effort: default\n\n        4. Schema['body', 'file_id'] -> LLMFilter -> Schema['body', 'file_id']\n    (body, file_id) -> (body, file_id)\n    Model: Qwen3.5-397B-A17B\n    Filter: Keep this investigation report only if it explicitly names a Tesla Model 3, Model S, Model X, or Model Y. A generic mention of Tesla without one of those concrete models is insufficient.\n\n          5. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['body', 'file_id']'>, id=vehicle_safety-018-semantic-input, op_id=ae239aa618)) -> <class 'palimpzest.core.lib.schemas.Schema['body', 'file_id']'>\n    (file_id, body)\n\n",
+    "root_operator_index": 5,
+    "operators": [
+      {
+        "topological_index": 0,
+        "physical_operator": "MarshalAndScanDataOp",
+        "logical_operator": "BaseScan",
+        "logical_op_id": "ae239aa618",
+        "unique_logical_op_id": "0-ae239aa618",
+        "full_op_id": "ae239aa618-1c55c3d4da",
+        "model": null,
+        "depends_on": [],
+        "generated_fields": [
+          "body",
+          "file_id"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "body",
+          "file_id"
+        ],
+        "source_operator_indices": []
+      },
+      {
+        "topological_index": 1,
+        "physical_operator": "LLMFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "d8cbdcdca1",
+        "unique_logical_op_id": "1-d8cbdcdca1",
+        "full_op_id": "d8cbdcdca1-e6ad27ff08",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['body', 'file_id'].vehicle_safety-018-semantic-input.body"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "body",
+          "file_id"
+        ],
+        "output_fields": [
+          "body",
+          "file_id"
+        ],
+        "source_operator_indices": [
+          0
+        ]
+      },
+      {
+        "topological_index": 2,
+        "physical_operator": "LLMConvertBonded",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "74ff701984",
+        "unique_logical_op_id": "2-74ff701984",
+        "full_op_id": "74ff701984-37e4baf21b",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['body', 'file_id'].vehicle_safety-018-semantic-input.body"
+        ],
+        "generated_fields": [
+          "cited_recall_numbers"
+        ],
+        "input_fields": [
+          "body",
+          "file_id"
+        ],
+        "output_fields": [
+          "body",
+          "cited_recall_numbers",
+          "file_id"
+        ],
+        "source_operator_indices": [
+          1
+        ]
+      },
+      {
+        "topological_index": 3,
+        "physical_operator": "NonLLMConvert",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "138712b959",
+        "unique_logical_op_id": "3-138712b959",
+        "full_op_id": "138712b959-241dcd8903",
+        "model": null,
+        "depends_on": [
+          "Schema['body', 'cited_recall_numbers', 'file_id', 'normalized_cited_recall_numbers'].cf25ebd177.cited_recall_numbers"
+        ],
+        "generated_fields": [
+          "normalized_cited_recall_numbers"
+        ],
+        "input_fields": [
+          "body",
+          "cited_recall_numbers",
+          "file_id"
+        ],
+        "output_fields": [
+          "body",
+          "cited_recall_numbers",
+          "file_id",
+          "normalized_cited_recall_numbers"
+        ],
+        "source_operator_indices": [
+          2
+        ]
+      },
+      {
+        "topological_index": 4,
+        "physical_operator": "NonLLMFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "d2633a1942",
+        "unique_logical_op_id": "4-d2633a1942",
+        "full_op_id": "d2633a1942-9406d4e4dd",
+        "model": null,
+        "depends_on": [
+          "Schema['body', 'cited_recall_numbers', 'file_id', 'normalized_cited_recall_numbers'].cf25ebd177.normalized_cited_recall_numbers"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "body",
+          "cited_recall_numbers",
+          "file_id",
+          "normalized_cited_recall_numbers"
+        ],
+        "output_fields": [
+          "body",
+          "cited_recall_numbers",
+          "file_id",
+          "normalized_cited_recall_numbers"
+        ],
+        "source_operator_indices": [
+          3
+        ]
+      },
+      {
+        "topological_index": 5,
+        "physical_operator": "ProjectOp",
+        "logical_operator": "Project",
+        "logical_op_id": "9a1bf0437f",
+        "unique_logical_op_id": "5-9a1bf0437f",
+        "full_op_id": "9a1bf0437f-d3bcfdcfcf",
+        "model": null,
+        "depends_on": [
+          "Schema['body', 'cited_recall_numbers', 'file_id', 'normalized_cited_recall_numbers'].871a82b856.body",
+          "Schema['body', 'cited_recall_numbers', 'file_id', 'normalized_cited_recall_numbers'].871a82b856.cited_recall_numbers",
+          "Schema['body', 'cited_recall_numbers', 'file_id', 'normalized_cited_recall_numbers'].871a82b856.file_id",
+          "Schema['body', 'cited_recall_numbers', 'file_id', 'normalized_cited_recall_numbers'].871a82b856.normalized_cited_recall_numbers",
+          "Schema['body', 'cited_recall_numbers', 'file_id', 'normalized_cited_recall_numbers'].cf25ebd177.body",
+          "Schema['body', 'cited_recall_numbers', 'file_id', 'normalized_cited_recall_numbers'].cf25ebd177.cited_recall_numbers",
+          "Schema['body', 'cited_recall_numbers', 'file_id', 'normalized_cited_recall_numbers'].cf25ebd177.file_id",
+          "Schema['body', 'cited_recall_numbers', 'file_id', 'normalized_cited_recall_numbers'].cf25ebd177.normalized_cited_recall_numbers",
+          "Schema['body', 'cited_recall_numbers', 'file_id'].5b9448420b.body",
+          "Schema['body', 'cited_recall_numbers', 'file_id'].5b9448420b.cited_recall_numbers",
+          "Schema['body', 'cited_recall_numbers', 'file_id'].5b9448420b.file_id",
+          "Schema['body', 'file_id'].037a782bd4.body",
+          "Schema['body', 'file_id'].037a782bd4.file_id",
+          "Schema['body', 'file_id'].vehicle_safety-018-semantic-input.body",
+          "Schema['body', 'file_id'].vehicle_safety-018-semantic-input.file_id"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "body",
+          "cited_recall_numbers",
+          "file_id",
+          "normalized_cited_recall_numbers"
+        ],
+        "output_fields": [
+          "file_id",
+          "normalized_cited_recall_numbers"
+        ],
+        "source_operator_indices": [
+          4
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "source": 0,
+        "target": 1
+      },
+      {
+        "source": 1,
+        "target": 2
+      },
+      {
+        "source": 2,
+        "target": 3
+      },
+      {
+        "source": 3,
+        "target": 4
+      },
+      {
+        "source": 4,
+        "target": 5
+      }
+    ],
+    "estimated_plan_cost": {
+      "cost": 0.22398012,
+      "time": 705.7699885368347,
+      "quality": 1.0,
+      "op_estimates": {
+        "cardinality": 0.0,
+        "time_per_record": 0.0,
+        "cost_per_record": 0.0,
+        "quality": 1.0,
+        "cardinality_lower_bound": 0.0,
+        "cardinality_upper_bound": 0.0,
+        "time_per_record_lower_bound": 0.0,
+        "time_per_record_upper_bound": 0.0,
+        "cost_per_record_lower_bound": 0.0,
+        "cost_per_record_upper_bound": 0.0,
+        "quality_lower_bound": 1.0,
+        "quality_upper_bound": 1.0
+      },
+      "cost_lower_bound": 0.22398012,
+      "cost_upper_bound": 0.22398012,
+      "time_lower_bound": 705.7699885368347,
+      "time_upper_bound": 705.7699885368347,
+      "quality_lower_bound": 1.0,
+      "quality_upper_bound": 1.0
+    },
+    "topological_logical_sequence": [
+      "0-ae239aa618",
+      "1-d8cbdcdca1",
+      "2-74ff701984",
+      "3-138712b959",
+      "4-d2633a1942",
+      "5-9a1bf0437f"
+    ]
+  },
+  "optimizer_configuration": {
+    "strategy": "pareto",
+    "policy": "MaxQuality",
+    "physical_implementation_candidates": {
+      "allow_bonded_query": true,
+      "allow_model_selection": false,
+      "allow_rag_reduction": false,
+      "allow_mixtures": true,
+      "allow_critic": true,
+      "allow_split_merge": false,
+      "force_rag": false,
+      "execution_strategy": "parallel",
+      "max_workers": 64,
+      "join_parallelism": 64
+    },
+    "dynamic_learning_requested": true,
+    "dynamic_learning_pipeline_supported": true,
+    "dynamic_learning": true,
+    "dynamic_learning_support": {
+      "supported": true,
+      "reason": null,
+      "terminal_only_operator_violations": []
+    },
+    "allow_unsupported_sentinel_plans": true,
+    "dynamic_learning_fallback": null,
+    "sentinel_execution_strategy": "mab",
+    "sentinel_k": 6,
+    "sentinel_j": 4,
+    "sentinel_sample_budget": 100,
+    "sentinel_seed": 42,
+    "available_models": [
+      "Qwen3.5-397B-A17B",
+      "openai/Qwen3-Embedding-8B"
+    ]
+  },
+  "optimizer_search_space": {
+    "group_count": 6,
+    "logical_expression_count": 6,
+    "physical_expression_count": 14,
+    "transformation_rules_explored": [
+      "PushDownFilter",
+      "ReorderConverts"
+    ],
+    "implementation_rules_explored": [
+      "BasicSubstitutionRule",
+      "CritiqueAndRefineRule",
+      "LLMConvertBondedRule",
+      "LLMFilterRule",
+      "MixtureOfAgentsRule",
+      "NonLLMConvertRule",
+      "NonLLMFilterRule"
+    ]
+  },
+  "optimization_metrics": {
+    "elapsed_seconds": 130.19362998,
+    "sentinel_sampling_seconds": 130.15540409,
+    "optimizer_search_and_bookkeeping_seconds": 0.03822589,
+    "cost_usd": 0.13126347,
+    "text_llm_calls": 239,
+    "embedding_calls": 0,
+    "input_text_tokens": 193833,
+    "output_text_tokens": 23790,
+    "total_text_tokens": 217623,
+    "embedding_input_tokens": 0,
+    "cache_read_tokens": 0,
+    "cache_creation_tokens": 0,
+    "sampled_operators": {
+      "text_llm_calls": 202,
+      "embedding_calls": 0,
+      "input_text_tokens": 149333,
+      "output_text_tokens": 18928,
+      "embedding_input_tokens": 0,
+      "cost_usd": 0.10253139
+    },
+    "validator": {
+      "text_llm_calls": 37,
+      "input_text_tokens": 44500,
+      "output_text_tokens": 4862,
+      "total_text_tokens": 49362,
+      "cost_usd": 0.02873208
+    },
+    "model_usage_by_model": {
+      "Qwen3.5-397B-A17B": {
+        "roles": [
+          "text",
+          "validator"
+        ],
+        "calls": 239,
+        "input_tokens": 193833,
+        "output_tokens": 23790,
+        "total_tokens": 217623,
+        "cost_usd": 0.13126347
+      }
+    }
+  },
+  "sentinel_join_sampling": [],
+  "sentinel_sampling_exhaustion": null,
+  "recovery": null
+}

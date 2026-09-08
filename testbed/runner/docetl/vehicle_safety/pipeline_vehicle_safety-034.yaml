@@ -1,0 +1,217 @@
+datasets:
+  nhtsa_complaints:
+    type: file
+    path: data/nhtsa_vehicle_safety/complaints.csv
+  nhtsa_recalls:
+    type: file
+    path: data/nhtsa_vehicle_safety/recalls.jsonl
+  nhtsa_investigation_reports:
+    type: file
+    path: data/nhtsa_vehicle_safety/investigation_reports/*.txt
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    # Chunk rewriting is not compatible with this pipeline's boolean filter schema.
+    plan_types: [proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_jeep_complaints
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("make") == "JEEP"
+
+  - name: classify_genuine_safety_relevant_defect
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether this complaint describes a genuine safety-relevant vehicle
+      defect.
+
+      Qualifying narratives describe an actual or alleged malfunction, loss of
+      function or control, fire, crash risk, injury risk, component failure, or
+      another defect with a plausible safety consequence. Do not qualify a
+      cosmetic blemish, appearance issue, convenience-only concern, infotainment
+      preference, routine maintenance, paperwork, or service scheduling with no
+      safety-relevant defect.
+
+      Complaint summary:
+      {{ input.summary_text }}
+    output:
+      mode: structured_output
+      schema:
+        describes_genuine_safety_relevant_defect: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_jeep_recalls
+    type: code_filter
+    code: |
+      def transform(doc):
+          vehicle = doc.get("vehicle") or {}
+          return vehicle.get("make") == "JEEP"
+
+  - name: flatten_jeep_recall_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          campaign = doc.get("campaign") or {}
+          component = doc.get("component") or {}
+          risk = doc.get("risk") or {}
+          return {
+              "campaign_number": campaign.get("number"),
+              "component_id": component.get("component_id"),
+              "defect_summary": risk.get("defect_summary") or "",
+          }
+
+  - name: match_complaints_to_same_underlying_recall_defect
+    type: equijoin
+    comparison_prompt: |
+      Determine whether the Jeep complaint and Jeep recall describe the same
+      underlying defect within their shared component category.
+
+      Match when the complaint's failure mechanism or clearly described defect is
+      the same as, or a direct manifestation of, the recall defect. A shared broad
+      component, generic safety consequence, or related vocabulary alone is not
+      enough. Return false when the mechanisms are different or either description
+      is too vague to establish the same underlying defect.
+
+      COMPONENT: {{ left.component_id }}
+
+      COMPLAINT:
+      {{ left.summary_text }}
+
+      RECALL DEFECT:
+      {{ right.defect_summary }}
+    blocking_conditions:
+      - left["component_id"] == right["component_id"]
+    comparison_model: Qwen3.5-397B-A17B
+    timeout: 120
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: derive_jeep_investigation_component_from_report
+    type: map
+    optimize: true
+    prompt: |
+      Using only this NHTSA Office of Defects Investigation report body,
+      determine whether it explicitly identifies at least one Jeep model as part
+      of the investigated or reviewed vehicle population. Do not infer Jeep
+      coverage solely from an unexplained recall number, external metadata, or
+      manufacturer identity.
+
+      Also extract the investigation's primary defect component as exactly one
+      report_component_id from:
+      ADAS, AIRBAG, BODY, BRAKES, ELECTRICAL, ENGINE, FUEL, OTHER, POWERTRAIN,
+      SEATBELT, STEERING, SUSPENSION, TIRES.
+
+      Choose the component under investigation, not a secondary consequence. For
+      example, an engine stall caused by an electrical module should use the
+      component whose defect is actually investigated. Use OTHER only when none of
+      the listed categories fits.
+
+      Investigation report:
+      {{ input.body }}
+    output:
+      mode: structured_output
+      schema:
+        covers_jeep: boolean
+        report_component_id: enum[ADAS, AIRBAG, BODY, BRAKES, ELECTRICAL, ENGINE, FUEL, OTHER, POWERTRAIN, SEATBELT, STEERING, SUSPENSION, TIRES]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: keep_jeep_investigation_components
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("covers_jeep") is True
+
+  - name: deduplicate_jeep_investigation_components
+    type: code_reduce
+    reduce_key: report_component_id
+    code: |
+      def transform(items):
+          return {"report_component_id": items[0].get("report_component_id")}
+
+  - name: join_matches_to_jeep_investigation_components
+    type: equijoin
+    deterministic: true
+    blocking_conditions:
+      - left["component_id_left"] == right["report_component_id"]
+
+  - name: count_distinct_matched_jeep_complaints
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          complaint_ids = {
+              item.get("complaint_id")
+              for item in items
+              if item.get("complaint_id")
+          }
+          return {"n": len(complaint_ids)}
+
+pipeline:
+  steps:
+    - name: safety_relevant_jeep_complaints
+      input: nhtsa_complaints
+      operations:
+        - filter_jeep_complaints
+        - classify_genuine_safety_relevant_defect
+    - name: jeep_recalls
+      input: nhtsa_recalls
+      operations:
+        - filter_jeep_recalls
+        - flatten_jeep_recall_fields
+    - name: semantically_matching_complaint_recalls
+      operations:
+        - match_complaints_to_same_underlying_recall_defect:
+            left: safety_relevant_jeep_complaints
+            right: jeep_recalls
+    - name: jeep_investigation_components
+      input: nhtsa_investigation_reports
+      operations:
+        - derive_jeep_investigation_component_from_report
+        - keep_jeep_investigation_components
+        - deduplicate_jeep_investigation_components
+    - name: matches_in_investigated_components
+      operations:
+        - join_matches_to_jeep_investigation_components:
+            left: semantically_matching_complaint_recalls
+            right: jeep_investigation_components
+    - name: matched_jeep_complaint_count
+      input: matches_in_investigated_components
+      operations:
+        - count_distinct_matched_jeep_complaints
+  output:
+    type: file
+    path: raw_outputs/vehicle_safety/output_vehicle_safety-034.json

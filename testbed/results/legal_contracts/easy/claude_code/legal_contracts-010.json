@@ -1,0 +1,148 @@
+{
+  "task_id": "legal_contracts-010",
+  "answer": [
+    {
+      "document_id": "1277090_0001104659-05-057084_a05-20673_1ex10.htm",
+      "disclosing_parties": [
+        "SERENA Software, Inc."
+      ],
+      "receiving_parties": [
+        "Silver Lake Management Company, L.L.C."
+      ],
+      "term_duration_years": 2.0,
+      "governing_law": "California"
+    },
+    {
+      "document_id": "1366649_0001193125-14-380778_d808213dex99d2.htm",
+      "disclosing_parties": [
+        "Dialogic Inc.",
+        "Dialogic Inc. and its affiliates"
+      ],
+      "receiving_parties": [
+        "Novacap Technologies III, L.P."
+      ],
+      "term_duration_years": 1.0,
+      "governing_law": "Province of Québec"
+    },
+    {
+      "document_id": "183.pdf",
+      "disclosing_parties": [
+        "CLIENT"
+      ],
+      "receiving_parties": [
+        "BROOKS' BOTTLING COMPANY, LLC"
+      ],
+      "term_duration_years": 1.0,
+      "governing_law": "New York"
+    },
+    {
+      "document_id": "801338_0000950134-07-015617_c16542toexv99wxdyx5y.htm",
+      "disclosing_parties": [
+        "GUIDELINE, Inc."
+      ],
+      "receiving_parties": [
+        "info USA Inc."
+      ],
+      "term_duration_years": 1.5,
+      "governing_law": "Delaware"
+    },
+    {
+      "document_id": "899240_0000912057-01-007226_a2040095zex-99_9d1.txt",
+      "disclosing_parties": [
+        "Sunglass Hut International, Inc."
+      ],
+      "receiving_parties": [
+        "Luxottica Group S.p.A"
+      ],
+      "term_duration_years": 1.0,
+      "governing_law": "Florida"
+    },
+    {
+      "document_id": "912592_0000929624-98-000842_document_20.txt",
+      "disclosing_parties": [
+        "Renaissance Golf Products, Inc.",
+        "World Golf Federation, Inc."
+      ],
+      "receiving_parties": [
+        "Joseph P. Connors",
+        "William Petmecky",
+        "Kip Gundry",
+        "Troy Horton"
+      ],
+      "term_duration_years": 2.0,
+      "governing_law": "Utah"
+    },
+    {
+      "document_id": "930796_0000950123-05-001407_y05539exv99w5.txt",
+      "disclosing_parties": [
+        "JD Holdings, LLC"
+      ],
+      "receiving_parties": [
+        "GIC Real Estate, Inc."
+      ],
+      "term_duration_years": 1.5,
+      "governing_law": "New York"
+    },
+    {
+      "document_id": "Confidentiality%20and%20Non-Disclosure%20Agreement%20%28CNA-1%29.pdf",
+      "disclosing_parties": [
+        "TYRE & TAYLOR COMMERCIAL REALTY, INC."
+      ],
+      "receiving_parties": [
+        "Prospect",
+        "Prospect's Broker"
+      ],
+      "term_duration_years": 1.0,
+      "governing_law": "Florida"
+    },
+    {
+      "document_id": "NDA-Template-Media-News-Group-inc.pdf",
+      "disclosing_parties": [
+        "Media News Group, Inc."
+      ],
+      "receiving_parties": [
+        "[NAME OF COMPANY]"
+      ],
+      "term_duration_years": 1.0,
+      "governing_law": "New York"
+    },
+    {
+      "document_id": "NDA_VPI.pdf",
+      "disclosing_parties": [
+        "Vladi Private Islands GmbH"
+      ],
+      "receiving_parties": [
+        "Client"
+      ],
+      "term_duration_years": 2.0,
+      "governing_law": "German"
+    },
+    {
+      "document_id": "NEW_moi_ndform.pdf",
+      "disclosing_parties": [
+        "Submitting Party"
+      ],
+      "receiving_parties": [
+        "American Broadcasting Companies, Inc.",
+        "West & Associates, A Professional Corporation",
+        "Mom Inventors, Inc."
+      ],
+      "term_duration_years": 2.0,
+      "governing_law": "New York"
+    },
+    {
+      "document_id": "SAMED%20confidentiality%20non%20disclosure%20and%20conflict%20of%20interest%20agreement%20for%20board%20and%20committee%20members%20ver%201.pdf",
+      "disclosing_parties": [
+        "South African Medical Devices Industry Association (SAMED)"
+      ],
+      "receiving_parties": [
+        "Member of the Board of SAMED and/or a member of SAMED Committee"
+      ],
+      "term_duration_years": 1.0,
+      "governing_law": "South Africa"
+    }
+  ],
+  "elapsed_seconds": 1069.778,
+  "cost_usd": 2.68881588,
+  "total_tokens": 5749352
+}

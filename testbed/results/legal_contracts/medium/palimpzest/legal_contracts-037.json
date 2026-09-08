@@ -1,0 +1,12 @@
+{
+  "task_id": "legal_contracts-037",
+  "answer": [
+    {"term_type": "fixed_short", "agreement_count": 286, "most_common_governing_law": "State of New York"},
+    {"term_type": "fixed_long", "agreement_count": 163, "most_common_governing_law": "State of New York"},
+    {"term_type": "perpetual", "agreement_count": 98, "most_common_governing_law": "State of California"},
+    {"term_type": "unspecified", "agreement_count": 71, "most_common_governing_law": "State of California"}
+  ],
+  "elapsed_seconds": 1268.84,
+  "cost_usd": 1.655870,
+  "total_tokens": 3133749
+}

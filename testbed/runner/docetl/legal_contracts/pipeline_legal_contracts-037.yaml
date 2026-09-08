@@ -1,0 +1,78 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_nda_types
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is a mutual NDA, unilateral NDA, or
+      confidentiality-and-standstill agreement.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_qualifying_nda_type: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_term_and_law
+    type: map
+    optimize: true
+    prompt: |
+      Determine whether the confidentiality duration is perpetual or indefinite.
+      Separately extract a single quantifiable fixed confidentiality duration in
+      months when one exists, and the expressly stated governing law. Use the
+      availability flags for an unquantifiable duration or unstated law, with 0 or
+      an empty string only as placeholders.
+
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        is_perpetual: boolean
+        term_duration_available: boolean
+        term_duration_months_value: float
+        governing_law_available: boolean
+        governing_law_value: string
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: classify_term_type
+    type: code_map
+    code: |
+      def transform(doc):
+          duration = float(doc.get("term_duration_months_value") or 0) if doc.get("term_duration_available") is True else None
+          if doc.get("is_perpetual") is True:
+              term_type = "perpetual"
+          elif duration is not None and duration <= 36:
+              term_type = "fixed_short"
+          elif duration is not None and duration > 36:
+              term_type = "fixed_long"
+          else:
+              term_type = "unspecified"
+          return {
+              "term_type": term_type,
+              "governing_law": str(doc.get("governing_law_value") or "") if doc.get("governing_law_available") is True else None,
+          }
+  - name: aggregate_by_term_type
+    type: code_reduce
+    reduce_key: term_type
+    code: |
+      def transform(items):
+          from collections import Counter
+          laws = Counter(str(item["governing_law"]) for item in items if item.get("governing_law") is not None)
+          highest = max(laws.values(), default=0)
+          mode = min((law for law, count in laws.items() if count == highest), default=None)
+          return {"agreement_count": len(items), "most_common_governing_law": mode}
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations: [filter_nda_types, extract_term_and_law, classify_term_type, aggregate_by_term_type]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-037.json

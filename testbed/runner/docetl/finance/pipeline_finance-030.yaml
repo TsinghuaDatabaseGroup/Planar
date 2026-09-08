@@ -1,0 +1,449 @@
+datasets:
+  sec_2022_filings:
+    type: file
+    path: data/SEC/CSV/2022.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_filings_over_60000_words
+    type: code_filter
+    code: |
+      def transform(doc):
+          try:
+              return int(doc.get("word_count", 0)) > 60000
+          except (TypeError, ValueError):
+              return False
+
+  - name: load_filing_document
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("SEC text path escapes data/SEC")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              document = handle.read()
+          return {"document": document}
+
+  - name: filter_major_customer_dependence
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this SEC 10-K filing only if it discloses dependence on a major
+      customer or a material customer concentration for the reporting company.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_foreign_currency_risk
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this SEC 10-K filing only if it discloses foreign-currency or
+      exchange-rate risk for the reporting company.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: classify_growth_strategy
+    type: map
+    optimize: true
+    prompt: |
+      Assign this SEC 10-K filing to exactly one stated growth-strategy category:
+
+      - organic: growth through the company's internal business activities;
+      - acquisition_driven: growth primarily through acquisitions;
+      - hybrid: both organic growth and acquisitions;
+      - not_applicable: the filing states that a growth strategy is not applicable;
+      - undetermined: the stated strategy cannot be determined from the filing.
+
+      Base the category on the reporting company's stated growth strategy.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        growth_strategy: enum[organic, acquisition_driven, hybrid, not_applicable, undetermined]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 256
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_acquisition_or_hybrid_strategy
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("growth_strategy") in {
+              "acquisition_driven",
+              "hybrid",
+          }
+
+  - name: extract_company_industry_countries_and_subsidiaries
+    type: map
+    optimize: true
+    prompt: |
+      Extract the following information for the reporting company from this SEC
+      10-K filing:
+
+      - company_name: the legal registrant name stated in the filing;
+      - industry_sector: a concise, broad industry sector grounded in the filing;
+      - countries_of_operation: every distinct country in which the filing
+        describes actual company operations;
+      - subsidiary_names: every distinct specifically named legal subsidiary
+        disclosed in the filing.
+
+      Return country and subsidiary names in a consistent canonical form. Do not
+      include the United States or non-country regions in countries_of_operation,
+      and do not count the registrant itself as a subsidiary. Use an empty list
+      when no qualifying country or named subsidiary is disclosed.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        company_name: string
+        industry_sector: string
+        countries_of_operation: list[string]
+        subsidiary_names: list[string]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 2048
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: project_normalized_footprint_counts
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          import re
+          import unicodedata
+
+          country_aliases = {
+              "u s": "united states",
+              "u s a": "united states",
+              "us": "united states",
+              "usa": "united states",
+              "united states of america": "united states",
+              "america": "united states",
+              "u k": "united kingdom",
+              "uk": "united kingdom",
+              "great britain": "united kingdom",
+              "people s republic of china": "china",
+              "prc": "china",
+              "republic of korea": "south korea",
+              "korea republic of": "south korea",
+              "russian federation": "russia",
+              "united arab emirates": "uae",
+              "u a e": "uae",
+              "czech republic": "czechia",
+          }
+          non_country_values = {
+              "",
+              "global",
+              "international",
+              "worldwide",
+              "various",
+              "other",
+              "not disclosed",
+              "europe",
+              "asia",
+              "africa",
+              "north america",
+              "south america",
+              "latin america",
+              "middle east",
+              "asia pacific",
+          }
+          entity_suffixes = {
+              "ag",
+              "bv",
+              "co",
+              "company",
+              "corp",
+              "corporation",
+              "gmbh",
+              "inc",
+              "incorporated",
+              "limited",
+              "llc",
+              "lp",
+              "ltd",
+              "nv",
+              "plc",
+              "pte",
+              "sa",
+              "sarl",
+          }
+
+          def normalized_words(value):
+              text = unicodedata.normalize("NFKD", str(value or ""))
+              text = text.encode("ascii", "ignore").decode("ascii").casefold()
+              text = text.replace("&", " and ")
+              return re.sub(r"[^a-z0-9]+", " ", text).strip()
+
+          def normalize_country(value):
+              country = normalized_words(value)
+              return country_aliases.get(country, country)
+
+          def normalize_entity(value):
+              tokens = normalized_words(value).split()
+              if tokens and tokens[0] == "the":
+                  tokens = tokens[1:]
+              while tokens and tokens[-1] in entity_suffixes:
+                  tokens.pop()
+              return " ".join(tokens)
+
+          rows = []
+          for item in items:
+              countries = {
+                  normalize_country(value)
+                  for value in (item.get("countries_of_operation") or [])
+              }
+              countries -= non_country_values
+              countries.discard("united states")
+
+              subsidiaries = {
+                  normalize_entity(value)
+                  for value in (item.get("subsidiary_names") or [])
+              }
+              subsidiaries.discard("")
+
+              try:
+                  word_count = int(item.get("word_count", 0))
+              except (TypeError, ValueError):
+                  word_count = 0
+              try:
+                  cik = int(item.get("cik", 0))
+              except (TypeError, ValueError):
+                  cik = 0
+
+              rows.append(
+                  {
+                      "cik": cik,
+                      "word_count": word_count,
+                      "company_name": item.get("company_name"),
+                      "industry_sector": item.get("industry_sector"),
+                      "growth_strategy": item.get("growth_strategy"),
+                      "country_count": len(countries),
+                      "subsidiary_count": len(subsidiaries),
+                  }
+              )
+          return {"rows": rows}
+
+  - name: unnest_footprint_counts
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - cik
+      - word_count
+      - company_name
+      - industry_sector
+      - growth_strategy
+      - country_count
+      - subsidiary_count
+
+  - name: filter_positive_foreign_country_counts
+    type: code_filter
+    code: |
+      def transform(doc):
+          return int(doc.get("country_count", 0)) > 0
+
+  - name: deduplicate_company_names
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          best_by_company = {}
+          for item in items:
+              company_name = str(item.get("company_name", "")).strip()
+              candidate_key = (
+                  int(item.get("country_count", 0)),
+                  int(item.get("subsidiary_count", 0)),
+                  int(item.get("word_count", 0)),
+                  int(item.get("cik", 0)),
+              )
+              current = best_by_company.get(company_name)
+              if current is None or candidate_key > current[0]:
+                  best_by_company[company_name] = (candidate_key, item)
+          return {
+              "rows": [
+                  candidate[1] for candidate in best_by_company.values()
+              ]
+          }
+
+  - name: unnest_deduplicated_companies
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - cik
+      - word_count
+      - company_name
+      - industry_sector
+      - growth_strategy
+      - country_count
+      - subsidiary_count
+
+  - name: order_by_foreign_footprint
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          rows = sorted(
+              items,
+              key=lambda item: (
+                  -int(item.get("country_count", 0)),
+                  -int(item.get("subsidiary_count", 0)),
+                  str(item.get("company_name", "")).lower(),
+              ),
+          )
+          return {"rows": rows}
+
+  - name: unnest_ordered_companies
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - cik
+      - word_count
+      - company_name
+      - industry_sector
+      - growth_strategy
+      - country_count
+      - subsidiary_count
+
+  - name: limit_to_10_companies
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {"rows": items[:10]}
+
+  - name: unnest_limited_companies
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - cik
+      - word_count
+      - company_name
+      - industry_sector
+      - growth_strategy
+      - country_count
+      - subsidiary_count
+
+  - name: project_answer_fields
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {
+              "rows": [
+                  {
+                      "company_name": item.get("company_name"),
+                      "industry_sector": item.get("industry_sector"),
+                      "growth_strategy": item.get("growth_strategy"),
+                      "country_count": item.get("country_count"),
+                      "subsidiary_count": item.get("subsidiary_count"),
+                  }
+                  for item in items
+              ]
+          }
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - company_name
+      - industry_sector
+      - growth_strategy
+      - country_count
+      - subsidiary_count
+
+pipeline:
+  steps:
+    - name: process
+      input: sec_2022_filings
+      operations:
+        - filter_filings_over_60000_words
+        - load_filing_document
+        - filter_major_customer_dependence
+        - filter_foreign_currency_risk
+        - classify_growth_strategy
+        - filter_acquisition_or_hybrid_strategy
+        - extract_company_industry_countries_and_subsidiaries
+        - project_normalized_footprint_counts
+        - unnest_footprint_counts
+        - filter_positive_foreign_country_counts
+        - deduplicate_company_names
+        - unnest_deduplicated_companies
+        - order_by_foreign_footprint
+        - unnest_ordered_companies
+        - limit_to_10_companies
+        - unnest_limited_companies
+        - project_answer_fields
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/finance/output_finance-030.json

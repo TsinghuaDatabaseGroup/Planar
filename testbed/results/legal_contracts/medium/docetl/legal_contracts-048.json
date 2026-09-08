@@ -1,0 +1,173 @@
+{
+  "task_id": "legal_contracts-048",
+  "answer": [
+    {
+      "document_id": "1178133_0000950131-03-000129_dex1013.txt",
+      "governing_law": "Minnesota",
+      "non_disclosure_direction": "unilateral"
+    },
+    {
+      "document_id": "118.3-Non-disclosure-agreement.pdf",
+      "governing_law": "English law",
+      "non_disclosure_direction": "unilateral"
+    },
+    {
+      "document_id": "18268-001%20Rev%20B%20Form%20Version%20in%20PDF.pdf",
+      "governing_law": "Commonwealth of Virginia",
+      "non_disclosure_direction": "unilateral"
+    },
+    {
+      "document_id": "41629_1.pdf",
+      "governing_law": "The laws of England and Wales",
+      "non_disclosure_direction": "unilateral"
+    },
+    {
+      "document_id": "426-2017_Appendix_C-Sample_Non-Disclosure_Agreement.pdf",
+      "governing_law": "the laws of Manitoba and the applicable laws of Canada",
+      "non_disclosure_direction": "unilateral"
+    },
+    {
+      "document_id": "817516_0001014909-05-000102_exh99_4sept2005.txt",
+      "governing_law": "State of Delaware",
+      "non_disclosure_direction": "unilateral"
+    },
+    {
+      "document_id": "Agreement_6_28_07.pdf",
+      "governing_law": "State of South Carolina",
+      "non_disclosure_direction": "mutual"
+    },
+    {
+      "document_id": "Confidentiality%20Agreement.pdf",
+      "governing_law": "the laws in force in the Province of Alberta",
+      "non_disclosure_direction": "unilateral"
+    },
+    {
+      "document_id": "Confidentiality.pdf",
+      "governing_law": "State of Michigan",
+      "non_disclosure_direction": "unilateral"
+    },
+    {
+      "document_id": "Example-One-Way-Non-Disclosure-Agreement.pdf",
+      "governing_law": "English law",
+      "non_disclosure_direction": "unilateral"
+    },
+    {
+      "document_id": "Florida-Non-Disclosure-Agreement-NDA-Template.pdf",
+      "governing_law": "State of Florida",
+      "non_disclosure_direction": "unilateral"
+    },
+    {
+      "document_id": "Model%20NDA%20(recommended%20by%20SWA).pdf",
+      "governing_law": "India",
+      "non_disclosure_direction": "unilateral"
+    },
+    {
+      "document_id": "NDA-Instructions-Agreement-Attachment.pdf",
+      "governing_law": "State of California",
+      "non_disclosure_direction": "unilateral"
+    },
+    {
+      "document_id": "NDA-standard.pdf",
+      "governing_law": "English law",
+      "non_disclosure_direction": "unilateral"
+    },
+    {
+      "document_id": "NDA.pdf",
+      "governing_law": "State of New York",
+      "non_disclosure_direction": "unilateral"
+    },
+    {
+      "document_id": "NDA_22.pdf",
+      "governing_law": "Republic of South Africa",
+      "non_disclosure_direction": "unilateral"
+    },
+    {
+      "document_id": "NDA_5.pdf",
+      "governing_law": "State of California",
+      "non_disclosure_direction": "unilateral"
+    },
+    {
+      "document_id": "NDA_ResConnect.pdf",
+      "governing_law": "South African law",
+      "non_disclosure_direction": "mutual"
+    },
+    {
+      "document_id": "NDA_Street_Stream_Franchise.pdf",
+      "governing_law": "laws of England and Wales",
+      "non_disclosure_direction": "unilateral"
+    },
+    {
+      "document_id": "Non-Disclosure%20Agreement_3.pdf",
+      "governing_law": "State of Iowa",
+      "non_disclosure_direction": "mutual"
+    },
+    {
+      "document_id": "Non-Disclosure-Agreement-1.pdf",
+      "governing_law": "Belgian law",
+      "non_disclosure_direction": "unilateral"
+    },
+    {
+      "document_id": "Non-Disclosure-Agreement_3.pdf",
+      "governing_law": "State of Florida",
+      "non_disclosure_direction": "unilateral"
+    },
+    {
+      "document_id": "VELCO%20NDA%20rev0%20Dec%2014%202015.pdf",
+      "governing_law": "State of Vermont",
+      "non_disclosure_direction": "unilateral"
+    },
+    {
+      "document_id": "annex-iii---nda-agreement..pdf",
+      "governing_law": "English law",
+      "non_disclosure_direction": "unilateral"
+    },
+    {
+      "document_id": "buyer_profile.pdf",
+      "governing_law": "Republic of South Africa",
+      "non_disclosure_direction": "unilateral"
+    },
+    {
+      "document_id": "ceii-and-nda.pdf",
+      "governing_law": "State of South Carolina",
+      "non_disclosure_direction": "unilateral"
+    },
+    {
+      "document_id": "document_viewer.pdf",
+      "governing_law": "all applicable laws and by-laws of the Town, Province of Ontario and any applicable Canadian federal laws",
+      "non_disclosure_direction": "unilateral"
+    },
+    {
+      "document_id": "modelnondisclosureagreement1.pdf",
+      "governing_law": "English Law",
+      "non_disclosure_direction": "unilateral"
+    },
+    {
+      "document_id": "mutual-non-disclosure-agreement.pdf",
+      "governing_law": "English Law",
+      "non_disclosure_direction": "mutual"
+    },
+    {
+      "document_id": "nda-format-approved-by-legal-section.pdf",
+      "governing_law": "laws of India",
+      "non_disclosure_direction": "mutual"
+    },
+    {
+      "document_id": "nda_template_final.pdf",
+      "governing_law": "German law",
+      "non_disclosure_direction": "unilateral"
+    },
+    {
+      "document_id": "one-way_nda_ji_form.pdf",
+      "governing_law": "State of Washington",
+      "non_disclosure_direction": "unilateral"
+    },
+    {
+      "document_id": "tufts_confidentiality_agreement.pdf",
+      "governing_law": "Commonwealth of Massachusetts",
+      "non_disclosure_direction": "unilateral"
+    }
+  ],
+  "elapsed_seconds": 87.4,
+  "cost_usd": 0.772067,
+  "total_tokens": 1469914
+}

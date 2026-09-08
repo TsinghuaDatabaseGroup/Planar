@@ -1,0 +1,68 @@
+{
+  "task_id": "finance-012",
+  "answer": [
+    {
+      "industry_sector": "Commercial Banking",
+      "ai_ml_filings_2022": 19,
+      "ai_ml_filings_2023": 60,
+      "total_filings_2023": 431
+    },
+    {
+      "industry_sector": "Electric Utilities",
+      "ai_ml_filings_2022": 4,
+      "ai_ml_filings_2023": 39,
+      "total_filings_2023": 178
+    },
+    {
+      "industry_sector": "Insurance Services",
+      "ai_ml_filings_2022": 25,
+      "ai_ml_filings_2023": 52,
+      "total_filings_2023": 74
+    },
+    {
+      "industry_sector": "Real Estate",
+      "ai_ml_filings_2022": 10,
+      "ai_ml_filings_2023": 37,
+      "total_filings_2023": 102
+    },
+    {
+      "industry_sector": "Utilities",
+      "ai_ml_filings_2022": 5,
+      "ai_ml_filings_2023": 31,
+      "total_filings_2023": 147
+    },
+    {
+      "industry_sector": "Software",
+      "ai_ml_filings_2022": 188,
+      "ai_ml_filings_2023": 206,
+      "total_filings_2023": 42
+    },
+    {
+      "industry_sector": "Telecommunications",
+      "ai_ml_filings_2022": 10,
+      "ai_ml_filings_2023": 24,
+      "total_filings_2023": 39
+    },
+    {
+      "industry_sector": "Biopharmaceuticals",
+      "ai_ml_filings_2022": 9,
+      "ai_ml_filings_2023": 21,
+      "total_filings_2023": 236
+    },
+    {
+      "industry_sector": "Biotechnology",
+      "ai_ml_filings_2022": 42,
+      "ai_ml_filings_2023": 54,
+      "total_filings_2023": 309
+    },
+    {
+      "industry_sector": "Retail",
+      "ai_ml_filings_2022": 20,
+      "ai_ml_filings_2023": 32,
+      "total_filings_2023": 41
+    }
+  ],
+  "elapsed_seconds": 6822.15,
+  "cost_usd": 26.366898,
+  "total_tokens": 56670520
+}

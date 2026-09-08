@@ -1,0 +1,28 @@
+{
+  "task_id": "vehicle_safety-025",
+  "answer": [
+    {
+      "make": "ACURA",
+      "phantom_braking_complaint_count": 37,
+      "matching_adas_recall_count": 1
+    },
+    {
+      "make": "SUBARU",
+      "phantom_braking_complaint_count": 35,
+      "matching_adas_recall_count": 1
+    },
+    {
+      "make": "TESLA",
+      "phantom_braking_complaint_count": 18,
+      "matching_adas_recall_count": 1
+    },
+    {
+      "make": "FORD",
+      "phantom_braking_complaint_count": 1,
+      "matching_adas_recall_count": 1
+    }
+  ],
+  "elapsed_seconds": 71.71,
+  "cost_usd": 0.263906,
+  "total_tokens": 564512
+}

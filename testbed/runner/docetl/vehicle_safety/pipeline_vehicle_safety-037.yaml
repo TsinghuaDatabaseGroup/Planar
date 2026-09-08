@@ -1,0 +1,343 @@
+datasets:
+  nhtsa_complaints:
+    type: file
+    path: data/nhtsa_vehicle_safety/complaints.csv
+  nhtsa_recalls:
+    type: file
+    path: data/nhtsa_vehicle_safety/recalls.jsonl
+  nhtsa_investigation_reports:
+    type: file
+    path: data/nhtsa_vehicle_safety/investigation_reports/*.txt
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_acura_engine_complaints
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("make") == "ACURA"
+              and doc.get("component_id") == "ENGINE"
+          )
+
+  - name: filter_acura_engine_recalls
+    type: code_filter
+    code: |
+      def transform(doc):
+          vehicle = doc.get("vehicle") or {}
+          component = doc.get("component") or {}
+          return (
+              vehicle.get("make") == "ACURA"
+              and component.get("component_id") == "ENGINE"
+          )
+
+  - name: flatten_acura_engine_recall_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          campaign = doc.get("campaign") or {}
+          vehicle = doc.get("vehicle") or {}
+          component = doc.get("component") or {}
+          risk = doc.get("risk") or {}
+          return {
+              "campaign_number": campaign.get("number"),
+              "make": vehicle.get("make"),
+              "component_id": component.get("component_id"),
+              "defect_summary": risk.get("defect_summary") or "",
+              "consequence_summary": risk.get("consequence_summary") or "",
+          }
+
+  - name: match_acura_engine_complaints_to_recalls
+    type: equijoin
+    comparison_prompt: |
+      Determine whether this Acura engine complaint and Acura engine recall
+      describe the same concrete engine failure mechanism.
+
+      Match only when the complaint narrative and recall defect identify the same
+      causal engine failure, such as the same internal component failure,
+      lubrication defect, seizure mechanism, or directly equivalent cause. A
+      shared ENGINE category, stalling consequence, warning light, or generic
+      loss-of-power wording alone is not sufficient.
+
+      COMPLAINT:
+      {{ left.summary_text }}
+
+      RECALL DEFECT:
+      {{ right.defect_summary }}
+    blocking_conditions:
+      - left["component_id"] == right["component_id"]
+    comparison_model: Qwen3.5-397B-A17B
+    timeout: 120
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: extract_shared_engine_root_cause_theme
+    type: map
+    optimize: true
+    prompt: |
+      Extract the engine root-cause theme shared by this matched complaint and
+      recall in no more than 8 words.
+
+      Return only the common causal failure mechanism. Do not return a symptom,
+      driving consequence, vehicle identity, campaign number, repair, or
+      explanatory sentence. If the texts differ in specificity, retain only the
+      cause supported by both.
+
+      Complaint:
+      {{ input.summary_text }}
+
+      Recall defect:
+      {{ input.defect_summary }}
+    output:
+      mode: structured_output
+      schema:
+        root_cause_theme: string
+    validate:
+      - len(output["root_cause_theme"].strip()) > 0
+      - len(output["root_cause_theme"].strip().split()) <= 8
+    num_retries_on_validate_failure: 2
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: classify_engine_driving_safety_consequence
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether this matched evidence describes loss of motive power,
+      stalling, engine seizure, or another concrete driving-safety consequence.
+
+      Consider both the complaint narrative and recall consequence. Qualify only
+      when at least one text establishes a consequence that can impair continued
+      vehicle operation or safe control while driving. Do not qualify a repair
+      concern, noise, warning light, or engine defect without such a consequence.
+
+      Complaint:
+      {{ input.summary_text }}
+
+      Recall consequence:
+      {{ input.consequence_summary }}
+    output:
+      mode: structured_output
+      schema:
+        describes_driving_safety_consequence: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_candidate_engine_investigation_reports
+    type: code_filter
+    code: |
+      def transform(doc):
+          body = str(doc.get("body") or "").lower()
+          return (
+              "acura" in body
+              or "honda" in body
+              or "engine failure" in body
+          )
+
+  - name: match_engine_themes_to_investigation_reports
+    type: equijoin
+    optimize: true
+    comparison_prompt: |
+      Determine whether this NHTSA investigation report discusses the same
+      Acura/Honda engine-failure scope or ODI finding as the matched
+      complaint-recall root-cause theme.
+
+      Match only when the report addresses the same concrete engine mechanism,
+      a directly equivalent failure scope, or an ODI finding specifically tied
+      to that mechanism. Brand overlap or generic discussion of engine failure
+      alone is not sufficient.
+
+      ROOT-CAUSE THEME:
+      {{ left.root_cause_theme }}
+
+      COMPLAINT:
+      {{ left.summary_text }}
+
+      RECALL DEFECT:
+      {{ left.defect_summary }}
+
+      INVESTIGATION REPORT:
+      {{ right.body }}
+    blocking_keys:
+      left:
+        - root_cause_theme
+        - summary_text
+        - defect_summary
+      right:
+        - body
+    blocking_target_recall: 0.95
+    embedding_model: Qwen3-Embedding-8B
+    comparison_model: Qwen3.5-397B-A17B
+    timeout: 120
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: aggregate_engine_theme_evidence
+    type: code_reduce
+    reduce_key: root_cause_theme
+    code: |
+      def transform(items):
+          complaint_ids = {
+              item.get("complaint_id")
+              for item in items
+              if item.get("complaint_id")
+          }
+          campaign_numbers = {
+              item.get("campaign_number")
+              for item in items
+              if item.get("campaign_number")
+          }
+          reports_by_id = {}
+          for item in items:
+              file_id = item.get("file_id")
+              body = item.get("body")
+              if file_id and body and file_id not in reports_by_id:
+                  reports_by_id[file_id] = body
+
+          related_report_ids = sorted(reports_by_id)
+          return {
+              "matched_complaint_count": len(complaint_ids),
+              "distinct_campaign_count": len(campaign_numbers),
+              "related_report_ids": related_report_ids,
+              "report_bodies": [
+                  reports_by_id[file_id]
+                  for file_id in related_report_ids
+              ],
+          }
+
+  - name: summarize_odi_engine_evidence
+    type: map
+    optimize: true
+    prompt: |
+      Summarize the ODI evidence across these related investigation report bodies
+      in one short phrase.
+
+      Capture the report-supported ODI finding about the engine failure mechanism
+      or investigation scope. Do not list report IDs, restate the root-cause
+      label, or add conclusions not supported by the supplied reports.
+
+      Related investigation reports:
+      {{ input.report_bodies }}
+    output:
+      mode: structured_output
+      schema:
+        odi_evidence_summary: string
+    validate:
+      - len(output["odi_evidence_summary"].strip()) > 0
+    num_retries_on_validate_failure: 2
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: order_and_limit_engine_themes
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          if not items:
+              return {}
+          return sorted(
+              items,
+              key=lambda item: (
+                  -int(item.get("matched_complaint_count") or 0),
+                  str(item.get("root_cause_theme") or ""),
+              ),
+          )[0]
+
+  - name: project_leading_engine_theme
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "root_cause_theme": doc.get("root_cause_theme"),
+              "matched_complaint_count": doc.get(
+                  "matched_complaint_count"
+              ),
+              "distinct_campaign_count": doc.get(
+                  "distinct_campaign_count"
+              ),
+              "related_report_ids": doc.get("related_report_ids") or [],
+              "odi_evidence_summary": doc.get("odi_evidence_summary"),
+          }
+
+pipeline:
+  steps:
+    - name: acura_engine_complaints
+      input: nhtsa_complaints
+      operations:
+        - filter_acura_engine_complaints
+    - name: acura_engine_recalls
+      input: nhtsa_recalls
+      operations:
+        - filter_acura_engine_recalls
+        - flatten_acura_engine_recall_fields
+    - name: matched_acura_engine_pairs
+      operations:
+        - match_acura_engine_complaints_to_recalls:
+            left: acura_engine_complaints
+            right: acura_engine_recalls
+    - name: qualified_acura_engine_pairs
+      input: matched_acura_engine_pairs
+      operations:
+        - extract_shared_engine_root_cause_theme
+        - classify_engine_driving_safety_consequence
+    - name: candidate_engine_investigation_reports
+      input: nhtsa_investigation_reports
+      operations:
+        - filter_candidate_engine_investigation_reports
+    - name: matched_engine_investigation_reports
+      operations:
+        - match_engine_themes_to_investigation_reports:
+            left: qualified_acura_engine_pairs
+            right: candidate_engine_investigation_reports
+    - name: leading_engine_theme
+      input: matched_engine_investigation_reports
+      operations:
+        - aggregate_engine_theme_evidence
+        - summarize_odi_engine_evidence
+        - order_and_limit_engine_themes
+        - project_leading_engine_theme
+  output:
+    type: file
+    path: raw_outputs/vehicle_safety/output_vehicle_safety-037.json

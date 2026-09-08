@@ -1,0 +1,93 @@
+{
+  "task_id": "legal_contracts-033",
+  "answer": [
+    {
+      "document_id": "NDA-STP-Performance-Coating-revC.pdf",
+      "governing_law": "Arizona",
+      "duration_months": 240
+    },
+    {
+      "document_id": "ConfidentialityAgreement.pdf",
+      "governing_law": "Austrian law",
+      "duration_months": 84
+    },
+    {
+      "document_id": "GSAOP0309-Non-disclosure-agreement.pdf",
+      "governing_law": "Belgium",
+      "duration_months": 120
+    },
+    {
+      "document_id": "71297_0000071297-97-000059_document_6.txt",
+      "governing_law": "Commonwealth of Massachusetts",
+      "duration_months": 84
+    },
+    {
+      "document_id": "1288379_0000950123-07-003101_y31044exv99wdw5.htm",
+      "governing_law": "Commonwealth of Virginia",
+      "duration_months": 84
+    },
+    {
+      "document_id": "1111682_0000950123-00-003802_document_15.txt",
+      "governing_law": "Connecticut",
+      "duration_months": 180
+    },
+    {
+      "document_id": "Non_Disclosure_Agreement_2.pdf",
+      "governing_law": "England",
+      "duration_months": 120
+    },
+    {
+      "document_id": "nda_8.pdf",
+      "governing_law": "England",
+      "duration_months": 120
+    },
+    {
+      "document_id": "IMOA%20Molybdenum%20Consortium%20NDA%20Agreement%20amended%20Jan%2008,%20valid%20March%2009%20onwards.pdf",
+      "governing_law": "England and Wales",
+      "duration_months": 144
+    },
+    {
+      "document_id": "2_waycda.pdf",
+      "governing_law": "English Law",
+      "duration_months": 120
+    },
+    {
+      "document_id": "Bio-FIP-EOI-NDA.pdf",
+      "governing_law": "English law",
+      "duration_months": 84
+    },
+    {
+      "document_id": "CCS-Salt-Cavern-RfP-NDA.pdf",
+      "governing_law": "English law",
+      "duration_months": 84
+    },
+    {
+      "document_id": "NDA_English.pdf",
+      "governing_law": "Province of Quebec",
+      "duration_months": 300
+    },
+    {
+      "document_id": "NonDisclosureAgreement_1.pdf",
+      "governing_law": "Republic of Slovenia",
+      "duration_months": 120
+    },
+    {
+      "document_id": "Mutual%20confidentiality%20and%20NDA%20-%20Final%20(2)%20(6)%2003%20July%202015.pdf",
+      "governing_law": "Republic of South Africa",
+      "duration_months": 120
+    },
+    {
+      "document_id": "Cyber Mutual Assistance NDA.pdf",
+      "governing_law": "State of New York",
+      "duration_months": 120
+    },
+    {
+      "document_id": "NDATC.pdf",
+      "governing_law": "State of Wisconsin, U.S.A.",
+      "duration_months": 120
+    }
+  ],
+  "elapsed_seconds": 403.48,
+  "cost_usd": 4.196151,
+  "total_tokens": 7873339
+}

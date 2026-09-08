@@ -1,0 +1,17 @@
+{
+  "task_id": "vehicle_safety-027",
+  "answer": {
+    "dominant_label": "sensor_misfire",
+    "per_label_counts": {
+      "sensor_misfire": {
+        "count": 1
+      }
+    },
+    "per_label_percentages": {
+      "sensor_misfire": 100.0
+    }
+  },
+  "elapsed_seconds": 126.795,
+  "cost_usd": 0.152566,
+  "total_tokens": 192314
+}

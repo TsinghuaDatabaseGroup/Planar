@@ -1,0 +1,76 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_mutual_ndas
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is a mutual non-disclosure agreement.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_mutual_nda: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: filter_term_law_and_restriction
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this agreement only if it expressly states a confidentiality term and
+      governing law and contains at least one operative non-compete or employee
+      non-solicitation clause.
+
+      Agreement:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {has_required_terms: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_term_law_and_indicators
+    type: map
+    optimize: true
+    prompt: |
+      Normalize the confidentiality term to years. Return a decimal number encoded
+      as text for a finite term, or exactly "perpetual" for an indefinite term.
+      Also extract the governing law and indicate separately whether operative
+      non-compete and employee non-solicitation clauses are present.
+
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        term_duration_years_raw: string
+        governing_law: string
+        non_compete_present: boolean
+        non_solicitation_employees_present: boolean
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: project_answer_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          raw = str(doc.get("term_duration_years_raw") or "").strip()
+          if raw.casefold() == "perpetual":
+              term = "perpetual"
+          else:
+              term = float(raw)
+          return {
+              "document_id": str(doc.get("doc_id") or ""),
+              "term_duration_years": term,
+              "governing_law": str(doc.get("governing_law") or ""),
+              "non_compete_present": doc.get("non_compete_present") is True,
+              "non_solicitation_employees_present": doc.get("non_solicitation_employees_present") is True,
+          }
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations: [filter_mutual_ndas, filter_term_law_and_restriction, extract_term_law_and_indicators, project_answer_fields]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-042.json

@@ -1,0 +1,404 @@
+datasets:
+  sec_csv_scan_seed:
+    type: file
+    path: data/SEC/CSV/2024.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: scan_all_sec_text_rows
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          import csv
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          csv_dir = os.path.abspath(os.path.join(base_dir, "CSV"))
+          if os.path.commonpath([base_dir, csv_dir]) != base_dir:
+              raise ValueError("SEC CSV path escapes data/SEC")
+
+          rows = []
+          for year in range(2019, 2025):
+              csv_path = os.path.join(csv_dir, f"{year}.csv")
+              with open(
+                  csv_path,
+                  "r",
+                  encoding="utf-8-sig",
+                  newline="",
+              ) as handle:
+                  for row in csv.DictReader(handle):
+                      rows.append({"text": row.get("text")})
+          return {"rows": rows}
+
+  - name: unnest_all_sec_filings
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - text
+
+  - name: load_filing_document
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("SEC text path escapes data/SEC")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              document = handle.read()
+          return {"document": document}
+
+  - name: extract_company_and_finance_subsidiaries
+    type: map
+    optimize: true
+    prompt: |
+      Extract from this SEC 10-K filing:
+
+      1. The filing company's legal name.
+      2. The legal names of every disclosed wholly-owned subsidiary whose
+         principal purpose is financing or funding the parent or affiliated
+         companies.
+
+      Use the legal registrant name stated in the filing. Include a subsidiary
+      only when the filing supports both that it is wholly owned and that it has a
+      finance or funding function. Return each distinct subsidiary legal name
+      once.
+
+      Return an empty list when no qualifying subsidiary is disclosed and an empty
+      string if the filing company name cannot be determined.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        company_name: string
+        finance_subsidiary_names: list[string]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 1024
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: group_filings_by_company
+    type: code_reduce
+    reduce_key: company_name
+    code: |
+      def transform(items):
+          company_name = str(items[0].get("company_name", "")).strip()
+
+          seen_subsidiaries = set()
+          finance_subsidiary_names = []
+          filing_texts = []
+          for item in items:
+              document = item.get("document")
+              if isinstance(document, str) and document:
+                  filing_texts.append(document)
+
+              names = item.get("finance_subsidiary_names", [])
+              if not isinstance(names, list):
+                  continue
+              for name in names:
+                  value = str(name).strip()
+                  key = value.casefold()
+                  if not value or key in seen_subsidiaries:
+                      continue
+                  seen_subsidiaries.add(key)
+                  finance_subsidiary_names.append(value)
+
+          return {
+              "company_name": company_name,
+              "finance_subsidiary_names": finance_subsidiary_names,
+              "filing_texts": filing_texts,
+          }
+
+  - name: filter_companies_with_finance_subsidiaries
+    type: code_filter
+    code: |
+      def transform(doc):
+          names = doc.get("finance_subsidiary_names")
+          return (
+              bool(str(doc.get("company_name", "")).strip())
+              and isinstance(names, list)
+              and len(names) > 0
+          )
+
+  - name: match_finance_subsidiaries_to_filer_registry
+    type: equijoin
+    optimize: true
+    comparison_prompt: |
+      Determine whether at least one wholly-owned finance or funding subsidiary
+      name refers to the same legal entity as the SEC filer registry company.
+
+      Allow harmless naming variations, but require the names to identify the same
+      legal entity.
+
+      FINANCE OR FUNDING SUBSIDIARY NAMES:
+      {{ left.finance_subsidiary_names }}
+
+      FILER REGISTRY COMPANY:
+      {{ right.company_name }}
+    blocking_keys:
+      left:
+        - finance_subsidiary_names
+      right:
+        - company_name
+    blocking_target_recall: 0.95
+    embedding_model: Qwen3-Embedding-8B
+    comparison_model: Qwen3.5-397B-A17B
+    timeout: 120
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: prepare_distinct_finance_matches
+    type: code_map
+    code: |
+      def transform(doc):
+          company_name = str(doc.get("company_name_left", "")).strip()
+          finance_company_name = str(
+              doc.get("company_name_right", "")
+          ).strip()
+          return {
+              "company_name": company_name,
+              "finance_company_name": finance_company_name,
+              "filing_texts": doc.get("filing_texts_left", []),
+          }
+
+  - name: filter_company_distinct_from_finance_subsidiary
+    type: code_filter
+    code: |
+      def transform(doc):
+          company_name = str(doc.get("company_name", "")).strip()
+          finance_company_name = str(
+              doc.get("finance_company_name", "")
+          ).strip()
+          return (
+              bool(company_name)
+              and bool(finance_company_name)
+              and company_name.casefold() != finance_company_name.casefold()
+          )
+
+  - name: extract_whole_company_ma_counterparties
+    type: map
+    optimize: true
+    prompt: |
+      From the following SEC 10-K filings for one company, extract the legal or
+      commonly stated names of all distinct counterparties to whole-company
+      mergers or acquisitions involving that company.
+
+      As required by the query, exclude asset purchases, minority-stake
+      investments, spin-offs, and SPAC or blank-check combinations. Return an
+      empty list when no qualifying counterparty is disclosed. Preserve each
+      counterparty's identifying name and return each distinct counterparty once.
+
+      COMPANY:
+      {{ input.company_name }}
+
+      {% for filing in input.filing_texts %}
+      FILING {{ loop.index }}:
+      {{ filing }}
+      ---
+      {% endfor %}
+    output:
+      mode: structured_output
+      schema:
+        ma_counterparty_names: list[string]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 1024
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: match_ma_counterparties_to_filer_registry
+    type: equijoin
+    optimize: true
+    comparison_prompt: |
+      Determine whether at least one whole-company merger or acquisition
+      counterparty name refers to the same legal entity as the SEC filer registry
+      company.
+
+      Allow harmless naming variations, but require the names to identify the same
+      legal entity.
+
+      M&A COUNTERPARTY NAMES:
+      {{ left.ma_counterparty_names }}
+
+      FILER REGISTRY COMPANY:
+      {{ right.company_name }}
+    blocking_keys:
+      left:
+        - ma_counterparty_names
+      right:
+        - company_name
+    blocking_target_recall: 0.95
+    embedding_model: Qwen3-Embedding-8B
+    comparison_model: Qwen3.5-397B-A17B
+    timeout: 120
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_three_distinct_companies
+    type: code_filter
+    code: |
+      def transform(doc):
+          company_name = str(doc.get("company_name_left", "")).strip()
+          finance_company_name = str(
+              doc.get("finance_company_name", "")
+          ).strip()
+          ma_company_name = str(
+              doc.get("company_name_right", "")
+          ).strip()
+          normalized = {
+              company_name.casefold(),
+              finance_company_name.casefold(),
+              ma_company_name.casefold(),
+          }
+          return (
+              bool(company_name)
+              and bool(finance_company_name)
+              and bool(ma_company_name)
+              and len(normalized) == 3
+          )
+
+  - name: project_company_counterparty_subsidiary_triples
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "company": str(doc.get("company_name_left", "")).strip(),
+              "ma_counterparty": str(
+                  doc.get("company_name_right", "")
+              ).strip(),
+              "finance_subsidiary": str(
+                  doc.get("finance_company_name", "")
+              ).strip(),
+          }
+
+  - name: deduplicate_company_triples
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          seen = set()
+          rows = []
+          for item in items:
+              company = str(item.get("company", "")).strip()
+              ma_counterparty = str(
+                  item.get("ma_counterparty", "")
+              ).strip()
+              finance_subsidiary = str(
+                  item.get("finance_subsidiary", "")
+              ).strip()
+              key = (
+                  company.casefold(),
+                  ma_counterparty.casefold(),
+                  finance_subsidiary.casefold(),
+              )
+              if (
+                  not company
+                  or not ma_counterparty
+                  or not finance_subsidiary
+                  or key in seen
+              ):
+                  continue
+              seen.add(key)
+              rows.append(
+                  {
+                      "company": company,
+                      "ma_counterparty": ma_counterparty,
+                      "finance_subsidiary": finance_subsidiary,
+                  }
+              )
+          return {"rows": rows}
+
+  - name: unnest_unique_company_triples
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - company
+      - ma_counterparty
+      - finance_subsidiary
+
+pipeline:
+  steps:
+    - name: filing_extractions
+      input: sec_csv_scan_seed
+      operations:
+        - scan_all_sec_text_rows
+        - unnest_all_sec_filings
+        - load_filing_document
+        - extract_company_and_finance_subsidiaries
+    - name: companies
+      input: filing_extractions
+      operations:
+        - group_filings_by_company
+    - name: finance_candidates
+      input: companies
+      operations:
+        - filter_companies_with_finance_subsidiaries
+    - name: finance_matches_raw
+      operations:
+        - match_finance_subsidiaries_to_filer_registry:
+            left: finance_candidates
+            right: companies
+    - name: ma_candidates
+      input: finance_matches_raw
+      operations:
+        - prepare_distinct_finance_matches
+        - filter_company_distinct_from_finance_subsidiary
+        - extract_whole_company_ma_counterparties
+    - name: ma_matches
+      operations:
+        - match_ma_counterparties_to_filer_registry:
+            left: ma_candidates
+            right: companies
+    - name: process
+      input: ma_matches
+      operations:
+        - filter_three_distinct_companies
+        - project_company_counterparty_subsidiary_triples
+        - deduplicate_company_triples
+        - unnest_unique_company_triples
+  output:
+    type: file
+    path: raw_outputs/finance/output_finance-042.json

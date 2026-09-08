@@ -1,0 +1,53 @@
+{
+  "task_id": "aviation_safety-034",
+  "answer": [
+    {
+      "rank": 1,
+      "incident_id": "asrs_083468",
+      "reconciliation_pattern": "direct_conflict",
+      "automation_guidance": "Maximum descent then maximum climb",
+      "atc_instruction": "Maintain 9,000 FT",
+      "horizontal_separation_ft": 300,
+      "vertical_separation_ft": 300
+    },
+    {
+      "rank": 2,
+      "incident_id": "asrs_027994",
+      "reconciliation_pattern": "direct_conflict",
+      "automation_guidance": "TCAS RA commanded descent after initial climb",
+      "atc_instruction": "ATC instructed other aircraft to descend immediately",
+      "horizontal_separation_ft": 5280,
+      "vertical_separation_ft": 100
+    },
+    {
+      "rank": 3,
+      "incident_id": "asrs_018484",
+      "reconciliation_pattern": "direct_conflict",
+      "automation_guidance": "CLB, CLB!",
+      "atc_instruction": "Cleared to land on RWY 22L",
+      "horizontal_separation_ft": 5280,
+      "vertical_separation_ft": 200
+    },
+    {
+      "rank": 4,
+      "incident_id": "asrs_057275",
+      "reconciliation_pattern": "direct_conflict",
+      "automation_guidance": "Descend (Change Vert Spd)",
+      "atc_instruction": "Maintain assigned altitude of 10,000 ft",
+      "horizontal_separation_ft": 5280,
+      "vertical_separation_ft": 1000
+    },
+    {
+      "rank": 5,
+      "incident_id": "asrs_053566",
+      "reconciliation_pattern": "direct_conflict",
+      "automation_guidance": "CLB, CLB",
+      "atc_instruction": "TURN R IMMEDIATELY",
+      "horizontal_separation_ft": 8448,
+      "vertical_separation_ft": 300
+    }
+  ],
+  "elapsed_seconds": 78.05,
+  "cost_usd": 0.10632693,
+  "total_tokens": 133642
+}

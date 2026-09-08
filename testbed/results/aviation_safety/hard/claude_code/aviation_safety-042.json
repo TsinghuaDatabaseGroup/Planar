@@ -1,0 +1,148 @@
+{
+  "task_id": "aviation_safety-042",
+  "answer": [
+    {
+      "rank": 1,
+      "canonical_component": "Turbine Engine",
+      "narrative_component_term": "engine",
+      "incident_count": 103,
+      "most_common_detection_cue": "Person Flight Crew"
+    },
+    {
+      "rank": 2,
+      "canonical_component": "Engine",
+      "narrative_component_term": "engine",
+      "incident_count": 51,
+      "most_common_detection_cue": "Person Flight Crew"
+    },
+    {
+      "rank": 3,
+      "canonical_component": "Main Gear Tire",
+      "narrative_component_term": "tire",
+      "incident_count": 27,
+      "most_common_detection_cue": "Person Flight Crew"
+    },
+    {
+      "rank": 4,
+      "canonical_component": "Hydraulic Main System",
+      "narrative_component_term": "hydraulic",
+      "incident_count": 23,
+      "most_common_detection_cue": "Person Flight Crew"
+    },
+    {
+      "rank": 5,
+      "canonical_component": "Main Gear Tire",
+      "narrative_component_term": "gear",
+      "incident_count": 23,
+      "most_common_detection_cue": "Person Flight Crew"
+    },
+    {
+      "rank": 6,
+      "canonical_component": "Gear Extend/Retract Mechanism",
+      "narrative_component_term": "gear",
+      "incident_count": 22,
+      "most_common_detection_cue": "Person Flight Crew"
+    },
+    {
+      "rank": 7,
+      "canonical_component": "Flap Control (Trailing & Leading Edge)",
+      "narrative_component_term": "flap",
+      "incident_count": 20,
+      "most_common_detection_cue": "Person Flight Crew"
+    },
+    {
+      "rank": 8,
+      "canonical_component": "Gear Extend/Retract Mechanism",
+      "narrative_component_term": "landing gear",
+      "incident_count": 20,
+      "most_common_detection_cue": "Person Flight Crew"
+    },
+    {
+      "rank": 9,
+      "canonical_component": "Electrical Power",
+      "narrative_component_term": "electrical",
+      "incident_count": 19,
+      "most_common_detection_cue": "Person Flight Crew"
+    },
+    {
+      "rank": 10,
+      "canonical_component": "Normal Brake System",
+      "narrative_component_term": "brake",
+      "incident_count": 19,
+      "most_common_detection_cue": "Person Flight Crew"
+    },
+    {
+      "rank": 11,
+      "canonical_component": "Hydraulic System",
+      "narrative_component_term": "hydraulic",
+      "incident_count": 18,
+      "most_common_detection_cue": "Person Flight Crew"
+    },
+    {
+      "rank": 12,
+      "canonical_component": "Main Gear Tire",
+      "narrative_component_term": "landing gear",
+      "incident_count": 17,
+      "most_common_detection_cue": "Person Flight Crew"
+    },
+    {
+      "rank": 13,
+      "canonical_component": "Brake System",
+      "narrative_component_term": "brake",
+      "incident_count": 16,
+      "most_common_detection_cue": "Person Flight Crew"
+    },
+    {
+      "rank": 14,
+      "canonical_component": "Autopilot",
+      "narrative_component_term": "autopilot",
+      "incident_count": 14,
+      "most_common_detection_cue": "Person Flight Crew"
+    },
+    {
+      "rank": 15,
+      "canonical_component": "Landing Gear",
+      "narrative_component_term": "gear",
+      "incident_count": 14,
+      "most_common_detection_cue": "Person Flight Crew"
+    },
+    {
+      "rank": 16,
+      "canonical_component": "Reciprocating Engine Assembly",
+      "narrative_component_term": "engine",
+      "incident_count": 13,
+      "most_common_detection_cue": "Person Flight Crew"
+    },
+    {
+      "rank": 17,
+      "canonical_component": "Landing Gear",
+      "narrative_component_term": "landing gear",
+      "incident_count": 12,
+      "most_common_detection_cue": "Person Flight Crew"
+    },
+    {
+      "rank": 18,
+      "canonical_component": "Trailing Edge Flap",
+      "narrative_component_term": "flap",
+      "incident_count": 12,
+      "most_common_detection_cue": "Person Flight Crew"
+    },
+    {
+      "rank": 19,
+      "canonical_component": "Electrical Power",
+      "narrative_component_term": "electrical system",
+      "incident_count": 10,
+      "most_common_detection_cue": "Person Flight Crew"
+    },
+    {
+      "rank": 20,
+      "canonical_component": "Engine",
+      "narrative_component_term": "engines",
+      "incident_count": 10,
+      "most_common_detection_cue": "Person Flight Crew"
+    }
+  ],
+  "elapsed_seconds": 122.287,
+  "cost_usd": 0.1920261,
+  "total_tokens": 217919
+}

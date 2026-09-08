@@ -1,0 +1,22 @@
+{
+  "task_id": "finance-020",
+  "answer": {
+    "Pharmaceutical": {
+      "filing_count": 838,
+      "ai_ml_mention_rate_percent": 5.2,
+      "going_concern_rate_percent": 19.4,
+      "international_operations_rate_percent": 46.8,
+      "litigation_rate_percent": 16.1
+    },
+    "Software": {
+      "filing_count": 456,
+      "ai_ml_mention_rate_percent": 34.3,
+      "going_concern_rate_percent": 12.7,
+      "international_operations_rate_percent": 66.7,
+      "litigation_rate_percent": 33.9
+    }
+  },
+  "elapsed_seconds": 5565.24,
+  "cost_usd": 59.082976,
+  "total_tokens": 148199647
+}

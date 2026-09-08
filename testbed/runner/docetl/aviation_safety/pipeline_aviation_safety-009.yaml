@@ -1,0 +1,186 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_air_carrier_airport
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("aircraft_operator") == "Air Carrier"
+              and doc.get("locale_reference_type") == "Airport"
+          )
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: extract_surface_conflict_prevention
+    type: map
+    optimize: true
+    prompt: |
+      Analyze this NASA ASRS narrative for a qualifying airport-surface conflict.
+
+      Set qualifies=true only when:
+      - a taxiway, runway, ramp, or gate conflict created a concrete threat involving
+        an aircraft that could enter a conflicting runway;
+      - the conflict was actually resolved before the threatened aircraft entered
+        that runway; and
+      - both the first effective correcting actor and that actor's prevention action
+        are clear from the narrative.
+
+      The first correcting actor is the first party whose action effectively began
+      preventing the runway conflict, not merely the first party mentioned or the
+      first to notice without acting. Normalize it to:
+      - atc, including tower or ground control;
+      - flight_crew, for pilots or flight-deck crew;
+      - ground_vehicle_operator, for the driver/operator of a tug, truck, or other
+        ground vehicle.
+
+      Normalize that actor's first effective prevention action to:
+      - stop_or_hold: stopped, held position, rejected movement, or issued/complied
+        with an effective stop or hold;
+      - reroute_or_turnoff: changed surface path, turned away, exited, or rerouted;
+      - clearance_or_instruction_correction: corrected, cancelled, clarified, or
+        replaced a clearance/instruction and that correction itself prevented entry.
+
+      Use unclear when qualification fails or either requested field cannot be
+      determined unambiguously. Do not infer an actor or action from what normally
+      would happen.
+
+      Always return all three required fields. When qualifies=false, set both
+      correcting_actor and prevention_action to unclear. Return one compact JSON
+      object and stop; do not omit fields or continue with trailing whitespace.
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        qualifies: boolean
+        correcting_actor: enum[atc, flight_crew, ground_vehicle_operator, unclear]
+        prevention_action: enum[stop_or_hold, reroute_or_turnoff, clearance_or_instruction_correction, unclear]
+    num_retries_on_validate_failure: 2
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 128
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: keep_clear_surface_conflict_labels
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("qualifies") is True
+              and doc.get("correcting_actor")
+              in {"atc", "flight_crew", "ground_vehicle_operator"}
+              and doc.get("prevention_action")
+              in {
+                  "stop_or_hold",
+                  "reroute_or_turnoff",
+                  "clearance_or_instruction_correction",
+              }
+          )
+
+  - name: aggregate_actor_action_pairs
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          actor_order = ["atc", "flight_crew", "ground_vehicle_operator"]
+          action_order = [
+              "stop_or_hold",
+              "reroute_or_turnoff",
+              "clearance_or_instruction_correction",
+          ]
+          incident_ids = {
+              (actor, action): set()
+              for actor in actor_order
+              for action in action_order
+          }
+
+          for item in items:
+              incident_id = str(item.get("incident_id", ""))
+              key = (
+                  item.get("correcting_actor"),
+                  item.get("prevention_action"),
+              )
+              if incident_id and key in incident_ids:
+                  incident_ids[key].add(incident_id)
+
+          rows = []
+          for actor in actor_order:
+              for action in action_order:
+                  ids = incident_ids[(actor, action)]
+                  if not ids:
+                      continue
+                  rows.append(
+                      {
+                          "correcting_actor": actor,
+                          "prevention_action": action,
+                          "incident_count": len(ids),
+                      }
+                  )
+          return {"rows": rows}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - correcting_actor
+      - prevention_action
+      - incident_count
+
+pipeline:
+  steps:
+    - name: process
+      input: asrs_incidents
+      operations:
+        - filter_air_carrier_airport
+        - load_asrs_narrative
+        - extract_surface_conflict_prevention
+        - keep_clear_surface_conflict_labels
+        - aggregate_actor_action_pairs
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-009.json

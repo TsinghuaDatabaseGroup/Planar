@@ -1,0 +1,157 @@
+datasets:
+  sec_2024_filings:
+    type: file
+    path: data/SEC/CSV/2024.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: load_filing_document
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("SEC text path escapes data/SEC")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              document = handle.read()
+          return {"document": document}
+
+  - name: filter_retail_industry_companies
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this SEC 10-K filing only if the reporting company operates in a
+      retail industry. Base the decision on the company's own substantive
+      business rather than an incidental reference to retail.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: extract_company_employees_and_retail_subsector
+    type: map
+    optimize: true
+    prompt: |
+      Extract the following fields for the reporting company from this SEC 10-K:
+      - company_name: the legal registrant name stated in the filing;
+      - employee_count: the explicitly reported company-wide employee count as an
+        integer, using the latest reporting date covered by the filing;
+      - retail_subsector: a concise, specific retail subsector grounded in the
+        company's described business.
+
+      Do not substitute a partial workforce figure or an unrelated count for the
+      company-wide employee count.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        company_name: string
+        employee_count: integer
+        retail_subsector: string
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 512
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: order_by_employee_count_and_company_name
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          def employee_count(item):
+              try:
+                  return int(item.get("employee_count", 0))
+              except (TypeError, ValueError):
+                  return 0
+
+          rows = sorted(
+              items,
+              key=lambda item: (
+                  -employee_count(item),
+                  str(item.get("company_name", "")).casefold(),
+                  str(item.get("company_name", "")),
+              ),
+          )
+          return {"rows": rows}
+
+  - name: unnest_ordered_companies
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - company_name
+      - employee_count
+      - retail_subsector
+
+  - name: limit_to_3_companies
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {"rows": items[:3]}
+
+  - name: unnest_limited_companies
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - company_name
+      - employee_count
+      - retail_subsector
+
+pipeline:
+  steps:
+    - name: process
+      input: sec_2024_filings
+      operations:
+        - load_filing_document
+        - filter_retail_industry_companies
+        - extract_company_employees_and_retail_subsector
+        - order_by_employee_count_and_company_name
+        - unnest_ordered_companies
+        - limit_to_3_companies
+        - unnest_limited_companies
+  output:
+    type: file
+    path: raw_outputs/finance/output_finance-001.json

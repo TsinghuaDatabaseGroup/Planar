@@ -1,0 +1,20 @@
+{
+  "task_id": "aviation_safety-044",
+  "answer": [
+    {
+      "cause_category": "equipment_malfunction",
+      "incident_count": 17,
+      "canonical_system": "cabin pressurization and air conditioning system",
+      "dominant_operational_outcome": "emergency descent and diversion"
+    },
+    {
+      "cause_category": "maintenance_or_release_decision",
+      "incident_count": 3,
+      "canonical_system": "pressurization and air conditioning systems",
+      "dominant_operational_outcome": "emergency descent and diversion"
+    }
+  ],
+  "elapsed_seconds": 134.08,
+  "cost_usd": 0.319151,
+  "total_tokens": 249378
+}

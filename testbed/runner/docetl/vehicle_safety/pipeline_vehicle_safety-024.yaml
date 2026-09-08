@@ -1,0 +1,157 @@
+datasets:
+  nhtsa_complaints:
+    type: file
+    path: data/nhtsa_vehicle_safety/complaints.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_2024_and_2025_model_year_complaints
+    type: code_filter
+    code: |
+      def transform(doc):
+          return str(doc.get("model_year") or "") in {"2024", "2025"}
+
+  - name: classify_tangible_safety_event
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether this complaint narrative describes a tangible vehicle
+      safety event.
+
+      A tangible event identifies an actual malfunction, loss of function or
+      control, collision or near-collision sequence, fire, deployment, breakage,
+      or another concrete safety-relevant occurrence. A narrative that only
+      concerns paperwork, a recall notice without an experienced event, a cosmetic
+      concern, billing, routine maintenance, or a routine service request does not
+      qualify.
+
+      Complaint narrative:
+      {{ input.summary_text }}
+    output:
+      mode: structured_output
+      schema:
+        describes_tangible_safety_event: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: extract_canonical_failure_mode
+    type: map
+    optimize: true
+    prompt: |
+      Extract the primary failure mode described in this complaint as a short
+      canonical label.
+
+      Return only the failure mode, preferably in two to eight lowercase words.
+      Describe what failed or malfunctioned rather than the resulting injury,
+      repair action, recall status, vehicle identity, or surrounding narrative.
+
+      Complaint narrative:
+      {{ input.summary_text }}
+    output:
+      mode: structured_output
+      schema:
+        failure_mode: string
+    validate:
+      - len(output["failure_mode"].strip()) > 0
+    num_retries_on_validate_failure: 2
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: aggregate_component_safety_metrics
+    type: code_reduce
+    reduce_key: component_id
+    code: |
+      def transform(items):
+          from collections import Counter
+
+          complaint_count = len(items)
+          towed_count = sum(
+              item.get("vehicle_towed_flag") == "true" for item in items
+          )
+          injury_counts = []
+          for item in items:
+              try:
+                  injury_counts.append(float(item.get("injury_count") or 0))
+              except (TypeError, ValueError):
+                  injury_counts.append(0.0)
+
+          failure_mode_counts = Counter(
+              str(item.get("failure_mode") or "").strip().lower()
+              for item in items
+              if str(item.get("failure_mode") or "").strip()
+          )
+          dominant_failure_mode = (
+              sorted(
+                  failure_mode_counts,
+                  key=lambda label: (-failure_mode_counts[label], label),
+              )[0]
+              if failure_mode_counts
+              else None
+          )
+
+          return {
+              "complaint_count": complaint_count,
+              "towed_rate": (
+                  towed_count / complaint_count if complaint_count else 0.0
+              ),
+              "avg_injury": (
+                  sum(injury_counts) / complaint_count
+                  if complaint_count
+                  else 0.0
+              ),
+              "dominant_failure_mode": dominant_failure_mode,
+          }
+
+  - name: project_component_safety_metrics
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "component_id": doc.get("component_id"),
+              "complaint_count": doc.get("complaint_count"),
+              "towed_rate": doc.get("towed_rate"),
+              "avg_injury": doc.get("avg_injury"),
+              "dominant_failure_mode": doc.get("dominant_failure_mode"),
+          }
+
+pipeline:
+  steps:
+    - name: component_safety_event_comparison
+      input: nhtsa_complaints
+      operations:
+        - filter_2024_and_2025_model_year_complaints
+        - classify_tangible_safety_event
+        - extract_canonical_failure_mode
+        - aggregate_component_safety_metrics
+        - project_component_safety_metrics
+  output:
+    type: file
+    path: raw_outputs/vehicle_safety/output_vehicle_safety-024.json

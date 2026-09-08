@@ -1,0 +1,18 @@
+{
+  "task_id": "legal_contracts-020",
+  "answer": [
+    {"document_id": "1089717_0000898430-99-004004_document_2.txt", "governing_law": "United States of America and the Commonwealth of Virginia", "direction": "unilateral"},
+    {"document_id": "1108906_0000889812-00-001212_document_45.txt", "governing_law": "Connecticut", "direction": "mutual"},
+    {"document_id": "BOMI%20Non-Disclosure%20Agreement.pdf", "governing_law": "Maryland", "direction": "unilateral"},
+    {"document_id": "Confidentiality%20Non-Disclosure%20and%20Appropriate%20Use%20Agreement%20-%20FAU.01082016.pdf", "governing_law": "Florida", "direction": "unilateral"},
+    {"document_id": "Confidentiality.pdf", "governing_law": "Michigan", "direction": "unilateral"},
+    {"document_id": "NDA.pdf", "governing_law": "New York", "direction": "unilateral"},
+    {"document_id": "NDA_17.pdf", "governing_law": "New Zealand", "direction": "unilateral"},
+    {"document_id": "Non-Disclosure-Agreement-9-1-2018.pdf", "governing_law": "State of Utah", "direction": "unilateral"},
+    {"document_id": "Non-Disclosure-Agreement_3.pdf", "governing_law": "Florida", "direction": "unilateral"},
+    {"document_id": "Non-disclosure-Agreement_7.pdf", "governing_law": "English law", "direction": "unilateral"}
+  ],
+  "elapsed_seconds": 1221.00,
+  "cost_usd": 1.750288,
+  "total_tokens": 3312438
+}

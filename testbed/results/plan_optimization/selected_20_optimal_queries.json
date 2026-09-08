@@ -1,0 +1,202 @@
+[
+  {
+    "task_id": "legal_contracts-012",
+    "query": "How many SOX Section 302 certifications contain the material-changes clause for internal control over financial reporting but do not describe any specific control change?",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> FILTER(REGEXP_LIKE(normalized_text, '(?is)disclosed\\s+in\\s+this(?:\\s+annual)?\\s+report\\s+any\\s+change.{0,500}?internal\\s+control\\s+over\\s+financ(?:ial|ing)\\s+reporting.{0,700}?(?:materially\\s+affected|reasonably\\s+likely\\s+to\\s+materially\\s+affect)'))\n-> SEM_FILTER('Keep certifications whose clause uses only generic certification language and describes no specific control change', input_bindings={document:text})\n-> GROUP_BY(keys=[], aggs=[COUNT(*) AS certification_count])"
+      }
+    ]
+  },
+  {
+    "task_id": "legal_contracts-084",
+    "query": "Which companies have a SOX Section 302 certification, a clawback policy that permits recovery for misconduct, and at least one subsidiary-list filing naming 70 or more subsidiaries? For each company, report its distinct certifying officers, normalized covered-person category, and largest subsidiary count in the corpus. Order by the largest subsidiary count descending; break ties by company name.",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SOX := SCAN_DOCS(CONTRACTEXHIBIT, all)\n  -> SEM_FILTER('Is this a SOX Section 302 certification document?')\n  -> SEM_EXTRACT('Extract the certified company entity and certifying officer with title', {company: str, certifying_officer: str})\n  -> GROUP_BY(company, certifying_officers=SORT_ASC(DISTINCT(certifying_officer)));\nCLAWBACK := SCAN_DOCS(CONTRACTEXHIBIT, all)\n  -> SEM_FILTER('Is this a clawback or compensation-recovery policy?')\n  -> SEM_FILTER('Does the policy permit recovery for misconduct?')\n  -> SEM_EXTRACT('Extract the company entity and normalize the covered-person category', {company: str, covered_person_category: str})\n  -> DEDUP(company, covered_person_category);\nSUBSIDIARIES := SCAN_DOCS(CONTRACTEXHIBIT, all)\n  -> SEM_FILTER('Is this a subsidiary-list filing?')\n  -> SEM_EXTRACT('Extract the parent company entity and number of listed subsidiaries', {company: str, subsidiary_count: integer})\n  -> FILTER(subsidiary_count >= 70)\n  -> GROUP_BY(company, largest_subsidiary_count=MAX(subsidiary_count));\nCLAWBACK_SUBSIDIARIES := SEM_JOIN(left=CLAWBACK, right=SUBSIDIARIES, instruction='match the same company entity despite naming, punctuation, or corporate-suffix variation');\nALL_THREE := SEM_JOIN(left=CLAWBACK_SUBSIDIARIES, right=SOX, instruction='match each company in the completed clawback-subsidiary relation to its SOX certification entity');\nALL_THREE\n  -> ORDER_BY(largest_subsidiary_count DESC, company ASC)"
+      }
+    ]
+  },
+  {
+    "task_id": "legal_contracts-086",
+    "query": "Among documents classified as NDAs, including dual-labelled exhibits, with effective dates after 2010-01-01, which stated governing-law jurisdictions occur in agreements that define confidential information to include electronic data or records, email, software or code, metadata, or other computer-readable material; require destruction of at least some confidential materials or copies rather than only their return; and expressly continue confidentiality or non-use duties beyond termination or expiry? Report the matching NDA count by jurisdiction, ordered by count descending and then jurisdiction alphabetically.",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('Is this document classified as an NDA, including a dual-labelled NDA exhibit, with an effective date strictly after 2010-01-01?')\n-> SEM_FILTER('Do confidentiality or non-use obligations expressly survive termination or expiry or continue beyond the stated term?')\n-> SEM_FILTER('Does the agreement require destruction of at least some confidential materials or copies, excluding clauses that only require return or merely allow an unrestricted choice between return and destruction?')\n-> SEM_FILTER('Does the confidential-information definition explicitly include electronic data or records, email, software or code, metadata, or other computer-readable material?')\n-> SEM_EXTRACT('Extract and canonicalize the expressly stated governing-law jurisdiction; return null when unstated', {governing_law: str|null})\n-> FILTER(governing_law IS NOT NULL)\n-> GROUP_BY(governing_law, matching_count = COUNT(*))\n-> ORDER_BY(matching_count DESC, governing_law ASC)"
+      }
+    ]
+  },
+  {
+    "task_id": "legal_contracts-088",
+    "query": "Which companies have both an EX-31 SOX officer certification and an EX-97 clawback policy that permits recovery for misconduct in addition to financial-restatement recovery? For each company, report its alphabetically sorted distinct certifying officers, including each officer's title, and the normalized covered-person category stated by the clawback policy.",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SOX := SCAN_DOCS(CONTRACTEXHIBIT, all)\n  -> SEM_FILTER('Is this an EX-31 SOX officer certification?')\n  -> SEM_EXTRACT('Extract the certified company entity and certifying officer name with title', {company: str, certifying_officer: str})\n  -> GROUP_BY(company, certifying_officers = SORT_ASC(DISTINCT(certifying_officer)));\nCLAWBACK := SCAN_DOCS(CONTRACTEXHIBIT, all)\n  -> SEM_FILTER('Does the policy provide financial-restatement recovery and also permit recovery for misconduct?')\n  -> SEM_FILTER('Is this an EX-97 clawback policy?')\n  -> SEM_EXTRACT('Extract the company entity and normalize the policy covered-person category', {company: str, covered_person_category: str})\n  -> DEDUP(company, covered_person_category);\nMATCHED := SEM_JOIN(left=SOX, right=CLAWBACK, instruction='same company entity despite naming, punctuation, or corporate-suffix variation');\nMATCHED -> PROJECT(company, certifying_officers, covered_person_category)"
+      }
+    ]
+  },
+  {
+    "task_id": "aviation_safety-029",
+    "query": "For reports from the 1201-1800 local-time period, how are approach or landing incidents distributed by flight condition and recorded result when weather or visibility, rather than traffic spacing, runway occupancy, or equipment, caused a go-around, missed approach, or new clearance? Flight conditions are IMC, Marginal, and Mixed; results are go_around_or_missed_approach and new_clearance. Show one row for every represented combination.",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "BASE := SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id,text_file,local_time_of_day,flight_phase]) -> FILTER(local_time_of_day='1201-1800' AND (flight_phase CONTAINS 'Approach' OR flight_phase CONTAINS 'Landing'));\nENV := SCAN_TABLE(NASA_ASRS, environment_attributes.csv, [incident_id,attribute,value]) -> FILTER(attribute='flight_conditions' AND value IN ('IMC','Marginal','Mixed'));\nWITH_ENV := JOIN(left=BASE, right=ENV, condition=incident_id equality);\nRESULTS := SCAN_TABLE(NASA_ASRS, events.csv, [incident_id,event_type,label]) -> FILTER(event_type='result' AND label IN ('Flight Crew Executed Go Around / Missed Approach','Air Traffic Control Issued New Clearance'));\nSTRUCTURED := JOIN(left=WITH_ENV, right=RESULTS, condition=incident_id equality);\nSTRUCTURED -> SCAN_DOCS(NASA_ASRS, selector=STRUCTURED.text_file) -> SEM_FILTER('weather or visibility caused the target result') -> SEM_FILTER('traffic, runway occupancy, or equipment was not the primary cause') -> GROUP_BY([flight_conditions,recorded_result], incident_count=COUNT_DISTINCT(incident_id))"
+      }
+    ]
+  },
+  {
+    "task_id": "aviation_safety-039",
+    "query": "Among Aircraft-primary reports with a maintenance records-complete or required-correct-document status and a component problem record, which documentation-issue and status combinations occur most often, up to fifteen combinations in total? Documentation types are incomplete_or_inaccurate_logbook, missing_or_incomplete_work_card, incorrect_or_incomplete_mel_procedure, missing_required_document, and release_or_signoff_error. Count only actual documentation problems rather than mechanical discrepancies alone. Rank by distinct-incident count, then documentation type and the two status values, and include a canonical affected item as a short phrase.",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "INCIDENTS := SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id,text_file,primary_problem])\n  -> FILTER(primary_problem='Aircraft');\nSTATUS := SCAN_TABLE(NASA_ASRS, aircraft_attributes.csv, [incident_id,attribute,value])\n  -> FILTER(attribute IN ('maintenance_status_records_complete','maintenance_status_required_correct_doc_on_board'))\n  -> GROUP_BY([incident_id], {records_complete:MAX_IF(value,attribute='maintenance_status_records_complete'),correct_document_on_board:MAX_IF(value,attribute='maintenance_status_required_correct_doc_on_board')});\nPROBLEMS := SCAN_TABLE(NASA_ASRS, components.csv, [incident_id,attribute,value])\n  -> FILTER(attribute='problem')\n  -> GROUP_BY([incident_id], {structured_problems:COLLECT(value)});\nWITH_STATUS := JOIN(left=INCIDENTS, right=STATUS, join_type=inner, condition=INCIDENTS.incident_id = STATUS.incident_id);\nSTRUCTURED := JOIN(left=WITH_STATUS, right=PROBLEMS, join_type=inner, condition=WITH_STATUS.incident_id = PROBLEMS.incident_id);\nEXTRACTED := STRUCTURED\n  -> SCAN_DOCS(NASA_ASRS, selector=STRUCTURED.text_file, [incident_id,text])\n  -> SEM_EXTRACT('Determine whether this is an actual maintenance-documentation problem rather than a mechanical discrepancy alone. Emit is_actual_documentation_issue; when true, assign documentation_issue_type from {incomplete_or_inaccurate_logbook,missing_or_incomplete_work_card,incorrect_or_incomplete_mel_procedure,missing_required_document,release_or_signoff_error} and extract the affected item in at most six words.', {incident_id:string,is_actual_documentation_issue:boolean,documentation_issue_type:string,affected_item:string}, {incident_id,text});\nEXTRACTED\n  -> FILTER(is_actual_documentation_issue=TRUE)\n  -> GROUP_BY([documentation_issue_type,records_complete,correct_document_on_board], {incident_count:COUNT_DISTINCT(incident_id),canonical_affected_item:MODE(affected_item)})\n  -> ORDER_BY([incident_count DESC,documentation_issue_type ASC,records_complete ASC,correct_document_on_board ASC])\n  -> LIMIT(15)\n  -> PROJECT([rank=ROW_NUMBER(),documentation_issue_type,records_complete,correct_document_on_board,incident_count,canonical_affected_item])"
+      }
+    ]
+  },
+  {
+    "task_id": "aviation_safety-044",
+    "query": "Among Aircraft-primary reports that have both a pressurization, pack, bleed-air, or air-conditioning component record and a smoke, fumes, odor, or aircraft-equipment-problem event, how many distinct incidents are primarily attributable to equipment_malfunction, maintenance_or_release_decision, environmental_contamination, or crew_procedure? Include only reports with one clearly primary cause and an operational consequence beyond a maintenance-record entry. For each cause, summarize the canonical system and dominant operational outcome in at most six words each.",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "BASE := SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id,text_file,primary_problem]) -> FILTER(primary_problem='Aircraft');\nCOMP := SCAN_TABLE(NASA_ASRS, components.csv, [incident_id,attribute,value]) -> FILTER(attribute='aircraft_component' AND value CONTAINS ANY OF ['Pressurization','Pack','Bleed','Air Conditioning']) -> GROUP_BY([incident_id], components=COLLECT(value));\nWITH_COMP := JOIN(left=BASE, right=COMP, condition=incident_id equality);\nEVENTS := SCAN_TABLE(NASA_ASRS, events.csv, [incident_id,event_type,label]) -> FILTER(label='Flight Deck / Cabin / Aircraft Event Smoke / Fire / Fumes / Odor' OR label CONTAINS 'Aircraft Equipment Problem') -> GROUP_BY([incident_id], labels=COLLECT(label));\nSTRUCTURED := JOIN(left=WITH_COMP, right=EVENTS, condition=incident_id equality);\nSTRUCTURED -> SCAN_DOCS(NASA_ASRS, selector=STRUCTURED.text_file) -> SEM_FILTER('one clearly primary cause') -> SEM_FILTER('operational consequence beyond a maintenance record') -> SEM_EXTRACT('initiating condition, system, intervention, and outcome') -> SEM_CLASSIFY('primary cause category') -> GROUP_BY([cause_category], records=COLLECT(*)) -> SEM_AGGREGATE('canonical system and dominant outcome')"
+      }
+    ]
+  },
+  {
+    "task_id": "vehicle_safety-033",
+    "query": "Which complaint-recall pairs involve the same vehicle make, model, model year, and component category, have a recall reported at least 1,500 days after the complaint, and describe the same defect mechanism in the complaint and recall summaries? For each long-lag pair, I want to know the complaint ID, recall campaign number, elapsed days, and a short root-cause phrase from the recall defect summary.",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "RECALLS := SCAN_DOCS(NHTSA, recalls, [recall_id,campaign.number,vehicle.vehicle_id AS vehicle_id,component.component_id AS component_id,campaign.report_received_date,risk.defect_summary]) -> FILTER(campaign.report_received_date IS NOT NULL AND campaign.report_received_date<>'');\nCOMPLAINTS := SCAN_TABLE(NHTSA, complaints, [complaint_id,vehicle_id,component_id,received_date,summary_text]);\nPAIRS := JOIN(left=COMPLAINTS, right=RECALLS, condition=vehicle_id and component_id equality AND complaint.received_date<recall.report_received_date AND date difference>=1500 days);\nNEEDED_RECALLS := PAIRS -> PROJECT([recall_id,campaign.number,risk.defect_summary]) -> DEDUP([recall_id]) -> SEM_EXTRACT('short recall root-cause phrase');\nWITH_CAUSE := JOIN(left=PAIRS, right=NEEDED_RECALLS, condition=recall_id equality);\nWITH_CAUSE -> SEM_FILTER('complaint and recall describe the same defect mechanism') -> PROJECT([complaint_id,campaign_number,days_between,defect_root_cause])"
+      }
+    ]
+  },
+  {
+    "task_id": "vehicle_safety-036",
+    "query": "Which five Ford airbag recall campaigns rank highest by the number of complaints describing the same defect as the campaign's defect summary? For each campaign, what are the matched complaint count, the share involving crash, injury, or towing indicators, the dominant complaint severity in {minor_inconvenience, moderate_safety_event, severe_safety_event}, and the dominant remedy style in {software_update, part_replacement, other}? Sort by campaign number ascending if there is a tie.",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "PAIRS := SCAN_TABLE(NHTSA, complaints, [complaint_id,make,component_id,summary_text]) -> FILTER(make='FORD' AND component_id='AIRBAG') -> SEM_JOIN('same Ford airbag failure mechanism', right=(SCAN_DOCS(NHTSA, recalls, [campaign.number,vehicle.make,component.component_id,risk.defect_summary,remedy.corrective_action]) -> FILTER(vehicle.make='FORD' AND component.component_id='AIRBAG'))) -> SEM_FILTER('concrete airbag safety event');\nCOMPLAINTS := PAIRS -> PROJECT([complaint_id,summary_text]) -> DEDUP([complaint_id]) -> SEM_CLASSIFY('complaint severity');\nCAMPAIGNS := PAIRS -> PROJECT([campaign.number,remedy.corrective_action]) -> DEDUP([campaign.number]) -> SEM_CLASSIFY('recall remedy style');\nLABELED_PAIRS := JOIN(left=PAIRS, right=COMPLAINTS, condition=PAIRS.complaint_id = COMPLAINTS.complaint_id);\nJOIN(left=LABELED_PAIRS, right=CAMPAIGNS, condition=LABELED_PAIRS.campaign.number = CAMPAIGNS.campaign.number) -> GROUP_BY([campaign.number], matched_complaint_count=COUNT_DISTINCT(complaint_id)) -> ORDER_BY(matched_complaint_count DESC) -> LIMIT(5)"
+      }
+    ]
+  },
+  {
+    "task_id": "vehicle_safety-042",
+    "query": "For Tesla ADAS recall campaigns whose defect summaries describe the same driver-assistance or automation-control problem as complaint narratives and an investigation report, what's the matched complaint count, dominant defect topic in {autopilot_misuse, unexpected_braking, steering_control, warning_or_supervision_gap, other}, and related investigation report IDs correspond to each campaign number?",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "PAIRS := SCAN_TABLE(NHTSA, complaints, [complaint_id,make,component_id,summary_text]) -> FILTER(make='TESLA' AND component_id='ADAS') -> SEM_JOIN('same Tesla ADAS problem', right=(SCAN_DOCS(NHTSA, recalls, [campaign.number,vehicle.make,component.component_id,risk.defect_summary]) -> FILTER(vehicle.make='TESLA' AND component.component_id='ADAS'))) -> SEM_FILTER('driving-context ADAS safety issue') -> SEM_CLASSIFY('dominant ADAS defect topic');\nISSUES := PAIRS -> GROUP_BY([campaign.number,group], matched_complaint_count=COUNT_DISTINCT(complaint_id), complaint_texts=COLLECT(summary_text), recall_texts=COLLECT(risk.defect_summary));\nREPORTS := SCAN_DOCS(NHTSA, investigation_reports, [file_id,body]) -> FILTER(body CONTAINS 'Tesla' OR body CONTAINS 'Autopilot' OR body CONTAINS 'driver assistance');\nMATCHED := SEM_JOIN(left=ISSUES, right=REPORTS, instruction='same ADAS safety issue or ODI human-factors concern');\nMATCHED -> GROUP_BY([campaign.number], matched_complaint_count=MAX(matched_complaint_count), dominant_adas_topic=MODE(group), related_report_ids=COLLECT_DISTINCT(file_id))"
+      }
+    ]
+  },
+  {
+    "task_id": "vehicle_safety-045",
+    "query": "Which two shared braking-defect themes have the highest matched complaint counts across Chevrolet complaint narratives, recall defect summaries, and investigation reports when all three describe the same defect or risk? For each ranked theme, how many distinct recall campaigns are involved, which investigation report IDs are related, and what short ODI risk summary captures the issue?",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "COMPLAINTS := SCAN_TABLE(NHTSA, complaints, [complaint_id,make,component_id,summary_text])\n  -> FILTER(make='CHEVROLET' AND component_id='BRAKES');\nRECALLS := SCAN_DOCS(NHTSA, recalls, [campaign.number,vehicle.make AS make,component.component_id AS component_id,risk.defect_summary,risk.consequence_summary])\n  -> FILTER(vehicle.make='CHEVROLET' AND component.component_id='BRAKES');\nPAIRS := SEM_JOIN(left=COMPLAINTS, right=RECALLS, instruction='match a complaint and recall only when they describe the same Chevrolet braking defect or risk');\nQUALIFIED := PAIRS\n  -> SEM_EXTRACT('Extract the shared braking defect theme in at most eight words', {defect_theme:string})\n  -> SEM_FILTER('the matched evidence describes a braking safety risk with potential crash, loss-of-control, or extended-stopping consequence');\nTHEMES := QUALIFIED\n  -> GROUP_BY([defect_theme], {matched_complaint_count:COUNT_DISTINCT(complaint_id),distinct_campaign_count:COUNT_DISTINCT(campaign.number),complaint_texts:COLLECT_DISTINCT(summary_text),recall_texts:COLLECT_DISTINCT(risk.defect_summary)});\nREPORTS := SCAN_DOCS(NHTSA, investigation_reports, selector='*.txt', columns=[file_id,body])\n  -> FILTER(body CONTAINS 'Chevrolet' OR body CONTAINS 'GM' OR body CONTAINS 'brake');\nREPORT_MATCHES := SEM_JOIN(left=THEMES, right=REPORTS, instruction='match a canonical braking theme to a report only when the report discusses the same Chevrolet or GM braking issue or ODI risk');\nGROUPED := REPORT_MATCHES\n  -> GROUP_BY([defect_theme], {matched_complaint_count:MAX(matched_complaint_count),distinct_campaign_count:MAX(distinct_campaign_count),related_report_ids:COLLECT_DISTINCT_SORTED(file_id,'asc'),report_bodies:COLLECT_DISTINCT(body)});\nGROUPED\n  -> SEM_AGGREGATE('Summarize the ODI braking risk finding for this defect theme in one short phrase', {odi_risk_summary:string}, group_by=[defect_theme], input_bindings={reports:report_bodies})\n  -> ORDER_BY([matched_complaint_count DESC,defect_theme ASC])\n  -> LIMIT(5)\n  -> PROJECT([rank=ROW_NUMBER(),defect_theme,matched_complaint_count,distinct_campaign_count,related_report_ids,odi_risk_summary])"
+      }
+    ]
+  },
+  {
+    "task_id": "vehicle_safety-046",
+    "query": "For Chrysler airbag recall campaigns whose summaries describe the same defect as complaint narratives and whose matched defects are also discussed in investigation reports as the same airbag risk, what matched complaint count, dominant airbag failure mode, dominant remedy style in {software_update, part_replacement, other}, related investigation report IDs, and short ODI evidence summary correspond to each campaign number?",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "PAIRS := SCAN_TABLE(NHTSA, complaints, [complaint_id,make,component_id,summary_text]) -> FILTER(make='CHRYSLER' AND component_id='AIRBAG') -> SEM_JOIN('same Chrysler airbag defect', right=(SCAN_DOCS(NHTSA, recalls, [campaign.number,vehicle.make,component.component_id,risk.defect_summary,risk.consequence_summary,remedy.corrective_action]) -> FILTER(vehicle.make='CHRYSLER' AND component.component_id='AIRBAG'))) -> SEM_FILTER('airbag safety risk') -> SEM_CLASSIFY('dominant airbag failure mode');\nCAMPAIGNS := PAIRS -> GROUP_BY([campaign.number,group], matched_complaint_count=COUNT_DISTINCT(complaint_id), remedy=MIN(remedy.corrective_action), pair_evidence=COLLECT(summary_text,risk.defect_summary));\nREPORTS := SCAN_DOCS(NHTSA, investigation_reports, [file_id,body]) -> FILTER(body CONTAINS 'Chrysler' OR body CONTAINS 'airbag' OR body CONTAINS 'inflator');\nMATCHED := SEM_JOIN(left=CAMPAIGNS, right=REPORTS, instruction='same Chrysler airbag risk or ODI evidence');\nGROUPED := MATCHED -> GROUP_BY([campaign.number], matched_complaint_count=MAX(matched_complaint_count), failure_mode=MODE(group), reports=COLLECT(body), remedy=MIN(remedy));\nGROUPED -> SEM_AGGREGATE('dominant remedy style and short ODI evidence summary')"
+      }
+    ]
+  },
+  {
+    "task_id": "aviation_safety-045",
+    "query": "Among Aircraft-primary reports, which twelve combinations of maintenance status, discovery phase, and causal chain occur most often when an earlier deferral or release-to-service decision is explicitly connected to a later component discrepancy? Maintenance status is deferred, released_to_service, or both; discovery phase is before_departure, after_takeoff, or after_landing; chain category is deferred_item_recurred, released_item_failed, incomplete_repair_or_signoff, or maintenance_limitation_escalated. Rank by distinct-incident count and then the three labels. Each row should include a canonical affected item and recurring discrepancy as short phrases.",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "BASE := SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id,text_file,primary_problem]) -> FILTER(primary_problem='Aircraft');\nMAINTENANCE := SCAN_TABLE(NASA_ASRS, aircraft_attributes.csv, [incident_id,attribute,value]) -> FILTER((attribute='maintenance_status_maintenance_deferred' OR attribute='maintenance_status_released_for_service') AND value='Y') -> GROUP_BY([incident_id], maintenance_flags=COLLECT(attribute)) -> PROJECT([incident_id,maintenance_status=CASE WHEN maintenance_flags CONTAINS 'maintenance_status_maintenance_deferred' AND maintenance_flags CONTAINS 'maintenance_status_released_for_service' THEN 'both' WHEN maintenance_flags CONTAINS 'maintenance_status_maintenance_deferred' THEN 'deferred' ELSE 'released_to_service' END]);\nWITH_STATUS := JOIN(left=BASE, right=MAINTENANCE, condition=BASE.incident_id = MAINTENANCE.incident_id);\nCOMPONENTS := SCAN_TABLE(NASA_ASRS, components.csv, [incident_id,attribute,value]) -> FILTER(attribute IN ('aircraft_component','problem')) -> GROUP_BY([incident_id], structured_components=COLLECT_IF(value,attribute='aircraft_component'), structured_problems=COLLECT_IF(value,attribute='problem'));\nSTRUCTURED := JOIN(left=WITH_STATUS, right=COMPONENTS, condition=WITH_STATUS.incident_id = COMPONENTS.incident_id);\nCHAINS := STRUCTURED -> SCAN_DOCS(NASA_ASRS, selector=STRUCTURED.text_file, [incident_id,text]) -> SEM_FILTER('explicitly connects an earlier maintenance deferral or release-to-service decision to a later component discrepancy') -> SEM_FILTER('clearly places discovery in before_departure, after_takeoff, or after_landing') -> SEM_EXTRACT('earlier decision, affected item, later discrepancy, operational effect, and normalized discovery phase') -> SEM_CLASSIFY('chain category', target_labels=[deferred_item_recurred,released_item_failed,incomplete_repair_or_signoff,maintenance_limitation_escalated]);\nCHAINS -> GROUP_BY([maintenance_status,discovery_phase,chain_category], incident_count=COUNT_DISTINCT(incident_id), chain_records=COLLECT(affected_item,later_discrepancy,structured_components,structured_problems)) -> SEM_AGGREGATE('canonical affected item and recurring discrepancy, each at most six words') -> ORDER_BY([incident_count DESC,maintenance_status ASC,discovery_phase ASC,chain_category ASC]) -> LIMIT(12) -> PROJECT([rank=ROW_NUMBER(),maintenance_status,discovery_phase,chain_category,incident_count,canonical_affected_item,recurring_discrepancy])"
+      }
+    ]
+  },
+  {
+    "task_id": "legal_contracts-044",
+    "query": "Which EX-97 compensation clawback or recoupment policies treat intentional misconduct as a trigger, extend recovery beyond SEC minimum requirements, and state an effective date? Report the document name, company name, effective date, and covered persons.",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('Keep policies that treat intentional misconduct as a trigger, extend recovery beyond SEC minimum requirements, and explicitly state an effective date', input_bindings={document: text})\n-> SEM_FILTER('Keep EX-97 clawback or recoupment policies', input_bindings={document: text})\n-> SEM_EXTRACT('Return document name, company name, effective date, and concise covered-person scope', out_schema={document_name: string, company_name: string, effective_date: date, covered_persons: string}, input_bindings={document: text})"
+      }
+    ]
+  },
+  {
+    "task_id": "legal_contracts-060",
+    "query": "Which NDA or confidentiality agreements contain a residual-information clause permitting use of information retained in unaided memory and expressly state a governing law? Report the document ID, nondisclosure direction, and governing law.",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('Keep agreements that contain a residual-information clause permitting use of information retained in unaided memory and expressly state a governing law', input_bindings={document: text})\n-> SEM_FILTER('Keep non-disclosure or confidentiality agreements', input_bindings={document: text})\n-> SEM_EXTRACT('Return document ID, nondisclosure direction, and governing law', out_schema={document_id: string, non_disclosure_direction: string, governing_law: string}, input_bindings={document: text})"
+      }
+    ]
+  },
+  {
+    "task_id": "legal_contracts-090",
+    "query": "For non-disclosure agreements that expressly contain both a standstill provision and an employee non-solicitation clause and state both durations, how are the agreements distributed according to which restriction lasts longer? Report the duration comparison (employee restriction longer, equal, or standstill longer), the number of agreements, and the average number of the six standard confidentiality exceptions present—public information, prior knowledge, independent development, third-party receipt, legal compulsion, and written consent—rounded to two decimal places. Order the categories by agreement count descending.",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all) -> SEM_FILTER('agreement expressly contains both a standstill provision and an employee non-solicitation clause') -> SEM_FILTER('document is a non-disclosure agreement, including dual-labeled NDA exhibits') -> SEM_EXTRACT('standstill duration; employee non-solicitation duration; presence of each of the 6 named confidentiality exceptions') -> FILTER(standstill_duration IS NOT NULL AND employee_non_solicitation_duration IS NOT NULL) -> PROJECT(class_label = CASE WHEN employee_duration > standstill_duration THEN 'employee_restriction_longer' WHEN employee_duration = standstill_duration THEN 'equal' ELSE 'standstill_longer' END, exception_count = sum(six_exception_flags)) -> GROUP_BY(class_label, agreement_count = COUNT(*), average_exception_count = ROUND(AVG(exception_count), 2)) -> ORDER_BY(agreement_count DESC, class_label ASC)"
+      }
+    ]
+  },
+  {
+    "task_id": "aviation_safety-046",
+    "query": "Which pairs of different ASRS incident IDs, up to twenty in total, most likely describe the same underlying occurrence? Compare only reports sharing incident month, state reference, locale-reference type, and primary problem, but require the narratives to agree on a distinctive event sequence, measurements, actions, and outcome rather than merely discussing the same topic. Rank matched pairs by incident month descending and then both incident IDs ascending. For each pair, give the shared primary event type and list which of flight phase, anomaly summary, and result summary differ between the two structured records.",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "LEFT := SCAN_TABLE(NASA_ASRS, incidents.csv AS L, [incident_id,incident_date,state_reference,locale_reference_type,primary_problem,text_file]);\nRIGHT := SCAN_TABLE(NASA_ASRS, incidents.csv AS R, [incident_id,incident_date,state_reference,locale_reference_type,primary_problem,text_file]);\nBLOCKED := JOIN(left=LEFT, right=RIGHT, condition=L.incident_id<R.incident_id AND date/state/locale/problem equality);\nLEFT_IDS := BLOCKED -> PROJECT([incident_id=L.incident_id,text_file=L.text_file]) -> DEDUP([incident_id]) -> SCAN_DOCS(NASA_ASRS, selector=text_file) -> SEM_EXTRACT('normalized event signature for left incident');\nRIGHT_IDS := BLOCKED -> PROJECT([incident_id=R.incident_id,text_file=R.text_file]) -> DEDUP([incident_id]) -> SCAN_DOCS(NASA_ASRS, selector=text_file) -> SEM_EXTRACT('normalized event signature for right incident');\nLEFT_PAIRS := JOIN(left=BLOCKED, right=LEFT_IDS, condition=L.incident_id=LEFT_IDS.incident_id);\nRIGHT_PAIRS := JOIN(left=BLOCKED, right=RIGHT_IDS, condition=R.incident_id=RIGHT_IDS.incident_id);\nMATCHED := SEM_JOIN(left=LEFT_PAIRS, right=RIGHT_PAIRS, instruction='same blocked pair and same distinctive occurrence');\nMATCHED -> ORDER_BY(incident_date DESC) -> LIMIT(20)"
+      }
+    ]
+  },
+  {
+    "task_id": "vehicle_safety-043",
+    "query": "For Ford, Jeep, Honda, and Tesla, how well do complaints, recalls, and NHTSA investigation reports align for each make? I want to know the number of distinct recall campaigns, the number of distinct complaints that match one of the make's recalls in the same component category and describe the same underlying defect, and whether any campaign is cited by an investigation report, labeled as cited or not_cited.",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "REPORTS := SCAN_DOCS(NHTSA, investigation_reports, [file_id,body]) -> PROJECT(cited_recall_cores=NORMALIZE(REGEXP_EXTRACT_ALL(body,'NHTSA recall-number pattern'))) -> GROUP_BY([], cited=COLLECT_DISTINCT(cited_recall_cores));\nCOMPLAINTS := SCAN_TABLE(NHTSA, complaints, [complaint_id,make,component_id,summary_text]) -> FILTER(make IN ['FORD','JEEP','HONDA','TESLA']);\nRECALLS := SCAN_DOCS(NHTSA, recalls, [campaign.number,vehicle.make,component.component_id,risk.defect_summary]) -> FILTER(vehicle.make IN ['FORD','JEEP','HONDA','TESLA']);\nMATCHES := SEM_JOIN(left=COMPLAINTS, right=RECALLS, instruction='same make/component and same underlying defect');\nBY_MAKE := MATCHES -> GROUP_BY([make], corroborated_complaint_count=COUNT_DISTINCT(complaint_id));\nRECALL_COUNTS := RECALLS -> GROUP_BY([make], recall_campaign_count=COUNT_DISTINCT(campaign.number), cores=COLLECT_DISTINCT(core(campaign.number)));\nJOIN(left=BY_MAKE, right=RECALL_COUNTS, condition=make equality) -> JOIN(cross, right=REPORTS) -> PROJECT([make,corroborated_complaint_count,recall_campaign_count,alignment_label])"
+      }
+    ]
+  },
+  {
+    "task_id": "vehicle_safety-018",
+    "query": "Which NHTSA investigation reports that both mention a Tesla model, such as Model 3, Model S, Model Y, or Model X, and cite at least one NHTSA recall number? For each file, which deduplicated and normalized recall numbers are cited?",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(NHTSA, investigation_reports, selector='*.txt', columns=[file_id,body])\n-> FILTER(REGEXP_LIKE(body, '(?is)\\[?Tesla\\]?.{0,80}?\\bModel\\s+(3|S|X|Y)\\b'))\n-> PROJECT([file_id,body,cited_recall_numbers=NORMALIZE(REGEXP_EXTRACT_ALL(body,'(?i)(?<![A-Z0-9])[0-9]{2}\\s*[VE][-\\s]?[0-9]{3}(?:[0-9]{3})?(?![A-Z0-9])'))])\n-> FILTER(LENGTH(cited_recall_numbers)>=1)\n-> PROJECT([file_id,cited_recall_numbers])"
+      }
+    ]
+  },
+  {
+    "task_id": "vehicle_safety-039",
+    "query": "Across Ford complaints and recalls, which five distinct recall campaigns rank highest by corroborating complaint count, where corroboration means that the complaint is in the same component category and describes the same underlying defect as the recall summary? For each campaign, what are its rank, campaign number, component ID, distinct corroborating complaint count, and whether an NHTSA investigation report cites the recall number? Campaign number ascending breaks ties in corroborating complaint count.",
+    "optimized_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(NHTSA, investigation_reports, selector='*.txt', columns=[file_id, body]) -> PROJECT([file_id, body, cited_recall_cores=NORMALIZE(REGEXP_EXTRACT_ALL(body,'(?i)(?<![A-Z0-9])[0-9]{2}\\s*[VE][-\\s]?[0-9]{3}(?:[0-9]{3})?(?![A-Z0-9])'), format='canonical_core', deduplicate=TRUE)]) -> GROUP_BY([], aggs={investigation_cited_cores: collect_distinct(cited_recall_cores)}) -> JOIN(cross, right=( SCAN_DOCS(NHTSA, recalls, [campaign.number, vehicle.make, component.component_id AS component_id, risk.defect_summary AS defect_summary]) -> FILTER(vehicle.make='FORD') -> DEDUP([campaign.number]) -> SEM_JOIN('Within the same component_id block, match a Ford recall campaign to a Ford complaint only when the complaint narrative describes the same underlying defect as the recall defect summary.', input_bindings_left={component_id: component_id, defect_summary: defect_summary}, input_bindings_right={component_id: c.component_id, complaint_summary: c.summary_text}, right=( SCAN_TABLE(NHTSA, complaints AS c, [complaint_id, make, component_id, summary_text]) -> FILTER(make='FORD') )) -> GROUP_BY([campaign.number], aggs={component_id: any(component_id), corroborating_complaint_count: count_distinct(complaint_id)}) )) -> PROJECT([campaign_number: campaign.number, component_id, corroborating_complaint_count, cited_by_investigation: (core(campaign.number) IN investigation_cited_cores ? 'true' : 'false')]) -> ORDER_BY([corroborating_complaint_count DESC, campaign_number ASC]) -> LIMIT(5) -> PROJECT([rank: row_number(), campaign_number, component_id, corroborating_complaint_count, cited_by_investigation])"
+      }
+    ]
+  }
+]

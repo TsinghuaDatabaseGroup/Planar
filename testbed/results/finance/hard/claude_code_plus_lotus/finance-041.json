@@ -1,0 +1,888 @@
+{
+  "task_id": "finance-041",
+  "answer": [
+    {
+      "acquirer": "Accolade, Inc.",
+      "target": "2nd.MD",
+      "target_sector": "Healthcare"
+    },
+    {
+      "acquirer": "Skillsoft Corp.",
+      "target": "Codecademy",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "FingerMotion, Inc.",
+      "target": "Beijing Technology Co",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "ePlus inc.",
+      "target": "Network Solutions Group",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Okta, Inc.",
+      "target": "Auth0, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "UiPath, Inc.",
+      "target": "Re:infer",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "SentinelOne",
+      "target": "PingSafe",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Smartsheet Inc.",
+      "target": "Outfit",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Phreesia, Inc.",
+      "target": "MediFind",
+      "target_sector": "Healthcare"
+    },
+    {
+      "acquirer": "Box, Inc.",
+      "target": "Crooze Corporation",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "CrowdStrike Holdings, Inc.",
+      "target": "Bionic",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "NextPlat Corp",
+      "target": "Progressive Care Inc.",
+      "target_sector": "Healthcare"
+    },
+    {
+      "acquirer": "Airship AI Holdings, Inc.",
+      "target": "Airship AI, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Doximity, Inc.",
+      "target": "AMiON",
+      "target_sector": "Healthcare"
+    },
+    {
+      "acquirer": "Ispire Technology Inc.",
+      "target": "Aspire North America LLC and Aspire Science and Technology Limited",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Verra Mobility Corporation",
+      "target": "T2 Systems Parent Corporation",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Clear Secure, Inc.",
+      "target": "Sora ID, Inc.",
+      "target_sector": "Financial Services"
+    },
+    {
+      "acquirer": "Taboola.com Ltd.",
+      "target": "Connexity (Shop Holding Corporation)",
+      "target_sector": "E-Commerce"
+    },
+    {
+      "acquirer": "Sarcos Technology and Robotics Corporation",
+      "target": "RE2, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Bumble Inc.",
+      "target": "Official",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Matterport, Inc.",
+      "target": "VHT, Inc.",
+      "target_sector": "Real Estate Marketing"
+    },
+    {
+      "acquirer": "SES AI Corporation",
+      "target": "SES Holdings Pte. Ltd.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Nerdy Inc.",
+      "target": "Nerdy LLC",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Rapid7, Inc.",
+      "target": "Minerva Labs Ltd.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Match Group, Inc.",
+      "target": "Hyperconnect Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Fastly, Inc.",
+      "target": "Glitch, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Five9, Inc.",
+      "target": "Aceyus, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Blackbaud, Inc.",
+      "target": "Kilter, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Synopsys, Inc.",
+      "target": "ANSYS, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "DigitalOcean Holdings, Inc.",
+      "target": "Paperspace",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "ACV Auctions Inc.",
+      "target": "Monk SAS",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "ZoomInfo Technologies Inc.",
+      "target": "Zoom Information Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Opendoor Technologies Inc.",
+      "target": "Pro.com",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "HubSpot, Inc.",
+      "target": "Clearbit",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Peraso Inc.",
+      "target": "Peraso Technologies Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Spectral AI, Inc.",
+      "target": "Spectral MD Holdings, Ltd.",
+      "target_sector": "Healthcare"
+    },
+    {
+      "acquirer": "Rubicon Technologies, Inc.",
+      "target": "Legacy Rubicon Units (Holdings LLC)",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Hyperfine, Inc.",
+      "target": "Legacy Hyperfine",
+      "target_sector": "Healthcare"
+    },
+    {
+      "acquirer": "Tigo Energy, Inc.",
+      "target": "Foresight Energy, Ltd.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "System1, Inc.",
+      "target": "Protected.net Group Limited",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "SEGA SAMMY CREATION INC.",
+      "target": "GAN Limited",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "AdTheorent Holding Company, Inc.",
+      "target": "Legacy AdTheorent",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Comscore, Inc.",
+      "target": "Shareablee, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "TaskUs, Inc.",
+      "target": "heloo",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Outbrain Inc.",
+      "target": "video intelligence AG",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "2U, Inc.",
+      "target": "edX",
+      "target_sector": "Education"
+    },
+    {
+      "acquirer": "Crexendo, Inc.",
+      "target": "Allegiant Networks, LLC",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "ZeroFox Holdings, Inc.",
+      "target": "ID Experts Holdings, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "SentinelOne, Inc.",
+      "target": "Attivo Networks, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "UiPath",
+      "target": "Re:infer",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Phreesia, Inc.",
+      "target": "Insignia Health, LLC",
+      "target_sector": "Healthcare"
+    },
+    {
+      "acquirer": "MongoDB, Inc.",
+      "target": "ObjectLabs Corporation",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "UiPath, Inc.",
+      "target": "Cloud Elements Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Elastic N.V.",
+      "target": "Cmd, build.security, and Optimyze",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Bill.com Holdings, Inc.",
+      "target": "Invoice2go, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Intapp, Inc.",
+      "target": "Billstream",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Palo Alto Networks, Inc.",
+      "target": "Bridgecrew Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Direct Digital Holdings, Inc.",
+      "target": "Orange142, LLC",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Core Scientific",
+      "target": "Blockcap, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "R1 RCM Inc.",
+      "target": "Cloudmed",
+      "target_sector": "Healthcare"
+    },
+    {
+      "acquirer": "Shift4 Payments, Inc.",
+      "target": "Online Payments Group AG",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Forge Global Holdings, Inc.",
+      "target": "SharesPost, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "AvidXchange Holdings, Inc.",
+      "target": "FastPay",
+      "target_sector": "Media"
+    },
+    {
+      "acquirer": "MultiPlan Corporation",
+      "target": "Discovery Health Partners",
+      "target_sector": "Healthcare"
+    },
+    {
+      "acquirer": "Envestnet, Inc.",
+      "target": "401kplans.com LLC",
+      "target_sector": "Finance"
+    },
+    {
+      "acquirer": "Playtika Holding Corp.",
+      "target": "JustPlay",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Verisk Analytics, Inc.",
+      "target": "Opta Information Intelligence Corp.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Robinhood Markets, Inc.",
+      "target": "A Say Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Twilio Inc.",
+      "target": "Segment",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "fuboTV Inc.",
+      "target": "Edisn Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Udemy, Inc.",
+      "target": "CorpU",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Align Technology, Inc.",
+      "target": "exocad",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "A10 Networks, Inc.",
+      "target": "Appcito, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Blackbaud, Inc.",
+      "target": "Kilter",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Nautilus Biotechnology, Inc.",
+      "target": "Nautilus Subsidiary, Inc.",
+      "target_sector": "Healthcare"
+    },
+    {
+      "acquirer": "Opendoor Technologies Inc.",
+      "target": "Services Labs Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "DigitalOcean Holdings, Inc.",
+      "target": "Cloudways",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Roku, Inc.",
+      "target": "This Old House",
+      "target_sector": "Media and Entertainment"
+    },
+    {
+      "acquirer": "HubSpot, Inc.",
+      "target": "Hustle Con Media, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Upwork Inc.",
+      "target": "Elance, Inc. and oDesk Corporation",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Amplitude, Inc.",
+      "target": "Iteratively",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Varonis Systems, Inc.",
+      "target": "Polyrize Security Ltd.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Advent Technologies Holdings, Inc.",
+      "target": "UltraCell LLC",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "View, Inc.",
+      "target": "IoTium",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Spark Networks SE",
+      "target": "Zoosk",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Skillz Inc.",
+      "target": "Aarki",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Rigetti Computing, Inc.",
+      "target": "Rigetti Holdings, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Hyperfine, Inc.",
+      "target": "Legacy Hyperfine and Liminal Sciences, Inc.",
+      "target_sector": "Healthcare"
+    },
+    {
+      "acquirer": "Bird Global, Inc.",
+      "target": "Bird Canada, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "ShotSpotter, Inc.",
+      "target": "Forensic Logic, LLC",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Talkspace, Inc.",
+      "target": "Lasting",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Squarespace, Inc.",
+      "target": "Tock, Inc.",
+      "target_sector": "Hospitality"
+    },
+    {
+      "acquirer": "ThredUp Inc.",
+      "target": "Remix Global AD",
+      "target_sector": "Retail"
+    },
+    {
+      "acquirer": "1stdibs.com, Inc.",
+      "target": "Design Manager",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Paymentus Holdings, Inc.",
+      "target": "Payveris and Finovera",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Clear Secure, Inc.",
+      "target": "Whyline, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Vroom, Inc.",
+      "target": "United Auto Credit Corporation",
+      "target_sector": "Finance"
+    },
+    {
+      "acquirer": "Toast, Inc.",
+      "target": "xtraCHEF, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Cardlytics, Inc.",
+      "target": "Bridg",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Skillz Inc.",
+      "target": "Aarki, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Five9, Inc.",
+      "target": "Inference Solutions Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Take-Two Interactive Software, Inc.",
+      "target": "Zynga Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "DigitalOcean Holdings, Inc.",
+      "target": "Nimbella Corp.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Fidelity National Information Services, Inc.",
+      "target": "Payrix",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "ACV Auctions Inc.",
+      "target": "MAX Digital",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Verisk Analytics, Inc.",
+      "target": "Infutor Data Solutions, LLC",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Upstart Holdings, Inc.",
+      "target": "Prodigy",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "R1 RCM Inc.",
+      "target": "VisitPay",
+      "target_sector": "Healthcare Technology"
+    },
+    {
+      "acquirer": "GoDaddy Inc.",
+      "target": "Poynt Co.",
+      "target_sector": "Finance"
+    },
+    {
+      "acquirer": "HubSpot, Inc.",
+      "target": "the Hustle",
+      "target_sector": "Media"
+    },
+    {
+      "acquirer": "Zendesk, Inc.",
+      "target": "Momentive Global Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Shapeways Holdings, Inc.",
+      "target": "Galileo Acquisition Corp.",
+      "target_sector": "Finance"
+    },
+    {
+      "acquirer": "HeartCore Enterprises, Inc.",
+      "target": "HeartCore Co., Ltd.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "KORE Group Holdings, Inc.",
+      "target": "SIMON IoT LLC",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "ShotSpotter, Inc.",
+      "target": "LEEDS, LLC",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "NerdWallet, Inc.",
+      "target": "Fundera, Inc.",
+      "target_sector": "Finance"
+    },
+    {
+      "acquirer": "LegalZoom.com, Inc.",
+      "target": "Earth Class Mail",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Codex DNA, Inc.",
+      "target": "EtonBio, Inc.",
+      "target_sector": "Biotechnology"
+    },
+    {
+      "acquirer": "Ipsidy Inc.",
+      "target": "Cards Plus",
+      "target_sector": "Manufacturing"
+    },
+    {
+      "acquirer": "Innovid",
+      "target": "TVSquared",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Thryv Holdings, Inc.",
+      "target": "Sensis Holding Limited",
+      "target_sector": "Marketing Services"
+    },
+    {
+      "acquirer": "Vivid Seats Inc.",
+      "target": "Betcha Sports, Inc.",
+      "target_sector": "Gaming"
+    },
+    {
+      "acquirer": "Bird Global, Inc.",
+      "target": "Bird Rides, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Roman DBDR Tech Acquisition Corp.",
+      "target": "CompoSecure Holdings, L.L.C.",
+      "target_sector": "Manufacturing"
+    },
+    {
+      "acquirer": "Viant Technology Inc.",
+      "target": "Adelphic",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Paymentus Holdings, Inc.",
+      "target": "Payveris LLC and Finovera, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Rimini Street, Inc.",
+      "target": "GP Investments Acquisition Corp.",
+      "target_sector": "Finance"
+    },
+    {
+      "acquirer": "Intapp, Inc.",
+      "target": "Repstor",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Palo Alto Networks, Inc.",
+      "target": "Expanse Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Keysight Technologies, Inc.",
+      "target": "Sanjole Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Helbiz, Inc.",
+      "target": "MiMoto Smart Mobility Srl",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Fast Radius, Inc.",
+      "target": "Fast Radius Operations, Inc.",
+      "target_sector": "Manufacturing"
+    },
+    {
+      "acquirer": "Mobiquity Technologies, Inc.",
+      "target": "Advangelists, LLC",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Bird Global, Inc.",
+      "target": "Scoot Networks, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "OppFi Inc.",
+      "target": "Opportunity Financial, LLC",
+      "target_sector": "Finance"
+    },
+    {
+      "acquirer": "2U, Inc.",
+      "target": "Trilogy Education Services, Inc.",
+      "target_sector": "Education"
+    },
+    {
+      "acquirer": "GoodRx",
+      "target": "HealthiNation, Inc.",
+      "target_sector": "Healthcare"
+    },
+    {
+      "acquirer": "DarioHealth Corp.",
+      "target": "Upright Technologies Ltd.",
+      "target_sector": "Healthcare"
+    },
+    {
+      "acquirer": "Viant",
+      "target": "Adelphic",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "USA Technologies, Inc.",
+      "target": "Cantaloupe Systems, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "10x Genomics, Inc.",
+      "target": "Tetramer Shop ApS",
+      "target_sector": "Life Sciences"
+    },
+    {
+      "acquirer": "HealthLynked Corp.",
+      "target": "MedOffice Direct LLC",
+      "target_sector": "Medical Distribution"
+    },
+    {
+      "acquirer": "Certara, Inc.",
+      "target": "BaseCase",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Okta",
+      "target": "Azuqua",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "PayPal Holdings, Inc.",
+      "target": "Honey Science Corporation",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Cisco Systems, Inc.",
+      "target": "Acacia Communications, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Datto Holding Corp.",
+      "target": "Gluh Pty. Ltd.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Unity Software Inc.",
+      "target": "Finger Food",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Zendesk, Inc.",
+      "target": "Smooch Technologies Holdings ULC",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Opendoor Technologies Inc.",
+      "target": "Opendoor Labs Inc.",
+      "target_sector": "Real Estate"
+    },
+    {
+      "acquirer": "Summit Wireless Technologies, Inc.",
+      "target": "WiSA, LLC",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Mimecast Limited",
+      "target": "Segasec Labs Ltd.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "RingCentral, Inc.",
+      "target": "Connect First, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Zscaler, Inc.",
+      "target": "Edgewise Networks Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Vista Equity Partners",
+      "target": "Jamf",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "JFrog Ltd.",
+      "target": "Shippable Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Criteo S.A.",
+      "target": "Manage",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "GoDaddy",
+      "target": "Neustar",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Five9",
+      "target": "Inference Solutions Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Coupa Software Incorporated",
+      "target": "Exari Group, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "eHealth, Inc.",
+      "target": "Wealth, Health and Life Advisors, LLC (GoMedigap)",
+      "target_sector": "Healthcare"
+    },
+    {
+      "acquirer": "Spark Networks SE",
+      "target": "Zoosk, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Health Catalyst",
+      "target": "Able Health",
+      "target_sector": "Healthcare"
+    },
+    {
+      "acquirer": "Omnicell, Inc.",
+      "target": "340B Link Business",
+      "target_sector": "Healthcare"
+    },
+    {
+      "acquirer": "Shift4 Payments, Inc.",
+      "target": "VenueNext",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "NextGen Healthcare",
+      "target": "HealthFusion Holdings, Inc.",
+      "target_sector": "Healthcare"
+    },
+    {
+      "acquirer": "Bumble Holdings",
+      "target": "Worldwide Vision Limited",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Roku, Inc.",
+      "target": "dataxu",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Alteryx, Inc.",
+      "target": "Feature Labs, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Autodesk",
+      "target": "PlanGrid",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Qlik",
+      "target": "Talend",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Verb Technology Company, Inc.",
+      "target": "Ascend Certification, LLC",
+      "target_sector": "Healthcare"
+    },
+    {
+      "acquirer": "i3 Verticals, Inc.",
+      "target": "Pace Payment Systems, Inc.",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Zuora",
+      "target": "Leeyo",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Duck Creek Technologies, Inc.",
+      "target": "Agencyport Software",
+      "target_sector": "Technology"
+    },
+    {
+      "acquirer": "Ping Identity",
+      "target": "ShoCard",
+      "target_sector": "Technology"
+    }
+  ],
+  "elapsed_seconds": 14400.0,
+  "cost_usd": 122.42333802,
+  "total_tokens": 312236177
+}

@@ -1,0 +1,98 @@
+{
+  "task_id": "aviation_safety-045",
+  "answer": [
+    {
+      "rank": 1,
+      "maintenance_status": "released_to_service",
+      "discovery_phase": "after_takeoff",
+      "chain_category": "released_item_failed",
+      "incident_count": 8,
+      "canonical_affected_item": "bleed system and ducts",
+      "recurring_discrepancy": "loss of pressure and indication"
+    },
+    {
+      "rank": 2,
+      "maintenance_status": "both",
+      "discovery_phase": "after_takeoff",
+      "chain_category": "released_item_failed",
+      "incident_count": 4,
+      "canonical_affected_item": "engine #2 systems",
+      "recurring_discrepancy": "engine power and quantity loss"
+    },
+    {
+      "rank": 3,
+      "maintenance_status": "both",
+      "discovery_phase": "after_takeoff",
+      "chain_category": "maintenance_limitation_escalated",
+      "incident_count": 1,
+      "canonical_affected_item": "Right DC generator",
+      "recurring_discrepancy": "Failure to reselect FMS"
+    },
+    {
+      "rank": 4,
+      "maintenance_status": "both",
+      "discovery_phase": "before_departure",
+      "chain_category": "released_item_failed",
+      "incident_count": 1,
+      "canonical_affected_item": "IRU 3",
+      "recurring_discrepancy": "enlarged skid mark on tire 1"
+    },
+    {
+      "rank": 5,
+      "maintenance_status": "deferred",
+      "discovery_phase": "before_departure",
+      "chain_category": "deferred_item_recurred",
+      "incident_count": 1,
+      "canonical_affected_item": "engine fan attrition liner",
+      "recurring_discrepancy": "holes and shedding patch material"
+    },
+    {
+      "rank": 6,
+      "maintenance_status": "deferred",
+      "discovery_phase": "before_departure",
+      "chain_category": "maintenance_limitation_escalated",
+      "incident_count": 1,
+      "canonical_affected_item": "Right Engine HPSOV",
+      "recurring_discrepancy": "zero duct pressure on both sides"
+    },
+    {
+      "rank": 7,
+      "maintenance_status": "deferred",
+      "discovery_phase": "before_departure",
+      "chain_category": "released_item_failed",
+      "incident_count": 1,
+      "canonical_affected_item": "AutoFeather System",
+      "recurring_discrepancy": "ARM light illuminated during takeoff"
+    },
+    {
+      "rank": 8,
+      "maintenance_status": "released_to_service",
+      "discovery_phase": "after_landing",
+      "chain_category": "released_item_failed",
+      "incident_count": 1,
+      "canonical_affected_item": "nose landing gear actuator rod end",
+      "recurring_discrepancy": "rod end separated at jam nut"
+    },
+    {
+      "rank": 9,
+      "maintenance_status": "released_to_service",
+      "discovery_phase": "after_takeoff",
+      "chain_category": "incomplete_repair_or_signoff",
+      "incident_count": 1,
+      "canonical_affected_item": "aileron trim tab",
+      "recurring_discrepancy": "trim indicator misaligned"
+    },
+    {
+      "rank": 10,
+      "maintenance_status": "released_to_service",
+      "discovery_phase": "before_departure",
+      "chain_category": "released_item_failed",
+      "incident_count": 1,
+      "canonical_affected_item": "Fuel Control Unit",
+      "recurring_discrepancy": "booming fireball start"
+    }
+  ],
+  "elapsed_seconds": 127.57,
+  "cost_usd": 0.178375,
+  "total_tokens": 102347
+}

@@ -1,0 +1,11 @@
+{
+  "task_id": "legal_contracts-081",
+  "answer": [
+    {
+      "company": "Voya Financial"
+    }
+  ],
+  "elapsed_seconds": 181.751,
+  "cost_usd": 0.46594596,
+  "total_tokens": 620439
+}

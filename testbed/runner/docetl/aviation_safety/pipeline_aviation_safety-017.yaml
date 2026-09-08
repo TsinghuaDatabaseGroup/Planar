@@ -1,0 +1,87 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+operations:
+- name: count_distinct_incidents
+  type: code_reduce
+  reduce_key: _all
+  code: "def transform(items):\n    return {\n        \"count\": len(\n            {\n               \
+    \ str(item.get(\"incident_id\"))\n                for item in items\n                if item.get(\"\
+    incident_id\") is not None\n            }\n        )\n    }\n"
+  model: Qwen3.5-397B-A17B
+- name: keep_reports_with_clear_troubleshooting_status
+  type: filter
+  prompt: 'Keep this report only when it describes active troubleshooting by the crew or
+
+    maintenance personnel and supports a clear resulting status: resolved when
+
+    corrective action cleared the problem, intermittent when the problem
+
+    disappeared but remained uncertain or later recurred, or still unsafe when
+
+    the problem persisted or left the aircraft unsafe.
+
+
+    Recorded result summary:
+
+    {{ input.result_summary }}
+
+
+    Report:
+
+    {{ input.text }}
+
+    '
+  output:
+    mode: structured_output
+    schema:
+      has_active_troubleshooting_and_clear_status: boolean
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 128
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  model: Qwen3.5-397B-A17B
+- name: load_asrs_narrative
+  type: code_map
+  code: "def transform(doc):\n    import os\n\n    base_dir = os.path.abspath(os.path.join(\"data\", \"\
+    asrs\"))\n    text_path = os.path.abspath(\n        os.path.join(base_dir, str(doc.get(\"text_file\"\
+    , \"\")))\n    )\n    if os.path.commonpath([base_dir, text_path]) != base_dir:\n        raise ValueError(\"\
+    ASRS text path escapes data/asrs\")\n    with open(text_path, \"r\", encoding=\"utf-8\", errors=\"\
+    replace\") as handle:\n        return {\"text\": handle.read()}\n"
+  model: Qwen3.5-397B-A17B
+- name: filter_aircraft_equipment_problem_reports
+  type: code_filter
+  code: "def transform(doc):\n    return \"Aircraft Equipment Problem\" in str(\n        doc.get(\"anomaly_summary\"\
+    ) or \"\"\n    )\n"
+  model: Qwen3.5-397B-A17B
+pipeline:
+  steps:
+  - name: process
+    operations:
+    - filter_aircraft_equipment_problem_reports
+    - load_asrs_narrative
+    - keep_reports_with_clear_troubleshooting_status
+    - count_distinct_incidents
+    input: asrs_incidents
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-017.json
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  num_plans_to_evaluate_in_parallel: 1

@@ -1,0 +1,60 @@
+{
+  "task_id": "legal_contracts-080",
+  "answer": [
+    {
+      "company": "ANI Pharmaceuticals, Inc.",
+      "covered_person_categories": [
+        "directors",
+        "officers or executives",
+        "employees or personnel",
+        "external service providers",
+        "family or household members",
+        "controlled entities or accounts"
+      ]
+    },
+    {
+      "company": "Aveanna Healthcare Holdings Inc.",
+      "covered_person_categories": [
+        "directors",
+        "officers or executives",
+        "employees or personnel",
+        "external service providers",
+        "family or household members",
+        "controlled entities or accounts"
+      ]
+    },
+    {
+      "company": "Acuity Brands, Inc.",
+      "covered_person_categories": [
+        "directors",
+        "officers or executives",
+        "employees or personnel",
+        "family or household members",
+        "controlled entities or accounts"
+      ]
+    },
+    {
+      "company": "Acuity Inc.",
+      "covered_person_categories": [
+        "directors",
+        "officers or executives",
+        "employees or personnel",
+        "family or household members",
+        "controlled entities or accounts"
+      ]
+    },
+    {
+      "company": "Reading International, Inc.",
+      "covered_person_categories": [
+        "directors",
+        "officers or executives",
+        "employees or personnel",
+        "family or household members",
+        "controlled entities or accounts"
+      ]
+    }
+  ],
+  "elapsed_seconds": 152.16,
+  "cost_usd": 0.36889752,
+  "total_tokens": 619292
+}

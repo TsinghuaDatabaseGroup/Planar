@@ -1,0 +1,344 @@
+{
+  "task_id": "legal_contracts-038",
+  "answer": [
+    {
+      "document_id": "1020416_0001193125-16-701566_d250247dex99d2.htm",
+      "exhibit_family": "Confidentiality Agreement",
+      "governing_law": "State of New York",
+      "term_months": 18,
+      "longest_restriction_months": 18
+    },
+    {
+      "document_id": "1046880_0001193125-11-323050_d262064dex992.htm",
+      "exhibit_family": "Non-Disclosure Agreement",
+      "governing_law": "State of New York",
+      "term_months": 12,
+      "longest_restriction_months": 12
+    },
+    {
+      "document_id": "1063085_0000950134-09-011390_f52580exv99wxeyx3y.htm",
+      "exhibit_family": "Mutual Non-Disclosure Agreement",
+      "governing_law": "State of California",
+      "term_months": 36,
+      "longest_restriction_months": 36
+    },
+    {
+      "document_id": "1070052_0000950130-01-501801_dex99d2.txt",
+      "exhibit_family": "Mutual Non-Disclosure Agreement",
+      "governing_law": "State of New York",
+      "term_months": 12,
+      "longest_restriction_months": 12
+    },
+    {
+      "document_id": "1094814_0001140361-18-017998_s002178x1_ex99d7.htm",
+      "exhibit_family": "NDA",
+      "governing_law": "Delaware",
+      "term_months": 12,
+      "longest_restriction_months": 12
+    },
+    {
+      "document_id": "1100182_0001107049-00-000014_document_23.txt",
+      "exhibit_family": "Non-Circumvention and Non-Disclosure Agreement",
+      "governing_law": "Pennsylvania",
+      "term_months": 24,
+      "longest_restriction_months": 24
+    },
+    {
+      "document_id": "1104332_0000950144-00-008876_ex10-26.txt",
+      "exhibit_family": "Non-Circumvention and Non-Disclosure Agreement",
+      "governing_law": "Pennsylvania",
+      "term_months": 24,
+      "longest_restriction_months": 24
+    },
+    {
+      "document_id": "1112422_0000950153-08-001257_p75864exv99wxeyx4y.htm",
+      "exhibit_family": "Nondisclosure Agreement",
+      "governing_law": "State of New York",
+      "term_months": 24,
+      "longest_restriction_months": 24
+    },
+    {
+      "document_id": "1120792_0001019687-05-001599_morgan_sb2a1-ex1408.txt",
+      "exhibit_family": "Non-Circumvention / Non-Disclosure and Confidentiality Agreement",
+      "governing_law": "Florida",
+      "term_months": 60,
+      "longest_restriction_months": 60
+    },
+    {
+      "document_id": "1123713_0001021408-00-003137_0016.txt",
+      "exhibit_family": "Mutual Non-Disclosure Agreement",
+      "governing_law": "Province of New Brunswick",
+      "term_months": 36,
+      "longest_restriction_months": 36
+    },
+    {
+      "document_id": "1142512_0001193125-14-269726_d757168dex99e3.htm",
+      "exhibit_family": "NDA",
+      "governing_law": "California",
+      "term_months": 24,
+      "longest_restriction_months": 24
+    },
+    {
+      "document_id": "1167294_0001193125-15-218134_d933068dex99d3.htm",
+      "exhibit_family": "NDA",
+      "governing_law": "Delaware",
+      "term_months": 12,
+      "longest_restriction_months": 12
+    },
+    {
+      "document_id": "1332602_0001193125-12-512465_d454990dex99d2.htm",
+      "exhibit_family": "Non-Disclosure Agreement",
+      "governing_law": "State of Minnesota",
+      "term_months": 24,
+      "longest_restriction_months": 24
+    },
+    {
+      "document_id": "1334303_0001193125-10-204560_dex99e5.htm",
+      "exhibit_family": "Nondisclosure Agreement",
+      "governing_law": "State of New York",
+      "term_months": 24,
+      "longest_restriction_months": 24
+    },
+    {
+      "document_id": "1335239_0001019687-14-003760_epazz_ex1034.htm",
+      "exhibit_family": "NON-DISCLOSURE/NON-COMPETE AGREEMENT",
+      "governing_law": "State of Illinois",
+      "term_months": 12,
+      "longest_restriction_months": 12
+    },
+    {
+      "document_id": "1372664_0001193125-12-159071_d333885dex99d9.htm",
+      "exhibit_family": "NDA",
+      "governing_law": "Georgia",
+      "term_months": 24,
+      "longest_restriction_months": 24
+    },
+    {
+      "document_id": "1373467_0001096350-07-000140_ex99threea.htm",
+      "exhibit_family": "Confidentiality/Standstill Agreement",
+      "governing_law": "State of Colorado",
+      "term_months": 12,
+      "longest_restriction_months": 12
+    },
+    {
+      "document_id": "1402305_0001193125-11-343865_d268167dex99d2.htm",
+      "exhibit_family": "NDA",
+      "governing_law": "New York",
+      "term_months": 12,
+      "longest_restriction_months": 12
+    },
+    {
+      "document_id": "1466739_0001002014-12-000470_exh10-4.htm",
+      "exhibit_family": "Non-Circumvention, Non-Disclosure, Brokerage and Working Agreement",
+      "governing_law": "State of Utah",
+      "term_months": 60,
+      "longest_restriction_months": 60
+    },
+    {
+      "document_id": "14803_0001047469-04-012846_a2134202zex-99_e3.htm",
+      "exhibit_family": "Confidentiality Agreement",
+      "governing_law": "State of Colorado",
+      "term_months": 18,
+      "longest_restriction_months": 18
+    },
+    {
+      "document_id": "183.pdf",
+      "exhibit_family": "Confidentiality (Non-Disclosure) Agreement",
+      "governing_law": "State of New York",
+      "term_months": 12,
+      "longest_restriction_months": 12
+    },
+    {
+      "document_id": "24104_0000024104-96-000010_document_3.txt",
+      "exhibit_family": "non-competition and non-disclosure agreement",
+      "governing_law": "Colorado",
+      "term_months": 120,
+      "longest_restriction_months": 120
+    },
+    {
+      "document_id": "354452_0000950123-99-011178_document_13.txt",
+      "exhibit_family": "Confidentiality Agreement",
+      "governing_law": "State of Florida",
+      "term_months": 6,
+      "longest_restriction_months": 6
+    },
+    {
+      "document_id": "55805_0001145443-10-001028_d26631_ex99-d3.htm",
+      "exhibit_family": "Mutual Confidentiality Agreement",
+      "governing_law": "State of Delaware",
+      "term_months": 24,
+      "longest_restriction_months": 24
+    },
+    {
+      "document_id": "703361_0001193125-12-242586_d356019dex9910.htm",
+      "exhibit_family": "NDA",
+      "governing_law": "State of California",
+      "term_months": 12,
+      "longest_restriction_months": 12
+    },
+    {
+      "document_id": "768262_0001193125-10-128597_dex99d2.htm",
+      "exhibit_family": "NDA",
+      "governing_law": "State of New York",
+      "term_months": 12,
+      "longest_restriction_months": 12
+    },
+    {
+      "document_id": "803647_0001047469-17-006266_a2233487zex-99_d2.htm",
+      "exhibit_family": "NDA",
+      "governing_law": "Commonwealth of Virginia",
+      "term_months": 24,
+      "longest_restriction_months": 24
+    },
+    {
+      "document_id": "814457_0000950137-04-009790_c89545exv99wxdyx6y.htm",
+      "exhibit_family": "NDA",
+      "governing_law": "State of Illinois",
+      "term_months": 24,
+      "longest_restriction_months": 24
+    },
+    {
+      "document_id": "88190_0000950144-96-003474_document_2.txt",
+      "exhibit_family": "Covenant Not to Compete",
+      "governing_law": "State of New York",
+      "term_months": 36,
+      "longest_restriction_months": 36
+    },
+    {
+      "document_id": "888953_0001193125-13-044630_d480503dex99e6.htm",
+      "exhibit_family": "Non-Disclosure and Confidentiality Agreement",
+      "governing_law": "State of Delaware",
+      "term_months": 12,
+      "longest_restriction_months": 12
+    },
+    {
+      "document_id": "912263_0001047469-12-006662_a2209873zex-99_d2.htm",
+      "exhibit_family": "Confidentiality Agreement",
+      "governing_law": "State of New York",
+      "term_months": 18,
+      "longest_restriction_months": 18
+    },
+    {
+      "document_id": "912263_0001104659-12-004811_a12-3671_1ex2.htm",
+      "exhibit_family": "Confidentiality Agreement",
+      "governing_law": "State of New York",
+      "term_months": 18,
+      "longest_restriction_months": 18
+    },
+    {
+      "document_id": "912263_0001193125-12-285724_d371520dex99e4.htm",
+      "exhibit_family": "Confidentiality Agreement",
+      "governing_law": "State of New York",
+      "term_months": 18,
+      "longest_restriction_months": 18
+    },
+    {
+      "document_id": "915191_0001047469-17-003155_a2231967zex-99_8.htm",
+      "exhibit_family": "Confidentiality Agreement",
+      "governing_law": "State of New York",
+      "term_months": 12,
+      "longest_restriction_months": 12
+    },
+    {
+      "document_id": "930796_0000950123-05-001407_y05539exv99w5.txt",
+      "exhibit_family": "Confidentiality, Non-Disclosure and Non-Circumvention Agreement",
+      "governing_law": "New York State",
+      "term_months": 18,
+      "longest_restriction_months": 18
+    },
+    {
+      "document_id": "BaconNon-Disclosure.pdf",
+      "exhibit_family": "Non-Disclosure Agreement",
+      "governing_law": "Tennessee",
+      "term_months": 36,
+      "longest_restriction_months": 36
+    },
+    {
+      "document_id": "Kerber_Non_Disclosure_Agreement.pdf",
+      "exhibit_family": "NDA",
+      "governing_law": "Province of Ontario",
+      "term_months": 60,
+      "longest_restriction_months": 60
+    },
+    {
+      "document_id": "Non-disclosure%20Agreement_1.pdf",
+      "exhibit_family": "NDA",
+      "governing_law": "Province of Alberta and the federal laws of Canada applicable in the Province of Alberta",
+      "term_months": 24,
+      "longest_restriction_months": 24
+    },
+    {
+      "document_id": "QEP-Williston-Form-of-Confidentiality-Agreement-BMO.pdf",
+      "exhibit_family": "Confidentiality and Nondisclosure Agreement",
+      "governing_law": "State of Texas",
+      "term_months": 12,
+      "longest_restriction_months": 12
+    },
+    {
+      "document_id": "RROI_Confidentiality_Agreement_Final.pdf",
+      "exhibit_family": "Confidentiality Agreement",
+      "governing_law": "Alberta",
+      "term_months": 12,
+      "longest_restriction_months": 12
+    },
+    {
+      "document_id": "contrato_ingles_corporativo_mal.pdf",
+      "exhibit_family": "Non-Circumvention and Non-Disclosure Agreement",
+      "governing_law": "Spain",
+      "term_months": 60,
+      "longest_restriction_months": 60
+    },
+    {
+      "document_id": "ex1017-cgallagherconsultin.htm",
+      "exhibit_family": "consulting agreement",
+      "governing_law": "Arizona",
+      "term_months": 18,
+      "longest_restriction_months": 18
+    },
+    {
+      "document_id": "exhibit1012-consultingagre.htm",
+      "exhibit_family": "consulting agreement",
+      "governing_law": "California",
+      "term_months": 6,
+      "longest_restriction_months": 6
+    },
+    {
+      "document_id": "exhibit1022.htm",
+      "exhibit_family": "consulting agreement",
+      "governing_law": "Texas",
+      "term_months": 12,
+      "longest_restriction_months": 12
+    },
+    {
+      "document_id": "exhibit102consultingagreem.htm",
+      "exhibit_family": "consulting agreement",
+      "governing_law": "State of California",
+      "term_months": 1,
+      "longest_restriction_months": 1
+    },
+    {
+      "document_id": "exhibit105consultingagreem.htm",
+      "exhibit_family": "consulting agreement",
+      "governing_law": "State of California",
+      "term_months": 1,
+      "longest_restriction_months": 1
+    },
+    {
+      "document_id": "greenrain_ex1001.htm",
+      "exhibit_family": "Memorandum of Understanding",
+      "governing_law": "State of Texas",
+      "term_months": 24,
+      "longest_restriction_months": 24
+    },
+    {
+      "document_id": "nondisclosureagreement.pdf",
+      "exhibit_family": "NDA",
+      "governing_law": "India",
+      "term_months": 60,
+      "longest_restriction_months": 60
+    }
+  ],
+  "elapsed_seconds": 630.44,
+  "cost_usd": 5.401446,
+  "total_tokens": 10278117
+}

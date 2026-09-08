@@ -1,0 +1,32 @@
+{
+  "task_id": "vehicle_safety-004",
+  "answer": [
+    {
+      "campaign_number": "23V610000",
+      "failure_mechanism": "Rearview camera mounting clips breaking"
+    },
+    {
+      "campaign_number": "16V862000",
+      "failure_mechanism": "tow hitch module malfunction"
+    },
+    {
+      "campaign_number": "23V579000",
+      "failure_mechanism": "Warning labels detaching from sun visors"
+    },
+    {
+      "campaign_number": "16V770000",
+      "failure_mechanism": "inadequate weld joints in seatback frame"
+    },
+    {
+      "campaign_number": "23V639000",
+      "failure_mechanism": "Water leakage into rearview camera"
+    },
+    {
+      "campaign_number": "15V089000",
+      "failure_mechanism": "Improperly soldered accelerator pedal component"
+    }
+  ],
+  "elapsed_seconds": 1.77,
+  "cost_usd": 0.003317,
+  "total_tokens": 5174
+}

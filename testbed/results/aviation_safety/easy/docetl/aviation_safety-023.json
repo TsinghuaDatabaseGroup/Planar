@@ -1,0 +1,24 @@
+{
+  "task_id": "aviation_safety-023",
+  "answer": [
+    {
+      "canonical_human_factor": "communication_breakdown",
+      "incident_factor_pair_count": 370
+    },
+    {
+      "canonical_human_factor": "workload",
+      "incident_factor_pair_count": 167
+    },
+    {
+      "canonical_human_factor": "confusion",
+      "incident_factor_pair_count": 259
+    },
+    {
+      "canonical_human_factor": "situational_awareness",
+      "incident_factor_pair_count": 501
+    }
+  ],
+  "elapsed_seconds": 165.74,
+  "cost_usd": 1.355775,
+  "total_tokens": 3258052
+}

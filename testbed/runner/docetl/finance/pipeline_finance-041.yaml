@@ -1,0 +1,390 @@
+datasets:
+  sec_csv_scan_seed:
+    type: file
+    path: data/SEC/CSV/2024.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: scan_all_sec_text_rows
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          import csv
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          csv_dir = os.path.abspath(os.path.join(base_dir, "CSV"))
+          if os.path.commonpath([base_dir, csv_dir]) != base_dir:
+              raise ValueError("SEC CSV path escapes data/SEC")
+
+          rows = []
+          for year in range(2019, 2025):
+              csv_path = os.path.join(csv_dir, f"{year}.csv")
+              with open(
+                  csv_path,
+                  "r",
+                  encoding="utf-8-sig",
+                  newline="",
+              ) as handle:
+                  for row in csv.DictReader(handle):
+                      rows.append({"text": row.get("text")})
+          return {"rows": rows}
+
+  - name: unnest_all_acquisition_filings
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - text
+
+  - name: load_acquisition_filing_document
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("SEC text path escapes data/SEC")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              acquisition_document = handle.read()
+          return {"acquisition_document": acquisition_document}
+
+  - name: filter_software_or_technology_platform_companies
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this SEC 10-K filing only if the reporting company's primary business
+      is software or operating a technology platform.
+      Base the decision on the company's primary business rather than its use of
+      software or technology in another type of business.
+
+      Filing:
+      {{ input.acquisition_document }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: extract_acquirer_and_whole_company_acquisitions
+    type: map
+    optimize: true
+    prompt: |
+      Extract from this SEC 10-K filing:
+
+      1. The reporting acquirer's legal registrant name.
+      2. Its concise, broad industry sector.
+      3. The legal or commonly stated names of every whole company that the
+         reporting company acquired, or entered a definitive agreement to
+         acquire, as disclosed in the filing.
+
+      As required by the query, exclude asset purchases, minority-stake
+      investments, spin-offs, and SPAC or blank-check combinations.
+      Preserve each acquired company's identifying name and return each distinct
+      company once.
+      Return an empty list if no qualifying acquisition is disclosed. If the
+      acquirer name or sector cannot be determined, use an empty string.
+
+      Filing:
+      {{ input.acquisition_document }}
+    output:
+      mode: structured_output
+      schema:
+        acquirer: string
+        acquirer_sector: string
+        acquired_company_names: list[string]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 1024
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_filings_with_acquired_companies
+    type: code_filter
+    code: |
+      def transform(doc):
+          names = doc.get("acquired_company_names")
+          return (
+              bool(str(doc.get("acquirer", "")).strip())
+              and isinstance(names, list)
+              and len(names) > 0
+          )
+
+  - name: scan_all_sec_registry_rows
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          import csv
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          csv_dir = os.path.abspath(os.path.join(base_dir, "CSV"))
+          if os.path.commonpath([base_dir, csv_dir]) != base_dir:
+              raise ValueError("SEC CSV path escapes data/SEC")
+
+          rows = []
+          for year in range(2019, 2025):
+              csv_path = os.path.join(csv_dir, f"{year}.csv")
+              with open(
+                  csv_path,
+                  "r",
+                  encoding="utf-8-sig",
+                  newline="",
+              ) as handle:
+                  for row in csv.DictReader(handle):
+                      rows.append(
+                          {
+                              "cik": row.get("cik"),
+                              "year": year,
+                              "text": row.get("text"),
+                              "word_count": row.get("word_count"),
+                          }
+                      )
+          return {"rows": rows}
+
+  - name: unnest_all_registry_filings
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - cik
+      - year
+      - text
+      - word_count
+
+  - name: select_earliest_longest_registry_filing_by_cik
+    type: code_reduce
+    reduce_key: cik
+    code: |
+      def transform(items):
+          def integer_value(item, key, default=0):
+              try:
+                  return int(item.get(key, default))
+              except (TypeError, ValueError):
+                  return default
+
+          selected = min(
+              items,
+              key=lambda item: (
+                  integer_value(item, "year", 9999),
+                  -integer_value(item, "word_count", 0),
+                  str(item.get("text", "")),
+              ),
+          )
+          return {
+              "cik": selected.get("cik"),
+              "registry_text": selected.get("text"),
+              "registry_year": integer_value(selected, "year", 0),
+              "registry_word_count": integer_value(
+                  selected,
+                  "word_count",
+                  0,
+              ),
+          }
+
+  - name: load_registry_filing_document
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("registry_text", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("SEC text path escapes data/SEC")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              registry_document = handle.read()
+          return {"registry_document": registry_document}
+
+  - name: extract_registry_company_name_and_sector
+    type: map
+    optimize: true
+    prompt: |
+      Extract the reporting company's legal name and industry sector from this
+      SEC 10-K filing. Use the legal registrant name stated in the filing and
+      return a concise, conventional industry-sector name grounded in the filing.
+      If either value cannot be determined, use an empty string placeholder.
+
+      Filing:
+      {{ input.registry_document }}
+    output:
+      mode: structured_output
+      schema:
+        registry_company_name: string
+        target_sector: string
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 256
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: match_acquired_companies_to_registry
+    type: equijoin
+    optimize: true
+    comparison_prompt: |
+      Determine whether at least one acquired-company name refers to the same
+      legal entity as the SEC filing registry company.
+
+      Allow harmless naming variations, but require the names to identify the same
+      legal entity.
+
+      ACQUIRED-COMPANY NAMES:
+      {{ left.acquired_company_names }}
+
+      REGISTRY COMPANY:
+      {{ right.registry_company_name }}
+    blocking_keys:
+      left:
+        - acquired_company_names
+      right:
+        - registry_company_name
+    blocking_target_recall: 0.95
+    embedding_model: Qwen3-Embedding-8B
+    comparison_model: Qwen3.5-397B-A17B
+    timeout: 120
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_cross_company_cross_sector_matches
+    type: code_filter
+    code: |
+      def transform(doc):
+          acquirer = str(doc.get("acquirer", "")).strip()
+          target = str(doc.get("registry_company_name", "")).strip()
+          acquirer_sector = str(
+              doc.get("acquirer_sector", "")
+          ).strip().casefold()
+          target_sector = str(
+              doc.get("target_sector", "")
+          ).strip().casefold()
+          return (
+              bool(acquirer)
+              and bool(target)
+              and acquirer.casefold() != target.casefold()
+              and bool(acquirer_sector)
+              and bool(target_sector)
+              and acquirer_sector != target_sector
+          )
+
+  - name: project_acquirer_target_pairs
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "acquirer": str(doc.get("acquirer", "")).strip(),
+              "target": str(
+                  doc.get("registry_company_name", "")
+              ).strip(),
+              "target_sector": str(doc.get("target_sector", "")).strip(),
+          }
+
+  - name: deduplicate_acquirer_target_pairs
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          seen = set()
+          rows = []
+          for item in items:
+              acquirer = str(item.get("acquirer", "")).strip()
+              target = str(item.get("target", "")).strip()
+              key = (acquirer.casefold(), target.casefold())
+              if not acquirer or not target or key in seen:
+                  continue
+              seen.add(key)
+              rows.append(
+                  {
+                      "acquirer": acquirer,
+                      "target": target,
+                      "target_sector": item.get("target_sector", ""),
+                  }
+              )
+          return {"rows": rows}
+
+  - name: unnest_unique_acquirer_target_pairs
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - acquirer
+      - target
+      - target_sector
+
+pipeline:
+  steps:
+    - name: acquisition_events
+      input: sec_csv_scan_seed
+      operations:
+        - scan_all_sec_text_rows
+        - unnest_all_acquisition_filings
+        - load_acquisition_filing_document
+        - filter_software_or_technology_platform_companies
+        - extract_acquirer_and_whole_company_acquisitions
+        - filter_filings_with_acquired_companies
+    - name: company_registry
+      input: sec_csv_scan_seed
+      operations:
+        - scan_all_sec_registry_rows
+        - unnest_all_registry_filings
+        - select_earliest_longest_registry_filing_by_cik
+        - load_registry_filing_document
+        - extract_registry_company_name_and_sector
+    - name: matched_acquisitions
+      operations:
+        - match_acquired_companies_to_registry:
+            left: acquisition_events
+            right: company_registry
+    - name: process
+      input: matched_acquisitions
+      operations:
+        - filter_cross_company_cross_sector_matches
+        - project_acquirer_target_pairs
+        - deduplicate_acquirer_target_pairs
+        - unnest_unique_acquirer_target_pairs
+  output:
+    type: file
+    path: raw_outputs/finance/output_finance-041.json

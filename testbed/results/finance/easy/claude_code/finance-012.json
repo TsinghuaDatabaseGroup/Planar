@@ -1,0 +1,68 @@
+{
+  "task_id": "finance-012",
+  "answer": [
+    {
+      "industry_sector": "Financial Services",
+      "ai_ml_filings_2022": 597,
+      "ai_ml_filings_2023": 717,
+      "total_filings_2023": 2366
+    },
+    {
+      "industry_sector": "Biotechnology",
+      "ai_ml_filings_2022": 259,
+      "ai_ml_filings_2023": 327,
+      "total_filings_2023": 722
+    },
+    {
+      "industry_sector": "Utilities",
+      "ai_ml_filings_2022": 13,
+      "ai_ml_filings_2023": 77,
+      "total_filings_2023": 184
+    },
+    {
+      "industry_sector": "Energy",
+      "ai_ml_filings_2022": 44,
+      "ai_ml_filings_2023": 94,
+      "total_filings_2023": 344
+    },
+    {
+      "industry_sector": "Industrials",
+      "ai_ml_filings_2022": 60,
+      "ai_ml_filings_2023": 110,
+      "total_filings_2023": 293
+    },
+    {
+      "industry_sector": "Media & Entertainment",
+      "ai_ml_filings_2022": 35,
+      "ai_ml_filings_2023": 76,
+      "total_filings_2023": 136
+    },
+    {
+      "industry_sector": "Materials",
+      "ai_ml_filings_2022": 20,
+      "ai_ml_filings_2023": 57,
+      "total_filings_2023": 196
+    },
+    {
+      "industry_sector": "Real Estate",
+      "ai_ml_filings_2022": 62,
+      "ai_ml_filings_2023": 97,
+      "total_filings_2023": 379
+    },
+    {
+      "industry_sector": "Healthcare",
+      "ai_ml_filings_2022": 95,
+      "ai_ml_filings_2023": 124,
+      "total_filings_2023": 282
+    },
+    {
+      "industry_sector": "Technology",
+      "ai_ml_filings_2022": 409,
+      "ai_ml_filings_2023": 437,
+      "total_filings_2023": 733
+    }
+  ],
+  "elapsed_seconds": 1872.416,
+  "cost_usd": 2.30825508,
+  "total_tokens": 5681940
+}

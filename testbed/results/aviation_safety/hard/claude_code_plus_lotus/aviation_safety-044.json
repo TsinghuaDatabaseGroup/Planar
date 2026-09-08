@@ -1,0 +1,32 @@
+{
+  "task_id": "aviation_safety-044",
+  "answer": [
+    {
+      "cause_category": "equipment_malfunction",
+      "incident_count": 56,
+      "canonical_system": "Answer: Cabin pressurization and air conditioning systems",
+      "dominant_operational_outcome": "Answer: Flight crew diverted or returned."
+    },
+    {
+      "cause_category": "maintenance_or_release_decision",
+      "incident_count": 12,
+      "canonical_system": "Answer: Environmental Control System (ECS) and Pressurization",
+      "dominant_operational_outcome": "Answer: Flight crew returned to departure airport."
+    },
+    {
+      "cause_category": "environmental_contamination",
+      "incident_count": 4,
+      "canonical_system": "Answer: Environmental Control System (ECS) and Packs",
+      "dominant_operational_outcome": "Answer: Flight crew diverted and landed safely."
+    },
+    {
+      "cause_category": "crew_procedure",
+      "incident_count": 5,
+      "canonical_system": "Answer: Cabin pressurization and oxygen systems",
+      "dominant_operational_outcome": "Answer: Flight crew landed in emergency condition."
+    }
+  ],
+  "elapsed_seconds": 260.319,
+  "cost_usd": 0.58022058,
+  "total_tokens": 1139021
+}

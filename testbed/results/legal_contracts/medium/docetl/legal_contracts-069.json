@@ -1,0 +1,143 @@
+{
+  "task_id": "legal_contracts-069",
+  "answer": [
+    {
+      "normalized_agreement_title": "non disclosure agreement",
+      "family_size": 170,
+      "distinct_finite_term_years": [
+        0,
+        0.08,
+        1,
+        1.5,
+        1.79,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9.17,
+        10,
+        25
+      ],
+      "perpetual_member_count": 36,
+      "distinct_stated_governing_law_count": 79
+    },
+    {
+      "normalized_agreement_title": "mutual non disclosure agreement",
+      "family_size": 86,
+      "distinct_finite_term_years": [
+        0,
+        1,
+        1.5,
+        2,
+        3,
+        4,
+        5
+      ],
+      "perpetual_member_count": 7,
+      "distinct_stated_governing_law_count": 47
+    },
+    {
+      "normalized_agreement_title": "confidentiality and non disclosure agreement",
+      "family_size": 41,
+      "distinct_finite_term_years": [
+        0.5,
+        1,
+        2,
+        3,
+        5
+      ],
+      "perpetual_member_count": 6,
+      "distinct_stated_governing_law_count": 29
+    },
+    {
+      "normalized_agreement_title": "confidentiality agreement",
+      "family_size": 34,
+      "distinct_finite_term_years": [
+        0.5,
+        1,
+        1.25,
+        1.5,
+        2,
+        3,
+        5,
+        7
+      ],
+      "perpetual_member_count": 4,
+      "distinct_stated_governing_law_count": 16
+    },
+    {
+      "normalized_agreement_title": "non disclosure and confidentiality agreement",
+      "family_size": 14,
+      "distinct_finite_term_years": [
+        0.04,
+        1,
+        2,
+        3,
+        5,
+        7
+      ],
+      "perpetual_member_count": 0,
+      "distinct_stated_governing_law_count": 12
+    },
+    {
+      "normalized_agreement_title": "mutual confidentiality and non disclosure agreement",
+      "family_size": 9,
+      "distinct_finite_term_years": [
+        3,
+        5,
+        10
+      ],
+      "perpetual_member_count": 2,
+      "distinct_stated_governing_law_count": 8
+    },
+    {
+      "normalized_agreement_title": "mutual nondisclosure agreement",
+      "family_size": 9,
+      "distinct_finite_term_years": [
+        1.5,
+        2,
+        3,
+        5
+      ],
+      "perpetual_member_count": 1,
+      "distinct_stated_governing_law_count": 7
+    },
+    {
+      "normalized_agreement_title": "non competition and non disclosure agreement",
+      "family_size": 7,
+      "distinct_finite_term_years": [
+        2,
+        5,
+        10
+      ],
+      "perpetual_member_count": 2,
+      "distinct_stated_governing_law_count": 7
+    },
+    {
+      "normalized_agreement_title": "non disclosure agreement nda",
+      "family_size": 5,
+      "distinct_finite_term_years": [
+        0.12,
+        3
+      ],
+      "perpetual_member_count": 0,
+      "distinct_stated_governing_law_count": 4
+    },
+    {
+      "normalized_agreement_title": "non disclosure confidentiality agreement",
+      "family_size": 5,
+      "distinct_finite_term_years": [
+        3,
+        5,
+        10
+      ],
+      "perpetual_member_count": 1,
+      "distinct_stated_governing_law_count": 4
+    }
+  ],
+  "elapsed_seconds": 133.13,
+  "cost_usd": 0.686344,
+  "total_tokens": 1168768
+}

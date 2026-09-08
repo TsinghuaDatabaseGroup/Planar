@@ -1,0 +1,22 @@
+{
+  "task_id": "finance-032",
+  "answer": [
+    {"company_name": "Scientific Energy, Inc", "industry_sector": "Retail - Food Delivery", "employee_count_2019": 3, "employee_count_2023": 872},
+    {"company_name": "BLUE OWL CAPITAL CORPORATION", "industry_sector": "Technology Services", "employee_count_2019": 0, "employee_count_2023": 0},
+    {"company_name": "BeiGene, Ltd.", "industry_sector": "Technology Services", "employee_count_2019": 0, "employee_count_2023": 0},
+    {"company_name": "Blackstone Secured Lending Fund", "industry_sector": "Technology Services", "employee_count_2019": 0, "employee_count_2023": 0},
+    {"company_name": "Cheniere Corpus Christi Holdings, LLC", "industry_sector": "Technology Services", "employee_count_2019": 0, "employee_count_2023": 0},
+    {"company_name": "Corcept Therapeutics Incorporated", "industry_sector": "Technology Services", "employee_count_2019": 0, "employee_count_2023": 0},
+    {"company_name": "DIGIMARC CORPORATION", "industry_sector": "Technology Services", "employee_count_2019": 0, "employee_count_2023": 0},
+    {"company_name": "Goldman Sachs Private Middle Market Credit II LLC", "industry_sector": "Technology Services", "employee_count_2019": 0, "employee_count_2023": 0},
+    {"company_name": "HALOZYME THERAPEUTICS, INC.", "industry_sector": "Technology Services", "employee_count_2019": 0, "employee_count_2023": 0},
+    {"company_name": "Hannon Armstrong Sustainable Infrastructure Capital, Inc.", "industry_sector": "Technology Services", "employee_count_2019": 0, "employee_count_2023": 0},
+    {"company_name": "Innovative Industrial Properties, Inc.", "industry_sector": "Technology Services", "employee_count_2019": 0, "employee_count_2023": 0},
+    {"company_name": "Leafly Holdings, Inc.", "industry_sector": "Technology Services", "employee_count_2019": 0, "employee_count_2023": 0},
+    {"company_name": "Marathon Digital Holdings, Inc.", "industry_sector": "Technology Services", "employee_count_2019": 0, "employee_count_2023": 0},
+    {"company_name": "POSTAL REALTY TRUST, INC.", "industry_sector": "Technology Services", "employee_count_2019": 0, "employee_count_2023": 0}
+  ],
+  "elapsed_seconds": 9174.23,
+  "cost_usd": 96.795479,
+  "total_tokens": 242772543
+}

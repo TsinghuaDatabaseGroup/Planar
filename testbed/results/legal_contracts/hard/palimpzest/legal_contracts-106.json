@@ -1,0 +1,10 @@
+{
+  "task_id": "legal_contracts-106",
+  "answer": [
+    {"jurisdiction": "New York", "qualifying_nda_count": 36, "most_common_restriction_profile": [false, false, true, true, false], "profile_nda_count": 17, "profile_avg_duration_years": 2.05},
+    {"jurisdiction": "Delaware", "qualifying_nda_count": 28, "most_common_restriction_profile": [false, false, true, true, false], "profile_nda_count": 18, "profile_avg_duration_years": 2.67}
+  ],
+  "elapsed_seconds": 7412.87,
+  "cost_usd": 12.403075,
+  "total_tokens": 23472939
+}

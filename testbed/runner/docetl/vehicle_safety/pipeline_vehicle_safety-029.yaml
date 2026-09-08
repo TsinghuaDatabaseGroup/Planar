@@ -1,0 +1,141 @@
+datasets:
+  nhtsa_complaints:
+    type: file
+    path: data/nhtsa_vehicle_safety/complaints.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_honda_adas_and_brakes_complaints
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("make") == "HONDA"
+              and doc.get("component_id") in {"ADAS", "BRAKES"}
+          )
+
+  - name: classify_tangible_safety_event
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether this complaint describes a tangible vehicle safety event.
+
+      A tangible safety event includes an actual malfunction, unexpected vehicle
+      behavior, loss or degradation of a safety function, collision or
+      near-collision, injury, fire, braking event, or another concrete
+      safety-relevant occurrence. Do not qualify a minor inconvenience such as
+      screen flicker, infotainment lag, a cosmetic blemish, routine service, or a
+      complaint with no tangible safety event.
+
+      Complaint summary:
+      {{ input.summary_text }}
+    output:
+      mode: structured_output
+      schema:
+        describes_tangible_safety_event: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: classify_problem_manifested_while_driving
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether the problem in this complaint manifested while the vehicle
+      was being driven.
+
+      Qualify events explicitly occurring while driving, moving, traveling,
+      accelerating, braking, turning, or in traffic. Do not qualify an event that
+      occurred only while parked, stopped and stationary, being serviced, or before
+      driving. If the operating state is not supported by the narrative, return
+      false.
+
+      Complaint summary:
+      {{ input.summary_text }}
+    output:
+      mode: structured_output
+      schema:
+        manifested_while_driving: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: calculate_average_injury_by_component
+    type: code_reduce
+    reduce_key: component_id
+    code: |
+      def transform(items):
+          injury_counts = []
+          for item in items:
+              try:
+                  injury_counts.append(float(item.get("injury_count") or 0))
+              except (TypeError, ValueError):
+                  injury_counts.append(0.0)
+          return {
+              "avg_injury": (
+                  sum(injury_counts) / len(injury_counts)
+                  if injury_counts
+                  else 0.0
+              ),
+          }
+
+  - name: compare_adas_and_brakes_average_injury
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          averages = {"ADAS": 0.0, "BRAKES": 0.0}
+          for item in items:
+              component_id = item.get("component_id")
+              if component_id in averages:
+                  averages[component_id] = float(
+                      item.get("avg_injury") or 0.0
+                  )
+
+          if averages["ADAS"] - averages["BRAKES"] > 0.01:
+              label = "ADAS_higher"
+          elif averages["BRAKES"] - averages["ADAS"] > 0.01:
+              label = "BRAKES_higher"
+          else:
+              label = "tie"
+          return {"label": label}
+
+pipeline:
+  steps:
+    - name: honda_in_motion_safety_comparison
+      input: nhtsa_complaints
+      operations:
+        - filter_honda_adas_and_brakes_complaints
+        - classify_tangible_safety_event
+        - classify_problem_manifested_while_driving
+        - calculate_average_injury_by_component
+        - compare_adas_and_brakes_average_injury
+  output:
+    type: file
+    path: raw_outputs/vehicle_safety/output_vehicle_safety-029.json

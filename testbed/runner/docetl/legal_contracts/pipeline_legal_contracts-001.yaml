@@ -1,0 +1,72 @@
+datasets:
+  contract_exhibits:
+    type: file
+    path: contract_exhibit_full.json
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_under_200_words
+    type: code_filter
+    code: |
+      def transform(doc):
+          return len(str(doc.get("contents") or "").split()) < 200
+
+  - name: filter_independent_auditor_consents
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is an independent auditor consent letter
+      authorizing use or incorporation of the auditor's report in an SEC filing.
+      Exclude legal-counsel, engineering, petroleum-reserve, and all other
+      non-auditor consents.
+
+      Document:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        is_matching_auditor_consent: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: count_matching_documents
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {"document_count": len(items)}
+
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations:
+        - filter_under_200_words
+        - filter_independent_auditor_consents
+        - count_matching_documents
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-001.json

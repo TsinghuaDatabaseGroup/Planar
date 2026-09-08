@@ -1,0 +1,85 @@
+{
+  "task_id": "legal_contracts-083",
+  "answer": [
+    {
+      "governing_law": "New York",
+      "agreement_count": 18,
+      "term_lengths_years": [
+        1.0,
+        1.5,
+        2.0,
+        3.0,
+        5.0,
+        10.0
+      ]
+    },
+    {
+      "governing_law": "Delaware",
+      "agreement_count": 17,
+      "term_lengths_years": [
+        1.0,
+        1.5,
+        2.0,
+        3.0,
+        4.0,
+        5.0
+      ]
+    },
+    {
+      "governing_law": "California",
+      "agreement_count": 11,
+      "term_lengths_years": [
+        1.0,
+        1.5,
+        2.0,
+        3.0,
+        5.0
+      ]
+    },
+    {
+      "governing_law": "Commonwealth of Pennsylvania",
+      "agreement_count": 4,
+      "term_lengths_years": [
+        3.0,
+        5.0
+      ]
+    },
+    {
+      "governing_law": "England",
+      "agreement_count": 4,
+      "term_lengths_years": [
+        1.0,
+        3.0,
+        5.0,
+        7.0
+      ]
+    },
+    {
+      "governing_law": "Maryland",
+      "agreement_count": 3,
+      "term_lengths_years": [
+        2.0
+      ]
+    },
+    {
+      "governing_law": "Minnesota",
+      "agreement_count": 3,
+      "term_lengths_years": [
+        2.0,
+        5.0
+      ]
+    },
+    {
+      "governing_law": "Washington",
+      "agreement_count": 3,
+      "term_lengths_years": [
+        3.0,
+        3.25,
+        5.0
+      ]
+    }
+  ],
+  "elapsed_seconds": 530.245,
+  "cost_usd": 4.58459862,
+  "total_tokens": 11211208
+}

@@ -1,0 +1,56 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_nda_and_confidentiality_agreements
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is a mutual NDA, unilateral NDA, or
+      confidentiality-and-standstill agreement.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_in_scope_agreement: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_direction_and_non_use
+    type: map
+    optimize: true
+    prompt: |
+      Return the nondisclosure direction and whether this agreement contains an
+      explicit non-use restriction.
+
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        non_disclosure_direction: string
+        has_non_use_restriction: boolean
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: aggregate_by_direction
+    type: code_reduce
+    reduce_key: non_disclosure_direction
+    code: |
+      def transform(items):
+          agreement_count = len(items)
+          non_use_count = sum(item.get("has_non_use_restriction") is True for item in items)
+          return {
+              "agreement_count": agreement_count,
+              "non_use_percentage": round(100 * non_use_count / agreement_count, 2) if agreement_count else 0.0,
+          }
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations: [filter_nda_and_confidentiality_agreements, extract_direction_and_non_use, aggregate_by_direction]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-015.json

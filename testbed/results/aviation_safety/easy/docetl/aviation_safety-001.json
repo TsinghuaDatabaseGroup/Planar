@@ -1,0 +1,23 @@
+{
+  "task_id": "aviation_safety-001",
+  "answer": [
+    {
+      "primary_trigger": "unstable_approach",
+      "incident_count": 116,
+      "most_common_initiating_role": "Captain"
+    },
+    {
+      "primary_trigger": "traffic_spacing",
+      "incident_count": 21,
+      "most_common_initiating_role": "Captain"
+    },
+    {
+      "primary_trigger": "runway_occupancy",
+      "incident_count": 18,
+      "most_common_initiating_role": "Tower Controller"
+    }
+  ],
+  "elapsed_seconds": 219.41,
+  "cost_usd": 1.55493,
+  "total_tokens": 3648306
+}

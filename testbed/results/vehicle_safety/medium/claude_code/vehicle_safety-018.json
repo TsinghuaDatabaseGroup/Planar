@@ -1,0 +1,20 @@
+{
+  "task_id": "vehicle_safety-018",
+  "answer": [
+    {
+      "file_id": "investigation_reports/txt_investigation_6bb46cfa3c2aaa30.txt",
+      "cited_recall_numbers": [
+        "23V-488"
+      ]
+    },
+    {
+      "file_id": "investigation_reports/txt_investigation_77da89c8ed63ed47.txt",
+      "cited_recall_numbers": [
+        "21V-035"
+      ]
+    }
+  ],
+  "elapsed_seconds": 50.517,
+  "cost_usd": 0.06076005,
+  "total_tokens": 60175
+}

@@ -1,0 +1,26 @@
+{
+  "task_id": "aviation_safety-047",
+  "answer": [
+    {
+      "attribution_category": "mainly_equipment_driven",
+      "incident_count": 400,
+      "dominant_initiating_factor": "equipment malfunction or failure",
+      "dominant_intervention": "emergency diversion or landing"
+    },
+    {
+      "attribution_category": "mainly_human_factor_driven",
+      "incident_count": 464,
+      "dominant_initiating_factor": "Aircraft component malfunction or failure",
+      "dominant_intervention": "Emergency landing or diversion executed"
+    },
+    {
+      "attribution_category": "mixed_equipment_human_factor",
+      "incident_count": 39,
+      "dominant_initiating_factor": "Malfunctioning aircraft components",
+      "dominant_intervention": "Crew manually assumed control or diverted"
+    }
+  ],
+  "elapsed_seconds": 398.18,
+  "cost_usd": 2.723658,
+  "total_tokens": 6323749
+}

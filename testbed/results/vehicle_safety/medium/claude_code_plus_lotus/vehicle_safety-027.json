@@ -1,0 +1,37 @@
+{
+  "task_id": "vehicle_safety-027",
+  "answer": {
+    "dominant_label": "sensor_misfire",
+    "per_label_counts": {
+      "other": {
+        "count": 3
+      },
+      "inflator_defect": {
+        "count": 0
+      },
+      "software_logic_error": {
+        "count": 1
+      },
+      "sensor_misfire": {
+        "count": 4
+      }
+    },
+    "per_label_percentages": {
+      "other": {
+        "percentage": 37.5
+      },
+      "inflator_defect": {
+        "percentage": 0.0
+      },
+      "software_logic_error": {
+        "percentage": 12.5
+      },
+      "sensor_misfire": {
+        "percentage": 50.0
+      }
+    }
+  },
+  "elapsed_seconds": 197.472,
+  "cost_usd": 0.56526825,
+  "total_tokens": 352510
+}

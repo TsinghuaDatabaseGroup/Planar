@@ -1,0 +1,64 @@
+{
+  "task_id": "legal_contracts-036",
+  "answer": [
+    {
+      "document_id": "Acme%20Corporation%20Inc%20NDA%20template.pdf",
+      "governing_law": "California"
+    },
+    {
+      "document_id": "Business-Sale-Non-Disclosure-Agreement.pdf",
+      "governing_law": "England and Wales"
+    },
+    {
+      "document_id": "ICTSC-NDA-General-MandA-signed.pdf",
+      "governing_law": "New South Wales"
+    },
+    {
+      "document_id": "NDATC.pdf",
+      "governing_law": "Wisconsin"
+    },
+    {
+      "document_id": "NDA_7.pdf",
+      "governing_law": "Spain"
+    },
+    {
+      "document_id": "NDA_VPI.pdf",
+      "governing_law": "Germany"
+    },
+    {
+      "document_id": "Non-Discl_Reciprocal_2.pdf",
+      "governing_law": "Ontario"
+    },
+    {
+      "document_id": "Non-Disclosure-Agreement-NDA.pdf",
+      "governing_law": "Germany"
+    },
+    {
+      "document_id": "Non_Disclosure_Agreement_3.pdf",
+      "governing_law": "United Kingdom"
+    },
+    {
+      "document_id": "UALR-Standard-Non-disclosure-AgreementTemplate.pdf",
+      "governing_law": "Arkansas"
+    },
+    {
+      "document_id": "epsteen_nda.pdf",
+      "governing_law": "California"
+    },
+    {
+      "document_id": "jmu_cise_mutual_nda.pdf",
+      "governing_law": "Virginia"
+    },
+    {
+      "document_id": "nda_19.pdf",
+      "governing_law": "Canada"
+    },
+    {
+      "document_id": "thoughtbot-mutual-nda.pdf",
+      "governing_law": "Massachusetts"
+    }
+  ],
+  "elapsed_seconds": 108.3,
+  "cost_usd": 0.865193,
+  "total_tokens": 1623382
+}

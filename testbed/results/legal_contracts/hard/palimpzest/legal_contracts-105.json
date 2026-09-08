@@ -1,0 +1,10 @@
+{
+  "task_id": "legal_contracts-105",
+  "answer": [
+    {"jurisdiction": "Delaware", "nda_count": 26, "all_five_core_clauses_count": 23, "all_six_standard_exceptions_count": 17, "perpetual_term_count": 4},
+    {"jurisdiction": "New York", "nda_count": 20, "all_five_core_clauses_count": 16, "all_six_standard_exceptions_count": 14, "perpetual_term_count": 1}
+  ],
+  "elapsed_seconds": 2618.69,
+  "cost_usd": 3.781881,
+  "total_tokens": 7157247
+}

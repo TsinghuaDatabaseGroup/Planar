@@ -1,0 +1,21 @@
+{
+  "task_id": "finance-031",
+  "answer": {
+    "top_sectors": {
+      "Healthcare": 397,
+      "Financial Services": 341,
+      "Technology": 262,
+      "Energy": 234,
+      "Real Estate": 233,
+      "Manufacturing": 108,
+      "Retail": 84,
+      "Utilities": 54,
+      "Transportation": 35,
+      "Telecommunications": 25
+    },
+    "mean_risk_factor_count_change": 0.0
+  },
+  "elapsed_seconds": 738.005,
+  "cost_usd": 1.05464736,
+  "total_tokens": 2145942
+}

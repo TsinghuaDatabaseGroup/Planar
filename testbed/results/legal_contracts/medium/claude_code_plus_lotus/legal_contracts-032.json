@@ -1,0 +1,152 @@
+{
+  "task_id": "legal_contracts-032",
+  "answer": [
+    {
+      "document_id": "1013687_0000950144-96-001973_document_38.txt",
+      "governing_law": "State of Florida"
+    },
+    {
+      "document_id": "1017545_0001012870-97-001500_document_2.txt",
+      "governing_law": "laws of the State of California"
+    },
+    {
+      "document_id": "1021096_0000914317-03-001205_ex2-2.txt",
+      "governing_law": "laws of the State of Ohio"
+    },
+    {
+      "document_id": "1082797_0000950131-01-501837_dex99d2.txt",
+      "governing_law": "laws of the State of Illinois"
+    },
+    {
+      "document_id": "1089717_0000898430-99-004004_document_2.txt",
+      "governing_law": "the laws of the United States of America and the Commonwealth of Virginia, USA"
+    },
+    {
+      "document_id": "1108906_0000889812-00-001212_document_45.txt",
+      "governing_law": "internal laws of the State of Connecticut"
+    },
+    {
+      "document_id": "1113303_0000892917-12-000026_stilffnw13d120112am2ex3.htm",
+      "governing_law": "laws of the State of Washington"
+    },
+    {
+      "document_id": "1138169_0001050234-02-000002_ex10h.txt",
+      "governing_law": "laws of the State of North Carolina"
+    },
+    {
+      "document_id": "12032018_NDA_The%20Munt_EN.pdf",
+      "governing_law": "Belgian law"
+    },
+    {
+      "document_id": "1588052992CCTV%20Non%20Disclosure%20Agreement.pdf",
+      "governing_law": "laws in force in India"
+    },
+    {
+      "document_id": "183.pdf",
+      "governing_law": "laws of the State of New York"
+    },
+    {
+      "document_id": "245490.pdf",
+      "governing_law": "laws of the State of Delaware"
+    },
+    {
+      "document_id": "313522_0000912057-02-040085_a2091647zex-99_d3.htm",
+      "governing_law": "laws of the State of Minnesota"
+    },
+    {
+      "document_id": "897730_0000950136-98-001457_document_7.txt",
+      "governing_law": "laws of the Commonwealth of Pennsylvania"
+    },
+    {
+      "document_id": "925544_0000950144-00-010739_ex99-d4.txt",
+      "governing_law": "laws of the Commonwealth of Pennsylvania"
+    },
+    {
+      "document_id": "ConfidNonDisclosureAgree.pdf",
+      "governing_law": "State of Oregon"
+    },
+    {
+      "document_id": "Confidentiality%20and%20Non-Disclosure%20Agreement%20%28CNA-1%29.pdf",
+      "governing_law": "laws of the State of Florida"
+    },
+    {
+      "document_id": "Confidentiality-and-Nondisclosure-Agreement-Template.pdf",
+      "governing_law": "State of Arkansas"
+    },
+    {
+      "document_id": "Confidentiality.pdf",
+      "governing_law": "laws of the State of Michigan"
+    },
+    {
+      "document_id": "Florida-Non-Disclosure-Agreement-NDA-Template.pdf",
+      "governing_law": "State of Florida"
+    },
+    {
+      "document_id": "MUTUAL-NDA-Form-2.pdf",
+      "governing_law": "laws of the State of New York"
+    },
+    {
+      "document_id": "MutualNonDisclosureAgreement0104.pdf",
+      "governing_law": "laws of the State of California"
+    },
+    {
+      "document_id": "NDA-2015-2.pdf",
+      "governing_law": "laws of the Province of Ontario and the federal laws of Canada"
+    },
+    {
+      "document_id": "NDA-M5-Systems.pdf",
+      "governing_law": "internal laws of the State of California"
+    },
+    {
+      "document_id": "NDA_13.pdf",
+      "governing_law": "laws of the Commonwealth of Australia and the State of New South Wales"
+    },
+    {
+      "document_id": "Non-Disclosure-Agreement-FORS-Cert-Body.pdf",
+      "governing_law": "Laws of England and Wales"
+    },
+    {
+      "document_id": "Non_Disclosure_Agreement_3.pdf",
+      "governing_law": "internal laws of the United Kingdom"
+    },
+    {
+      "document_id": "Non_Disclosure_Canada_BC.pdf",
+      "governing_law": "laws of the Alberta, Canada"
+    },
+    {
+      "document_id": "QSA_NDA.pdf",
+      "governing_law": "laws of the Commonwealth of Australia and the laws of the State of Victoria"
+    },
+    {
+      "document_id": "cornell_non-disclosure_agreement.pdf",
+      "governing_law": "laws of the State of New York"
+    },
+    {
+      "document_id": "eHandshake_Non_Disclosure_Agreement.pdf",
+      "governing_law": "laws of England and Wales"
+    },
+    {
+      "document_id": "epsteen_nda.pdf",
+      "governing_law": "laws of the State of California, USA"
+    },
+    {
+      "document_id": "eulerhermes-nda.pdf",
+      "governing_law": "laws of the state of Maryland"
+    },
+    {
+      "document_id": "jmu_cise_mutual_nda.pdf",
+      "governing_law": "laws of the Commonwealth of Virginia, U.S.A."
+    },
+    {
+      "document_id": "nda_9.pdf",
+      "governing_law": "law of England"
+    },
+    {
+      "document_id": "thoughtbot-mutual-nda.pdf",
+      "governing_law": "laws of the Commonwealth of Massachusetts"
+    }
+  ],
+  "elapsed_seconds": 237.57,
+  "cost_usd": 0.86269626,
+  "total_tokens": 1640704
+}

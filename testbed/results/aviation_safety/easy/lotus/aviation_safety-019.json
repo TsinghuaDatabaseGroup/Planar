@@ -1,0 +1,38 @@
+{
+  "task_id": "aviation_safety-019",
+  "answer": [
+    {
+      "operational_consequence": "emergency_declaration",
+      "incident_count": 247,
+      "with_numeric_fuel_value_count": 58,
+      "with_numeric_time_value_count": 183
+    },
+    {
+      "operational_consequence": "diversion",
+      "incident_count": 231,
+      "with_numeric_fuel_value_count": 71,
+      "with_numeric_time_value_count": 188
+    },
+    {
+      "operational_consequence": "return",
+      "incident_count": 407,
+      "with_numeric_fuel_value_count": 73,
+      "with_numeric_time_value_count": 290
+    },
+    {
+      "operational_consequence": "holding",
+      "incident_count": 52,
+      "with_numeric_fuel_value_count": 20,
+      "with_numeric_time_value_count": 34
+    },
+    {
+      "operational_consequence": "continued_with_concern",
+      "incident_count": 53,
+      "with_numeric_fuel_value_count": 14,
+      "with_numeric_time_value_count": 31
+    }
+  ],
+  "elapsed_seconds": 202.8,
+  "cost_usd": 1.50867,
+  "total_tokens": 3490500
+}

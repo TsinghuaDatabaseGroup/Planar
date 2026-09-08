@@ -1,0 +1,3613 @@
+{
+  "task_id": "legal_contracts-061",
+  "answer": [
+    {
+      "agreement_type": "None",
+      "non_disclosure_direction": "None",
+      "document_count": 1270
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral A to B",
+      "document_count": 105
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "not applicable",
+      "document_count": 72
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "bilateral",
+      "document_count": 56
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Employee to Company",
+      "document_count": 38
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Executive to Company",
+      "document_count": 38
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral insiders to company",
+      "document_count": 37
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "bilateral",
+      "document_count": 37
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "N/A",
+      "document_count": 35
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "mutual",
+      "document_count": 30
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "mutual",
+      "document_count": 28
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "not specified",
+      "document_count": 27
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Participant to Company",
+      "document_count": 24
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Participant to Company",
+      "document_count": 23
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to Executive Officer",
+      "document_count": 18
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Disclosing Party to Receiving Party",
+      "document_count": 18
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Discloser to Recipient",
+      "document_count": 17
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral employees to Company",
+      "document_count": 16
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "disclose to each other",
+      "document_count": 15
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Executive to Company",
+      "document_count": 11
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Consultant to Company",
+      "document_count": 11
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Covered Persons to Company",
+      "document_count": 8
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to Indemnitee",
+      "document_count": 7
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Insiders to Company",
+      "document_count": 7
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral insiders to Company",
+      "document_count": 7
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to Executive",
+      "document_count": 7
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Disclosing Party to Recipient",
+      "document_count": 7
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Executive to Nucor Corporation",
+      "document_count": 7
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral employee to Company",
+      "document_count": 7
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to Covered Persons",
+      "document_count": 6
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Employee to Employer",
+      "document_count": 6
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Grantee to Company",
+      "document_count": 6
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "Not applicable",
+      "document_count": 4
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "Not specified in the provided text",
+      "document_count": 4
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to Covered Executive",
+      "document_count": 4
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to Participant",
+      "document_count": 4
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Grantee to Company",
+      "document_count": 4
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Insider to Company",
+      "document_count": 4
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral employee to Company",
+      "document_count": 4
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "disclose to one another",
+      "document_count": 4
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to Receiving Party",
+      "document_count": 4
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Director to Company",
+      "document_count": 4
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Employee to Banking Organization",
+      "document_count": 4
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Executive to Employer",
+      "document_count": 4
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to Insiders",
+      "document_count": 3
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to insiders",
+      "document_count": 3
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Employee to Company",
+      "document_count": 3
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Insider to Company and third parties",
+      "document_count": 3
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Each Party wishes to disclose to the other Party",
+      "document_count": 3
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each Party to the other Party",
+      "document_count": 3
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "either Party might share information with the other",
+      "document_count": 3
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to Consultant",
+      "document_count": 3
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to Employee",
+      "document_count": 3
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to Recipient",
+      "document_count": 3
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral individual to United States Government",
+      "document_count": 3
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "mutual releases from potential claims and Causes of Action of each Releasing Party",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company Personnel to other companies",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to Investor",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Consultant to Company",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Covered Executive to Company",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Debtor to Secured Party",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Employee to Employer",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Executive Officer to Company",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Holder to Company",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral IP to third parties",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Optionee to Company",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Sohn to Company and unilateral Company to Sohn",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Sponsor, officers and directors to Company",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Voya Financial to Executive Officers and employees",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral third party to Evofem",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "SAP and Company may deliver to each other",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "disclose confidential information to each other",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "disclosing to each other",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each Party expects to make available to the other Party",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each like to provide the other",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party may disclose to the other",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party may from time to time receive Information relating to the other",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "mutual disclosure of confidential information to each other",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "one Party (\"Disclosing Party\") may disclose to the other Party (\"Recipient\")",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "one Party to the other Party",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "wish to exchange confidential information while obtaining assurances that this information will be kept confidential by the other party",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Auditor to Auditee",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Client to Consultant",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to Counterparty",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to Investor",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to Manager",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to Participant",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to you",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Contractor to Company",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Corporation to Grantee",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Executive to Aveanna",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Owner to Recipient",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Participant to Company Group",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Participant to Fulton",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Participant to USAC Entities",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Shareholder to Company",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral WECC to Data Recipient",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral employee to International Paper",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral individual to University of Nebraska",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral third parties to Voya Financial",
+      "document_count": 2
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "Board Observer to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "Both Seller and Buyer shall each be delivering Information to the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "Each Party agrees to maintain the confidentiality of all proprietary or confidential information disclosed by the other Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "Fifth Third's ability to secure confidential information",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "The Parties are willing to exchange Confidential Information",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "each Company (as Provider) to the other Company (as Recipient)",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "each Party (in its capacity as a provider of information hereunder, a \" Provider \") is prepared to make available to the other Party (in its capacity as a recipient of information hereunder, a \" Recipient \")",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "each Party as a provider/discloser of Confidential Information... and each Party as a reviewer/recipient of Confidential Information",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "each Party furnish to the other Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "each Party may desire to disclose to and/or receive from the other Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "each of Fairfax and Allied World may disclose and deliver to the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "each of Polycom and PictureTel hereby agrees to receive such Confidential Information of the other and to disclose such Confidential Information to the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "each party agrees to treat any such nonpublic information concerning the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "exchange of Confidential Information between Swansi and Zulu",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "shareholder to Fund",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Access Persons to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Acuity to outside parties",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Associates, officers, and directors to the Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Autolus to employees and directors",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral BGC to John Abularrage",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Becton Finance to BD",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Borrower to Holder",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Borrower to Lender",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Borrowers to Agents",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Carlos Bori to Skyworks Solutions, Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Cavco to Directors, Officers, Employees, and Covered Persons",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Celanese Corporation to recipients",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Celanese to Element Solutions Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company Personnel to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company Persons to non-Company Persons",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to Addington",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to Carpenter Technology Corporation",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to Covered Individual",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to Covered Officer",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to Covered Person",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to Directors, Officers, and Covered Employees",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to Holder",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to Indemnified Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to Officer",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to Personnel",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to Shareholder",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to Steven Yari/Triyar Companies, Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to Stockholder",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to Underwriters",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to United Dominion Industries",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to employees and Directors",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to employees and service providers",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to officers, directors, and employees",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to officers, directors, employees, and consultants",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to persons to whom this Policy applies",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to senior personnel",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to third parties",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Company to you",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Contractor to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Corporation to Holders",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Cousins to outside parties",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Covered Persons to Company and others",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Covered Persons to Littelfuse",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Covered Persons to Sprinklr and third parties",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Covered Persons to Turtle Beach",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Developer to Franchisor",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Distributor to Manufacturer",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Don Templin to Voya Financial, Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Dorman to directors, officers, employees, and affiliates",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral EMPLOYEE to EMPLOYER",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral El Pollo Loco Holdings, Inc. to Acquiring Person",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Employees and Board Members to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Employer to Employee",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Franchisor to Developer",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Glenview to CVS Health",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Globalstar to Customer",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Grantors to Secured Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Guarantors to Lender",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral HGI to Employees and Outside Parties",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Holder to Parent",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Holders to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Indemnitor to Indemnitees",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Insiders to Company and public",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Inspector to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral KLS Petroleum Consulting LLC to Trio Petroleum Corp",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Kari Durham to Skyworks Solutions, Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Kingsway to insiders and special relationship persons",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Kris Sennesael to Skyworks Solutions, Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Leafly Personnel to Leafly",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral New Way to Federal Signal",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Newbury Street II Acquisition Corp to Continental Stock Transfer & Trust Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Participant to Corporation",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Planet Fitness Parties to Initial Purchasers",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Pledgors to Collateral Agent",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Provider to Recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Restricted Persons to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Reza Kasnavi to Skyworks Solutions, Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Rivian to Covered Persons",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Robert J. Terry to Skyworks Solutions, Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Samples to Acquiror and Target Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Seller Parties to Buyer Parties",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Seller and Guarantor to Buyer",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Seller to Counterparty",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Service Provider to Client",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Subject Party to Purchaser",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral TBI to EnCana",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Talley Industries, Inc. to Carpenter Technology Corporation",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral Telos to insiders and third parties",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral associates to Primo",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral employee to Cavco",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral employee to company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral employee to embecta",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral employees and directors to BD",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral employees to Illumina",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral employees to PEC",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral employees to Reading International, Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral employees to Vado",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral employees, officers, and directors to parties outside of Ingevity",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral employees/directors/officers/consultants to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral nominee to Corporation",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral shareholder to corporation",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral shareholder to debtor",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral stockholder to Corporation",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral stockholder to company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral team members to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "A Party may disclose to the other Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "ADP and Partner will furnish and/or disclose to each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "BROOKSTECH to ____________ and ____________ to BROOKSTECH",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Bomatec shall provide the Business Partner with confidential information that should be protected against unauthorized viewing and vice versa",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Both parties agree that its representatives and employees will not at any time, either during or subsequent to the Period of Affiliation, either directly or indirectly, disclose to others or use any secret, confidential or proprietary information and know-how of the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Both parties agree to maintain complete confidentiality concerning the business affairs of the other and all proprietary information which each may receive from the other.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Both the Licensor and the Licensee acknowledge that during the Term of this Agreement, each party may be exposed to or acquire communication or data that is confidential to the other party.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Company and Adobe may make disclosures of CI to each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Confidential Information of each party (\"Disclosing Party\") may be used by the other party (\"Receiving Party\")",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Curtiss-Wright and Company (as to proprietary information disclosed by it, the \"Disclosing Party\") desire to provide the other party (as to the information received by it, the \"Recipient\")",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Disclosing & Receiving",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Disclosing Participant to Receiving Participant",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "EACH PARTY ENVISAGES PROVIDING CERTAIN INFORMATION TO THE OTHER PARTY",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Each Party agrees to maintain in strict confidence any proprietary, technical, commercial, or business information disclosed by the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Each Party agrees to protect PROPRIETARY INFORMATION of the other Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Each Party hereto agrees that it will not make any public disclosure... All information furnished to a Party by the other Party... shall remain strictly confidential",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Each Party will limit the disclosure of its contents to its employees... not to disclose its contents to any other person or entity without the prior written consent of the other Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Each Party wishes to receive Confidential Information from the other Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Each of the Company and Supplier desires to receive Confidential Information of the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Each of the Parties may be the \"Disclosing Party\" and the other party will be deemed to be the \"Receiving Party\"",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Each of the parties agrees that it will not make use of, disseminate, or in any way disclose any Confidential Information of the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Each of the parties to this Agreement intends to disclose information to the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Each of the undersigned parties may furnish to the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Each party has requested or may be receiving from the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Each party is willing to disclose such Proprietary/Confidential Information to the other parties",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Each party may disclose to the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Each party will disclose such information... to the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Each party will limit the disclosure of its contents... not to disclose its contents to any other person or entity without the prior written consent of the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Each party wishes to disclose to the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Each party wishes to receive confidential information in the Field from the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Each undersigned party (the \"Receiving Party\") understands that the other party (the \"Disclosing Party\") has disclosed or may disclose information",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Either Party may disclose Confidential Information to the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Either party agrees that it shall ensure that it and its associated companies and their respective officers and employees shall keep confidential... all information which: Consists of any of the commercial secrets of the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Either party may receive or disclose Confidential Information",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Either party may terminate this MNDA without cause upon five (5) days written notice given to the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Every contract party can disclose confidential information to the other contract party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "FMO and the Company ... agreed to disclose to each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Federal to IBS and IBS to Federal",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "FieldWorks to COMPANY and COMPANY to FieldWorks",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Isilon and you have made and expect to make available to one another",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Level 3 and NNT may disclose to each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "One party hereto (\"Owner\") may disclose to the other party hereto (\"Recipient\")",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Parties disclose to each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Parties herein furnishing each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Parties may disclose to each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Parties may provide to each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Parties may share between themselves",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Parties to disclose to each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Party One and Party Two",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "STP and Company (each a \"Disclosing Party\", and together the \"Parties\") contemplate that they may disclose Proprietary Information (as defined below) to the other party (the \"Receiving Party\")",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "Seeed and Customer are discloser and recipient under difference context",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "The Company and BiG ... shall disclose certain confidential and proprietary information to each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "The First Party and the Second Party have agreed to exchange oral and written proprietary, financial, operating and other information concerning themselves",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "The Parties both expect to disclose information... and receive information",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "The Parties intend to exchange certain Information",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "The Parties will provide each other with Confidential Information",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "The contracting parties mutually agree not to make available to third parties without prior consent any confidential information which was made available to them during the duration of this agreement by the student or the contractual partner.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "XIUS and BCGI may disclose to each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "XYZ and TTU may disclose and reveal to each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "a Party (\"Disclosing Party\") may disclose or otherwise make available to the other Party (\"Receiving Party\")",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "a Party may disclose to another",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "any party at the event to any other party at the event",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "between Supplier and Green Industrial Supply, Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "between the parties",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "both Parties (acting as the Disclosing Party) are prepared to supply certain Confidential Information... to the other Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "both parties agree that disclosure and use of the other party's Confidential Information shall be subject to the terms and conditions of this CNDA",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "both parties may provide certain confidential and proprietary information to each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "both parties to this Agreement in their respective roles as discloser of Confidential Information and recipient of Confidential Information",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "by and between Oacis Healthcare Systems Corp. (\"OACIS\") and Science Applications International Corporation (\"SAIC\")",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "disclose Confidential Information to each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "disclose certain Information to each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "disclose certain confidential information to one another",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "disclose certain of their proprietary and other information to each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "disclose or provide to each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "disclose to and receive from each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "disclose to each other and to receive from each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "disclosed between the parties",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "disclosed between us",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "disclosed by Cyberlux or ICT to the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "disclosed by USM and/or ABC to each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "disclosed by each Party to the other Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "disclosed by one Party (the \"Disclosing Party\") to another Party (the \"Receiving Party\")",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "disclosed by one Party ... to the other Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "disclosed by one party (hereinafter referred to as the \"Disclosing Party\") and received, held, safeguarded by the other party (hereinafter referred to as the \"Receiving Party\")",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "disclosed by one to the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "disclosed by the parties to the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "disclosed or made available to each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "disclosed to each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "disclosure by either party to the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "disclosure by one Party (the \"Disclosing Party\") to the other Party (the \"Receiving Party\")",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "disclosure to one another",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each Party ... to the other Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each Party has disclosed and/or may further disclose its Confidential Information to the other Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each Party has either requested or may request access to certain non-public information regarding the other Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each Party has furnished or may furnish to the other Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each Party is prepared to make available to the other Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each Party may disclose certain confidential information to each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each Party may elect, in its sole discretion, to disclose Information to the other Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each Party recognizes the need for the other Party to disclose certain information and materials",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each Party shall use and reproduce the other Party's Confidential Information",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each Party to disclose or make available certain Confidential Information",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each Party to disclose to the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each Party undertakes to the other Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each may disclose certain information... to the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each may disclose its Confidential Information to the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each of COMPANY and XPLORE ... proposes to disclose to the other Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each of DTM and 3D have and will deliver to the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each of DTM and 3D have and will deliver to the other party hereto",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each of GO and Client disclosing such Confidential Information to the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each of LEE&PACK will require access to certain Confidential Information... of the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each of the Companies has requested or will request certain oral and written information concerning the other Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each of the Company and Investor ... may disclose certain confidential and proprietary information regarding the conduct of each Party's respective business activities",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each of the Parties (each a \"Disclosing Party\") is prepared to make available to the other Party (the \"Receiving Party\")",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each of the parties (each a \"Disclosing Party\" as applicable) is prepared to make available to the other (each a \"Recipient\" as applicable)",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each of the parties wish to disclose confidential information to the other party hereto",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each of the undersigned Parties shall, from time to time, disclose to the other Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party (a \"Disclosing Party\") may disclose to the other party (the \"Recipient\")",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party (as to information disclosed by it, the \"Disclosing Party\") is prepared to furnish the other party (as to information received by it, the \"Receiving Party\")",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party (the \" disclosing party \") may disclose its Confidential Information to the other party (the \" receiving party \")",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party (the \"Disclosing Party\") to disclose to the other (the \"Receiving Party\")",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party (the \"Receiving Party\") understands that the other party (the \"Disclosing Party\") has disclosed or may disclose information",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party ... may receive ... Confidential Information ... of the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party agrees to treat any nonpublic information concerning the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party agrees to treat any nonpublic information concerning to other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party anticipates that it will disclose to the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party desires to provide and to receive information",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party disclosing its Confidential Information to the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party hereto has agreed to disclose to the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party is willing to disclose to the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party is willing to disclose to the other party its Proprietary Information",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party may acquire valuable trade secrets and/or confidential and proprietary information of the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party may disclose certain information to the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party may disclose certain information... to the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party may disclose certain of its proprietary and confidential information to the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party may disclose its Confidential Information to the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party may disclose its Trade Secrets or Confidential Information to the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party may disclose to the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party may furnish to the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party to disclose certain Confidential Information to the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party to disclose to the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party to disclose to the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party to the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party to the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party to this Agreement may wish to disclose certain proprietary and confidential information to the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party to this Agreement receiving the other party's Confidential Information",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party will furnish and or disclose to the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party's provision of access to certain confidential information by the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each party... to disclose to the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each shall disclose Confidential Information to the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each shall disclose confidential information to the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "each to the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "either NEW RIVER or SHIRE or both Parties to disclose Confidential Information to a Receiving Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "either Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "either Party may disclose to the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "either Party might share such Confidential Information with the other Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "either Party possesses certain confidential proprietary information... confidential proprietary information of one Party may become available to the other Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "either Party to disclose to the other Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "either Party to provide confidential and/or proprietary information to the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "either Party to the other Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "either or both Parties to disclose Confidential Information",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "either or both of said Parties (\"Disclosing Party\") may disclose certain of its proprietary and confidential information to the other Party (\"Receiving Party\")",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "either party (the \"Disclosing Party\") may disclose Confidential Information (as defined below) to the other party (the \"Receiving Party\")",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "either party hereto or both may disclose to the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "either party may disclose, from time to time, such data and information to the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "either party may find it desirable or necessary to disclose information",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "either party may have need of information from the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "either party may have to disclose or deliver to other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "either party receives or acquires from the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "either party to the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "exchange confidential information with each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "exchange of Confidential Information between them",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "from one party to the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "furnished by one of the parties hereto to the other party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "information they have shared and will share with each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "make available to one another",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "mutual exchange of certain confidential information and intellectual property",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "mutual sharing of Confidential Information",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "one Party (\"Disclosing Party\") and its Affiliates to the other (\"Receiving Party\")",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "one Party (\"Owner\") may disclose to the other Party (\"the Recipient\")",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "one party (the 'Discloser') to the other (the 'Recipient')",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "one party to disclose (the \"Disclosing Party\") to the other (the \"Receiving Party\")",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "one party to the other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "parties expect to make available to one another",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "parties may disclose to each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "parties will share Confidential Information with each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "provide each other certain Confidential Information",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "reciprocal one between the signatories",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "relating to each other's businesses and affairs",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "they will disclose written or verbal information of a confidential nature",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "to each other",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "Company to Contact",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "Each Party agrees",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "State to Vendor",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "bilateral",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "one Party (\"Disclosing Party\") may disclose to the other Party (\"Receiving Party\")",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral (Your Company Name) to Petro-Lube",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral 1st Party to 2nd Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral A to B",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral ABRH to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral ADC to BATTELLE",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral AMDOCS to Receiving Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral AOC to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral ARC to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Access Persons to Corporation",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Acuity to outside parties",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Advisor to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Agency to Applicant",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Aldes, Seller/s and Business/es to Buyer",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Ameren Illinois to Recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Applicant to ARIN",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Attendee to BOMI",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral B to A",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral BDO to the undersigned",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral BPS to VENDOR",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Bidder to County",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral BioIS to iRTC",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Blueknight and General Partner to Receiving Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Board/Committee Member to SAMED",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Brian Merker to New Horizon Aircraft Ltd.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Brian Robinson to New Horizon Aircraft Ltd.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Broker and Seller to Buyer",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Broker to Buyer",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Buyer to Broker and Seller",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Buyer to Broker/Seller",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral CAO to Contractor",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral CCPDT to Volunteer",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral CEDC to Recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral CGSH to Supplier",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral CIF to Dealer",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral CLIENT to BROOKS",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral CMC to Valco and Brubaker",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral CMHC to Proponent",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral COMPANY to RECIPIENT",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral COMVERGE to H.I.G.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral CORPORATION to NYU",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Captaris to Vector",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Casino to Receiving Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Christine to Voya",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral City of Winnipeg to Confidant",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral City to Recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Client to Chemsultants",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Client to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Client to Ross & Moncure",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Client to The Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Companion Paws and The LifeLine Canada Foundation to Volunteer, Trainer and/or Evaluator",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company Personnel to non-Company Personnel",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company and Client to Recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to AST",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to Adviser",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to Buyer",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to Chairman",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to EastGroup Properties Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to Euler Hermes",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to FLIR Systems, Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to GSEnergy",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to Holder",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to Independent Contractor",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to Interested Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to Kenneth Hao",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to MARIPOSA",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to MSC",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to Master Distributor",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to Potential Bidder",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to Potential Purchaser",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to Prospective Vendor",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to Randstad Holding NV",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to Restricted Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to Stilwell Group",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to Stockholder",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to Stockholders",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to Supplier",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company to You",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Company/Partnership to Consultant",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Consortium to Receiving Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Consultant to CareDx",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Consultant to Client",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Contractor to NIH",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Contractor to NYSDOL",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Contractor to University",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Cooperator to EPA",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Corporation to Recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Covenantor to Buyer",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Covered Person to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Covered Persons to ANI",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Covered Persons to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Covered Persons to outsiders",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Customer to Paramit",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral DISCLOSING PARTY to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral DISCLOSING PARTY to RECEIVING PARTY",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral DOHMH to Data Recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Derek White to Galileo Financial Technologies, LLC",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Derrick Sung to Pulmonx",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Diane Adams to Sprinklr",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Discloser to Institution",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Discloser to NIST",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Discloser to TAMU",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Discloser to University",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Disclosers to Recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Disclosing Parties to Receiving Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Disclosing Party/Writer to Receiving Party/Producer",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Disclosor to Recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Donor to Recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral EICA to Signee",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral EMPLOYEE to FRANKLIN",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Eligible Employee to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Employee to BGC",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Employee to VISIONWAVE",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Employee/Student to University",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Ermilio to Purchaser",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Executive to H.B. Fuller",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral FDI to Developer",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral FNHA to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral FP to SP",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Flow to Jag",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral FormFactor to Recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Franchisee to potential investor",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Frodsham Town Council to [NAME OF INDIVIDUAL RECEIVING INFORMATION]",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Fronius International GmbH to DISCLOSEE",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral GK to SUPPLIER",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral GSA to Recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral GTC to Recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Gerald Harder to Trinity Capital Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Google to Participant",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Grindrod SA to Vendor",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral HALO to RECIPIENT",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral HNBA to Board Member",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral HPAC to LHT",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Health Card to Ciufo",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Heidi B. Capozzi to CVS Pharmacy, Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Heidy King-Jones to Aeglea BioTherapeutics, Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral HySafe participants to Mr./Mrs. …",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral IBC to Vendor",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral ICC Court to Member",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral IHiS to the Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral INFE to RECIPIENT",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral ISCA to Vendor",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Individual Member to Partnership",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Individual to the United States",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Ingram to Vendor",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Inria to Organization",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Intel to Participant",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral InterTrust to NatWest",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Inventor to recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Inventor/Disclosing Party to Receiving Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Investor to Owner",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral JEA to Recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Jason O'Neill to New Horizon Aircraft Ltd.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Jessica to CareDx, Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral John Hanna to CareDx, Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral John Joyner to CVS Pharmacy, Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral KDOL to Authorized Person",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral KWSH to Participant",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Kennedy to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Kennetik to Individual",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Kevin Conway to Generation Bio",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Kevin Thornal to Zimmer Biomet",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Kitty Haven Sanctuary of Utah to Volunteer Applicant",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Kyle Brown to Trinity Capital Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral LSUK to Recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Lending Agent to Borrower",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Liberty Technologies, Inc. to Crane Co.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral ListFusion to Raphael",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Listing Broker to Prospect and Prospect's Broker",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Lockheed Martin to NARA",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral M&R to Partner",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral MCI to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Manager to Owner",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Manitoba Housing to Recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Mark Austin to Perspective Therapeutics, Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Marsh & McLennan Companies, Inc to you",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Matt to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral McGurn Advisors to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Medline to Supplier",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Mehul Joshi to Pulmonx Corporation",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Michael Spanos to Delta",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Michael Testa to Trinity Capital Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Minnesota Power to Customer",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral MyPoints.com to Receiving Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral NASDAQ OMX to Recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral NUSD to DISCLOSEE",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral NYNEX to CONSULTANT",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Nathan to CareDx, Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Nation to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Non-Officer Director to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral NostraData to the Confidant",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral ONS to RECIPIENT",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral ORCC to Receiving Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral OSCE to Recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral OWNER to RECIPIENT",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Oceaneering to Recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Originator to Participant",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Owner to Buyer",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Owner to Receiving Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral PHCS to Recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral PURCHASER to CONTRACTOR",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Participants to Mentor",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Phillip Samayoa to Generation Bio Co.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Premisys to Recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Principal to Phoenix Footwear and PFG Acquisition",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Providing Party to Receiving Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Public Company to Adviser",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral ROCHESTER to COMPANY",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Receiver to Recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Receiving Party to Disclosing Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Recipient to Association",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Recipient to Commission",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Recipient to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Recipient to MS",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Recipient to Society",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Recipient to The Open Group",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Reporting Entity to MDHHS",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Respondent to Kenall Manufacturing, Co.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Ronald Kundich to Trinity Capital Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Room2Rent to the Recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral SABI to Victorinox",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral SDSS-IV LOC to Non-members",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral SINTEC to Receiving Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral SMT LABS PTY LTD to Customer",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral STI to Pinetree",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Sam Whiting to Tempest Therapeutics, Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Samrat Khichi to CVS Pharmacy, Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Sanmina to Recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Sarah Stanton to Trinity Capital Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Seller to Interested Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Seller to JAB Beech Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Seller to NIM",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Seller to Purchaser",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Seller to Purchasers and Parent",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Seller, Key Personnel and Shareholder to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Sellers to Buyer",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Sellers to Candidate",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Selling Parties to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Selling Shareholder to Dollar Tree",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Shareholder to Heritage, HBC, and Diablo",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Society to Receiving Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Solid Power to SK On",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Sponsor to Student Participants and Faculty Instructor/Mentor",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral State Bar to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral State to Contractor",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral State to Recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Steven L. Brown to Trinity Capital Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Stockholder to Buyer",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Stockholders to AUGI and Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Stockholders to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Subject Party to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Subject Party to Covered Parties",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Submitting Party to Receiving Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Sunglass Hut to Luxottica",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Supplier to Vedrova",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral TJPA to Contractor",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral TPI to [Insert Company]",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral TSR to CGS",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral TTC to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral TTI to investor",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral The Business Partnership to me",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Thomas R. Knott to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Tompkins Cortland Community College to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Tower International, Inc. to Autokiniton Global Group, Inc.",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Town to Provider",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Trac Pham to Sprinklr",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Transnet to Bidder",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral UNHCR to Bidder",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral UNIVERSITY to VENDOR",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Undersigneds to Corporation",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral University to Recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral University to other Parties",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral VASCO to HUCOM",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral VELCO to Recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral VIDAR to Receiver",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Vapotherm to Receiving Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Vendor to Recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Vendor to me",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Verenium to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Visitor to Hydranautics",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Visitor to Motorola",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Vladi Private Islands to Client",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral Writer to Producer",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral XCZONE.TV to recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral You to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral [Company Name] to undersigned",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral applicant/disclosing party to receiving Party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral contract employee to United States Government",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral contractor to Deafness Resource Centre",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral contractor to VA",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral disclosing party to EFCA Pty Ltd",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral disclosing party to receiving party",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral employee to University",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral employee/student/volunteer/intern/co-op to Northeastern University",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral employee/volunteer to Office of Undergraduate Admissions",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral entrants to Recipients",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral individual to Department of State",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral individual to FAU",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral individual to HSC",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral other party to Navidec, Incorporated",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral owner to recipient",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral potential Franchisee to Franchisor",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral shareholder to Company",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral undersigned to Goldman Sachs",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral us to you",
+      "document_count": 1
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral you to Tyson",
+      "document_count": 1
+    }
+  ],
+  "elapsed_seconds": 535.238,
+  "cost_usd": 2.6227842,
+  "total_tokens": 5872760
+}

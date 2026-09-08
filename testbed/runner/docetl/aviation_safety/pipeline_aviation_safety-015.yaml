@@ -1,0 +1,224 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_part121_passenger_reports
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("far_part") == "Part 121"
+              and doc.get("mission") == "Passenger"
+          )
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: extract_fuel_operation_consequence
+    type: map
+    optimize: true
+    prompt: |
+      Extract a record only when a fuel quantity, reserve, fuel calculation, or
+      dispatch-release fuel decision directly affected this flight's operation.
+      A qualifying effect includes an emergency declaration, diversion, return,
+      holding, or continuing while managing a concrete fuel concern. Mere fuel
+      discussion, routine fuel monitoring, or a fuel value with no operational
+      effect does not qualify.
+
+      Return fuel_values_normalized as a short list containing the explicitly
+      reported numeric fuel quantities or reserves. Keep each value with its unit
+      and normalize common unit wording to concise lowercase forms such as lb, kg,
+      or gal. Do not include times, percentages without a fuel quantity context, or
+      inferred values.
+
+      Return time_values_normalized as a separate short list containing explicitly
+      reported numeric fuel-related durations, endurance, delay, hold time, or time
+      remaining. Normalize common unit wording to concise lowercase forms such as
+      min or hr. Do not include clock times unrelated to the fuel decision or
+      inferred values. Return an empty list when a report gives no numeric value of
+      the corresponding kind.
+
+      Assign exactly one operational_consequence using this strict priority:
+      1. emergency_declaration
+      2. diversion
+      3. return
+      4. holding
+      5. continued_with_concern
+
+      Use the highest-priority consequence supported when several occur. The
+      structured result summary may establish a directly recorded emergency,
+      diversion, or return only when it is consistent with the fuel-related event
+      in the narrative. It cannot by itself make an unrelated fuel mention qualify.
+
+      Use operational_consequence=not_target when fuel did not directly affect the
+      operation or no listed consequence is supported; in that case return empty
+      value lists.
+
+      Structured result summary:
+      {{ input.result_summary }}
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        fuel_values_normalized: list[string]
+        time_values_normalized: list[string]
+        operational_consequence: enum[emergency_declaration, diversion, return, holding, continued_with_concern, not_target]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: project_fuel_ranking_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          import re
+
+          priority = {
+              "emergency_declaration": 1,
+              "diversion": 2,
+              "return": 3,
+              "holding": 4,
+              "continued_with_concern": 5,
+          }
+
+          def normalize_values(values):
+              normalized = []
+              seen = set()
+              for value in values if isinstance(values, list) else []:
+                  clean = re.sub(r"\s+", " ", str(value).strip().lower())
+                  if clean and clean not in seen:
+                      normalized.append(clean)
+                      seen.add(clean)
+              return normalized
+
+          fuel_values = normalize_values(doc.get("fuel_values_normalized"))
+          time_values = normalize_values(doc.get("time_values_normalized"))
+          consequence = doc.get("operational_consequence")
+          return {
+              "fuel_values_normalized": fuel_values,
+              "time_values_normalized": time_values,
+              "consequence_priority": priority.get(consequence),
+              "has_numeric_value": bool(fuel_values or time_values),
+          }
+
+  - name: keep_qualifying_fuel_reports
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("consequence_priority") is not None
+
+  - name: order_limit_and_rank_fuel_reports
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          def incident_sort_key(incident_id):
+              text = str(incident_id)
+              try:
+                  return (0, int(text))
+              except ValueError:
+                  return (1, text)
+
+          ordered = sorted(
+              items,
+              key=lambda item: (
+                  item.get("consequence_priority"),
+                  not bool(item.get("has_numeric_value")),
+                  incident_sort_key(item.get("incident_id", "")),
+              ),
+          )
+
+          rows = []
+          seen_incidents = set()
+          for item in ordered:
+              incident_id = str(item.get("incident_id", ""))
+              if not incident_id or incident_id in seen_incidents:
+                  continue
+              seen_incidents.add(incident_id)
+              rows.append(
+                  {
+                      "rank": len(rows) + 1,
+                      "incident_id": item.get("incident_id"),
+                      "fuel_values_normalized": item.get(
+                          "fuel_values_normalized", []
+                      ),
+                      "time_values_normalized": item.get(
+                          "time_values_normalized", []
+                      ),
+                      "operational_consequence": item.get(
+                          "operational_consequence"
+                      ),
+                  }
+              )
+              if len(rows) == 5:
+                  break
+          return {"rows": rows}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - rank
+      - incident_id
+      - fuel_values_normalized
+      - time_values_normalized
+      - operational_consequence
+
+pipeline:
+  steps:
+    - name: process
+      input: asrs_incidents
+      operations:
+        - filter_part121_passenger_reports
+        - load_asrs_narrative
+        - extract_fuel_operation_consequence
+        - project_fuel_ranking_fields
+        - keep_qualifying_fuel_reports
+        - order_limit_and_rank_fuel_reports
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-015.json

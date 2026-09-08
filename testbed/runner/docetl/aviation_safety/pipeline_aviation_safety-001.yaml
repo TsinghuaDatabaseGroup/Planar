@@ -1,0 +1,173 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_part121_passenger
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("far_part") == "Part 121"
+              and doc.get("mission") == "Passenger"
+          )
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: extract_go_around_trigger_and_initiator
+    type: map
+    optimize: true
+    prompt: |
+      Classify this NASA ASRS report using only the narrative below.
+
+      Set qualifies=true only when the reporting aircraft actually performed a
+      go-around or missed approach and its primary trigger was exactly one of:
+      - unstable_approach: the approach itself was unstable, improperly configured,
+        too high, too fast, or otherwise not suitable to continue;
+      - traffic_spacing: airborne traffic or ATC spacing made continuation unsafe;
+      - runway_occupancy: an aircraft, vehicle, person, or other occupancy conflict
+        made the landing runway unavailable.
+
+      The maneuver must have been executed, not merely discussed or anticipated.
+      Exclude a maneuver whose primary trigger was an aircraft equipment failure.
+      Choose only the single primary trigger.
+
+      Return initiating_role as a concise crew or ATC role phrase of at most six
+      words, preserving the most specific role stated in the narrative. Do not
+      force the role into a fixed vocabulary or infer a rank that is not stated.
+      For a non-qualifying report, return not_applicable for both labels.
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        qualifies: boolean
+        primary_trigger: enum[unstable_approach, traffic_spacing, runway_occupancy, not_applicable]
+        initiating_role: string
+    validate:
+      - output["initiating_role"] == "not_applicable" or 1 <= len(output["initiating_role"].split()) <= 6
+    num_retries_on_validate_failure: 2
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: keep_qualifying_go_arounds
+    type: code_filter
+    code: |
+      def transform(doc):
+          initiating_role = str(doc.get("initiating_role", "")).strip()
+          return (
+              doc.get("qualifies") is True
+              and doc.get("primary_trigger")
+              in {"unstable_approach", "traffic_spacing", "runway_occupancy"}
+              and bool(initiating_role)
+              and initiating_role != "not_applicable"
+          )
+
+  - name: aggregate_by_primary_trigger
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          from collections import Counter
+
+          trigger_order = [
+              "unstable_approach",
+              "traffic_spacing",
+              "runway_occupancy",
+          ]
+          grouped_ids = {trigger: set() for trigger in trigger_order}
+          role_counts = {trigger: Counter() for trigger in trigger_order}
+          seen = set()
+
+          for item in items:
+              incident_id = str(item.get("incident_id", ""))
+              trigger = item.get("primary_trigger")
+              role = item.get("initiating_role")
+              key = (incident_id, trigger)
+              if not incident_id or trigger not in grouped_ids or key in seen:
+                  continue
+              seen.add(key)
+              grouped_ids[trigger].add(incident_id)
+              role_counts[trigger][role] += 1
+
+          rows = []
+          for trigger in trigger_order:
+              if not grouped_ids[trigger]:
+                  continue
+              mode_role = sorted(
+                  role_counts[trigger].items(), key=lambda pair: (-pair[1], pair[0])
+              )[0][0]
+              rows.append(
+                  {
+                      "primary_trigger": trigger,
+                      "incident_count": len(grouped_ids[trigger]),
+                      "most_common_initiating_role": mode_role,
+                  }
+              )
+          return {"rows": rows}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - primary_trigger
+      - incident_count
+      - most_common_initiating_role
+
+pipeline:
+  steps:
+    - name: process
+      input: asrs_incidents
+      operations:
+        - filter_part121_passenger
+        - load_asrs_narrative
+        - extract_go_around_trigger_and_initiator
+        - keep_qualifying_go_arounds
+        - aggregate_by_primary_trigger
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-001.json

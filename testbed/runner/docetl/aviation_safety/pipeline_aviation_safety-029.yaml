@@ -1,0 +1,310 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+  asrs_environment_attributes:
+    type: file
+    path: data/asrs/environment_attributes.csv
+  asrs_events:
+    type: file
+    path: data/asrs/events.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_afternoon_local_time
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("local_time_of_day") == "1201-1800"
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: filter_weather_caused_target_result
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this NASA ASRS report only when the narrative explicitly states that
+      weather or visibility caused at least one of these results:
+
+      - a go-around;
+      - a missed approach; or
+      - a new or revised ATC clearance.
+
+      The causal connection must be explicit. Mere weather or visibility mention,
+      weather encountered during an unrelated go-around, or a clearance change
+      without a stated weather or visibility cause does not qualify.
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_nonexcluded_primary_cause
+    type: filter
+    optimize: true
+    prompt: |
+      This report has already been identified as explicitly linking weather or
+      visibility to a go-around, missed approach, or new clearance. Keep it only
+      when traffic spacing, runway occupancy, or aircraft equipment was not the
+      primary cause of that result.
+
+      Exclude the report when the primary reason for the go-around, missed
+      approach, or new clearance was separation or traffic spacing, an occupied or
+      unavailable runway caused by traffic, or an aircraft system/equipment
+      problem, even if weather appears as secondary context. Keep it when weather
+      or visibility remained the primary cause.
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: attach_target_flight_conditions
+    type: code_map
+    code: |
+      import csv
+      import os
+      import threading
+
+      _flight_condition_index = None
+      _flight_condition_lock = threading.Lock()
+
+      def load_flight_condition_index():
+          global _flight_condition_index
+          if _flight_condition_index is None:
+              with _flight_condition_lock:
+                  if _flight_condition_index is None:
+                      index = {}
+                      path = os.path.abspath(
+                          os.path.join(
+                              "data", "asrs", "environment_attributes.csv"
+                          )
+                      )
+                      with open(
+                          path, "r", encoding="utf-8", errors="replace", newline=""
+                      ) as handle:
+                          for row in csv.DictReader(handle):
+                              value = row.get("value")
+                              if (
+                                  row.get("attribute") == "flight_conditions"
+                                  and value in {"IMC", "Marginal", "Mixed"}
+                              ):
+                                  index.setdefault(
+                                      str(row.get("incident_id", "")), []
+                                  ).append(value)
+                      _flight_condition_index = index
+          return _flight_condition_index
+
+      def transform(doc):
+          values = load_flight_condition_index().get(
+              str(doc.get("incident_id", "")), []
+          )
+          return {"flight_conditions_values": list(dict.fromkeys(values))}
+
+  - name: inner_join_environment_records
+    type: code_filter
+    code: |
+      def transform(doc):
+          return bool(doc.get("flight_conditions_values"))
+
+  - name: attach_target_result_events
+    type: code_map
+    code: |
+      import csv
+      import os
+      import threading
+
+      _result_event_index = None
+      _result_event_lock = threading.Lock()
+
+      def load_result_event_index():
+          global _result_event_index
+          if _result_event_index is None:
+              with _result_event_lock:
+                  if _result_event_index is None:
+                      label_to_result = {
+                          "Flight Crew Executed Go Around / Missed Approach":
+                              "go_around_or_missed_approach",
+                          "Air Traffic Control Issued New Clearance":
+                              "new_clearance",
+                      }
+                      index = {}
+                      path = os.path.abspath(
+                          os.path.join("data", "asrs", "events.csv")
+                      )
+                      with open(
+                          path, "r", encoding="utf-8", errors="replace", newline=""
+                      ) as handle:
+                          for row in csv.DictReader(handle):
+                              label = row.get("label")
+                              if (
+                                  row.get("event_type") == "result"
+                                  and label in label_to_result
+                              ):
+                                  index.setdefault(
+                                      str(row.get("incident_id", "")), []
+                                  ).append(label_to_result[label])
+                      _result_event_index = index
+          return _result_event_index
+
+      def transform(doc):
+          results = load_result_event_index().get(
+              str(doc.get("incident_id", "")), []
+          )
+          return {"recorded_result_values": list(dict.fromkeys(results))}
+
+  - name: inner_join_result_events
+    type: code_filter
+    code: |
+      def transform(doc):
+          return bool(doc.get("recorded_result_values"))
+
+  - name: filter_approach_or_landing_phase
+    type: code_filter
+    code: |
+      def transform(doc):
+          flight_phase = str(doc.get("flight_phase", ""))
+          return "Approach" in flight_phase or "Landing" in flight_phase
+
+  - name: build_condition_result_combinations
+    type: code_map
+    code: |
+      def transform(doc):
+          rows = [
+              {
+                  "flight_conditions": condition,
+                  "recorded_result": result,
+              }
+              for condition in doc.get("flight_conditions_values", [])
+              for result in doc.get("recorded_result_values", [])
+          ]
+          return {"condition_result_rows": rows}
+
+  - name: unnest_condition_result_combinations
+    type: unnest
+    unnest_key: condition_result_rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - flight_conditions
+      - recorded_result
+
+  - name: aggregate_condition_result_distribution
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          condition_order = ["IMC", "Marginal", "Mixed"]
+          result_order = [
+              "go_around_or_missed_approach",
+              "new_clearance",
+          ]
+          incident_ids = {
+              (condition, result): set()
+              for condition in condition_order
+              for result in result_order
+          }
+
+          for item in items:
+              incident_id = str(item.get("incident_id", ""))
+              key = (item.get("flight_conditions"), item.get("recorded_result"))
+              if incident_id and key in incident_ids:
+                  incident_ids[key].add(incident_id)
+
+          rows = []
+          for condition in condition_order:
+              for result in result_order:
+                  ids = incident_ids[(condition, result)]
+                  if not ids:
+                      continue
+                  rows.append(
+                      {
+                          "flight_conditions": condition,
+                          "recorded_result": result,
+                          "incident_count": len(ids),
+                      }
+                  )
+          return {"rows": rows}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - flight_conditions
+      - recorded_result
+      - incident_count
+
+pipeline:
+  steps:
+    - name: process
+      input: asrs_incidents
+      operations:
+        - filter_afternoon_local_time
+        - load_asrs_narrative
+        - filter_weather_caused_target_result
+        - filter_nonexcluded_primary_cause
+        - attach_target_flight_conditions
+        - inner_join_environment_records
+        - attach_target_result_events
+        - inner_join_result_events
+        - filter_approach_or_landing_phase
+        - build_condition_result_combinations
+        - unnest_condition_result_combinations
+        - aggregate_condition_result_distribution
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-029.json

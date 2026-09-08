@@ -1,0 +1,253 @@
+{
+  "task_id": "aviation_safety-041",
+  "answer": [
+    {
+      "flight_phase": "Climb",
+      "clearance_conflict_type": "conflicting_clearance",
+      "incident_count": 2
+    },
+    {
+      "flight_phase": "Climb",
+      "clearance_conflict_type": "confusing_clearance",
+      "incident_count": 13
+    },
+    {
+      "flight_phase": "Climb",
+      "clearance_conflict_type": "late_clearance",
+      "incident_count": 2
+    },
+    {
+      "flight_phase": "Climb",
+      "clearance_conflict_type": "other_atc_issue",
+      "incident_count": 1
+    },
+    {
+      "flight_phase": "Climb; Final Approach",
+      "clearance_conflict_type": "confusing_clearance",
+      "incident_count": 1
+    },
+    {
+      "flight_phase": "Climb; Final Approach",
+      "clearance_conflict_type": "other_atc_issue",
+      "incident_count": 1
+    },
+    {
+      "flight_phase": "Climb; Initial Climb",
+      "clearance_conflict_type": "confusing_clearance",
+      "incident_count": 1
+    },
+    {
+      "flight_phase": "Climb; Takeoff / Launch; Initial Climb",
+      "clearance_conflict_type": "confusing_clearance",
+      "incident_count": 1
+    },
+    {
+      "flight_phase": "Cruise",
+      "clearance_conflict_type": "ambiguous_clearance",
+      "incident_count": 1
+    },
+    {
+      "flight_phase": "Cruise",
+      "clearance_conflict_type": "conflicting_clearance",
+      "incident_count": 2
+    },
+    {
+      "flight_phase": "Cruise",
+      "clearance_conflict_type": "confusing_clearance",
+      "incident_count": 12
+    },
+    {
+      "flight_phase": "Cruise",
+      "clearance_conflict_type": "late_clearance",
+      "incident_count": 4
+    },
+    {
+      "flight_phase": "Cruise; Descent",
+      "clearance_conflict_type": "confusing_clearance",
+      "incident_count": 1
+    },
+    {
+      "flight_phase": "Cruise; Initial Approach",
+      "clearance_conflict_type": "conflicting_clearance",
+      "incident_count": 1
+    },
+    {
+      "flight_phase": "Cruise; Initial Approach",
+      "clearance_conflict_type": "confusing_clearance",
+      "incident_count": 2
+    },
+    {
+      "flight_phase": "Descent",
+      "clearance_conflict_type": "conflicting_clearance",
+      "incident_count": 3
+    },
+    {
+      "flight_phase": "Descent",
+      "clearance_conflict_type": "confusing_clearance",
+      "incident_count": 12
+    },
+    {
+      "flight_phase": "Descent",
+      "clearance_conflict_type": "late_clearance",
+      "incident_count": 9
+    },
+    {
+      "flight_phase": "Descent",
+      "clearance_conflict_type": "other_atc_issue",
+      "incident_count": 1
+    },
+    {
+      "flight_phase": "Descent; Cruise; Initial Approach",
+      "clearance_conflict_type": "late_clearance",
+      "incident_count": 1
+    },
+    {
+      "flight_phase": "Final Approach",
+      "clearance_conflict_type": "ambiguous_clearance",
+      "incident_count": 1
+    },
+    {
+      "flight_phase": "Final Approach",
+      "clearance_conflict_type": "conflicting_clearance",
+      "incident_count": 3
+    },
+    {
+      "flight_phase": "Final Approach",
+      "clearance_conflict_type": "confusing_clearance",
+      "incident_count": 12
+    },
+    {
+      "flight_phase": "Final Approach",
+      "clearance_conflict_type": "late_clearance",
+      "incident_count": 3
+    },
+    {
+      "flight_phase": "Final Approach",
+      "clearance_conflict_type": "other_atc_issue",
+      "incident_count": 1
+    },
+    {
+      "flight_phase": "Initial Approach",
+      "clearance_conflict_type": "ambiguous_clearance",
+      "incident_count": 2
+    },
+    {
+      "flight_phase": "Initial Approach",
+      "clearance_conflict_type": "conflicting_clearance",
+      "incident_count": 4
+    },
+    {
+      "flight_phase": "Initial Approach",
+      "clearance_conflict_type": "confusing_clearance",
+      "incident_count": 44
+    },
+    {
+      "flight_phase": "Initial Approach",
+      "clearance_conflict_type": "late_clearance",
+      "incident_count": 9
+    },
+    {
+      "flight_phase": "Initial Approach",
+      "clearance_conflict_type": "other_atc_issue",
+      "incident_count": 2
+    },
+    {
+      "flight_phase": "Initial Approach; Descent",
+      "clearance_conflict_type": "late_clearance",
+      "incident_count": 1
+    },
+    {
+      "flight_phase": "Initial Approach; Final Approach",
+      "clearance_conflict_type": "conflicting_clearance",
+      "incident_count": 1
+    },
+    {
+      "flight_phase": "Initial Approach; Landing",
+      "clearance_conflict_type": "conflicting_clearance",
+      "incident_count": 2
+    },
+    {
+      "flight_phase": "Initial Approach; Landing",
+      "clearance_conflict_type": "confusing_clearance",
+      "incident_count": 2
+    },
+    {
+      "flight_phase": "Initial Climb",
+      "clearance_conflict_type": "conflicting_clearance",
+      "incident_count": 1
+    },
+    {
+      "flight_phase": "Initial Climb",
+      "clearance_conflict_type": "confusing_clearance",
+      "incident_count": 8
+    },
+    {
+      "flight_phase": "Initial Climb",
+      "clearance_conflict_type": "late_clearance",
+      "incident_count": 2
+    },
+    {
+      "flight_phase": "Initial Climb",
+      "clearance_conflict_type": "other_atc_issue",
+      "incident_count": 1
+    },
+    {
+      "flight_phase": "Initial Climb; Takeoff / Launch",
+      "clearance_conflict_type": "confusing_clearance",
+      "incident_count": 1
+    },
+    {
+      "flight_phase": "Landing",
+      "clearance_conflict_type": "conflicting_clearance",
+      "incident_count": 1
+    },
+    {
+      "flight_phase": "Landing",
+      "clearance_conflict_type": "confusing_clearance",
+      "incident_count": 1
+    },
+    {
+      "flight_phase": "Landing",
+      "clearance_conflict_type": "late_clearance",
+      "incident_count": 2
+    },
+    {
+      "flight_phase": "Landing; Initial Approach",
+      "clearance_conflict_type": "confusing_clearance",
+      "incident_count": 1
+    },
+    {
+      "flight_phase": "Other Go Around",
+      "clearance_conflict_type": "conflicting_clearance",
+      "incident_count": 1
+    },
+    {
+      "flight_phase": "Other Missed Approach",
+      "clearance_conflict_type": "confusing_clearance",
+      "incident_count": 1
+    },
+    {
+      "flight_phase": "Parked",
+      "clearance_conflict_type": "conflicting_clearance",
+      "incident_count": 1
+    },
+    {
+      "flight_phase": "Takeoff / Launch",
+      "clearance_conflict_type": "confusing_clearance",
+      "incident_count": 4
+    },
+    {
+      "flight_phase": "Takeoff / Launch; Climb",
+      "clearance_conflict_type": "confusing_clearance",
+      "incident_count": 1
+    },
+    {
+      "flight_phase": "Takeoff / Launch; Landing",
+      "clearance_conflict_type": "conflicting_clearance",
+      "incident_count": 1
+    }
+  ],
+  "elapsed_seconds": 404.898,
+  "cost_usd": 1.91656131,
+  "total_tokens": 4482977
+}

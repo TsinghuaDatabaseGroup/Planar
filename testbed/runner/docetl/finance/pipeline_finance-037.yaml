@@ -1,0 +1,451 @@
+datasets:
+  sec_2021_filings:
+    type: file
+    path: data/SEC/CSV/2021.csv
+  sec_2023_filings:
+    type: file
+    path: data/SEC/CSV/2023.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_2021_filings_over_60000_words
+    type: code_filter
+    code: |
+      def transform(doc):
+          try:
+              return int(doc.get("word_count", 0)) > 60000
+          except (TypeError, ValueError):
+              return False
+
+  - name: load_2021_filing_document
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("SEC text path escapes data/SEC")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              document_2021 = handle.read()
+          return {"document_2021": document_2021}
+
+  - name: classify_2021_geographic_footprint
+    type: map
+    optimize: true
+    prompt: |
+      Assign the reporting company's operating footprint in this 2021 SEC 10-K
+      filing to exactly one category:
+
+      - domestic_only: business operations are confined to the United States;
+      - limited_international: the company has operations outside the United
+        States, but they are limited in scope or importance;
+      - globally_diversified: substantial operations span multiple foreign
+        countries or regions;
+      - undetermined: the filing does not support a reliable assignment.
+
+      2021 filing:
+      {{ input.document_2021 }}
+    output:
+      mode: structured_output
+      schema:
+        geographic_diversification_2021: enum[domestic_only, limited_international, globally_diversified, undetermined]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 256
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_2021_domestic_only
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("geographic_diversification_2021") == "domestic_only"
+
+  - name: filter_2021_without_foreign_currency_risk
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this 2021 SEC 10-K filing only when it does not disclose
+      foreign-currency or exchange-rate risk for the reporting company.
+      Return false only when such risk is disclosed.
+
+      2021 filing:
+      {{ input.document_2021 }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: deduplicate_2021_by_cik_keep_longest
+    type: code_reduce
+    reduce_key: cik
+    code: |
+      def transform(items):
+          def word_count(item):
+              try:
+                  return int(item.get("word_count", 0))
+              except (TypeError, ValueError):
+                  return 0
+
+          selected = max(items, key=word_count)
+          return {
+              "cik": selected.get("cik"),
+              "text_2021": selected.get("text"),
+              "word_count_2021": word_count(selected),
+              "document_2021": selected.get("document_2021", ""),
+          }
+
+  - name: filter_2023_filings_over_60000_words
+    type: code_filter
+    code: |
+      def transform(doc):
+          try:
+              return int(doc.get("word_count", 0)) > 60000
+          except (TypeError, ValueError):
+              return False
+
+  - name: load_2023_filing_document
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("SEC text path escapes data/SEC")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              document_2023 = handle.read()
+          return {"document_2023": document_2023}
+
+  - name: classify_2023_geographic_footprint
+    type: map
+    optimize: true
+    prompt: |
+      Assign the reporting company's operating footprint in this 2023 SEC 10-K
+      filing to exactly one category:
+
+      - domestic_only: business operations are confined to the United States;
+      - limited_international: the company has operations outside the United
+        States, but they are limited in scope or importance;
+      - globally_diversified: substantial operations span multiple foreign
+        countries or regions;
+      - undetermined: the filing does not support a reliable assignment.
+
+      2023 filing:
+      {{ input.document_2023 }}
+    output:
+      mode: structured_output
+      schema:
+        geographic_diversification_2023: enum[domestic_only, limited_international, globally_diversified, undetermined]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 256
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_2023_globally_diversified
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("geographic_diversification_2023")
+              == "globally_diversified"
+          )
+
+  - name: filter_2023_with_foreign_currency_risk
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this 2023 SEC 10-K filing only if it discloses foreign-currency or
+      exchange-rate risk for the reporting company.
+
+      2023 filing:
+      {{ input.document_2023 }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: deduplicate_2023_by_cik_keep_longest
+    type: code_reduce
+    reduce_key: cik
+    code: |
+      def transform(items):
+          def word_count(item):
+              try:
+                  return int(item.get("word_count", 0))
+              except (TypeError, ValueError):
+                  return 0
+
+          selected = max(items, key=word_count)
+          return {
+              "cik": selected.get("cik"),
+              "text_2023": selected.get("text"),
+              "word_count_2023": word_count(selected),
+              "document_2023": selected.get("document_2023", ""),
+          }
+
+  - name: join_2021_baseline_and_2023_expansion
+    type: equijoin
+    deterministic: true
+    blocking_conditions:
+      - left["cik"] == right["cik"]
+
+  - name: classify_2023_growth_strategy
+    type: map
+    optimize: true
+    prompt: |
+      Assign the reporting company's stated growth strategy in this 2023 SEC 10-K
+      filing to exactly one category:
+
+      - organic: growth through the company's internal business activities;
+      - acquisition_driven: growth primarily through acquisitions;
+      - hybrid: both organic growth and acquisitions;
+      - not_applicable: the filing states that a growth strategy is not applicable;
+      - undetermined: the stated strategy cannot be determined from the filing.
+
+      Base the category on the reporting company's stated growth strategy.
+
+      2023 filing:
+      {{ input.document_2023 }}
+    output:
+      mode: structured_output
+      schema:
+        growth_strategy: enum[organic, acquisition_driven, hybrid, not_applicable, undetermined]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 256
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: extract_2023_company_industry_and_countries
+    type: map
+    optimize: true
+    prompt: |
+      Extract from this 2023 SEC 10-K filing:
+
+      1. The reporting company's legal name.
+      2. Its industry sector.
+      3. Every distinct foreign country in which the reporting company has actual
+         business operations.
+
+      Use the legal registrant name stated in the filing and return a concise,
+      conventional industry-sector name. Return country names in a consistent
+      canonical form, do not include the United States or non-country regions, and
+      do not infer an operating country from a reference that does not describe
+      company operations there.
+
+      If a name or sector is unavailable, set its availability flag to false and
+      use an empty string placeholder. Return an empty list when no individual
+      foreign country can be supported.
+
+      2023 filing:
+      {{ input.document_2023 }}
+    output:
+      mode: structured_output
+      schema:
+        company_name_available: boolean
+        company_name_value: string
+        industry_sector_available: boolean
+        industry_sector_value: string
+        countries_of_operation: list[string]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 1024
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: project_foreign_country_count
+    type: code_map
+    code: |
+      def transform(doc):
+          import re
+
+          aliases = {
+              "u s": "united states",
+              "u s a": "united states",
+              "us": "united states",
+              "usa": "united states",
+              "united states of america": "united states",
+              "uk": "united kingdom",
+              "u k": "united kingdom",
+              "great britain": "united kingdom",
+              "republic of korea": "south korea",
+              "korea republic of": "south korea",
+              "people s republic of china": "china",
+              "prc": "china",
+          }
+
+          normalized_countries = set()
+          countries = doc.get("countries_of_operation", [])
+          if not isinstance(countries, list):
+              countries = []
+          for country in countries:
+              value = re.sub(
+                  r"[^a-z0-9]+",
+                  " ",
+                  str(country).casefold(),
+              ).strip()
+              value = aliases.get(value, value)
+              if value and value != "united states":
+                  normalized_countries.add(value)
+
+          company_name = (
+              str(doc.get("company_name_value", "")).strip()
+              if doc.get("company_name_available") is True
+              else ""
+          )
+          industry_sector = (
+              str(doc.get("industry_sector_value", "")).strip()
+              if doc.get("industry_sector_available") is True
+              else ""
+          )
+          return {
+              "company_name": company_name,
+              "industry_sector": industry_sector,
+              "growth_strategy": doc.get("growth_strategy", "undetermined"),
+              "foreign_country_count": len(normalized_countries),
+          }
+
+  - name: order_companies_by_foreign_country_count
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          rows = [
+              {
+                  "company_name": item.get("company_name", ""),
+                  "industry_sector": item.get("industry_sector", ""),
+                  "growth_strategy": item.get(
+                      "growth_strategy",
+                      "undetermined",
+                  ),
+                  "foreign_country_count": int(
+                      item.get("foreign_country_count", 0)
+                  ),
+              }
+              for item in items
+          ]
+          rows.sort(
+              key=lambda item: (
+                  -item["foreign_country_count"],
+                  item["company_name"].casefold(),
+              )
+          )
+          return {"rows": rows}
+
+  - name: unnest_ordered_companies
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - company_name
+      - industry_sector
+      - growth_strategy
+      - foreign_country_count
+
+  - name: limit_to_10_companies
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {"rows": items[:10]}
+
+  - name: unnest_limited_companies
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - company_name
+      - industry_sector
+      - growth_strategy
+      - foreign_country_count
+
+pipeline:
+  steps:
+    - name: baseline_2021
+      input: sec_2021_filings
+      operations:
+        - filter_2021_filings_over_60000_words
+        - load_2021_filing_document
+        - classify_2021_geographic_footprint
+        - filter_2021_domestic_only
+        - filter_2021_without_foreign_currency_risk
+        - deduplicate_2021_by_cik_keep_longest
+    - name: expanded_2023
+      input: sec_2023_filings
+      operations:
+        - filter_2023_filings_over_60000_words
+        - load_2023_filing_document
+        - classify_2023_geographic_footprint
+        - filter_2023_globally_diversified
+        - filter_2023_with_foreign_currency_risk
+        - deduplicate_2023_by_cik_keep_longest
+    - name: transitions
+      operations:
+        - join_2021_baseline_and_2023_expansion:
+            left: baseline_2021
+            right: expanded_2023
+    - name: process
+      input: transitions
+      operations:
+        - classify_2023_growth_strategy
+        - extract_2023_company_industry_and_countries
+        - project_foreign_country_count
+        - order_companies_by_foreign_country_count
+        - unnest_ordered_companies
+        - limit_to_10_companies
+        - unnest_limited_companies
+  output:
+    type: file
+    path: raw_outputs/finance/output_finance-037.json

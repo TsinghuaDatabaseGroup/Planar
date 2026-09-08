@@ -1,0 +1,183 @@
+datasets:
+  sec_2023_filings:
+    type: file
+    path: data/SEC/CSV/2023.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: load_filing_document
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("SEC text path escapes data/SEC")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              document = handle.read()
+          return {"document": document}
+
+  - name: classify_comparison_industry
+    type: map
+    optimize: true
+    prompt: |
+      Assign the reporting company in this 2023 SEC 10-K filing to exactly one
+      industry category for this comparison:
+
+      - Pharmaceutical: the primary business is developing, manufacturing,
+        licensing, or marketing pharmaceutical products or therapeutics;
+      - Software: the primary business is developing, licensing, or providing
+        software products or software-based services;
+      - Other: neither Pharmaceutical nor Software is the company's primary
+        industry.
+
+      Classify by the reporting company's primary business.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        industry_sector: enum[Pharmaceutical, Software, Other]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 256
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_target_industries
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("industry_sector") in {
+              "Pharmaceutical",
+              "Software",
+          }
+
+  - name: extract_four_filing_indicators
+    type: map
+    optimize: true
+    prompt: |
+      Analyze this 2023 SEC 10-K filing and return four boolean indicators:
+
+      - ai_ml_mentioned: whether the filing contains a qualifying AI/ML reference;
+      - has_going_concern: whether the filing expresses substantial doubt about
+        the company's ability to continue as a going concern;
+      - has_international_ops: whether the filing describes company operations
+        outside the United States;
+      - has_litigation: true when the filing reports a pending, threatened, or
+        ongoing litigation matter, legal proceeding, lawsuit, or regulatory
+        investigation involving the company.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        ai_ml_mentioned: boolean
+        has_going_concern: boolean
+        has_international_ops: boolean
+        has_litigation: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 512
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: aggregate_industry_rates
+    type: code_reduce
+    reduce_key: industry_sector
+    code: |
+      def transform(items):
+          from decimal import Decimal, ROUND_HALF_UP
+
+          filing_count = len(items)
+
+          def percentage(field):
+              true_count = sum(
+                  1 for item in items if item.get(field) is True
+              )
+              return float(
+                  (
+                      Decimal(100 * true_count) / Decimal(filing_count)
+                  ).quantize(Decimal("0.1"), rounding=ROUND_HALF_UP)
+              )
+
+          return {
+              "filing_count": filing_count,
+              "ai_ml_mention_rate_percent": percentage("ai_ml_mentioned"),
+              "going_concern_rate_percent": percentage(
+                  "has_going_concern"
+              ),
+              "international_operations_rate_percent": percentage(
+                  "has_international_ops"
+              ),
+              "litigation_rate_percent": percentage("has_litigation"),
+          }
+
+  - name: pack_industry_comparison_dictionary
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {
+              str(item.get("industry_sector", "")): {
+                  "filing_count": item.get("filing_count"),
+                  "ai_ml_mention_rate_percent": item.get(
+                      "ai_ml_mention_rate_percent"
+                  ),
+                  "going_concern_rate_percent": item.get(
+                      "going_concern_rate_percent"
+                  ),
+                  "international_operations_rate_percent": item.get(
+                      "international_operations_rate_percent"
+                  ),
+                  "litigation_rate_percent": item.get(
+                      "litigation_rate_percent"
+                  ),
+              }
+              for item in items
+              if str(item.get("industry_sector", ""))
+          }
+
+pipeline:
+  steps:
+    - name: process
+      input: sec_2023_filings
+      operations:
+        - load_filing_document
+        - classify_comparison_industry
+        - filter_target_industries
+        - extract_four_filing_indicators
+        - aggregate_industry_rates
+        - pack_industry_comparison_dictionary
+  output:
+    type: file
+    path: raw_outputs/finance/output_finance-020.json

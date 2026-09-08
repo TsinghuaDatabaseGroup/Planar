@@ -1,0 +1,32 @@
+{
+  "task_id": "finance-004",
+  "answer": {
+    "investment_income": {
+      "count": 69
+    },
+    "licensing": {
+      "count": 21
+    },
+    "mixed": {
+      "count": 101
+    },
+    "other": {
+      "count": 60
+    },
+    "product_sales": {
+      "count": 97
+    },
+    "service_fees": {
+      "count": 37
+    },
+    "subscription": {
+      "count": 3
+    },
+    "transaction_fees": {
+      "count": 6
+    }
+  },
+  "elapsed_seconds": 2023.288,
+  "cost_usd": 3.71328891,
+  "total_tokens": 8769804
+}

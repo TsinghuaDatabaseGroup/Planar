@@ -1,0 +1,53 @@
+{
+  "task_id": "aviation_safety-034",
+  "answer": [
+    {
+      "rank": 1,
+      "incident_id": "asrs_053566",
+      "reconciliation_pattern": "direct_conflict",
+      "automation_guidance": "TCAS RA commanded climb",
+      "atc_instruction": "ATC instructed maintain 10000 feet",
+      "horizontal_separation_ft": 7000,
+      "vertical_separation_ft": 300
+    },
+    {
+      "rank": 2,
+      "incident_id": "asrs_016747",
+      "reconciliation_pattern": "modified_or_delayed_compliance",
+      "automation_guidance": "Climb as directed by TCAS II RA",
+      "atc_instruction": "Clearance for visual approach to runway 16L",
+      "horizontal_separation_ft": 0,
+      "vertical_separation_ft": 100
+    },
+    {
+      "rank": 3,
+      "incident_id": "asrs_031644",
+      "reconciliation_pattern": "modified_or_delayed_compliance",
+      "automation_guidance": "TCAS II issued Traffic Advisory",
+      "atc_instruction": "Turn left to 270 degrees, maintain 1500 feet",
+      "horizontal_separation_ft": 1500,
+      "vertical_separation_ft": 100
+    },
+    {
+      "rank": 4,
+      "incident_id": "asrs_060926",
+      "reconciliation_pattern": "modified_or_delayed_compliance",
+      "automation_guidance": "TCAS RA commanded 2000-2500 VVI descent",
+      "atc_instruction": "Clearance to cross fix at 10000 FT MSL",
+      "horizontal_separation_ft": 3000,
+      "vertical_separation_ft": 200
+    },
+    {
+      "rank": 5,
+      "incident_id": "asrs_027994",
+      "reconciliation_pattern": "modified_or_delayed_compliance",
+      "automation_guidance": "TCAS II commanded descent of 4000 fpm",
+      "atc_instruction": "ATC instructed immediate climb",
+      "horizontal_separation_ft": 3000,
+      "vertical_separation_ft": 300
+    }
+  ],
+  "elapsed_seconds": 262.11,
+  "cost_usd": 1.691747,
+  "total_tokens": 3988609
+}

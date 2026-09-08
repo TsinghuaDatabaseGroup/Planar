@@ -1,0 +1,13 @@
+{
+  "task_id": "legal_contracts-095",
+  "answer": [
+    {
+      "company": "Cavco Industries, Inc.",
+      "subsidiary_count": 19,
+      "covered_person_category": "current and former executive officers"
+    }
+  ],
+  "elapsed_seconds": 771.54,
+  "cost_usd": 5.891112,
+  "total_tokens": 11053635
+}

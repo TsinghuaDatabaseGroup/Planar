@@ -1,0 +1,473 @@
+{
+  "task_id": "legal_contracts-035",
+  "answer": [
+    {
+      "document_name": "1010471_0000950134-97-006281_document_5.txt",
+      "governing_law": "Delaware",
+      "difference_months": 0
+    },
+    {
+      "document_name": "1013240_0001047469-04-010350_a2132633zex-10_22.htm",
+      "governing_law": "Colorado",
+      "difference_months": 0
+    },
+    {
+      "document_name": "1021086_0000950162-99-000581_document_3.txt",
+      "governing_law": "Delaware",
+      "difference_months": 0
+    },
+    {
+      "document_name": "1021096_0000914317-03-001205_ex2-2.txt",
+      "governing_law": "Ohio",
+      "difference_months": 0
+    },
+    {
+      "document_name": "1053352_0001104659-07-049383_a07-17151_1ex10d5.htm",
+      "governing_law": "California",
+      "difference_months": 0
+    },
+    {
+      "document_name": "1061148_0001047469-98-018914_document_17.txt",
+      "governing_law": "District of Columbia",
+      "difference_months": 0
+    },
+    {
+      "document_name": "1068874_0001068874-07-000012_ex10_2.htm",
+      "governing_law": "Massachusetts",
+      "difference_months": 0
+    },
+    {
+      "document_name": "1102301_0001094328-04-000141_freesarex23052004.txt",
+      "governing_law": "New York",
+      "difference_months": 0
+    },
+    {
+      "document_name": "1335239_0001019687-14-003760_epazz_ex1034.htm",
+      "governing_law": "Illinois",
+      "difference_months": 0
+    },
+    {
+      "document_name": "1363033_0001144204-06-024852_v045245_ex10-8.htm",
+      "governing_law": "Pennsylvania",
+      "difference_months": 0
+    },
+    {
+      "document_name": "1628908_0001193125-15-169530_d838828dex1016.htm",
+      "governing_law": "Pennsylvania",
+      "difference_months": 66
+    },
+    {
+      "document_name": "1689602_0001144204-16-140940_v455386_ex10-3.htm",
+      "governing_law": "Virginia",
+      "difference_months": 0
+    },
+    {
+      "document_name": "24104_0000024104-96-000010_document_3.txt",
+      "governing_law": "Colorado",
+      "difference_months": 96
+    },
+    {
+      "document_name": "26820_0000936392-03-001111_a92217exv10w5.txt",
+      "governing_law": "Delaware",
+      "difference_months": 0
+    },
+    {
+      "document_name": "736291_0000930661-99-001320_document_3.txt",
+      "governing_law": "Delaware",
+      "difference_months": 0
+    },
+    {
+      "document_name": "770461_0001144204-05-023830_v022988_ex10-6.txt",
+      "governing_law": "New York",
+      "difference_months": 0
+    },
+    {
+      "document_name": "770461_0001144204-06-041516_v054278_ex10-7.txt",
+      "governing_law": "New York",
+      "difference_months": 0
+    },
+    {
+      "document_name": "817516_0001014909-05-000102_exh99_4sept2005.txt",
+      "governing_law": "Delaware",
+      "difference_months": 0
+    },
+    {
+      "document_name": "86115_0000930661-99-001321_document_3.txt",
+      "governing_law": "Delaware",
+      "difference_months": 0
+    },
+    {
+      "document_name": "87888_0000912057-97-029111_document_6.txt",
+      "governing_law": "Ohio",
+      "difference_months": 0
+    },
+    {
+      "document_name": "880458_0001021408-01-510269_dex1087.txt",
+      "governing_law": "California",
+      "difference_months": 0
+    },
+    {
+      "document_name": "88190_0000950144-96-003474_document_2.txt",
+      "governing_law": "New York",
+      "difference_months": 24
+    },
+    {
+      "document_name": "912592_0000929624-98-000842_document_20.txt",
+      "governing_law": "Utah",
+      "difference_months": 0
+    },
+    {
+      "document_name": "918541_0001193125-14-328980_d785003dex105.htm",
+      "governing_law": "Delaware",
+      "difference_months": 0
+    },
+    {
+      "document_name": "930796_0000950123-05-001407_y05539exv99w5.txt",
+      "governing_law": "New York State",
+      "difference_months": 0
+    },
+    {
+      "document_name": "935703_0001047469-98-030238_document_4.txt",
+      "governing_law": "California or Virginia",
+      "difference_months": -4
+    },
+    {
+      "document_name": "LMS_Non_Disclosure_Agreement.pdf",
+      "governing_law": "laws of the jurisdiction in which the Disclosing Party is located",
+      "difference_months": 18
+    },
+    {
+      "document_name": "a03312024ex101.htm",
+      "governing_law": "Rhode Island",
+      "difference_months": 0
+    },
+    {
+      "document_name": "a03312025ex101.htm",
+      "governing_law": "Rhode Island",
+      "difference_months": 0
+    },
+    {
+      "document_name": "a03312025ex103.htm",
+      "governing_law": "Rhode Island",
+      "difference_months": 0
+    },
+    {
+      "document_name": "a1029trv2025restrictedstoc.htm",
+      "governing_law": "Participant's Employment Jurisdiction",
+      "difference_months": 0
+    },
+    {
+      "document_name": "avah-ex10_23.htm",
+      "governing_law": "Georgia",
+      "difference_months": 0
+    },
+    {
+      "document_name": "avah-ex10_24.htm",
+      "governing_law": "Georgia",
+      "difference_months": 0
+    },
+    {
+      "document_name": "cfoconfidentialityandnon-c.htm",
+      "governing_law": "Texas",
+      "difference_months": -12
+    },
+    {
+      "document_name": "d822701dex103.htm",
+      "governing_law": "State in which employee last rendered services",
+      "difference_months": 0
+    },
+    {
+      "document_name": "d864562dex103.htm",
+      "governing_law": "State in which I last rendered services to the Company",
+      "difference_months": 0
+    },
+    {
+      "document_name": "dal9302024ex101.htm",
+      "governing_law": "Georgia",
+      "difference_months": 0
+    },
+    {
+      "document_name": "dv-20250721xex10d1.htm",
+      "governing_law": "New York",
+      "difference_months": 0
+    },
+    {
+      "document_name": "e5407_ex10-29.htm",
+      "governing_law": "Florida",
+      "difference_months": -6
+    },
+    {
+      "document_name": "e6756_ex10-6.htm",
+      "governing_law": "State of Georgia",
+      "difference_months": 0
+    },
+    {
+      "document_name": "ea020170101ex10-21_onconetix.htm",
+      "governing_law": "Swiss law",
+      "difference_months": 0
+    },
+    {
+      "document_name": "ea020170401ex10-4_natures.htm",
+      "governing_law": "Delaware",
+      "difference_months": 0
+    },
+    {
+      "document_name": "ea020224801ex10-23_gryphon.htm",
+      "governing_law": "New York",
+      "difference_months": 0
+    },
+    {
+      "document_name": "ea021499501ex10-37_foxxdev.htm",
+      "governing_law": "Texas",
+      "difference_months": 0
+    },
+    {
+      "document_name": "ea023134401ex10-1_bgc.htm",
+      "governing_law": "New York",
+      "difference_months": -24
+    },
+    {
+      "document_name": "ea023134401ex10-4_bgc.htm",
+      "governing_law": "England and Wales",
+      "difference_months": 0
+    },
+    {
+      "document_name": "ea023506301_ex10-1.htm",
+      "governing_law": "Arizona",
+      "difference_months": 0
+    },
+    {
+      "document_name": "ea023506301_ex10-2.htm",
+      "governing_law": "Arizona",
+      "difference_months": 0
+    },
+    {
+      "document_name": "ea023506301_ex10-3.htm",
+      "governing_law": "Arizona",
+      "difference_months": 0
+    },
+    {
+      "document_name": "ea023506301_ex10-4.htm",
+      "governing_law": "Arizona",
+      "difference_months": 0
+    },
+    {
+      "document_name": "ea191793ex10-10_newhorizon.htm",
+      "governing_law": "Delaware",
+      "difference_months": 0
+    },
+    {
+      "document_name": "ef20030540_ex10-1.htm",
+      "governing_law": "North Carolina",
+      "difference_months": 6
+    },
+    {
+      "document_name": "eh250596666_ex1008.htm",
+      "governing_law": "Delaware",
+      "difference_months": 0
+    },
+    {
+      "document_name": "eh250596666_ex1009.htm",
+      "governing_law": "Delaware",
+      "difference_months": 0
+    },
+    {
+      "document_name": "ex-106executiveemploymenta.htm",
+      "governing_law": "Virginia",
+      "difference_months": 0
+    },
+    {
+      "document_name": "ex10-1.htm",
+      "governing_law": "Texas",
+      "difference_months": 0
+    },
+    {
+      "document_name": "ex10-1_1.htm",
+      "governing_law": "Texas",
+      "difference_months": 0
+    },
+    {
+      "document_name": "ex10-1_2.htm",
+      "governing_law": "Texas",
+      "difference_months": 0
+    },
+    {
+      "document_name": "ex10-3_1.htm",
+      "governing_law": "Texas",
+      "difference_months": 0
+    },
+    {
+      "document_name": "ex1010dormanproducts-execu.htm",
+      "governing_law": "Pennsylvania",
+      "difference_months": 6
+    },
+    {
+      "document_name": "ex1021restrictedstockunita.htm",
+      "governing_law": "Delaware",
+      "difference_months": 0
+    },
+    {
+      "document_name": "ex1023keytalentawardagreem.htm",
+      "governing_law": "Delaware",
+      "difference_months": 0
+    },
+    {
+      "document_name": "ex1024stockoptionagreement.htm",
+      "governing_law": "Delaware",
+      "difference_months": 0
+    },
+    {
+      "document_name": "ex1025performanceshareunit.htm",
+      "governing_law": "Delaware",
+      "difference_months": 0
+    },
+    {
+      "document_name": "ex1042-thomasrknottxaroffe.htm",
+      "governing_law": "Delaware",
+      "difference_months": 0
+    },
+    {
+      "document_name": "ex105ciia.htm",
+      "governing_law": "State in which employee last rendered services",
+      "difference_months": 0
+    },
+    {
+      "document_name": "ex108_confidentialinformat.htm",
+      "governing_law": "State in which employee last rendered services",
+      "difference_months": 0
+    },
+    {
+      "document_name": "ex_740997.htm",
+      "governing_law": "Texas",
+      "difference_months": 0
+    },
+    {
+      "document_name": "exhibit1020-dadamsxsprinkl.htm",
+      "governing_law": "North Carolina",
+      "difference_months": -9
+    },
+    {
+      "document_name": "exhibit1022.htm",
+      "governing_law": "Texas",
+      "difference_months": 0
+    },
+    {
+      "document_name": "exhibit1025-amisraemployme.htm",
+      "governing_law": "India",
+      "difference_months": -9
+    },
+    {
+      "document_name": "exhibit1027-jcorsoemployme.htm",
+      "governing_law": "Texas",
+      "difference_months": 0
+    },
+    {
+      "document_name": "exhibit102consultingagreem.htm",
+      "governing_law": "California",
+      "difference_months": 0
+    },
+    {
+      "document_name": "exhibit105consultingagreem.htm",
+      "governing_law": "California",
+      "difference_months": 0
+    },
+    {
+      "document_name": "finalpapaexecutiveemploy.htm",
+      "governing_law": "Maryland",
+      "difference_months": 0
+    },
+    {
+      "document_name": "glp-20231231xex10d28.htm",
+      "governing_law": "Massachusetts",
+      "difference_months": 0
+    },
+    {
+      "document_name": "idxx2024q210-qexhibit104.htm",
+      "governing_law": "Maine",
+      "difference_months": 0
+    },
+    {
+      "document_name": "idxx2024q310-qexhibit101.htm",
+      "governing_law": "Maine",
+      "difference_months": 0
+    },
+    {
+      "document_name": "nue-ex10_xx.htm",
+      "governing_law": "North Carolina",
+      "difference_months": 0
+    },
+    {
+      "document_name": "nue-ex10_xxii.htm",
+      "governing_law": "North Carolina",
+      "difference_months": 0
+    },
+    {
+      "document_name": "nue-ex10_xxiv.htm",
+      "governing_law": "North Carolina",
+      "difference_months": 0
+    },
+    {
+      "document_name": "nue-ex10_xxxi.htm",
+      "governing_law": "North Carolina",
+      "difference_months": 0
+    },
+    {
+      "document_name": "nue-ex10_xxxiii.htm",
+      "governing_law": "North Carolina",
+      "difference_months": 0
+    },
+    {
+      "document_name": "nue-ex10_xxxv.htm",
+      "governing_law": "North Carolina",
+      "difference_months": 0
+    },
+    {
+      "document_name": "nue-ex10_xxxvii.htm",
+      "governing_law": "North Carolina",
+      "difference_months": 0
+    },
+    {
+      "document_name": "phat-ex10_1.htm",
+      "governing_law": "Illinois",
+      "difference_months": 0
+    },
+    {
+      "document_name": "stra-20231231xex1012.htm",
+      "governing_law": "Maryland",
+      "difference_months": 9
+    },
+    {
+      "document_name": "stra-20231231xex1013.htm",
+      "governing_law": "Maryland",
+      "difference_months": 9
+    },
+    {
+      "document_name": "tm254711d1_ex10-1.htm",
+      "governing_law": "Colorado",
+      "difference_months": 0
+    },
+    {
+      "document_name": "tm254711d1_ex10-2.htm",
+      "governing_law": "Colorado",
+      "difference_months": 0
+    },
+    {
+      "document_name": "trin-ex10_7.htm",
+      "governing_law": "Arizona",
+      "difference_months": 0
+    },
+    {
+      "document_name": "voorheesemploymentagreement.htm",
+      "governing_law": "Washington",
+      "difference_months": 0
+    },
+    {
+      "document_name": "wu-ex10_36.htm",
+      "governing_law": "Italy",
+      "difference_months": -6
+    }
+  ],
+  "elapsed_seconds": 427.87,
+  "cost_usd": 4.392202,
+  "total_tokens": 8241194
+}

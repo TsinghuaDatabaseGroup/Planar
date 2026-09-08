@@ -1,0 +1,189 @@
+datasets:
+  contract_exhibit_root:
+    type: memory
+    path:
+    - root: data/contract-exhibit
+operations:
+- name: unnest_answer_rows
+  type: unnest
+  unnest_key: rows
+  recursive: true
+  depth: 2
+  expand_fields:
+  - rank
+  - agreement_or_filing_type
+  - document_count
+  model: Qwen3.5-397B-A17B
+- name: aggregate_top_document_types_bs_3_fp_0
+  type: reduce
+  synthesize_merge: true
+  reduce_key:
+  - _all
+  prompt: 'Across the complete input relation below, assign each document exactly one
+
+    primary agreement or filing type from sox_certification,
+
+    employment_agreement, insider_trading_policy, auditor_consent,
+
+    subsidiary_list, clawback_policy, mutual_nda, unilateral_nda,
+
+    confidentiality_standstill, non_compete_agreement, supply_agreement,
+
+    non_solicitation_agreement, and other. Treat genuine Section 302 or Section
+
+    906 officer certifications as sox_certification, but classify Regulation AB
+
+    servicing certifications as other. Return the five most common categories
+
+    with distinct document counts, ordered by count descending and category
+
+    alphabetically for ties, with ranks beginning at one.
+
+
+    {% for record in inputs %}
+
+    CONTRACT_ID: {{ record.contract_id }}
+
+    DOCUMENT:
+
+    {{ record.text }}
+
+    ---
+
+    {% endfor %}
+
+    '
+  output:
+    mode: structured_output
+    schema:
+      rows: 'list[{rank: integer, agreement_or_filing_type: enum[sox_certification, employment_agreement,
+        insider_trading_policy, auditor_consent, subsidiary_list, clawback_policy, mutual_nda, unilateral_nda,
+        confidentiality_standstill, non_compete_agreement, supply_agreement, non_solicitation_agreement,
+        other], document_count: integer}]'
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  model: Qwen3.5-397B-A17B
+  fold_prompt: "You are updating an existing aggregation of document counts by agreement/filing type.\
+    \ \n\nCurrent Aggregated State:\n{{ output | tojson(indent=2) }}\n\nNew Batch of Documents to Process:\n\
+    {% for record in inputs %}\nCONTRACT_ID: {{ record.contract_id }}\nDOCUMENT:\n{{ record.text }}\n\
+    ---\n{% endfor %}\n\nInstructions:\n1. Classify each document in the new batch above into exactly\
+    \ one category from: sox_certification, employment_agreement, insider_trading_policy, auditor_consent,\
+    \ subsidiary_list, clawback_policy, mutual_nda, unilateral_nda, confidentiality_standstill, non_compete_agreement,\
+    \ supply_agreement, non_solicitation_agreement, other.\n   - Treat genuine Section 302 or Section\
+    \ 906 officer certifications as sox_certification.\n   - Classify Regulation AB servicing certifications\
+    \ as other.\n2. Count the occurrences of each category in this new batch.\n3. Merge these new counts\
+    \ into the \"Current Aggregated State\" by adding them to the existing counts for each category. If\
+    \ a category exists in the new batch but not in the current state, add it. If it exists in the state\
+    \ but not the new batch, keep the existing count.\n4. From the combined totals, select the five most\
+    \ common categories.\n5. Sort the result by count descending, then by category name alphabetically\
+    \ for ties.\n6. Assign ranks starting at 1.\n7. Return ONLY the JSON object with the key \"rows\"\
+    \ containing the list of ranked items, matching the schema: {\"rows\": [{\"rank\": int, \"agreement_or_filing_type\"\
+    : str, \"document_count\": int}, ...]}."
+  fold_batch_size: 3
+  associative: true
+  merge_prompt: 'You are merging multiple partial aggregation results from parallel fold operations into
+    a single final result. This step combines the outputs of several fold operations that each processed
+    a different batch of documents, effectively reconstructing the result as if the original reduce operation
+    had been run on all inputs at once.
+
+
+    Each input below represents the top-5 ranked categories from a specific batch, including their counts.
+    However, to ensure accuracy, you must sum the raw document counts for every category across ALL provided
+    inputs before re-ranking. Do not simply merge the top-5 lists, as a category appearing in the top-5
+    of one batch might have a higher total count when combined with counts from other batches where it
+    did not make the top-5.
+
+
+    Inputs to Merge:
+
+    {% for output in outputs %}
+
+    Batch {{ loop.index }} Result:
+
+    {{ output | tojson(indent=2) }}
+
+    ---
+
+    {% endfor %}
+
+
+    Instructions:
+
+    1. Extract the document counts for every category found in any of the input batches. Note that some
+    batches may not list all categories (implicitly zero) or may only list the top 5. Treat missing categories
+    in a specific batch as having a count of 0 for that batch.
+
+    2. Sum the counts for each unique category across all input batches to get the global total for that
+    category.
+
+    3. From these global totals, select the five most common categories.
+
+    4. Sort the result by total count descending. For ties in count, sort by category name alphabetically.
+
+    5. Assign ranks starting at 1.
+
+    6. Return ONLY the JSON object with the key "rows" containing the list of ranked items, matching the
+    schema: {"rows": [{"rank": int, "agreement_or_filing_type": str, "document_count": int}, ...]}.'
+  merge_batch_size: 2
+  merge_time: 2.132020726799965
+  fold_time: 16.63319230079651
+- name: unnest_html_contract_documents
+  type: unnest
+  unnest_key: documents
+  recursive: true
+  depth: 2
+  expand_fields:
+  - contract_id
+  - doc_format
+  - text
+  model: Qwen3.5-397B-A17B
+- name: load_html_contract_documents
+  type: code_map
+  code: "def transform(doc):\n    import glob\n    import os\n    from html.parser import HTMLParser\n\
+    \n    class TextExtractor(HTMLParser):\n        def __init__(self):\n            super().__init__()\n\
+    \            self.parts = []\n            self.skip_depth = 0\n\n        def handle_starttag(self,\
+    \ tag, attrs):\n            if tag.lower() in {\"script\", \"style\"}:\n                self.skip_depth\
+    \ += 1\n\n        def handle_endtag(self, tag):\n            if tag.lower() in {\"script\", \"style\"\
+    } and self.skip_depth:\n                self.skip_depth -= 1\n\n        def handle_data(self, data):\n\
+    \            if not self.skip_depth:\n                value = \" \".join(data.split())\n         \
+    \       if value:\n                    self.parts.append(value)\n\n    root = os.path.abspath(str(doc.get(\"\
+    root\", \"\")))\n    paths = sorted(\n        path\n        for path in glob.glob(os.path.join(root,\
+    \ \"*\"))\n        if os.path.splitext(path)[1].lower() in {\".htm\", \".html\"}\n    )\n    documents\
+    \ = []\n    for path in paths:\n        with open(path, \"r\", encoding=\"utf-8\", errors=\"replace\"\
+    ) as handle:\n            parser = TextExtractor()\n            parser.feed(handle.read())\n     \
+    \   documents.append(\n            {\n                \"contract_id\": os.path.basename(path),\n \
+    \               \"doc_format\": \"htm\",\n                \"text\": \"\\n\".join(parser.parts),\n\
+    \            }\n        )\n    return {\"documents\": documents}\n"
+  model: Qwen3.5-397B-A17B
+pipeline:
+  steps:
+  - name: process
+    operations:
+    - load_html_contract_documents
+    - unnest_html_contract_documents
+    - aggregate_top_document_types_bs_3_fp_0
+    - unnest_answer_rows
+    input: contract_exhibit_root
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-019.json
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  num_plans_to_evaluate_in_parallel: 1

@@ -1,0 +1,40 @@
+{
+  "task_id": "vehicle_safety-046",
+  "answer": [
+    {
+      "campaign_number": "24V793000",
+      "matched_complaint_count": 9,
+      "dominant_airbag_failure_mode": "curtain_failure",
+      "dominant_remedy_style": "other",
+      "related_report_ids": [],
+      "odi_evidence_summary": ""
+    },
+    {
+      "campaign_number": "25V302000",
+      "matched_complaint_count": 6,
+      "dominant_airbag_failure_mode": "curtain_failure",
+      "dominant_remedy_style": "part_replacement",
+      "related_report_ids": [],
+      "odi_evidence_summary": ""
+    },
+    {
+      "campaign_number": "25V573000",
+      "matched_complaint_count": 6,
+      "dominant_airbag_failure_mode": "curtain_failure",
+      "dominant_remedy_style": "part_replacement",
+      "related_report_ids": [],
+      "odi_evidence_summary": ""
+    },
+    {
+      "campaign_number": "26V189000",
+      "matched_complaint_count": 6,
+      "dominant_airbag_failure_mode": "curtain_failure",
+      "dominant_remedy_style": "part_replacement",
+      "related_report_ids": [],
+      "odi_evidence_summary": ""
+    }
+  ],
+  "elapsed_seconds": 736.388,
+  "cost_usd": 0.88054335,
+  "total_tokens": 864527
+}

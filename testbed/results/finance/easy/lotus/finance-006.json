@@ -1,0 +1,68 @@
+{
+  "task_id": "finance-006",
+  "answer": [
+    {
+      "company_name": "1847 HOLDINGS LLC",
+      "competitive_advantages_count": 8,
+      "subsidiary_count": 10,
+      "industry_sector": "Holding Company"
+    },
+    {
+      "company_name": "3D Systems Corporation",
+      "competitive_advantages_count": 8,
+      "subsidiary_count": 10,
+      "industry_sector": "3D Printing and Additive Manufacturing"
+    },
+    {
+      "company_name": "A-MARK PRECIOUS METALS, INC.",
+      "competitive_advantages_count": 7,
+      "subsidiary_count": 9,
+      "industry_sector": "Precious Metals and Commodities Trading"
+    },
+    {
+      "company_name": "ACRES Commercial Realty Corp.",
+      "competitive_advantages_count": 8,
+      "subsidiary_count": 10,
+      "industry_sector": "Commercial Real Estate"
+    },
+    {
+      "company_name": "AEMETIS, INC",
+      "competitive_advantages_count": 8,
+      "subsidiary_count": 10,
+      "industry_sector": "Renewable Fuels"
+    },
+    {
+      "company_name": "ALLETE, Inc.",
+      "competitive_advantages_count": 8,
+      "subsidiary_count": 10,
+      "industry_sector": "Utilities"
+    },
+    {
+      "company_name": "ALTRA INDUSTRIAL MOTION CORP.",
+      "competitive_advantages_count": 8,
+      "subsidiary_count": 10,
+      "industry_sector": "Electromechanical Power Transmission Motion Control"
+    },
+    {
+      "company_name": "AMERCO",
+      "competitive_advantages_count": 8,
+      "subsidiary_count": 10,
+      "industry_sector": "Moving and Storage"
+    },
+    {
+      "company_name": "ANI PHARMACEUTICALS, INC.",
+      "competitive_advantages_count": 8,
+      "subsidiary_count": 10,
+      "industry_sector": "Pharmaceuticals"
+    },
+    {
+      "company_name": "Advantage Solutions Inc.",
+      "competitive_advantages_count": 6,
+      "subsidiary_count": 9,
+      "industry_sector": "Marketing Consulting Business Services"
+    }
+  ],
+  "elapsed_seconds": 3557.78,
+  "cost_usd": 13.750429,
+  "total_tokens": 29505716
+}

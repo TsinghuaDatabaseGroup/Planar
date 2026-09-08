@@ -1,0 +1,124 @@
+datasets:
+  sec_2023_filings:
+    type: file
+    path: data/SEC/CSV/2023.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_filings_over_100000_words
+    type: code_filter
+    code: |
+      def transform(doc):
+          try:
+              return int(doc.get("word_count", 0)) > 100000
+          except (TypeError, ValueError):
+              return False
+
+  - name: load_filing_document
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("SEC text path escapes data/SEC")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              document = handle.read()
+          return {"document": document}
+
+  - name: classify_primary_revenue_model
+    type: map
+    optimize: true
+    prompt: |
+      Assign this 2023 SEC 10-K filing to exactly one primary revenue-model
+      category from the following target labels:
+
+      - mixed: multiple listed models are material with no single primary model;
+      - product_sales: revenue primarily from product sales;
+      - interest_income: revenue primarily from interest income;
+      - service_fees: revenue primarily from non-subscription service fees;
+      - licensing_royalties: revenue primarily from licensing or royalties;
+      - rental_income: revenue primarily from rentals or leases;
+      - investment_returns: revenue primarily from investment returns;
+      - subscription: revenue primarily from subscriptions or memberships;
+      - commission: revenue primarily from commissions.
+
+      Base the category on how the reporting company earns revenue.
+      Set revenue_model_determined=true only when one target category is supported.
+      If no primary target category can be determined, set it to false and return
+      mixed as the required placeholder; the following deterministic operation
+      converts that placeholder to null.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        revenue_model_determined: boolean
+        revenue_model_value: enum[mixed, product_sales, interest_income, service_fees, licensing_royalties, rental_income, investment_returns, subscription, commission]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 256
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: normalize_nullable_revenue_model
+    type: code_map
+    code: |
+      def transform(doc):
+          if doc.get("revenue_model_determined") is not True:
+              return {"revenue_model": None}
+          return {"revenue_model": doc.get("revenue_model_value")}
+
+  - name: filter_determined_revenue_models
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("revenue_model") is not None
+
+  - name: count_filings_by_revenue_model
+    type: code_reduce
+    reduce_key: revenue_model
+    code: |
+      def transform(items):
+          return {"filing_count": len(items)}
+
+pipeline:
+  steps:
+    - name: process
+      input: sec_2023_filings
+      operations:
+        - filter_filings_over_100000_words
+        - load_filing_document
+        - classify_primary_revenue_model
+        - normalize_nullable_revenue_model
+        - filter_determined_revenue_models
+        - count_filings_by_revenue_model
+  output:
+    type: file
+    path: raw_outputs/finance/output_finance-004.json

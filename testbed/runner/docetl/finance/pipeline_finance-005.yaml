@@ -1,0 +1,198 @@
+datasets:
+  sec_2022_filings:
+    type: file
+    path: data/SEC/CSV/2022.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: load_filing_document
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("SEC text path escapes data/SEC")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              document = handle.read()
+          return {"document": document}
+
+  - name: extract_canonical_industry_and_going_concern_doubt
+    type: map
+    optimize: true
+    prompt: |
+      Analyze this 2022 SEC 10-K filing and return:
+
+      - industry_sector_raw: the reporting company's industry sector;
+      - has_going_concern_doubt: true only if the filing affirmatively expresses
+        doubt about the company's ability to continue as a going concern.
+
+      Use sector labels consistently. Treat differences in case, separators, and
+      synonymous naming as the same sector, including blank-check and SPAC naming
+      variants.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        industry_sector_raw: string
+        has_going_concern_doubt: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 256
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: normalize_industry_sector_label
+    type: code_map
+    code: |
+      def transform(doc):
+          import re
+
+          raw = str(doc.get("industry_sector_raw", "")).strip()
+          normalized = raw.casefold().replace("&", " and ")
+          key = re.sub(r"[^a-z0-9]+", " ", normalized).strip()
+          if (
+              "blank check" in key
+              or "special purpose acquisition" in key
+              or key == "spac"
+              or key == "spacs"
+          ):
+              sector = "Blank Check Companies"
+          else:
+              small_words = {"and", "of", "the", "for", "in", "to"}
+              words = []
+              for index, word in enumerate(key.split()):
+                  if word in {"ai", "it"}:
+                      words.append(word.upper())
+                  elif index > 0 and word in small_words:
+                      words.append(word)
+                  else:
+                      words.append(word.capitalize())
+              sector = " ".join(words)
+          return {"industry_sector": sector}
+
+  - name: aggregate_by_industry_sector
+    type: code_reduce
+    reduce_key: industry_sector
+    code: |
+      def transform(items):
+          from decimal import Decimal, ROUND_HALF_UP
+
+          filing_count = len(items)
+          going_concern_count = sum(
+              1
+              for item in items
+              if item.get("has_going_concern_doubt") is True
+          )
+          unrounded_rate = going_concern_count / filing_count
+          rounded_percent = float(
+              (
+                  Decimal(100 * going_concern_count)
+                  / Decimal(filing_count)
+              ).quantize(Decimal("0.1"), rounding=ROUND_HALF_UP)
+          )
+          return {
+              "filing_count": filing_count,
+              "going_concern_count": going_concern_count,
+              "unrounded_rate": unrounded_rate,
+              "going_concern_rate_percent": rounded_percent,
+          }
+
+  - name: filter_sectors_with_at_least_20_filings
+    type: code_filter
+    code: |
+      def transform(doc):
+          return int(doc.get("filing_count", 0)) >= 20
+
+  - name: order_sectors_by_unrounded_rate
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          from fractions import Fraction
+
+          rows = sorted(
+              items,
+              key=lambda item: (
+                  -Fraction(
+                      int(item.get("going_concern_count", 0)),
+                      int(item.get("filing_count", 1)),
+                  ),
+                  str(item.get("industry_sector", "")),
+              ),
+          )
+          return {"rows": rows}
+
+  - name: unnest_ordered_sectors
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - industry_sector
+      - filing_count
+      - going_concern_count
+      - unrounded_rate
+      - going_concern_rate_percent
+
+  - name: limit_to_3_sectors
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {"rows": items[:3]}
+
+  - name: unnest_limited_sectors
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - industry_sector
+      - going_concern_rate_percent
+      - filing_count
+
+pipeline:
+  steps:
+    - name: process
+      input: sec_2022_filings
+      operations:
+        - load_filing_document
+        - extract_canonical_industry_and_going_concern_doubt
+        - normalize_industry_sector_label
+        - aggregate_by_industry_sector
+        - filter_sectors_with_at_least_20_filings
+        - order_sectors_by_unrounded_rate
+        - unnest_ordered_sectors
+        - limit_to_3_sectors
+        - unnest_limited_sectors
+  output:
+    type: file
+    path: raw_outputs/finance/output_finance-005.json

@@ -1,0 +1,86 @@
+{
+  "task_id": "legal_contracts-013",
+  "answer": [
+    {
+      "document_id": "1043431_0000950133-00-000090_document_15.txt",
+      "agreement_type": "Mutual Non-Disclosure Agreement",
+      "standstill_duration_years": 2.0,
+      "governing_law": "Virginia"
+    },
+    {
+      "document_id": "1112422_0000950153-08-001257_p75864exv99wxeyx4y.htm",
+      "agreement_type": "Nondisclosure Agreement",
+      "standstill_duration_years": 2.0,
+      "governing_law": "Delaware"
+    },
+    {
+      "document_id": "1332602_0001193125-12-512465_d454990dex99d2.htm",
+      "agreement_type": "Confidentiality Agreement",
+      "standstill_duration_years": 2.0,
+      "governing_law": "None"
+    },
+    {
+      "document_id": "1334303_0001193125-10-204560_dex99e5.htm",
+      "agreement_type": "Confidentiality Agreement",
+      "standstill_duration_years": 2.0,
+      "governing_law": "None"
+    },
+    {
+      "document_id": "25895_0000950134-07-023464_d51356exv10w1.htm",
+      "agreement_type": "Noncompetition and Non-Disclosure Agreement",
+      "standstill_duration_years": 4.0,
+      "governing_law": "Delaware"
+    },
+    {
+      "document_id": "814457_0000950137-04-009790_c89545exv99wxdyx6y.htm",
+      "agreement_type": "Confidentiality Agreement",
+      "standstill_duration_years": 2.0,
+      "governing_law": "California"
+    },
+    {
+      "document_id": "816955_0000899243-97-001962_document_4.txt",
+      "agreement_type": "Confidentiality Agreement",
+      "standstill_duration_years": 2.0,
+      "governing_law": "Not specified"
+    },
+    {
+      "document_id": "913610_0001047469-03-027395_a2116567zex-99_e3.htm",
+      "agreement_type": "Confidentiality Agreement",
+      "standstill_duration_years": 2.0,
+      "governing_law": "None"
+    },
+    {
+      "document_id": "925942_0001047469-98-029396_document_13.txt",
+      "agreement_type": "Confidentiality Agreement",
+      "standstill_duration_years": 2.0,
+      "governing_law": "None"
+    },
+    {
+      "document_id": "96238_0000950103-97-000583_document_4.txt",
+      "agreement_type": "Confidentiality Agreement",
+      "standstill_duration_years": 2.0,
+      "governing_law": "New York"
+    },
+    {
+      "document_id": "96238_0000950116-97-001823_document_13.txt",
+      "agreement_type": "Confidentiality Agreement",
+      "standstill_duration_years": 2.0,
+      "governing_law": "None"
+    },
+    {
+      "document_id": "Non-disclosure%20Agreement_1.pdf",
+      "agreement_type": "Non-Disclosure Agreement",
+      "standstill_duration_years": 2.0,
+      "governing_law": "Alberta"
+    },
+    {
+      "document_id": "stony_hill_buyer_nda.pdf",
+      "agreement_type": "Non-Disclosure and Confidentiality Agreement",
+      "standstill_duration_years": 3.0,
+      "governing_law": "Pennsylvania"
+    }
+  ],
+  "elapsed_seconds": 390.095,
+  "cost_usd": 1.21018704,
+  "total_tokens": 2516606
+}

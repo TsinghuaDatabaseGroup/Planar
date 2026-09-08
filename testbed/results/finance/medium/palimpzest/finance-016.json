@@ -1,0 +1,18 @@
+{
+  "task_id": "finance-016",
+  "answer": [
+    {"industry_sector": "Commercial Banking", "company_count": 160},
+    {"industry_sector": "Pharmaceutical", "company_count": 156},
+    {"industry_sector": "Technology", "company_count": 146},
+    {"industry_sector": "Energy", "company_count": 119},
+    {"industry_sector": "Real Estate", "company_count": 78},
+    {"industry_sector": "Consumer Goods", "company_count": 66},
+    {"industry_sector": "Manufacturing", "company_count": 64},
+    {"industry_sector": "Insurance", "company_count": 43},
+    {"industry_sector": "Transportation", "company_count": 26},
+    {"industry_sector": "Telecommunications", "company_count": 16}
+  ],
+  "elapsed_seconds": 2442.92,
+  "cost_usd": 25.781809,
+  "total_tokens": 64254161
+}

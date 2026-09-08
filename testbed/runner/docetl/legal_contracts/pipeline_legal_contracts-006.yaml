@@ -1,0 +1,89 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body: {chat_template_kwargs: {enable_thinking: false}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+
+operations:
+  - name: filter_indefinite_nda_types
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is a mutual NDA, unilateral NDA, or
+      confidentiality-and-standstill agreement whose confidentiality duty is
+      perpetual or indefinite.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_indefinite_qualifying_nda: boolean}}
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body: {chat_template_kwargs: {enable_thinking: false}}
+
+  - name: extract_law_and_missing_exceptions
+    type: map
+    optimize: true
+    prompt: |
+      Extract the expressly stated governing law and all missing standard
+      confidentiality carve-outs. Normalize each missing exception to one of:
+      public_information, prior_knowledge, independent_development,
+      third_party_receipt, legal_compulsion, or consent. Set
+      governing_law_available=false when no law is stated and use an empty string
+      only as a placeholder.
+
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        governing_law_available: boolean
+        governing_law_value: string
+        missing_exceptions: list[string]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body: {chat_template_kwargs: {enable_thinking: false}}
+
+  - name: project_nullable_answer_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          missing = list(dict.fromkeys(str(value) for value in (doc.get("missing_exceptions") or [])))
+          return {
+              "document_id": str(doc.get("doc_id") or ""),
+              "governing_law": str(doc.get("governing_law_value") or "") if doc.get("governing_law_available") is True else None,
+              "missing_exceptions": missing,
+          }
+
+  - name: filter_law_and_two_missing_exceptions
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("governing_law") is not None and len(doc.get("missing_exceptions") or []) == 2
+
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations:
+        - filter_indefinite_nda_types
+        - extract_law_and_missing_exceptions
+        - project_nullable_answer_fields
+        - filter_law_and_two_missing_exceptions
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-006.json

@@ -1,0 +1,40 @@
+{
+  "task_id": "finance-029",
+  "answer": [
+    {
+      "company_name": "MongoDB, Inc.",
+      "industry": "Database Management Software"
+    },
+    {
+      "company_name": "MATTEL, INC.",
+      "industry": "Toys and Family Entertainment"
+    },
+    {
+      "company_name": "EDGEWELL PERSONAL CARE COMPANY",
+      "industry": "Personal Care Products"
+    },
+    {
+      "company_name": "DARIOHEALTH CORP.",
+      "industry": "Digital Health"
+    },
+    {
+      "company_name": "NATIONAL BEVERAGE CORP.",
+      "industry": "Beverage"
+    },
+    {
+      "company_name": "Topgolf Callaway Brands Corp.",
+      "industry": "Golf Equipment and Entertainment"
+    },
+    {
+      "company_name": "T-MOBILE US, INC.",
+      "industry": "Wireless Communications Services"
+    },
+    {
+      "company_name": "8x8, Inc.",
+      "industry": "Software-as-a-Service (SaaS) Cloud Communications"
+    }
+  ],
+  "elapsed_seconds": 2009.733,
+  "cost_usd": 19.41719604,
+  "total_tokens": 49333609
+}

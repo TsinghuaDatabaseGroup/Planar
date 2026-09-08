@@ -1,0 +1,619 @@
+{
+  "task_id": "vehicle_safety-036",
+  "status": "failed",
+  "selected_plan_persisted_before_execution": false,
+  "source": "queries/queries.json reference_semantic_plan",
+  "input_plan": {
+    "task_id": "vehicle_safety-036",
+    "query": "Which five Ford airbag recall campaigns rank highest by the number of complaints describing the same defect as the campaign's defect summary? For each campaign, what are the matched complaint count, the share involving crash, injury, or towing indicators, the dominant complaint severity in {minor_inconvenience, moderate_safety_event, severe_safety_event}, and the dominant remedy style in {software_update, part_replacement, other}? Sort by campaign number ascending if there is a tie.",
+    "inputs": [
+      {
+        "source_id": "complaints_csv",
+        "dataset": "NHTSA Vehicle Safety",
+        "source_type": "table",
+        "role": "primary"
+      },
+      {
+        "source_id": "recalls_jsonl",
+        "dataset": "NHTSA Vehicle Safety",
+        "source_type": "document",
+        "role": "primary"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [complaint_id, make, component_id, crash_flag, injury_count, vehicle_towed_flag, summary_text]) -> FILTER(make='FORD' AND component_id='AIRBAG') -> SEM_JOIN('Within Ford AIRBAG records, match a complaint to a recall only when the complaint narrative and recall defect summary describe the same airbag failure mechanism.', input_bindings_left={complaint_summary: summary_text, component_id: component_id}, input_bindings_right={recall_defect: r.risk.defect_summary, component_id: r.component_id}, right=( SCAN_DOCS(NHTSA, recalls AS r, [campaign.number, vehicle.make AS make, component.component_id AS component_id, risk.defect_summary, remedy.corrective_action]) -> FILTER(vehicle.make='FORD' AND component.component_id='AIRBAG') )) -> SEM_FILTER('the complaint narrative describes a concrete airbag safety event rather than a cosmetic warning-light-only concern', input_bindings={text: summary_text}) -> SEM_CLASSIFY('Classify the complaint severity.', target_labels=['minor_inconvenience','moderate_safety_event','severe_safety_event'], input_bindings={text: summary_text}) -> PROJECT([complaint_id, crash_flag, injury_count, vehicle_towed_flag, summary_text, r.campaign.number, r.remedy.corrective_action, complaint_severity: group]) -> SEM_CLASSIFY('Classify the recall remedy style.', target_labels=['software_update','part_replacement','other'], input_bindings={text: r.remedy.corrective_action}) -> PROJECT([complaint_id, crash_flag, injury_count, vehicle_towed_flag, r.campaign.number, complaint_severity, recall_remedy_style: group]) -> GROUP_BY([r.campaign.number], aggs={matched_complaint_count: count_distinct(complaint_id), severe_indicator_rate: avg(crash_flag='true' OR injury_count > 0 OR vehicle_towed_flag='true'), dominant_complaint_severity: mode_with_tiebreak(complaint_severity, tiebreak='alpha_asc'), dominant_recall_remedy_style: mode_with_tiebreak(recall_remedy_style, tiebreak='alpha_asc')}) -> ORDER_BY([matched_complaint_count DESC, r.campaign.number ASC]) -> LIMIT(5) -> PROJECT([rank: row_number(), campaign_number: r.campaign.number, matched_complaint_count, severe_indicator_rate, dominant_complaint_severity, dominant_recall_remedy_style])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "campaign_number",
+        "matched_complaint_count",
+        "severe_indicator_rate",
+        "dominant_complaint_severity",
+        "dominant_recall_remedy_style"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "float",
+        "string",
+        "string"
+      ]
+    }
+  },
+  "input_palimpzest_logical_plan": {
+    "root_dataset_id": "243d8bf7e3",
+    "nodes": [
+      {
+        "dataset_id": "vehicle_safety-036-complaints-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "58cd911caa",
+        "unique_logical_op_id": "0-58cd911caa",
+        "depends_on": [],
+        "generated_fields": [
+          "complaint_id",
+          "component_id",
+          "crash_flag",
+          "injury_count",
+          "summary_text",
+          "vehicle_towed_flag"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "complaint_id",
+          "component_id",
+          "crash_flag",
+          "injury_count",
+          "summary_text",
+          "vehicle_towed_flag"
+        ]
+      },
+      {
+        "dataset_id": "vehicle_safety-036-recalls-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "41b429b065",
+        "unique_logical_op_id": "1-41b429b065",
+        "depends_on": [],
+        "generated_fields": [
+          "campaign_number",
+          "recall_component_id",
+          "recall_corrective_action",
+          "recall_defect_summary"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "campaign_number",
+          "recall_component_id",
+          "recall_corrective_action",
+          "recall_defect_summary"
+        ]
+      },
+      {
+        "dataset_id": "5d7e6561ff",
+        "source_dataset_ids": [
+          "vehicle_safety-036-complaints-semantic-input",
+          "vehicle_safety-036-recalls-semantic-input"
+        ],
+        "logical_operator": "JoinOp",
+        "logical_op_id": "aacf2afd12",
+        "unique_logical_op_id": "2-aacf2afd12",
+        "depends_on": [
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "recall_component_id",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "crash_flag",
+          "injury_count",
+          "recall_component_id",
+          "recall_corrective_action",
+          "recall_defect_summary",
+          "summary_text",
+          "vehicle_towed_flag"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "crash_flag",
+          "injury_count",
+          "recall_component_id",
+          "recall_corrective_action",
+          "recall_defect_summary",
+          "summary_text",
+          "vehicle_towed_flag"
+        ],
+        "condition": "Within Ford AIRBAG records, match a complaint to a recall only when component_id equals recall_component_id and the complaint narrative and recall defect summary describe the same airbag failure mechanism.",
+        "how": "inner"
+      },
+      {
+        "dataset_id": "8cc04e6a0b",
+        "source_dataset_ids": [
+          "5d7e6561ff"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "83d3e4098c",
+        "unique_logical_op_id": "3-83d3e4098c",
+        "depends_on": [
+          "summary_text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "crash_flag",
+          "injury_count",
+          "recall_component_id",
+          "recall_corrective_action",
+          "recall_defect_summary",
+          "summary_text",
+          "vehicle_towed_flag"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "crash_flag",
+          "injury_count",
+          "recall_component_id",
+          "recall_corrective_action",
+          "recall_defect_summary",
+          "summary_text",
+          "vehicle_towed_flag"
+        ],
+        "filter": "Keep this matched pair only if the complaint narrative describes a concrete airbag safety event rather than a cosmetic warning-light-only concern."
+      },
+      {
+        "dataset_id": "e9eb2cd24f",
+        "source_dataset_ids": [
+          "8cc04e6a0b"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "afff7103f6",
+        "unique_logical_op_id": "4-afff7103f6",
+        "depends_on": [
+          "summary_text"
+        ],
+        "generated_fields": [
+          "complaint_severity"
+        ],
+        "input_fields": [
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "crash_flag",
+          "injury_count",
+          "recall_component_id",
+          "recall_corrective_action",
+          "recall_defect_summary",
+          "summary_text",
+          "vehicle_towed_flag"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "complaint_id",
+          "complaint_severity",
+          "component_id",
+          "crash_flag",
+          "injury_count",
+          "recall_component_id",
+          "recall_corrective_action",
+          "recall_defect_summary",
+          "summary_text",
+          "vehicle_towed_flag"
+        ],
+        "desc": "Classify the complaint severity.",
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "0b0919a2a8",
+        "source_dataset_ids": [
+          "e9eb2cd24f"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "82aa819a8b",
+        "unique_logical_op_id": "5-82aa819a8b",
+        "depends_on": [
+          "recall_corrective_action"
+        ],
+        "generated_fields": [
+          "recall_remedy_style"
+        ],
+        "input_fields": [
+          "campaign_number",
+          "complaint_id",
+          "complaint_severity",
+          "component_id",
+          "crash_flag",
+          "injury_count",
+          "recall_component_id",
+          "recall_corrective_action",
+          "recall_defect_summary",
+          "summary_text",
+          "vehicle_towed_flag"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "complaint_id",
+          "complaint_severity",
+          "component_id",
+          "crash_flag",
+          "injury_count",
+          "recall_component_id",
+          "recall_corrective_action",
+          "recall_defect_summary",
+          "recall_remedy_style",
+          "summary_text",
+          "vehicle_towed_flag"
+        ],
+        "desc": "Classify the recall remedy style.",
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "bbf85de862",
+        "source_dataset_ids": [
+          "0b0919a2a8"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "4f48ca9ae1",
+        "unique_logical_op_id": "6-4f48ca9ae1",
+        "depends_on": [
+          "complaint_severity",
+          "crash_flag",
+          "injury_count",
+          "recall_remedy_style",
+          "vehicle_towed_flag"
+        ],
+        "generated_fields": [
+          "normalized_complaint_severity",
+          "normalized_recall_remedy_style",
+          "severe_indicator"
+        ],
+        "input_fields": [
+          "campaign_number",
+          "complaint_id",
+          "complaint_severity",
+          "component_id",
+          "crash_flag",
+          "injury_count",
+          "recall_component_id",
+          "recall_corrective_action",
+          "recall_defect_summary",
+          "recall_remedy_style",
+          "summary_text",
+          "vehicle_towed_flag"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "complaint_id",
+          "complaint_severity",
+          "component_id",
+          "crash_flag",
+          "injury_count",
+          "normalized_complaint_severity",
+          "normalized_recall_remedy_style",
+          "recall_component_id",
+          "recall_corrective_action",
+          "recall_defect_summary",
+          "recall_remedy_style",
+          "severe_indicator",
+          "summary_text",
+          "vehicle_towed_flag"
+        ],
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "3e225578af",
+        "source_dataset_ids": [
+          "bbf85de862"
+        ],
+        "logical_operator": "Distinct",
+        "logical_op_id": "d10b23dadc",
+        "unique_logical_op_id": "7-d10b23dadc",
+        "depends_on": [],
+        "generated_fields": [],
+        "input_fields": [
+          "campaign_number",
+          "complaint_id",
+          "complaint_severity",
+          "component_id",
+          "crash_flag",
+          "injury_count",
+          "normalized_complaint_severity",
+          "normalized_recall_remedy_style",
+          "recall_component_id",
+          "recall_corrective_action",
+          "recall_defect_summary",
+          "recall_remedy_style",
+          "severe_indicator",
+          "summary_text",
+          "vehicle_towed_flag"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "complaint_id",
+          "complaint_severity",
+          "component_id",
+          "crash_flag",
+          "injury_count",
+          "normalized_complaint_severity",
+          "normalized_recall_remedy_style",
+          "recall_component_id",
+          "recall_corrective_action",
+          "recall_defect_summary",
+          "recall_remedy_style",
+          "severe_indicator",
+          "summary_text",
+          "vehicle_towed_flag"
+        ],
+        "distinct_cols": "['campaign_number', 'complaint_id', 'normalized_complaint_severity', 'normalized_recall_remedy_style', 'severe_indicator']"
+      },
+      {
+        "dataset_id": "243d8bf7e3",
+        "source_dataset_ids": [
+          "3e225578af"
+        ],
+        "logical_operator": "GroupByAggregate",
+        "logical_op_id": "76be66c0a9",
+        "unique_logical_op_id": "8-76be66c0a9",
+        "depends_on": [],
+        "generated_fields": [
+          "average(severe_indicator)",
+          "count(complaint_id)",
+          "list(normalized_complaint_severity)",
+          "list(normalized_recall_remedy_style)"
+        ],
+        "input_fields": [
+          "campaign_number",
+          "complaint_id",
+          "complaint_severity",
+          "component_id",
+          "crash_flag",
+          "injury_count",
+          "normalized_complaint_severity",
+          "normalized_recall_remedy_style",
+          "recall_component_id",
+          "recall_corrective_action",
+          "recall_defect_summary",
+          "recall_remedy_style",
+          "severe_indicator",
+          "summary_text",
+          "vehicle_towed_flag"
+        ],
+        "output_fields": [
+          "average(severe_indicator)",
+          "campaign_number",
+          "count(complaint_id)",
+          "list(normalized_complaint_severity)",
+          "list(normalized_recall_remedy_style)"
+        ],
+        "group_by": "GroupBy({'group_by_fields': ['campaign_number'], 'agg_funcs': ['count', 'average', 'list', 'list'], 'agg_fields': ['complaint_id', 'severe_indicator', 'normalized_complaint_severity', 'normalized_recall_remedy_style']})"
+      }
+    ],
+    "topological_logical_sequence": [
+      "0-58cd911caa",
+      "1-41b429b065",
+      "2-aacf2afd12",
+      "3-83d3e4098c",
+      "4-afff7103f6",
+      "5-82aa819a8b",
+      "6-4f48ca9ae1",
+      "7-d10b23dadc",
+      "8-76be66c0a9"
+    ]
+  },
+  "optimizer": {
+    "strategy": "pareto",
+    "policy": "MaxQuality",
+    "physical_implementation_candidates": {
+      "allow_bonded_query": true,
+      "allow_model_selection": false,
+      "allow_rag_reduction": false,
+      "allow_mixtures": true,
+      "allow_critic": true,
+      "allow_split_merge": false,
+      "force_rag": false,
+      "execution_strategy": "parallel",
+      "max_workers": 64,
+      "join_parallelism": 64
+    },
+    "dynamic_learning_requested": true,
+    "dynamic_learning_pipeline_supported": true,
+    "dynamic_learning": true,
+    "dynamic_learning_support": {
+      "supported": true,
+      "reason": null,
+      "terminal_only_operator_violations": []
+    },
+    "allow_unsupported_sentinel_plans": true,
+    "dynamic_learning_fallback": null,
+    "sentinel_execution_strategy": "mab",
+    "sentinel_k": 6,
+    "sentinel_j": 4,
+    "sentinel_sample_budget": 100,
+    "sentinel_seed": 42,
+    "available_models": [
+      "Qwen3.5-397B-A17B",
+      "openai/Qwen3-Embedding-8B"
+    ]
+  },
+  "sentinel_join_sampling": [
+    {
+      "unique_logical_op_id": "2-aacf2afd12",
+      "frontier_representative_operator_class": "NestedLoopsJoin",
+      "root_dataset_count": 2,
+      "left_available_source_indices": 171,
+      "right_available_source_indices": 10,
+      "theoretical_combination_count": 1710,
+      "available_combination_count": 1710,
+      "sample_limit": 100,
+      "sampled_combination_count": 100,
+      "sampling_method": "seeded_uniform_without_replacement_flat_indices",
+      "seed": 42
+    }
+  ],
+  "sentinel_sampling_exhaustion": null,
+  "failure_type": "AssertionError",
+  "failure_message": "Non-join operator must have zero or one input groups.",
+  "partial_optimization_metrics": {
+    "elapsed_seconds": 221.96384192,
+    "sentinel_sampling_seconds": 221.8445785,
+    "optimizer_search_and_bookkeeping_seconds": 0.11926341,
+    "cost_usd": 0.14033267,
+    "text_llm_calls": 113,
+    "embedding_calls": 0,
+    "input_text_tokens": 107669,
+    "output_text_tokens": 41905,
+    "total_text_tokens": 149574,
+    "embedding_input_tokens": 0,
+    "cache_read_tokens": 0,
+    "cache_creation_tokens": 0,
+    "sampled_operators": {
+      "text_llm_calls": 29,
+      "embedding_calls": 0,
+      "input_text_tokens": 27438,
+      "output_text_tokens": 11118,
+      "embedding_input_tokens": 0,
+      "cost_usd": 0.037001
+    },
+    "validator": {
+      "text_llm_calls": 84,
+      "input_text_tokens": 80231,
+      "output_text_tokens": 30787,
+      "total_text_tokens": 111018,
+      "cost_usd": 0.10333167
+    },
+    "model_usage_by_model": {
+      "Qwen3.5-397B-A17B": {
+        "roles": [
+          "text",
+          "validator"
+        ],
+        "calls": 113,
+        "input_tokens": 107669,
+        "output_tokens": 41905,
+        "total_tokens": 149574,
+        "cost_usd": 0.14033267
+      }
+    }
+  },
+  "partial_sentinel": {
+    "plan_id": "604a616ecf",
+    "plan_string": "0. Schema['campaign_number', 'complaint_id', 'complaint_severity', 'component_id', 'crash_flag', 'injury_count', 'normalized_complaint_severity', 'normalized_recall_remedy_style', 'recall_component_id', 'recall_corrective_action', 'recall_defect_summary', 'recall_remedy_style', 'severe_indicator', 'summary_text', 'vehicle_towed_flag'] -> ApplyGroupByOp -> Schema['average(severe_indicator)', 'campaign_number', 'count(complaint_id)', 'list(normalized_complaint_severity)', 'list(normalized_recall_remedy_style)']\n    (campaign_number, complaint_id,) -> (average(severe_indicator), cam)\n    Group-by Signature: GroupBy({'group_by_fields': ['campaign_number'], 'agg_funcs': ['count', 'average', 'list', 'list'], 'agg_fields': ['complaint_id', 'severe_indicator', 'normalized_complaint_severity', 'normalized_recall_remedy_style']})\n\n  1. Schema['campaign_number', 'complaint_id', 'complaint_severity', 'component_id', 'crash_flag', 'injury_count', 'normalized_complaint_severity', 'normalized_recall_remedy_style', 'recall_component_id', 'recall_corrective_action', 'recall_defect_summary', 'recall_remedy_style', 'severe_indicator', 'summary_text', 'vehicle_towed_flag'] -> DistinctOp -> Schema['campaign_number', 'complaint_id', 'complaint_severity', 'component_id', 'crash_flag', 'injury_count', 'normalized_complaint_severity', 'normalized_recall_remedy_style', 'recall_component_id', 'recall_corrective_action', 'recall_defect_summary', 'recall_remedy_style', 'severe_indicator', 'summary_text', 'vehicle_towed_flag']\n    (campaign_number, complaint_id,) -> (campaign_number, complaint_id,)\n    Distinct Cols: ['campaign_number', 'complaint_id', 'normalized_complaint_severity', 'normalized_recall_remedy_style', 'severe_indicator']\n\n    2. Schema['campaign_number', 'complaint_id', 'complaint_severity', 'component_id', 'crash_flag', 'injury_count', 'recall_component_id', 'recall_corrective_action', 'recall_defect_summary', 'recall_remedy_style', 'summary_text', 'vehicle_towed_flag'] -> NonLLMConvert -> Schema['campaign_number', 'complaint_id', 'complaint_severity', 'component_id', 'crash_flag', 'injury_count', 'normalized_complaint_severity', 'normalized_recall_remedy_style', 'recall_component_id', 'recall_corrective_action', 'recall_defect_summary', 'recall_remedy_style', 'severe_indicator', 'summary_text', 'vehicle_towed_flag']\n    (campaign_number, complaint_id,) -> (campaign_number, complaint_id,)\n    UDF: normalize_classifications\n\n      3.1 - 5. Schema['campaign_number', 'complaint_id', 'complaint_severity', 'component_id', 'crash_flag', 'injury_count', 'recall_component_id', 'recall_corrective_action', 'recall_defect_summary', 'summary_text', 'vehicle_towed_flag'] -> LLMConvertBonded -> Schema['campaign_number', 'complaint_id', 'complaint_severity', 'component_id', 'crash_flag', 'injury_count', 'recall_component_id', 'recall_corrective_action', 'recall_defect_summary', 'recall_remedy_style', 'summary_text', 'vehicle_towed_flag']\n    (campaign_number, complaint_id,) -> (campaign_number, complaint_id,)\n    Model: Qwen3.5-397B-A17B\n    Prompt Strategy: PromptStrategy.MAP\n    Reasoning Effort: default\n\n        4.1 - 5. Schema['campaign_number', 'complaint_id', 'component_id', 'crash_flag', 'injury_count', 'recall_component_id', 'recall_corrective_action', 'recall_defect_summary', 'summary_text', 'vehicle_towed_flag'] -> MixtureOfAgentsConvert -> Schema['campaign_number', 'complaint_id', 'complaint_severity', 'component_id', 'crash_flag', 'injury_count', 'recall_component_id', 'recall_corrective_action', 'recall_defect_summary', 'summary_text', 'vehicle_towed_flag']\n    (campaign_number, complaint_id,) -> (campaign_number, complaint_id,)\n    Prompt Strategy: None\n    Reasoning Effort: default\n    Proposer Models: [Qwen3.5-397B-A17B]\n    Temperatures: [0.0]\n    Aggregator Model: Qwen3.5-397B-A17B\n\n          5.1 - 5. Schema['campaign_number', 'complaint_id', 'component_id', 'crash_flag', 'injury_count', 'recall_component_id', 'recall_corrective_action', 'recall_defect_summary', 'summary_text', 'vehicle_towed_flag'] -> CritiqueAndRefineFilter -> Schema['campaign_number', 'complaint_id', 'component_id', 'crash_flag', 'injury_count', 'recall_component_id', 'recall_corrective_action', 'recall_defect_summary', 'summary_text', 'vehicle_towed_flag']\n    (campaign_number, complaint_id,) -> (campaign_number, complaint_id,)\n    Model: Qwen3.5-397B-A17B\n    Filter: Keep this matched pair only if the complaint narrative describes a concrete airbag safety event rather than a cosmetic warning-light-only concern.\n    Critic Model: Qwen3.5-397B-A17B\n    Refine Model: Qwen3.5-397B-A17B\n\n            6.1 - 2. Schema['campaign_number', 'complaint_id', 'component_id', 'crash_flag', 'injury_count', 'recall_component_id', 'recall_corrective_action', 'recall_defect_summary', 'summary_text', 'vehicle_towed_flag'] -> NestedLoopsJoin -> Schema['campaign_number', 'complaint_id', 'component_id', 'crash_flag', 'injury_count', 'recall_component_id', 'recall_corrective_action', 'recall_defect_summary', 'summary_text', 'vehicle_towed_flag']\n    (campaign_number, complaint_id,) -> (campaign_number, complaint_id,)\n    Model: Qwen3.5-397B-A17B\n    Condition: Within Ford AIRBAG records, match a complaint to a recall only when component_id equals recall_component_id and the complaint narrative and recall defect summary describe the same airbag failure mechanism.\n    How: inner\n    On: None\n    Model: Qwen3.5-397B-A17B\n    Reasoning Effort: default\n    Prompt Strategy: join\n\n              7. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['complaint_id', 'component_id', 'crash_flag', 'injury_count', 'summary_text', 'vehicle_towed_flag']'>, id=vehicle_safety-036-complaints-semantic-input, op_id=58cd911caa)) -> <class 'palimpzest.core.lib.schemas.Schema['complaint_id', 'component_id', 'crash_flag', 'injury_count', 'summary_text', 'vehicle_towed_flag']'>\n    (complaint_id, component_id, cr)\n\n              7. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['campaign_number', 'recall_component_id', 'recall_corrective_action', 'recall_defect_summary']'>, id=vehicle_safety-036-recalls-semantic-input, op_id=41b429b065)) -> <class 'palimpzest.core.lib.schemas.Schema['campaign_number', 'recall_component_id', 'recall_corrective_action', 'recall_defect_summary']'>\n    (campaign_number, recall_compon)\n\n",
+    "operators": [
+      {
+        "physical_operator": "MarshalAndScanDataOp",
+        "full_op_id": "58cd911caa-278c2ec8cb",
+        "input_cardinality_observed": 0,
+        "output_cardinality_observed": 67,
+        "record_stats_count": 67,
+        "quality_scores_observed": 67,
+        "quality_scores_missing": 0,
+        "llm_calls": 0,
+        "text_llm_calls": 0,
+        "embedding_calls": 0,
+        "input_text_tokens": 0,
+        "output_text_tokens": 0,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.0,
+        "elapsed_seconds": 0.01043701,
+        "operator_details": {
+          "datasource_id": "vehicle_safety-036-complaints-semantic-input"
+        }
+      },
+      {
+        "physical_operator": "MarshalAndScanDataOp",
+        "full_op_id": "41b429b065-93304ce1db",
+        "input_cardinality_observed": 0,
+        "output_cardinality_observed": 10,
+        "record_stats_count": 10,
+        "quality_scores_observed": 10,
+        "quality_scores_missing": 0,
+        "llm_calls": 0,
+        "text_llm_calls": 0,
+        "embedding_calls": 0,
+        "input_text_tokens": 0,
+        "output_text_tokens": 0,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.0,
+        "elapsed_seconds": 0.00070047,
+        "operator_details": {
+          "datasource_id": "vehicle_safety-036-recalls-semantic-input"
+        }
+      },
+      {
+        "physical_operator": "NestedLoopsJoin",
+        "full_op_id": "aacf2afd12-63afd7bd44",
+        "input_cardinality_observed": 16,
+        "output_cardinality_observed": 1,
+        "record_stats_count": 16,
+        "quality_scores_observed": 16,
+        "quality_scores_missing": 0,
+        "llm_calls": 16,
+        "text_llm_calls": 16,
+        "embedding_calls": 0,
+        "input_text_tokens": 15283,
+        "output_text_tokens": 5844,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.01963533,
+        "elapsed_seconds": 111.11670709,
+        "operator_details": {
+          "model": "Qwen3.5-397B-A17B",
+          "prompt_strategy": "join",
+          "reasoning_effort": "default",
+          "condition": "Within Ford AIRBAG records, match a complaint to a recall only when component_id equals recall_component_id and the complaint narrative and recall defect summary describe the same airbag failure mechanism.",
+          "join_parallelism": "64",
+          "desc": "None",
+          "how": "inner",
+          "on": "None"
+        }
+      },
+      {
+        "physical_operator": "EmbeddingJoin",
+        "full_op_id": "aacf2afd12-a8fba7f330",
+        "input_cardinality_observed": 84,
+        "output_cardinality_observed": 0,
+        "record_stats_count": 84,
+        "quality_scores_observed": 84,
+        "quality_scores_missing": 0,
+        "llm_calls": 13,
+        "text_llm_calls": 13,
+        "embedding_calls": 0,
+        "input_text_tokens": 12155,
+        "output_text_tokens": 5274,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.01736567,
+        "elapsed_seconds": 45.35114241,
+        "operator_details": {
+          "embedding_model": "openai/Qwen3-Embedding-8B",
+          "num_samples": "10",
+          "model": "Qwen3.5-397B-A17B",
+          "prompt_strategy": "join",
+          "reasoning_effort": "default",
+          "condition": "Within Ford AIRBAG records, match a complaint to a recall only when component_id equals recall_component_id and the complaint narrative and recall defect summary describe the same airbag failure mechanism.",
+          "join_parallelism": "64",
+          "desc": "None",
+          "how": "inner",
+          "on": "None"
+        }
+      }
+    ],
+    "validation_llm_calls": 84,
+    "validation_input_text_tokens": 80231,
+    "validation_output_text_tokens": 30787,
+    "validation_cost_usd": 0.10333167
+  }
+}

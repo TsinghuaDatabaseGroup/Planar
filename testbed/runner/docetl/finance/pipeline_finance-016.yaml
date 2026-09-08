@@ -1,0 +1,210 @@
+datasets:
+  sec_2019_filings:
+    type: file
+    path: data/SEC/CSV/2019.csv
+  sec_2023_filings:
+    type: file
+    path: data/SEC/CSV/2023.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: alias_2019_text_path
+    type: code_map
+    code: |
+      def transform(doc):
+          return {"text_2019": doc.get("text")}
+
+  - name: alias_2023_text_path
+    type: code_map
+    code: |
+      def transform(doc):
+          return {"text_2023": doc.get("text")}
+
+  - name: join_2019_and_2023_filings
+    type: equijoin
+    deterministic: true
+    blocking_conditions:
+      - left["cik"] == right["cik"]
+
+  - name: load_2023_filing_document
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_2023", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("SEC text path escapes data/SEC")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              document_2023 = handle.read()
+          return {"document_2023": document_2023}
+
+  - name: filter_2023_ai_or_ml_phrase
+    type: code_filter
+    code: |
+      def transform(doc):
+          text = str(doc.get("document_2023", "")).casefold()
+          return (
+              "artificial intelligence" in text
+              or "machine learning" in text
+          )
+
+  - name: deduplicate_by_cik
+    type: code_reduce
+    reduce_key: cik_left
+    code: |
+      def transform(items):
+          first = items[0]
+          return {
+              "text_2019": first.get("text_2019"),
+              "document_2023": first.get("document_2023"),
+          }
+
+  - name: load_2019_filing_document
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_2019", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("SEC text path escapes data/SEC")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              document_2019 = handle.read()
+          return {"document_2019": document_2019}
+
+  - name: filter_2019_without_ai_or_ml_phrase
+    type: code_filter
+    code: |
+      def transform(doc):
+          text = str(doc.get("document_2019", "")).casefold()
+          return (
+              "artificial intelligence" not in text
+              and "machine learning" not in text
+          )
+
+  - name: extract_2023_industry_sector
+    type: map
+    optimize: true
+    prompt: |
+      Extract the reporting company's industry sector from this 2023 SEC 10-K
+      filing. Return a concise, conventional industry-sector name grounded in the
+      filing rather than a detailed business description or product category.
+
+      2023 filing:
+      {{ input.document_2023 }}
+    output:
+      mode: structured_output
+      schema:
+        industry_sector: string
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 256
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: count_companies_by_industry
+    type: code_reduce
+    reduce_key: industry_sector
+    code: |
+      def transform(items):
+          return {"company_count": len(items)}
+
+  - name: order_industries_by_company_count
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          rows = sorted(
+              items,
+              key=lambda item: (
+                  -int(item.get("company_count", 0)),
+                  str(item.get("industry_sector", "")),
+              ),
+          )
+          return {"rows": rows}
+
+  - name: unnest_ordered_industries
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - industry_sector
+      - company_count
+
+  - name: limit_to_10_industries
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {"rows": items[:10]}
+
+  - name: unnest_limited_industries
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - industry_sector
+      - company_count
+
+pipeline:
+  steps:
+    - name: filings_2019
+      input: sec_2019_filings
+      operations:
+        - alias_2019_text_path
+    - name: filings_2023
+      input: sec_2023_filings
+      operations:
+        - alias_2023_text_path
+    - name: joined_filings
+      operations:
+        - join_2019_and_2023_filings:
+            left: filings_2019
+            right: filings_2023
+    - name: process
+      input: joined_filings
+      operations:
+        - load_2023_filing_document
+        - filter_2023_ai_or_ml_phrase
+        - deduplicate_by_cik
+        - load_2019_filing_document
+        - filter_2019_without_ai_or_ml_phrase
+        - extract_2023_industry_sector
+        - count_companies_by_industry
+        - order_industries_by_company_count
+        - unnest_ordered_industries
+        - limit_to_10_industries
+        - unnest_limited_industries
+  output:
+    type: file
+    path: raw_outputs/finance/output_finance-016.json

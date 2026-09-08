@@ -1,0 +1,18 @@
+{
+  "task_id": "legal_contracts-024",
+  "answer": [
+    {"document_id": "1253176_0001193125-18-317778_d567323dex1024.htm", "governing_state": "Delaware", "missing_exception": "independent_development", "direction": "unilateral"},
+    {"document_id": "1277141_0001193125-15-184193_d923647dex99d2.htm", "governing_state": "Delaware", "missing_exception": "consent", "direction": "mutual"},
+    {"document_id": "1485469_0001193125-19-222469_d760929dex99d3.htm", "governing_state": "New York", "missing_exception": "consent", "direction": "unilateral"},
+    {"document_id": "3511_standard_nda.pdf", "governing_state": "New York", "missing_exception": "consent", "direction": "unilateral"},
+    {"document_id": "801338_0000950134-07-015617_c16542toexv99wxdyx5y.htm", "governing_state": "Delaware", "missing_exception": "consent", "direction": "unilateral"},
+    {"document_id": "915191_0001047469-17-003155_a2231967zex-99_8.htm", "governing_state": "New York", "missing_exception": "consent", "direction": "mutual"},
+    {"document_id": "920729_0000891618-96-000819_document_6.txt", "governing_state": "California", "missing_exception": "legal_compulsion", "direction": "mutual"},
+    {"document_id": "MUTUAL-NDA-Form-2.pdf", "governing_state": "New York", "missing_exception": "independent_development", "direction": "mutual"},
+    {"document_id": "NDA-ONSemi_IndustryAnalystConf-2011.pdf", "governing_state": "New York", "missing_exception": "prior_knowledge", "direction": "mutual"},
+    {"document_id": "NRSC_2015_NDAForm.pdf", "governing_state": "New York", "missing_exception": "third_party_receipt", "direction": "mutual"}
+  ],
+  "elapsed_seconds": 3229.00,
+  "cost_usd": 5.608591,
+  "total_tokens": 10614314
+}

@@ -1,0 +1,132 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_ex31_certifications
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is an EX-31 SOX Section 302 certification.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_ex31_certification: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_certification_profile
+    type: map
+    optimize: true
+    prompt: |
+      Return the input document ID, canonical key for the company named in the
+      certification, and whether the internal-controls, fraud-disclosure, and
+      material-changes assertions are present.
+
+      Input document ID: {{ input.doc_id }}
+      Certification:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        document_id: string
+        company_key: string
+        internal_controls_asserted: boolean
+        fraud_disclosure_asserted: boolean
+        material_changes_asserted: boolean
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: aggregate_profile_totals
+    type: code_reduce
+    reduce_key: [internal_controls_asserted, fraud_disclosure_asserted, material_changes_asserted]
+    code: |
+      def transform(items):
+          return {
+              "certification_document_count": len({str(item.get("document_id") or "") for item in items if str(item.get("document_id") or "")}),
+              "distinct_company_count": len({str(item.get("company_key") or "") for item in items if str(item.get("company_key") or "")}),
+          }
+
+  - name: filter_ex97_clawback_policies
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is an EX-97 clawback policy.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_ex97_clawback_policy: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_clawback_company_and_scope
+    type: map
+    optimize: true
+    prompt: |
+      Return the canonical policy-company key and whether the policy goes beyond
+      the SEC minimum.
+
+      Policy:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema: {company_key: string, beyond_sec_minimum: boolean}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+
+  - name: join_certifications_and_clawbacks
+    type: equijoin
+    deterministic: true
+    blocking_conditions:
+      - left["company_key"] == right["company_key"]
+  - name: aggregate_matched_profiles
+    type: code_reduce
+    reduce_key: [internal_controls_asserted, fraud_disclosure_asserted, material_changes_asserted]
+    code: |
+      def transform(items):
+          companies = {str(item.get("company_key_left") or "") for item in items if str(item.get("company_key_left") or "")}
+          beyond = {str(item.get("company_key_left") or "") for item in items if item.get("beyond_sec_minimum") is True and str(item.get("company_key_left") or "")}
+          return {"companies_with_clawback_count": len(companies), "beyond_sec_minimum_company_count": len(beyond)}
+  - name: join_profile_totals_and_matches
+    type: equijoin
+    deterministic: true
+    blocking_conditions:
+      - left["internal_controls_asserted"] == right["internal_controls_asserted"] and left["fraud_disclosure_asserted"] == right["fraud_disclosure_asserted"] and left["material_changes_asserted"] == right["material_changes_asserted"]
+  - name: project_profile_results
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "internal_controls_asserted": doc.get("internal_controls_asserted_left"),
+              "fraud_disclosure_asserted": doc.get("fraud_disclosure_asserted_left"),
+              "material_changes_asserted": doc.get("material_changes_asserted_left"),
+              "certification_document_count": doc.get("certification_document_count"),
+              "distinct_company_count": doc.get("distinct_company_count"),
+              "companies_with_clawback_count": doc.get("companies_with_clawback_count"),
+              "beyond_sec_minimum_company_count": doc.get("beyond_sec_minimum_company_count"),
+          }
+pipeline:
+  steps:
+    - name: certification_records
+      input: contract_exhibits
+      operations: [filter_ex31_certifications, extract_certification_profile]
+    - name: profile_totals
+      input: certification_records
+      operations: [aggregate_profile_totals]
+    - name: clawback_records
+      input: contract_exhibits
+      operations: [filter_ex97_clawback_policies, extract_clawback_company_and_scope]
+    - name: matched_certification_records
+      operations:
+        - join_certifications_and_clawbacks: {left: certification_records, right: clawback_records}
+    - name: matched_profiles
+      input: matched_certification_records
+      operations: [aggregate_matched_profiles]
+    - name: complete_profiles
+      operations:
+        - join_profile_totals_and_matches: {left: profile_totals, right: matched_profiles}
+    - name: answer
+      input: complete_profiles
+      operations: [project_profile_results]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-100.json

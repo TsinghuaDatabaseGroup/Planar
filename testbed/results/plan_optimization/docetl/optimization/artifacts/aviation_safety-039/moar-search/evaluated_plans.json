@@ -1,0 +1,50 @@
+[
+  {
+    "node": 68,
+    "path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-039/moar-search/pipeline_aviation_safety-039_input_sample_openai_Qwen3.5-397B-A17B.yaml",
+    "cost": 0.07942622999999999,
+    "accuracy": 1.0,
+    "value": -4.093888888888889,
+    "is_frontier": true
+  },
+  {
+    "node": 69,
+    "path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-039/moar-search/pipeline_NASA_input_sample_openai_69.yaml",
+    "cost": 0.15389946000000004,
+    "accuracy": 0.145,
+    "value": -0.855,
+    "is_frontier": false
+  },
+  {
+    "node": 70,
+    "path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-039/moar-search/pipeline_NASA_input_sample_openai_70.yaml",
+    "cost": 0.08738379000000002,
+    "accuracy": 0.35,
+    "value": -0.65,
+    "is_frontier": false
+  },
+  {
+    "node": 71,
+    "path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-039/moar-search/pipeline_NASA_input_sample_openai_71.yaml",
+    "cost": 0.1907295,
+    "accuracy": 0.0,
+    "value": -1.0,
+    "is_frontier": false
+  },
+  {
+    "node": 72,
+    "path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-039/moar-search/pipeline_NASA_input_sample_openai_72.yaml",
+    "cost": 0.15686541000000007,
+    "accuracy": 0.06111111111111111,
+    "value": -0.9388888888888889,
+    "is_frontier": false
+  },
+  {
+    "node": 73,
+    "path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-039/moar-search/pipeline_NASA_input_sample_openai_73.yaml",
+    "cost": 0.1535352,
+    "accuracy": 0.35,
+    "value": -0.65,
+    "is_frontier": false
+  }
+]

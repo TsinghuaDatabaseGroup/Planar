@@ -1,0 +1,113 @@
+{
+  "task_id": "vehicle_safety-035",
+  "answer": [
+    {
+      "campaign_number": "15V460000",
+      "matched_complaint_count": 1,
+      "related_report_ids": [],
+      "root_cause_phrase": "overly sensitive side impact sensor calibrations",
+      "odi_safety_conclusion": ""
+    },
+    {
+      "campaign_number": "15V467000",
+      "matched_complaint_count": 3,
+      "related_report_ids": [],
+      "root_cause_phrase": "overly sensitive side impact sensor calibrations",
+      "odi_safety_conclusion": ""
+    },
+    {
+      "campaign_number": "17V302000",
+      "matched_complaint_count": 1,
+      "related_report_ids": [],
+      "root_cause_phrase": "Roll rate sensor triggers ORC fault",
+      "odi_safety_conclusion": ""
+    },
+    {
+      "campaign_number": "19V018000",
+      "matched_complaint_count": 1,
+      "related_report_ids": [],
+      "root_cause_phrase": "excessive internal pressure causes inflator explosion",
+      "odi_safety_conclusion": ""
+    },
+    {
+      "campaign_number": "19V246000",
+      "matched_complaint_count": 3,
+      "related_report_ids": [],
+      "root_cause_phrase": "Sun visors lack air bag warning",
+      "odi_safety_conclusion": ""
+    },
+    {
+      "campaign_number": "20V374000",
+      "matched_complaint_count": 2,
+      "related_report_ids": [],
+      "root_cause_phrase": "improperly crimped diffuser in airbag",
+      "odi_safety_conclusion": ""
+    },
+    {
+      "campaign_number": "21V280000",
+      "matched_complaint_count": 1,
+      "related_report_ids": [],
+      "root_cause_phrase": "loose or missing SABIC fastener",
+      "odi_safety_conclusion": ""
+    },
+    {
+      "campaign_number": "21V632000",
+      "matched_complaint_count": 3,
+      "related_report_ids": [],
+      "root_cause_phrase": "SABIC inflator end cap detachment or rupture",
+      "odi_safety_conclusion": ""
+    },
+    {
+      "campaign_number": "21V925000",
+      "matched_complaint_count": 3,
+      "related_report_ids": [],
+      "root_cause_phrase": "incorrect amount of compressed gas",
+      "odi_safety_conclusion": ""
+    },
+    {
+      "campaign_number": "24V198000",
+      "matched_complaint_count": 8,
+      "related_report_ids": [],
+      "root_cause_phrase": "manufacturing defect in airbag inflators",
+      "odi_safety_conclusion": ""
+    },
+    {
+      "campaign_number": "25V010000",
+      "matched_complaint_count": 3,
+      "related_report_ids": [],
+      "root_cause_phrase": "manufacturing defect in inflators",
+      "odi_safety_conclusion": ""
+    },
+    {
+      "campaign_number": "25V298000",
+      "matched_complaint_count": 5,
+      "related_report_ids": [],
+      "root_cause_phrase": "Driver air bag improperly connected",
+      "odi_safety_conclusion": ""
+    },
+    {
+      "campaign_number": "25V592000",
+      "matched_complaint_count": 3,
+      "related_report_ids": [],
+      "root_cause_phrase": "manufacturing defect in airbag inflators",
+      "odi_safety_conclusion": ""
+    },
+    {
+      "campaign_number": "25V765000",
+      "matched_complaint_count": 1,
+      "related_report_ids": [],
+      "root_cause_phrase": "steering column control module malfunction",
+      "odi_safety_conclusion": ""
+    },
+    {
+      "campaign_number": "25V824000",
+      "matched_complaint_count": 3,
+      "related_report_ids": [],
+      "root_cause_phrase": "manufacturing defect in airbag inflators",
+      "odi_safety_conclusion": ""
+    }
+  ],
+  "elapsed_seconds": 650.525,
+  "cost_usd": 1.43119755,
+  "total_tokens": 1823195
+}

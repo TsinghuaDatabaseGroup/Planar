@@ -1,0 +1,18 @@
+{
+  "task_id": "legal_contracts-009",
+  "answer": [
+    {
+      "coverage_group": "beyond_sec_minimum",
+      "policy_count": 15,
+      "misconduct_fraction": 0.7333
+    },
+    {
+      "coverage_group": "sec_minimum_only",
+      "policy_count": 87,
+      "misconduct_fraction": 0.0345
+    }
+  ],
+  "elapsed_seconds": 437.56,
+  "cost_usd": 4.172346,
+  "total_tokens": 7828673
+}

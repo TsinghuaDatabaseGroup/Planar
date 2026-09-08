@@ -1,0 +1,12 @@
+{
+  "task_id": "finance-010",
+  "answer": {
+    "both_esg_and_ai_ml": 1615,
+    "esg_only": 2974,
+    "ai_ml_only": 299,
+    "neither": 1839
+  },
+  "elapsed_seconds": 3235.58,
+  "cost_usd": 12.505172,
+  "total_tokens": 26878190
+}

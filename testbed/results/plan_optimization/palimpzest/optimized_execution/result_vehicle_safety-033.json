@@ -1,0 +1,134 @@
+{
+  "task_id": "vehicle_safety-033",
+  "answer": [
+    {
+      "complaint_id": "complaint_11342358",
+      "campaign_number": "26V332000",
+      "days_between": 2121,
+      "defect_root_cause": "front passenger seat weight sensor may crack and short circuit"
+    },
+    {
+      "complaint_id": "complaint_11001403",
+      "campaign_number": "22V150000",
+      "days_between": 1956,
+      "defect_root_cause": "brake master cylinder allowing brake fluid to leak"
+    },
+    {
+      "complaint_id": "complaint_11365925",
+      "campaign_number": "25V442000",
+      "days_between": 1708,
+      "defect_root_cause": "software error"
+    },
+    {
+      "complaint_id": "complaint_11390603",
+      "campaign_number": "26V011000",
+      "days_between": 1812,
+      "defect_root_cause": "engine block heater may crack"
+    },
+    {
+      "complaint_id": "complaint_10928584",
+      "campaign_number": "24V196000",
+      "days_between": 2662,
+      "defect_root_cause": "Debris contamination"
+    },
+    {
+      "complaint_id": "complaint_10970121",
+      "campaign_number": "22V150000",
+      "days_between": 2040,
+      "defect_root_cause": "brake master cylinder allowing brake fluid to leak"
+    },
+    {
+      "complaint_id": "complaint_11161506",
+      "campaign_number": "24V196000",
+      "days_between": 1916,
+      "defect_root_cause": "Debris contamination"
+    },
+    {
+      "complaint_id": "complaint_11109618",
+      "campaign_number": "25V236000",
+      "days_between": 2679,
+      "defect_root_cause": "brake master cylinder may allow brake fluid to leak"
+    },
+    {
+      "complaint_id": "complaint_11424739",
+      "campaign_number": "26V378000",
+      "days_between": 1880,
+      "defect_root_cause": "Loss of signal between transmission sensor and PCM"
+    },
+    {
+      "complaint_id": "complaint_11396939",
+      "campaign_number": "25V274000",
+      "days_between": 1525,
+      "defect_root_cause": "manufacturing defects in connecting rod and/or crankshaft components"
+    },
+    {
+      "complaint_id": "complaint_11421240",
+      "campaign_number": "26V378000",
+      "days_between": 1907,
+      "defect_root_cause": "Loss of signal between transmission sensor and PCM"
+    },
+    {
+      "complaint_id": "complaint_11241023",
+      "campaign_number": "24V652000",
+      "days_between": 1743,
+      "defect_root_cause": "internal short circuit"
+    },
+    {
+      "complaint_id": "complaint_11119905",
+      "campaign_number": "22V413000",
+      "days_between": 1514,
+      "defect_root_cause": "bushing that attaches the shifter cable may degrade or detach"
+    },
+    {
+      "complaint_id": "complaint_11339784",
+      "campaign_number": "25V236000",
+      "days_between": 1937,
+      "defect_root_cause": "brake master cylinder may allow brake fluid to leak"
+    },
+    {
+      "complaint_id": "complaint_11325862",
+      "campaign_number": "25V298000",
+      "days_between": 1898,
+      "defect_root_cause": "driver's side air bag may not be connected properly"
+    },
+    {
+      "complaint_id": "complaint_11255177",
+      "campaign_number": "25V298000",
+      "days_between": 2154,
+      "defect_root_cause": "driver's side air bag may not be connected properly"
+    },
+    {
+      "complaint_id": "complaint_11329424",
+      "campaign_number": "25V298000",
+      "days_between": 1875,
+      "defect_root_cause": "driver's side air bag may not be connected properly"
+    },
+    {
+      "complaint_id": "complaint_11394876",
+      "campaign_number": "25V298000",
+      "days_between": 1642,
+      "defect_root_cause": "driver's side air bag may not be connected properly"
+    },
+    {
+      "complaint_id": "complaint_11331097",
+      "campaign_number": "25V298000",
+      "days_between": 1866,
+      "defect_root_cause": "driver's side air bag may not be connected properly"
+    },
+    {
+      "complaint_id": "complaint_11319766",
+      "campaign_number": "25V298000",
+      "days_between": 1954,
+      "defect_root_cause": "driver's side air bag may not be connected properly"
+    },
+    {
+      "complaint_id": "complaint_11434263",
+      "campaign_number": "26V332000",
+      "days_between": 1700,
+      "defect_root_cause": "front passenger seat weight sensor may crack and short circuit"
+    }
+  ],
+  "elapsed_seconds": 914.89,
+  "cost_usd": 1.412273,
+  "total_tokens": 2030622
+}

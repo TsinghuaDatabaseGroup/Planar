@@ -1,0 +1,36 @@
+{
+  "task_id": "legal_contracts-039",
+  "answer": [
+    {
+      "document_name": "1046880_0001193125-11-323050_d262064dex992.htm",
+      "governing_law": "State of New York"
+    },
+    {
+      "document_name": "5bfbcabf0627e70bdcfc5b32_nda-ready4s.pdf",
+      "governing_law": "England"
+    },
+    {
+      "document_name": "JB-Machine-LLC-NDA-1.pdf",
+      "governing_law": "State of Florida"
+    },
+    {
+      "document_name": "NDA_Mutual_template2_5_2019.pdf",
+      "governing_law": "State of Tennessee"
+    },
+    {
+      "document_name": "nda_3.pdf",
+      "governing_law": "State of Virginia"
+    },
+    {
+      "document_name": "nda_8.pdf",
+      "governing_law": "England"
+    },
+    {
+      "document_name": "non-disclosure-agreement_5.pdf",
+      "governing_law": "State of Minnesota"
+    }
+  ],
+  "elapsed_seconds": 444.12,
+  "cost_usd": 4.134273,
+  "total_tokens": 7866883
+}

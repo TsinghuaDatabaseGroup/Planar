@@ -1,0 +1,29 @@
+{
+  "task_id": "legal_contracts-105",
+  "answer": [
+    {
+      "jurisdiction": "Delaware",
+      "nda_count": 26,
+      "all_five_core_clauses_count": 23,
+      "all_six_standard_exceptions_count": 17,
+      "perpetual_term_count": 4
+    },
+    {
+      "jurisdiction": "New York",
+      "nda_count": 20,
+      "all_five_core_clauses_count": 16,
+      "all_six_standard_exceptions_count": 14,
+      "perpetual_term_count": 1
+    },
+    {
+      "jurisdiction": "California",
+      "nda_count": 10,
+      "all_five_core_clauses_count": 8,
+      "all_six_standard_exceptions_count": 6,
+      "perpetual_term_count": 3
+    }
+  ],
+  "elapsed_seconds": 655.07,
+  "cost_usd": 5.32586433,
+  "total_tokens": 12789172
+}

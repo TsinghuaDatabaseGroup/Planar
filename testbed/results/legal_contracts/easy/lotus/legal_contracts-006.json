@@ -1,0 +1,168 @@
+{
+  "task_id": "legal_contracts-006",
+  "answer": [
+    {
+      "document_id": "1108906_0000889812-00-001212_document_45.txt",
+      "governing_law": "Connecticut",
+      "missing_exceptions": [
+        "legal_compulsion",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "1178133_0000950131-03-000129_dex1013.txt",
+      "governing_law": "Minnesota",
+      "missing_exceptions": [
+        "prior_knowledge",
+        "independent_development"
+      ]
+    },
+    {
+      "document_id": "130806ca141.pdf",
+      "governing_law": "Province of Nova Scotia and Canada",
+      "missing_exceptions": [
+        "legal_compulsion",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "Example-Mutual-Non-Disclosure-Agreement.pdf",
+      "governing_law": "English law",
+      "missing_exceptions": [
+        "independent_development",
+        "third_party_receipt"
+      ]
+    },
+    {
+      "document_id": "Grindrod%20SA%20Confidentiality%20and%20Non-Disclosure%20Undertaking.pdf",
+      "governing_law": "Republic of South Africa",
+      "missing_exceptions": [
+        "third_party_receipt",
+        "legal_compulsion"
+      ]
+    },
+    {
+      "document_id": "ICTSC-NDA-General-MandA-signed.pdf",
+      "governing_law": "New South Wales, Australia",
+      "missing_exceptions": [
+        "third_party_receipt",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "NDA_17.pdf",
+      "governing_law": "New Zealand",
+      "missing_exceptions": [
+        "prior_knowledge",
+        "independent_development"
+      ]
+    },
+    {
+      "document_id": "NUSD-Non-Disclosure-Agreement.pdf",
+      "governing_law": "California",
+      "missing_exceptions": [
+        "independent_development",
+        "third_party_receipt"
+      ]
+    },
+    {
+      "document_id": "PSGT Agreement NDA New Supplier Non Disclosure Template DC.pdf",
+      "governing_law": "State of New York",
+      "missing_exceptions": [
+        "independent_development",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "RFP20171008-RFPPublishingNotice.pdf",
+      "governing_law": "Republic of Singapore",
+      "missing_exceptions": [
+        "prior_knowledge",
+        "third_party_receipt"
+      ]
+    },
+    {
+      "document_id": "document_viewer.pdf",
+      "governing_law": "Ontario, Canada",
+      "missing_exceptions": [
+        "prior_knowledge",
+        "independent_development"
+      ]
+    },
+    {
+      "document_id": "dv-20250721xex10d1.htm",
+      "governing_law": "New York",
+      "missing_exceptions": [
+        "prior_knowledge",
+        "independent_development"
+      ]
+    },
+    {
+      "document_id": "e6756_ex10-6.htm",
+      "governing_law": "State of Georgia",
+      "missing_exceptions": [
+        "third_party_receipt",
+        "legal_compulsion"
+      ]
+    },
+    {
+      "document_id": "ea020170101ex10-24_onconetix.htm",
+      "governing_law": "Swiss law",
+      "missing_exceptions": [
+        "prior_knowledge",
+        "independent_development"
+      ]
+    },
+    {
+      "document_id": "ex1010dormanproducts-execu.htm",
+      "governing_law": "Pennsylvania",
+      "missing_exceptions": [
+        "prior_knowledge",
+        "independent_development"
+      ]
+    },
+    {
+      "document_id": "exhibit1027-jcorsoemployme.htm",
+      "governing_law": "Texas",
+      "missing_exceptions": [
+        "prior_knowledge",
+        "independent_development"
+      ]
+    },
+    {
+      "document_id": "fs42021ex10-11_cmlifescien3.htm",
+      "governing_law": "Massachusetts",
+      "missing_exceptions": [
+        "prior_knowledge",
+        "third_party_receipt"
+      ]
+    },
+    {
+      "document_id": "icc-court-non-disclosure-agreement-english.pdf",
+      "governing_law": "France",
+      "missing_exceptions": [
+        "public_information",
+        "legal_compulsion"
+      ]
+    },
+    {
+      "document_id": "modelnondisclosureagreement1.pdf",
+      "governing_law": "English Law",
+      "missing_exceptions": [
+        "legal_compulsion",
+        "consent"
+      ]
+    },
+    {
+      "document_id": "standard_nda.pdf",
+      "governing_law": "India",
+      "missing_exceptions": [
+        "independent_development",
+        "third_party_receipt"
+      ]
+    }
+  ],
+  "elapsed_seconds": 436.58,
+  "cost_usd": 4.373603,
+  "total_tokens": 8206297
+}

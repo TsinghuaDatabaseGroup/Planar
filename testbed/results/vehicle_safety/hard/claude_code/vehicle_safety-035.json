@@ -1,0 +1,75 @@
+{
+  "task_id": "vehicle_safety-035",
+  "answer": [
+    {
+      "campaign_number": "19V018000",
+      "matched_complaint_count": 24,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_1b079ec22d532228.txt",
+        "investigation_reports/txt_investigation_9d5728218e6f95e9.txt",
+        "investigation_reports/txt_investigation_a6af87cc65c4685e.txt",
+        "investigation_reports/txt_investigation_ef12d2cfbf020527.txt"
+      ],
+      "root_cause_phrase": "Excessive internal pressure causes inflator to explode",
+      "odi_safety_conclusion": "The defect poses a critical safety risk where excessive internal pressure during air bag deployment can cause the inflator to explode, potentially projecting metal fragments and causing serious injury or death."
+    },
+    {
+      "campaign_number": "19V018000",
+      "matched_complaint_count": 23,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_1b079ec22d532228.txt",
+        "investigation_reports/txt_investigation_9d5728218e6f95e9.txt",
+        "investigation_reports/txt_investigation_a6af87cc65c4685e.txt",
+        "investigation_reports/txt_investigation_ef12d2cfbf020527.txt"
+      ],
+      "root_cause_phrase": "Excessive internal pressure causes inflator to explode",
+      "odi_safety_conclusion": "The defect poses a critical safety risk where excessive internal pressure during air bag deployment can cause the inflator to explode, potentially projecting metal fragments and causing serious injury or death."
+    },
+    {
+      "campaign_number": "24V198000",
+      "matched_complaint_count": 57,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_1b079ec22d532228.txt",
+        "investigation_reports/txt_investigation_a6af87cc65c4685e.txt"
+      ],
+      "root_cause_phrase": "manufacturing defect causing air bag inflator rupture",
+      "odi_safety_conclusion": "The manufacturing defect in the side curtain air bag inflators poses a safety risk because they may rupture during deployment."
+    },
+    {
+      "campaign_number": "24V198000",
+      "matched_complaint_count": 58,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_1b079ec22d532228.txt",
+        "investigation_reports/txt_investigation_a6af87cc65c4685e.txt",
+        "investigation_reports/txt_investigation_ef12d2cfbf020527.txt"
+      ],
+      "root_cause_phrase": "manufacturing defect causing air bag inflator rupture",
+      "odi_safety_conclusion": "The manufacturing defect in the side curtain air bag inflators poses a safety risk because they may rupture during deployment."
+    },
+    {
+      "campaign_number": "24V198000",
+      "matched_complaint_count": 57,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_1b079ec22d532228.txt",
+        "investigation_reports/txt_investigation_a6af87cc65c4685e.txt",
+        "investigation_reports/txt_investigation_ef12d2cfbf020527.txt"
+      ],
+      "root_cause_phrase": "manufacturing defect causing air bag inflator rupture",
+      "odi_safety_conclusion": "The manufacturing defect in the side curtain air bag inflators poses a safety risk because they may rupture during deployment."
+    },
+    {
+      "campaign_number": "24V198000",
+      "matched_complaint_count": 55,
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_1b079ec22d532228.txt",
+        "investigation_reports/txt_investigation_a6af87cc65c4685e.txt",
+        "investigation_reports/txt_investigation_ef12d2cfbf020527.txt"
+      ],
+      "root_cause_phrase": "manufacturing defect causing air bag inflator rupture",
+      "odi_safety_conclusion": "The manufacturing defect in the side curtain air bag inflators poses a safety risk because they may rupture during deployment."
+    }
+  ],
+  "elapsed_seconds": 1345.595,
+  "cost_usd": 1.46117703,
+  "total_tokens": 3537411
+}

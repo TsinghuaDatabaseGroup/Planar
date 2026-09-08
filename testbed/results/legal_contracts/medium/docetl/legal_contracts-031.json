@@ -1,0 +1,32 @@
+{
+  "task_id": "legal_contracts-031",
+  "answer": [
+    {
+      "document_id": "cvco-2025329xexhibit97.htm",
+      "company_name": "Cavco Industries, Inc."
+    },
+    {
+      "document_id": "ex1072ngvt2024formofretent.htm",
+      "company_name": "Ingevity Corporation"
+    },
+    {
+      "document_id": "exhibit971-clawbackpolicy.htm",
+      "company_name": "Skyworks Solutions, Inc."
+    },
+    {
+      "document_id": "ip-20231231exhibit1063.htm",
+      "company_name": "International Paper Company"
+    },
+    {
+      "document_id": "loco-20231227xex97d1.htm",
+      "company_name": "El Pollo Loco Holdings, Inc."
+    },
+    {
+      "document_id": "zspc-20241231xex97d1.htm",
+      "company_name": "zSpace, Inc."
+    }
+  ],
+  "elapsed_seconds": 400.68,
+  "cost_usd": 3.660557,
+  "total_tokens": 6965475
+}

@@ -1,0 +1,1501 @@
+{
+  "format_version": 1,
+  "purpose": "human_review_of_selected_palimpzest_physical_plan",
+  "task_id": "aviation_safety-045",
+  "optimization_status": "optimized_only",
+  "selected_plan_id": "2f777fbca2",
+  "executable_plan": {
+    "file": "optimized_plan_aviation_safety-045.plan.pkl",
+    "format": "cloudpickle",
+    "version": 1,
+    "sha256": "7777def354c2e0c024a9f5b108db6f5c368367b5f5deb4be023c7497cd569b02",
+    "size_bytes": 575496,
+    "selected_plan_id": "2f777fbca2",
+    "datasources": {
+      "aviation_safety-045-reports-semantic-input": {
+        "id": "aviation_safety-045-reports-semantic-input",
+        "row_count": 1030,
+        "schema_fields": [
+          "incident_id",
+          "text"
+        ]
+      },
+      "aviation_safety-045-maintenance-semantic-input": {
+        "id": "aviation_safety-045-maintenance-semantic-input",
+        "row_count": 147,
+        "schema_fields": [
+          "incident_id",
+          "maintenance_status"
+        ]
+      },
+      "aviation_safety-045-components-semantic-input": {
+        "id": "aviation_safety-045-components-semantic-input",
+        "row_count": 1647,
+        "schema_fields": [
+          "incident_id",
+          "structured_components",
+          "structured_problems"
+        ]
+      }
+    },
+    "scan_datasource_records_included": false,
+    "sentinel_record_payloads_included": false
+  },
+  "input_plan": {
+    "task_id": "aviation_safety-045",
+    "query": "Among Aircraft-primary reports, which twelve combinations of maintenance status, discovery phase, and causal chain occur most often when an earlier deferral or release-to-service decision is explicitly connected to a later component discrepancy? Maintenance status is deferred, released_to_service, or both; discovery phase is before_departure, after_takeoff, or after_landing; chain category is deferred_item_recurred, released_item_failed, incomplete_repair_or_signoff, or maintenance_limitation_escalated. Rank by distinct-incident count and then the three labels. Each row should include a canonical affected item and recurring discrepancy as short phrases.",
+    "inputs": [
+      {
+        "source_id": "incidents.csv",
+        "dataset": "NASA_ASRS",
+        "source_type": "table",
+        "role": "primary"
+      },
+      {
+        "source_id": "aircraft_attributes.csv",
+        "dataset": "NASA_ASRS",
+        "source_type": "table",
+        "role": "primary"
+      },
+      {
+        "source_id": "components.csv",
+        "dataset": "NASA_ASRS",
+        "source_type": "table",
+        "role": "primary"
+      },
+      {
+        "source_id": "text/*",
+        "dataset": "NASA_ASRS",
+        "source_type": "document",
+        "role": "primary"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "semantic_chains := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, primary_problem])\n  -> FILTER(primary_problem = 'Aircraft')\n  -> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n  -> SEM_FILTER(\"Keep reports that explicitly connect an earlier maintenance deferral or release-to-service decision to a later component discrepancy.\", {text})\n  -> SEM_FILTER(\"Keep reports that clearly place discovery in before_departure, after_takeoff, or after_landing.\", {text})\n  -> SEM_EXTRACT(\"Extract the earlier maintenance decision, affected item, later discrepancy, operational effect, and discovery_phase from {before_departure,after_takeoff,after_landing}, using short phrases for free-text fields.\", {incident_id:string, earlier_decision:string, affected_item:string, later_discrepancy:string, operational_effect:string, discovery_phase:string}, {incident_id,text})\n  -> SEM_CLASSIFY(\"Assign chain_category to deferred_item_recurred, released_item_failed, incomplete_repair_or_signoff, or maintenance_limitation_escalated.\", target_labels=[deferred_item_recurred,released_item_failed,incomplete_repair_or_signoff,maintenance_limitation_escalated], input_bindings={earlier_decision,affected_item,later_discrepancy,operational_effect,text})\n)\nmaintenance_flags := (\n  SCAN_TABLE(NASA_ASRS, aircraft_attributes.csv, [incident_id, attribute, value])\n  -> FILTER((attribute = 'maintenance_status_maintenance_deferred' OR attribute = 'maintenance_status_released_for_service') AND value = 'Y')\n  -> GROUP_BY([incident_id], {maintenance_flags:COLLECT(attribute)})\n  -> PROJECT([incident_id,maintenance_status=CASE WHEN maintenance_flags CONTAINS 'maintenance_status_maintenance_deferred' AND maintenance_flags CONTAINS 'maintenance_status_released_for_service' THEN 'both' WHEN maintenance_flags CONTAINS 'maintenance_status_maintenance_deferred' THEN 'deferred' ELSE 'released_to_service' END])\n)\nchains_with_status := JOIN(left=semantic_chains, right=maintenance_flags, join_type=inner, condition=semantic_chains.incident_id = maintenance_flags.incident_id)\ncomponent_records := (\n  SCAN_TABLE(NASA_ASRS, components.csv, [incident_id, attribute, value])\n  -> FILTER(attribute IN ('aircraft_component','problem'))\n  -> GROUP_BY([incident_id], {structured_components:COLLECT_IF(value,attribute='aircraft_component'), structured_problems:COLLECT_IF(value,attribute='problem')})\n)\njoined := JOIN(left=chains_with_status, right=component_records, join_type=inner, condition=chains_with_status.incident_id = component_records.incident_id)\njoined\n-> GROUP_BY([maintenance_status,discovery_phase,chain_category], {incident_count:COUNT_DISTINCT(incident_id), chain_records:COLLECT(affected_item,later_discrepancy,structured_components,structured_problems)})\n-> SEM_AGGREGATE(\"For each group, provide one canonical affected item and recurring discrepancy, each in at most six words.\", {canonical_affected_item:string, recurring_discrepancy:string}, group_by=[maintenance_status,discovery_phase,chain_category], input_bindings={chain_records})\n-> ORDER_BY([incident_count DESC, maintenance_status ASC, discovery_phase ASC, chain_category ASC])\n-> LIMIT(12)\n-> PROJECT([rank=ROW_NUMBER(),maintenance_status,discovery_phase,chain_category,incident_count,canonical_affected_item,recurring_discrepancy])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "rank",
+        "maintenance_status",
+        "discovery_phase",
+        "chain_category",
+        "incident_count",
+        "canonical_affected_item",
+        "recurring_discrepancy"
+      ],
+      "types": [
+        "integer",
+        "string",
+        "string",
+        "string",
+        "integer",
+        "string",
+        "string"
+      ]
+    }
+  },
+  "input_bad_plan": null,
+  "input_logical_plan": {
+    "root_dataset_id": "959cd2d910",
+    "nodes": [
+      {
+        "dataset_id": "aviation_safety-045-reports-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "2cb4c58487",
+        "unique_logical_op_id": "0-2cb4c58487",
+        "depends_on": [],
+        "generated_fields": [
+          "incident_id",
+          "text"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "incident_id",
+          "text"
+        ]
+      },
+      {
+        "dataset_id": "6af986b266",
+        "source_dataset_ids": [
+          "aviation_safety-045-reports-semantic-input"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "91c49c4c8f",
+        "unique_logical_op_id": "1-91c49c4c8f",
+        "depends_on": [
+          "text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "incident_id",
+          "text"
+        ],
+        "output_fields": [
+          "incident_id",
+          "text"
+        ],
+        "filter": "Keep this report only if it explicitly connects an earlier maintenance deferral or release-to-service decision to a later component discrepancy."
+      },
+      {
+        "dataset_id": "982fb64e4d",
+        "source_dataset_ids": [
+          "6af986b266"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "a4f57e3e9a",
+        "unique_logical_op_id": "2-a4f57e3e9a",
+        "depends_on": [
+          "text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "incident_id",
+          "text"
+        ],
+        "output_fields": [
+          "incident_id",
+          "text"
+        ],
+        "filter": "Keep this report only if it clearly places discovery in before departure, after takeoff, or after landing."
+      },
+      {
+        "dataset_id": "dbfa4a0999",
+        "source_dataset_ids": [
+          "982fb64e4d"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "85996dc213",
+        "unique_logical_op_id": "3-85996dc213",
+        "depends_on": [
+          "incident_id",
+          "text"
+        ],
+        "generated_fields": [
+          "affected_item",
+          "discovery_phase",
+          "earlier_decision",
+          "later_discrepancy",
+          "operational_effect"
+        ],
+        "input_fields": [
+          "incident_id",
+          "text"
+        ],
+        "output_fields": [
+          "affected_item",
+          "discovery_phase",
+          "earlier_decision",
+          "incident_id",
+          "later_discrepancy",
+          "operational_effect",
+          "text"
+        ],
+        "desc": "Extract the earlier maintenance decision, affected item, later discrepancy, operational effect, and discovery phase.",
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "f36d3df28d",
+        "source_dataset_ids": [
+          "dbfa4a0999"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "e18ddb4065",
+        "unique_logical_op_id": "4-e18ddb4065",
+        "depends_on": [
+          "affected_item",
+          "earlier_decision",
+          "later_discrepancy",
+          "operational_effect",
+          "text"
+        ],
+        "generated_fields": [
+          "chain_category"
+        ],
+        "input_fields": [
+          "affected_item",
+          "discovery_phase",
+          "earlier_decision",
+          "incident_id",
+          "later_discrepancy",
+          "operational_effect",
+          "text"
+        ],
+        "output_fields": [
+          "affected_item",
+          "chain_category",
+          "discovery_phase",
+          "earlier_decision",
+          "incident_id",
+          "later_discrepancy",
+          "operational_effect",
+          "text"
+        ],
+        "desc": "Assign the causal maintenance-chain category.",
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "39df1b781b",
+        "source_dataset_ids": [
+          "f36d3df28d"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "6f78af49f6",
+        "unique_logical_op_id": "5-6f78af49f6",
+        "depends_on": [
+          "chain_category",
+          "discovery_phase"
+        ],
+        "generated_fields": [
+          "normalized_chain_category",
+          "normalized_discovery_phase"
+        ],
+        "input_fields": [
+          "affected_item",
+          "chain_category",
+          "discovery_phase",
+          "earlier_decision",
+          "incident_id",
+          "later_discrepancy",
+          "operational_effect",
+          "text"
+        ],
+        "output_fields": [
+          "affected_item",
+          "chain_category",
+          "discovery_phase",
+          "earlier_decision",
+          "incident_id",
+          "later_discrepancy",
+          "normalized_chain_category",
+          "normalized_discovery_phase",
+          "operational_effect",
+          "text"
+        ],
+        "udf_fingerprint": {
+          "name": "normalize_chain",
+          "source_sha256": "5e866c4cc6d19c7d0a9eb7a098cb8c4bdf3848e0e4eb66a21f35649fa279b386"
+        },
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "b6dc3ea7c2",
+        "source_dataset_ids": [
+          "39df1b781b"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "61950cb73a",
+        "unique_logical_op_id": "6-61950cb73a",
+        "depends_on": [
+          "normalized_chain_category",
+          "normalized_discovery_phase"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "affected_item",
+          "chain_category",
+          "discovery_phase",
+          "earlier_decision",
+          "incident_id",
+          "later_discrepancy",
+          "normalized_chain_category",
+          "normalized_discovery_phase",
+          "operational_effect",
+          "text"
+        ],
+        "output_fields": [
+          "affected_item",
+          "chain_category",
+          "discovery_phase",
+          "earlier_decision",
+          "incident_id",
+          "later_discrepancy",
+          "normalized_chain_category",
+          "normalized_discovery_phase",
+          "operational_effect",
+          "text"
+        ],
+        "filter": "has_valid_chain",
+        "filter_fn_fingerprint": {
+          "name": "has_valid_chain",
+          "source_sha256": "f98a293b5daa0b9ba98f7aa438ff2739a3d46a6ae9cffe17568d95ea5ceb2bfd"
+        }
+      },
+      {
+        "dataset_id": "aviation_safety-045-maintenance-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "412b25a9c1",
+        "unique_logical_op_id": "7-412b25a9c1",
+        "depends_on": [],
+        "generated_fields": [
+          "incident_id",
+          "maintenance_status"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "incident_id",
+          "maintenance_status"
+        ]
+      },
+      {
+        "dataset_id": "15db27f5c6",
+        "source_dataset_ids": [
+          "b6dc3ea7c2",
+          "aviation_safety-045-maintenance-semantic-input"
+        ],
+        "logical_operator": "JoinOp",
+        "logical_op_id": "e3e63d11e5",
+        "unique_logical_op_id": "8-e3e63d11e5",
+        "depends_on": [
+          "incident_id"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "affected_item",
+          "chain_category",
+          "discovery_phase",
+          "earlier_decision",
+          "incident_id",
+          "later_discrepancy",
+          "maintenance_status",
+          "normalized_chain_category",
+          "normalized_discovery_phase",
+          "operational_effect",
+          "text"
+        ],
+        "output_fields": [
+          "affected_item",
+          "chain_category",
+          "discovery_phase",
+          "earlier_decision",
+          "incident_id",
+          "later_discrepancy",
+          "maintenance_status",
+          "normalized_chain_category",
+          "normalized_discovery_phase",
+          "operational_effect",
+          "text"
+        ],
+        "on": "['incident_id']",
+        "how": "inner"
+      },
+      {
+        "dataset_id": "aviation_safety-045-components-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "849858f764",
+        "unique_logical_op_id": "9-849858f764",
+        "depends_on": [],
+        "generated_fields": [
+          "incident_id",
+          "structured_components",
+          "structured_problems"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "incident_id",
+          "structured_components",
+          "structured_problems"
+        ]
+      },
+      {
+        "dataset_id": "e6e6d2f9e0",
+        "source_dataset_ids": [
+          "15db27f5c6",
+          "aviation_safety-045-components-semantic-input"
+        ],
+        "logical_operator": "JoinOp",
+        "logical_op_id": "e3e63d11e5",
+        "unique_logical_op_id": "10-e3e63d11e5",
+        "depends_on": [
+          "incident_id"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "affected_item",
+          "chain_category",
+          "discovery_phase",
+          "earlier_decision",
+          "incident_id",
+          "later_discrepancy",
+          "maintenance_status",
+          "normalized_chain_category",
+          "normalized_discovery_phase",
+          "operational_effect",
+          "structured_components",
+          "structured_problems",
+          "text"
+        ],
+        "output_fields": [
+          "affected_item",
+          "chain_category",
+          "discovery_phase",
+          "earlier_decision",
+          "incident_id",
+          "later_discrepancy",
+          "maintenance_status",
+          "normalized_chain_category",
+          "normalized_discovery_phase",
+          "operational_effect",
+          "structured_components",
+          "structured_problems",
+          "text"
+        ],
+        "on": "['incident_id']",
+        "how": "inner"
+      },
+      {
+        "dataset_id": "90c3802fc4",
+        "source_dataset_ids": [
+          "e6e6d2f9e0"
+        ],
+        "logical_operator": "Distinct",
+        "logical_op_id": "85245dd9e7",
+        "unique_logical_op_id": "11-85245dd9e7",
+        "depends_on": [],
+        "generated_fields": [],
+        "input_fields": [
+          "affected_item",
+          "chain_category",
+          "discovery_phase",
+          "earlier_decision",
+          "incident_id",
+          "later_discrepancy",
+          "maintenance_status",
+          "normalized_chain_category",
+          "normalized_discovery_phase",
+          "operational_effect",
+          "structured_components",
+          "structured_problems",
+          "text"
+        ],
+        "output_fields": [
+          "affected_item",
+          "chain_category",
+          "discovery_phase",
+          "earlier_decision",
+          "incident_id",
+          "later_discrepancy",
+          "maintenance_status",
+          "normalized_chain_category",
+          "normalized_discovery_phase",
+          "operational_effect",
+          "structured_components",
+          "structured_problems",
+          "text"
+        ],
+        "distinct_cols": "['affected_item', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase']"
+      },
+      {
+        "dataset_id": "02b0d498c7",
+        "source_dataset_ids": [
+          "90c3802fc4"
+        ],
+        "logical_operator": "GroupByAggregate",
+        "logical_op_id": "50a9069b87",
+        "unique_logical_op_id": "12-50a9069b87",
+        "depends_on": [],
+        "generated_fields": [
+          "count(incident_id)",
+          "list(affected_item)",
+          "list(later_discrepancy)",
+          "list(structured_components)",
+          "list(structured_problems)"
+        ],
+        "input_fields": [
+          "affected_item",
+          "chain_category",
+          "discovery_phase",
+          "earlier_decision",
+          "incident_id",
+          "later_discrepancy",
+          "maintenance_status",
+          "normalized_chain_category",
+          "normalized_discovery_phase",
+          "operational_effect",
+          "structured_components",
+          "structured_problems",
+          "text"
+        ],
+        "output_fields": [
+          "count(incident_id)",
+          "list(affected_item)",
+          "list(later_discrepancy)",
+          "list(structured_components)",
+          "list(structured_problems)",
+          "maintenance_status",
+          "normalized_chain_category",
+          "normalized_discovery_phase"
+        ],
+        "group_by": "GroupBy({'group_by_fields': ['maintenance_status', 'normalized_discovery_phase', 'normalized_chain_category'], 'agg_funcs': ['count', 'list', 'list', 'list', 'list'], 'agg_fields': ['incident_id', 'affected_item', 'later_discrepancy', 'structured_components', 'structured_problems']})"
+      },
+      {
+        "dataset_id": "959cd2d910",
+        "source_dataset_ids": [
+          "02b0d498c7"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "858d459daf",
+        "unique_logical_op_id": "13-858d459daf",
+        "depends_on": [
+          "list(affected_item)",
+          "list(later_discrepancy)",
+          "list(structured_components)",
+          "list(structured_problems)",
+          "maintenance_status",
+          "normalized_chain_category",
+          "normalized_discovery_phase"
+        ],
+        "generated_fields": [
+          "canonical_affected_item",
+          "recurring_discrepancy"
+        ],
+        "input_fields": [
+          "count(incident_id)",
+          "list(affected_item)",
+          "list(later_discrepancy)",
+          "list(structured_components)",
+          "list(structured_problems)",
+          "maintenance_status",
+          "normalized_chain_category",
+          "normalized_discovery_phase"
+        ],
+        "output_fields": [
+          "canonical_affected_item",
+          "count(incident_id)",
+          "list(affected_item)",
+          "list(later_discrepancy)",
+          "list(structured_components)",
+          "list(structured_problems)",
+          "maintenance_status",
+          "normalized_chain_category",
+          "normalized_discovery_phase",
+          "recurring_discrepancy"
+        ],
+        "desc": "For this maintenance-status, discovery-phase, and chain-category group, summarize one canonical affected item and one recurring discrepancy from the collected records.",
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      }
+    ],
+    "topological_logical_sequence": [
+      "0-2cb4c58487",
+      "1-91c49c4c8f",
+      "2-a4f57e3e9a",
+      "3-85996dc213",
+      "4-e18ddb4065",
+      "5-6f78af49f6",
+      "6-61950cb73a",
+      "7-412b25a9c1",
+      "8-e3e63d11e5",
+      "9-849858f764",
+      "10-e3e63d11e5",
+      "11-85245dd9e7",
+      "12-50a9069b87",
+      "13-858d459daf"
+    ]
+  },
+  "selected_physical_plan": {
+    "plan_id": "2f777fbca2",
+    "plan_string": "0. Schema['count(incident_id)', 'list(affected_item)', 'list(later_discrepancy)', 'list(structured_components)', 'list(structured_problems)', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase'] -> LLMConvertBonded -> Schema['canonical_affected_item', 'count(incident_id)', 'list(affected_item)', 'list(later_discrepancy)', 'list(structured_components)', 'list(structured_problems)', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'recurring_discrepancy']\n    (count(incident_id), list(affec) -> (canonical_affected_item, count)\n    Model: Qwen3.5-397B-A17B\n    Prompt Strategy: PromptStrategy.MAP\n    Reasoning Effort: default\n\n  1. Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'] -> ApplyGroupByOp -> Schema['count(incident_id)', 'list(affected_item)', 'list(later_discrepancy)', 'list(structured_components)', 'list(structured_problems)', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase']\n    (affected_item, chain_category,) -> (count(incident_id), list(affec)\n    Group-by Signature: GroupBy({'group_by_fields': ['maintenance_status', 'normalized_discovery_phase', 'normalized_chain_category'], 'agg_funcs': ['count', 'list', 'list', 'list', 'list'], 'agg_fields': ['incident_id', 'affected_item', 'later_discrepancy', 'structured_components', 'structured_problems']})\n\n    2. Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'] -> DistinctOp -> Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text']\n    (affected_item, chain_category,) -> (affected_item, chain_category,)\n    Distinct Cols: ['affected_item', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase']\n\n      3. Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'] -> RelationalJoin -> Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text']\n    (affected_item, chain_category,) -> (affected_item, chain_category,)\n    Condition: \n    How: inner\n    On: ['incident_id']\n\n        4. Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'] -> RelationalJoin -> Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text']\n    (affected_item, chain_category,) -> (affected_item, chain_category,)\n    Condition: \n    How: inner\n    On: ['incident_id']\n\n          5. Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'] -> NonLLMFilter -> Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text']\n    (affected_item, chain_category,) -> (affected_item, chain_category,)\n    Filter: has_valid_chain\n\n            6. Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'] -> NonLLMConvert -> Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text']\n    (affected_item, chain_category,) -> (affected_item, chain_category,)\n    UDF: normalize_chain\n\n              7. Schema['affected_item', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'] -> LLMConvertBonded -> Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text']\n    (affected_item, discovery_phase) -> (affected_item, chain_category,)\n    Model: Qwen3.5-397B-A17B\n    Prompt Strategy: PromptStrategy.MAP\n    Reasoning Effort: default\n\n                8. Schema['incident_id', 'text'] -> MixtureOfAgentsConvert -> Schema['affected_item', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text']\n    (incident_id, text) -> (affected_item, discovery_phase)\n    Prompt Strategy: None\n    Reasoning Effort: default\n    Proposer Models: [Qwen3.5-397B-A17B]\n    Temperatures: [0.0]\n    Aggregator Model: Qwen3.5-397B-A17B\n\n                  9. Schema['incident_id', 'text'] -> LLMFilter -> Schema['incident_id', 'text']\n    (incident_id, text) -> (incident_id, text)\n    Model: Qwen3.5-397B-A17B\n    Filter: Keep this report only if it clearly places discovery in before departure, after takeoff, or after landing.\n\n                    10. Schema['incident_id', 'text'] -> LLMFilter -> Schema['incident_id', 'text']\n    (incident_id, text) -> (incident_id, text)\n    Model: Qwen3.5-397B-A17B\n    Filter: Keep this report only if it explicitly connects an earlier maintenance deferral or release-to-service decision to a later component discrepancy.\n\n                      11. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['incident_id', 'text']'>, id=aviation_safety-045-reports-semantic-input, op_id=2cb4c58487)) -> <class 'palimpzest.core.lib.schemas.Schema['incident_id', 'text']'>\n    (incident_id, text)\n\n          5. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['incident_id', 'maintenance_status']'>, id=aviation_safety-045-maintenance-semantic-input, op_id=412b25a9c1)) -> <class 'palimpzest.core.lib.schemas.Schema['incident_id', 'maintenance_status']'>\n    (incident_id, maintenance_statu)\n\n        4. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['incident_id', 'structured_components', 'structured_problems']'>, id=aviation_safety-045-components-semantic-input, op_id=849858f764)) -> <class 'palimpzest.core.lib.schemas.Schema['incident_id', 'structured_components', 'structured_problems']'>\n    (incident_id, structured_compon)\n\n",
+    "root_operator_index": 13,
+    "operators": [
+      {
+        "topological_index": 0,
+        "physical_operator": "MarshalAndScanDataOp",
+        "logical_operator": "BaseScan",
+        "logical_op_id": "2cb4c58487",
+        "unique_logical_op_id": "0-2cb4c58487",
+        "full_op_id": "2cb4c58487-2648dffb20",
+        "model": null,
+        "depends_on": [],
+        "generated_fields": [
+          "incident_id",
+          "text"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "incident_id",
+          "text"
+        ],
+        "source_operator_indices": []
+      },
+      {
+        "topological_index": 1,
+        "physical_operator": "LLMFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "91c49c4c8f",
+        "unique_logical_op_id": "1-91c49c4c8f",
+        "full_op_id": "91c49c4c8f-3c8d940764",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['incident_id', 'text'].aviation_safety-045-reports-semantic-input.text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "incident_id",
+          "text"
+        ],
+        "output_fields": [
+          "incident_id",
+          "text"
+        ],
+        "source_operator_indices": [
+          0
+        ]
+      },
+      {
+        "topological_index": 2,
+        "physical_operator": "LLMFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "a4f57e3e9a",
+        "unique_logical_op_id": "2-a4f57e3e9a",
+        "full_op_id": "a4f57e3e9a-878f3a3b04",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['incident_id', 'text'].aviation_safety-045-reports-semantic-input.text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "incident_id",
+          "text"
+        ],
+        "output_fields": [
+          "incident_id",
+          "text"
+        ],
+        "source_operator_indices": [
+          1
+        ]
+      },
+      {
+        "topological_index": 3,
+        "physical_operator": "MixtureOfAgentsConvert",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "85996dc213",
+        "unique_logical_op_id": "3-85996dc213",
+        "full_op_id": "85996dc213-59611ffe01",
+        "model": null,
+        "depends_on": [
+          "Schema['incident_id', 'text'].aviation_safety-045-reports-semantic-input.incident_id",
+          "Schema['incident_id', 'text'].aviation_safety-045-reports-semantic-input.text"
+        ],
+        "generated_fields": [
+          "affected_item",
+          "discovery_phase",
+          "earlier_decision",
+          "later_discrepancy",
+          "operational_effect"
+        ],
+        "input_fields": [
+          "incident_id",
+          "text"
+        ],
+        "output_fields": [
+          "affected_item",
+          "discovery_phase",
+          "earlier_decision",
+          "incident_id",
+          "later_discrepancy",
+          "operational_effect",
+          "text"
+        ],
+        "source_operator_indices": [
+          2
+        ]
+      },
+      {
+        "topological_index": 4,
+        "physical_operator": "LLMConvertBonded",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "e18ddb4065",
+        "unique_logical_op_id": "4-e18ddb4065",
+        "full_op_id": "e18ddb4065-44c2cc67f6",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['affected_item', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].dbfa4a0999.affected_item",
+          "Schema['affected_item', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].dbfa4a0999.earlier_decision",
+          "Schema['affected_item', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].dbfa4a0999.later_discrepancy",
+          "Schema['affected_item', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].dbfa4a0999.operational_effect",
+          "Schema['incident_id', 'text'].aviation_safety-045-reports-semantic-input.text"
+        ],
+        "generated_fields": [
+          "chain_category"
+        ],
+        "input_fields": [
+          "affected_item",
+          "discovery_phase",
+          "earlier_decision",
+          "incident_id",
+          "later_discrepancy",
+          "operational_effect",
+          "text"
+        ],
+        "output_fields": [
+          "affected_item",
+          "chain_category",
+          "discovery_phase",
+          "earlier_decision",
+          "incident_id",
+          "later_discrepancy",
+          "operational_effect",
+          "text"
+        ],
+        "source_operator_indices": [
+          3
+        ]
+      },
+      {
+        "topological_index": 5,
+        "physical_operator": "NonLLMConvert",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "6f78af49f6",
+        "unique_logical_op_id": "5-6f78af49f6",
+        "full_op_id": "6f78af49f6-83ff4ea2fa",
+        "model": null,
+        "depends_on": [
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].39df1b781b.chain_category",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].39df1b781b.discovery_phase"
+        ],
+        "generated_fields": [
+          "normalized_chain_category",
+          "normalized_discovery_phase"
+        ],
+        "input_fields": [
+          "affected_item",
+          "chain_category",
+          "discovery_phase",
+          "earlier_decision",
+          "incident_id",
+          "later_discrepancy",
+          "operational_effect",
+          "text"
+        ],
+        "output_fields": [
+          "affected_item",
+          "chain_category",
+          "discovery_phase",
+          "earlier_decision",
+          "incident_id",
+          "later_discrepancy",
+          "normalized_chain_category",
+          "normalized_discovery_phase",
+          "operational_effect",
+          "text"
+        ],
+        "source_operator_indices": [
+          4
+        ]
+      },
+      {
+        "topological_index": 6,
+        "physical_operator": "NonLLMFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "61950cb73a",
+        "unique_logical_op_id": "6-61950cb73a",
+        "full_op_id": "61950cb73a-dc9ec8f703",
+        "model": null,
+        "depends_on": [
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].39df1b781b.normalized_chain_category",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].39df1b781b.normalized_discovery_phase"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "affected_item",
+          "chain_category",
+          "discovery_phase",
+          "earlier_decision",
+          "incident_id",
+          "later_discrepancy",
+          "normalized_chain_category",
+          "normalized_discovery_phase",
+          "operational_effect",
+          "text"
+        ],
+        "output_fields": [
+          "affected_item",
+          "chain_category",
+          "discovery_phase",
+          "earlier_decision",
+          "incident_id",
+          "later_discrepancy",
+          "normalized_chain_category",
+          "normalized_discovery_phase",
+          "operational_effect",
+          "text"
+        ],
+        "source_operator_indices": [
+          5
+        ]
+      },
+      {
+        "topological_index": 7,
+        "physical_operator": "MarshalAndScanDataOp",
+        "logical_operator": "BaseScan",
+        "logical_op_id": "412b25a9c1",
+        "unique_logical_op_id": "7-412b25a9c1",
+        "full_op_id": "412b25a9c1-2da4dd5ae1",
+        "model": null,
+        "depends_on": [],
+        "generated_fields": [
+          "incident_id",
+          "maintenance_status"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "incident_id",
+          "maintenance_status"
+        ],
+        "source_operator_indices": []
+      },
+      {
+        "topological_index": 8,
+        "physical_operator": "RelationalJoin",
+        "logical_operator": "JoinOp",
+        "logical_op_id": "e3e63d11e5",
+        "unique_logical_op_id": "8-e3e63d11e5",
+        "full_op_id": "e3e63d11e5-9baa92c4c8",
+        "model": null,
+        "depends_on": [
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].39df1b781b.incident_id"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "affected_item",
+          "chain_category",
+          "discovery_phase",
+          "earlier_decision",
+          "incident_id",
+          "later_discrepancy",
+          "maintenance_status",
+          "normalized_chain_category",
+          "normalized_discovery_phase",
+          "operational_effect",
+          "text"
+        ],
+        "output_fields": [
+          "affected_item",
+          "chain_category",
+          "discovery_phase",
+          "earlier_decision",
+          "incident_id",
+          "later_discrepancy",
+          "maintenance_status",
+          "normalized_chain_category",
+          "normalized_discovery_phase",
+          "operational_effect",
+          "text"
+        ],
+        "source_operator_indices": [
+          6,
+          7
+        ]
+      },
+      {
+        "topological_index": 9,
+        "physical_operator": "MarshalAndScanDataOp",
+        "logical_operator": "BaseScan",
+        "logical_op_id": "849858f764",
+        "unique_logical_op_id": "9-849858f764",
+        "full_op_id": "849858f764-d1853c460b",
+        "model": null,
+        "depends_on": [],
+        "generated_fields": [
+          "incident_id",
+          "structured_components",
+          "structured_problems"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "incident_id",
+          "structured_components",
+          "structured_problems"
+        ],
+        "source_operator_indices": []
+      },
+      {
+        "topological_index": 10,
+        "physical_operator": "RelationalJoin",
+        "logical_operator": "JoinOp",
+        "logical_op_id": "e3e63d11e5",
+        "unique_logical_op_id": "10-e3e63d11e5",
+        "full_op_id": "e3e63d11e5-9baa92c4c8",
+        "model": null,
+        "depends_on": [
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].39df1b781b.incident_id"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "affected_item",
+          "chain_category",
+          "discovery_phase",
+          "earlier_decision",
+          "incident_id",
+          "later_discrepancy",
+          "maintenance_status",
+          "normalized_chain_category",
+          "normalized_discovery_phase",
+          "operational_effect",
+          "structured_components",
+          "structured_problems",
+          "text"
+        ],
+        "output_fields": [
+          "affected_item",
+          "chain_category",
+          "discovery_phase",
+          "earlier_decision",
+          "incident_id",
+          "later_discrepancy",
+          "maintenance_status",
+          "normalized_chain_category",
+          "normalized_discovery_phase",
+          "operational_effect",
+          "structured_components",
+          "structured_problems",
+          "text"
+        ],
+        "source_operator_indices": [
+          8,
+          9
+        ]
+      },
+      {
+        "topological_index": 11,
+        "physical_operator": "DistinctOp",
+        "logical_operator": "Distinct",
+        "logical_op_id": "85245dd9e7",
+        "unique_logical_op_id": "11-85245dd9e7",
+        "full_op_id": "85245dd9e7-c08c9dd7be",
+        "model": null,
+        "depends_on": [
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].e6e6d2f9e0.affected_item",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].e6e6d2f9e0.chain_category",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].e6e6d2f9e0.discovery_phase",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].e6e6d2f9e0.earlier_decision",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].e6e6d2f9e0.incident_id",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].e6e6d2f9e0.later_discrepancy",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].e6e6d2f9e0.maintenance_status",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].e6e6d2f9e0.normalized_chain_category",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].e6e6d2f9e0.normalized_discovery_phase",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].e6e6d2f9e0.operational_effect",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].e6e6d2f9e0.structured_components",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].e6e6d2f9e0.structured_problems",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].e6e6d2f9e0.text",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].15db27f5c6.affected_item",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].15db27f5c6.chain_category",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].15db27f5c6.discovery_phase",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].15db27f5c6.earlier_decision",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].15db27f5c6.incident_id",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].15db27f5c6.later_discrepancy",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].15db27f5c6.maintenance_status",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].15db27f5c6.normalized_chain_category",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].15db27f5c6.normalized_discovery_phase",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].15db27f5c6.operational_effect",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].15db27f5c6.text",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].39df1b781b.affected_item",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].39df1b781b.chain_category",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].39df1b781b.discovery_phase",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].39df1b781b.earlier_decision",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].39df1b781b.incident_id",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].39df1b781b.later_discrepancy",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].39df1b781b.normalized_chain_category",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].39df1b781b.normalized_discovery_phase",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].39df1b781b.operational_effect",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].39df1b781b.text",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].b6dc3ea7c2.affected_item",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].b6dc3ea7c2.chain_category",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].b6dc3ea7c2.discovery_phase",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].b6dc3ea7c2.earlier_decision",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].b6dc3ea7c2.incident_id",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].b6dc3ea7c2.later_discrepancy",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].b6dc3ea7c2.normalized_chain_category",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].b6dc3ea7c2.normalized_discovery_phase",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].b6dc3ea7c2.operational_effect",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].b6dc3ea7c2.text",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].f36d3df28d.affected_item",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].f36d3df28d.chain_category",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].f36d3df28d.discovery_phase",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].f36d3df28d.earlier_decision",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].f36d3df28d.incident_id",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].f36d3df28d.later_discrepancy",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].f36d3df28d.operational_effect",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].f36d3df28d.text",
+          "Schema['affected_item', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].dbfa4a0999.affected_item",
+          "Schema['affected_item', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].dbfa4a0999.discovery_phase",
+          "Schema['affected_item', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].dbfa4a0999.earlier_decision",
+          "Schema['affected_item', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].dbfa4a0999.incident_id",
+          "Schema['affected_item', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].dbfa4a0999.later_discrepancy",
+          "Schema['affected_item', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].dbfa4a0999.operational_effect",
+          "Schema['affected_item', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].dbfa4a0999.text",
+          "Schema['incident_id', 'maintenance_status'].aviation_safety-045-maintenance-semantic-input.incident_id",
+          "Schema['incident_id', 'maintenance_status'].aviation_safety-045-maintenance-semantic-input.maintenance_status",
+          "Schema['incident_id', 'structured_components', 'structured_problems'].aviation_safety-045-components-semantic-input.incident_id",
+          "Schema['incident_id', 'structured_components', 'structured_problems'].aviation_safety-045-components-semantic-input.structured_components",
+          "Schema['incident_id', 'structured_components', 'structured_problems'].aviation_safety-045-components-semantic-input.structured_problems",
+          "Schema['incident_id', 'text'].6af986b266.incident_id",
+          "Schema['incident_id', 'text'].6af986b266.text",
+          "Schema['incident_id', 'text'].982fb64e4d.incident_id",
+          "Schema['incident_id', 'text'].982fb64e4d.text",
+          "Schema['incident_id', 'text'].aviation_safety-045-reports-semantic-input.incident_id",
+          "Schema['incident_id', 'text'].aviation_safety-045-reports-semantic-input.text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "affected_item",
+          "chain_category",
+          "discovery_phase",
+          "earlier_decision",
+          "incident_id",
+          "later_discrepancy",
+          "maintenance_status",
+          "normalized_chain_category",
+          "normalized_discovery_phase",
+          "operational_effect",
+          "structured_components",
+          "structured_problems",
+          "text"
+        ],
+        "output_fields": [
+          "affected_item",
+          "chain_category",
+          "discovery_phase",
+          "earlier_decision",
+          "incident_id",
+          "later_discrepancy",
+          "maintenance_status",
+          "normalized_chain_category",
+          "normalized_discovery_phase",
+          "operational_effect",
+          "structured_components",
+          "structured_problems",
+          "text"
+        ],
+        "source_operator_indices": [
+          10
+        ]
+      },
+      {
+        "topological_index": 12,
+        "physical_operator": "ApplyGroupByOp",
+        "logical_operator": "GroupByAggregate",
+        "logical_op_id": "50a9069b87",
+        "unique_logical_op_id": "12-50a9069b87",
+        "full_op_id": "50a9069b87-67d1ee3fcf",
+        "model": null,
+        "depends_on": [
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].90c3802fc4.affected_item",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].90c3802fc4.chain_category",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].90c3802fc4.discovery_phase",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].90c3802fc4.earlier_decision",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].90c3802fc4.incident_id",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].90c3802fc4.later_discrepancy",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].90c3802fc4.maintenance_status",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].90c3802fc4.normalized_chain_category",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].90c3802fc4.normalized_discovery_phase",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].90c3802fc4.operational_effect",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].90c3802fc4.structured_components",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].90c3802fc4.structured_problems",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].90c3802fc4.text",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].e6e6d2f9e0.affected_item",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].e6e6d2f9e0.chain_category",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].e6e6d2f9e0.discovery_phase",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].e6e6d2f9e0.earlier_decision",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].e6e6d2f9e0.incident_id",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].e6e6d2f9e0.later_discrepancy",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].e6e6d2f9e0.maintenance_status",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].e6e6d2f9e0.normalized_chain_category",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].e6e6d2f9e0.normalized_discovery_phase",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].e6e6d2f9e0.operational_effect",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].e6e6d2f9e0.structured_components",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].e6e6d2f9e0.structured_problems",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'structured_components', 'structured_problems', 'text'].e6e6d2f9e0.text",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].15db27f5c6.affected_item",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].15db27f5c6.chain_category",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].15db27f5c6.discovery_phase",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].15db27f5c6.earlier_decision",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].15db27f5c6.incident_id",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].15db27f5c6.later_discrepancy",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].15db27f5c6.maintenance_status",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].15db27f5c6.normalized_chain_category",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].15db27f5c6.normalized_discovery_phase",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].15db27f5c6.operational_effect",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].15db27f5c6.text",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].39df1b781b.affected_item",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].39df1b781b.chain_category",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].39df1b781b.discovery_phase",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].39df1b781b.earlier_decision",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].39df1b781b.incident_id",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].39df1b781b.later_discrepancy",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].39df1b781b.normalized_chain_category",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].39df1b781b.normalized_discovery_phase",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].39df1b781b.operational_effect",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].39df1b781b.text",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].b6dc3ea7c2.affected_item",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].b6dc3ea7c2.chain_category",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].b6dc3ea7c2.discovery_phase",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].b6dc3ea7c2.earlier_decision",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].b6dc3ea7c2.incident_id",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].b6dc3ea7c2.later_discrepancy",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].b6dc3ea7c2.normalized_chain_category",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].b6dc3ea7c2.normalized_discovery_phase",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].b6dc3ea7c2.operational_effect",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].b6dc3ea7c2.text",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].f36d3df28d.affected_item",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].f36d3df28d.chain_category",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].f36d3df28d.discovery_phase",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].f36d3df28d.earlier_decision",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].f36d3df28d.incident_id",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].f36d3df28d.later_discrepancy",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].f36d3df28d.operational_effect",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].f36d3df28d.text",
+          "Schema['affected_item', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].dbfa4a0999.affected_item",
+          "Schema['affected_item', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].dbfa4a0999.discovery_phase",
+          "Schema['affected_item', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].dbfa4a0999.earlier_decision",
+          "Schema['affected_item', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].dbfa4a0999.incident_id",
+          "Schema['affected_item', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].dbfa4a0999.later_discrepancy",
+          "Schema['affected_item', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].dbfa4a0999.operational_effect",
+          "Schema['affected_item', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'operational_effect', 'text'].dbfa4a0999.text",
+          "Schema['incident_id', 'maintenance_status'].aviation_safety-045-maintenance-semantic-input.incident_id",
+          "Schema['incident_id', 'maintenance_status'].aviation_safety-045-maintenance-semantic-input.maintenance_status",
+          "Schema['incident_id', 'structured_components', 'structured_problems'].aviation_safety-045-components-semantic-input.incident_id",
+          "Schema['incident_id', 'structured_components', 'structured_problems'].aviation_safety-045-components-semantic-input.structured_components",
+          "Schema['incident_id', 'structured_components', 'structured_problems'].aviation_safety-045-components-semantic-input.structured_problems",
+          "Schema['incident_id', 'text'].6af986b266.incident_id",
+          "Schema['incident_id', 'text'].6af986b266.text",
+          "Schema['incident_id', 'text'].982fb64e4d.incident_id",
+          "Schema['incident_id', 'text'].982fb64e4d.text",
+          "Schema['incident_id', 'text'].aviation_safety-045-reports-semantic-input.incident_id",
+          "Schema['incident_id', 'text'].aviation_safety-045-reports-semantic-input.text"
+        ],
+        "generated_fields": [
+          "count(incident_id)",
+          "list(affected_item)",
+          "list(later_discrepancy)",
+          "list(structured_components)",
+          "list(structured_problems)"
+        ],
+        "input_fields": [
+          "affected_item",
+          "chain_category",
+          "discovery_phase",
+          "earlier_decision",
+          "incident_id",
+          "later_discrepancy",
+          "maintenance_status",
+          "normalized_chain_category",
+          "normalized_discovery_phase",
+          "operational_effect",
+          "structured_components",
+          "structured_problems",
+          "text"
+        ],
+        "output_fields": [
+          "count(incident_id)",
+          "list(affected_item)",
+          "list(later_discrepancy)",
+          "list(structured_components)",
+          "list(structured_problems)",
+          "maintenance_status",
+          "normalized_chain_category",
+          "normalized_discovery_phase"
+        ],
+        "source_operator_indices": [
+          11
+        ]
+      },
+      {
+        "topological_index": 13,
+        "physical_operator": "LLMConvertBonded",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "858d459daf",
+        "unique_logical_op_id": "13-858d459daf",
+        "full_op_id": "858d459daf-c878cec6f4",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].39df1b781b.normalized_chain_category",
+          "Schema['affected_item', 'chain_category', 'discovery_phase', 'earlier_decision', 'incident_id', 'later_discrepancy', 'normalized_chain_category', 'normalized_discovery_phase', 'operational_effect', 'text'].39df1b781b.normalized_discovery_phase",
+          "Schema['count(incident_id)', 'list(affected_item)', 'list(later_discrepancy)', 'list(structured_components)', 'list(structured_problems)', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase'].02b0d498c7.list(affected_item)",
+          "Schema['count(incident_id)', 'list(affected_item)', 'list(later_discrepancy)', 'list(structured_components)', 'list(structured_problems)', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase'].02b0d498c7.list(later_discrepancy)",
+          "Schema['count(incident_id)', 'list(affected_item)', 'list(later_discrepancy)', 'list(structured_components)', 'list(structured_problems)', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase'].02b0d498c7.list(structured_components)",
+          "Schema['count(incident_id)', 'list(affected_item)', 'list(later_discrepancy)', 'list(structured_components)', 'list(structured_problems)', 'maintenance_status', 'normalized_chain_category', 'normalized_discovery_phase'].02b0d498c7.list(structured_problems)",
+          "Schema['incident_id', 'maintenance_status'].aviation_safety-045-maintenance-semantic-input.maintenance_status"
+        ],
+        "generated_fields": [
+          "canonical_affected_item",
+          "recurring_discrepancy"
+        ],
+        "input_fields": [
+          "count(incident_id)",
+          "list(affected_item)",
+          "list(later_discrepancy)",
+          "list(structured_components)",
+          "list(structured_problems)",
+          "maintenance_status",
+          "normalized_chain_category",
+          "normalized_discovery_phase"
+        ],
+        "output_fields": [
+          "canonical_affected_item",
+          "count(incident_id)",
+          "list(affected_item)",
+          "list(later_discrepancy)",
+          "list(structured_components)",
+          "list(structured_problems)",
+          "maintenance_status",
+          "normalized_chain_category",
+          "normalized_discovery_phase",
+          "recurring_discrepancy"
+        ],
+        "source_operator_indices": [
+          12
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "source": 0,
+        "target": 1
+      },
+      {
+        "source": 1,
+        "target": 2
+      },
+      {
+        "source": 2,
+        "target": 3
+      },
+      {
+        "source": 3,
+        "target": 4
+      },
+      {
+        "source": 4,
+        "target": 5
+      },
+      {
+        "source": 5,
+        "target": 6
+      },
+      {
+        "source": 6,
+        "target": 8
+      },
+      {
+        "source": 7,
+        "target": 8
+      },
+      {
+        "source": 8,
+        "target": 10
+      },
+      {
+        "source": 9,
+        "target": 10
+      },
+      {
+        "source": 10,
+        "target": 11
+      },
+      {
+        "source": 11,
+        "target": 12
+      },
+      {
+        "source": 12,
+        "target": 13
+      }
+    ],
+    "estimated_plan_cost": {
+      "cost": 3.2155195697368417,
+      "time": 57115.830469792636,
+      "quality": 0.8588856459330143,
+      "op_estimates": {
+        "cardinality": 3.0,
+        "time_per_record": 0.8,
+        "cost_per_record": 0.000624,
+        "quality": 0.878,
+        "cardinality_lower_bound": 3.0,
+        "cardinality_upper_bound": 3.0,
+        "time_per_record_lower_bound": 0.8,
+        "time_per_record_upper_bound": 0.8,
+        "cost_per_record_lower_bound": 0.000624,
+        "cost_per_record_upper_bound": 0.000624,
+        "quality_lower_bound": 0.878,
+        "quality_upper_bound": 0.878
+      },
+      "cost_lower_bound": 3.2155195697368417,
+      "cost_upper_bound": 3.2155195697368417,
+      "time_lower_bound": 57115.830469792636,
+      "time_upper_bound": 57115.830469792636,
+      "quality_lower_bound": 0.8588856459330143,
+      "quality_upper_bound": 0.8588856459330143
+    },
+    "topological_logical_sequence": [
+      "0-2cb4c58487",
+      "1-91c49c4c8f",
+      "2-a4f57e3e9a",
+      "3-85996dc213",
+      "4-e18ddb4065",
+      "5-6f78af49f6",
+      "6-61950cb73a",
+      "7-412b25a9c1",
+      "8-e3e63d11e5",
+      "9-849858f764",
+      "10-e3e63d11e5",
+      "11-85245dd9e7",
+      "12-50a9069b87",
+      "13-858d459daf"
+    ]
+  },
+  "optimizer_configuration": {
+    "strategy": "pareto",
+    "policy": "MaxQuality",
+    "physical_implementation_candidates": {
+      "allow_bonded_query": true,
+      "allow_model_selection": false,
+      "allow_rag_reduction": false,
+      "allow_mixtures": true,
+      "allow_critic": true,
+      "allow_split_merge": false,
+      "force_rag": false,
+      "execution_strategy": "parallel",
+      "max_workers": 64,
+      "join_parallelism": 64
+    },
+    "dynamic_learning_requested": true,
+    "dynamic_learning_pipeline_supported": true,
+    "dynamic_learning": true,
+    "dynamic_learning_support": {
+      "supported": false,
+      "reason": "Palimpzest Sentinel/MAB does not preserve source indices after non-final aggregate or limit operators",
+      "terminal_only_operator_violations": [
+        {
+          "dataset_id": "02b0d498c7",
+          "unique_logical_op_id": "12-50a9069b87",
+          "logical_operator": "GroupByAggregate",
+          "direct_downstream": [
+            {
+              "dataset_id": "959cd2d910",
+              "unique_logical_op_id": "13-858d459daf",
+              "logical_operator": "ConvertScan"
+            }
+          ]
+        }
+      ]
+    },
+    "allow_unsupported_sentinel_plans": true,
+    "dynamic_learning_fallback": null,
+    "sentinel_execution_strategy": "mab",
+    "sentinel_k": 6,
+    "sentinel_j": 4,
+    "sentinel_sample_budget": 100,
+    "sentinel_seed": 42,
+    "available_models": [
+      "Qwen3.5-397B-A17B",
+      "openai/Qwen3-Embedding-8B"
+    ],
+    "static_search_preflight": {
+      "status": "passed",
+      "elapsed_seconds": 0.10734955,
+      "candidate_plan_count": 1,
+      "text_llm_calls": 0,
+      "embedding_calls": 0,
+      "cost_usd": 0.0
+    }
+  },
+  "optimizer_search_space": {
+    "group_count": 15,
+    "logical_expression_count": 16,
+    "physical_expression_count": 44,
+    "transformation_rules_explored": [
+      "PushDownFilter",
+      "ReorderConverts"
+    ],
+    "implementation_rules_explored": [
+      "BasicSubstitutionRule",
+      "CritiqueAndRefineRule",
+      "LLMConvertBondedRule",
+      "LLMFilterRule",
+      "MixtureOfAgentsRule",
+      "NonLLMConvertRule",
+      "NonLLMFilterRule",
+      "RelationalJoinRule"
+    ]
+  },
+  "optimization_metrics": {
+    "elapsed_seconds": 701.30032325,
+    "sentinel_sampling_seconds": 701.06921911,
+    "optimizer_search_and_bookkeeping_seconds": 0.23110414,
+    "cost_usd": 1.63413666,
+    "text_llm_calls": 1107,
+    "embedding_calls": 0,
+    "input_text_tokens": 1773510,
+    "output_text_tokens": 402764,
+    "total_text_tokens": 2176274,
+    "embedding_input_tokens": 0,
+    "cache_read_tokens": 0,
+    "cache_creation_tokens": 0,
+    "sampled_operators": {
+      "text_llm_calls": 945,
+      "embedding_calls": 0,
+      "input_text_tokens": 1401872,
+      "output_text_tokens": 354372,
+      "embedding_input_tokens": 0,
+      "cost_usd": 1.37596056
+    },
+    "validator": {
+      "text_llm_calls": 162,
+      "input_text_tokens": 371638,
+      "output_text_tokens": 48392,
+      "total_text_tokens": 420030,
+      "cost_usd": 0.2581761
+    },
+    "model_usage_by_model": {
+      "Qwen3.5-397B-A17B": {
+        "roles": [
+          "text",
+          "validator"
+        ],
+        "calls": 1107,
+        "input_tokens": 1773510,
+        "output_tokens": 402764,
+        "total_tokens": 2176274,
+        "cost_usd": 1.63413666
+      }
+    }
+  },
+  "sentinel_join_sampling": [
+    {
+      "unique_logical_op_id": "8-e3e63d11e5",
+      "frontier_representative_operator_class": "RelationalJoin",
+      "root_dataset_count": 2,
+      "left_available_source_indices": 1030,
+      "right_available_source_indices": 147,
+      "theoretical_combination_count": 151410,
+      "available_combination_count": 151410,
+      "sample_limit": 100,
+      "sampled_combination_count": 100,
+      "sampling_method": "seeded_uniform_without_replacement_flat_indices",
+      "seed": 42
+    },
+    {
+      "unique_logical_op_id": "10-e3e63d11e5",
+      "frontier_representative_operator_class": "RelationalJoin",
+      "root_dataset_count": 3,
+      "left_available_source_indices": 100,
+      "right_available_source_indices": 1647,
+      "theoretical_combination_count": 249372270,
+      "available_combination_count": 164700,
+      "sample_limit": 100,
+      "sampled_combination_count": 100,
+      "sampling_method": "seeded_uniform_without_replacement_flat_indices",
+      "seed": 42
+    }
+  ],
+  "sentinel_sampling_exhaustion": null,
+  "recovery": null
+}

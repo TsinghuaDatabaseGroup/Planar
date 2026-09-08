@@ -1,0 +1,328 @@
+{
+  "task_id": "legal_contracts-091",
+  "answer": [
+    {
+      "parent_company": "ANI Pharmaceuticals, Inc.",
+      "subsidiary_count": 11,
+      "qualifying_agreement_count": 64
+    },
+    {
+      "parent_company": "Acuity Brands, Inc.",
+      "subsidiary_count": 41,
+      "qualifying_agreement_count": 71
+    },
+    {
+      "parent_company": "Acuity Inc.",
+      "subsidiary_count": 52,
+      "qualifying_agreement_count": 67
+    },
+    {
+      "parent_company": "Capitol Federal Financial, Inc.",
+      "subsidiary_count": 4,
+      "qualifying_agreement_count": 63
+    },
+    {
+      "parent_company": "Cipher Mining Inc.",
+      "subsidiary_count": 16,
+      "qualifying_agreement_count": 55
+    },
+    {
+      "parent_company": "CTO Realty Growth, Inc.",
+      "subsidiary_count": 58,
+      "qualifying_agreement_count": 57
+    },
+    {
+      "parent_company": "Cavco Industries, Inc.",
+      "subsidiary_count": 30,
+      "qualifying_agreement_count": 66
+    },
+    {
+      "parent_company": "Clover Leaf Capital Corp.",
+      "subsidiary_count": 1,
+      "qualifying_agreement_count": 63
+    },
+    {
+      "parent_company": "Onconetix, Inc.",
+      "subsidiary_count": 1,
+      "qualifying_agreement_count": 56
+    },
+    {
+      "parent_company": "Gryphon Digital Mining, Inc.",
+      "subsidiary_count": 2,
+      "qualifying_agreement_count": 64
+    },
+    {
+      "parent_company": "Cuentas Inc.",
+      "subsidiary_count": 1,
+      "qualifying_agreement_count": 57
+    },
+    {
+      "parent_company": "LQR House Inc.",
+      "subsidiary_count": 2,
+      "qualifying_agreement_count": 54
+    },
+    {
+      "parent_company": "SBC Medical Group Holdings Incorporated",
+      "subsidiary_count": 15,
+      "qualifying_agreement_count": 66
+    },
+    {
+      "parent_company": "Steele Creek Capital",
+      "subsidiary_count": 2,
+      "qualifying_agreement_count": 7
+    },
+    {
+      "parent_company": "Entrepreneurship World Technology Holding Group Company Limited",
+      "subsidiary_count": 1,
+      "qualifying_agreement_count": 1
+    },
+    {
+      "parent_company": "New Horizon Aircraft Ltd",
+      "subsidiary_count": 1,
+      "qualifying_agreement_count": 1
+    },
+    {
+      "parent_company": "Broadway Financial Corporation",
+      "subsidiary_count": 4,
+      "qualifying_agreement_count": 7
+    },
+    {
+      "parent_company": "Rivian Automotive, Inc.",
+      "subsidiary_count": 31,
+      "qualifying_agreement_count": 66
+    },
+    {
+      "parent_company": "Ingevity Corporation",
+      "subsidiary_count": 19,
+      "qualifying_agreement_count": 69
+    },
+    {
+      "parent_company": "Spyre Therapeutics, Inc.",
+      "subsidiary_count": 11,
+      "qualifying_agreement_count": 64
+    },
+    {
+      "parent_company": "EVERCOMMERCE INC.",
+      "subsidiary_count": 54,
+      "qualifying_agreement_count": 66
+    },
+    {
+      "parent_company": "Volato Group, Inc.",
+      "subsidiary_count": 4,
+      "qualifying_agreement_count": 66
+    },
+    {
+      "parent_company": "Berkshire Hills Bancorp, Inc.",
+      "subsidiary_count": 20,
+      "qualifying_agreement_count": 66
+    },
+    {
+      "parent_company": "Geospace Technologies Corporation",
+      "subsidiary_count": 11,
+      "qualifying_agreement_count": 65
+    },
+    {
+      "parent_company": "Byrna Technologies, Inc.",
+      "subsidiary_count": 1,
+      "qualifying_agreement_count": 54
+    },
+    {
+      "parent_company": "Kingsway Financial Services Inc.",
+      "subsidiary_count": 30,
+      "qualifying_agreement_count": 66
+    },
+    {
+      "parent_company": "MRC Global",
+      "subsidiary_count": 40,
+      "qualifying_agreement_count": 57
+    },
+    {
+      "parent_company": "Ceva, Inc.",
+      "subsidiary_count": 15,
+      "qualifying_agreement_count": 65
+    },
+    {
+      "parent_company": "P.A.M. Transport, Inc.",
+      "subsidiary_count": 18,
+      "qualifying_agreement_count": 66
+    },
+    {
+      "parent_company": "Sprinklr, Inc.",
+      "subsidiary_count": 20,
+      "qualifying_agreement_count": 55
+    },
+    {
+      "parent_company": "Zentalis Pharmaceuticals, Inc.",
+      "subsidiary_count": 6,
+      "qualifying_agreement_count": 63
+    },
+    {
+      "parent_company": "Autolus Therapeutics plc",
+      "subsidiary_count": 5,
+      "qualifying_agreement_count": 54
+    },
+    {
+      "parent_company": "Solo Brands, Inc.",
+      "subsidiary_count": 20,
+      "qualifying_agreement_count": 66
+    },
+    {
+      "parent_company": "NeoGenomics, Inc.",
+      "subsidiary_count": 7,
+      "qualifying_agreement_count": 71
+    },
+    {
+      "parent_company": "ProPetro Holding Corp.",
+      "subsidiary_count": 4,
+      "qualifying_agreement_count": 66
+    },
+    {
+      "parent_company": "TaskUs, Inc.",
+      "subsidiary_count": 19,
+      "qualifying_agreement_count": 66
+    },
+    {
+      "parent_company": "Primo Brands Corporation",
+      "subsidiary_count": 34,
+      "qualifying_agreement_count": 66
+    },
+    {
+      "parent_company": "Dorman Products, Inc.",
+      "subsidiary_count": 6,
+      "qualifying_agreement_count": 66
+    },
+    {
+      "parent_company": "Illumina, Inc.",
+      "subsidiary_count": 44,
+      "qualifying_agreement_count": 63
+    },
+    {
+      "parent_company": "Skyworks Solutions, Inc.",
+      "subsidiary_count": 33,
+      "qualifying_agreement_count": 66
+    },
+    {
+      "parent_company": "GLOBAL PARTNERS LP",
+      "subsidiary_count": 12,
+      "qualifying_agreement_count": 66
+    },
+    {
+      "parent_company": "Turtle Beach Corporation",
+      "subsidiary_count": 10,
+      "qualifying_agreement_count": 64
+    },
+    {
+      "parent_company": "Huntington Ingalls Industries, Inc.",
+      "subsidiary_count": 45,
+      "qualifying_agreement_count": 66
+    },
+    {
+      "parent_company": "Harmonic Inc.",
+      "subsidiary_count": 23,
+      "qualifying_agreement_count": 54
+    },
+    {
+      "parent_company": "ICF International, Inc.",
+      "subsidiary_count": 28,
+      "qualifying_agreement_count": 70
+    },
+    {
+      "parent_company": "INOVIO PHARMACEUTICALS, INC.",
+      "subsidiary_count": 1,
+      "qualifying_agreement_count": 57
+    },
+    {
+      "parent_company": "iAnthus",
+      "subsidiary_count": 40,
+      "qualifying_agreement_count": 66
+    },
+    {
+      "parent_company": "Food Innovations, Inc.",
+      "subsidiary_count": 18,
+      "qualifying_agreement_count": 66
+    },
+    {
+      "parent_company": "Leafly Holdings, Inc.",
+      "subsidiary_count": 3,
+      "qualifying_agreement_count": 57
+    },
+    {
+      "parent_company": "Lodging Fund REIT III",
+      "subsidiary_count": 40,
+      "qualifying_agreement_count": 68
+    },
+    {
+      "parent_company": "Mobile Modular Management Corporation",
+      "subsidiary_count": 10,
+      "qualifying_agreement_count": 66
+    },
+    {
+      "parent_company": "Monroe Capital Corporation",
+      "subsidiary_count": 23,
+      "qualifying_agreement_count": 7
+    },
+    {
+      "parent_company": "Nucor Corporation",
+      "subsidiary_count": 46,
+      "qualifying_agreement_count": 73
+    },
+    {
+      "parent_company": "PFS Bancorp, Inc.",
+      "subsidiary_count": 1,
+      "qualifying_agreement_count": 54
+    },
+    {
+      "parent_company": "Insulet",
+      "subsidiary_count": 20,
+      "qualifying_agreement_count": 64
+    },
+    {
+      "parent_company": "PERDOCEO EDUCATION CORPORATION",
+      "subsidiary_count": 21,
+      "qualifying_agreement_count": 68
+    },
+    {
+      "parent_company": "Embecta Corp.",
+      "subsidiary_count": 58,
+      "qualifying_agreement_count": 55
+    },
+    {
+      "parent_company": "Key Tronic",
+      "subsidiary_count": 6,
+      "qualifying_agreement_count": 68
+    },
+    {
+      "parent_company": "RH",
+      "subsidiary_count": 35,
+      "qualifying_agreement_count": 67
+    },
+    {
+      "parent_company": "TITAN INTERNATIONAL, INC.",
+      "subsidiary_count": 29,
+      "qualifying_agreement_count": 66
+    },
+    {
+      "parent_company": "Tigo Energy",
+      "subsidiary_count": 8,
+      "qualifying_agreement_count": 63
+    },
+    {
+      "parent_company": "Verde Resources, Inc.",
+      "subsidiary_count": 8,
+      "qualifying_agreement_count": 64
+    },
+    {
+      "parent_company": "Advanced Drainage Systems, Inc.",
+      "subsidiary_count": 30,
+      "qualifying_agreement_count": 67
+    },
+    {
+      "parent_company": "WideOpenWest, Inc.",
+      "subsidiary_count": 41,
+      "qualifying_agreement_count": 66
+    }
+  ],
+  "elapsed_seconds": 446.75,
+  "cost_usd": 2.05717341,
+  "total_tokens": 4206659
+}

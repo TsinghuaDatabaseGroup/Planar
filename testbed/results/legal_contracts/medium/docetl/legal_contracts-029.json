@@ -1,0 +1,38 @@
+{
+  "task_id": "legal_contracts-029",
+  "answer": [
+    {
+      "document_id": "e5407_ex10-29.htm",
+      "governing_law": "State of Florida",
+      "non_compete_months": 6
+    },
+    {
+      "document_id": "exhibit1012-consultingagre.htm",
+      "governing_law": "State of California",
+      "non_compete_months": 6
+    },
+    {
+      "document_id": "exhibit1025-amisraemployme.htm",
+      "governing_law": "Laws of India",
+      "non_compete_months": 3
+    },
+    {
+      "document_id": "exhibit102consultingagreem.htm",
+      "governing_law": "the laws of the United States of America and by the laws of the State of California",
+      "non_compete_months": 1
+    },
+    {
+      "document_id": "exhibit105consultingagreem.htm",
+      "governing_law": "the laws of the United States of America and by the laws of the State of California",
+      "non_compete_months": 2
+    },
+    {
+      "document_id": "wu-ex10_36.htm",
+      "governing_law": "Italy",
+      "non_compete_months": 6
+    }
+  ],
+  "elapsed_seconds": 404.56,
+  "cost_usd": 3.909729,
+  "total_tokens": 7439611
+}

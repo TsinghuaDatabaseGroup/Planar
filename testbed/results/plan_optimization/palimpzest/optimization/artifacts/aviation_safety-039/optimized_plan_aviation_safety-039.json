@@ -1,0 +1,1051 @@
+{
+  "format_version": 1,
+  "purpose": "human_review_of_selected_palimpzest_physical_plan",
+  "task_id": "aviation_safety-039",
+  "optimization_status": "optimized_only",
+  "selected_plan_id": "e83ca1015c",
+  "executable_plan": {
+    "file": "optimized_plan_aviation_safety-039.plan.pkl",
+    "format": "cloudpickle",
+    "version": 1,
+    "sha256": "e90643435abd8e6aeb418aeb969967c9bf10bd1b2a8e49958ee6a595edc08376",
+    "size_bytes": 552022,
+    "selected_plan_id": "e83ca1015c",
+    "datasources": {
+      "aviation_safety-039-reports-semantic-input": {
+        "id": "aviation_safety-039-reports-semantic-input",
+        "row_count": 1030,
+        "schema_fields": [
+          "incident_id",
+          "text"
+        ]
+      },
+      "aviation_safety-039-status-semantic-input": {
+        "id": "aviation_safety-039-status-semantic-input",
+        "row_count": 90,
+        "schema_fields": [
+          "correct_document_on_board",
+          "incident_id",
+          "records_complete"
+        ]
+      },
+      "aviation_safety-039-components-semantic-input": {
+        "id": "aviation_safety-039-components-semantic-input",
+        "row_count": 1647,
+        "schema_fields": [
+          "incident_id",
+          "structured_components",
+          "structured_problems"
+        ]
+      }
+    },
+    "scan_datasource_records_included": false,
+    "sentinel_record_payloads_included": false
+  },
+  "input_plan": {
+    "task_id": "aviation_safety-039",
+    "query": "Among Aircraft-primary reports with a maintenance records-complete or required-correct-document status and a component problem record, which documentation-issue and status combinations occur most often, up to fifteen combinations in total? Documentation types are incomplete_or_inaccurate_logbook, missing_or_incomplete_work_card, incorrect_or_incomplete_mel_procedure, missing_required_document, and release_or_signoff_error. Count only actual documentation problems rather than mechanical discrepancies alone. Rank by distinct-incident count, then documentation type and the two status values, and include a canonical affected item as a short phrase.",
+    "inputs": [
+      {
+        "source_id": "incidents.csv",
+        "dataset": "NASA_ASRS",
+        "source_type": "table",
+        "role": "primary"
+      },
+      {
+        "source_id": "aircraft_attributes.csv",
+        "dataset": "NASA_ASRS",
+        "source_type": "table",
+        "role": "primary"
+      },
+      {
+        "source_id": "components.csv",
+        "dataset": "NASA_ASRS",
+        "source_type": "table",
+        "role": "primary"
+      },
+      {
+        "source_id": "text/*",
+        "dataset": "NASA_ASRS",
+        "source_type": "document",
+        "role": "primary"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "documentation_issues := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id,text_file,primary_problem])\n  -> FILTER(primary_problem = 'Aircraft')\n  -> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id,text])\n  -> SEM_FILTER(\"Keep reports describing an actual maintenance-documentation problem that affected a component or required item, rather than a mechanical discrepancy alone.\", {text})\n  -> SEM_EXTRACT(\"Assign documentation_issue_type from {incomplete_or_inaccurate_logbook,missing_or_incomplete_work_card,incorrect_or_incomplete_mel_procedure,missing_required_document,release_or_signoff_error}, and extract the affected item as a phrase of at most six words.\", {incident_id:string,documentation_issue_type:string,affected_item:string}, {incident_id,text})\n)\ndocumentation_status := (\n  SCAN_TABLE(NASA_ASRS, aircraft_attributes.csv, [incident_id,attribute,value])\n  -> FILTER(attribute IN ('maintenance_status_records_complete','maintenance_status_required_correct_doc_on_board'))\n  -> GROUP_BY([incident_id], {records_complete:MAX_IF(value,attribute='maintenance_status_records_complete'),correct_document_on_board:MAX_IF(value,attribute='maintenance_status_required_correct_doc_on_board')})\n)\nissues_with_status := JOIN(left=documentation_issues, right=documentation_status, join_type=inner, condition=documentation_issues.incident_id = documentation_status.incident_id)\ncomponent_records := (\n  SCAN_TABLE(NASA_ASRS, components.csv, [incident_id,attribute,value])\n  -> FILTER(attribute IN ('aircraft_component','problem'))\n  -> GROUP_BY([incident_id], {structured_components:COLLECT_IF(value,attribute='aircraft_component'),structured_problems:COLLECT_IF(value,attribute='problem')})\n)\njoined := JOIN(left=issues_with_status, right=component_records, join_type=inner, condition=issues_with_status.incident_id = component_records.incident_id)\njoined\n-> GROUP_BY([documentation_issue_type,records_complete,correct_document_on_board], {incident_count:COUNT_DISTINCT(incident_id),canonical_affected_item:MODE(affected_item)})\n-> ORDER_BY([incident_count DESC,documentation_issue_type ASC,records_complete ASC,correct_document_on_board ASC])\n-> LIMIT(15)\n-> PROJECT([rank=ROW_NUMBER(),documentation_issue_type,records_complete,correct_document_on_board,incident_count,canonical_affected_item])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "rank",
+        "documentation_issue_type",
+        "records_complete",
+        "correct_document_on_board",
+        "incident_count",
+        "canonical_affected_item"
+      ],
+      "types": [
+        "integer",
+        "string",
+        "string|null",
+        "string|null",
+        "integer",
+        "string"
+      ]
+    }
+  },
+  "input_bad_plan": null,
+  "input_logical_plan": {
+    "root_dataset_id": "2651be489d",
+    "nodes": [
+      {
+        "dataset_id": "aviation_safety-039-reports-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "a221bab530",
+        "unique_logical_op_id": "0-a221bab530",
+        "depends_on": [],
+        "generated_fields": [
+          "incident_id",
+          "text"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "incident_id",
+          "text"
+        ]
+      },
+      {
+        "dataset_id": "4275680886",
+        "source_dataset_ids": [
+          "aviation_safety-039-reports-semantic-input"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "9ae0823562",
+        "unique_logical_op_id": "1-9ae0823562",
+        "depends_on": [
+          "text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "incident_id",
+          "text"
+        ],
+        "output_fields": [
+          "incident_id",
+          "text"
+        ],
+        "filter": "Keep this report only if it describes an actual maintenance-documentation problem affecting a component or required item. Exclude a mechanical discrepancy alone."
+      },
+      {
+        "dataset_id": "5a96e2c107",
+        "source_dataset_ids": [
+          "4275680886"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "7a40aff185",
+        "unique_logical_op_id": "2-7a40aff185",
+        "depends_on": [
+          "incident_id",
+          "text"
+        ],
+        "generated_fields": [
+          "affected_item",
+          "documentation_issue_type"
+        ],
+        "input_fields": [
+          "incident_id",
+          "text"
+        ],
+        "output_fields": [
+          "affected_item",
+          "documentation_issue_type",
+          "incident_id",
+          "text"
+        ],
+        "desc": "Classify the documentation issue and extract its affected item.",
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "4d57a6056b",
+        "source_dataset_ids": [
+          "5a96e2c107"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "1ac3839cd3",
+        "unique_logical_op_id": "3-1ac3839cd3",
+        "depends_on": [
+          "documentation_issue_type"
+        ],
+        "generated_fields": [
+          "normalized_documentation_issue"
+        ],
+        "input_fields": [
+          "affected_item",
+          "documentation_issue_type",
+          "incident_id",
+          "text"
+        ],
+        "output_fields": [
+          "affected_item",
+          "documentation_issue_type",
+          "incident_id",
+          "normalized_documentation_issue",
+          "text"
+        ],
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "d1e1c8f060",
+        "source_dataset_ids": [
+          "4d57a6056b"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "18b3651b34",
+        "unique_logical_op_id": "4-18b3651b34",
+        "depends_on": [
+          "affected_item",
+          "normalized_documentation_issue"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "affected_item",
+          "documentation_issue_type",
+          "incident_id",
+          "normalized_documentation_issue",
+          "text"
+        ],
+        "output_fields": [
+          "affected_item",
+          "documentation_issue_type",
+          "incident_id",
+          "normalized_documentation_issue",
+          "text"
+        ],
+        "filter": "has_valid_issue"
+      },
+      {
+        "dataset_id": "aviation_safety-039-status-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "bb6adf1a1e",
+        "unique_logical_op_id": "5-bb6adf1a1e",
+        "depends_on": [],
+        "generated_fields": [
+          "correct_document_on_board",
+          "incident_id",
+          "records_complete"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "correct_document_on_board",
+          "incident_id",
+          "records_complete"
+        ]
+      },
+      {
+        "dataset_id": "73fc592bc9",
+        "source_dataset_ids": [
+          "d1e1c8f060",
+          "aviation_safety-039-status-semantic-input"
+        ],
+        "logical_operator": "JoinOp",
+        "logical_op_id": "e3e63d11e5",
+        "unique_logical_op_id": "6-e3e63d11e5",
+        "depends_on": [
+          "incident_id"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "affected_item",
+          "correct_document_on_board",
+          "documentation_issue_type",
+          "incident_id",
+          "normalized_documentation_issue",
+          "records_complete",
+          "text"
+        ],
+        "output_fields": [
+          "affected_item",
+          "correct_document_on_board",
+          "documentation_issue_type",
+          "incident_id",
+          "normalized_documentation_issue",
+          "records_complete",
+          "text"
+        ],
+        "on": "['incident_id']",
+        "how": "inner"
+      },
+      {
+        "dataset_id": "aviation_safety-039-components-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "74469b6839",
+        "unique_logical_op_id": "7-74469b6839",
+        "depends_on": [],
+        "generated_fields": [
+          "incident_id",
+          "structured_components",
+          "structured_problems"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "incident_id",
+          "structured_components",
+          "structured_problems"
+        ]
+      },
+      {
+        "dataset_id": "c744a39680",
+        "source_dataset_ids": [
+          "73fc592bc9",
+          "aviation_safety-039-components-semantic-input"
+        ],
+        "logical_operator": "JoinOp",
+        "logical_op_id": "e3e63d11e5",
+        "unique_logical_op_id": "8-e3e63d11e5",
+        "depends_on": [
+          "incident_id"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "affected_item",
+          "correct_document_on_board",
+          "documentation_issue_type",
+          "incident_id",
+          "normalized_documentation_issue",
+          "records_complete",
+          "structured_components",
+          "structured_problems",
+          "text"
+        ],
+        "output_fields": [
+          "affected_item",
+          "correct_document_on_board",
+          "documentation_issue_type",
+          "incident_id",
+          "normalized_documentation_issue",
+          "records_complete",
+          "structured_components",
+          "structured_problems",
+          "text"
+        ],
+        "on": "['incident_id']",
+        "how": "inner"
+      },
+      {
+        "dataset_id": "b9b8179113",
+        "source_dataset_ids": [
+          "c744a39680"
+        ],
+        "logical_operator": "Distinct",
+        "logical_op_id": "97a48657b6",
+        "unique_logical_op_id": "9-97a48657b6",
+        "depends_on": [],
+        "generated_fields": [],
+        "input_fields": [
+          "affected_item",
+          "correct_document_on_board",
+          "documentation_issue_type",
+          "incident_id",
+          "normalized_documentation_issue",
+          "records_complete",
+          "structured_components",
+          "structured_problems",
+          "text"
+        ],
+        "output_fields": [
+          "affected_item",
+          "correct_document_on_board",
+          "documentation_issue_type",
+          "incident_id",
+          "normalized_documentation_issue",
+          "records_complete",
+          "structured_components",
+          "structured_problems",
+          "text"
+        ],
+        "distinct_cols": "['affected_item', 'correct_document_on_board', 'incident_id', 'normalized_documentation_issue', 'records_complete']"
+      },
+      {
+        "dataset_id": "2651be489d",
+        "source_dataset_ids": [
+          "b9b8179113"
+        ],
+        "logical_operator": "GroupByAggregate",
+        "logical_op_id": "4ddbef5af8",
+        "unique_logical_op_id": "10-4ddbef5af8",
+        "depends_on": [],
+        "generated_fields": [
+          "count(incident_id)",
+          "list(affected_item)"
+        ],
+        "input_fields": [
+          "affected_item",
+          "correct_document_on_board",
+          "documentation_issue_type",
+          "incident_id",
+          "normalized_documentation_issue",
+          "records_complete",
+          "structured_components",
+          "structured_problems",
+          "text"
+        ],
+        "output_fields": [
+          "correct_document_on_board",
+          "count(incident_id)",
+          "list(affected_item)",
+          "normalized_documentation_issue",
+          "records_complete"
+        ],
+        "group_by": "GroupBy({'group_by_fields': ['normalized_documentation_issue', 'records_complete', 'correct_document_on_board'], 'agg_funcs': ['count', 'list'], 'agg_fields': ['incident_id', 'affected_item']})"
+      }
+    ],
+    "topological_logical_sequence": [
+      "0-a221bab530",
+      "1-9ae0823562",
+      "2-7a40aff185",
+      "3-1ac3839cd3",
+      "4-18b3651b34",
+      "5-bb6adf1a1e",
+      "6-e3e63d11e5",
+      "7-74469b6839",
+      "8-e3e63d11e5",
+      "9-97a48657b6",
+      "10-4ddbef5af8"
+    ]
+  },
+  "selected_physical_plan": {
+    "plan_id": "e83ca1015c",
+    "plan_string": "0. Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'] -> ApplyGroupByOp -> Schema['correct_document_on_board', 'count(incident_id)', 'list(affected_item)', 'normalized_documentation_issue', 'records_complete']\n    (affected_item, correct_documen) -> (correct_document_on_board, cou)\n    Group-by Signature: GroupBy({'group_by_fields': ['normalized_documentation_issue', 'records_complete', 'correct_document_on_board'], 'agg_funcs': ['count', 'list'], 'agg_fields': ['incident_id', 'affected_item']})\n\n  1. Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'] -> DistinctOp -> Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text']\n    (affected_item, correct_documen) -> (affected_item, correct_documen)\n    Distinct Cols: ['affected_item', 'correct_document_on_board', 'incident_id', 'normalized_documentation_issue', 'records_complete']\n\n    2. Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'] -> RelationalJoin -> Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text']\n    (affected_item, correct_documen) -> (affected_item, correct_documen)\n    Condition: \n    How: inner\n    On: ['incident_id']\n\n      3. Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'text'] -> RelationalJoin -> Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'text']\n    (affected_item, correct_documen) -> (affected_item, correct_documen)\n    Condition: \n    How: inner\n    On: ['incident_id']\n\n        4. Schema['affected_item', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'text'] -> NonLLMFilter -> Schema['affected_item', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'text']\n    (affected_item, documentation_i) -> (affected_item, documentation_i)\n    Filter: has_valid_issue\n\n          5. Schema['affected_item', 'documentation_issue_type', 'incident_id', 'text'] -> NonLLMConvert -> Schema['affected_item', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'text']\n    (affected_item, documentation_i) -> (affected_item, documentation_i)\n    UDF: normalize_issue\n\n            6. Schema['incident_id', 'text'] -> LLMConvertBonded -> Schema['affected_item', 'documentation_issue_type', 'incident_id', 'text']\n    (incident_id, text) -> (affected_item, documentation_i)\n    Model: Qwen3.5-397B-A17B\n    Prompt Strategy: PromptStrategy.MAP\n    Reasoning Effort: default\n\n              7. Schema['incident_id', 'text'] -> LLMFilter -> Schema['incident_id', 'text']\n    (incident_id, text) -> (incident_id, text)\n    Model: Qwen3.5-397B-A17B\n    Filter: Keep this report only if it describes an actual maintenance-documentation problem affecting a component or required item. Exclude a mechanical discrepancy alone.\n\n                8. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['incident_id', 'text']'>, id=aviation_safety-039-reports-semantic-input, op_id=a221bab530)) -> <class 'palimpzest.core.lib.schemas.Schema['incident_id', 'text']'>\n    (incident_id, text)\n\n        4. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['correct_document_on_board', 'incident_id', 'records_complete']'>, id=aviation_safety-039-status-semantic-input, op_id=bb6adf1a1e)) -> <class 'palimpzest.core.lib.schemas.Schema['correct_document_on_board', 'incident_id', 'records_complete']'>\n    (incident_id, records_complete,)\n\n      3. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['incident_id', 'structured_components', 'structured_problems']'>, id=aviation_safety-039-components-semantic-input, op_id=74469b6839)) -> <class 'palimpzest.core.lib.schemas.Schema['incident_id', 'structured_components', 'structured_problems']'>\n    (incident_id, structured_compon)\n\n",
+    "root_operator_index": 10,
+    "operators": [
+      {
+        "topological_index": 0,
+        "physical_operator": "MarshalAndScanDataOp",
+        "logical_operator": "BaseScan",
+        "logical_op_id": "a221bab530",
+        "unique_logical_op_id": "0-a221bab530",
+        "full_op_id": "a221bab530-4af77d0fb4",
+        "model": null,
+        "depends_on": [],
+        "generated_fields": [
+          "incident_id",
+          "text"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "incident_id",
+          "text"
+        ],
+        "source_operator_indices": []
+      },
+      {
+        "topological_index": 1,
+        "physical_operator": "LLMFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "9ae0823562",
+        "unique_logical_op_id": "1-9ae0823562",
+        "full_op_id": "9ae0823562-6bcf24a345",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['incident_id', 'text'].aviation_safety-039-reports-semantic-input.text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "incident_id",
+          "text"
+        ],
+        "output_fields": [
+          "incident_id",
+          "text"
+        ],
+        "source_operator_indices": [
+          0
+        ]
+      },
+      {
+        "topological_index": 2,
+        "physical_operator": "LLMConvertBonded",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "7a40aff185",
+        "unique_logical_op_id": "2-7a40aff185",
+        "full_op_id": "7a40aff185-e8f89a1e78",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['incident_id', 'text'].aviation_safety-039-reports-semantic-input.incident_id",
+          "Schema['incident_id', 'text'].aviation_safety-039-reports-semantic-input.text"
+        ],
+        "generated_fields": [
+          "affected_item",
+          "documentation_issue_type"
+        ],
+        "input_fields": [
+          "incident_id",
+          "text"
+        ],
+        "output_fields": [
+          "affected_item",
+          "documentation_issue_type",
+          "incident_id",
+          "text"
+        ],
+        "source_operator_indices": [
+          1
+        ]
+      },
+      {
+        "topological_index": 3,
+        "physical_operator": "NonLLMConvert",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "1ac3839cd3",
+        "unique_logical_op_id": "3-1ac3839cd3",
+        "full_op_id": "1ac3839cd3-6bc103ebf3",
+        "model": null,
+        "depends_on": [
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'text'].4d57a6056b.documentation_issue_type"
+        ],
+        "generated_fields": [
+          "normalized_documentation_issue"
+        ],
+        "input_fields": [
+          "affected_item",
+          "documentation_issue_type",
+          "incident_id",
+          "text"
+        ],
+        "output_fields": [
+          "affected_item",
+          "documentation_issue_type",
+          "incident_id",
+          "normalized_documentation_issue",
+          "text"
+        ],
+        "source_operator_indices": [
+          2
+        ]
+      },
+      {
+        "topological_index": 4,
+        "physical_operator": "NonLLMFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "18b3651b34",
+        "unique_logical_op_id": "4-18b3651b34",
+        "full_op_id": "18b3651b34-1a707c54e2",
+        "model": null,
+        "depends_on": [
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'text'].4d57a6056b.affected_item",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'text'].4d57a6056b.normalized_documentation_issue"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "affected_item",
+          "documentation_issue_type",
+          "incident_id",
+          "normalized_documentation_issue",
+          "text"
+        ],
+        "output_fields": [
+          "affected_item",
+          "documentation_issue_type",
+          "incident_id",
+          "normalized_documentation_issue",
+          "text"
+        ],
+        "source_operator_indices": [
+          3
+        ]
+      },
+      {
+        "topological_index": 5,
+        "physical_operator": "MarshalAndScanDataOp",
+        "logical_operator": "BaseScan",
+        "logical_op_id": "bb6adf1a1e",
+        "unique_logical_op_id": "5-bb6adf1a1e",
+        "full_op_id": "bb6adf1a1e-0752485981",
+        "model": null,
+        "depends_on": [],
+        "generated_fields": [
+          "correct_document_on_board",
+          "incident_id",
+          "records_complete"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "correct_document_on_board",
+          "incident_id",
+          "records_complete"
+        ],
+        "source_operator_indices": []
+      },
+      {
+        "topological_index": 6,
+        "physical_operator": "RelationalJoin",
+        "logical_operator": "JoinOp",
+        "logical_op_id": "e3e63d11e5",
+        "unique_logical_op_id": "6-e3e63d11e5",
+        "full_op_id": "e3e63d11e5-9baa92c4c8",
+        "model": null,
+        "depends_on": [
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'text'].4d57a6056b.incident_id"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "affected_item",
+          "correct_document_on_board",
+          "documentation_issue_type",
+          "incident_id",
+          "normalized_documentation_issue",
+          "records_complete",
+          "text"
+        ],
+        "output_fields": [
+          "affected_item",
+          "correct_document_on_board",
+          "documentation_issue_type",
+          "incident_id",
+          "normalized_documentation_issue",
+          "records_complete",
+          "text"
+        ],
+        "source_operator_indices": [
+          4,
+          5
+        ]
+      },
+      {
+        "topological_index": 7,
+        "physical_operator": "MarshalAndScanDataOp",
+        "logical_operator": "BaseScan",
+        "logical_op_id": "74469b6839",
+        "unique_logical_op_id": "7-74469b6839",
+        "full_op_id": "74469b6839-87e6ccfc4b",
+        "model": null,
+        "depends_on": [],
+        "generated_fields": [
+          "incident_id",
+          "structured_components",
+          "structured_problems"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "incident_id",
+          "structured_components",
+          "structured_problems"
+        ],
+        "source_operator_indices": []
+      },
+      {
+        "topological_index": 8,
+        "physical_operator": "RelationalJoin",
+        "logical_operator": "JoinOp",
+        "logical_op_id": "e3e63d11e5",
+        "unique_logical_op_id": "8-e3e63d11e5",
+        "full_op_id": "e3e63d11e5-9baa92c4c8",
+        "model": null,
+        "depends_on": [
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'text'].4d57a6056b.incident_id"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "affected_item",
+          "correct_document_on_board",
+          "documentation_issue_type",
+          "incident_id",
+          "normalized_documentation_issue",
+          "records_complete",
+          "structured_components",
+          "structured_problems",
+          "text"
+        ],
+        "output_fields": [
+          "affected_item",
+          "correct_document_on_board",
+          "documentation_issue_type",
+          "incident_id",
+          "normalized_documentation_issue",
+          "records_complete",
+          "structured_components",
+          "structured_problems",
+          "text"
+        ],
+        "source_operator_indices": [
+          6,
+          7
+        ]
+      },
+      {
+        "topological_index": 9,
+        "physical_operator": "DistinctOp",
+        "logical_operator": "Distinct",
+        "logical_op_id": "97a48657b6",
+        "unique_logical_op_id": "9-97a48657b6",
+        "full_op_id": "97a48657b6-2e7839732a",
+        "model": null,
+        "depends_on": [
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'].c744a39680.affected_item",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'].c744a39680.correct_document_on_board",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'].c744a39680.documentation_issue_type",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'].c744a39680.incident_id",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'].c744a39680.normalized_documentation_issue",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'].c744a39680.records_complete",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'].c744a39680.structured_components",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'].c744a39680.structured_problems",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'].c744a39680.text",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'text'].73fc592bc9.affected_item",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'text'].73fc592bc9.correct_document_on_board",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'text'].73fc592bc9.documentation_issue_type",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'text'].73fc592bc9.incident_id",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'text'].73fc592bc9.normalized_documentation_issue",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'text'].73fc592bc9.records_complete",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'text'].73fc592bc9.text",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'text'].4d57a6056b.affected_item",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'text'].4d57a6056b.documentation_issue_type",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'text'].4d57a6056b.incident_id",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'text'].4d57a6056b.normalized_documentation_issue",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'text'].4d57a6056b.text",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'text'].d1e1c8f060.affected_item",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'text'].d1e1c8f060.documentation_issue_type",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'text'].d1e1c8f060.incident_id",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'text'].d1e1c8f060.normalized_documentation_issue",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'text'].d1e1c8f060.text",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'text'].5a96e2c107.affected_item",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'text'].5a96e2c107.documentation_issue_type",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'text'].5a96e2c107.incident_id",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'text'].5a96e2c107.text",
+          "Schema['correct_document_on_board', 'incident_id', 'records_complete'].aviation_safety-039-status-semantic-input.correct_document_on_board",
+          "Schema['correct_document_on_board', 'incident_id', 'records_complete'].aviation_safety-039-status-semantic-input.incident_id",
+          "Schema['correct_document_on_board', 'incident_id', 'records_complete'].aviation_safety-039-status-semantic-input.records_complete",
+          "Schema['incident_id', 'structured_components', 'structured_problems'].aviation_safety-039-components-semantic-input.incident_id",
+          "Schema['incident_id', 'structured_components', 'structured_problems'].aviation_safety-039-components-semantic-input.structured_components",
+          "Schema['incident_id', 'structured_components', 'structured_problems'].aviation_safety-039-components-semantic-input.structured_problems",
+          "Schema['incident_id', 'text'].4275680886.incident_id",
+          "Schema['incident_id', 'text'].4275680886.text",
+          "Schema['incident_id', 'text'].aviation_safety-039-reports-semantic-input.incident_id",
+          "Schema['incident_id', 'text'].aviation_safety-039-reports-semantic-input.text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "affected_item",
+          "correct_document_on_board",
+          "documentation_issue_type",
+          "incident_id",
+          "normalized_documentation_issue",
+          "records_complete",
+          "structured_components",
+          "structured_problems",
+          "text"
+        ],
+        "output_fields": [
+          "affected_item",
+          "correct_document_on_board",
+          "documentation_issue_type",
+          "incident_id",
+          "normalized_documentation_issue",
+          "records_complete",
+          "structured_components",
+          "structured_problems",
+          "text"
+        ],
+        "source_operator_indices": [
+          8
+        ]
+      },
+      {
+        "topological_index": 10,
+        "physical_operator": "ApplyGroupByOp",
+        "logical_operator": "GroupByAggregate",
+        "logical_op_id": "4ddbef5af8",
+        "unique_logical_op_id": "10-4ddbef5af8",
+        "full_op_id": "4ddbef5af8-d039a25dba",
+        "model": null,
+        "depends_on": [
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'].b9b8179113.affected_item",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'].b9b8179113.correct_document_on_board",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'].b9b8179113.documentation_issue_type",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'].b9b8179113.incident_id",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'].b9b8179113.normalized_documentation_issue",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'].b9b8179113.records_complete",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'].b9b8179113.structured_components",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'].b9b8179113.structured_problems",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'].b9b8179113.text",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'].c744a39680.affected_item",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'].c744a39680.correct_document_on_board",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'].c744a39680.documentation_issue_type",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'].c744a39680.incident_id",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'].c744a39680.normalized_documentation_issue",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'].c744a39680.records_complete",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'].c744a39680.structured_components",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'].c744a39680.structured_problems",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'structured_components', 'structured_problems', 'text'].c744a39680.text",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'text'].73fc592bc9.affected_item",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'text'].73fc592bc9.correct_document_on_board",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'text'].73fc592bc9.documentation_issue_type",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'text'].73fc592bc9.incident_id",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'text'].73fc592bc9.normalized_documentation_issue",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'text'].73fc592bc9.records_complete",
+          "Schema['affected_item', 'correct_document_on_board', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'records_complete', 'text'].73fc592bc9.text",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'text'].4d57a6056b.affected_item",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'text'].4d57a6056b.documentation_issue_type",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'text'].4d57a6056b.incident_id",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'text'].4d57a6056b.normalized_documentation_issue",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'text'].4d57a6056b.text",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'text'].d1e1c8f060.affected_item",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'text'].d1e1c8f060.documentation_issue_type",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'text'].d1e1c8f060.incident_id",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'text'].d1e1c8f060.normalized_documentation_issue",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'normalized_documentation_issue', 'text'].d1e1c8f060.text",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'text'].5a96e2c107.affected_item",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'text'].5a96e2c107.documentation_issue_type",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'text'].5a96e2c107.incident_id",
+          "Schema['affected_item', 'documentation_issue_type', 'incident_id', 'text'].5a96e2c107.text",
+          "Schema['correct_document_on_board', 'incident_id', 'records_complete'].aviation_safety-039-status-semantic-input.correct_document_on_board",
+          "Schema['correct_document_on_board', 'incident_id', 'records_complete'].aviation_safety-039-status-semantic-input.incident_id",
+          "Schema['correct_document_on_board', 'incident_id', 'records_complete'].aviation_safety-039-status-semantic-input.records_complete",
+          "Schema['incident_id', 'structured_components', 'structured_problems'].aviation_safety-039-components-semantic-input.incident_id",
+          "Schema['incident_id', 'structured_components', 'structured_problems'].aviation_safety-039-components-semantic-input.structured_components",
+          "Schema['incident_id', 'structured_components', 'structured_problems'].aviation_safety-039-components-semantic-input.structured_problems",
+          "Schema['incident_id', 'text'].4275680886.incident_id",
+          "Schema['incident_id', 'text'].4275680886.text",
+          "Schema['incident_id', 'text'].aviation_safety-039-reports-semantic-input.incident_id",
+          "Schema['incident_id', 'text'].aviation_safety-039-reports-semantic-input.text"
+        ],
+        "generated_fields": [
+          "count(incident_id)",
+          "list(affected_item)"
+        ],
+        "input_fields": [
+          "affected_item",
+          "correct_document_on_board",
+          "documentation_issue_type",
+          "incident_id",
+          "normalized_documentation_issue",
+          "records_complete",
+          "structured_components",
+          "structured_problems",
+          "text"
+        ],
+        "output_fields": [
+          "correct_document_on_board",
+          "count(incident_id)",
+          "list(affected_item)",
+          "normalized_documentation_issue",
+          "records_complete"
+        ],
+        "source_operator_indices": [
+          9
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "source": 0,
+        "target": 1
+      },
+      {
+        "source": 1,
+        "target": 2
+      },
+      {
+        "source": 2,
+        "target": 3
+      },
+      {
+        "source": 3,
+        "target": 4
+      },
+      {
+        "source": 4,
+        "target": 6
+      },
+      {
+        "source": 5,
+        "target": 6
+      },
+      {
+        "source": 6,
+        "target": 8
+      },
+      {
+        "source": 7,
+        "target": 8
+      },
+      {
+        "source": 8,
+        "target": 9
+      },
+      {
+        "source": 9,
+        "target": 10
+      }
+    ],
+    "estimated_plan_cost": {
+      "cost": 5.3032410078332575,
+      "time": 91778.09889030167,
+      "quality": 0.8918167372881356,
+      "op_estimates": {
+        "cardinality": 3.0,
+        "time_per_record": 0.0,
+        "cost_per_record": 0.0,
+        "quality": 1.0,
+        "cardinality_lower_bound": 3.0,
+        "cardinality_upper_bound": 3.0,
+        "time_per_record_lower_bound": 0.0,
+        "time_per_record_upper_bound": 0.0,
+        "cost_per_record_lower_bound": 0.0,
+        "cost_per_record_upper_bound": 0.0,
+        "quality_lower_bound": 1.0,
+        "quality_upper_bound": 1.0
+      },
+      "cost_lower_bound": 5.3032410078332575,
+      "cost_upper_bound": 5.3032410078332575,
+      "time_lower_bound": 91778.09889030167,
+      "time_upper_bound": 91778.09889030167,
+      "quality_lower_bound": 0.8918167372881356,
+      "quality_upper_bound": 0.8918167372881356
+    },
+    "topological_logical_sequence": [
+      "0-a221bab530",
+      "1-9ae0823562",
+      "2-7a40aff185",
+      "3-1ac3839cd3",
+      "4-18b3651b34",
+      "5-bb6adf1a1e",
+      "6-e3e63d11e5",
+      "7-74469b6839",
+      "8-e3e63d11e5",
+      "9-97a48657b6",
+      "10-4ddbef5af8"
+    ]
+  },
+  "optimizer_configuration": {
+    "strategy": "pareto",
+    "policy": "MaxQuality",
+    "physical_implementation_candidates": {
+      "allow_bonded_query": true,
+      "allow_model_selection": false,
+      "allow_rag_reduction": false,
+      "allow_mixtures": true,
+      "allow_critic": true,
+      "allow_split_merge": false,
+      "force_rag": false,
+      "execution_strategy": "parallel",
+      "max_workers": 64,
+      "join_parallelism": 64
+    },
+    "dynamic_learning_requested": true,
+    "dynamic_learning_pipeline_supported": true,
+    "dynamic_learning": true,
+    "dynamic_learning_support": {
+      "supported": true,
+      "reason": null,
+      "terminal_only_operator_violations": []
+    },
+    "allow_unsupported_sentinel_plans": true,
+    "dynamic_learning_fallback": null,
+    "sentinel_execution_strategy": "mab",
+    "sentinel_k": 6,
+    "sentinel_j": 4,
+    "sentinel_sample_budget": 100,
+    "sentinel_seed": 42,
+    "available_models": [
+      "Qwen3.5-397B-A17B",
+      "openai/Qwen3-Embedding-8B"
+    ]
+  },
+  "optimizer_search_space": {
+    "group_count": 11,
+    "logical_expression_count": 11,
+    "physical_expression_count": 19,
+    "transformation_rules_explored": [
+      "PushDownFilter",
+      "ReorderConverts"
+    ],
+    "implementation_rules_explored": [
+      "BasicSubstitutionRule",
+      "CritiqueAndRefineRule",
+      "LLMConvertBondedRule",
+      "LLMFilterRule",
+      "MixtureOfAgentsRule",
+      "NonLLMConvertRule",
+      "NonLLMFilterRule",
+      "RelationalJoinRule"
+    ]
+  },
+  "optimization_metrics": {
+    "elapsed_seconds": 845.24168491,
+    "sentinel_sampling_seconds": 845.1428175,
+    "optimizer_search_and_bookkeeping_seconds": 0.09886742,
+    "cost_usd": 2.02119255,
+    "text_llm_calls": 1212,
+    "embedding_calls": 0,
+    "input_text_tokens": 1925913,
+    "output_text_tokens": 542772,
+    "total_text_tokens": 2468685,
+    "embedding_input_tokens": 0,
+    "cache_read_tokens": 0,
+    "cache_creation_tokens": 0,
+    "sampled_operators": {
+      "text_llm_calls": 970,
+      "embedding_calls": 0,
+      "input_text_tokens": 1429425,
+      "output_text_tokens": 412412,
+      "embedding_input_tokens": 0,
+      "cost_usd": 1.52251983
+    },
+    "validator": {
+      "text_llm_calls": 242,
+      "input_text_tokens": 496488,
+      "output_text_tokens": 130360,
+      "total_text_tokens": 626848,
+      "cost_usd": 0.49867272
+    },
+    "model_usage_by_model": {
+      "Qwen3.5-397B-A17B": {
+        "roles": [
+          "text",
+          "validator"
+        ],
+        "calls": 1212,
+        "input_tokens": 1925913,
+        "output_tokens": 542772,
+        "total_tokens": 2468685,
+        "cost_usd": 2.02119255
+      }
+    }
+  },
+  "sentinel_join_sampling": [
+    {
+      "unique_logical_op_id": "6-e3e63d11e5",
+      "frontier_representative_operator_class": "RelationalJoin",
+      "root_dataset_count": 2,
+      "left_available_source_indices": 1030,
+      "right_available_source_indices": 90,
+      "theoretical_combination_count": 92700,
+      "available_combination_count": 92700,
+      "sample_limit": 100,
+      "sampled_combination_count": 100,
+      "sampling_method": "seeded_uniform_without_replacement_flat_indices",
+      "seed": 42
+    },
+    {
+      "unique_logical_op_id": "8-e3e63d11e5",
+      "frontier_representative_operator_class": "RelationalJoin",
+      "root_dataset_count": 3,
+      "left_available_source_indices": 100,
+      "right_available_source_indices": 1647,
+      "theoretical_combination_count": 152676900,
+      "available_combination_count": 164700,
+      "sample_limit": 100,
+      "sampled_combination_count": 100,
+      "sampling_method": "seeded_uniform_without_replacement_flat_indices",
+      "seed": 42
+    }
+  ],
+  "sentinel_sampling_exhaustion": null,
+  "recovery": null
+}

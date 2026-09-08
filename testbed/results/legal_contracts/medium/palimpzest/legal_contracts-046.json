@@ -1,0 +1,13 @@
+{
+  "task_id": "legal_contracts-046",
+  "answer": [
+    {"document_id": "1177845_0001193125-18-219243_d519554dex99d3.htm", "term_duration_years": 4.0, "non_disclosure_direction": "mutual"},
+    {"document_id": "1373671_0001193125-10-265249_dex99d3.htm", "term_duration_years": 5.0, "non_disclosure_direction": "mutual"},
+    {"document_id": "1693664_0001193125-18-171470_d426098dex99d3.htm", "term_duration_years": 3.0, "non_disclosure_direction": "mutual"},
+    {"document_id": "20150916-model-sharing-non-disclosure-agreement.pdf", "term_duration_years": "perpetual", "non_disclosure_direction": "mutual"},
+    {"document_id": "Supplier_Non_Disclosure.pdf", "term_duration_years": 5.0, "non_disclosure_direction": "mutual"}
+  ],
+  "elapsed_seconds": 3129.19,
+  "cost_usd": 3.207867,
+  "total_tokens": 6070920
+}

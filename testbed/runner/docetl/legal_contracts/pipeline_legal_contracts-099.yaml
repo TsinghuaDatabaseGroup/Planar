@@ -1,0 +1,128 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_three_nda_categories
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is a mutual NDA, unilateral NDA, or
+      confidentiality-and-standstill agreement, including a dual-status SEC
+      exhibit.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_in_scope_nda: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_nda_category_and_party
+    type: map
+    optimize: true
+    prompt: |
+      Return the input NDA document ID, one of these three NDA categories:
+      mutual_nda, unilateral_nda, or confidentiality_standstill, a stated
+      corporate-party name, and its canonical corporate-party key.
+
+      Input document ID: {{ input.doc_id }}
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        nda_document_id: string
+        nda_category: "enum[mutual_nda, unilateral_nda, confidentiality_standstill]"
+        party_name: string
+        party_key: string
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: aggregate_nda_category_totals
+    type: code_reduce
+    reduce_key: nda_category
+    code: |
+      def transform(items):
+          return {"total_agreement_count": len({str(item.get("nda_document_id") or "") for item in items if str(item.get("nda_document_id") or "")})}
+
+  - name: filter_ex23_auditor_consents
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is an EX-23 auditor consent letter that
+      names its audit client.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_ex23_consent_with_client: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_audit_client
+    type: map
+    optimize: true
+    prompt: |
+      Return the stated audit-client company and its canonical audit-client key.
+
+      Consent letter:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema: {audit_client_company: string, audit_client_key: string}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+
+  - name: join_ndas_to_audit_clients
+    type: equijoin
+    deterministic: true
+    blocking_conditions:
+      - left["party_key"] == right["audit_client_key"]
+  - name: aggregate_audit_linked_ndas
+    type: code_reduce
+    reduce_key: nda_category
+    code: |
+      def transform(items):
+          return {
+              "audit_linked_agreement_count": len({str(item.get("nda_document_id") or "") for item in items if str(item.get("nda_document_id") or "")}),
+              "matched_audit_client_companies": sorted({str(item.get("audit_client_company") or "") for item in items if str(item.get("audit_client_company") or "")}),
+          }
+  - name: join_category_totals_and_linked
+    type: equijoin
+    deterministic: true
+    blocking_conditions:
+      - left["nda_category"] == right["nda_category"]
+  - name: project_category_audit_results
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "nda_category": doc.get("nda_category_left"),
+              "total_agreement_count": doc.get("total_agreement_count"),
+              "audit_linked_agreement_count": doc.get("audit_linked_agreement_count"),
+              "matched_audit_client_companies": doc.get("matched_audit_client_companies") or [],
+          }
+pipeline:
+  steps:
+    - name: nda_records
+      input: contract_exhibits
+      operations: [filter_three_nda_categories, extract_nda_category_and_party]
+    - name: nda_category_totals
+      input: nda_records
+      operations: [aggregate_nda_category_totals]
+    - name: audit_records
+      input: contract_exhibits
+      operations: [filter_ex23_auditor_consents, extract_audit_client]
+    - name: linked_nda_records
+      operations:
+        - join_ndas_to_audit_clients: {left: nda_records, right: audit_records}
+    - name: linked_nda_categories
+      input: linked_nda_records
+      operations: [aggregate_audit_linked_ndas]
+    - name: complete_category_records
+      operations:
+        - join_category_totals_and_linked: {left: nda_category_totals, right: linked_nda_categories}
+    - name: answer
+      input: complete_category_records
+      operations: [project_category_audit_results]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-099.json

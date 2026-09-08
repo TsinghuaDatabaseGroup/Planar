@@ -1,0 +1,224 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_aircraft_primary_problem
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("primary_problem") == "Aircraft"
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: extract_engine_symptom_action_outcome
+    type: map
+    optimize: true
+    prompt: |
+      Extract one engine-symptom record from this NASA ASRS report only when the
+      report describes an engine thrust, power, oil, temperature, vibration, or
+      flameout problem. Assign the primary symptom that drove the reported event;
+      do not use list order as precedence.
+
+      symptom_category must be one of:
+      - thrust_loss: loss, reduction, rollback, surge-related loss, or failure to
+        produce commanded engine thrust or power;
+      - oil_indication: abnormal engine oil pressure, quantity, temperature when
+        explicitly an oil indication, leak indication, or oil warning;
+      - temperature: abnormal engine temperature or overtemperature not already
+        classified as an oil indication;
+      - vibration: abnormal engine vibration, shaking, or vibration indication;
+      - flameout: an engine flameout, shutdown caused by flameout, or explicit loss
+        of combustion;
+      - other_engine_indication: another operationally relevant engine indication
+        or warning not covered by the five categories above.
+
+      immediate_crew_action must be a concise lowercase verb phrase of at most six
+      words describing the crew's first direct response to the engine symptom, not
+      later maintenance work or the final outcome.
+
+      primary_outcome must be one of emergency, diversion, return,
+      continued_flight, or maintenance_only. Select the report's primary outcome
+      from the narrative and structured result summary; do not apply category-list
+      precedence when several facts are mentioned.
+
+      Use symptom_category=not_target and primary_outcome=not_target when the report
+      does not qualify, or when a required action or outcome is not supported.
+
+      Structured result summary:
+      {{ input.result_summary }}
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        symptom_category: enum[thrust_loss, oil_indication, temperature, vibration, flameout, other_engine_indication, not_target]
+        immediate_crew_action: string
+        primary_outcome: enum[emergency, diversion, return, continued_flight, maintenance_only, not_target]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: normalize_and_keep_engine_records
+    type: code_map
+    code: |
+      def transform(doc):
+          import re
+
+          target_categories = {
+              "thrust_loss",
+              "oil_indication",
+              "temperature",
+              "vibration",
+              "flameout",
+              "other_engine_indication",
+          }
+          target_outcomes = {
+              "emergency",
+              "diversion",
+              "return",
+              "continued_flight",
+              "maintenance_only",
+          }
+          action = re.sub(
+              r"\s+", " ", str(doc.get("immediate_crew_action", "")).strip().lower()
+          )
+          is_target = (
+              doc.get("symptom_category") in target_categories
+              and doc.get("primary_outcome") in target_outcomes
+              and 1 <= len(action.split()) <= 6
+          )
+          return {
+              "normalized_immediate_crew_action": action,
+              "is_target_engine_record": is_target,
+          }
+
+  - name: keep_target_engine_records
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("is_target_engine_record") is True
+
+  - name: aggregate_engine_symptoms
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          from collections import Counter
+
+          categories = [
+              "thrust_loss",
+              "oil_indication",
+              "temperature",
+              "vibration",
+              "flameout",
+              "other_engine_indication",
+          ]
+          records = {category: {} for category in categories}
+
+          for item in items:
+              category = item.get("symptom_category")
+              incident_id = str(item.get("incident_id", ""))
+              if not incident_id or category not in records:
+                  continue
+              records[category].setdefault(
+                  incident_id,
+                  (
+                      item.get("normalized_immediate_crew_action"),
+                      item.get("primary_outcome"),
+                  ),
+              )
+
+          def stable_mode(values):
+              counts = Counter(values)
+              return sorted(counts, key=lambda value: (-counts[value], value))[0]
+
+          rows = []
+          for category in categories:
+              incident_records = list(records[category].values())
+              if not incident_records:
+                  continue
+              rows.append(
+                  {
+                      "symptom_category": category,
+                      "incident_count": len(incident_records),
+                      "most_common_immediate_action": stable_mode(
+                          [record[0] for record in incident_records]
+                      ),
+                      "most_common_outcome": stable_mode(
+                          [record[1] for record in incident_records]
+                      ),
+                  }
+              )
+
+          rows.sort(
+              key=lambda row: (-row["incident_count"], row["symptom_category"])
+          )
+          return {"rows": rows}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - symptom_category
+      - incident_count
+      - most_common_immediate_action
+      - most_common_outcome
+
+pipeline:
+  steps:
+    - name: process
+      input: asrs_incidents
+      operations:
+        - filter_aircraft_primary_problem
+        - load_asrs_narrative
+        - extract_engine_symptom_action_outcome
+        - normalize_and_keep_engine_records
+        - keep_target_engine_records
+        - aggregate_engine_symptoms
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-013.json

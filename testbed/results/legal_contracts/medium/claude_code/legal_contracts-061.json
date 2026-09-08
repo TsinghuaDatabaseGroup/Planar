@@ -1,0 +1,48 @@
+{
+  "task_id": "legal_contracts-061",
+  "answer": [
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "not applicable",
+      "document_count": 1462
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "unilateral",
+      "document_count": 772
+    },
+    {
+      "agreement_type": "mutual NDA",
+      "non_disclosure_direction": "mutual",
+      "document_count": 301
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "not applicable",
+      "document_count": 215
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "mutual",
+      "document_count": 18
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "non_disclosure_direction": "mutual",
+      "document_count": 9
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill agreement",
+      "non_disclosure_direction": "unilateral",
+      "document_count": 8
+    },
+    {
+      "agreement_type": "not applicable",
+      "non_disclosure_direction": "not applicable",
+      "document_count": 8
+    }
+  ],
+  "elapsed_seconds": 635.783,
+  "cost_usd": 1.72050036,
+  "total_tokens": 3993984
+}

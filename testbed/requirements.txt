@@ -1,0 +1,11 @@
+# Shared dependencies for the Planar evaluator, runners, and data loaders.
+# Install each execution backend in a separate environment; DocETL, LOTUS,
+# and Palimpzest intentionally remain outside this file because their native
+# dependency constraints are not mutually compatible.
+
+beautifulsoup4>=4.13.4,<5
+litellm>=1.81.11,<2
+pandas>=2.3.0,<3
+PyMuPDF>=1.24.10
+python-dotenv>=1.2.1,<2
+PyYAML>=6.0.1,<7

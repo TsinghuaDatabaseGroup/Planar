@@ -1,0 +1,17 @@
+{
+  "task_id": "legal_contracts-100",
+  "answer": [
+    {
+      "internal_controls_asserted": true,
+      "fraud_disclosure_asserted": true,
+      "material_changes_asserted": true,
+      "certification_document_count": 435,
+      "distinct_company_count": 196,
+      "companies_with_clawback_count": 74,
+      "beyond_sec_minimum_company_count": 7
+    }
+  ],
+  "elapsed_seconds": 541.984,
+  "cost_usd": 1.24532883,
+  "total_tokens": 2100142
+}

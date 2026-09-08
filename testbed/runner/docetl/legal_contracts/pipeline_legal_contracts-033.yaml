@@ -1,0 +1,105 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body: {chat_template_kwargs: {enable_thinking: false}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+
+operations:
+  - name: filter_mutual_or_unilateral_ndas
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is a mutual or unilateral non-disclosure
+      agreement.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_mutual_or_unilateral_nda: boolean}}
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body: {chat_template_kwargs: {enable_thinking: false}}
+
+  - name: filter_no_restrictive_covenants
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this agreement only if it contains no operative non-compete,
+      customer-, employee-, or vendor-non-solicitation, or standstill
+      restriction.
+
+      Agreement:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {has_no_restrictive_covenants: boolean}}
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body: {chat_template_kwargs: {enable_thinking: false}}
+
+  - name: extract_law_and_finite_duration
+    type: map
+    optimize: true
+    prompt: |
+      Extract the expressly stated governing law and finite confidentiality
+      duration normalized to whole months. Set an availability flag to false when
+      its value is unstated or unquantifiable. A perpetual or indefinite duration
+      is not finite and must have duration_available=false. Use empty or zero
+      placeholders only when required by the schema.
+
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        governing_law_available: boolean
+        governing_law_value: string
+        duration_available: boolean
+        duration_months_value: integer
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body: {chat_template_kwargs: {enable_thinking: false}}
+
+  - name: normalize_nullable_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "document_id": str(doc.get("doc_id") or ""),
+              "governing_law": str(doc.get("governing_law_value") or "") if doc.get("governing_law_available") is True else None,
+              "duration_months": int(doc.get("duration_months_value") or 0) if doc.get("duration_available") is True else None,
+          }
+
+  - name: filter_long_finite_duration_with_law
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("governing_law") is not None and doc.get("duration_months") is not None and int(doc["duration_months"]) > 60
+
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations:
+        - filter_mutual_or_unilateral_ndas
+        - filter_no_restrictive_covenants
+        - extract_law_and_finite_duration
+        - normalize_nullable_fields
+        - filter_long_finite_duration_with_law
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-033.json

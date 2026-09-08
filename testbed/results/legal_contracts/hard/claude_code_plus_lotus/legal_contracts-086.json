@@ -1,0 +1,12 @@
+{
+  "task_id": "legal_contracts-086",
+  "answer": [
+    {
+      "governing_law": "New York",
+      "matching_count": 2
+    }
+  ],
+  "elapsed_seconds": 500.753,
+  "cost_usd": 3.56773581,
+  "total_tokens": 8390584
+}

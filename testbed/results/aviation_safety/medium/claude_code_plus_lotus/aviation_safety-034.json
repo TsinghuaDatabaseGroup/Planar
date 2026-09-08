@@ -1,0 +1,53 @@
+{
+  "task_id": "aviation_safety-034",
+  "answer": [
+    {
+      "rank": 1,
+      "incident_id": "asrs_016747",
+      "reconciliation_pattern": "direct_conflict",
+      "automation_guidance": "climb RA issued",
+      "atc_instruction": "cleared for visual to runway 16L",
+      "horizontal_separation_ft": 0,
+      "vertical_separation_ft": 100
+    },
+    {
+      "rank": 2,
+      "incident_id": "asrs_031644",
+      "reconciliation_pattern": "direct_conflict",
+      "automation_guidance": "traffic advisory issued",
+      "atc_instruction": "turn left to 270 degrees and maintain 1500 feet",
+      "horizontal_separation_ft": 1500,
+      "vertical_separation_ft": 100
+    },
+    {
+      "rank": 3,
+      "incident_id": "asrs_060926",
+      "reconciliation_pattern": "direct_conflict",
+      "automation_guidance": "RA called for 2000-2500 VVI descent",
+      "atc_instruction": "Clearance to cross fix at 10000 FT",
+      "horizontal_separation_ft": 3000,
+      "vertical_separation_ft": 200
+    },
+    {
+      "rank": 4,
+      "incident_id": "asrs_026973",
+      "reconciliation_pattern": "direct_conflict",
+      "automation_guidance": "No TCAS RA or TA advisory issued",
+      "atc_instruction": "Immediate right turn to 090 degrees",
+      "horizontal_separation_ft": 4500,
+      "vertical_separation_ft": 400
+    },
+    {
+      "rank": 5,
+      "incident_id": "asrs_052410",
+      "reconciliation_pattern": "direct_conflict",
+      "automation_guidance": "TCAS commanded descent RA in excess of 3000 FPM",
+      "atc_instruction": "Maintain 11000 ft and expect lower crossing traffic",
+      "horizontal_separation_ft": 4500,
+      "vertical_separation_ft": 1000
+    }
+  ],
+  "elapsed_seconds": 355.043,
+  "cost_usd": 0.4635627,
+  "total_tokens": 804544
+}

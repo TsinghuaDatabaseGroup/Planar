@@ -1,0 +1,99 @@
+{
+  "task_id": "vehicle_safety-024",
+  "answer": [
+    {
+      "component_id": "ADAS",
+      "complaint_count": 257,
+      "towed_rate": 0.0661478599,
+      "avg_injury": 0.0622568093,
+      "dominant_failure_mode": "brake failure"
+    },
+    {
+      "component_id": "AIRBAG",
+      "complaint_count": 56,
+      "towed_rate": 0.5714285714,
+      "avg_injury": 0.5892857143,
+      "dominant_failure_mode": "airbag non-deployment"
+    },
+    {
+      "component_id": "BODY",
+      "complaint_count": 77,
+      "towed_rate": 0.038961039,
+      "avg_injury": 0.1038961039,
+      "dominant_failure_mode": "sunroof explosion"
+    },
+    {
+      "component_id": "BRAKES",
+      "complaint_count": 78,
+      "towed_rate": 0.2051282051,
+      "avg_injury": 0.1923076923,
+      "dominant_failure_mode": "brake failure"
+    },
+    {
+      "component_id": "ELECTRICAL",
+      "complaint_count": 190,
+      "towed_rate": 0.0526315789,
+      "avg_injury": 0.0526315789,
+      "dominant_failure_mode": "engine stall"
+    },
+    {
+      "component_id": "ENGINE",
+      "complaint_count": 154,
+      "towed_rate": 0.2662337662,
+      "avg_injury": 0.038961039,
+      "dominant_failure_mode": "engine failure"
+    },
+    {
+      "component_id": "FUEL",
+      "complaint_count": 14,
+      "towed_rate": 0.1428571429,
+      "avg_injury": 0.0714285714,
+      "dominant_failure_mode": "unintended acceleration"
+    },
+    {
+      "component_id": "OTHER",
+      "complaint_count": 84,
+      "towed_rate": 0.1071428571,
+      "avg_injury": 0.1785714286,
+      "dominant_failure_mode": "unintended acceleration"
+    },
+    {
+      "component_id": "POWERTRAIN",
+      "complaint_count": 30,
+      "towed_rate": 0.2333333333,
+      "avg_injury": 0.0333333333,
+      "dominant_failure_mode": "transmission failure"
+    },
+    {
+      "component_id": "SEATBELT",
+      "complaint_count": 8,
+      "towed_rate": 0.125,
+      "avg_injury": 0.125,
+      "dominant_failure_mode": "false occupant detection"
+    },
+    {
+      "component_id": "STEERING",
+      "complaint_count": 15,
+      "towed_rate": 0.2666666667,
+      "avg_injury": 0.1333333333,
+      "dominant_failure_mode": "power steering failure"
+    },
+    {
+      "component_id": "SUSPENSION",
+      "complaint_count": 1,
+      "towed_rate": 0.0,
+      "avg_injury": 0.0,
+      "dominant_failure_mode": "creaking and rubbing noise when turning"
+    },
+    {
+      "component_id": "TIRES",
+      "complaint_count": 7,
+      "towed_rate": 0.1428571429,
+      "avg_injury": 0.2857142857,
+      "dominant_failure_mode": "tire blowout"
+    }
+  ],
+  "elapsed_seconds": 811.58,
+  "cost_usd": 1.210898,
+  "total_tokens": 1681211
+}

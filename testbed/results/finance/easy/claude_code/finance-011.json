@@ -1,0 +1,26 @@
+{
+  "task_id": "finance-011",
+  "answer": {
+    "domestic-only": {
+      "filing_count": 551,
+      "foreign_currency_risk_rate_percent": 43.7,
+      "international_operations_rate_percent": 71.3,
+      "litigation_rate_percent": 98.2
+    },
+    "limited-international": {
+      "filing_count": 122,
+      "foreign_currency_risk_rate_percent": 92.6,
+      "international_operations_rate_percent": 94.3,
+      "litigation_rate_percent": 99.2
+    },
+    "globally diversified": {
+      "filing_count": 238,
+      "foreign_currency_risk_rate_percent": 98.3,
+      "international_operations_rate_percent": 95.0,
+      "litigation_rate_percent": 98.3
+    }
+  },
+  "elapsed_seconds": 3454.037,
+  "cost_usd": 5.34774117,
+  "total_tokens": 12943237
+}

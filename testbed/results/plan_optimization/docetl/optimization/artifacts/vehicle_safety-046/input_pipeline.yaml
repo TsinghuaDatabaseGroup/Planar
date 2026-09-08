@@ -1,0 +1,372 @@
+datasets:
+  nhtsa_complaints:
+    type: file
+    path: data/nhtsa_vehicle_safety/complaints.csv
+  nhtsa_recalls:
+    type: file
+    path: data/nhtsa_vehicle_safety/recalls.jsonl
+  nhtsa_investigation_reports:
+    type: file
+    path: data/nhtsa_vehicle_safety/investigation_reports/*.txt
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: https://llm-endpoint.example/v1
+default_embedding_api_base: https://llm-endpoint.example/v1
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: https://llm-endpoint.example/v1
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_chrysler_airbag_complaints
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("make") == "CHRYSLER"
+              and doc.get("component_id") == "AIRBAG"
+          )
+
+  - name: filter_chrysler_airbag_recalls
+    type: code_filter
+    code: |
+      def transform(doc):
+          vehicle = doc.get("vehicle") or {}
+          component = doc.get("component") or {}
+          return (
+              vehicle.get("make") == "CHRYSLER"
+              and component.get("component_id") == "AIRBAG"
+          )
+
+  - name: flatten_chrysler_airbag_recall_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          campaign = doc.get("campaign") or {}
+          vehicle = doc.get("vehicle") or {}
+          component = doc.get("component") or {}
+          risk = doc.get("risk") or {}
+          remedy = doc.get("remedy") or {}
+          return {
+              "campaign_number": campaign.get("number"),
+              "make": vehicle.get("make"),
+              "component_id": component.get("component_id"),
+              "defect_summary": risk.get("defect_summary") or "",
+              "consequence_summary": risk.get("consequence_summary") or "",
+              "corrective_action": remedy.get("corrective_action") or "",
+          }
+
+  - name: match_chrysler_airbag_complaints_to_recalls
+    type: equijoin
+    comparison_prompt: |
+      Determine whether this Chrysler airbag complaint and Chrysler airbag recall
+      describe the same concrete airbag defect.
+
+      Match only when the complaint narrative and recall defect identify the same
+      deployment failure, inflator mechanism, sensor or warning fault, or directly
+      equivalent airbag problem. A shared AIRBAG category, injury risk, crash
+      consequence, or generic deployment wording alone is not sufficient.
+
+      COMPLAINT:
+      {{ left.summary_text }}
+
+      RECALL DEFECT:
+      {{ right.defect_summary }}
+    blocking_conditions:
+      - left["component_id"] == right["component_id"]
+    comparison_model: Qwen3.5-397B-A17B
+    timeout: 120
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: classify_chrysler_airbag_safety_risk
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether this matched evidence describes an airbag safety risk
+      such as non-deployment, unintended deployment, inflator rupture, or
+      occupant-injury risk.
+
+      Use the complaint, recall defect, and recall consequence together. Qualify
+      only when the evidence establishes a concrete deployment, inflator,
+      restraint-control, or occupant-protection hazard. Do not qualify a warning
+      light, maintenance concern, or generic airbag issue without such a risk.
+
+      Complaint:
+      {{ input.summary_text }}
+
+      Recall defect:
+      {{ input.defect_summary }}
+
+      Recall consequence:
+      {{ input.consequence_summary }}
+    output:
+      mode: structured_output
+      schema:
+        is_airbag_safety_risk: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: classify_chrysler_airbag_failure_mode
+    type: map
+    optimize: true
+    prompt: |
+      Assign the dominant issue in this complaint to exactly one airbag
+      failure-mode label:
+
+      - non_deployment: an airbag fails to deploy when deployment is warranted.
+      - unintended_deployment: an airbag deploys unexpectedly or without a
+        qualifying crash.
+      - inflator_rupture: inflator rupture, explosion, fragmentation, or
+        propellant-related failure.
+      - warning_or_sensor_fault: warning indicators, occupant sensing, crash
+        sensing, wiring, or restraint-control detection faults.
+      - other: a concrete airbag safety issue not covered above.
+
+      Choose the single dominant mode from the complaint narrative.
+
+      Complaint:
+      {{ input.summary_text }}
+    output:
+      mode: structured_output
+      schema:
+        airbag_failure_mode: string
+    validate:
+      - output["airbag_failure_mode"] in ["non_deployment", "unintended_deployment", "inflator_rupture", "warning_or_sensor_fault", "other"]
+    num_retries_on_validate_failure: 2
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_candidate_chrysler_airbag_reports
+    type: code_filter
+    code: |
+      def transform(doc):
+          body = str(doc.get("body") or "").lower()
+          return (
+              "chrysler" in body
+              or "airbag" in body
+              or "inflator" in body
+          )
+
+  - name: match_chrysler_airbag_issues_to_reports
+    type: equijoin
+    optimize: true
+    comparison_prompt: |
+      Determine whether this NHTSA investigation report discusses the same
+      Chrysler airbag risk or ODI evidence as the matched complaint-recall issue.
+
+      Match only when the report addresses the same concrete deployment,
+      inflator, sensor, warning, or restraint-control failure, or a directly
+      equivalent risk. Chrysler, airbag, inflator, crash, or injury vocabulary
+      alone is not sufficient.
+
+      FAILURE MODE:
+      {{ left.airbag_failure_mode }}
+
+      COMPLAINT:
+      {{ left.summary_text }}
+
+      RECALL DEFECT:
+      {{ left.defect_summary }}
+
+      INVESTIGATION REPORT:
+      {{ right.body }}
+    blocking_keys:
+      left:
+        - airbag_failure_mode
+        - summary_text
+        - defect_summary
+      right:
+        - body
+    blocking_target_recall: 0.95
+    embedding_model: openai/Qwen3-Embedding-8B
+    comparison_model: Qwen3.5-397B-A17B
+    timeout: 120
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: aggregate_chrysler_airbag_campaigns
+    type: code_reduce
+    reduce_key: campaign_number
+    code: |
+      def transform(items):
+          from collections import Counter
+
+          complaint_ids = {
+              item.get("complaint_id")
+              for item in items
+              if item.get("complaint_id")
+          }
+          failure_mode_counts = Counter(
+              str(item.get("airbag_failure_mode") or "").strip()
+              for item in items
+              if str(item.get("airbag_failure_mode") or "").strip()
+          )
+          dominant_failure_mode = (
+              sorted(
+                  failure_mode_counts,
+                  key=lambda value: (
+                      -failure_mode_counts[value],
+                      value,
+                  ),
+              )[0]
+              if failure_mode_counts
+              else ""
+          )
+          corrective_actions = sorted(
+              {
+                  item.get("corrective_action")
+                  for item in items
+                  if item.get("corrective_action")
+              }
+          )
+          related_report_ids = sorted(
+              {
+                  item.get("file_id")
+                  for item in items
+                  if item.get("file_id")
+              }
+          )
+          report_bodies = sorted(
+              {
+                  item.get("body")
+                  for item in items
+                  if item.get("body")
+              }
+          )
+          return {
+              "matched_complaint_count": len(complaint_ids),
+              "dominant_airbag_failure_mode": dominant_failure_mode,
+              "corrective_actions": corrective_actions,
+              "related_report_ids": related_report_ids,
+              "report_bodies": report_bodies,
+          }
+
+  - name: summarize_chrysler_remedy_and_odi_evidence
+    type: map
+    optimize: true
+    prompt: |
+      Analyze the corrective actions and related investigation reports for this
+      Chrysler airbag campaign, then return both requested fields.
+
+      dominant_remedy_style: exactly one of software_update, part_replacement,
+      other. Use software_update when software, firmware, calibration, or
+      reprogramming is the principal remedy; part_replacement when replacement of
+      physical airbag, inflator, sensor, wiring, module, or restraint hardware is
+      principal; otherwise use other.
+
+      odi_evidence_summary: one short phrase capturing the report-supported ODI
+      evidence about the airbag risk. Do not list report IDs or add unsupported
+      findings.
+
+      Corrective actions:
+      {{ input.corrective_actions }}
+
+      Related investigation reports:
+      {{ input.report_bodies }}
+    output:
+      mode: structured_output
+      schema:
+        dominant_remedy_style: string
+        odi_evidence_summary: string
+    validate:
+      - output["dominant_remedy_style"] in ["software_update", "part_replacement", "other"]
+      - len(output["odi_evidence_summary"].strip()) > 0
+    num_retries_on_validate_failure: 2
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: project_chrysler_airbag_campaign_summary
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "campaign_number": doc.get("campaign_number"),
+              "matched_complaint_count": doc.get(
+                  "matched_complaint_count"
+              ),
+              "dominant_airbag_failure_mode": doc.get(
+                  "dominant_airbag_failure_mode"
+              ),
+              "dominant_remedy_style": doc.get(
+                  "dominant_remedy_style"
+              ),
+              "related_report_ids": doc.get("related_report_ids") or [],
+              "odi_evidence_summary": doc.get("odi_evidence_summary"),
+          }
+
+pipeline:
+  steps:
+    - name: chrysler_airbag_complaints
+      input: nhtsa_complaints
+      operations:
+        - filter_chrysler_airbag_complaints
+    - name: chrysler_airbag_recalls
+      input: nhtsa_recalls
+      operations:
+        - filter_chrysler_airbag_recalls
+        - flatten_chrysler_airbag_recall_fields
+    - name: matched_chrysler_airbag_pairs
+      operations:
+        - match_chrysler_airbag_complaints_to_recalls:
+            left: chrysler_airbag_complaints
+            right: chrysler_airbag_recalls
+    - name: qualified_chrysler_airbag_pairs
+      input: matched_chrysler_airbag_pairs
+      operations:
+        - classify_chrysler_airbag_safety_risk
+        - classify_chrysler_airbag_failure_mode
+    - name: candidate_chrysler_airbag_reports
+      input: nhtsa_investigation_reports
+      operations:
+        - filter_candidate_chrysler_airbag_reports
+    - name: matched_chrysler_airbag_reports
+      operations:
+        - match_chrysler_airbag_issues_to_reports:
+            left: qualified_chrysler_airbag_pairs
+            right: candidate_chrysler_airbag_reports
+    - name: chrysler_airbag_campaign_summaries
+      input: matched_chrysler_airbag_reports
+      operations:
+        - aggregate_chrysler_airbag_campaigns
+        - summarize_chrysler_remedy_and_odi_evidence
+        - project_chrysler_airbag_campaign_summary
+  output:
+    type: file
+    path: plan-optimization-moar/standalone/outputs/output_vehicle_safety-046.json
+    intermediate_dir: plan-optimization-moar/standalone/intermediates/vehicle_safety-046

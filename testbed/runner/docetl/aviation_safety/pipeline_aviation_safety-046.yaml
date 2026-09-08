@@ -1,0 +1,330 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: build_blocked_incident_pairs
+    type: code_reduce
+    reduce_key:
+      - incident_date
+      - state_reference
+      - locale_reference_type
+      - primary_problem
+    code: |
+      def transform(items):
+          ordered = sorted(items, key=lambda item: str(item.get("incident_id", "")))
+          pairs = []
+          for left_index, left in enumerate(ordered):
+              left_id = str(left.get("incident_id", ""))
+              if not left_id:
+                  continue
+              for right in ordered[left_index + 1:]:
+                  right_id = str(right.get("incident_id", ""))
+                  if not right_id or left_id >= right_id:
+                      continue
+                  pairs.append(
+                      {
+                          "left_incident_id": left_id,
+                          "right_incident_id": right_id,
+                          "incident_date": left.get("incident_date"),
+                          "state_reference": left.get("state_reference"),
+                          "locale_reference_type": left.get("locale_reference_type"),
+                          "primary_problem": left.get("primary_problem"),
+                          "left_flight_phase": left.get("flight_phase"),
+                          "right_flight_phase": right.get("flight_phase"),
+                          "left_anomaly_summary": left.get("anomaly_summary"),
+                          "right_anomaly_summary": right.get("anomaly_summary"),
+                          "left_result_summary": left.get("result_summary"),
+                          "right_result_summary": right.get("result_summary"),
+                          "left_text_file": left.get("text_file"),
+                          "right_text_file": right.get("text_file"),
+                      }
+                  )
+          return {"blocked_pairs": pairs}
+
+  - name: unnest_blocked_incident_pairs
+    type: unnest
+    unnest_key: blocked_pairs
+    recursive: true
+    depth: 2
+    expand_fields:
+      - left_incident_id
+      - right_incident_id
+      - incident_date
+      - state_reference
+      - locale_reference_type
+      - primary_problem
+      - left_flight_phase
+      - right_flight_phase
+      - left_anomaly_summary
+      - right_anomaly_summary
+      - left_result_summary
+      - right_result_summary
+      - left_text_file
+      - right_text_file
+
+  - name: load_left_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("left_text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"left_text": text}
+
+  - name: extract_left_event_signature
+    type: map
+    optimize: true
+    prompt: |
+      Extract a normalized event signature from the left NASA ASRS report in this
+      pre-blocked incident pair. The pair IDs are preserved by the pipeline.
+
+      Return:
+      - left_primary_event_type: exactly one of equipment_failure,
+        airborne_conflict, ground_conflict, clearance_deviation, weather_event,
+        maintenance_event, cabin_event, or other;
+      - left_measurements: every distinctive quantitative value or measurement
+        that helps identify the occurrence, preserving units and context;
+      - left_action_sequence: an ordered list of concise action or event steps;
+      - left_outcome: a concise description of the final operational outcome.
+
+      Extract only details stated in this narrative. Do not compare it with the
+      right report in this step. If no distinctive measurement is stated, return an
+      empty measurement list rather than inventing one.
+
+      LEFT INCIDENT ID: {{ input.left_incident_id }}
+      RIGHT INCIDENT ID: {{ input.right_incident_id }}
+      LEFT NARRATIVE:
+      {{ input.left_text }}
+    output:
+      mode: structured_output
+      schema:
+        left_primary_event_type: enum[equipment_failure, airborne_conflict, ground_conflict, clearance_deviation, weather_event, maintenance_event, cabin_event, other]
+        left_measurements: list[string]
+        left_action_sequence: list[string]
+        left_outcome: string
+    validate:
+      - all([len(value.strip()) > 0 for value in output["left_measurements"]])
+      - len(output["left_action_sequence"]) > 0
+      - all([len(value.strip()) > 0 for value in output["left_action_sequence"]])
+      - len(output["left_outcome"].strip()) > 0
+    num_retries_on_validate_failure: 2
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 512
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: load_right_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("right_text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"right_text": text}
+
+  - name: extract_right_event_signature
+    type: map
+    optimize: true
+    prompt: |
+      Extract the same normalized event signature from the right NASA ASRS report
+      in this pre-blocked incident pair. The pair IDs are preserved by the pipeline.
+
+      Return:
+      - right_primary_event_type: exactly one of equipment_failure,
+        airborne_conflict, ground_conflict, clearance_deviation, weather_event,
+        maintenance_event, cabin_event, or other;
+      - right_measurements: every distinctive quantitative value or measurement
+        that helps identify the occurrence, preserving units and context;
+      - right_action_sequence: an ordered list of concise action or event steps;
+      - right_outcome: a concise description of the final operational outcome.
+
+      Extract only details stated in this narrative. Do not compare it with the
+      left report in this step. If no distinctive measurement is stated, return an
+      empty measurement list rather than inventing one.
+
+      LEFT INCIDENT ID: {{ input.left_incident_id }}
+      RIGHT INCIDENT ID: {{ input.right_incident_id }}
+      RIGHT NARRATIVE:
+      {{ input.right_text }}
+    output:
+      mode: structured_output
+      schema:
+        right_primary_event_type: enum[equipment_failure, airborne_conflict, ground_conflict, clearance_deviation, weather_event, maintenance_event, cabin_event, other]
+        right_measurements: list[string]
+        right_action_sequence: list[string]
+        right_outcome: string
+    validate:
+      - all([len(value.strip()) > 0 for value in output["right_measurements"]])
+      - len(output["right_action_sequence"]) > 0
+      - all([len(value.strip()) > 0 for value in output["right_action_sequence"]])
+      - len(output["right_outcome"].strip()) > 0
+    num_retries_on_validate_failure: 2
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 512
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: match_same_underlying_occurrence
+    type: equijoin
+    comparison_prompt: |
+      Determine whether these two NASA ASRS event signatures describe the same
+      underlying occurrence. The rows already carry the same pre-blocked pair IDs
+      and originate from reports with the same incident month, state reference,
+      locale-reference type, and primary problem.
+
+      Return true only when the narratives agree on a distinctive event progression
+      and have compatible measurements, actions, and final outcome. Measurements
+      may be complementary or differently rounded, but must not materially conflict.
+      Action sequences may differ in detail or perspective, but their distinctive
+      order and substance must align. The normalized primary event types must also
+      agree. Generic topical similarity, a common aircraft problem, or routine
+      procedural overlap is insufficient.
+
+      LEFT INCIDENT ID: {{ left.left_incident_id }}
+      RIGHT INCIDENT ID: {{ left.right_incident_id }}
+      LEFT EVENT TYPE: {{ left.left_primary_event_type }}
+      LEFT MEASUREMENTS: {{ left.left_measurements }}
+      LEFT ACTION SEQUENCE: {{ left.left_action_sequence }}
+      LEFT OUTCOME: {{ left.left_outcome }}
+
+      RIGHT EVENT TYPE: {{ right.right_primary_event_type }}
+      RIGHT MEASUREMENTS: {{ right.right_measurements }}
+      RIGHT ACTION SEQUENCE: {{ right.right_action_sequence }}
+      RIGHT OUTCOME: {{ right.right_outcome }}
+    blocking_conditions:
+      - left["left_incident_id"] == right["left_incident_id"] and left["right_incident_id"] == right["right_incident_id"]
+    comparison_model: Qwen3.5-397B-A17B
+    timeout: 120
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: rank_matched_incident_pairs
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          rows = []
+          for item in items:
+              differing_fields = []
+              for field in (
+                  "flight_phase",
+                  "anomaly_summary",
+                  "result_summary",
+              ):
+                  if item.get("left_" + field) != item.get("right_" + field):
+                      differing_fields.append(field)
+              rows.append(
+                  {
+                      "left_incident_id": item.get("left_incident_id"),
+                      "right_incident_id": item.get("right_incident_id"),
+                      "incident_date": item.get("incident_date"),
+                      "shared_primary_event_type": item.get(
+                          "left_primary_event_type"
+                      ),
+                      "differing_structured_fields": differing_fields,
+                  }
+              )
+
+          def sort_key(row):
+              date_text = str(row.get("incident_date", ""))
+              date_number = int(date_text) if date_text.isdigit() else -1
+              return (
+                  -date_number,
+                  str(row.get("left_incident_id", "")),
+                  str(row.get("right_incident_id", "")),
+              )
+
+          rows.sort(key=sort_key)
+          for rank, row in enumerate(rows[:20], start=1):
+              row["rank"] = rank
+          return {"rows": rows[:20]}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - rank
+      - left_incident_id
+      - right_incident_id
+      - incident_date
+      - shared_primary_event_type
+      - differing_structured_fields
+
+pipeline:
+  steps:
+    - name: blocked_pairs
+      input: asrs_incidents
+      operations:
+        - build_blocked_incident_pairs
+        - unnest_blocked_incident_pairs
+    - name: left_signatures
+      input: blocked_pairs
+      operations:
+        - load_left_narrative
+        - extract_left_event_signature
+    - name: right_signatures
+      input: blocked_pairs
+      operations:
+        - load_right_narrative
+        - extract_right_event_signature
+    - name: matched_pairs
+      operations:
+        - match_same_underlying_occurrence:
+            left: left_signatures
+            right: right_signatures
+    - name: ranked_matched_pairs
+      input: matched_pairs
+      operations:
+        - rank_matched_incident_pairs
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-046.json

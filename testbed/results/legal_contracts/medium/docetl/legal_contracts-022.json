@@ -1,0 +1,93 @@
+{
+  "task_id": "legal_contracts-022",
+  "answer": [
+    {
+      "document_id": "09-24-2019-04-25-05-3914910473.pdf",
+      "governing_law": "Republic of Italy",
+      "term_months": 36
+    },
+    {
+      "document_id": "1016503_0000929624-00-000894_0010.txt",
+      "governing_law": "New York",
+      "term_months": 12
+    },
+    {
+      "document_id": "900091_0001047469-97-003029_document_4.txt",
+      "governing_law": "Japan",
+      "term_months": 36
+    },
+    {
+      "document_id": "Confidentiality_Non-Disclosure_Agreement.pdf",
+      "governing_law": "Utah",
+      "term_months": 12
+    },
+    {
+      "document_id": "Kenway-NDA-Form-Blank.pdf",
+      "governing_law": "Delaware",
+      "term_months": 24
+    },
+    {
+      "document_id": "Mutual%20Non%20Disclosure%20Agreement_0.pdf",
+      "governing_law": "New York",
+      "term_months": 36
+    },
+    {
+      "document_id": "NDA-2016-DAB.pdf",
+      "governing_law": "England and Wales",
+      "term_months": 12
+    },
+    {
+      "document_id": "NDATyre%20Plant.pdf",
+      "governing_law": "South Africa",
+      "term_months": 36
+    },
+    {
+      "document_id": "NDA_10.pdf",
+      "governing_law": "State of Israel",
+      "term_months": 36
+    },
+    {
+      "document_id": "NDA_English.pdf",
+      "governing_law": "Province of Quebec",
+      "term_months": 12
+    },
+    {
+      "document_id": "Non Disclosure Agreement - CP Specific NDA (CreativeNDA-CPS121.1014).pdf",
+      "governing_law": "Delaware",
+      "term_months": 24
+    },
+    {
+      "document_id": "SONGS%20RFP%20Confidentiality%20Agreement_201705051754392249.pdf",
+      "governing_law": "California",
+      "term_months": 36
+    },
+    {
+      "document_id": "Template-NDA.pdf",
+      "governing_law": "Commonwealth of Pennsylvania",
+      "term_months": 36
+    },
+    {
+      "document_id": "annex-2-sample-non-disclosure-agreement.pdf",
+      "governing_law": "England",
+      "term_months": 36
+    },
+    {
+      "document_id": "non-disclosure-agreement-en.pdf",
+      "governing_law": "Brazil or New York",
+      "term_months": 36
+    },
+    {
+      "document_id": "non-disclosure-agreement-mutual-generic-blank.pdf",
+      "governing_law": "Arizona",
+      "term_months": 24
+    },
+    {
+      "document_id": "non-disclosure-agreement_5.pdf",
+      "governing_law": "Minnesota",
+      "term_months": 24
+    }
+  ],
+  "elapsed_seconds": 526.75,
+  "cost_usd": 4.792357,
+  "total_tokens": 9119116
+}

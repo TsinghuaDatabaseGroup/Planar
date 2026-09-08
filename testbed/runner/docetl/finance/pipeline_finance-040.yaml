@@ -1,0 +1,294 @@
+datasets:
+  sec_csv_scan_seed:
+    type: file
+    path: data/SEC/CSV/2024.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: scan_all_sec_csv_tables
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          import csv
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          csv_dir = os.path.abspath(os.path.join(base_dir, "CSV"))
+          if os.path.commonpath([base_dir, csv_dir]) != base_dir:
+              raise ValueError("SEC CSV path escapes data/SEC")
+
+          rows = []
+          for year in range(2019, 2025):
+              csv_path = os.path.join(csv_dir, f"{year}.csv")
+              with open(
+                  csv_path,
+                  "r",
+                  encoding="utf-8-sig",
+                  newline="",
+              ) as handle:
+                  for row in csv.DictReader(handle):
+                      rows.append({"text": row.get("text")})
+          return {"rows": rows}
+
+  - name: unnest_all_sec_filings
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - text
+
+  - name: load_filing_document
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("SEC text path escapes data/SEC")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              document = handle.read()
+          return {"document": document}
+
+  - name: filter_software_industry_companies
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this SEC 10-K filing only if the reporting company's primary industry
+      sector is Software.
+      Base the decision on the company's primary business rather than its use of
+      software in another industry.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: extract_company_and_transaction_counterparties
+    type: map
+    optimize: true
+    prompt: |
+      Extract from this SEC 10-K filing:
+
+      1. The legal registrant name stated in the filing.
+      2. The names of all distinct whole-company merger or acquisition
+         counterparties disclosed in the filing.
+
+      As required by the query, exclude asset purchases, minority-stake
+      investments, spin-offs, going-private recapitalizations involving only one
+      operating company, and SPAC or blank-check combinations. Return an empty
+      list when no qualifying counterparty is disclosed, and use an empty string
+      if the filing company name cannot be determined.
+      Preserve each counterparty's identifying name and return each distinct
+      counterparty once.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        company_name: string
+        counterparty_names: list[string]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 1024
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_events_with_counterparties
+    type: code_filter
+    code: |
+      def transform(doc):
+          counterparties = doc.get("counterparty_names")
+          return (
+              bool(str(doc.get("company_name", "")).strip())
+              and isinstance(counterparties, list)
+              and len(counterparties) > 0
+          )
+
+  - name: deduplicate_software_registry_by_company_name
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          seen = set()
+          rows = []
+          for item in items:
+              company_name = str(item.get("company_name", "")).strip()
+              key = company_name.casefold()
+              if not company_name or key in seen:
+                  continue
+              seen.add(key)
+              rows.append({"registry_company_name": company_name})
+          return {"rows": rows}
+
+  - name: unnest_software_registry
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - registry_company_name
+
+  - name: match_counterparties_to_software_registry
+    type: equijoin
+    optimize: true
+    comparison_prompt: |
+      Determine whether at least one named whole-company transaction counterparty
+      refers to the same legal entity as the software registry company.
+
+      Allow harmless naming variations, but require the names to identify the same
+      legal entity.
+
+      COUNTERPARTY NAMES:
+      {{ left.counterparty_names }}
+
+      SOFTWARE REGISTRY COMPANY:
+      {{ right.registry_company_name }}
+    blocking_keys:
+      left:
+        - counterparty_names
+      right:
+        - registry_company_name
+    blocking_target_recall: 0.95
+    embedding_model: Qwen3-Embedding-8B
+    comparison_model: Qwen3.5-397B-A17B
+    timeout: 120
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_distinct_company_matches
+    type: code_filter
+    code: |
+      def transform(doc):
+          filing_company = str(doc.get("company_name", "")).strip()
+          registry_company = str(
+              doc.get("registry_company_name", "")
+          ).strip()
+          return (
+              bool(filing_company)
+              and bool(registry_company)
+              and filing_company.casefold() != registry_company.casefold()
+          )
+
+  - name: project_alphabetical_company_pairs
+    type: code_map
+    code: |
+      def transform(doc):
+          filing_company = str(doc.get("company_name", "")).strip()
+          registry_company = str(
+              doc.get("registry_company_name", "")
+          ).strip()
+          ordered = sorted(
+              [filing_company, registry_company],
+              key=lambda value: value.casefold(),
+          )
+          return {
+              "company_a": ordered[0],
+              "company_b": ordered[1],
+          }
+
+  - name: deduplicate_unordered_company_pairs
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          seen = set()
+          rows = []
+          for item in items:
+              company_a = str(item.get("company_a", "")).strip()
+              company_b = str(item.get("company_b", "")).strip()
+              key = (company_a.casefold(), company_b.casefold())
+              if not company_a or not company_b or key in seen:
+                  continue
+              seen.add(key)
+              rows.append(
+                  {
+                      "company_a": company_a,
+                      "company_b": company_b,
+                  }
+              )
+          return {"rows": rows}
+
+  - name: unnest_unique_company_pairs
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - company_a
+      - company_b
+
+pipeline:
+  steps:
+    - name: software_events
+      input: sec_csv_scan_seed
+      operations:
+        - scan_all_sec_csv_tables
+        - unnest_all_sec_filings
+        - load_filing_document
+        - filter_software_industry_companies
+        - extract_company_and_transaction_counterparties
+    - name: candidate_events
+      input: software_events
+      operations:
+        - filter_events_with_counterparties
+    - name: software_registry
+      input: software_events
+      operations:
+        - deduplicate_software_registry_by_company_name
+        - unnest_software_registry
+    - name: matched_counterparties
+      operations:
+        - match_counterparties_to_software_registry:
+            left: candidate_events
+            right: software_registry
+    - name: process
+      input: matched_counterparties
+      operations:
+        - filter_distinct_company_matches
+        - project_alphabetical_company_pairs
+        - deduplicate_unordered_company_pairs
+        - unnest_unique_company_pairs
+  output:
+    type: file
+    path: raw_outputs/finance/output_finance-040.json

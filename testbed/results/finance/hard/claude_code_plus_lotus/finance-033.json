@@ -1,0 +1,22 @@
+{
+  "task_id": "finance-033",
+  "answer": {
+    "top_5_growth": {
+      "None": {
+        "employee_count_2019": 2200,
+        "employee_count_2023": 106500,
+        "employee_change_percent": 4740.9
+      }
+    },
+    "top_5_decline": {
+      "None": {
+        "employee_count_2019": 1039,
+        "employee_count_2023": 0,
+        "employee_change_percent": -100.0
+      }
+    }
+  },
+  "elapsed_seconds": 3299.683,
+  "cost_usd": 29.54807805,
+  "total_tokens": 74314905
+}

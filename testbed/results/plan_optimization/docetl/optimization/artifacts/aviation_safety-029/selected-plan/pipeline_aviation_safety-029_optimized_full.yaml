@@ -1,0 +1,224 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+  asrs_environment_attributes:
+    type: file
+    path: data/asrs/environment_attributes.csv
+  asrs_events:
+    type: file
+    path: data/asrs/events.csv
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: https://llm-endpoint.example/v1
+default_embedding_api_base: https://llm-endpoint.example/v1
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: https://llm-endpoint.example/v1
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types:
+    - chunk
+    - proj_synthesis
+    - glean
+  equijoin:
+    target_recall: 0.95
+operations:
+- name: filter_afternoon_local_time
+  type: code_filter
+  code: "def transform(doc):\n    return doc.get(\"local_time_of_day\") == \"1201-1800\"\n"
+- name: load_asrs_narrative
+  type: code_map
+  code: "def transform(doc):\n    import os\n\n    base_dir = os.path.abspath(os.path.join(\"data\", \"\
+    asrs\"))\n    text_path = os.path.abspath(\n        os.path.join(base_dir, str(doc.get(\"text_file\"\
+    , \"\")))\n    )\n    if os.path.commonpath([base_dir, text_path]) != base_dir:\n        raise ValueError(\"\
+    ASRS text path escapes data/asrs\")\n    with open(text_path, \"r\", encoding=\"utf-8\", errors=\"\
+    replace\") as handle:\n        text = handle.read()\n    return {\"text\": text}\n"
+- name: filter_weather_caused_target_result
+  type: filter
+  optimize: true
+  prompt: 'Keep this NASA ASRS report only when the narrative explicitly states that
+
+    weather or visibility caused at least one of these results:
+
+
+    - a go-around;
+
+    - a missed approach; or
+
+    - a new or revised ATC clearance.
+
+
+    The causal connection must be explicit. Mere weather or visibility mention,
+
+    weather encountered during an unrelated go-around, or a clearance change
+
+    without a stated weather or visibility cause does not qualify.
+
+
+    Narrative:
+
+    {{ input.text }}
+
+    '
+  output:
+    mode: structured_output
+    schema:
+      is_match: boolean
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 4096
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: filter_nonexcluded_primary_cause
+  type: filter
+  optimize: true
+  prompt: 'This report has already been identified as explicitly linking weather or
+
+    visibility to a go-around, missed approach, or new clearance. Keep it only
+
+    when traffic spacing, runway occupancy, or aircraft equipment was not the
+
+    primary cause of that result.
+
+
+    Exclude the report when the primary reason for the go-around, missed
+
+    approach, or new clearance was separation or traffic spacing, an occupied or
+
+    unavailable runway caused by traffic, or an aircraft system/equipment
+
+    problem, even if weather appears as secondary context. Keep it when weather
+
+    or visibility remained the primary cause.
+
+
+    Narrative:
+
+    {{ input.text }}
+
+    '
+  output:
+    mode: structured_output
+    schema:
+      is_match: boolean
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 4096
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: attach_target_flight_conditions
+  type: code_map
+  code: "import csv\nimport os\nimport threading\n\n_flight_condition_index = None\n_flight_condition_lock\
+    \ = threading.Lock()\n\ndef load_flight_condition_index():\n    global _flight_condition_index\n \
+    \   if _flight_condition_index is None:\n        with _flight_condition_lock:\n            if _flight_condition_index\
+    \ is None:\n                index = {}\n                path = os.path.abspath(\n                \
+    \    os.path.join(\n                        \"data\", \"asrs\", \"environment_attributes.csv\"\n \
+    \                   )\n                )\n                with open(\n                    path, \"\
+    r\", encoding=\"utf-8\", errors=\"replace\", newline=\"\"\n                ) as handle:\n        \
+    \            for row in csv.DictReader(handle):\n                        value = row.get(\"value\"\
+    )\n                        if (\n                            row.get(\"attribute\") == \"flight_conditions\"\
+    \n                            and value in {\"IMC\", \"Marginal\", \"Mixed\"}\n                  \
+    \      ):\n                            index.setdefault(\n                                str(row.get(\"\
+    incident_id\", \"\")), []\n                            ).append(value)\n                _flight_condition_index\
+    \ = index\n    return _flight_condition_index\n\ndef transform(doc):\n    values = load_flight_condition_index().get(\n\
+    \        str(doc.get(\"incident_id\", \"\")), []\n    )\n    return {\"flight_conditions_values\"\
+    : list(dict.fromkeys(values))}\n"
+- name: inner_join_environment_records
+  type: code_filter
+  code: "def transform(doc):\n    return bool(doc.get(\"flight_conditions_values\"))\n"
+- name: attach_target_result_events
+  type: code_map
+  code: "import csv\nimport os\nimport threading\n\n_result_event_index = None\n_result_event_lock = threading.Lock()\n\
+    \ndef load_result_event_index():\n    global _result_event_index\n    if _result_event_index is None:\n\
+    \        with _result_event_lock:\n            if _result_event_index is None:\n                label_to_result\
+    \ = {\n                    \"Flight Crew Executed Go Around / Missed Approach\":\n               \
+    \         \"go_around_or_missed_approach\",\n                    \"Air Traffic Control Issued New\
+    \ Clearance\":\n                        \"new_clearance\",\n                }\n                index\
+    \ = {}\n                path = os.path.abspath(\n                    os.path.join(\"data\", \"asrs\"\
+    , \"events.csv\")\n                )\n                with open(\n                    path, \"r\"\
+    , encoding=\"utf-8\", errors=\"replace\", newline=\"\"\n                ) as handle:\n           \
+    \         for row in csv.DictReader(handle):\n                        label = row.get(\"label\")\n\
+    \                        if (\n                            row.get(\"event_type\") == \"result\"\n\
+    \                            and label in label_to_result\n                        ):\n          \
+    \                  index.setdefault(\n                                str(row.get(\"incident_id\"\
+    , \"\")), []\n                            ).append(label_to_result[label])\n                _result_event_index\
+    \ = index\n    return _result_event_index\n\ndef transform(doc):\n    results = load_result_event_index().get(\n\
+    \        str(doc.get(\"incident_id\", \"\")), []\n    )\n    return {\"recorded_result_values\": list(dict.fromkeys(results))}\n"
+- name: inner_join_result_events
+  type: code_filter
+  code: "def transform(doc):\n    return bool(doc.get(\"recorded_result_values\"))\n"
+- name: filter_approach_or_landing_phase
+  type: code_filter
+  code: "def transform(doc):\n    flight_phase = str(doc.get(\"flight_phase\", \"\"))\n    return \"Approach\"\
+    \ in flight_phase or \"Landing\" in flight_phase\n"
+- name: build_condition_result_combinations
+  type: code_map
+  code: "def transform(doc):\n    rows = [\n        {\n            \"flight_conditions\": condition,\n\
+    \            \"recorded_result\": result,\n        }\n        for condition in doc.get(\"flight_conditions_values\"\
+    , [])\n        for result in doc.get(\"recorded_result_values\", [])\n    ]\n    return {\"condition_result_rows\"\
+    : rows}\n"
+- name: unnest_condition_result_combinations
+  type: unnest
+  unnest_key: condition_result_rows
+  recursive: true
+  depth: 2
+  expand_fields:
+  - flight_conditions
+  - recorded_result
+- name: aggregate_condition_result_distribution
+  type: code_reduce
+  reduce_key: _all
+  code: "def transform(items):\n    condition_order = [\"IMC\", \"Marginal\", \"Mixed\"]\n    result_order\
+    \ = [\n        \"go_around_or_missed_approach\",\n        \"new_clearance\",\n    ]\n    incident_ids\
+    \ = {\n        (condition, result): set()\n        for condition in condition_order\n        for result\
+    \ in result_order\n    }\n\n    for item in items:\n        incident_id = str(item.get(\"incident_id\"\
+    , \"\"))\n        key = (item.get(\"flight_conditions\"), item.get(\"recorded_result\"))\n       \
+    \ if incident_id and key in incident_ids:\n            incident_ids[key].add(incident_id)\n\n    rows\
+    \ = []\n    for condition in condition_order:\n        for result in result_order:\n            ids\
+    \ = incident_ids[(condition, result)]\n            if not ids:\n                continue\n       \
+    \     rows.append(\n                {\n                    \"flight_conditions\": condition,\n   \
+    \                 \"recorded_result\": result,\n                    \"incident_count\": len(ids),\n\
+    \                }\n            )\n    return {\"rows\": rows}\n"
+- name: unnest_answer_rows
+  type: unnest
+  unnest_key: rows
+  recursive: true
+  depth: 2
+  expand_fields:
+  - flight_conditions
+  - recorded_result
+  - incident_count
+pipeline:
+  steps:
+  - name: process
+    input: asrs_incidents
+    operations:
+    - filter_afternoon_local_time
+    - load_asrs_narrative
+    - filter_weather_caused_target_result
+    - filter_nonexcluded_primary_cause
+    - attach_target_flight_conditions
+    - inner_join_environment_records
+    - attach_target_result_events
+    - inner_join_result_events
+    - filter_approach_or_landing_phase
+    - build_condition_result_combinations
+    - unnest_condition_result_combinations
+    - aggregate_condition_result_distribution
+    - unnest_answer_rows
+  output:
+    type: file
+    path: /home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-029/outputs/output_aviation_safety-029.json
+    intermediate_dir: /home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-029/intermediates
+bypass_cache: true

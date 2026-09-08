@@ -1,0 +1,1365 @@
+{
+  "format_version": 1,
+  "purpose": "human_review_of_selected_palimpzest_physical_plan",
+  "task_id": "aviation_safety-044",
+  "optimization_status": "optimized_only",
+  "selected_plan_id": "04f12b76a8",
+  "executable_plan": {
+    "file": "optimized_plan_aviation_safety-044.plan.pkl",
+    "format": "cloudpickle",
+    "version": 1,
+    "sha256": "809cdc4baf7d60629ecdfa4f89b2cee269f47304b0c0ab336ca0309a67ea4046",
+    "size_bytes": 649824,
+    "selected_plan_id": "04f12b76a8",
+    "datasources": {
+      "aviation_safety-044-reports-semantic-input": {
+        "id": "aviation_safety-044-reports-semantic-input",
+        "row_count": 1030,
+        "schema_fields": [
+          "incident_id",
+          "text"
+        ]
+      },
+      "aviation_safety-044-components-semantic-input": {
+        "id": "aviation_safety-044-components-semantic-input",
+        "row_count": 124,
+        "schema_fields": [
+          "component_records",
+          "incident_id"
+        ]
+      },
+      "aviation_safety-044-events-semantic-input": {
+        "id": "aviation_safety-044-events-semantic-input",
+        "row_count": 1700,
+        "schema_fields": [
+          "event_labels",
+          "incident_id"
+        ]
+      }
+    },
+    "scan_datasource_records_included": false,
+    "sentinel_record_payloads_included": false
+  },
+  "input_plan": {
+    "task_id": "aviation_safety-044",
+    "query": "Among Aircraft-primary reports that have both a pressurization, pack, bleed-air, or air-conditioning component record and a smoke, fumes, odor, or aircraft-equipment-problem event, how many distinct incidents are primarily attributable to equipment_malfunction, maintenance_or_release_decision, environmental_contamination, or crew_procedure? Include only reports with one clearly primary cause and an operational consequence beyond a maintenance-record entry. For each cause, summarize the canonical system and dominant operational outcome in at most six words each.",
+    "inputs": [
+      {
+        "source_id": "incidents.csv",
+        "dataset": "NASA_ASRS",
+        "source_type": "table",
+        "role": "primary"
+      },
+      {
+        "source_id": "components.csv",
+        "dataset": "NASA_ASRS",
+        "source_type": "table",
+        "role": "primary"
+      },
+      {
+        "source_id": "events.csv",
+        "dataset": "NASA_ASRS",
+        "source_type": "table",
+        "role": "primary"
+      },
+      {
+        "source_id": "text/*",
+        "dataset": "NASA_ASRS",
+        "source_type": "document",
+        "role": "primary"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "causal_records := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, primary_problem])\n  -> FILTER(primary_problem = 'Aircraft')\n  -> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n  -> SEM_FILTER(\"Keep reports whose narrative states one clearly primary cause for the smoke, fumes, odor, or equipment event.\", {text})\n  -> SEM_FILTER(\"Keep reports that describe an operational response or consequence beyond a maintenance-record entry alone.\", {text})\n  -> SEM_EXTRACT(\"Extract the initiating condition, relevant system phrase, crew or maintenance intervention, and operational outcome as phrases of at most eight words.\", {incident_id:string, initiating_condition:string, system_phrase:string, intervention:string, operational_outcome:string}, {incident_id,text})\n  -> SEM_CLASSIFY(\"Assign primary cause to equipment_malfunction, maintenance_or_release_decision, environmental_contamination, or crew_procedure.\", target_labels=[equipment_malfunction,maintenance_or_release_decision,environmental_contamination,crew_procedure], input_bindings={initiating_condition,system_phrase,intervention,operational_outcome,text})\n)\ncomponent_records := (\n  SCAN_TABLE(NASA_ASRS, components.csv, [incident_id, attribute, value])\n  -> FILTER(attribute = 'aircraft_component' AND (value CONTAINS 'Pressurization' OR value CONTAINS 'Pack' OR value CONTAINS 'Bleed' OR value CONTAINS 'Air Conditioning'))\n  -> GROUP_BY([incident_id], {component_records:COLLECT(value)})\n)\ncauses_with_components := JOIN(left=causal_records, right=component_records, join_type=inner, condition=causal_records.incident_id = component_records.incident_id)\nevent_labels := (\n  SCAN_TABLE(NASA_ASRS, events.csv, [incident_id, event_type, label])\n  -> FILTER(label = 'Flight Deck / Cabin / Aircraft Event Smoke / Fire / Fumes / Odor' OR label CONTAINS 'Aircraft Equipment Problem')\n  -> GROUP_BY([incident_id], {event_labels:COLLECT(event_type,label)})\n)\njoined := JOIN(left=causes_with_components, right=event_labels, join_type=inner, condition=causes_with_components.incident_id = event_labels.incident_id)\njoined\n-> GROUP_BY([cause_category], {incident_count:COUNT_DISTINCT(incident_id), causal_records:COLLECT(system_phrase,operational_outcome,component_records,event_labels)})\n-> SEM_AGGREGATE(\"For each cause category, produce the canonical system and dominant operational outcome as phrases of at most six words.\", {canonical_system:string, dominant_operational_outcome:string}, group_by=[cause_category], input_bindings={causal_records})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "cause_category",
+        "incident_count",
+        "canonical_system",
+        "dominant_operational_outcome"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "string",
+        "string"
+      ]
+    }
+  },
+  "input_bad_plan": null,
+  "input_logical_plan": {
+    "root_dataset_id": "9b042690eb",
+    "nodes": [
+      {
+        "dataset_id": "aviation_safety-044-reports-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "c0040bfd91",
+        "unique_logical_op_id": "0-c0040bfd91",
+        "depends_on": [],
+        "generated_fields": [
+          "incident_id",
+          "text"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "incident_id",
+          "text"
+        ]
+      },
+      {
+        "dataset_id": "b2a0752e8a",
+        "source_dataset_ids": [
+          "aviation_safety-044-reports-semantic-input"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "a28c2c2057",
+        "unique_logical_op_id": "1-a28c2c2057",
+        "depends_on": [
+          "text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "incident_id",
+          "text"
+        ],
+        "output_fields": [
+          "incident_id",
+          "text"
+        ],
+        "filter": "Keep this report only if the narrative states one clearly primary cause for the smoke, fumes, odor, or equipment event."
+      },
+      {
+        "dataset_id": "df0b06ce33",
+        "source_dataset_ids": [
+          "b2a0752e8a"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "17d7245f00",
+        "unique_logical_op_id": "2-17d7245f00",
+        "depends_on": [
+          "text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "incident_id",
+          "text"
+        ],
+        "output_fields": [
+          "incident_id",
+          "text"
+        ],
+        "filter": "Keep this report only if it describes an operational response or consequence beyond a maintenance-record entry alone."
+      },
+      {
+        "dataset_id": "7bb01867aa",
+        "source_dataset_ids": [
+          "df0b06ce33"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "312ca4e5fd",
+        "unique_logical_op_id": "3-312ca4e5fd",
+        "depends_on": [
+          "incident_id",
+          "text"
+        ],
+        "generated_fields": [
+          "initiating_condition",
+          "intervention",
+          "operational_outcome",
+          "system_phrase"
+        ],
+        "input_fields": [
+          "incident_id",
+          "text"
+        ],
+        "output_fields": [
+          "incident_id",
+          "initiating_condition",
+          "intervention",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "desc": "Extract the initiating condition, relevant system, intervention, and operational outcome.",
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "d76aa3d28f",
+        "source_dataset_ids": [
+          "7bb01867aa"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "0ed1e22187",
+        "unique_logical_op_id": "4-0ed1e22187",
+        "depends_on": [
+          "initiating_condition",
+          "intervention",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "generated_fields": [
+          "cause_category"
+        ],
+        "input_fields": [
+          "incident_id",
+          "initiating_condition",
+          "intervention",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "output_fields": [
+          "cause_category",
+          "incident_id",
+          "initiating_condition",
+          "intervention",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "desc": "Assign the report's one clearly primary cause category.",
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "5472bdeb44",
+        "source_dataset_ids": [
+          "d76aa3d28f"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "51a765ba93",
+        "unique_logical_op_id": "5-51a765ba93",
+        "depends_on": [
+          "cause_category"
+        ],
+        "generated_fields": [
+          "normalized_cause_category"
+        ],
+        "input_fields": [
+          "cause_category",
+          "incident_id",
+          "initiating_condition",
+          "intervention",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "output_fields": [
+          "cause_category",
+          "incident_id",
+          "initiating_condition",
+          "intervention",
+          "normalized_cause_category",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "2a09e7c550",
+        "source_dataset_ids": [
+          "5472bdeb44"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "418035f2bd",
+        "unique_logical_op_id": "6-418035f2bd",
+        "depends_on": [
+          "normalized_cause_category"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "cause_category",
+          "incident_id",
+          "initiating_condition",
+          "intervention",
+          "normalized_cause_category",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "output_fields": [
+          "cause_category",
+          "incident_id",
+          "initiating_condition",
+          "intervention",
+          "normalized_cause_category",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "filter": "has_valid_cause"
+      },
+      {
+        "dataset_id": "aviation_safety-044-components-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "c410f35586",
+        "unique_logical_op_id": "7-c410f35586",
+        "depends_on": [],
+        "generated_fields": [
+          "component_records",
+          "incident_id"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "component_records",
+          "incident_id"
+        ]
+      },
+      {
+        "dataset_id": "9f97b7d067",
+        "source_dataset_ids": [
+          "2a09e7c550",
+          "aviation_safety-044-components-semantic-input"
+        ],
+        "logical_operator": "JoinOp",
+        "logical_op_id": "e3e63d11e5",
+        "unique_logical_op_id": "8-e3e63d11e5",
+        "depends_on": [
+          "incident_id"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "cause_category",
+          "component_records",
+          "incident_id",
+          "initiating_condition",
+          "intervention",
+          "normalized_cause_category",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "output_fields": [
+          "cause_category",
+          "component_records",
+          "incident_id",
+          "initiating_condition",
+          "intervention",
+          "normalized_cause_category",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "on": "['incident_id']",
+        "how": "inner"
+      },
+      {
+        "dataset_id": "aviation_safety-044-events-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "435d207f0d",
+        "unique_logical_op_id": "9-435d207f0d",
+        "depends_on": [],
+        "generated_fields": [
+          "event_labels",
+          "incident_id"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "event_labels",
+          "incident_id"
+        ]
+      },
+      {
+        "dataset_id": "0ac02d5ecf",
+        "source_dataset_ids": [
+          "9f97b7d067",
+          "aviation_safety-044-events-semantic-input"
+        ],
+        "logical_operator": "JoinOp",
+        "logical_op_id": "e3e63d11e5",
+        "unique_logical_op_id": "10-e3e63d11e5",
+        "depends_on": [
+          "incident_id"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "cause_category",
+          "component_records",
+          "event_labels",
+          "incident_id",
+          "initiating_condition",
+          "intervention",
+          "normalized_cause_category",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "output_fields": [
+          "cause_category",
+          "component_records",
+          "event_labels",
+          "incident_id",
+          "initiating_condition",
+          "intervention",
+          "normalized_cause_category",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "on": "['incident_id']",
+        "how": "inner"
+      },
+      {
+        "dataset_id": "16aa1fdb52",
+        "source_dataset_ids": [
+          "0ac02d5ecf"
+        ],
+        "logical_operator": "Distinct",
+        "logical_op_id": "162f9f8bee",
+        "unique_logical_op_id": "11-162f9f8bee",
+        "depends_on": [],
+        "generated_fields": [],
+        "input_fields": [
+          "cause_category",
+          "component_records",
+          "event_labels",
+          "incident_id",
+          "initiating_condition",
+          "intervention",
+          "normalized_cause_category",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "output_fields": [
+          "cause_category",
+          "component_records",
+          "event_labels",
+          "incident_id",
+          "initiating_condition",
+          "intervention",
+          "normalized_cause_category",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "distinct_cols": "['incident_id', 'normalized_cause_category', 'operational_outcome', 'system_phrase']"
+      },
+      {
+        "dataset_id": "d35afdd87b",
+        "source_dataset_ids": [
+          "16aa1fdb52"
+        ],
+        "logical_operator": "GroupByAggregate",
+        "logical_op_id": "9bb48004ce",
+        "unique_logical_op_id": "12-9bb48004ce",
+        "depends_on": [],
+        "generated_fields": [
+          "count(incident_id)",
+          "list(component_records)",
+          "list(event_labels)",
+          "list(operational_outcome)",
+          "list(system_phrase)"
+        ],
+        "input_fields": [
+          "cause_category",
+          "component_records",
+          "event_labels",
+          "incident_id",
+          "initiating_condition",
+          "intervention",
+          "normalized_cause_category",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "output_fields": [
+          "count(incident_id)",
+          "list(component_records)",
+          "list(event_labels)",
+          "list(operational_outcome)",
+          "list(system_phrase)",
+          "normalized_cause_category"
+        ],
+        "group_by": "GroupBy({'group_by_fields': ['normalized_cause_category'], 'agg_funcs': ['count', 'list', 'list', 'list', 'list'], 'agg_fields': ['incident_id', 'system_phrase', 'operational_outcome', 'component_records', 'event_labels']})"
+      },
+      {
+        "dataset_id": "9b042690eb",
+        "source_dataset_ids": [
+          "d35afdd87b"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "29054c3fb3",
+        "unique_logical_op_id": "13-29054c3fb3",
+        "depends_on": [
+          "list(component_records)",
+          "list(event_labels)",
+          "list(operational_outcome)",
+          "list(system_phrase)",
+          "normalized_cause_category"
+        ],
+        "generated_fields": [
+          "canonical_system",
+          "dominant_operational_outcome"
+        ],
+        "input_fields": [
+          "count(incident_id)",
+          "list(component_records)",
+          "list(event_labels)",
+          "list(operational_outcome)",
+          "list(system_phrase)",
+          "normalized_cause_category"
+        ],
+        "output_fields": [
+          "canonical_system",
+          "count(incident_id)",
+          "dominant_operational_outcome",
+          "list(component_records)",
+          "list(event_labels)",
+          "list(operational_outcome)",
+          "list(system_phrase)",
+          "normalized_cause_category"
+        ],
+        "desc": "For this cause category, summarize the canonical system and dominant operational outcome from the collected records.",
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      }
+    ],
+    "topological_logical_sequence": [
+      "0-c0040bfd91",
+      "1-a28c2c2057",
+      "2-17d7245f00",
+      "3-312ca4e5fd",
+      "4-0ed1e22187",
+      "5-51a765ba93",
+      "6-418035f2bd",
+      "7-c410f35586",
+      "8-e3e63d11e5",
+      "9-435d207f0d",
+      "10-e3e63d11e5",
+      "11-162f9f8bee",
+      "12-9bb48004ce",
+      "13-29054c3fb3"
+    ]
+  },
+  "selected_physical_plan": {
+    "plan_id": "04f12b76a8",
+    "plan_string": "0. Schema['count(incident_id)', 'list(component_records)', 'list(event_labels)', 'list(operational_outcome)', 'list(system_phrase)', 'normalized_cause_category'] -> LLMConvertBonded -> Schema['canonical_system', 'count(incident_id)', 'dominant_operational_outcome', 'list(component_records)', 'list(event_labels)', 'list(operational_outcome)', 'list(system_phrase)', 'normalized_cause_category']\n    (count(incident_id), list(compo) -> (canonical_system, count(incide)\n    Model: Qwen3.5-397B-A17B\n    Prompt Strategy: PromptStrategy.MAP\n    Reasoning Effort: default\n\n  1. Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'] -> ApplyGroupByOp -> Schema['count(incident_id)', 'list(component_records)', 'list(event_labels)', 'list(operational_outcome)', 'list(system_phrase)', 'normalized_cause_category']\n    (cause_category, component_reco) -> (count(incident_id), list(compo)\n    Group-by Signature: GroupBy({'group_by_fields': ['normalized_cause_category'], 'agg_funcs': ['count', 'list', 'list', 'list', 'list'], 'agg_fields': ['incident_id', 'system_phrase', 'operational_outcome', 'component_records', 'event_labels']})\n\n    2. Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'] -> DistinctOp -> Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text']\n    (cause_category, component_reco) -> (cause_category, component_reco)\n    Distinct Cols: ['incident_id', 'normalized_cause_category', 'operational_outcome', 'system_phrase']\n\n      3. Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'] -> RelationalJoin -> Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text']\n    (cause_category, component_reco) -> (cause_category, component_reco)\n    Condition: \n    How: inner\n    On: ['incident_id']\n\n        4. Schema['cause_category', 'component_records', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'] -> RelationalJoin -> Schema['cause_category', 'component_records', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text']\n    (cause_category, component_reco) -> (cause_category, component_reco)\n    Condition: \n    How: inner\n    On: ['incident_id']\n\n          5. Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'] -> NonLLMFilter -> Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text']\n    (cause_category, incident_id, i) -> (cause_category, incident_id, i)\n    Filter: has_valid_cause\n\n            6. Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'] -> NonLLMConvert -> Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text']\n    (cause_category, incident_id, i) -> (cause_category, incident_id, i)\n    UDF: normalize_cause\n\n              7. Schema['incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'] -> MixtureOfAgentsConvert -> Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text']\n    (incident_id, initiating_condit) -> (cause_category, incident_id, i)\n    Prompt Strategy: None\n    Reasoning Effort: default\n    Proposer Models: [Qwen3.5-397B-A17B]\n    Temperatures: [0.4]\n    Aggregator Model: Qwen3.5-397B-A17B\n\n                8. Schema['incident_id', 'text'] -> MixtureOfAgentsConvert -> Schema['incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text']\n    (incident_id, text) -> (incident_id, initiating_condit)\n    Prompt Strategy: None\n    Reasoning Effort: default\n    Proposer Models: [Qwen3.5-397B-A17B]\n    Temperatures: [0.0]\n    Aggregator Model: Qwen3.5-397B-A17B\n\n                  9. Schema['incident_id', 'text'] -> LLMFilter -> Schema['incident_id', 'text']\n    (incident_id, text) -> (incident_id, text)\n    Model: Qwen3.5-397B-A17B\n    Filter: Keep this report only if it describes an operational response or consequence beyond a maintenance-record entry alone.\n\n                    10. Schema['incident_id', 'text'] -> LLMFilter -> Schema['incident_id', 'text']\n    (incident_id, text) -> (incident_id, text)\n    Model: Qwen3.5-397B-A17B\n    Filter: Keep this report only if the narrative states one clearly primary cause for the smoke, fumes, odor, or equipment event.\n\n                      11. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['incident_id', 'text']'>, id=aviation_safety-044-reports-semantic-input, op_id=c0040bfd91)) -> <class 'palimpzest.core.lib.schemas.Schema['incident_id', 'text']'>\n    (incident_id, text)\n\n          5. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['component_records', 'incident_id']'>, id=aviation_safety-044-components-semantic-input, op_id=c410f35586)) -> <class 'palimpzest.core.lib.schemas.Schema['component_records', 'incident_id']'>\n    (incident_id, component_records)\n\n        4. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['event_labels', 'incident_id']'>, id=aviation_safety-044-events-semantic-input, op_id=435d207f0d)) -> <class 'palimpzest.core.lib.schemas.Schema['event_labels', 'incident_id']'>\n    (incident_id, event_labels)\n\n",
+    "root_operator_index": 13,
+    "operators": [
+      {
+        "topological_index": 0,
+        "physical_operator": "MarshalAndScanDataOp",
+        "logical_operator": "BaseScan",
+        "logical_op_id": "c0040bfd91",
+        "unique_logical_op_id": "0-c0040bfd91",
+        "full_op_id": "c0040bfd91-0d83279daa",
+        "model": null,
+        "depends_on": [],
+        "generated_fields": [
+          "incident_id",
+          "text"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "incident_id",
+          "text"
+        ],
+        "source_operator_indices": []
+      },
+      {
+        "topological_index": 1,
+        "physical_operator": "LLMFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "a28c2c2057",
+        "unique_logical_op_id": "1-a28c2c2057",
+        "full_op_id": "a28c2c2057-fe59b73c23",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['incident_id', 'text'].aviation_safety-044-reports-semantic-input.text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "incident_id",
+          "text"
+        ],
+        "output_fields": [
+          "incident_id",
+          "text"
+        ],
+        "source_operator_indices": [
+          0
+        ]
+      },
+      {
+        "topological_index": 2,
+        "physical_operator": "LLMFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "17d7245f00",
+        "unique_logical_op_id": "2-17d7245f00",
+        "full_op_id": "17d7245f00-6850d19d03",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['incident_id', 'text'].aviation_safety-044-reports-semantic-input.text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "incident_id",
+          "text"
+        ],
+        "output_fields": [
+          "incident_id",
+          "text"
+        ],
+        "source_operator_indices": [
+          1
+        ]
+      },
+      {
+        "topological_index": 3,
+        "physical_operator": "MixtureOfAgentsConvert",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "312ca4e5fd",
+        "unique_logical_op_id": "3-312ca4e5fd",
+        "full_op_id": "312ca4e5fd-63c2c00e57",
+        "model": null,
+        "depends_on": [
+          "Schema['incident_id', 'text'].aviation_safety-044-reports-semantic-input.incident_id",
+          "Schema['incident_id', 'text'].aviation_safety-044-reports-semantic-input.text"
+        ],
+        "generated_fields": [
+          "initiating_condition",
+          "intervention",
+          "operational_outcome",
+          "system_phrase"
+        ],
+        "input_fields": [
+          "incident_id",
+          "text"
+        ],
+        "output_fields": [
+          "incident_id",
+          "initiating_condition",
+          "intervention",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "source_operator_indices": [
+          2
+        ]
+      },
+      {
+        "topological_index": 4,
+        "physical_operator": "MixtureOfAgentsConvert",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "0ed1e22187",
+        "unique_logical_op_id": "4-0ed1e22187",
+        "full_op_id": "0ed1e22187-155c769d63",
+        "model": null,
+        "depends_on": [
+          "Schema['incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].7bb01867aa.initiating_condition",
+          "Schema['incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].7bb01867aa.intervention",
+          "Schema['incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].7bb01867aa.operational_outcome",
+          "Schema['incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].7bb01867aa.system_phrase",
+          "Schema['incident_id', 'text'].aviation_safety-044-reports-semantic-input.text"
+        ],
+        "generated_fields": [
+          "cause_category"
+        ],
+        "input_fields": [
+          "incident_id",
+          "initiating_condition",
+          "intervention",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "output_fields": [
+          "cause_category",
+          "incident_id",
+          "initiating_condition",
+          "intervention",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "source_operator_indices": [
+          3
+        ]
+      },
+      {
+        "topological_index": 5,
+        "physical_operator": "NonLLMConvert",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "51a765ba93",
+        "unique_logical_op_id": "5-51a765ba93",
+        "full_op_id": "51a765ba93-9e947fd475",
+        "model": null,
+        "depends_on": [
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].5472bdeb44.cause_category"
+        ],
+        "generated_fields": [
+          "normalized_cause_category"
+        ],
+        "input_fields": [
+          "cause_category",
+          "incident_id",
+          "initiating_condition",
+          "intervention",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "output_fields": [
+          "cause_category",
+          "incident_id",
+          "initiating_condition",
+          "intervention",
+          "normalized_cause_category",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "source_operator_indices": [
+          4
+        ]
+      },
+      {
+        "topological_index": 6,
+        "physical_operator": "NonLLMFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "418035f2bd",
+        "unique_logical_op_id": "6-418035f2bd",
+        "full_op_id": "418035f2bd-ed1036beba",
+        "model": null,
+        "depends_on": [
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].5472bdeb44.normalized_cause_category"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "cause_category",
+          "incident_id",
+          "initiating_condition",
+          "intervention",
+          "normalized_cause_category",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "output_fields": [
+          "cause_category",
+          "incident_id",
+          "initiating_condition",
+          "intervention",
+          "normalized_cause_category",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "source_operator_indices": [
+          5
+        ]
+      },
+      {
+        "topological_index": 7,
+        "physical_operator": "MarshalAndScanDataOp",
+        "logical_operator": "BaseScan",
+        "logical_op_id": "c410f35586",
+        "unique_logical_op_id": "7-c410f35586",
+        "full_op_id": "c410f35586-4382762e37",
+        "model": null,
+        "depends_on": [],
+        "generated_fields": [
+          "component_records",
+          "incident_id"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "component_records",
+          "incident_id"
+        ],
+        "source_operator_indices": []
+      },
+      {
+        "topological_index": 8,
+        "physical_operator": "RelationalJoin",
+        "logical_operator": "JoinOp",
+        "logical_op_id": "e3e63d11e5",
+        "unique_logical_op_id": "8-e3e63d11e5",
+        "full_op_id": "e3e63d11e5-9baa92c4c8",
+        "model": null,
+        "depends_on": [
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].5472bdeb44.incident_id"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "cause_category",
+          "component_records",
+          "incident_id",
+          "initiating_condition",
+          "intervention",
+          "normalized_cause_category",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "output_fields": [
+          "cause_category",
+          "component_records",
+          "incident_id",
+          "initiating_condition",
+          "intervention",
+          "normalized_cause_category",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "source_operator_indices": [
+          6,
+          7
+        ]
+      },
+      {
+        "topological_index": 9,
+        "physical_operator": "MarshalAndScanDataOp",
+        "logical_operator": "BaseScan",
+        "logical_op_id": "435d207f0d",
+        "unique_logical_op_id": "9-435d207f0d",
+        "full_op_id": "435d207f0d-3cd316f801",
+        "model": null,
+        "depends_on": [],
+        "generated_fields": [
+          "event_labels",
+          "incident_id"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "event_labels",
+          "incident_id"
+        ],
+        "source_operator_indices": []
+      },
+      {
+        "topological_index": 10,
+        "physical_operator": "RelationalJoin",
+        "logical_operator": "JoinOp",
+        "logical_op_id": "e3e63d11e5",
+        "unique_logical_op_id": "10-e3e63d11e5",
+        "full_op_id": "e3e63d11e5-9baa92c4c8",
+        "model": null,
+        "depends_on": [
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].5472bdeb44.incident_id"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "cause_category",
+          "component_records",
+          "event_labels",
+          "incident_id",
+          "initiating_condition",
+          "intervention",
+          "normalized_cause_category",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "output_fields": [
+          "cause_category",
+          "component_records",
+          "event_labels",
+          "incident_id",
+          "initiating_condition",
+          "intervention",
+          "normalized_cause_category",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "source_operator_indices": [
+          8,
+          9
+        ]
+      },
+      {
+        "topological_index": 11,
+        "physical_operator": "DistinctOp",
+        "logical_operator": "Distinct",
+        "logical_op_id": "162f9f8bee",
+        "unique_logical_op_id": "11-162f9f8bee",
+        "full_op_id": "162f9f8bee-5baa41915e",
+        "model": null,
+        "depends_on": [
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].0ac02d5ecf.cause_category",
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].0ac02d5ecf.component_records",
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].0ac02d5ecf.event_labels",
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].0ac02d5ecf.incident_id",
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].0ac02d5ecf.initiating_condition",
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].0ac02d5ecf.intervention",
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].0ac02d5ecf.normalized_cause_category",
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].0ac02d5ecf.operational_outcome",
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].0ac02d5ecf.system_phrase",
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].0ac02d5ecf.text",
+          "Schema['cause_category', 'component_records', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].9f97b7d067.cause_category",
+          "Schema['cause_category', 'component_records', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].9f97b7d067.component_records",
+          "Schema['cause_category', 'component_records', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].9f97b7d067.incident_id",
+          "Schema['cause_category', 'component_records', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].9f97b7d067.initiating_condition",
+          "Schema['cause_category', 'component_records', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].9f97b7d067.intervention",
+          "Schema['cause_category', 'component_records', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].9f97b7d067.normalized_cause_category",
+          "Schema['cause_category', 'component_records', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].9f97b7d067.operational_outcome",
+          "Schema['cause_category', 'component_records', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].9f97b7d067.system_phrase",
+          "Schema['cause_category', 'component_records', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].9f97b7d067.text",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].2a09e7c550.cause_category",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].2a09e7c550.incident_id",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].2a09e7c550.initiating_condition",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].2a09e7c550.intervention",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].2a09e7c550.normalized_cause_category",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].2a09e7c550.operational_outcome",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].2a09e7c550.system_phrase",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].2a09e7c550.text",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].5472bdeb44.cause_category",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].5472bdeb44.incident_id",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].5472bdeb44.initiating_condition",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].5472bdeb44.intervention",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].5472bdeb44.normalized_cause_category",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].5472bdeb44.operational_outcome",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].5472bdeb44.system_phrase",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].5472bdeb44.text",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].d76aa3d28f.cause_category",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].d76aa3d28f.incident_id",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].d76aa3d28f.initiating_condition",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].d76aa3d28f.intervention",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].d76aa3d28f.operational_outcome",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].d76aa3d28f.system_phrase",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].d76aa3d28f.text",
+          "Schema['component_records', 'incident_id'].aviation_safety-044-components-semantic-input.component_records",
+          "Schema['component_records', 'incident_id'].aviation_safety-044-components-semantic-input.incident_id",
+          "Schema['event_labels', 'incident_id'].aviation_safety-044-events-semantic-input.event_labels",
+          "Schema['event_labels', 'incident_id'].aviation_safety-044-events-semantic-input.incident_id",
+          "Schema['incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].7bb01867aa.incident_id",
+          "Schema['incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].7bb01867aa.initiating_condition",
+          "Schema['incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].7bb01867aa.intervention",
+          "Schema['incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].7bb01867aa.operational_outcome",
+          "Schema['incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].7bb01867aa.system_phrase",
+          "Schema['incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].7bb01867aa.text",
+          "Schema['incident_id', 'text'].aviation_safety-044-reports-semantic-input.incident_id",
+          "Schema['incident_id', 'text'].aviation_safety-044-reports-semantic-input.text",
+          "Schema['incident_id', 'text'].b2a0752e8a.incident_id",
+          "Schema['incident_id', 'text'].b2a0752e8a.text",
+          "Schema['incident_id', 'text'].df0b06ce33.incident_id",
+          "Schema['incident_id', 'text'].df0b06ce33.text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "cause_category",
+          "component_records",
+          "event_labels",
+          "incident_id",
+          "initiating_condition",
+          "intervention",
+          "normalized_cause_category",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "output_fields": [
+          "cause_category",
+          "component_records",
+          "event_labels",
+          "incident_id",
+          "initiating_condition",
+          "intervention",
+          "normalized_cause_category",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "source_operator_indices": [
+          10
+        ]
+      },
+      {
+        "topological_index": 12,
+        "physical_operator": "ApplyGroupByOp",
+        "logical_operator": "GroupByAggregate",
+        "logical_op_id": "9bb48004ce",
+        "unique_logical_op_id": "12-9bb48004ce",
+        "full_op_id": "9bb48004ce-20d63d8ba9",
+        "model": null,
+        "depends_on": [
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].0ac02d5ecf.cause_category",
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].0ac02d5ecf.component_records",
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].0ac02d5ecf.event_labels",
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].0ac02d5ecf.incident_id",
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].0ac02d5ecf.initiating_condition",
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].0ac02d5ecf.intervention",
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].0ac02d5ecf.normalized_cause_category",
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].0ac02d5ecf.operational_outcome",
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].0ac02d5ecf.system_phrase",
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].0ac02d5ecf.text",
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].16aa1fdb52.cause_category",
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].16aa1fdb52.component_records",
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].16aa1fdb52.event_labels",
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].16aa1fdb52.incident_id",
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].16aa1fdb52.initiating_condition",
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].16aa1fdb52.intervention",
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].16aa1fdb52.normalized_cause_category",
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].16aa1fdb52.operational_outcome",
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].16aa1fdb52.system_phrase",
+          "Schema['cause_category', 'component_records', 'event_labels', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].16aa1fdb52.text",
+          "Schema['cause_category', 'component_records', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].9f97b7d067.cause_category",
+          "Schema['cause_category', 'component_records', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].9f97b7d067.component_records",
+          "Schema['cause_category', 'component_records', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].9f97b7d067.incident_id",
+          "Schema['cause_category', 'component_records', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].9f97b7d067.initiating_condition",
+          "Schema['cause_category', 'component_records', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].9f97b7d067.intervention",
+          "Schema['cause_category', 'component_records', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].9f97b7d067.normalized_cause_category",
+          "Schema['cause_category', 'component_records', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].9f97b7d067.operational_outcome",
+          "Schema['cause_category', 'component_records', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].9f97b7d067.system_phrase",
+          "Schema['cause_category', 'component_records', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].9f97b7d067.text",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].2a09e7c550.cause_category",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].2a09e7c550.incident_id",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].2a09e7c550.initiating_condition",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].2a09e7c550.intervention",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].2a09e7c550.normalized_cause_category",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].2a09e7c550.operational_outcome",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].2a09e7c550.system_phrase",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].2a09e7c550.text",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].5472bdeb44.cause_category",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].5472bdeb44.incident_id",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].5472bdeb44.initiating_condition",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].5472bdeb44.intervention",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].5472bdeb44.normalized_cause_category",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].5472bdeb44.operational_outcome",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].5472bdeb44.system_phrase",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].5472bdeb44.text",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].d76aa3d28f.cause_category",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].d76aa3d28f.incident_id",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].d76aa3d28f.initiating_condition",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].d76aa3d28f.intervention",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].d76aa3d28f.operational_outcome",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].d76aa3d28f.system_phrase",
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].d76aa3d28f.text",
+          "Schema['component_records', 'incident_id'].aviation_safety-044-components-semantic-input.component_records",
+          "Schema['component_records', 'incident_id'].aviation_safety-044-components-semantic-input.incident_id",
+          "Schema['event_labels', 'incident_id'].aviation_safety-044-events-semantic-input.event_labels",
+          "Schema['event_labels', 'incident_id'].aviation_safety-044-events-semantic-input.incident_id",
+          "Schema['incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].7bb01867aa.incident_id",
+          "Schema['incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].7bb01867aa.initiating_condition",
+          "Schema['incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].7bb01867aa.intervention",
+          "Schema['incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].7bb01867aa.operational_outcome",
+          "Schema['incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].7bb01867aa.system_phrase",
+          "Schema['incident_id', 'initiating_condition', 'intervention', 'operational_outcome', 'system_phrase', 'text'].7bb01867aa.text",
+          "Schema['incident_id', 'text'].aviation_safety-044-reports-semantic-input.incident_id",
+          "Schema['incident_id', 'text'].aviation_safety-044-reports-semantic-input.text",
+          "Schema['incident_id', 'text'].b2a0752e8a.incident_id",
+          "Schema['incident_id', 'text'].b2a0752e8a.text",
+          "Schema['incident_id', 'text'].df0b06ce33.incident_id",
+          "Schema['incident_id', 'text'].df0b06ce33.text"
+        ],
+        "generated_fields": [
+          "count(incident_id)",
+          "list(component_records)",
+          "list(event_labels)",
+          "list(operational_outcome)",
+          "list(system_phrase)"
+        ],
+        "input_fields": [
+          "cause_category",
+          "component_records",
+          "event_labels",
+          "incident_id",
+          "initiating_condition",
+          "intervention",
+          "normalized_cause_category",
+          "operational_outcome",
+          "system_phrase",
+          "text"
+        ],
+        "output_fields": [
+          "count(incident_id)",
+          "list(component_records)",
+          "list(event_labels)",
+          "list(operational_outcome)",
+          "list(system_phrase)",
+          "normalized_cause_category"
+        ],
+        "source_operator_indices": [
+          11
+        ]
+      },
+      {
+        "topological_index": 13,
+        "physical_operator": "LLMConvertBonded",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "29054c3fb3",
+        "unique_logical_op_id": "13-29054c3fb3",
+        "full_op_id": "29054c3fb3-4d1cd0eb5a",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['cause_category', 'incident_id', 'initiating_condition', 'intervention', 'normalized_cause_category', 'operational_outcome', 'system_phrase', 'text'].5472bdeb44.normalized_cause_category",
+          "Schema['count(incident_id)', 'list(component_records)', 'list(event_labels)', 'list(operational_outcome)', 'list(system_phrase)', 'normalized_cause_category'].d35afdd87b.list(component_records)",
+          "Schema['count(incident_id)', 'list(component_records)', 'list(event_labels)', 'list(operational_outcome)', 'list(system_phrase)', 'normalized_cause_category'].d35afdd87b.list(event_labels)",
+          "Schema['count(incident_id)', 'list(component_records)', 'list(event_labels)', 'list(operational_outcome)', 'list(system_phrase)', 'normalized_cause_category'].d35afdd87b.list(operational_outcome)",
+          "Schema['count(incident_id)', 'list(component_records)', 'list(event_labels)', 'list(operational_outcome)', 'list(system_phrase)', 'normalized_cause_category'].d35afdd87b.list(system_phrase)"
+        ],
+        "generated_fields": [
+          "canonical_system",
+          "dominant_operational_outcome"
+        ],
+        "input_fields": [
+          "count(incident_id)",
+          "list(component_records)",
+          "list(event_labels)",
+          "list(operational_outcome)",
+          "list(system_phrase)",
+          "normalized_cause_category"
+        ],
+        "output_fields": [
+          "canonical_system",
+          "count(incident_id)",
+          "dominant_operational_outcome",
+          "list(component_records)",
+          "list(event_labels)",
+          "list(operational_outcome)",
+          "list(system_phrase)",
+          "normalized_cause_category"
+        ],
+        "source_operator_indices": [
+          12
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "source": 0,
+        "target": 1
+      },
+      {
+        "source": 1,
+        "target": 2
+      },
+      {
+        "source": 2,
+        "target": 3
+      },
+      {
+        "source": 3,
+        "target": 4
+      },
+      {
+        "source": 4,
+        "target": 5
+      },
+      {
+        "source": 5,
+        "target": 6
+      },
+      {
+        "source": 6,
+        "target": 8
+      },
+      {
+        "source": 7,
+        "target": 8
+      },
+      {
+        "source": 8,
+        "target": 10
+      },
+      {
+        "source": 9,
+        "target": 10
+      },
+      {
+        "source": 10,
+        "target": 11
+      },
+      {
+        "source": 11,
+        "target": 12
+      },
+      {
+        "source": 12,
+        "target": 13
+      }
+    ],
+    "estimated_plan_cost": {
+      "cost": 3.6581508914541963,
+      "time": 64874.35963470771,
+      "quality": 0.8544821428571429,
+      "op_estimates": {
+        "cardinality": 3.0,
+        "time_per_record": 0.8,
+        "cost_per_record": 0.000624,
+        "quality": 0.878,
+        "cardinality_lower_bound": 3.0,
+        "cardinality_upper_bound": 3.0,
+        "time_per_record_lower_bound": 0.8,
+        "time_per_record_upper_bound": 0.8,
+        "cost_per_record_lower_bound": 0.000624,
+        "cost_per_record_upper_bound": 0.000624,
+        "quality_lower_bound": 0.878,
+        "quality_upper_bound": 0.878
+      },
+      "cost_lower_bound": 3.6581508914541963,
+      "cost_upper_bound": 3.6581508914541963,
+      "time_lower_bound": 64874.35963470771,
+      "time_upper_bound": 64874.35963470771,
+      "quality_lower_bound": 0.8544821428571429,
+      "quality_upper_bound": 0.8544821428571429
+    },
+    "topological_logical_sequence": [
+      "0-c0040bfd91",
+      "1-a28c2c2057",
+      "2-17d7245f00",
+      "3-312ca4e5fd",
+      "4-0ed1e22187",
+      "5-51a765ba93",
+      "6-418035f2bd",
+      "7-c410f35586",
+      "8-e3e63d11e5",
+      "9-435d207f0d",
+      "10-e3e63d11e5",
+      "11-162f9f8bee",
+      "12-9bb48004ce",
+      "13-29054c3fb3"
+    ]
+  },
+  "optimizer_configuration": {
+    "strategy": "pareto",
+    "policy": "MaxQuality",
+    "physical_implementation_candidates": {
+      "allow_bonded_query": true,
+      "allow_model_selection": false,
+      "allow_rag_reduction": false,
+      "allow_mixtures": true,
+      "allow_critic": true,
+      "allow_split_merge": false,
+      "force_rag": false,
+      "execution_strategy": "parallel",
+      "max_workers": 64,
+      "join_parallelism": 64
+    },
+    "dynamic_learning_requested": true,
+    "dynamic_learning_pipeline_supported": true,
+    "dynamic_learning": true,
+    "dynamic_learning_support": {
+      "supported": false,
+      "reason": "Palimpzest Sentinel/MAB does not preserve source indices after non-final aggregate or limit operators",
+      "terminal_only_operator_violations": [
+        {
+          "dataset_id": "d35afdd87b",
+          "unique_logical_op_id": "12-9bb48004ce",
+          "logical_operator": "GroupByAggregate",
+          "direct_downstream": [
+            {
+              "dataset_id": "9b042690eb",
+              "unique_logical_op_id": "13-29054c3fb3",
+              "logical_operator": "ConvertScan"
+            }
+          ]
+        }
+      ]
+    },
+    "allow_unsupported_sentinel_plans": true,
+    "dynamic_learning_fallback": null,
+    "sentinel_execution_strategy": "mab",
+    "sentinel_k": 6,
+    "sentinel_j": 4,
+    "sentinel_sample_budget": 100,
+    "sentinel_seed": 42,
+    "available_models": [
+      "Qwen3.5-397B-A17B",
+      "openai/Qwen3-Embedding-8B"
+    ]
+  },
+  "optimizer_search_space": {
+    "group_count": 15,
+    "logical_expression_count": 16,
+    "physical_expression_count": 44,
+    "transformation_rules_explored": [
+      "PushDownFilter",
+      "ReorderConverts"
+    ],
+    "implementation_rules_explored": [
+      "BasicSubstitutionRule",
+      "CritiqueAndRefineRule",
+      "LLMConvertBondedRule",
+      "LLMFilterRule",
+      "MixtureOfAgentsRule",
+      "NonLLMConvertRule",
+      "NonLLMFilterRule",
+      "RelationalJoinRule"
+    ]
+  },
+  "optimization_metrics": {
+    "elapsed_seconds": 533.33325386,
+    "sentinel_sampling_seconds": 533.14252543,
+    "optimizer_search_and_bookkeeping_seconds": 0.19072843,
+    "cost_usd": 1.47941547,
+    "text_llm_calls": 1397,
+    "embedding_calls": 0,
+    "input_text_tokens": 2070077,
+    "output_text_tokens": 287216,
+    "total_text_tokens": 2357293,
+    "embedding_input_tokens": 0,
+    "cache_read_tokens": 0,
+    "cache_creation_tokens": 0,
+    "sampled_operators": {
+      "text_llm_calls": 1160,
+      "embedding_calls": 0,
+      "input_text_tokens": 1566621,
+      "output_text_tokens": 244254,
+      "embedding_input_tokens": 0,
+      "cost_usd": 1.18253655
+    },
+    "validator": {
+      "text_llm_calls": 237,
+      "input_text_tokens": 503456,
+      "output_text_tokens": 42962,
+      "total_text_tokens": 546418,
+      "cost_usd": 0.29687892
+    },
+    "model_usage_by_model": {
+      "Qwen3.5-397B-A17B": {
+        "roles": [
+          "text",
+          "validator"
+        ],
+        "calls": 1397,
+        "input_tokens": 2070077,
+        "output_tokens": 287216,
+        "total_tokens": 2357293,
+        "cost_usd": 1.47941547
+      }
+    }
+  },
+  "sentinel_join_sampling": [
+    {
+      "unique_logical_op_id": "8-e3e63d11e5",
+      "frontier_representative_operator_class": "RelationalJoin",
+      "root_dataset_count": 2,
+      "left_available_source_indices": 1030,
+      "right_available_source_indices": 124,
+      "theoretical_combination_count": 127720,
+      "available_combination_count": 127720,
+      "sample_limit": 100,
+      "sampled_combination_count": 100,
+      "sampling_method": "seeded_uniform_without_replacement_flat_indices",
+      "seed": 42
+    },
+    {
+      "unique_logical_op_id": "10-e3e63d11e5",
+      "frontier_representative_operator_class": "RelationalJoin",
+      "root_dataset_count": 3,
+      "left_available_source_indices": 100,
+      "right_available_source_indices": 1700,
+      "theoretical_combination_count": 217124000,
+      "available_combination_count": 170000,
+      "sample_limit": 100,
+      "sampled_combination_count": 100,
+      "sampling_method": "seeded_uniform_without_replacement_flat_indices",
+      "seed": 42
+    }
+  ],
+  "sentinel_sampling_exhaustion": null,
+  "recovery": null
+}

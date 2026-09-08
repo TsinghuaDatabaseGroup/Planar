@@ -1,0 +1,50 @@
+{
+  "task_id": "finance-004",
+  "answer": {
+    "Mixed/Diversified": {
+      "count": 8
+    },
+    "Product Sales": {
+      "count": 11
+    },
+    "Pharmaceutical/Biotech": {
+      "count": 118
+    },
+    "Licensing/Royalties": {
+      "count": 6
+    },
+    "Transaction/Marketplace": {
+      "count": 4
+    },
+    "Financial Services": {
+      "count": 135
+    },
+    "Healthcare Services": {
+      "count": 7
+    },
+    "Services": {
+      "count": 5
+    },
+    "Software/SaaS": {
+      "count": 3
+    },
+    "Energy/Resources": {
+      "count": 12
+    },
+    "Utilities": {
+      "count": 68
+    },
+    "Real Estate": {
+      "count": 14
+    },
+    "Telecommunications": {
+      "count": 2
+    },
+    "Advertising": {
+      "count": 1
+    }
+  },
+  "elapsed_seconds": 164.645,
+  "cost_usd": 0.23319294,
+  "total_tokens": 447309
+}

@@ -1,0 +1,79 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_delaware_customer_non_solicitation
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this agreement only if it is governed by Delaware law and contains an
+      operative customer non-solicitation covenant.
+
+      Agreement:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_delaware_with_customer_non_solicit: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: filter_employee_non_solicitation_or_standstill
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this agreement only if it also contains an operative employee
+      non-solicitation covenant or an operative standstill provision.
+
+      Agreement:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {has_employee_non_solicit_or_standstill: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_covenant_types_and_periods
+    type: map
+    optimize: true
+    prompt: |
+      Extract the agreement type and all applicable matched covenant types among
+      customer_non_solicitation, employee_non_solicitation, and standstill.
+      Normalize each matched covenant's stated duration to months. Set its
+      availability flag to false when no quantifiable duration is stated, using 0
+      only as a placeholder.
+
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        agreement_type: string
+        matched_covenant_types: list[string]
+        customer_period_available: boolean
+        customer_period_months_value: float
+        employee_period_available: boolean
+        employee_period_months_value: float
+        standstill_period_available: boolean
+        standstill_period_months_value: float
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: project_longest_period
+    type: code_map
+    code: |
+      def transform(doc):
+          periods = []
+          for flag, value in (("customer_period_available", "customer_period_months_value"), ("employee_period_available", "employee_period_months_value"), ("standstill_period_available", "standstill_period_months_value")):
+              if doc.get(flag) is True:
+                  periods.append(float(doc.get(value) or 0))
+          return {"document_id": str(doc.get("doc_id") or ""), "agreement_type": str(doc.get("agreement_type") or ""), "matched_covenant_types": doc.get("matched_covenant_types") or [], "longest_period_months": max(periods) if periods else None}
+  - name: filter_stated_period
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("longest_period_months") is not None
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations: [filter_delaware_customer_non_solicitation, filter_employee_non_solicitation_or_standstill, extract_covenant_types_and_periods, project_longest_period, filter_stated_period]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-050.json

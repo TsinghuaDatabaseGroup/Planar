@@ -1,0 +1,58 @@
+{
+  "task_id": "finance-015",
+  "answer": [
+    {
+      "company_name": "CIK 1635088",
+      "industry": "Not specified",
+      "word_count": 130746
+    },
+    {
+      "company_name": "CIK 1823575",
+      "industry": "Not specified",
+      "word_count": 97527
+    },
+    {
+      "company_name": "CIK 1796022",
+      "industry": "Not specified",
+      "word_count": 92048
+    },
+    {
+      "company_name": "CIK 929351",
+      "industry": "Not specified",
+      "word_count": 87196
+    },
+    {
+      "company_name": "CIK 769397",
+      "industry": "Not specified",
+      "word_count": 83517
+    },
+    {
+      "company_name": "CIK 797721",
+      "industry": "Not specified",
+      "word_count": 82562
+    },
+    {
+      "company_name": "CIK 1836833",
+      "industry": "Not specified",
+      "word_count": 81367
+    },
+    {
+      "company_name": "CIK 1443646",
+      "industry": "Not specified",
+      "word_count": 77726
+    },
+    {
+      "company_name": "CIK 1800347",
+      "industry": "Not specified",
+      "word_count": 75852
+    },
+    {
+      "company_name": "CIK 1368622",
+      "industry": "Not specified",
+      "word_count": 75150
+    }
+  ],
+  "elapsed_seconds": 56.024,
+  "cost_usd": 0.08127885,
+  "total_tokens": 89673
+}

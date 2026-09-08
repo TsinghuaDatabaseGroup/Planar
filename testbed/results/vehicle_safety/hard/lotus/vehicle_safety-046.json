@@ -1,0 +1,51 @@
+{
+  "task_id": "vehicle_safety-046",
+  "answer": [
+    {
+      "campaign_number": "24V199000",
+      "matched_complaint_count": 3,
+      "dominant_airbag_failure_mode": "other",
+      "dominant_remedy_style": "",
+      "related_report_ids": [
+        "txt_investigation_06eb6243a86354e7.txt",
+        "txt_investigation_ddaa5a22b8dac784.txt"
+      ],
+      "odi_evidence_summary": "Answer: {\"dominant_remedy_style\": \"part_replacement\", \"odi_evidence_summary\": \"Resistor over-stress causing ORC failure\"}"
+    },
+    {
+      "campaign_number": "24V793000",
+      "matched_complaint_count": 6,
+      "dominant_airbag_failure_mode": "non_deployment",
+      "dominant_remedy_style": "",
+      "related_report_ids": [
+        "txt_investigation_06eb6243a86354e7.txt",
+        "txt_investigation_ddaa5a22b8dac784.txt"
+      ],
+      "odi_evidence_summary": "Answer: {\"dominant_remedy_style\": \"part_replacement\", \"odi_evidence_summary\": \"Resistor over-stress causing ORC failure\"}"
+    },
+    {
+      "campaign_number": "25V302000",
+      "matched_complaint_count": 1,
+      "dominant_airbag_failure_mode": "non_deployment",
+      "dominant_remedy_style": "part_replacement",
+      "related_report_ids": [
+        "txt_investigation_06eb6243a86354e7.txt"
+      ],
+      "odi_evidence_summary": "Fuel pump relay failure causing no-start or stall"
+    },
+    {
+      "campaign_number": "26V189000",
+      "matched_complaint_count": 5,
+      "dominant_airbag_failure_mode": "non_deployment",
+      "dominant_remedy_style": "",
+      "related_report_ids": [
+        "txt_investigation_06eb6243a86354e7.txt",
+        "txt_investigation_ddaa5a22b8dac784.txt"
+      ],
+      "odi_evidence_summary": "Answer: {\"dominant_remedy_style\": \"part_replacement\", \"odi_evidence_summary\": \"Physical component failures confirmed\"}"
+    }
+  ],
+  "elapsed_seconds": 534.36,
+  "cost_usd": 1.436043,
+  "total_tokens": 3555156
+}

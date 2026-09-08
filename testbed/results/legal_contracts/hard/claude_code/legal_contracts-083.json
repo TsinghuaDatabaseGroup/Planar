@@ -1,0 +1,43 @@
+{
+  "task_id": "legal_contracts-083",
+  "answer": [
+    {
+      "governing_law": "California",
+      "agreement_count": 7,
+      "term_lengths_years": [
+        1.5,
+        2.0,
+        3.0,
+        5.0
+      ]
+    },
+    {
+      "governing_law": "New York",
+      "agreement_count": 7,
+      "term_lengths_years": [
+        1.0,
+        2.0,
+        3.0,
+        5.0
+      ]
+    },
+    {
+      "governing_law": "Ontario",
+      "agreement_count": 4,
+      "term_lengths_years": [
+        3.0,
+        5.0
+      ]
+    },
+    {
+      "governing_law": "Pennsylvania",
+      "agreement_count": 3,
+      "term_lengths_years": [
+        5.0
+      ]
+    }
+  ],
+  "elapsed_seconds": 313.587,
+  "cost_usd": 1.05283785,
+  "total_tokens": 2337322
+}

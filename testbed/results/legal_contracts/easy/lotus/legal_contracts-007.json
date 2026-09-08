@@ -1,0 +1,56 @@
+{
+  "task_id": "legal_contracts-007",
+  "answer": [
+    {
+      "document_id": "a2023q4voyaex191voyafinanc.htm",
+      "company_name": "Voya Financial"
+    },
+    {
+      "document_id": "a2024q4voyaex191tradingpol.htm",
+      "company_name": "Voya Financial"
+    },
+    {
+      "document_id": "annx-ex19_1.htm",
+      "company_name": "Annexon, Inc."
+    },
+    {
+      "document_id": "avah-ex19_1.htm",
+      "company_name": "Aveanna Healthcare Holdings Inc."
+    },
+    {
+      "document_id": "cuz-exhibit194q24.htm",
+      "company_name": "Cousins Properties Incorporated"
+    },
+    {
+      "document_id": "d917002dex19.htm",
+      "company_name": "Marblegate Acquisition Corp."
+    },
+    {
+      "document_id": "ea020139601ex19-1_aibacq.htm",
+      "company_name": "AIB Acquisition Corporation"
+    },
+    {
+      "document_id": "ea020145401ex19_clover.htm",
+      "company_name": "Clover Leaf Capital Corp."
+    },
+    {
+      "document_id": "ea020161201ex19_climate.htm",
+      "company_name": "ClimateRock"
+    },
+    {
+      "document_id": "idya-ex19_1.htm",
+      "company_name": "IDEAYA Biosciences, Inc."
+    },
+    {
+      "document_id": "idya-ex19_1_1.htm",
+      "company_name": "IDEAYA Biosciences, Inc."
+    },
+    {
+      "document_id": "innovativeeye_ex19-1.htm",
+      "company_name": "Innovative Eyewear Inc."
+    }
+  ],
+  "elapsed_seconds": 281.81,
+  "cost_usd": 2.991162,
+  "total_tokens": 5612389
+}

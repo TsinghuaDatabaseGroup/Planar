@@ -1,0 +1,89 @@
+{
+  "task_id": "aviation_safety-045",
+  "answer": [
+    {
+      "rank": 1,
+      "maintenance_status": "released_to_service",
+      "discovery_phase": "after_takeoff",
+      "chain_category": "released_item_failed",
+      "incident_count": 5,
+      "canonical_affected_item": "engine and flight control systems",
+      "recurring_discrepancy": "system malfunction causing operational failure"
+    },
+    {
+      "rank": 2,
+      "maintenance_status": "both",
+      "discovery_phase": "after_takeoff",
+      "chain_category": "incomplete_repair_or_signoff",
+      "incident_count": 2,
+      "canonical_affected_item": "Pitot-static and air/ground sensor systems",
+      "recurring_discrepancy": "Sensor malfunction due to environmental blockage"
+    },
+    {
+      "rank": 3,
+      "maintenance_status": "both",
+      "discovery_phase": "after_takeoff",
+      "chain_category": "maintenance_limitation_escalated",
+      "incident_count": 2,
+      "canonical_affected_item": "Engine fuel and control systems",
+      "recurring_discrepancy": "Engine power loss and instrument failure"
+    },
+    {
+      "rank": 4,
+      "maintenance_status": "both",
+      "discovery_phase": "after_takeoff",
+      "chain_category": "released_item_failed",
+      "incident_count": 2,
+      "canonical_affected_item": "engine oil system",
+      "recurring_discrepancy": "oil quantity drop and filter bypass"
+    },
+    {
+      "rank": 5,
+      "maintenance_status": "released_to_service",
+      "discovery_phase": "after_takeoff",
+      "chain_category": "incomplete_repair_or_signoff",
+      "incident_count": 2,
+      "canonical_affected_item": "Trim tab and bleed duct systems",
+      "recurring_discrepancy": "Uncommanded roll and pack offline"
+    },
+    {
+      "rank": 6,
+      "maintenance_status": "both",
+      "discovery_phase": "after_takeoff",
+      "chain_category": "deferred_item_recurred",
+      "incident_count": 1,
+      "canonical_affected_item": "Number 3 Inertial Reference Unit",
+      "recurring_discrepancy": "lost airspeed and Mach indications"
+    },
+    {
+      "rank": 7,
+      "maintenance_status": "deferred",
+      "discovery_phase": "after_takeoff",
+      "chain_category": "maintenance_limitation_escalated",
+      "incident_count": 1,
+      "canonical_affected_item": "Propeller Autofeather System",
+      "recurring_discrepancy": "ARM light illuminated during takeoff"
+    },
+    {
+      "rank": 8,
+      "maintenance_status": "deferred",
+      "discovery_phase": "before_departure",
+      "chain_category": "incomplete_repair_or_signoff",
+      "incident_count": 1,
+      "canonical_affected_item": "Right Engine HPSOV",
+      "recurring_discrepancy": "Zero duct pressure"
+    },
+    {
+      "rank": 9,
+      "maintenance_status": "released_to_service",
+      "discovery_phase": "after_landing",
+      "chain_category": "released_item_failed",
+      "incident_count": 1,
+      "canonical_affected_item": "Nose landing gear actuator rod end",
+      "recurring_discrepancy": "Rod end separated at jam nut"
+    }
+  ],
+  "elapsed_seconds": 14.76,
+  "cost_usd": 0.01346,
+  "total_tokens": 31346
+}

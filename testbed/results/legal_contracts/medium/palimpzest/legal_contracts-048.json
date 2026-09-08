@@ -1,0 +1,13 @@
+{
+  "task_id": "legal_contracts-048",
+  "answer": [
+    {"document_id": "CNDA1218Draft3.pdf", "governing_law": "California", "non_disclosure_direction": "mutual"},
+    {"document_id": "Confidentiality.pdf", "governing_law": "State of Michigan", "non_disclosure_direction": "unilateral"},
+    {"document_id": "NDA.pdf", "governing_law": "New York", "non_disclosure_direction": "unilateral"},
+    {"document_id": "modelnondisclosureagreement1.pdf", "governing_law": "English Law", "non_disclosure_direction": "unilateral"},
+    {"document_id": "mutual-non-disclosure-agreement.pdf", "governing_law": "English Law", "non_disclosure_direction": "mutual"}
+  ],
+  "elapsed_seconds": 2146.46,
+  "cost_usd": 3.400917,
+  "total_tokens": 6436268
+}

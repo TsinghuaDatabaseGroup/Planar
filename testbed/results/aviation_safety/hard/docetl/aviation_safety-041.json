@@ -1,0 +1,83 @@
+{
+  "task_id": "aviation_safety-041",
+  "answer": [
+    {
+      "flight_phase": "ground_or_departure",
+      "clearance_conflict_type": "late_or_changed_clearance",
+      "incident_count": 9
+    },
+    {
+      "flight_phase": "ground_or_departure",
+      "clearance_conflict_type": "ambiguous_or_incomplete_clearance",
+      "incident_count": 7
+    },
+    {
+      "flight_phase": "ground_or_departure",
+      "clearance_conflict_type": "misunderstood_clearance",
+      "incident_count": 17
+    },
+    {
+      "flight_phase": "ground_or_departure",
+      "clearance_conflict_type": "readback_hearback_failure",
+      "incident_count": 5
+    },
+    {
+      "flight_phase": "climb_or_cruise",
+      "clearance_conflict_type": "late_or_changed_clearance",
+      "incident_count": 10
+    },
+    {
+      "flight_phase": "climb_or_cruise",
+      "clearance_conflict_type": "ambiguous_or_incomplete_clearance",
+      "incident_count": 4
+    },
+    {
+      "flight_phase": "climb_or_cruise",
+      "clearance_conflict_type": "misunderstood_clearance",
+      "incident_count": 16
+    },
+    {
+      "flight_phase": "climb_or_cruise",
+      "clearance_conflict_type": "readback_hearback_failure",
+      "incident_count": 6
+    },
+    {
+      "flight_phase": "descent_or_approach",
+      "clearance_conflict_type": "late_or_changed_clearance",
+      "incident_count": 34
+    },
+    {
+      "flight_phase": "descent_or_approach",
+      "clearance_conflict_type": "ambiguous_or_incomplete_clearance",
+      "incident_count": 19
+    },
+    {
+      "flight_phase": "descent_or_approach",
+      "clearance_conflict_type": "misunderstood_clearance",
+      "incident_count": 27
+    },
+    {
+      "flight_phase": "descent_or_approach",
+      "clearance_conflict_type": "readback_hearback_failure",
+      "incident_count": 5
+    },
+    {
+      "flight_phase": "landing_or_other",
+      "clearance_conflict_type": "late_or_changed_clearance",
+      "incident_count": 4
+    },
+    {
+      "flight_phase": "landing_or_other",
+      "clearance_conflict_type": "ambiguous_or_incomplete_clearance",
+      "incident_count": 3
+    },
+    {
+      "flight_phase": "landing_or_other",
+      "clearance_conflict_type": "misunderstood_clearance",
+      "incident_count": 3
+    }
+  ],
+  "elapsed_seconds": 159.1,
+  "cost_usd": 1.007937,
+  "total_tokens": 2348350
+}

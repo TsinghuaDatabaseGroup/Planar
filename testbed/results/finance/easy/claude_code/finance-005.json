@@ -1,0 +1,23 @@
+{
+  "task_id": "finance-005",
+  "answer": [
+    {
+      "industry": "Other",
+      "going_concern_rate": 0.468691,
+      "count": 527
+    },
+    {
+      "industry": "Healthcare",
+      "going_concern_rate": 0.250354,
+      "count": 1414
+    },
+    {
+      "industry": "Materials",
+      "going_concern_rate": 0.19802,
+      "count": 202
+    }
+  ],
+  "elapsed_seconds": 2024.727,
+  "cost_usd": 6.59509107,
+  "total_tokens": 16415151
+}

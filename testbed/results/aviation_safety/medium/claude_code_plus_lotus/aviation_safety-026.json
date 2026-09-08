@@ -1,0 +1,28 @@
+{
+  "task_id": "aviation_safety-026",
+  "answer": [
+    {
+      "measurement_type": "altitude",
+      "comparison_count": 32,
+      "most_common_deviation": "climbed to 12000 ft instead of descending immediately"
+    },
+    {
+      "measurement_type": "speed",
+      "comparison_count": 14,
+      "most_common_deviation": "20 kts above Vref"
+    },
+    {
+      "measurement_type": "heading",
+      "comparison_count": 1,
+      "most_common_deviation": "possible confusion between 070 heading and 7000 ft altitude"
+    },
+    {
+      "measurement_type": "runway",
+      "comparison_count": 6,
+      "most_common_deviation": "landed on different runway than prepared"
+    }
+  ],
+  "elapsed_seconds": 346.186,
+  "cost_usd": 0.45604599,
+  "total_tokens": 495617
+}

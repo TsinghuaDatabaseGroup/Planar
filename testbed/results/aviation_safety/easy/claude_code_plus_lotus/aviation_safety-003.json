@@ -1,0 +1,33 @@
+{
+  "task_id": "aviation_safety-003",
+  "answer": [
+    {
+      "operational_response": "oxygen_masks_used",
+      "incident_count": 58,
+      "most_common_suspected_source_category": "electrical"
+    },
+    {
+      "operational_response": "emergency_declared",
+      "incident_count": 60,
+      "most_common_suspected_source_category": "electrical"
+    },
+    {
+      "operational_response": "diverted",
+      "incident_count": 57,
+      "most_common_suspected_source_category": "electrical"
+    },
+    {
+      "operational_response": "returned",
+      "incident_count": 43,
+      "most_common_suspected_source_category": "electrical"
+    },
+    {
+      "operational_response": "precautionary_landing",
+      "incident_count": 27,
+      "most_common_suspected_source_category": "electrical"
+    }
+  ],
+  "elapsed_seconds": 245.093,
+  "cost_usd": 0.46116444,
+  "total_tokens": 863727
+}

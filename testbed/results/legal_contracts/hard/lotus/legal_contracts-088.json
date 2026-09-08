@@ -1,0 +1,49 @@
+{
+  "task_id": "legal_contracts-088",
+  "answer": [
+    {
+      "company": "Voya Financial, Inc.",
+      "certifying_officers": [
+        "Donald C. Templin, Chief Financial Officer",
+        "Heather H. Lavallee, Chief Executive Officer",
+        "Michael R. Katz, Chief Financial Officer"
+      ],
+      "covered_person_category": "executive_officers_employees_and_directors"
+    },
+    {
+      "company": "Cavco Industries, Inc.",
+      "certifying_officers": [
+        "Allison K. Aden, Executive Vice President, Chief Financial Officer & Treasurer",
+        "William C. Boor, President and Chief Executive Officer"
+      ],
+      "covered_person_category": "current_and_former_executive_officers"
+    },
+    {
+      "company": "Globalstar, Inc.",
+      "certifying_officers": [
+        "Dr. Paul E. Jacobs, Chief Executive Officer (Principal Executive Officer)",
+        "Rebecca S. Clary, Chief Financial Officer (Principal Financial Officer)"
+      ],
+      "covered_person_category": "section_16_officers_and_designated_senior_executives"
+    },
+    {
+      "company": "H.B. Fuller Company",
+      "certifying_officers": [
+        "Celeste B. Mastin, President and Chief Executive Officer",
+        "John J. Corkrean, Executive Vice President, Chief Financial Officer"
+      ],
+      "covered_person_category": "executive_officers_and_key_managers"
+    },
+    {
+      "company": "Skyworks Solutions, Inc.",
+      "certifying_officers": [
+        "Kris Sennesael, Senior Vice President and Chief Financial Officer",
+        "Liam K. Griffin, Chairman, Chief Executive Officer and President"
+      ],
+      "covered_person_category": "executive_officers_during_performance_period"
+    }
+  ],
+  "elapsed_seconds": 2381.77,
+  "cost_usd": 11.187994,
+  "total_tokens": 20992303
+}

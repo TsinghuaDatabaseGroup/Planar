@@ -1,0 +1,12 @@
+{
+  "task_id": "vehicle_safety-015",
+  "answer": [
+    {
+      "campaign_number": "",
+      "matched_pair_count": null
+    }
+  ],
+  "elapsed_seconds": 74.544,
+  "cost_usd": 0.1440306,
+  "total_tokens": 275904
+}

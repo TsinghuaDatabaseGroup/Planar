@@ -1,0 +1,18 @@
+{
+  "task_id": "finance-030",
+  "answer": [
+    {"company_name": "Monster Beverage Corporation", "industry_sector": "Beverages", "growth_strategy": "Hybrid approach expanding existing sectors and entering alcohol via acquisitions like CANarchy.", "country_count": 44, "subsidiary_count": 11},
+    {"company_name": "Y-mAbs Therapeutics, Inc.", "industry_sector": "Healthcare", "growth_strategy": "Hybrid approach leveraging strategic partnerships, licensing agreements, and potential acquisitions to expand product portfolio.", "country_count": 36, "subsidiary_count": 15},
+    {"company_name": "Jacobs Solutions Inc.", "industry_sector": "Research & Consulting Services", "growth_strategy": "Hybrid approach leveraging acquisitions and strategic investments to reshape portfolio toward high-value technology solutions.", "country_count": 34, "subsidiary_count": 8},
+    {"company_name": "Innoviva, Inc.", "industry_sector": "Healthcare", "growth_strategy": "Hybrid approach maximizing respiratory royalties and pursuing opportunistic acquisitions in healthcare.", "country_count": 33, "subsidiary_count": 13},
+    {"company_name": "Novan, Inc.", "industry_sector": "Healthcare", "growth_strategy": "Hybrid approach integrating the EPI Health acquisition with legacy dermatology business operations.", "country_count": 33, "subsidiary_count": 6},
+    {"company_name": "AllianceBernstein L.P.", "industry_sector": "Financial Services", "growth_strategy": "Hybrid approach combining strategic acquisitions like CarVal and joint ventures with organic growth initiatives.", "country_count": 31, "subsidiary_count": 19},
+    {"company_name": "AllianceBernstein", "industry_sector": "Financial Services", "growth_strategy": "Hybrid approach combining inorganic private alternatives acquisitions with organic active ETF launches and cost-saving relocation.", "country_count": 31, "subsidiary_count": 11},
+    {"company_name": "Inogen, Inc.", "industry_sector": "Healthcare", "growth_strategy": "Hybrid approach combining core business growth, product innovation, clinical evidence generation, and strategic acquisitions.", "country_count": 30, "subsidiary_count": 5},
+    {"company_name": "BGC Partners, Inc.", "industry_sector": "Financial Services", "growth_strategy": "Hybrid approach leveraging strategic alliances, acquisitions, dispositions, joint ventures, and hiring new brokers.", "country_count": 27, "subsidiary_count": 23},
+    {"company_name": "Akebia Therapeutics, Inc.", "industry_sector": "Healthcare", "growth_strategy": "Hybrid approach focusing on commercializing Auryxia, advancing vadadustat, and pursuing strategic licensing or asset acquisitions.", "country_count": 27, "subsidiary_count": 20}
+  ],
+  "elapsed_seconds": 3389.43,
+  "cost_usd": 39.840426,
+  "total_tokens": 100906289
+}

@@ -1,0 +1,32 @@
+{
+  "task_id": "aviation_safety-038",
+  "answer": [
+    {
+      "canonical_human_factor": "Communication Breakdown",
+      "incident_count": 29,
+      "most_common_actor": "flight crew",
+      "most_common_operational_effect": "NMAC with Ercoupe"
+    },
+    {
+      "canonical_human_factor": "Workload",
+      "incident_count": 2,
+      "most_common_actor": "ATC controller",
+      "most_common_operational_effect": "precarious holding situation"
+    },
+    {
+      "canonical_human_factor": "Confusion",
+      "incident_count": 6,
+      "most_common_actor": "ZAU controller",
+      "most_common_operational_effect": "loss of separation event"
+    },
+    {
+      "canonical_human_factor": "Situational Awareness",
+      "incident_count": 15,
+      "most_common_actor": "First Officer",
+      "most_common_operational_effect": "drift into adjacent runway centerline"
+    }
+  ],
+  "elapsed_seconds": 220.021,
+  "cost_usd": 0.30421926,
+  "total_tokens": 368514
+}

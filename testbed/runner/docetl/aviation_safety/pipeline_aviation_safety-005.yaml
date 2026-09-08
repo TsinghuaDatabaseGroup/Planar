@@ -1,0 +1,107 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_us_reference
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("state_reference") == "US"
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: filter_same_closest_approach_dimensions
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether this NASA ASRS narrative states both horizontal and
+      vertical separation for the same actual closest-approach event.
+
+      Keep the report only if:
+      - the horizontal separation is stated as a numeric value, range, or bound
+        with feet, yards, nautical miles, or statute miles;
+      - the vertical separation is stated the same way, or is explicitly stated
+        as zero/same altitude;
+      - both dimensions describe the same actual closest or near-closest point,
+        not different stages of the encounter; and
+      - both can be represented in feet using 1 yard = 3 feet,
+        1 nautical mile approximately 6076 feet, and 1 statute mile = 5280 feet.
+
+      Exclude planned or required separation standards, protected areas, display
+      estimates that refer to a different time, and reports with only one usable
+      dimension.
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: count_distinct_incidents
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          incident_ids = {
+              str(item.get("incident_id"))
+              for item in items
+              if item.get("incident_id")
+          }
+          return {"count": len(incident_ids)}
+
+pipeline:
+  steps:
+    - name: process
+      input: asrs_incidents
+      operations:
+        - filter_us_reference
+        - load_asrs_narrative
+        - filter_same_closest_approach_dimensions
+        - count_distinct_incidents
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-005.json

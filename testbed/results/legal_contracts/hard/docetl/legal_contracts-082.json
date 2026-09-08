@@ -1,0 +1,32 @@
+{
+  "task_id": "legal_contracts-082",
+  "answer": [
+    {
+      "document_id": "1052946_0000950134-98-001627_document_4.txt"
+    },
+    {
+      "document_id": "NDA.pdf"
+    },
+    {
+      "document_id": "NDD.pdf"
+    },
+    {
+      "document_id": "Non-Disclosure_Agreement_oct2009.pdf"
+    },
+    {
+      "document_id": "Non-disclosure.pdf"
+    },
+    {
+      "document_id": "ferc_gen-nda.pdf"
+    },
+    {
+      "document_id": "nda_gtl_inria.pdf"
+    },
+    {
+      "document_id": "uconn_confidentiality_agreement.pdf"
+    }
+  ],
+  "elapsed_seconds": 85.36,
+  "cost_usd": 0.761788,
+  "total_tokens": 1451078
+}

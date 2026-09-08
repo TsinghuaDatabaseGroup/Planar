@@ -1,0 +1,92 @@
+{
+  "task_id": "legal_contracts-036",
+  "answer": [
+    {
+      "document_id": "1017545_0001012870-97-001500_document_2.txt",
+      "governing_law": "California"
+    },
+    {
+      "document_id": "1030471_0001012870-01-501268_dex1065.txt",
+      "governing_law": "California"
+    },
+    {
+      "document_id": "1065748_0000950131-00-004465_0016.txt",
+      "governing_law": "California"
+    },
+    {
+      "document_id": "1125576_0000928385-02-000738_dex991d2.txt",
+      "governing_law": "California"
+    },
+    {
+      "document_id": "801338_0000950134-07-015617_c16542toexv99wxdyx5y.htm",
+      "governing_law": "Delaware"
+    },
+    {
+      "document_id": "922913_0000943440-00-000122_document_2.txt",
+      "governing_law": "Virginia"
+    },
+    {
+      "document_id": "922913_0000943440-00-000294_0004.txt",
+      "governing_law": "Virginia"
+    },
+    {
+      "document_id": "Acme%20Corporation%20Inc%20NDA%20template.pdf",
+      "governing_law": "California"
+    },
+    {
+      "document_id": "Business-Sale-Non-Disclosure-Agreement.pdf",
+      "governing_law": "England and Wales"
+    },
+    {
+      "document_id": "ICTSC-NDA-General-MandA-signed.pdf",
+      "governing_law": "New South Wales"
+    },
+    {
+      "document_id": "NDATC.pdf",
+      "governing_law": "Wisconsin"
+    },
+    {
+      "document_id": "NDA_7.pdf",
+      "governing_law": "Spain"
+    },
+    {
+      "document_id": "NDA_VPI.pdf",
+      "governing_law": "Germany"
+    },
+    {
+      "document_id": "Non-Discl_Reciprocal_2.pdf",
+      "governing_law": "Ontario"
+    },
+    {
+      "document_id": "Non-Disclosure-Agreement-NDA.pdf",
+      "governing_law": "Germany"
+    },
+    {
+      "document_id": "Non_Disclosure_Agreement_3.pdf",
+      "governing_law": "United Kingdom"
+    },
+    {
+      "document_id": "UALR-Standard-Non-disclosure-AgreementTemplate.pdf",
+      "governing_law": "Arkansas"
+    },
+    {
+      "document_id": "epsteen_nda.pdf",
+      "governing_law": "California"
+    },
+    {
+      "document_id": "jmu_cise_mutual_nda.pdf",
+      "governing_law": "Virginia"
+    },
+    {
+      "document_id": "nda_19.pdf",
+      "governing_law": "Canada"
+    },
+    {
+      "document_id": "thoughtbot-mutual-nda.pdf",
+      "governing_law": "Massachusetts"
+    }
+  ],
+  "elapsed_seconds": 235.422,
+  "cost_usd": 0.4361079,
+  "total_tokens": 975678
+}

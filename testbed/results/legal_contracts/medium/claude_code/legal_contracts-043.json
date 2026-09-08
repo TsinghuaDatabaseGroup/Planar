@@ -1,0 +1,286 @@
+{
+  "task_id": "legal_contracts-043",
+  "answer": [
+    {
+      "document_name": "1013240_0001047469-04-010350_a2132633zex-10_22.htm",
+      "parties": [
+        "Level 3 Communications, LLC",
+        "ICG Communications, Inc.",
+        "ICG Telecom Group, Inc."
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2004-04-01"
+    },
+    {
+      "document_name": "1031896_0000950147-01-501725_ex10-8.txt",
+      "parties": [
+        "AMERICAN SOIL TECHNOLOGIES INC. AGRIBLEND DIVISION",
+        "BioPlusNutrients"
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "2001-07-25"
+    },
+    {
+      "document_name": "1068874_0001068874-07-000012_ex10_2.htm",
+      "parties": [
+        "Accurel Systems International Corporation",
+        "Implant Sciences Corporation",
+        "Evans Analytical Group LLC"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2007-04-30"
+    },
+    {
+      "document_name": "1084000_0001144204-06-046785_v056501_ex10-16.txt",
+      "parties": [
+        "Nanolution, LLC",
+        "NaturalNano Inc."
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "2005-05-25"
+    },
+    {
+      "document_name": "1096182_0001144204-06-021678_v043804_ex10-3.txt",
+      "parties": [
+        "Yale University School of Medicine",
+        "Advanced BioPhotonics Inc."
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "2005-11-18"
+    },
+    {
+      "document_name": "1100772_0001038838-02-000125_ex1032sb2no5.txt",
+      "parties": [
+        "SMART CHIP TECHNOLOGIES, LLC",
+        "CONSUMER ECONOMIC OPPORTUNITIES INC."
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "2001-11-07"
+    },
+    {
+      "document_name": "1104332_0000950144-00-008876_ex10-26.txt",
+      "parties": [
+        "High Speed Net Solutions",
+        "R. J. Seifert Enterprises"
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "1999-02-06"
+    },
+    {
+      "document_name": "1105503_0000950123-00-006736_ex10-14.txt",
+      "parties": [
+        "NATIONAL NETWORK TECHNOLOGIES, LLC",
+        "LEVEL 3 COMMUNICATIONS, LLC"
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "1998-10-14"
+    },
+    {
+      "document_name": "1112999_0001193125-08-214471_dex105.htm",
+      "parties": [
+        "e-Smart technologies, Inc.",
+        "Lee&Pak,.Ltd"
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "2008-05-30"
+    },
+    {
+      "document_name": "1125892_0000950133-00-004441_w41075a1ex10-7.txt",
+      "parties": [
+        "MICROSOFT CORPORATION",
+        "STARBAND COMMUNICATIONS INC."
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "2000-11-11"
+    },
+    {
+      "document_name": "1138169_0001050234-02-000002_ex10h.txt",
+      "parties": [
+        "Cyberlux Corporation",
+        "International Consolidated Technologies"
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "2001-11-30"
+    },
+    {
+      "document_name": "1173495_0001047469-03-033872_a2118144zex-10_12.txt",
+      "parties": [
+        "DUNC, LLC",
+        "NORTHWEST AIRLINES, INC."
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "2000-03-06"
+    },
+    {
+      "document_name": "1175638_0000912057-02-024619_a2082526zex-10_3.htm",
+      "parties": [
+        "Accu-Tech Systems",
+        "Network Printing Solutions"
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "1999-11-01"
+    },
+    {
+      "document_name": "1240722_0001161697-03-000454_exhibit_10-12.txt",
+      "parties": [
+        "Solomon Technologies, Inc.",
+        "Pinetree (Barbados) Inc."
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2003-07-31"
+    },
+    {
+      "document_name": "1253176_0001193125-18-317778_d567323dex1024.htm",
+      "parties": [
+        "Vapotherm, Inc.",
+        "John Coolidge"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2014-01-28"
+    },
+    {
+      "document_name": "1277090_0001104659-05-057084_a05-20673_1ex10.htm",
+      "parties": [
+        "SERENA Software, Inc.",
+        "Silver Lake Management Company, L.L.C."
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2005-06-24"
+    },
+    {
+      "document_name": "1285543_0001013762-05-000550_may52005sb2ex1019.txt",
+      "parties": [
+        "StrikeForce Technologies, Inc.",
+        "the person, company or entity listed below"
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "2005-04-05"
+    },
+    {
+      "document_name": "1335239_0001019687-14-003760_epazz_ex1034.htm",
+      "parties": [
+        "TROY HOLDINGS INTERNATIONAL, INC.",
+        "EPAZZ, INC.",
+        "TELECORP PRODUCTS, INC.",
+        "Troy Inc.",
+        "ANA MISRA",
+        "SCOTT MacCANNELL"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2014-02-28"
+    },
+    {
+      "document_name": "1363033_0001144204-06-024852_v045245_ex10-8.htm",
+      "parties": [
+        "Yann Mellet",
+        "Sweetskinz, Inc."
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "2006-04-06"
+    },
+    {
+      "document_name": "1367408_0001367408-06-000002_risb2ex105.htm",
+      "parties": [
+        "Raphael Industries, Inc",
+        "Marketing Software Company"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2005-11-22"
+    },
+    {
+      "document_name": "1466739_0001002014-12-000470_exh10-4.htm",
+      "parties": [
+        "Monnit Corp.",
+        "iMetrik M2M Solutions Inc."
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "2012-02-12"
+    },
+    {
+      "document_name": "1473637_0001432093-12-000764_ex10-34.htm",
+      "parties": [
+        "KLEEN-FLO TUMBLER INDUSTRIES LIMITED",
+        "ECO-TEK GROUP INC."
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "2012-09-18"
+    },
+    {
+      "document_name": "703339_0001387308-13-000090_ex101.htm",
+      "parties": [
+        "Capital Group Holdings, Inc.",
+        "Tailor Made Business Solutions, PLLC"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2013-05-06"
+    },
+    {
+      "document_name": "770461_0001144204-05-023830_v022988_ex10-6.txt",
+      "parties": [
+        "John Ermilio",
+        "National Investment Managers Inc."
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2005-08-02"
+    },
+    {
+      "document_name": "770461_0001144204-06-041516_v054278_ex10-7.txt",
+      "parties": [
+        "THE LAMCO GROUP, INC.",
+        "Nicholas J. Lamoriello",
+        "National Investment Managers Inc."
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2006-10-03"
+    },
+    {
+      "document_name": "880458_0001021408-01-510269_dex1087.txt",
+      "parties": [
+        "Hai-Perng, aka Alex Kuo",
+        "Vertel Corporation"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2001-05-30"
+    },
+    {
+      "document_name": "916457_0000916457-14-000028_exhibit104-confidentiality.htm",
+      "parties": [
+        "Calpine Corporation",
+        "LS Power Equity Advisors, LLC"
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "2014-02-19"
+    },
+    {
+      "document_name": "918541_0001193125-14-328980_d785003dex105.htm",
+      "parties": [
+        "NN, Inc.",
+        "John C. Kennedy"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2014-07-18"
+    },
+    {
+      "document_name": "d828431dex101.htm",
+      "parties": [
+        "CVS Health Corporation",
+        "Glenview Capital Management, LLC"
+      ],
+      "agreement_type": "unilateral",
+      "effective_date": "2024-11-17"
+    },
+    {
+      "document_name": "greenrain_ex1001.htm",
+      "parties": [
+        "Allied Energy Corporation",
+        "Green Rain Energy Holdings Inc.",
+        "Green Rain Solar Inc."
+      ],
+      "agreement_type": "mutual",
+      "effective_date": "2025-09-03"
+    }
+  ],
+  "elapsed_seconds": 199.769,
+  "cost_usd": 0.73382778,
+  "total_tokens": 1661426
+}

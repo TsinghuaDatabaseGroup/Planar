@@ -1,0 +1,78 @@
+{
+  "task_id": "finance-030",
+  "answer": [
+    {
+      "company_name": "Tucows Inc.",
+      "industry_sector": "Technology",
+      "growth_strategy": "The company employs a hybrid growth strategy combining organic expansion, such as building new fiber infrastructure and developing software platforms, with inorganic growth through acquisitions like Simply Bits to increase serviceable addresses and market reach.",
+      "country_count": 190,
+      "subsidiary_count": 10
+    },
+    {
+      "company_name": "Assurant, Inc.",
+      "industry_sector": "Financial Services",
+      "growth_strategy": "The company pursues a hybrid growth strategy that combines organic expansion through innovation and client partnerships with a disciplined approach to acquiring businesses and capabilities that complement its strategic objectives.",
+      "country_count": 20,
+      "subsidiary_count": 0
+    },
+    {
+      "company_name": "American Tower Corporation",
+      "industry_sector": "Real Estate Investment Trusts (REITs) / Communications Infrastructure",
+      "growth_strategy": "The company grows its portfolio through a hybrid approach combining organic site development and long-term lease arrangements with strategic acquisitions, such as the $10.4 billion purchase of CoreSite Realty Corporation and international asset purchases in markets like New Zealand.",
+      "country_count": 17,
+      "subsidiary_count": 5
+    },
+    {
+      "company_name": "Teva Pharmaceutical Industries Limited",
+      "industry_sector": "Healthcare",
+      "growth_strategy": "The company pursues growth through a hybrid approach that includes developing its internal product pipeline and commercializing innovative medicines, while also actively seeking to bid for suitable acquisition targets and licensing opportunities to expand its portfolio.",
+      "country_count": 13,
+      "subsidiary_count": 8
+    },
+    {
+      "company_name": "The Cooper Companies, Inc.",
+      "industry_sector": "Healthcare",
+      "growth_strategy": "The company pursues a hybrid growth strategy that combines organic expansion in existing and emerging markets with an active acquisition approach to complement its business model, expand product portfolios (such as specialty eye care), and address specific market needs like myopia management.",
+      "country_count": 9,
+      "subsidiary_count": 4
+    },
+    {
+      "company_name": "DENTSPLY SIRONA Inc.",
+      "industry_sector": "Healthcare",
+      "growth_strategy": "The company pursues growth through a combination of organic innovation in digital workflows and strategic initiatives including acquisitions, dispositions, and investments.",
+      "country_count": 7,
+      "subsidiary_count": 3
+    },
+    {
+      "company_name": "Digital Turbine, Inc.",
+      "industry_sector": "Technology",
+      "growth_strategy": "The company pursues rapid growth through a strategy of acquiring complementary mobile advertising and monetization platforms (such as AdColony, Fyber, and Appreciate) to build a leading end-to-end solution for mobile brand acquisition and advertising.",
+      "country_count": 7,
+      "subsidiary_count": 0
+    },
+    {
+      "company_name": "Repligen Corporation",
+      "industry_sector": "Healthcare",
+      "growth_strategy": "The company employs a hybrid growth strategy that combines organic initiatives, such as internal innovation and commercial leverage, with targeted acquisitions to expand its product portfolio, geographic scope, and manufacturing capabilities.",
+      "country_count": 6,
+      "subsidiary_count": 7
+    },
+    {
+      "company_name": "Spectrum Brands Holdings, Inc.",
+      "industry_sector": "Consumer Goods",
+      "growth_strategy": "The company employs a hybrid growth strategy that combines organic initiatives with strategic acquisitions, such as the 2022 purchase of the Tristar Business, while also utilizing divestitures to reshape its portfolio into focused segments like Global Pet Care and Home & Garden.",
+      "country_count": 6,
+      "subsidiary_count": 1
+    },
+    {
+      "company_name": "Ribbon Communications Inc.",
+      "industry_sector": "Technology",
+      "growth_strategy": "The company employs a hybrid growth strategy centered on transformative acquisitions (such as ECI, Edgewater, and Anova) to expand its product portfolio into IP networking and optical transport, combined with aggressive cross-selling of this broadened portfolio to its existing global base of service provider and enterprise customers.",
+      "country_count": 5,
+      "subsidiary_count": 5
+    }
+  ],
+  "elapsed_seconds": 4281.416,
+  "cost_usd": 7.74391362,
+  "total_tokens": 18190924
+}

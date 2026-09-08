@@ -1,0 +1,10 @@
+{
+  "task_id": "legal_contracts-049",
+  "answer": {
+    "document_id": "NDA-STP-Performance-Coating-revC.pdf",
+    "term_duration_years": 20.0
+  },
+  "elapsed_seconds": 552.62,
+  "cost_usd": 4.882964,
+  "total_tokens": 9345263
+}

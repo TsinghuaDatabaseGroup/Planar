@@ -1,0 +1,27 @@
+{
+  "task_id": "aviation_safety-029",
+  "optimization_analysis": "Three changes reduce LM cost: (1) The flight_phase predicate (CONTAINS 'Approach' OR 'Landing') is a structured field in incidents.csv — moving it into the initial SCAN_TABLE FILTER eliminates non-approach/landing incidents before any document scanning occurs. (2) Both structured side-tables (environment_attributes and events) are joined before SCAN_DOCS/SEM_FILTER rather than after, so only incidents that already satisfy the flight_conditions and result-label constraints are fetched as documents and sent to the LM — this can cut the document set substantially. (3) The two sequential SEM_FILTERs (positive cause check then negative cause exclusion) are merged into one, halving the number of LM calls per surviving document. Semantics are unchanged: the combined prompt enforces both the inclusion and exclusion criteria simultaneously.",
+  "optimized_semantic_plan": [
+    {
+      "type": "operator_dag",
+      "program": "approach_incidents := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, local_time_of_day, flight_phase])\n  -> FILTER(local_time_of_day = '1201-1800' AND (flight_phase CONTAINS 'Approach' OR flight_phase CONTAINS 'Landing'))\n)\nenvironment_records := (\n  SCAN_TABLE(NASA_ASRS, environment_attributes.csv, [incident_id, attribute, value])\n  -> FILTER(attribute = 'flight_conditions' AND value IN ('IMC','Marginal','Mixed'))\n)\nresult_events := (\n  SCAN_TABLE(NASA_ASRS, events.csv, [incident_id, event_type, label])\n  -> FILTER(event_type = 'result' AND label IN ('Flight Crew Executed Go Around / Missed Approach','Air Traffic Control Issued New Clearance'))\n)\nstructured_candidates := JOIN(left=approach_incidents, right=environment_records, join_type=inner, condition=approach_incidents.incident_id = environment_records.incident_id)\nstructured_candidates_with_events := JOIN(left=structured_candidates, right=result_events, join_type=inner, condition=structured_candidates.incident_id = result_events.incident_id)\nsemantic_candidates := (\n  structured_candidates_with_events\n  -> SCAN_DOCS(NASA_ASRS, selector=structured_candidates_with_events.text_file, [incident_id, text])\n  -> SEM_FILTER(\"Keep reports where weather or visibility explicitly caused the go-around, missed approach, or new clearance. Exclude reports where traffic spacing, runway occupancy, or aircraft equipment was the primary cause of that outcome.\", {text})\n)\nsemantic_candidates\n-> GROUP_BY([flight_conditions:value, recorded_result=CASE label WHEN 'Flight Crew Executed Go Around / Missed Approach' THEN 'go_around_or_missed_approach' ELSE 'new_clearance' END], {incident_count:COUNT_DISTINCT(incident_id)})"
+    }
+  ],
+  "valid": true,
+  "validation_warnings": [],
+  "elapsed_secs": 52.528,
+  "cost_usd": 0.085089,
+  "agent_cost_usd": 0.085089,
+  "usage": {
+    "input": 3,
+    "output": 3746,
+    "cacheRead": 0,
+    "cacheWrite": 7704
+  },
+  "agent_usage": {
+    "input": 3,
+    "output": 3746,
+    "cacheRead": 0,
+    "cacheWrite": 7704
+  }
+}

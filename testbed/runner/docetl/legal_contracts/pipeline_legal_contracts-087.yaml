@@ -1,0 +1,97 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_pure_titled_ndas
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if its exhibit type is exactly NDA and its
+      agreement title is identifiable.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_pure_titled_nda: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: filter_explicit_confidential_definition
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this agreement only if it explicitly defines confidential
+      information.
+
+      Agreement:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {explicitly_defines_confidential_information: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_title_and_protection_profile
+    type: map
+    optimize: true
+    prompt: |
+      Return the agreement title; whether return or destruction of materials is
+      required; whether injunctive or equitable relief is provided; and whether
+      each of the six standard confidentiality exceptions is present.
+
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        agreement_title: string
+        return_or_destroy: boolean
+        injunctive_relief: boolean
+        public_information: boolean
+        prior_knowledge: boolean
+        independent_development: boolean
+        third_party_receipt: boolean
+        legal_compulsion: boolean
+        consent: boolean
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: project_title_qualification
+    type: code_map
+    code: |
+      def transform(doc):
+          import re
+          title = re.sub(r"[\W_]+", " ", str(doc.get("agreement_title") or "").casefold(), flags=re.UNICODE)
+          title = " ".join(title.split())
+          fields = ["return_or_destroy", "injunctive_relief", "public_information", "prior_knowledge", "independent_development", "third_party_receipt", "legal_compulsion", "consent"]
+          return {"normalized_agreement_title": title, "qualifies": int(all(doc.get(field) is True for field in fields))}
+  - name: aggregate_title_qualifications
+    type: code_reduce
+    reduce_key: normalized_agreement_title
+    code: |
+      def transform(items):
+          return {"family_size": len(items), "qualifying_member_count": sum(int(item.get("qualifies") or 0) for item in items)}
+  - name: filter_qualifying_title_families
+    type: code_filter
+    code: |
+      def transform(doc):
+          return int(doc.get("family_size") or 0) >= 5 and int(doc.get("qualifying_member_count") or 0) >= 1
+  - name: order_qualifying_title_families
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          ordered = sorted(items, key=lambda item: (-int(item.get("qualifying_member_count") or 0), -int(item.get("family_size") or 0), str(item.get("normalized_agreement_title") or "")))
+          return {"rows": [{"normalized_agreement_title": item.get("normalized_agreement_title"), "family_size": item.get("family_size"), "qualifying_member_count": item.get("qualifying_member_count")} for item in ordered]}
+  - name: unnest_qualifying_title_families
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields: [normalized_agreement_title, family_size, qualifying_member_count]
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations: [filter_pure_titled_ndas, filter_explicit_confidential_definition, extract_title_and_protection_profile, project_title_qualification, aggregate_title_qualifications, filter_qualifying_title_families, order_qualifying_title_families, unnest_qualifying_title_families]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-087.json

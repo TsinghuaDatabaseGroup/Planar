@@ -1,0 +1,32 @@
+{
+  "task_id": "aviation_safety-044",
+  "answer": [
+    {
+      "cause_category": "crew_procedure",
+      "incident_count": 2,
+      "canonical_system": "pressurization system",
+      "dominant_operational_outcome": "emergency landing"
+    },
+    {
+      "cause_category": "environmental_contamination",
+      "incident_count": 1,
+      "canonical_system": "external air start cart",
+      "dominant_operational_outcome": "flight delay and medical treatment"
+    },
+    {
+      "cause_category": "equipment_malfunction",
+      "incident_count": 71,
+      "canonical_system": "cabin pressurization system",
+      "dominant_operational_outcome": "returned to departure airport"
+    },
+    {
+      "cause_category": "maintenance_or_release_decision",
+      "incident_count": 5,
+      "canonical_system": "air conditioning pack system",
+      "dominant_operational_outcome": "returned to departure airport"
+    }
+  ],
+  "elapsed_seconds": 76.559,
+  "cost_usd": 0.11980767,
+  "total_tokens": 139220
+}

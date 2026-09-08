@@ -1,0 +1,15 @@
+{
+  "task_id": "legal_contracts-070",
+  "answer": [
+    {
+      "residual_information_present": false,
+      "agreement_count": 347,
+      "most_common_governing_law": "State of California",
+      "return_of_materials_rate": 0.9078,
+      "injunctive_relief_rate": 0.755
+    }
+  ],
+  "elapsed_seconds": 548.31,
+  "cost_usd": 4.866418,
+  "total_tokens": 9130977
+}

@@ -1,0 +1,32 @@
+{
+  "task_id": "legal_contracts-066",
+  "answer": [
+    {
+      "exception_bracket": "0-1",
+      "agreement_count": 2203,
+      "avg_finite_duration_years": 3.44,
+      "return_of_materials_rate": 0.0336
+    },
+    {
+      "exception_bracket": "2-3",
+      "agreement_count": 108,
+      "avg_finite_duration_years": 4.37,
+      "return_of_materials_rate": 0.5093
+    },
+    {
+      "exception_bracket": "4-5",
+      "agreement_count": 217,
+      "avg_finite_duration_years": 4.83,
+      "return_of_materials_rate": 0.6912
+    },
+    {
+      "exception_bracket": "all 6",
+      "agreement_count": 265,
+      "avg_finite_duration_years": 3.48,
+      "return_of_materials_rate": 0.6717
+    }
+  ],
+  "elapsed_seconds": 466.792,
+  "cost_usd": 1.79796825,
+  "total_tokens": 4020085
+}

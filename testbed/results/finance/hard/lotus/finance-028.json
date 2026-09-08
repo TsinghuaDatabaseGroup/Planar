@@ -1,0 +1,19 @@
+{
+  "task_id": "finance-028",
+  "answer": [
+    {"industry_sector": "Healthcare", "company_count": 34},
+    {"industry_sector": "Technology", "company_count": 27},
+    {"industry_sector": "Consumer Goods", "company_count": 18},
+    {"industry_sector": "Energy", "company_count": 14},
+    {"industry_sector": "Financial Services", "company_count": 12},
+    {"industry_sector": "Industrial Manufacturing", "company_count": 11},
+    {"industry_sector": "Agricultural Technology", "company_count": 10},
+    {"industry_sector": "Cannabis", "company_count": 9},
+    {"industry_sector": "Beverages", "company_count": 8},
+    {"industry_sector": "Software Services", "company_count": 7},
+    {"industry_sector": "Semiconductors", "company_count": 6}
+  ],
+  "elapsed_seconds": 4563.05,
+  "cost_usd": 17.635750,
+  "total_tokens": 37956579
+}

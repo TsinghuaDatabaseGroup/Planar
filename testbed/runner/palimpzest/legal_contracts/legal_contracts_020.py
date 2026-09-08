@@ -1,0 +1,145 @@
+#!/usr/bin/env python3
+"""Palimpzest pipeline for legal_contracts-020."""
+
+from __future__ import annotations
+
+import os
+import sys
+import time
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+
+from pipeline_helpers import (  # noqa: E402
+    StepTracker,
+    Timer,
+    df_records,
+    get_config,
+    load_mixed_documents,
+    memory_dataset,
+    normalize_text_value,
+    normalize_enum,
+    result_frame,
+    save_output,
+)
+
+TASK_ID = "legal_contracts-020"
+DATASET = "contract-exhibit"
+DIRECTIONS = ("mutual", "unilateral")
+
+
+def normalize_text(value) -> str | None:
+    return normalize_text_value(
+        value, null_markers={"", "none", "null", "n/a", "unknown"}
+    )
+
+
+def main() -> None:
+    config = get_config(max_tokens=4096)
+    tracker = StepTracker(TASK_ID)
+
+    with Timer() as timer:
+        documents = load_mixed_documents(DATASET)
+        tracker.record("scan", None, documents)
+
+        short_documents = documents.loc[
+            documents["word_count"] < 1500
+        ].reset_index(drop=True)
+        tracker.record("filter", len(documents), short_documents)
+
+        agreement_plan = memory_dataset(TASK_ID, short_documents).sem_filter(
+            filter=(
+                "Keep the document only if it is itself a standalone "
+                "non-disclosure or confidentiality agreement, rather than "
+                "another kind of document that merely mentions confidentiality."
+            ),
+            depends_on=["text"],
+        )
+        started = time.time()
+        agreement_result = agreement_plan.run(config)
+        agreements = result_frame(agreement_result, short_documents)
+        tracker.record_semantic(
+            "sem_filter",
+            len(short_documents),
+            agreements,
+            agreement_result,
+            time.time() - started,
+        )
+
+        condition_plan = memory_dataset(
+            f"{TASK_ID}-conditions", agreements
+        ).sem_filter(
+            filter=(
+                "Keep the agreement only if it expressly states a governing "
+                "law, makes the confidentiality obligation indefinite or "
+                "perpetual, requires confidential materials to be returned or "
+                "destroyed, and provides injunctive relief, equitable relief, "
+                "or specific performance. All four conditions must be present."
+            ),
+            depends_on=["text"],
+        )
+        started = time.time()
+        condition_result = condition_plan.run(config)
+        qualifying = result_frame(condition_result, agreements)
+        tracker.record_semantic(
+            "sem_filter",
+            len(agreements),
+            qualifying,
+            condition_result,
+            time.time() - started,
+        )
+
+        extraction_plan = memory_dataset(
+            f"{TASK_ID}-extraction", qualifying
+        ).sem_map(
+            cols=[
+                {
+                    "name": "governing_law",
+                    "type": str | None,
+                    "desc": "The expressly stated governing-law jurisdiction.",
+                },
+                {
+                    "name": "direction",
+                    "type": str | None,
+                    "desc": (
+                        "Exactly mutual if both sides owe the nondisclosure duty, "
+                        "or unilateral if only one side owes it."
+                    ),
+                },
+            ],
+            desc=(
+                "Extract the expressly stated governing law and the direction "
+                "of the nondisclosure obligation."
+            ),
+            depends_on=["text"],
+        )
+        started = time.time()
+        extraction_result = extraction_plan.run(config)
+        extracted = result_frame(
+            extraction_result,
+            qualifying,
+            ["governing_law", "direction"],
+        )
+        extracted["governing_law"] = extracted["governing_law"].map(
+            normalize_text
+        )
+        extracted["direction"] = extracted["direction"].map(
+            lambda value: normalize_enum(value, DIRECTIONS)
+        )
+        extracted = extracted[
+            ["document_id", "governing_law", "direction"]
+        ].reset_index(drop=True)
+        tracker.record_semantic(
+            "sem_map",
+            len(qualifying),
+            extracted,
+            extraction_result,
+            time.time() - started,
+        )
+
+        answer = df_records(extracted)
+
+    save_output(TASK_ID, answer, timer.elapsed, tracker)
+
+
+if __name__ == "__main__":
+    main()

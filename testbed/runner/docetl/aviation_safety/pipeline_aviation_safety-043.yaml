@@ -1,0 +1,327 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_afternoon_incidents
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("local_time_of_day") == "1201-1800"
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: filter_weather_caused_operational_decision
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this NASA ASRS report only when the narrative explicitly states or
+      clearly describes that weather or reduced visibility caused an operational
+      decision. The qualifying decision must be a diversion, an emergency
+      declaration, or receipt/issuance of a new ATC clearance.
+
+      The causal connection must be supported by the narrative. Exclude reports in
+      which weather and a decision merely co-occur, or in which the decision has an
+      unrelated cause.
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_substantive_weather_decision
+    type: filter
+    optimize: true
+    prompt: |
+      This report has already been found to connect weather or reduced visibility
+      to an operational decision. Keep it only when the weather was operationally
+      material to that decision.
+
+      Exclude incidental weather mentions. Also exclude turbulence cases where the
+      only stated effect was passenger comfort, cabin service, or a seat-belt action
+      and the turbulence did not cause the qualifying operational decision.
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: extract_weather_decision_pairs
+    type: map
+    optimize: true
+    prompt: |
+      Emit every weather-mechanism and recorded-decision pair for which this NASA
+      ASRS narrative explicitly supports that the weather mechanism caused the
+      decision.
+
+      Normalize weather_mechanism to exactly one of:
+      - convective_weather
+      - turbulence
+      - windshear
+      - icing
+      - low_visibility
+      - low_ceiling
+      - strong_or_gusty_wind
+      - precipitation
+
+      Normalize recorded_decision to exactly one of:
+      - diversion
+      - emergency_declaration
+      - new_clearance
+
+      Return one compact JSON object with a weather_decision_pairs array containing
+      one weather_mechanism and recorded_decision object per causal pair. Emit each
+      supported pair at most once. Do not infer a pair from mere co-occurrence,
+      incidental weather, or passenger-comfort-only turbulence. Return an empty
+      array if no enumerated pair is explicitly supported.
+
+      Incident ID: {{ input.incident_id }}
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        weather_decision_pairs: "list[{weather_mechanism: enum[convective_weather, turbulence, windshear, icing, low_visibility, low_ceiling, strong_or_gusty_wind, precipitation], recorded_decision: enum[diversion, emergency_declaration, new_clearance]}]"
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 256
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: build_weather_decision_rows
+    type: code_map
+    code: |
+      def transform(doc):
+          valid_mechanisms = {
+              "convective_weather",
+              "turbulence",
+              "windshear",
+              "icing",
+              "low_visibility",
+              "low_ceiling",
+              "strong_or_gusty_wind",
+              "precipitation",
+          }
+          valid_decisions = {
+              "diversion",
+              "emergency_declaration",
+              "new_clearance",
+          }
+          rows = []
+          seen = set()
+          for item in doc.get("weather_decision_pairs") or []:
+              if not isinstance(item, dict):
+                  continue
+              pair = (
+                  str(item.get("weather_mechanism", "")).strip(),
+                  str(item.get("recorded_decision", "")).strip(),
+              )
+              if (
+                  pair[0] not in valid_mechanisms
+                  or pair[1] not in valid_decisions
+                  or pair in seen
+              ):
+                  continue
+              seen.add(pair)
+              rows.append(
+                  {
+                      "weather_mechanism": pair[0],
+                      "recorded_decision": pair[1],
+                  }
+              )
+          return {"weather_decision_rows": rows}
+
+  - name: unnest_weather_decision_rows
+    type: unnest
+    unnest_key: weather_decision_rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - weather_mechanism
+      - recorded_decision
+
+  - name: attach_recorded_result_labels
+    type: code_map
+    code: |
+      import csv
+      import os
+      import threading
+
+      _recorded_results_index = None
+      _recorded_results_lock = threading.Lock()
+      _qualifying_result_labels = {
+          "Flight Crew Diverted",
+          "General Declared Emergency",
+          "Air Traffic Control Issued New Clearance",
+      }
+
+      def load_recorded_results_index():
+          global _recorded_results_index
+          if _recorded_results_index is None:
+              with _recorded_results_lock:
+                  if _recorded_results_index is None:
+                      index = {}
+                      path = os.path.abspath(
+                          os.path.join("data", "asrs", "events.csv")
+                      )
+                      with open(
+                          path, "r", encoding="utf-8", errors="replace", newline=""
+                      ) as handle:
+                          for row in csv.DictReader(handle):
+                              if row.get("event_type") != "result":
+                                  continue
+                              label = row.get("label")
+                              if label not in _qualifying_result_labels:
+                                  continue
+                              incident_id = str(row.get("incident_id", ""))
+                              if incident_id:
+                                  index.setdefault(incident_id, set()).add(label)
+                      _recorded_results_index = {
+                          key: sorted(values) for key, values in index.items()
+                      }
+          return _recorded_results_index
+
+      def transform(doc):
+          return {
+              "recorded_result_labels": load_recorded_results_index().get(
+                  str(doc.get("incident_id", "")), []
+              )
+          }
+
+  - name: inner_join_matching_recorded_decision
+    type: code_filter
+    code: |
+      def transform(doc):
+          required_label = {
+              "diversion": "Flight Crew Diverted",
+              "emergency_declaration": "General Declared Emergency",
+              "new_clearance": "Air Traffic Control Issued New Clearance",
+          }.get(doc.get("recorded_decision"))
+          return required_label in (doc.get("recorded_result_labels") or [])
+
+  - name: aggregate_ranked_weather_decisions
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          grouped = {}
+          for item in items:
+              key = (
+                  item.get("weather_mechanism"),
+                  item.get("recorded_decision"),
+              )
+              incident_id = str(item.get("incident_id", ""))
+              if not all(key) or not incident_id:
+                  continue
+              grouped.setdefault(key, set()).add(incident_id)
+
+          rows = [
+              {
+                  "weather_mechanism": mechanism,
+                  "recorded_decision": decision,
+                  "incident_count": len(incident_ids),
+              }
+              for (mechanism, decision), incident_ids in grouped.items()
+          ]
+          rows.sort(
+              key=lambda row: (
+                  -row["incident_count"],
+                  row["weather_mechanism"],
+                  row["recorded_decision"],
+              )
+          )
+          for rank, row in enumerate(rows[:20], start=1):
+              row["rank"] = rank
+          return {"rows": rows[:20]}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - rank
+      - weather_mechanism
+      - recorded_decision
+      - incident_count
+
+pipeline:
+  steps:
+    - name: semantic_pairs
+      input: asrs_incidents
+      operations:
+        - filter_afternoon_incidents
+        - load_asrs_narrative
+        - filter_weather_caused_operational_decision
+        - filter_substantive_weather_decision
+        - extract_weather_decision_pairs
+        - build_weather_decision_rows
+        - unnest_weather_decision_rows
+    - name: joined_recorded_results
+      input: semantic_pairs
+      operations:
+        - attach_recorded_result_labels
+        - inner_join_matching_recorded_decision
+    - name: ranked_weather_decisions
+      input: joined_recorded_results
+      operations:
+        - aggregate_ranked_weather_decisions
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-043.json

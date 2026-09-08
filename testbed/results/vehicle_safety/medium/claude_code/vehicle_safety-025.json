@@ -1,0 +1,28 @@
+{
+  "task_id": "vehicle_safety-025",
+  "answer": [
+    {
+      "make": "JEEP",
+      "phantom_braking_complaint_count": 62,
+      "matching_adas_recall_count": 7
+    },
+    {
+      "make": "TESLA",
+      "phantom_braking_complaint_count": 41,
+      "matching_adas_recall_count": 5
+    },
+    {
+      "make": "FORD",
+      "phantom_braking_complaint_count": 32,
+      "matching_adas_recall_count": 5
+    },
+    {
+      "make": "CHRYSLER",
+      "phantom_braking_complaint_count": 23,
+      "matching_adas_recall_count": 3
+    }
+  ],
+  "elapsed_seconds": 103.031,
+  "cost_usd": 0.17617185,
+  "total_tokens": 140086
+}

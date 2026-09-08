@@ -1,0 +1,32 @@
+{
+  "task_id": "aviation_safety-044",
+  "answer": [
+    {
+      "cause_category": "crew_procedure",
+      "incident_count": 3,
+      "canonical_system": "Air conditioning pressurization system",
+      "dominant_operational_outcome": "safe landing"
+    },
+    {
+      "cause_category": "environmental_contamination",
+      "incident_count": 1,
+      "canonical_system": null,
+      "dominant_operational_outcome": null
+    },
+    {
+      "cause_category": "equipment_malfunction",
+      "incident_count": 17,
+      "canonical_system": null,
+      "dominant_operational_outcome": null
+    },
+    {
+      "cause_category": "maintenance_or_release_decision",
+      "incident_count": 7,
+      "canonical_system": null,
+      "dominant_operational_outcome": null
+    }
+  ],
+  "elapsed_seconds": 6131.0,
+  "cost_usd": 3.629288,
+  "total_tokens": 5621816
+}

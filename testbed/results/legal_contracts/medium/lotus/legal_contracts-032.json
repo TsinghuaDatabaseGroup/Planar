@@ -1,0 +1,64 @@
+{
+  "task_id": "legal_contracts-032",
+  "answer": [
+    {
+      "document_id": "1588052992CCTV%20Non%20Disclosure%20Agreement.pdf",
+      "governing_law": "India"
+    },
+    {
+      "document_id": "Non-Disclosure%20Agreement%202015.pdf",
+      "governing_law": "Switzerland"
+    },
+    {
+      "document_id": "eHandshake_Non_Disclosure_Agreement.pdf",
+      "governing_law": "laws of England and Wales"
+    },
+    {
+      "document_id": "Agency-Lending-Disclosure_A-Z-Guide_Appendix_Sample-Confidentiality-Agreements.pdf",
+      "governing_law": "State of New York"
+    },
+    {
+      "document_id": "NDA_13.pdf",
+      "governing_law": "laws of the Commonwealth of Australia and the State of New South Wales"
+    },
+    {
+      "document_id": "non-disclosure_201302814_english_.pdf",
+      "governing_law": "Province of Ontario"
+    },
+    {
+      "document_id": "tufts_confidentiality_agreement.pdf",
+      "governing_law": "Commonwealth of Massachusetts"
+    },
+    {
+      "document_id": "QSA_NDA.pdf",
+      "governing_law": "Commonwealth of Australia and the State of Victoria"
+    },
+    {
+      "document_id": "1089717_0000898430-99-004004_document_2.txt",
+      "governing_law": "the laws of the United States of America and the Commonwealth of Virginia, USA"
+    },
+    {
+      "document_id": "1017545_0001012870-97-001500_document_2.txt",
+      "governing_law": "laws of the State of California"
+    },
+    {
+      "document_id": "1113303_0000892917-12-000026_stilffnw13d120112am2ex3.htm",
+      "governing_law": "laws of the State of Washington"
+    },
+    {
+      "document_id": "245490.pdf",
+      "governing_law": "laws of the State of Delaware"
+    },
+    {
+      "document_id": "313522_0000912057-02-040085_a2091647zex-99_d3.htm",
+      "governing_law": "laws of the State of Minnesota"
+    },
+    {
+      "document_id": "897730_0000950136-98-001457_document_7.txt",
+      "governing_law": "laws of the Commonwealth of Pennsylvania"
+    }
+  ],
+  "elapsed_seconds": 442.94,
+  "cost_usd": 4.526521,
+  "total_tokens": 8493220
+}

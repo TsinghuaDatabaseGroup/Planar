@@ -1,0 +1,18 @@
+{
+  "task_id": "vehicle_safety-045",
+  "answer": [
+    {
+      "rank": 1,
+      "defect_theme": "Unintended Braking Activation",
+      "matched_complaint_count": 2,
+      "distinct_campaign_count": 1,
+      "related_report_ids": [
+        "txt_investigation_1aba8edbfb2b2c6b"
+      ],
+      "odi_risk_summary": "Unintended braking causes unexpected vehicle pull, increasing crash risk."
+    }
+  ],
+  "elapsed_seconds": 414.283,
+  "cost_usd": 0.82962471,
+  "total_tokens": 811652
+}

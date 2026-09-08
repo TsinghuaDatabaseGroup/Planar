@@ -1,0 +1,140 @@
+{
+  "task_id": "legal_contracts-045",
+  "answer": [
+    {
+      "document_name": "1112422_0000950153-08-001257_p75864exv99wxeyx4y.htm",
+      "governing_state": "New York",
+      "term_duration_years": 2,
+      "standstill_period_years": 2
+    },
+    {
+      "document_name": "1177845_0001193125-18-219243_d519554dex99d3.htm",
+      "governing_state": "Delaware",
+      "term_duration_years": 4,
+      "standstill_period_years": 1.5
+    },
+    {
+      "document_name": "1329919_0001193125-14-149149_d701401dex99d6.htm",
+      "governing_state": "Delaware",
+      "term_duration_years": 2,
+      "standstill_period_years": 1.5
+    },
+    {
+      "document_name": "1089786_0000912057-00-052660_a2032473zex-99_e2.txt",
+      "governing_state": "New York",
+      "term_duration_years": "perpetual",
+      "standstill_period_years": 1.4
+    },
+    {
+      "document_name": "1280058_0001193125-12-023311_d287213dex99d3.htm",
+      "governing_state": "Delaware",
+      "term_duration_years": "perpetual",
+      "standstill_period_years": 1.17
+    },
+    {
+      "document_name": "1094348_0001144204-18-026846_tv493416_exd2.htm",
+      "governing_state": "New York",
+      "term_duration_years": 3,
+      "standstill_period_years": 1
+    },
+    {
+      "document_name": "1163932_0001193125-13-394191_d606730dex99d2.htm",
+      "governing_state": "Delaware",
+      "term_duration_years": 2,
+      "standstill_period_years": 1
+    },
+    {
+      "document_name": "1316898_0001047469-18-005618_a2236490zex-99_d2.htm",
+      "governing_state": "Delaware",
+      "term_duration_years": 2,
+      "standstill_period_years": 1
+    },
+    {
+      "document_name": "1373671_0001193125-10-265249_dex99d3.htm",
+      "governing_state": "Delaware",
+      "term_duration_years": 5,
+      "standstill_period_years": 1
+    },
+    {
+      "document_name": "1402305_0001193125-11-343865_d268167dex99d2.htm",
+      "governing_state": "New York",
+      "term_duration_years": 1,
+      "standstill_period_years": 1
+    },
+    {
+      "document_name": "1475274_0001567619-17-000751_s001644x1_exd-2.htm",
+      "governing_state": "Delaware",
+      "term_duration_years": 2,
+      "standstill_period_years": 1
+    },
+    {
+      "document_name": "1561604_0001193125-12-472390_d438799dex99d3.htm",
+      "governing_state": "Delaware",
+      "term_duration_years": 2,
+      "standstill_period_years": 1
+    },
+    {
+      "document_name": "1592288_0001193125-17-306543_d469659dex99e2.htm",
+      "governing_state": "Delaware",
+      "term_duration_years": 2,
+      "standstill_period_years": 1
+    },
+    {
+      "document_name": "1693664_0001193125-18-171470_d426098dex99d3.htm",
+      "governing_state": "Delaware",
+      "term_duration_years": "perpetual",
+      "standstill_period_years": 1
+    },
+    {
+      "document_name": "55805_0001145443-10-001028_d26631_ex99-d3.htm",
+      "governing_state": "Delaware",
+      "term_duration_years": 2,
+      "standstill_period_years": 1
+    },
+    {
+      "document_name": "768262_0001193125-10-128597_dex99d2.htm",
+      "governing_state": "New York",
+      "term_duration_years": 1,
+      "standstill_period_years": 1
+    },
+    {
+      "document_name": "792130_0001193125-18-326077_d601641dex99d3.htm",
+      "governing_state": "Delaware",
+      "term_duration_years": 2,
+      "standstill_period_years": 1
+    },
+    {
+      "document_name": "874265_0001193125-05-138436_dex99d1.htm",
+      "governing_state": "New York",
+      "term_duration_years": "perpetual",
+      "standstill_period_years": 1
+    },
+    {
+      "document_name": "912263_0001047469-12-006662_a2209873zex-99_d2.htm",
+      "governing_state": "New York",
+      "term_duration_years": 1.5,
+      "standstill_period_years": 1
+    },
+    {
+      "document_name": "912263_0001104659-12-004811_a12-3671_1ex2.htm",
+      "governing_state": "New York",
+      "term_duration_years": 1.5,
+      "standstill_period_years": 1
+    },
+    {
+      "document_name": "1167294_0001193125-15-218134_d933068dex99d3.htm",
+      "governing_state": "Delaware",
+      "term_duration_years": 1,
+      "standstill_period_years": 0.75
+    },
+    {
+      "document_name": "802724_0001193125-15-331613_d96542dex99d5.htm",
+      "governing_state": "Delaware",
+      "term_duration_years": 3,
+      "standstill_period_years": 0.5
+    }
+  ],
+  "elapsed_seconds": 456.59,
+  "cost_usd": 4.157847,
+  "total_tokens": 7801468
+}

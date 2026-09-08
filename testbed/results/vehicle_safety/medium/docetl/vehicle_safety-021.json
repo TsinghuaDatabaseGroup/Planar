@@ -1,0 +1,62 @@
+{
+  "task_id": "vehicle_safety-021",
+  "answer": [
+    {
+      "complaint_id": "complaint_11097236",
+      "vehicle_id": "NISSAN__ALTIMA__2014",
+      "campaign_number": "16V244000",
+      "airbag_failure_mode": "airbag threw metal scraps"
+    },
+    {
+      "complaint_id": "complaint_11097236",
+      "vehicle_id": "NISSAN__ALTIMA__2014",
+      "campaign_number": "15V681000",
+      "airbag_failure_mode": "airbag threw metal scraps"
+    },
+    {
+      "complaint_id": "complaint_11097236",
+      "vehicle_id": "NISSAN__ALTIMA__2014",
+      "campaign_number": "16V911000",
+      "airbag_failure_mode": "airbag threw metal scraps"
+    },
+    {
+      "complaint_id": "complaint_11092321",
+      "vehicle_id": "NISSAN__ALTIMA__2014",
+      "campaign_number": "16V244000",
+      "airbag_failure_mode": "airbag exploded with metal scraps"
+    },
+    {
+      "complaint_id": "complaint_11092321",
+      "vehicle_id": "NISSAN__ALTIMA__2014",
+      "campaign_number": "15V681000",
+      "airbag_failure_mode": "airbag exploded with metal scraps"
+    },
+    {
+      "complaint_id": "complaint_11092321",
+      "vehicle_id": "NISSAN__ALTIMA__2014",
+      "campaign_number": "16V911000",
+      "airbag_failure_mode": "airbag exploded with metal scraps"
+    },
+    {
+      "complaint_id": "complaint_11083508",
+      "vehicle_id": "NISSAN__ALTIMA__2014",
+      "campaign_number": "16V244000",
+      "airbag_failure_mode": "airbag explosion spewing metal scraps"
+    },
+    {
+      "complaint_id": "complaint_11083508",
+      "vehicle_id": "NISSAN__ALTIMA__2014",
+      "campaign_number": "15V681000",
+      "airbag_failure_mode": "airbag explosion spewing metal scraps"
+    },
+    {
+      "complaint_id": "complaint_11083508",
+      "vehicle_id": "NISSAN__ALTIMA__2014",
+      "campaign_number": "16V911000",
+      "airbag_failure_mode": "airbag explosion spewing metal scraps"
+    }
+  ],
+  "elapsed_seconds": 5.2,
+  "cost_usd": 0.014462,
+  "total_tokens": 28591
+}

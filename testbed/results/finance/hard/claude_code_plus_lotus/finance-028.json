@@ -1,0 +1,24 @@
+{
+  "task_id": "finance-028",
+  "answer": [
+    {
+      "industry": "Healthcare",
+      "count": 5
+    },
+    {
+      "industry": "Technology",
+      "count": 4
+    },
+    {
+      "industry": "Energy",
+      "count": 1
+    },
+    {
+      "industry": "Transportation",
+      "count": 1
+    }
+  ],
+  "elapsed_seconds": 1295.264,
+  "cost_usd": 9.88393758,
+  "total_tokens": 24606744
+}

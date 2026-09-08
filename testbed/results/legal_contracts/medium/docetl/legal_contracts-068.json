@@ -1,0 +1,78 @@
+{
+  "task_id": "legal_contracts-068",
+  "answer": [
+    {
+      "normalized_agreement_title": "non disclosure agreement",
+      "family_size": 170,
+      "avg_exception_count": 4.56,
+      "return_and_injunctive_share": 0.6235,
+      "all_six_exceptions_share": 0.3412
+    },
+    {
+      "normalized_agreement_title": "mutual non disclosure agreement",
+      "family_size": 86,
+      "avg_exception_count": 5.24,
+      "return_and_injunctive_share": 0.7907,
+      "all_six_exceptions_share": 0.4186
+    },
+    {
+      "normalized_agreement_title": "confidentiality and non disclosure agreement",
+      "family_size": 42,
+      "avg_exception_count": 4.1,
+      "return_and_injunctive_share": 0.6429,
+      "all_six_exceptions_share": 0.3095
+    },
+    {
+      "normalized_agreement_title": "confidentiality agreement",
+      "family_size": 34,
+      "avg_exception_count": 4.88,
+      "return_and_injunctive_share": 0.7941,
+      "all_six_exceptions_share": 0.5294
+    },
+    {
+      "normalized_agreement_title": "non disclosure and confidentiality agreement",
+      "family_size": 13,
+      "avg_exception_count": 4.62,
+      "return_and_injunctive_share": 0.6923,
+      "all_six_exceptions_share": 0.2308
+    },
+    {
+      "normalized_agreement_title": "mutual confidentiality and non disclosure agreement",
+      "family_size": 9,
+      "avg_exception_count": 5.33,
+      "return_and_injunctive_share": 0.8889,
+      "all_six_exceptions_share": 0.4444
+    },
+    {
+      "normalized_agreement_title": "mutual nondisclosure agreement",
+      "family_size": 9,
+      "avg_exception_count": 4.89,
+      "return_and_injunctive_share": 0.5556,
+      "all_six_exceptions_share": 0.4444
+    },
+    {
+      "normalized_agreement_title": "non competition and non disclosure agreement",
+      "family_size": 7,
+      "avg_exception_count": 2.71,
+      "return_and_injunctive_share": 0.2857,
+      "all_six_exceptions_share": 0
+    },
+    {
+      "normalized_agreement_title": "non disclosure agreement nda",
+      "family_size": 5,
+      "avg_exception_count": 3.6,
+      "return_and_injunctive_share": 0.6,
+      "all_six_exceptions_share": 0
+    },
+    {
+      "normalized_agreement_title": "non disclosure confidentiality agreement",
+      "family_size": 5,
+      "avg_exception_count": 4.2,
+      "return_and_injunctive_share": 0.6,
+      "all_six_exceptions_share": 0.4
+    }
+  ],
+  "elapsed_seconds": 526.77,
+  "cost_usd": 4.286918,
+  "total_tokens": 8010851
+}

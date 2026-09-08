@@ -1,0 +1,240 @@
+datasets:
+  nhtsa_complaints:
+    type: file
+    path: data/nhtsa_vehicle_safety/complaints.csv
+  nhtsa_recalls:
+    type: file
+    path: data/nhtsa_vehicle_safety/recalls.jsonl
+  nhtsa_investigation_reports:
+    type: file
+    path: data/nhtsa_vehicle_safety/investigation_reports/*.txt
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: https://llm-endpoint.example/v1
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: https://llm-endpoint.example/v1
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types:
+    - chunk
+    - proj_synthesis
+    - glean
+  equijoin:
+    target_recall: 0.95
+operations:
+- name: extract_cited_recall_cores
+  type: map
+  optimize: true
+  prompt: 'Extract every NHTSA vehicle recall campaign number cited in this
+
+    investigation report.
+
+
+    Normalize each citation to its canonical core in the form YYVNNN: two-digit
+
+    campaign year, the letter V, and the three-digit campaign sequence. For
+
+    example, a full campaign number ending in manufacturer-extension digits
+
+    must be reduced to its YYVNNN core. Include only actual recall-number
+
+    citations, preserve no extra text, and deduplicate the returned list. Return
+
+    an empty list when the report cites no recall number.
+
+
+    Investigation report:
+
+    {{ input.body }}
+
+    '
+  output:
+    mode: structured_output
+    schema:
+      cited_recall_cores: list[string]
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 4096
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: normalize_extracted_recall_cores
+  type: code_map
+  code: "def transform(doc):\n    import re\n\n    cores = set()\n    for value in doc.get(\"cited_recall_cores\"\
+    ) or []:\n        compact = re.sub(r\"[^0-9A-Za-z]\", \"\", str(value)).upper()\n        match = re.search(r\"\
+    (\\d{2})V(\\d{3})\", compact)\n        if match:\n            cores.add(\n                f\"{match.group(1)}V{match.group(2)}\"\
+    \n            )\n    return {\"cited_recall_cores\": sorted(cores)}\n"
+- name: collect_investigation_cited_cores
+  type: code_reduce
+  reduce_key: _all
+  code: "def transform(items):\n    cores = {\n        str(core)\n        for item in items\n        for\
+    \ core in (item.get(\"cited_recall_cores\") or [])\n        if str(core)\n    }\n    return {\"investigation_cited_cores\"\
+    : sorted(cores)}\n"
+- name: filter_selected_make_recalls
+  type: code_filter
+  code: "def transform(doc):\n    vehicle = doc.get(\"vehicle\") or {}\n    return vehicle.get(\"make\"\
+    ) in {\n        \"FORD\",\n        \"JEEP\",\n        \"HONDA\",\n        \"TESLA\",\n    }\n"
+- name: flatten_selected_make_recall_fields
+  type: code_map
+  code: "def transform(doc):\n    campaign = doc.get(\"campaign\") or {}\n    vehicle = doc.get(\"vehicle\"\
+    ) or {}\n    component = doc.get(\"component\") or {}\n    risk = doc.get(\"risk\") or {}\n    return\
+    \ {\n        \"campaign_number\": campaign.get(\"number\"),\n        \"make\": vehicle.get(\"make\"\
+    ),\n        \"component_id\": component.get(\"component_id\"),\n        \"defect_summary\": risk.get(\"\
+    defect_summary\") or \"\",\n    }\n"
+- name: aggregate_recall_statistics_by_make
+  type: code_reduce
+  reduce_key: make
+  code: "def transform(items):\n    import re\n\n    campaign_numbers = {\n        str(item.get(\"campaign_number\"\
+    ))\n        for item in items\n        if item.get(\"campaign_number\")\n    }\n    recall_cores =\
+    \ set()\n    for campaign_number in campaign_numbers:\n        match = re.search(\n            r\"\
+    (\\d{2})V(\\d{3})\",\n            campaign_number.upper(),\n        )\n        if match:\n       \
+    \     recall_cores.add(\n                f\"{match.group(1)}V{match.group(2)}\"\n            )\n \
+    \   return {\n        \"recall_campaign_count\": len(campaign_numbers),\n        \"all_recall_cores\"\
+    : sorted(recall_cores),\n    }\n"
+- name: filter_selected_make_complaints
+  type: code_filter
+  code: "def transform(doc):\n    return doc.get(\"make\") in {\n        \"FORD\",\n        \"JEEP\",\n\
+    \        \"HONDA\",\n        \"TESLA\",\n    }\n"
+- name: match_selected_make_complaints_to_recalls
+  type: equijoin
+  comparison_prompt: 'Determine whether this complaint describes the same underlying defect as
+
+    this recall.
+
+
+    The pair has already been restricted to the same make and component
+
+    category. Match only when the complaint narrative and recall summary
+
+    identify the same concrete failure mechanism or directly equivalent
+
+    defect. A shared make, component, symptom, consequence, or broad safety
+
+    concern alone is not sufficient.
+
+
+    COMPLAINT:
+
+    {{ left.summary_text }}
+
+
+    RECALL DEFECT:
+
+    {{ right.defect_summary }}
+
+    '
+  blocking_conditions:
+  - left["make"] == right["make"] and left["component_id"] == right["component_id"]
+  comparison_model: Qwen3.5-397B-A17B
+  timeout: 120
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 4096
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: collect_corroborated_complaint_counts
+  type: code_reduce
+  reduce_key: _all
+  code: "def transform(items):\n    complaint_ids_by_make = {}\n    for item in items:\n        make =\
+    \ item.get(\"make_left\") or item.get(\"make\")\n        complaint_id = item.get(\"complaint_id\"\
+    )\n        if make and complaint_id:\n            complaint_ids_by_make.setdefault(make, set()).add(\n\
+    \                complaint_id\n            )\n    return {\n        \"corroborated_counts_by_make\"\
+    : {\n            make: len(complaint_ids)\n            for make, complaint_ids in complaint_ids_by_make.items()\n\
+    \        }\n    }\n"
+- name: cross_join_recall_stats_with_complaint_counts
+  type: equijoin
+  deterministic: true
+  blocking_conditions:
+  - 'True'
+- name: coalesce_corroborated_complaint_count
+  type: code_map
+  code: "def transform(doc):\n    make = doc.get(\"make\")\n    counts = doc.get(\"corroborated_counts_by_make\"\
+    ) or {}\n    return {\n        \"make\": make,\n        \"recall_campaign_count\": doc.get(\n    \
+    \        \"recall_campaign_count\"\n        ),\n        \"all_recall_cores\": doc.get(\"all_recall_cores\"\
+    ) or [],\n        \"corroborated_complaint_count\": int(\n            counts.get(make, 0)\n      \
+    \  ),\n    }\n"
+- name: cross_join_make_stats_with_investigation_cores
+  type: equijoin
+  deterministic: true
+  blocking_conditions:
+  - 'True'
+- name: assign_make_alignment_label
+  type: code_map
+  code: "def transform(doc):\n    recall_cores = set(doc.get(\"all_recall_cores\") or [])\n    cited_cores\
+    \ = set(\n        doc.get(\"investigation_cited_cores\") or []\n    )\n    return {\n        \"make\"\
+    : doc.get(\"make\"),\n        \"corroborated_complaint_count\": doc.get(\n            \"corroborated_complaint_count\"\
+    \n        ),\n        \"recall_campaign_count\": doc.get(\n            \"recall_campaign_count\"\n\
+    \        ),\n        \"alignment_label\": (\n            \"cited\"\n            if recall_cores.intersection(cited_cores)\n\
+    \            else \"not_cited\"\n        ),\n    }\n"
+- name: format_make_alignment_dictionary
+  type: code_reduce
+  reduce_key: _all
+  code: "def transform(items):\n    return {\n        str(item.get(\"make\")): {\n            \"corroborated_complaint_count\"\
+    : item.get(\n                \"corroborated_complaint_count\"\n            ),\n            \"recall_campaign_count\"\
+    : item.get(\n                \"recall_campaign_count\"\n            ),\n            \"alignment_label\"\
+    : item.get(\"alignment_label\"),\n        }\n        for item in sorted(\n            items,\n   \
+    \         key=lambda row: str(row.get(\"make\") or \"\"),\n        )\n        if item.get(\"make\"\
+    )\n    }\n"
+pipeline:
+  steps:
+  - name: investigation_citation_set
+    input: nhtsa_investigation_reports
+    operations:
+    - extract_cited_recall_cores
+    - normalize_extracted_recall_cores
+    - collect_investigation_cited_cores
+  - name: selected_make_recalls
+    input: nhtsa_recalls
+    operations:
+    - filter_selected_make_recalls
+    - flatten_selected_make_recall_fields
+  - name: recall_statistics_by_make
+    input: selected_make_recalls
+    operations:
+    - aggregate_recall_statistics_by_make
+  - name: selected_make_complaints
+    input: nhtsa_complaints
+    operations:
+    - filter_selected_make_complaints
+  - name: matched_selected_make_complaints
+    operations:
+    - match_selected_make_complaints_to_recalls:
+        left: selected_make_complaints
+        right: selected_make_recalls
+  - name: corroborated_complaint_counts
+    input: matched_selected_make_complaints
+    operations:
+    - collect_corroborated_complaint_counts
+  - name: make_stats_with_complaint_counts
+    operations:
+    - cross_join_recall_stats_with_complaint_counts:
+        left: recall_statistics_by_make
+        right: corroborated_complaint_counts
+  - name: make_stats_with_citation_set
+    input: make_stats_with_complaint_counts
+    operations:
+    - coalesce_corroborated_complaint_count
+  - name: complete_make_alignment_rows
+    operations:
+    - cross_join_make_stats_with_investigation_cores:
+        left: make_stats_with_citation_set
+        right: investigation_citation_set
+  - name: make_alignment_dictionary
+    input: complete_make_alignment_rows
+    operations:
+    - assign_make_alignment_label
+    - format_make_alignment_dictionary
+  output:
+    type: file
+    path: /home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-043/outputs/output_vehicle_safety-043.json
+    intermediate_dir: /home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-043/intermediates
+bypass_cache: true

@@ -1,0 +1,9 @@
+{
+  "task_id": "legal_contracts-056",
+  "answer": [
+    {"agreement_type": "mutual_nda", "document_count": 260, "avg_word_count": 1598.47}
+  ],
+  "elapsed_seconds": 4683.42,
+  "cost_usd": 8.720430,
+  "total_tokens": 16503500
+}

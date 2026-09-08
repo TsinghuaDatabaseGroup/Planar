@@ -1,0 +1,71 @@
+{
+  "task_id": "legal_contracts-038",
+  "answer": [
+    {
+      "document_id": "1335239_0001019687-14-003760_epazz_ex1034.htm",
+      "exhibit_family": "Non-Disclosure/Non-Compete Agreement",
+      "governing_law": "Illinois",
+      "term_months": 12.0,
+      "longest_restriction_months": 12.0
+    },
+    {
+      "document_id": "24104_0000024104-96-000010_document_3.txt",
+      "exhibit_family": "Non-Competition and Non-Disclosure Agreement",
+      "governing_law": "Colorado",
+      "term_months": 120.0,
+      "longest_restriction_months": 120.0
+    },
+    {
+      "document_id": "25895_0000950134-07-023464_d51356exv10w1.htm",
+      "exhibit_family": "Noncompetition and Non-Disclosure Agreement",
+      "governing_law": "Delaware",
+      "term_months": 48.0,
+      "longest_restriction_months": 48.0
+    },
+    {
+      "document_id": "88190_0000950144-96-003474_document_2.txt",
+      "exhibit_family": "Covenant Not to Compete",
+      "governing_law": "New York",
+      "term_months": 36.0,
+      "longest_restriction_months": 36.0
+    },
+    {
+      "document_id": "918541_0001193125-14-328980_d785003dex105.htm",
+      "exhibit_family": "Noncompetition and Nondisclosure Agreement",
+      "governing_law": "Delaware",
+      "term_months": 36.0,
+      "longest_restriction_months": 36.0
+    },
+    {
+      "document_id": "930796_0000950123-05-001407_y05539exv99w5.txt",
+      "exhibit_family": "Confidentiality, Non-Disclosure and Non-Circumvention Agreement",
+      "governing_law": "New York",
+      "term_months": 18.0,
+      "longest_restriction_months": 18.0
+    },
+    {
+      "document_id": "935703_0001047469-98-030238_document_4.txt",
+      "exhibit_family": "Non-Competition Agreement",
+      "governing_law": "California (or Virginia if Selling Shareholder ceases to be a resident of California)",
+      "term_months": 60.0,
+      "longest_restriction_months": 60.0
+    },
+    {
+      "document_id": "idxx2024q210-qexhibit104.htm",
+      "exhibit_family": "Executive Employment Agreement",
+      "governing_law": "Maine",
+      "term_months": 24.0,
+      "longest_restriction_months": 24.0
+    },
+    {
+      "document_id": "idxx2024q310-qexhibit101.htm",
+      "exhibit_family": "Executive Employment Agreement",
+      "governing_law": "Maine",
+      "term_months": 24.0,
+      "longest_restriction_months": 24.0
+    }
+  ],
+  "elapsed_seconds": 386.772,
+  "cost_usd": 2.40581463,
+  "total_tokens": 5470902
+}

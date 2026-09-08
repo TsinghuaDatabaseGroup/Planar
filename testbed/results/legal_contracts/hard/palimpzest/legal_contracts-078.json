@@ -1,0 +1,13 @@
+{
+  "task_id": "legal_contracts-078",
+  "answer": [
+    {"document_id": "a2023q4voyaex191voyafinanc.htm", "company_names": ["Voya Financial, Inc.", "Voya Financial Advisors, Inc."]},
+    {"document_id": "a202410kex191insidertrading.htm", "company_names": ["HUDSON PACIFIC PROPERTIES, INC."]},
+    {"document_id": "a2024q4voyaex191tradingpol.htm", "company_names": ["Voya Financial, Inc.", "Voya Financial Advisors, Inc."]},
+    {"document_id": "avah-ex19_1.htm", "company_names": ["Aveanna Healthcare Holdings Inc."]},
+    {"document_id": "ayi-20240831xex19.htm", "company_names": ["Acuity Brands, Inc."]}
+  ],
+  "elapsed_seconds": 591.25,
+  "cost_usd": 0.614169,
+  "total_tokens": 1162321
+}

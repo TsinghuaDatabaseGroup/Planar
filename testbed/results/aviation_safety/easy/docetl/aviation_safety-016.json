@@ -1,0 +1,58 @@
+{
+  "task_id": "aviation_safety-016",
+  "answer": [
+    {
+      "communication_pair": "flight_crew_atc",
+      "breakdown_mode": "phraseology",
+      "incident_count": 20
+    },
+    {
+      "communication_pair": "flight_crew_atc",
+      "breakdown_mode": "timing_or_late_information",
+      "incident_count": 39
+    },
+    {
+      "communication_pair": "flight_crew_atc",
+      "breakdown_mode": "assumption_or_expectation",
+      "incident_count": 58
+    },
+    {
+      "communication_pair": "flight_crew_atc",
+      "breakdown_mode": "task_division_or_role",
+      "incident_count": 3
+    },
+    {
+      "communication_pair": "flight_crew_atc",
+      "breakdown_mode": "failure_to_challenge",
+      "incident_count": 2
+    },
+    {
+      "communication_pair": "flight_crew_flight_crew",
+      "breakdown_mode": "phraseology",
+      "incident_count": 5
+    },
+    {
+      "communication_pair": "flight_crew_flight_crew",
+      "breakdown_mode": "timing_or_late_information",
+      "incident_count": 5
+    },
+    {
+      "communication_pair": "flight_crew_flight_crew",
+      "breakdown_mode": "assumption_or_expectation",
+      "incident_count": 62
+    },
+    {
+      "communication_pair": "flight_crew_flight_crew",
+      "breakdown_mode": "task_division_or_role",
+      "incident_count": 66
+    },
+    {
+      "communication_pair": "flight_crew_flight_crew",
+      "breakdown_mode": "failure_to_challenge",
+      "incident_count": 40
+    }
+  ],
+  "elapsed_seconds": 299.74,
+  "cost_usd": 2.093356,
+  "total_tokens": 5002284
+}

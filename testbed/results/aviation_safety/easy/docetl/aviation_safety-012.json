@@ -1,0 +1,20 @@
+{
+  "task_id": "aviation_safety-012",
+  "answer": [
+    {
+      "post_troubleshooting_status": "still_unsafe",
+      "incident_count": 601
+    },
+    {
+      "post_troubleshooting_status": "intermittent",
+      "incident_count": 103
+    },
+    {
+      "post_troubleshooting_status": "resolved",
+      "incident_count": 499
+    }
+  ],
+  "elapsed_seconds": 155.31,
+  "cost_usd": 1.320953,
+  "total_tokens": 3244425
+}

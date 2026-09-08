@@ -1,0 +1,16 @@
+{
+  "task_id": "vehicle_safety-008",
+  "answer": [
+    {
+      "campaign_number": "25V092000",
+      "primary_cause_phrase": "printed circuit board overstress condition"
+    },
+    {
+      "campaign_number": "23V085000",
+      "primary_cause_phrase": "FSD Beta software unsafe behavior"
+    }
+  ],
+  "elapsed_seconds": 0.54,
+  "cost_usd": 0.000323,
+  "total_tokens": 628
+}

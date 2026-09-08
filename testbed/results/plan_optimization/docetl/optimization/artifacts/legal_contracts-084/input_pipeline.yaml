@@ -1,0 +1,321 @@
+datasets:
+  contract_exhibits:
+    type: file
+    path: contract_exhibit_full.json
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: https://llm-endpoint.example/v1
+default_embedding_api_base: https://llm-endpoint.example/v1
+
+operations:
+  - name: filter_sox_302_certifications
+    type: filter
+    prompt: |
+      Determine whether this document is a SOX Section 302 certification.
+
+      Document:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        is_sox_302_certification: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: extract_sox_company_and_officer
+    type: map
+    prompt: |
+      Extract the certified company entity and the certifying officer from this
+      SOX Section 302 certification. Include the officer's stated title in the
+      certifying_officer value.
+
+      Document:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        sox_company: string
+        certifying_officer: string
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 192
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: group_sox_officers_by_company
+    type: code_reduce
+    reduce_key: sox_company
+    code: |
+      def transform(items):
+          officers = sorted({
+              str(item.get("certifying_officer") or "").strip()
+              for item in items
+              if str(item.get("certifying_officer") or "").strip()
+          })
+          return {"certifying_officers": officers}
+
+  - name: filter_clawback_policies
+    type: filter
+    prompt: |
+      Determine whether this document is a clawback or compensation-recovery
+      policy.
+
+      Document:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        is_clawback_policy: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_clawback_misconduct_recovery
+    type: filter
+    prompt: |
+      Determine whether this clawback policy permits recovery for misconduct by a
+      covered person.
+
+      Document:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        permits_misconduct_recovery: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: extract_clawback_company_and_category
+    type: map
+    prompt: |
+      Extract the company entity and a concise normalized covered-person category
+      from this clawback policy.
+
+      Document:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        clawback_company: string
+        covered_person_category: string
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 192
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: deduplicate_clawback_company_categories
+    type: code_reduce
+    reduce_key:
+      - clawback_company
+      - covered_person_category
+    code: |
+      def transform(items):
+          return {}
+
+  - name: filter_subsidiary_list_filings
+    type: filter
+    prompt: |
+      Determine whether this document is a subsidiary-list filing that names the
+      subsidiaries of a parent company.
+
+      Document:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        is_subsidiary_list_filing: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: extract_subsidiary_parent_and_count
+    type: map
+    prompt: |
+      Extract the parent company entity and the number of subsidiaries explicitly
+      listed in this subsidiary-list filing.
+
+      Document:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        subsidiary_company: string
+        subsidiary_count: integer
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 192
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_at_least_70_subsidiaries
+    type: code_filter
+    code: |
+      def transform(doc):
+          return int(doc.get("subsidiary_count") or 0) >= 70
+
+  - name: group_largest_subsidiary_count_by_company
+    type: code_reduce
+    reduce_key: subsidiary_company
+    code: |
+      def transform(items):
+          return {
+              "largest_subsidiary_count": max(
+                  int(item.get("subsidiary_count") or 0) for item in items
+              )
+          }
+
+  - name: join_sox_and_clawback_companies
+    type: equijoin
+    comparison_prompt: |
+      Determine whether these names refer to the same company entity despite
+      naming, punctuation, abbreviation, or corporate-suffix variation.
+
+      SOX COMPANY:
+      {{ left.sox_company }}
+
+      CLAWBACK COMPANY:
+      {{ right.clawback_company }}
+    blocking_keys:
+      left: [sox_company]
+      right: [clawback_company]
+    blocking_target_recall: 0.95
+    embedding_model: openai/Qwen3-Embedding-8B
+    comparison_model: Qwen3.5-397B-A17B
+    timeout: 120
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: join_company_matches_to_subsidiaries
+    type: equijoin
+    comparison_prompt: |
+      Determine whether the company in this SOX/clawback match and the parent
+      company in this subsidiary-list record are the same entity despite naming,
+      punctuation, abbreviation, or corporate-suffix variation.
+
+      SOX COMPANY:
+      {{ left.sox_company }}
+
+      CLAWBACK COMPANY:
+      {{ left.clawback_company }}
+
+      SUBSIDIARY-LIST PARENT:
+      {{ right.subsidiary_company }}
+    blocking_keys:
+      left: [sox_company, clawback_company]
+      right: [subsidiary_company]
+    blocking_target_recall: 0.95
+    embedding_model: openai/Qwen3-Embedding-8B
+    comparison_model: Qwen3.5-397B-A17B
+    timeout: 120
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: order_company_intersection
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          rows = [
+              {
+                  "company": item.get("sox_company"),
+                  "certifying_officers": item.get("certifying_officers") or [],
+                  "covered_person_category": item.get("covered_person_category"),
+                  "largest_subsidiary_count": int(
+                      item.get("largest_subsidiary_count") or 0
+                  ),
+              }
+              for item in items
+          ]
+          rows.sort(
+              key=lambda row: (
+                  -row["largest_subsidiary_count"],
+                  str(row["company"] or "").casefold(),
+              )
+          )
+          return {"rows": rows}
+
+  - name: unnest_company_intersection
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - company
+      - certifying_officers
+      - covered_person_category
+      - largest_subsidiary_count
+
+pipeline:
+  steps:
+    - name: sox_company_groups
+      input: contract_exhibits
+      operations:
+        - filter_sox_302_certifications
+        - extract_sox_company_and_officer
+        - group_sox_officers_by_company
+    - name: clawback_company_categories
+      input: contract_exhibits
+      operations:
+        - filter_clawback_policies
+        - filter_clawback_misconduct_recovery
+        - extract_clawback_company_and_category
+        - deduplicate_clawback_company_categories
+    - name: large_subsidiary_lists
+      input: contract_exhibits
+      operations:
+        - filter_subsidiary_list_filings
+        - extract_subsidiary_parent_and_count
+        - filter_at_least_70_subsidiaries
+        - group_largest_subsidiary_count_by_company
+    - name: sox_clawback_company_matches
+      operations:
+        - join_sox_and_clawback_companies:
+            left: sox_company_groups
+            right: clawback_company_categories
+    - name: complete_company_matches
+      operations:
+        - join_company_matches_to_subsidiaries:
+            left: sox_clawback_company_matches
+            right: large_subsidiary_lists
+    - name: ordered_answer
+      input: complete_company_matches
+      operations:
+        - order_company_intersection
+        - unnest_company_intersection
+  output:
+    type: file
+    path: plan-optimization-moar/standalone/outputs/output_legal_contracts-084.json
+    intermediate_dir: plan-optimization-moar/standalone/intermediates/legal_contracts-084

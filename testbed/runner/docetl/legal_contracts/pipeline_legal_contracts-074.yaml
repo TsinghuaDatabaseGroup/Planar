@@ -1,0 +1,92 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_insider_trading_policies
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is an insider-trading policy.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_insider_trading_policy: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_policy_feature_flags
+    type: map
+    optimize: true
+    prompt: |
+      Determine whether this policy has a blackout period, requires
+      pre-clearance, discusses Rule 10b5-1 plans, covers family or household
+      members, and prohibits pledging. For each feature, set its available flag
+      to false when a definite yes-or-no value cannot be determined; the paired
+      boolean value is then only a placeholder.
+
+      Policy:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        blackout_period_available: boolean
+        blackout_period_value: boolean
+        pre_clearance_available: boolean
+        pre_clearance_value: boolean
+        rule_10b5_1_available: boolean
+        rule_10b5_1_value: boolean
+        family_household_coverage_available: boolean
+        family_household_coverage_value: boolean
+        pledging_prohibited_available: boolean
+        pledging_prohibited_value: boolean
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: normalize_nullable_feature_flags
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "blackout_period": bool(doc.get("blackout_period_value")) if doc.get("blackout_period_available") is True else None,
+              "pre_clearance": bool(doc.get("pre_clearance_value")) if doc.get("pre_clearance_available") is True else None,
+              "rule_10b5_1": bool(doc.get("rule_10b5_1_value")) if doc.get("rule_10b5_1_available") is True else None,
+              "family_household_coverage": bool(doc.get("family_household_coverage_value")) if doc.get("family_household_coverage_available") is True else None,
+              "pledging_prohibited": bool(doc.get("pledging_prohibited_value")) if doc.get("pledging_prohibited_available") is True else None,
+          }
+  - name: filter_definite_feature_profiles
+    type: code_filter
+    code: |
+      def transform(doc):
+          fields = ["blackout_period", "pre_clearance", "rule_10b5_1", "family_household_coverage", "pledging_prohibited"]
+          return all(doc.get(field) is not None for field in fields)
+  - name: count_feature_profiles
+    type: code_reduce
+    reduce_key: [blackout_period, pre_clearance, rule_10b5_1, family_household_coverage, pledging_prohibited]
+    code: |
+      def transform(items):
+          return {"policy_count": len(items)}
+  - name: order_feature_profiles
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          fields = ["blackout_period", "pre_clearance", "rule_10b5_1", "family_household_coverage", "pledging_prohibited"]
+          ordered = sorted(items, key=lambda item: tuple([-int(item.get("policy_count") or 0)] + [bool(item.get(field)) for field in fields]))
+          return {"rows": [{field: item.get(field) for field in fields} | {"policy_count": item.get("policy_count")} for item in ordered]}
+  - name: unnest_feature_profiles
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields: [blackout_period, pre_clearance, rule_10b5_1, family_household_coverage, pledging_prohibited, policy_count]
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations: [filter_insider_trading_policies, extract_policy_feature_flags, normalize_nullable_feature_flags, filter_definite_feature_profiles, count_feature_profiles, order_feature_profiles, unnest_feature_profiles]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-074.json

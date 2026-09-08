@@ -1,0 +1,20 @@
+{
+  "task_id": "finance-032",
+  "answer": [
+    {
+      "company_name": "Scientific Energy, Inc.",
+      "industry_sector": "Food and Grocery Ordering and Delivery Services",
+      "employee_count_2019": 3,
+      "employee_count_2023": 847.0
+    },
+    {
+      "company_name": "Grid Dynamics Holdings, Inc.",
+      "industry_sector": "Technology Consulting and Engineering Services",
+      "employee_count_2019": 2,
+      "employee_count_2023": NaN
+    }
+  ],
+  "elapsed_seconds": 1624.335,
+  "cost_usd": 17.13960207,
+  "total_tokens": 43586123
+}

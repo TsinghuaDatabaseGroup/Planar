@@ -1,0 +1,32 @@
+{
+  "task_id": "finance-018",
+  "answer": {
+    "advertising": {
+      "filing_count": 42,
+      "average_employee_count": 4953
+    },
+    "investment_returns": {
+      "filing_count": 101,
+      "average_employee_count": 1583
+    },
+    "mixed": {
+      "filing_count": 965,
+      "average_employee_count": 10747
+    },
+    "product_sales": {
+      "filing_count": 1803,
+      "average_employee_count": 12598
+    },
+    "service_fees": {
+      "filing_count": 794,
+      "average_employee_count": 16962
+    },
+    "subscription": {
+      "filing_count": 242,
+      "average_employee_count": 3097
+    }
+  },
+  "elapsed_seconds": 8044.35,
+  "cost_usd": 85.830267,
+  "total_tokens": 215420181
+}

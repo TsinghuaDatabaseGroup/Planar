@@ -1,0 +1,11 @@
+{
+  "task_id": "vehicle_safety-005",
+  "answer": [
+    {
+      "campaign_number": "25V092000"
+    }
+  ],
+  "elapsed_seconds": 5.06,
+  "cost_usd": 0.020711,
+  "total_tokens": 45215
+}

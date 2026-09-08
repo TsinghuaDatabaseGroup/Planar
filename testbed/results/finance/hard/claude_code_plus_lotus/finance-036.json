@@ -1,0 +1,78 @@
+{
+  "task_id": "finance-036",
+  "answer": [
+    {
+      "company_name": "Yum China Holdings, Inc.",
+      "industry_sector": "Restaurants",
+      "entity_type": "Corporation",
+      "growth_strategy": "Hybrid",
+      "risk_factor_count": 63.0
+    },
+    {
+      "company_name": "Goldman Sachs BDC, Inc.",
+      "industry_sector": "Specialty Finance",
+      "entity_type": "Closed-end management investment company (BDC)",
+      "growth_strategy": "Hybrid",
+      "risk_factor_count": 58.0
+    },
+    {
+      "company_name": "Anworth Mortgage Asset Corporation",
+      "industry_sector": "Real Estate Investment Trust (REIT)",
+      "entity_type": "Corporation",
+      "growth_strategy": "Hybrid",
+      "risk_factor_count": 54.0
+    },
+    {
+      "company_name": "HC2 Holdings, Inc.",
+      "industry_sector": "Diversified Holding Company",
+      "entity_type": "Corporation",
+      "growth_strategy": "Hybrid",
+      "risk_factor_count": 54.0
+    },
+    {
+      "company_name": "EnLink Midstream, LLC",
+      "industry_sector": "Energy",
+      "entity_type": "Delaware limited liability company",
+      "growth_strategy": "acquisition-driven",
+      "risk_factor_count": 52.0
+    },
+    {
+      "company_name": "ViewRay, Inc.",
+      "industry_sector": "Medical Devices",
+      "entity_type": "Corporation",
+      "growth_strategy": "Market expansion",
+      "risk_factor_count": 48.0
+    },
+    {
+      "company_name": "Cowen Inc.",
+      "industry_sector": "Financial Services",
+      "entity_type": "Delaware corporation",
+      "growth_strategy": "acquisition-driven",
+      "risk_factor_count": 46.0
+    },
+    {
+      "company_name": "Not specified in the provided text",
+      "industry_sector": "Financial Services",
+      "entity_type": "Corporation",
+      "growth_strategy": "Hybrid",
+      "risk_factor_count": 46.0
+    },
+    {
+      "company_name": "South State Corporation",
+      "industry_sector": "Financial Services",
+      "entity_type": "Corporation",
+      "growth_strategy": "Hybrid",
+      "risk_factor_count": 46.0
+    },
+    {
+      "company_name": "Boston Properties, Inc.",
+      "industry_sector": "Real Estate",
+      "entity_type": "Corporation",
+      "growth_strategy": "Hybrid",
+      "risk_factor_count": 45.0
+    }
+  ],
+  "elapsed_seconds": 1337.895,
+  "cost_usd": 13.72636689,
+  "total_tokens": 34676497
+}

@@ -1,0 +1,155 @@
+datasets:
+  nhtsa_complaints:
+    type: file
+    path: data/nhtsa_vehicle_safety/complaints.csv
+  nhtsa_recalls:
+    type: file
+    path: data/nhtsa_vehicle_safety/recalls.jsonl
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+
+operations:
+  - name: filter_dodge_airbag_complaints
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("make") == "DODGE"
+              and doc.get("component_id") == "AIRBAG"
+          )
+
+  - name: filter_dodge_airbag_recalls
+    type: code_filter
+    code: |
+      def transform(doc):
+          vehicle = doc.get("vehicle") or {}
+          component = doc.get("component") or {}
+          return (
+              vehicle.get("make") == "DODGE"
+              and component.get("component_id") == "AIRBAG"
+          )
+
+  - name: flatten_airbag_recall_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          campaign = doc.get("campaign") or {}
+          risk = doc.get("risk") or {}
+          return {
+              "campaign_number": campaign.get("number"),
+              "defect_summary": risk.get("defect_summary") or "",
+          }
+
+  - name: deduplicate_recall_campaigns
+    type: code_reduce
+    reduce_key: campaign_number
+    code: |
+      def transform(items):
+          summaries = sorted(
+              {
+                  str(item.get("defect_summary") or "")
+                  for item in items
+                  if str(item.get("defect_summary") or "")
+              }
+          )
+          return {"defect_summary": "\n".join(summaries)}
+
+  - name: match_airbag_complaints_to_campaigns
+    type: equijoin
+    comparison_prompt: |
+      Keep this complaint-recall pair only when the complaint narrative and recall
+      defect summary describe the same concrete airbag failure mechanism or
+      deployment hazard, such as the same non-deployment, unintended deployment,
+      or inflator-rupture problem. A generic shared mention of airbags is
+      insufficient.
+
+      COMPLAINT:
+      {{ left.summary_text }}
+
+      RECALL DEFECT SUMMARY:
+      {{ right.defect_summary }}
+    blocking_conditions:
+      - "True"
+    embedding_model: Qwen3-Embedding-8B
+    comparison_model: Qwen3.5-397B-A17B
+    timeout: 120
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 128
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: aggregate_and_order_campaign_matches
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          grouped = {}
+          for item in items:
+              campaign = str(item.get("campaign_number") or "")
+              complaint_id = str(item.get("complaint_id") or "")
+              if campaign and complaint_id:
+                  grouped.setdefault(campaign, set()).add(
+                      (complaint_id, campaign)
+                  )
+          rows = [
+              {
+                  "campaign_number": campaign,
+                  "matched_pair_count": len(pairs),
+              }
+              for campaign, pairs in grouped.items()
+          ]
+          rows.sort(
+              key=lambda row: (-row["matched_pair_count"], row["campaign_number"])
+          )
+          return {"rows": rows}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - campaign_number
+      - matched_pair_count
+
+pipeline:
+  steps:
+    - name: complaints
+      input: nhtsa_complaints
+      operations:
+        - filter_dodge_airbag_complaints
+    - name: recalls
+      input: nhtsa_recalls
+      operations:
+        - filter_dodge_airbag_recalls
+        - flatten_airbag_recall_fields
+        - deduplicate_recall_campaigns
+    - name: matched_pairs
+      operations:
+        - match_airbag_complaints_to_campaigns:
+            left: complaints
+            right: recalls
+    - name: answer
+      input: matched_pairs
+      operations:
+        - aggregate_and_order_campaign_matches
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/vehicle_safety/output_vehicle_safety-014.json

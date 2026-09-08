@@ -1,0 +1,256 @@
+{
+  "task_id": "legal_contracts-071",
+  "answer": [
+    {
+      "document_id": "103884_0001193125-12-338104_d390544dex99d3.htm",
+      "nda_direction": "unilateral (ABRH discloses)",
+      "confidentiality_term_years": 2.0,
+      "noncompete_duration_years": 1.5,
+      "governing_law": "Colorado",
+      "duration_comparison": "confidentiality_longer"
+    },
+    {
+      "document_id": "1043431_0000950133-00-000090_document_15.txt",
+      "nda_direction": "mutual",
+      "confidentiality_term_years": 2.0,
+      "noncompete_duration_years": 1.0,
+      "governing_law": "Virginia",
+      "duration_comparison": "confidentiality_longer"
+    },
+    {
+      "document_id": "1094814_0001140361-18-017998_s002178x1_ex99d7.htm",
+      "nda_direction": "mutual",
+      "confidentiality_term_years": 1.0,
+      "noncompete_duration_years": 1.0,
+      "governing_law": "Delaware",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "1280058_0001193125-12-023311_d287213dex99d3.htm",
+      "nda_direction": "mutual",
+      "confidentiality_term_years": 5.0,
+      "noncompete_duration_years": 1.0,
+      "governing_law": "Delaware",
+      "duration_comparison": "confidentiality_longer"
+    },
+    {
+      "document_id": "1289434_0001047469-10-008010_a2200117zex-99_d3.htm",
+      "nda_direction": "unilateral (Cogent, Inc. discloses)",
+      "confidentiality_term_years": 4.0,
+      "noncompete_duration_years": 3.0,
+      "governing_law": "Minnesota",
+      "duration_comparison": "confidentiality_longer"
+    },
+    {
+      "document_id": "1316898_0001047469-18-005618_a2236490zex-99_d2.htm",
+      "nda_direction": "mutual",
+      "confidentiality_term_years": 2.0,
+      "noncompete_duration_years": 1.5,
+      "governing_law": "Delaware",
+      "duration_comparison": "confidentiality_longer"
+    },
+    {
+      "document_id": "1335239_0001019687-14-003760_epazz_ex1034.htm",
+      "nda_direction": "unilateral (Seller, Key Personnel, and Shareholder disclose to Company)",
+      "confidentiality_term_years": 1.0,
+      "noncompete_duration_years": 1.0,
+      "governing_law": "Illinois",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "1363033_0001144204-06-024852_v045245_ex10-8.htm",
+      "nda_direction": "unilateral (Mellet discloses to Sweetskinz)",
+      "confidentiality_term_years": 10.75,
+      "noncompete_duration_years": 10.75,
+      "governing_law": "Pennsylvania",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "1693664_0001193125-18-171470_d426098dex99d3.htm",
+      "nda_direction": "mutual",
+      "confidentiality_term_years": 3.0,
+      "noncompete_duration_years": 1.0,
+      "governing_law": "Delaware",
+      "duration_comparison": "confidentiality_longer"
+    },
+    {
+      "document_id": "24104_0000024104-96-000010_document_3.txt",
+      "nda_direction": "unilateral (Valco and Brubaker disclose to CMC)",
+      "confidentiality_term_years": 10.0,
+      "noncompete_duration_years": 10.0,
+      "governing_law": "Colorado",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "703361_0001193125-12-242586_d356019dex9910.htm",
+      "nda_direction": "mutual",
+      "confidentiality_term_years": 1.0,
+      "noncompete_duration_years": 1.0,
+      "governing_law": "California",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "804151_0000950144-97-007563_document_14.txt",
+      "nda_direction": "unilateral (IMO Industries Inc. discloses)",
+      "confidentiality_term_years": 5.0,
+      "noncompete_duration_years": 2.0,
+      "governing_law": "New York",
+      "duration_comparison": "confidentiality_longer"
+    },
+    {
+      "document_id": "814457_0000950137-04-009790_c89545exv99wxdyx6y.htm",
+      "nda_direction": "unilateral (Triyar Companies, Inc. receives)",
+      "confidentiality_term_years": 2.0,
+      "noncompete_duration_years": 2.0,
+      "governing_law": "Illinois",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "816955_0000899243-97-001962_document_4.txt",
+      "nda_direction": "unilateral (MCI discloses)",
+      "confidentiality_term_years": 3.0,
+      "noncompete_duration_years": 2.0,
+      "governing_law": "Louisiana",
+      "duration_comparison": "confidentiality_longer"
+    },
+    {
+      "document_id": "845818_0001193125-11-195725_dex99d8.htm",
+      "nda_direction": "mutual",
+      "confidentiality_term_years": 2.0,
+      "noncompete_duration_years": 1.0,
+      "governing_law": "New York",
+      "duration_comparison": "confidentiality_longer"
+    },
+    {
+      "document_id": "88190_0000950144-96-003474_document_2.txt",
+      "nda_direction": "unilateral (Seller discloses)",
+      "confidentiality_term_years": 3.0,
+      "noncompete_duration_years": 3.0,
+      "governing_law": "New York",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "897730_0000950136-98-001457_document_7.txt",
+      "nda_direction": "unilateral (Liberty Technologies, Inc. discloses)",
+      "confidentiality_term_years": 1.79,
+      "noncompete_duration_years": 1.0,
+      "governing_law": "Pennsylvania",
+      "duration_comparison": "confidentiality_longer"
+    },
+    {
+      "document_id": "899240_0000912057-01-007226_a2040095zex-99_9d1.txt",
+      "nda_direction": "unilateral (Sunglass Hut discloses)",
+      "confidentiality_term_years": 1.0,
+      "noncompete_duration_years": 2.0,
+      "governing_law": "Florida",
+      "duration_comparison": "noncompete_longer"
+    },
+    {
+      "document_id": "912263_0001047469-12-006662_a2209873zex-99_d2.htm",
+      "nda_direction": "unilateral (Company discloses)",
+      "confidentiality_term_years": 1.5,
+      "noncompete_duration_years": 1.5,
+      "governing_law": "New York",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "912263_0001104659-12-004811_a12-3671_1ex2.htm",
+      "nda_direction": "unilateral (Company discloses)",
+      "confidentiality_term_years": 1.5,
+      "noncompete_duration_years": 1.5,
+      "governing_law": "New York",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "912263_0001193125-12-285724_d371520dex99e4.htm",
+      "nda_direction": "unilateral (Company discloses)",
+      "confidentiality_term_years": 1.5,
+      "noncompete_duration_years": 1.5,
+      "governing_law": "New York",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "LMS_Non_Disclosure_Agreement.pdf",
+      "nda_direction": "unilateral (Last Man Stands discloses)",
+      "confidentiality_term_years": 5.0,
+      "noncompete_duration_years": 3.0,
+      "governing_law": "jurisdiction in which the Disclosing Party is located",
+      "duration_comparison": "confidentiality_longer"
+    },
+    {
+      "document_id": "a1033trv2025mcmperfsharesa.htm",
+      "nda_direction": "unilateral (Participant discloses)",
+      "confidentiality_term_years": 3.0,
+      "noncompete_duration_years": 1.0,
+      "governing_law": "Participant's Employment Jurisdiction",
+      "duration_comparison": "confidentiality_longer"
+    },
+    {
+      "document_id": "dal9302024ex101.htm",
+      "nda_direction": "unilateral (Michael Spanos discloses to Delta)",
+      "confidentiality_term_years": 5.0,
+      "noncompete_duration_years": 1.0,
+      "governing_law": "Georgia",
+      "duration_comparison": "confidentiality_longer"
+    },
+    {
+      "document_id": "e6756_ex10-6.htm",
+      "nda_direction": "unilateral (Employee discloses to VISIONWAVE)",
+      "confidentiality_term_years": 3.0,
+      "noncompete_duration_years": 2.0,
+      "governing_law": "Georgia",
+      "duration_comparison": "confidentiality_longer"
+    },
+    {
+      "document_id": "ea023506301_ex10-1.htm",
+      "nda_direction": "unilateral (Employee discloses to Company)",
+      "confidentiality_term_years": 2.0,
+      "noncompete_duration_years": 1.0,
+      "governing_law": "Arizona",
+      "duration_comparison": "confidentiality_longer"
+    },
+    {
+      "document_id": "exhibit1022.htm",
+      "nda_direction": "unilateral (Consultant discloses)",
+      "confidentiality_term_years": 2.0,
+      "noncompete_duration_years": 1.0,
+      "governing_law": "Texas",
+      "duration_comparison": "confidentiality_longer"
+    },
+    {
+      "document_id": "larsenemploymentagreement.htm",
+      "nda_direction": "unilateral (Employee discloses)",
+      "confidentiality_term_years": 3.0,
+      "noncompete_duration_years": 1.0,
+      "governing_law": "Washington",
+      "duration_comparison": "confidentiality_longer"
+    },
+    {
+      "document_id": "non-disclosure-agreement_1.pdf",
+      "nda_direction": "bidirectional",
+      "confidentiality_term_years": 1.5,
+      "noncompete_duration_years": 1.0,
+      "governing_law": "English law",
+      "duration_comparison": "confidentiality_longer"
+    },
+    {
+      "document_id": "trin-ex10_7.htm",
+      "nda_direction": "unilateral (Employee discloses to Company)",
+      "confidentiality_term_years": 2.0,
+      "noncompete_duration_years": 1.0,
+      "governing_law": "Arizona",
+      "duration_comparison": "confidentiality_longer"
+    },
+    {
+      "document_id": "voorheesemploymentagreement.htm",
+      "nda_direction": "unilateral (Employee discloses)",
+      "confidentiality_term_years": 3.0,
+      "noncompete_duration_years": 1.0,
+      "governing_law": "Washington",
+      "duration_comparison": "confidentiality_longer"
+    }
+  ],
+  "elapsed_seconds": 386.078,
+  "cost_usd": 2.97760101,
+  "total_tokens": 7006859
+}

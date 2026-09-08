@@ -1,0 +1,122 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_nda_status_documents
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it has NDA status, including a dual-status SEC
+      exhibit.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {has_nda_status: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_date_and_jurisdictions
+    type: map
+    optimize: true
+    prompt: |
+      Return the explicit effective date normalized to YYYY-MM-DD and the list
+      of expressly stated governing-law jurisdictions. Set
+      effective_date_available=false if no effective date is stated, using an
+      empty string only as a placeholder.
+
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        effective_date_available: boolean
+        effective_date_value: string
+        governing_law_jurisdictions: "list[string]"
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: normalize_effective_date
+    type: code_map
+    code: |
+      def transform(doc):
+          return {"effective_date": str(doc.get("effective_date_value") or "") if doc.get("effective_date_available") is True else None}
+  - name: filter_recent_single_jurisdiction
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("effective_date") is not None and str(doc["effective_date"]) >= "2010-01-01" and len(doc.get("governing_law_jurisdictions") or []) == 1
+  - name: extract_clause_and_exception_profile
+    type: map
+    optimize: true
+    prompt: |
+      Return whether each of these five core clauses is present: a confidential-
+      information definition, nondisclosure, non-use, return of materials, and
+      survival. Also return whether each of the six standard confidentiality
+      exceptions is present and whether the confidentiality term is perpetual.
+
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        has_confidential_information_definition: boolean
+        has_nondisclosure: boolean
+        has_non_use: boolean
+        has_return_of_materials: boolean
+        has_survival: boolean
+        has_public_information_exception: boolean
+        has_prior_knowledge_exception: boolean
+        has_independent_development_exception: boolean
+        has_third_party_receipt_exception: boolean
+        has_legal_compulsion_exception: boolean
+        has_consent_exception: boolean
+        perpetual_confidentiality_term: boolean
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: project_jurisdiction_profile
+    type: code_map
+    code: |
+      def transform(doc):
+          core = ["has_confidential_information_definition", "has_nondisclosure", "has_non_use", "has_return_of_materials", "has_survival"]
+          exceptions = ["has_public_information_exception", "has_prior_knowledge_exception", "has_independent_development_exception", "has_third_party_receipt_exception", "has_legal_compulsion_exception", "has_consent_exception"]
+          return {
+              "jurisdiction": (doc.get("governing_law_jurisdictions") or [None])[0],
+              "all_five_core_clauses": all(doc.get(field) is True for field in core),
+              "all_six_standard_exceptions": all(doc.get(field) is True for field in exceptions),
+              "perpetual_confidentiality_term": doc.get("perpetual_confidentiality_term") is True,
+          }
+  - name: aggregate_jurisdiction_profiles
+    type: code_reduce
+    reduce_key: jurisdiction
+    code: |
+      def transform(items):
+          return {
+              "nda_count": len(items),
+              "all_five_core_clauses_count": sum(item.get("all_five_core_clauses") is True for item in items),
+              "all_six_standard_exceptions_count": sum(item.get("all_six_standard_exceptions") is True for item in items),
+              "perpetual_term_count": sum(item.get("perpetual_confidentiality_term") is True for item in items),
+          }
+  - name: select_top_three_jurisdictions
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          ordered = sorted(items, key=lambda item: -int(item.get("nda_count") or 0))
+          fields = ["jurisdiction", "nda_count", "all_five_core_clauses_count", "all_six_standard_exceptions_count", "perpetual_term_count"]
+          return {"rows": [{field: item.get(field) for field in fields} for item in ordered[:3]]}
+  - name: unnest_top_jurisdictions
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields: [jurisdiction, nda_count, all_five_core_clauses_count, all_six_standard_exceptions_count, perpetual_term_count]
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations: [filter_nda_status_documents, extract_date_and_jurisdictions, normalize_effective_date, filter_recent_single_jurisdiction, extract_clause_and_exception_profile, project_jurisdiction_profile, aggregate_jurisdiction_profiles, select_top_three_jurisdictions, unnest_top_jurisdictions]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-105.json

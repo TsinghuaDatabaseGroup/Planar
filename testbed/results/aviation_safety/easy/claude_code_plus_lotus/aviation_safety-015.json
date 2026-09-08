@@ -1,0 +1,133 @@
+{
+  "task_id": "aviation_safety-015",
+  "answer": [
+    {
+      "rank": 1,
+      "incident_id": "asrs_034863",
+      "fuel_values_normalized": [
+        "1200 LBS",
+        "17800 LBS",
+        "3.7",
+        "3.2",
+        "2.4",
+        "3.0"
+      ],
+      "time_values_normalized": [
+        "2-3 MINS",
+        "1 MIN"
+      ],
+      "operational_consequence": "emergency_declaration"
+    },
+    {
+      "rank": 2,
+      "incident_id": "asrs_061836",
+      "fuel_values_normalized": [
+        "6.3",
+        "1.7",
+        "4.7",
+        "4.9",
+        "1.8",
+        "2.8",
+        "45 minutes",
+        "30 minutes",
+        "4800 LBS",
+        "2200 LBS"
+      ],
+      "time_values_normalized": [
+        "1:04 minutes",
+        "40 minutes",
+        "45 minutes",
+        "30 minutes",
+        "5 minutes"
+      ],
+      "operational_consequence": "emergency_declaration"
+    },
+    {
+      "rank": 3,
+      "incident_id": "asrs_070320",
+      "fuel_values_normalized": [
+        "2",
+        "900 LBS",
+        "998 LBS",
+        "2",
+        "400 LBS",
+        "2",
+        "000 LBS",
+        "1",
+        "200 LBS"
+      ],
+      "time_values_normalized": [
+        "10 minutes",
+        "9:03"
+      ],
+      "operational_consequence": "emergency_declaration"
+    },
+    {
+      "rank": 4,
+      "incident_id": "asrs_086414",
+      "fuel_values_normalized": [
+        "1",
+        "500 LBS",
+        "5",
+        "200 LBS",
+        "5",
+        "040 LBS",
+        "4",
+        "390 LBS",
+        "2",
+        "360 LBS",
+        "5",
+        "100 LBS",
+        "2",
+        "160 LBS",
+        "1",
+        "800 LBS",
+        "1",
+        "700 LBS",
+        "1",
+        "400 LBS",
+        "1",
+        "350 LBS"
+      ],
+      "time_values_normalized": [
+        "10 minutes",
+        "14 minutes",
+        "20 minutes",
+        "23 minutes"
+      ],
+      "operational_consequence": "emergency_declaration"
+    },
+    {
+      "rank": 5,
+      "incident_id": "asrs_111100",
+      "fuel_values_normalized": [
+        "3",
+        "500 pounds",
+        "14",
+        "000 pounds",
+        "3-700 pounds",
+        "-2",
+        "800 pounds",
+        "1",
+        "600 pounds",
+        "400 feet",
+        "1",
+        "000 feet",
+        "15",
+        "000 pounds"
+      ],
+      "time_values_normalized": [
+        "6 minutes",
+        "twelve to thirteen minutes",
+        "6 1/2 hrs",
+        "6 hours",
+        "10 minute",
+        "13 minute"
+      ],
+      "operational_consequence": "emergency_declaration"
+    }
+  ],
+  "elapsed_seconds": 241.063,
+  "cost_usd": 0.40582194,
+  "total_tokens": 657234
+}

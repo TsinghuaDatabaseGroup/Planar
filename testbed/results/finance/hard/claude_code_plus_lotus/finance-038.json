@@ -1,0 +1,38 @@
+{
+  "task_id": "finance-038",
+  "answer": [
+    {
+      "competitive_position": "emerging competitor",
+      "filing_count": 113,
+      "median_employee_count": 36.0,
+      "top_risk_theme": "cybersecurity"
+    },
+    {
+      "competitive_position": "challenger",
+      "filing_count": 27,
+      "median_employee_count": 225.0,
+      "top_risk_theme": "customer_concentration"
+    },
+    {
+      "competitive_position": "market leader",
+      "filing_count": 19,
+      "median_employee_count": 245.0,
+      "top_risk_theme": "cybersecurity"
+    },
+    {
+      "competitive_position": "niche player",
+      "filing_count": 17,
+      "median_employee_count": 65.0,
+      "top_risk_theme": "customer_concentration"
+    },
+    {
+      "competitive_position": "established player",
+      "filing_count": 10,
+      "median_employee_count": 158.0,
+      "top_risk_theme": "customer_concentration"
+    }
+  ],
+  "elapsed_seconds": 6190.696,
+  "cost_usd": 60.64753116,
+  "total_tokens": 154892526
+}

@@ -1,0 +1,18 @@
+{
+  "task_id": "vehicle_safety-035",
+  "answer": [
+    {
+      "campaign_number": "19V018000",
+      "matched_complaint_count": 2,
+      "related_report_ids": [
+        "txt_investigation_1b079ec22d532228.txt",
+        "txt_investigation_ef12d2cfbf020527.txt"
+      ],
+      "root_cause_phrase": "excessive internal pressure causing inflator explosion",
+      "odi_safety_conclusion": "High absolute humidity is a significant factor in inflator ruptures, necessitating regional recalls for passenger inflators and nationwide recalls for driver inflators due to unexplained failures in low-humidity areas."
+    }
+  ],
+  "elapsed_seconds": 225.51,
+  "cost_usd": 1.345486,
+  "total_tokens": 3045794
+}

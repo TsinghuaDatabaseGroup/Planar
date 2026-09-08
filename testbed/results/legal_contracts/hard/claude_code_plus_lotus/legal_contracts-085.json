@@ -1,0 +1,119 @@
+{
+  "task_id": "legal_contracts-085",
+  "answer": [
+    {
+      "company": "Peakstone Realty Trust",
+      "certifying_officers": [
+        "None",
+        "Michael J. Escalante",
+        "Javier F. Bitar"
+      ],
+      "auditor_firms": [
+        "Ernst & Young LLP"
+      ],
+      "covered_person_categories": [
+        "All Employees",
+        "Board Members",
+        "Executive Officers",
+        "Consultants"
+      ],
+      "largest_subsidiary_count": 146
+    },
+    {
+      "company": "Voya Financial, Inc.",
+      "certifying_officers": [
+        "None",
+        "Dena Faccio"
+      ],
+      "auditor_firms": [
+        "Ernst & Young LLP"
+      ],
+      "covered_person_categories": [
+        "Executive Officers",
+        "Named Executive Officers",
+        "All Employees",
+        "Board Members",
+        "Tier A Employees",
+        "Tier B Employees"
+      ],
+      "largest_subsidiary_count": 143
+    },
+    {
+      "company": "H.B. Fuller Company",
+      "certifying_officers": [
+        "None"
+      ],
+      "auditor_firms": [
+        "Ernst and Young LLP"
+      ],
+      "covered_person_categories": [
+        "Executive Officers",
+        "Key Managers"
+      ],
+      "largest_subsidiary_count": 126
+    },
+    {
+      "company": "Hertz Global Holdings, Inc.",
+      "certifying_officers": [
+        "W. Gil West",
+        "Scott M. Haralson"
+      ],
+      "auditor_firms": [
+        "Ernst & Young LLP"
+      ],
+      "covered_person_categories": [
+        "Executive Officers"
+      ],
+      "largest_subsidiary_count": 89
+    },
+    {
+      "company": "International Paper Company",
+      "certifying_officers": [
+        "Mark S. Sutton, Timothy S. Nicholls",
+        "None",
+        "Andrew K. Silvernail, Timothy S. Nicholls"
+      ],
+      "auditor_firms": [
+        "Deloitte & Touche LLP",
+        "AO Business Solutions and Technologies"
+      ],
+      "covered_person_categories": [
+        "Executive Officers"
+      ],
+      "largest_subsidiary_count": 78
+    },
+    {
+      "company": "The Travelers Companies, Inc.",
+      "certifying_officers": [
+        "Alan D. Schnitzer",
+        "Daniel S. Frey"
+      ],
+      "auditor_firms": [
+        "KPMG LLP"
+      ],
+      "covered_person_categories": [
+        "All Employees"
+      ],
+      "largest_subsidiary_count": 78
+    },
+    {
+      "company": "Globalstar, Inc.",
+      "certifying_officers": [
+        "None",
+        "Dr. Paul E. Jacobs",
+        "Rebecca S. Clary"
+      ],
+      "auditor_firms": [
+        "Ernst & Young LLP"
+      ],
+      "covered_person_categories": [
+        "Section 16 Officers",
+        "Covered Executives"
+      ],
+      "largest_subsidiary_count": 68
+    }
+  ],
+  "elapsed_seconds": 982.259,
+  "cost_usd": 8.11726947,
+  "total_tokens": 19739983
+}

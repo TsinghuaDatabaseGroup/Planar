@@ -1,0 +1,338 @@
+datasets:
+  sec_2023_filings:
+    type: file
+    path: data/SEC/CSV/2023.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_filings_over_60000_words
+    type: code_filter
+    code: |
+      def transform(doc):
+          try:
+              return int(doc.get("word_count", 0)) > 60000
+          except (TypeError, ValueError):
+              return False
+
+  - name: load_filing_document
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("SEC text path escapes data/SEC")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              document = handle.read()
+          return {"document": document}
+
+  - name: filter_acquisition_integration_risk
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this SEC 10-K filing only if it identifies acquisition-integration
+      risk for the reporting company.
+      The disclosed risk must concern integrating an acquisition, rather than
+      acquisitions generally.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_reported_legal_proceedings
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this SEC 10-K filing only if it reports a pending, threatened, or
+      ongoing litigation matter, legal proceeding, lawsuit, or regulatory
+      investigation involving the reporting company.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: classify_competitive_position
+    type: map
+    optimize: true
+    prompt: |
+      Assign the reporting company to exactly one competitive-position category
+      using evidence in this SEC 10-K filing:
+
+      - emerging: an early-stage or emerging competitor;
+      - niche_player: a competitor focused on a specialized market niche;
+      - challenger: a challenger to larger or leading competitors;
+      - major_player: a major established competitor that is not the market leader;
+      - market_leader: a recognized leader in its primary market;
+      - undetermined: the filing does not support a reliable assignment.
+
+      Base the category on the reporting company's described current position.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        competitive_position: enum[emerging, niche_player, challenger, major_player, market_leader, undetermined]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 256
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: extract_company_industry_employees_and_transactions
+    type: map
+    optimize: true
+    prompt: |
+      Extract the following fields for the reporting company from this SEC 10-K:
+
+      - company_name: the legal registrant name stated in the filing;
+      - industry_sector: a concise, broad industry sector grounded in the filing;
+      - employee_count: the explicitly reported company-wide employee count for
+        the latest reporting date covered by the filing;
+      - ma_transaction_count: the number of distinct merger or acquisition
+        transactions involving the reporting company that are specifically
+        mentioned in the filing.
+
+      Count each distinguishable transaction once even if it is discussed more
+      than once in the filing. Do not infer a transaction from a general
+      acquisition strategy without a distinguishable transaction.
+
+      Set employee_count_available=true only when a company-wide total is
+      explicitly disclosed. Otherwise set it to false and return 0 only as the
+      required placeholder; the following deterministic operation converts it to
+      null.
+
+      Filing:
+      {{ input.document }}
+    output:
+      mode: structured_output
+      schema:
+        company_name: string
+        industry_sector: string
+        employee_count_available: boolean
+        employee_count_value: integer
+        ma_transaction_count: integer
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 512
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: normalize_nullable_employee_count
+    type: code_map
+    code: |
+      def transform(doc):
+          if doc.get("employee_count_available") is not True:
+              return {"employee_count": None}
+          try:
+              return {"employee_count": int(doc.get("employee_count_value"))}
+          except (TypeError, ValueError):
+              return {"employee_count": None}
+
+  - name: filter_qualifying_company_records
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("competitive_position") != "undetermined"
+              and int(doc.get("ma_transaction_count", 0)) >= 3
+              and doc.get("employee_count") is not None
+          )
+
+  - name: deduplicate_company_names
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          def integer_value(item, key):
+              try:
+                  return int(item.get(key, 0))
+              except (TypeError, ValueError):
+                  return 0
+
+          best_by_company = {}
+          for item in items:
+              company_name = str(item.get("company_name", "")).strip()
+              candidate_key = (
+                  integer_value(item, "employee_count"),
+                  integer_value(item, "ma_transaction_count"),
+                  integer_value(item, "word_count"),
+                  integer_value(item, "cik"),
+              )
+              current = best_by_company.get(company_name)
+              if current is None or candidate_key > current[0]:
+                  best_by_company[company_name] = (candidate_key, item)
+          return {
+              "rows": [
+                  candidate[1] for candidate in best_by_company.values()
+              ]
+          }
+
+  - name: unnest_deduplicated_companies
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - company_name
+      - industry_sector
+      - competitive_position
+      - employee_count
+      - ma_transaction_count
+      - word_count
+      - cik
+
+  - name: order_by_employee_count
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          rows = sorted(
+              items,
+              key=lambda item: (
+                  -int(item.get("employee_count", 0)),
+                  str(item.get("company_name", "")).lower(),
+              ),
+          )
+          return {"rows": rows}
+
+  - name: unnest_ordered_companies
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - company_name
+      - industry_sector
+      - competitive_position
+      - employee_count
+      - ma_transaction_count
+      - word_count
+      - cik
+
+  - name: limit_to_10_companies
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {"rows": items[:10]}
+
+  - name: unnest_limited_companies
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - company_name
+      - industry_sector
+      - competitive_position
+      - employee_count
+      - ma_transaction_count
+      - word_count
+      - cik
+
+  - name: project_answer_fields
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {
+              "rows": [
+                  {
+                      "company_name": item.get("company_name"),
+                      "industry_sector": item.get("industry_sector"),
+                      "competitive_position": item.get(
+                          "competitive_position"
+                      ),
+                      "employee_count": item.get("employee_count"),
+                      "ma_transaction_count": item.get(
+                          "ma_transaction_count"
+                      ),
+                  }
+                  for item in items
+              ]
+          }
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - company_name
+      - industry_sector
+      - competitive_position
+      - employee_count
+      - ma_transaction_count
+
+pipeline:
+  steps:
+    - name: process
+      input: sec_2023_filings
+      operations:
+        - filter_filings_over_60000_words
+        - load_filing_document
+        - filter_acquisition_integration_risk
+        - filter_reported_legal_proceedings
+        - classify_competitive_position
+        - extract_company_industry_employees_and_transactions
+        - normalize_nullable_employee_count
+        - filter_qualifying_company_records
+        - deduplicate_company_names
+        - unnest_deduplicated_companies
+        - order_by_employee_count
+        - unnest_ordered_companies
+        - limit_to_10_companies
+        - unnest_limited_companies
+        - project_answer_fields
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/finance/output_finance-035.json

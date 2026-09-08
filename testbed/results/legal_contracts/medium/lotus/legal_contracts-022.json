@@ -1,0 +1,68 @@
+{
+  "task_id": "legal_contracts-022",
+  "answer": [
+    {
+      "document_id": "1016503_0000929624-00-000894_0010.txt",
+      "governing_law": "New York",
+      "term_months": 12
+    },
+    {
+      "document_id": "900091_0001047469-97-003029_document_4.txt",
+      "governing_law": "Japan",
+      "term_months": 36
+    },
+    {
+      "document_id": "Kenway-NDA-Form-Blank.pdf",
+      "governing_law": "Delaware",
+      "term_months": 24
+    },
+    {
+      "document_id": "Mutual%20Non%20Disclosure%20Agreement_0.pdf",
+      "governing_law": "State of New York",
+      "term_months": 36
+    },
+    {
+      "document_id": "NDA-2016-DAB.pdf",
+      "governing_law": "English Law",
+      "term_months": 12
+    },
+    {
+      "document_id": "NDA_10.pdf",
+      "governing_law": "State of Israel",
+      "term_months": 36
+    },
+    {
+      "document_id": "Non Disclosure Agreement - CP Specific NDA (CreativeNDA-CPS121.1014).pdf",
+      "governing_law": "Delaware",
+      "term_months": 24
+    },
+    {
+      "document_id": "Template-NDA-2-way-final-1.pdf",
+      "governing_law": "Province of Ontario and the laws of Canada",
+      "term_months": 36
+    },
+    {
+      "document_id": "Template-NDA.pdf",
+      "governing_law": "Commonwealth of Pennsylvania",
+      "term_months": 36
+    },
+    {
+      "document_id": "annex-2-sample-non-disclosure-agreement.pdf",
+      "governing_law": "England",
+      "term_months": 36
+    },
+    {
+      "document_id": "non-disclosure-agreement-en.pdf",
+      "governing_law": "Brazil or State of New York",
+      "term_months": 36
+    },
+    {
+      "document_id": "non-disclosure-agreement-mutual-generic-blank.pdf",
+      "governing_law": "Arizona",
+      "term_months": 24
+    }
+  ],
+  "elapsed_seconds": 870.31,
+  "cost_usd": 4.965195,
+  "total_tokens": 9316315
+}

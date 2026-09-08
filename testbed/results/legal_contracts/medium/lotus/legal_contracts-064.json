@@ -1,0 +1,40 @@
+{
+  "task_id": "legal_contracts-064",
+  "answer": [
+    {
+      "document_id": "Non-Disclosure-Agreement-NDA.pdf",
+      "word_count": 693
+    },
+    {
+      "document_id": "RFP_Telephony-NDA_Attachment-F.pdf",
+      "word_count": 704
+    },
+    {
+      "document_id": "MutualNonDisclosureAgreement0104.pdf",
+      "word_count": 732
+    },
+    {
+      "document_id": "non-disclosure-agreement-mutual-generic-blank.pdf",
+      "word_count": 820
+    },
+    {
+      "document_id": "DBT%20Mutual%20NDA.pdf",
+      "word_count": 1079
+    },
+    {
+      "document_id": "900091_0001047469-97-003029_document_4.txt",
+      "word_count": 1283
+    },
+    {
+      "document_id": "Mutual-Non-Disclosure-Agreement-Inventor-Product-Development-Experts-Inc..pdf",
+      "word_count": 1285
+    },
+    {
+      "document_id": "69067_0000927016-00-002123_0010.txt",
+      "word_count": 1342
+    }
+  ],
+  "elapsed_seconds": 676.13,
+  "cost_usd": 4.372492,
+  "total_tokens": 7794001
+}

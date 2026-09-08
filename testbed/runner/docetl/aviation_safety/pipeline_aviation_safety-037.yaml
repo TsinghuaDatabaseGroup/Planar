@@ -1,0 +1,241 @@
+datasets:
+  asrs_events:
+    type: file
+    path: data/asrs/events.csv
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_candidate_result_events
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("event_type") == "result"
+              and doc.get("label")
+              in {
+                  "Air Traffic Control Provided Assistance",
+                  "Flight Crew Took Evasive Action",
+                  "Flight Crew Became Reoriented",
+                  "Flight Crew Overcame Equipment Problem",
+                  "Air Traffic Control Issued Advisory / Alert",
+                  "Flight Crew Executed Go Around / Missed Approach",
+              }
+          )
+
+  - name: deduplicate_candidate_incidents
+    type: code_reduce
+    reduce_key: incident_id
+    code: |
+      def transform(items):
+          return {"has_candidate_result": bool(items)}
+
+  - name: attach_grouping_incident_fields
+    type: code_map
+    code: |
+      import csv
+      import os
+      import threading
+
+      _grouping_incident_index = None
+      _grouping_incident_lock = threading.Lock()
+
+      def load_grouping_incident_index():
+          global _grouping_incident_index
+          if _grouping_incident_index is None:
+              with _grouping_incident_lock:
+                  if _grouping_incident_index is None:
+                      index = {}
+                      path = os.path.abspath(
+                          os.path.join("data", "asrs", "incidents.csv")
+                      )
+                      with open(
+                          path, "r", encoding="utf-8", errors="replace", newline=""
+                      ) as handle:
+                          for row in csv.DictReader(handle):
+                              flight_phase = row.get("flight_phase")
+                              aircraft_operator = row.get("aircraft_operator")
+                              text_file = row.get("text_file")
+                              if not flight_phase or not aircraft_operator or not text_file:
+                                  continue
+                              incident_id = str(row.get("incident_id", ""))
+                              if incident_id:
+                                  index.setdefault(
+                                      incident_id,
+                                      {
+                                          "flight_phase": flight_phase,
+                                          "aircraft_operator": aircraft_operator,
+                                          "text_file": text_file,
+                                      },
+                                  )
+                      _grouping_incident_index = index
+          return _grouping_incident_index
+
+      def transform(doc):
+          values = load_grouping_incident_index().get(
+              str(doc.get("incident_id", ""))
+          )
+          if values is None:
+              return {
+                  "has_grouping_incident": False,
+                  "flight_phase": None,
+                  "aircraft_operator": None,
+                  "text_file": None,
+              }
+          return {"has_grouping_incident": True, **values}
+
+  - name: inner_join_grouping_incidents
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("has_grouping_incident") is True
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: classify_safety_barrier_status
+    type: map
+    optimize: true
+    prompt: |
+      Classify this NASA ASRS candidate as successful_barrier only when its
+      narrative clearly supports all three elements of a successful safety barrier:
+
+      1. a concrete hazard, unsafe condition, developing conflict, error, or
+         equipment/operational threat was detected or recognized;
+      2. a person, crew, controller, system, or other actor made a specific
+         intervention in response; and
+      3. the intervention avoided or reduced a worse consequence, or clearly
+         stabilized/recovered the situation.
+
+      The three elements must belong to the same causal episode. Do not infer
+      success merely from routine assistance, an advisory, evasive action,
+      reorientation, equipment recovery, or a go-around being mentioned. Classify
+      as not_fully_supported when any element is absent, ambiguous, unrelated, or
+      only implied without clear narrative support.
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        barrier_status: enum[successful_barrier, not_fully_supported]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: aggregate_ranked_safety_barriers
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          grouped = {}
+          for item in items:
+              key = (item.get("flight_phase"), item.get("aircraft_operator"))
+              incident_id = str(item.get("incident_id", ""))
+              if not incident_id or key[0] is None or key[1] is None:
+                  continue
+              record = grouped.setdefault(
+                  key,
+                  {"candidate_ids": set(), "successful_ids": set()},
+              )
+              record["candidate_ids"].add(incident_id)
+              if item.get("barrier_status") == "successful_barrier":
+                  record["successful_ids"].add(incident_id)
+
+          rows = []
+          for (flight_phase, aircraft_operator), values in grouped.items():
+              candidate_count = len(values["candidate_ids"])
+              if candidate_count < 20:
+                  continue
+              successful_count = len(values["successful_ids"])
+              rows.append(
+                  {
+                      "flight_phase": flight_phase,
+                      "aircraft_operator": aircraft_operator,
+                      "candidate_incident_count": candidate_count,
+                      "successful_barrier_count": successful_count,
+                      "successful_barrier_rate": (
+                          successful_count / candidate_count
+                      ),
+                  }
+              )
+
+          rows.sort(
+              key=lambda row: (
+                  -row["successful_barrier_rate"],
+                  -row["successful_barrier_count"],
+                  row["flight_phase"],
+                  row["aircraft_operator"],
+              )
+          )
+          for rank, row in enumerate(rows[:5], start=1):
+              row["rank"] = rank
+          return {"rows": rows[:5]}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - rank
+      - flight_phase
+      - aircraft_operator
+      - candidate_incident_count
+      - successful_barrier_count
+      - successful_barrier_rate
+
+pipeline:
+  steps:
+    - name: process
+      input: asrs_events
+      operations:
+        - filter_candidate_result_events
+        - deduplicate_candidate_incidents
+        - attach_grouping_incident_fields
+        - inner_join_grouping_incidents
+        - load_asrs_narrative
+        - classify_safety_barrier_status
+        - aggregate_ranked_safety_barriers
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-037.json

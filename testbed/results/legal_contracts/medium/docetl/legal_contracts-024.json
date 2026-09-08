@@ -1,0 +1,488 @@
+{
+  "task_id": "legal_contracts-024",
+  "answer": [
+    {
+      "document_id": "1001113_0000950134-07-005231_f27921orexv99wxdyx3y.htm",
+      "governing_state": "California",
+      "missing_exception": "inadvertent disclosure",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "1002276_0001036050-99-002047_document_13.txt",
+      "governing_state": "California",
+      "missing_exception": "independent development",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "1011671_0000936392-99-000246_document_46.txt",
+      "governing_state": "California",
+      "missing_exception": "independent development",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "1013322_0000912057-00-023405_document_2.txt",
+      "governing_state": "California",
+      "missing_exception": "independent development",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "1016503_0000929624-00-000894_0010.txt",
+      "governing_state": "New York",
+      "missing_exception": "independent development",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "1017545_0001012870-97-001500_document_2.txt",
+      "governing_state": "California",
+      "missing_exception": "court order",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "1020416_0001193125-16-701566_d250247dex99d2.htm",
+      "governing_state": "New York",
+      "missing_exception": "disclosure to a party's auditors",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "1029445_0000940180-97-000212_document_12.txt",
+      "governing_state": "New York",
+      "missing_exception": "independent development without use of confidential information",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "1030471_0001012870-01-501268_dex1065.txt",
+      "governing_state": "California",
+      "missing_exception": "Attorney-Client Privilege / Legal Counsel Disclosure",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "1049210_0001047469-13-009461_a2216846zex-99_d3.htm",
+      "governing_state": "California",
+      "missing_exception": "court order",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "1063085_0000950134-09-011390_f52580exv99wxeyx3y.htm",
+      "governing_state": "California",
+      "missing_exception": "court order",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "1070052_0000950130-01-501801_dex99d2.txt",
+      "governing_state": "New York",
+      "missing_exception": "court order",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "1077050_0000950147-99-000049_document_10.txt",
+      "governing_state": "California",
+      "missing_exception": "disclosure required by court order or legal process without prior notice (specifically, the agreement lacks an exception permitting disclosure when prior notice is legally prohibited or when a protective order is obtained in lieu of notice)",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "1084817_0001193125-14-004957_d648340dex99e2.htm",
+      "governing_state": "Delaware",
+      "missing_exception": "Attorney-Client Privilege",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "1089786_0000912057-00-052660_a2032473zex-99_e2.txt",
+      "governing_state": "New York",
+      "missing_exception": "inadvertent disclosure",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "1101204_0001085037-00-000208_0015.txt",
+      "governing_state": "California",
+      "missing_exception": "subpoena or other legal process",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "1112422_0000950153-08-001257_p75864exv99wxeyx4y.htm",
+      "governing_state": "New York",
+      "missing_exception": "disclosure to a court or tribunal in connection with a legal proceeding (other than pursuant to a subpoena or similar process)",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "1125576_0000928385-02-000738_dex991d2.txt",
+      "governing_state": "California",
+      "missing_exception": "disclosure required by law or regulation (other than court order)",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "1142512_0001193125-14-269726_d757168dex99e3.htm",
+      "governing_state": "California",
+      "missing_exception": "independent development",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "1163932_0001193125-13-394191_d606730dex99d2.htm",
+      "governing_state": "Delaware",
+      "missing_exception": "disclosure to a court or tribunal in connection with a legal proceeding (litigation exception)",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "1167294_0001193125-15-218134_d933068dex99d3.htm",
+      "governing_state": "Delaware",
+      "missing_exception": "court order",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "1173495_0001047469-03-033872_a2118144zex-10_12.txt",
+      "governing_state": "Delaware",
+      "missing_exception": "disclosure required by a court order or other legal process where the receiving party has not exhausted reasonable legal remedies or provided notice to the disclosing party",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "1177845_0001193125-18-219243_d519554dex99d3.htm",
+      "governing_state": "Delaware",
+      "missing_exception": "disclosure required by stock exchange rules or regulations",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "1274644_0001193125-17-338759_d485523dex99d2.htm",
+      "governing_state": "New York",
+      "missing_exception": "disclosure to the receiving party's attorneys or accountants",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "1280058_0001193125-12-023311_d287213dex99d3.htm",
+      "governing_state": "Delaware",
+      "missing_exception": "disclosure to the Recipient's professional advisors (attorneys, accountants, consultants, bankers, and financial advisors) who are bound by confidentiality obligations",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "1316898_0001047469-18-005618_a2236490zex-99_d2.htm",
+      "governing_state": "Delaware",
+      "missing_exception": "disclosure to a party's own attorneys or legal counsel for the purpose of obtaining legal advice",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "1373671_0001193125-10-265249_dex99d3.htm",
+      "governing_state": "Delaware",
+      "missing_exception": "inadvertent disclosure",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "1413447_0001193125-16-771498_d295023dex99d5.htm",
+      "governing_state": "New York",
+      "missing_exception": "disclosure to a Party's auditors",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "1485469_0001193125-19-222469_d760929dex99d3.htm",
+      "governing_state": "New York",
+      "missing_exception": "independent development",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "1561604_0001193125-12-472390_d438799dex99d3.htm",
+      "governing_state": "Delaware",
+      "missing_exception": "disclosure to a court or tribunal in connection with a legal proceeding (other than a compelled disclosure under Section 5)",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "1574111_0001193125-14-440569_d826999dex99d5.htm",
+      "governing_state": "California",
+      "missing_exception": "disclosure compelled by a subpoena",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "1592288_0001193125-17-306543_d469659dex99e2.htm",
+      "governing_state": "Delaware",
+      "missing_exception": "independent development",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "1609351_0001193125-19-066373_d642137dex99d2.htm",
+      "governing_state": "Delaware",
+      "missing_exception": "disclosure required by court order or other legal process (independent of the specific 'External Demand' procedure defined)",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "183.pdf",
+      "governing_state": "New York",
+      "missing_exception": "Information required to be disclosed by law or court order without prior notice and opportunity to seek a protective order (Compelled Disclosure is present but lacks the explicit carve-out language stating no liability attaches if the protective order fails, specifically missing the standard phrasing that disclosure is permitted *only* to the extent legally compelled *after* failing to obtain protection, whereas Section 4 conditions disclosure on counsel opinion and best efforts but doesn't explicitly state the obligation ceases entirely in that specific scenario as a standalone exception like the others).",
+      "direction": "Unilateral"
+    },
+    {
+      "document_id": "55805_0001145443-10-001028_d26631_ex99-d3.htm",
+      "governing_state": "Delaware",
+      "missing_exception": "disclosure required by a court order or other legal process without prior notice to the Disclosing Party (specifically, the agreement requires notice and consultation before disclosure, lacking a carve-out for situations where such notice is legally prohibited or impossible)",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "703361_0001193125-12-242586_d356019dex9910.htm",
+      "governing_state": "California",
+      "missing_exception": "independently developed information",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "741696_0001193125-10-290887_dex99d9.htm",
+      "governing_state": "California",
+      "missing_exception": "disclosure to a court or tribunal in connection with the enforcement of this Agreement",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "75448_0001193125-05-158309_dex99d4.htm",
+      "governing_state": "California",
+      "missing_exception": "Compelled by law or court order",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "792130_0001193125-18-326077_d601641dex99d3.htm",
+      "governing_state": "Delaware",
+      "missing_exception": "independently developed information",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "801338_0000950134-07-015617_c16542toexv99wxdyx5y.htm",
+      "governing_state": "Delaware",
+      "missing_exception": "Attorney-Client Privilege",
+      "direction": "Unilateral"
+    },
+    {
+      "document_id": "802724_0001193125-15-331613_d96542dex99d5.htm",
+      "governing_state": "Delaware",
+      "missing_exception": "independent development",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "804151_0000950144-97-007563_document_14.txt",
+      "governing_state": "New York",
+      "missing_exception": "disclosure required by court order or other legal process without prior notice to the disclosing party",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "828957_0000950109-98-001266_document_19.txt",
+      "governing_state": "California",
+      "missing_exception": "disclosure required by court order or other legal process without prior notice to the disclosing party",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "859119_0000950123-98-001418_document_15.txt",
+      "governing_state": "New York",
+      "missing_exception": "inadvertent disclosure",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "874265_0001193125-05-138436_dex99d1.htm",
+      "governing_state": "New York",
+      "missing_exception": "inadvertent disclosure",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "883905_0001095811-01-000469_f68556ex99-d12.txt",
+      "governing_state": "California",
+      "missing_exception": "court order or legal compulsion",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "912263_0001193125-12-285724_d371520dex99e4.htm",
+      "governing_state": "New York",
+      "missing_exception": "disclosure required by stock exchange rules or regulations",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "912890_0001193125-11-030842_dex99d5.htm",
+      "governing_state": "New York",
+      "missing_exception": "disclosure required by a court order or similar legal process without prior notice to the other party",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "913610_0001047469-03-027395_a2116567zex-99_e3.htm",
+      "governing_state": "New York",
+      "missing_exception": "disclosure to a third party without a duty of confidentiality",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "922237_0000950005-02-000645_p15515_ex10-19.txt",
+      "governing_state": "California",
+      "missing_exception": "independent development",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "931784_0001104659-07-068716_a07-23871_1ex2.htm",
+      "governing_state": "New York",
+      "missing_exception": "disclosure to a party's auditors or accounting firms for audit purposes (outside of the specific retention/disclosure rights granted to the *receiving* party's own accounting firms)",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "96238_0000950103-97-000583_document_4.txt",
+      "governing_state": "New York",
+      "missing_exception": "disclosure required by law",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "96238_0000950116-97-001823_document_13.txt",
+      "governing_state": "New York",
+      "missing_exception": "disclosure required by court order or other legal process",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "Acme%20Corporation%20Inc%20NDA%20template.pdf",
+      "governing_state": "California",
+      "missing_exception": "independent development",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "CNDA1218Draft3.pdf",
+      "governing_state": "California",
+      "missing_exception": "disclosure to the Receiving Party's attorneys or legal counsel for the purpose of obtaining legal advice",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "Cyber Mutual Assistance NDA.pdf",
+      "governing_state": "New York",
+      "missing_exception": "disclosure to the disclosing party's attorneys, accountants, or other professional advisors",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "HALO-NDA.pdf",
+      "governing_state": "California",
+      "missing_exception": "disclosure pursuant to a court order or other legal process",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "Kenway-NDA-Form-Blank.pdf",
+      "governing_state": "Delaware",
+      "missing_exception": "independent development",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "Mutual%20Non%20Disclosure%20Agreement_0.pdf",
+      "governing_state": "New York",
+      "missing_exception": "disclosure to a court or tribunal in connection with a legal proceeding (other than pursuant to legal process/compulsion)",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "NDA-Broker-Seller-for-Company-6-19-17.pdf",
+      "governing_state": "Delaware",
+      "missing_exception": "Attorney-Client Privilege / Legal Counsel Disclosure",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "NDA-ONSemi_IndustryAnalystConf-2011.pdf",
+      "governing_state": "New York",
+      "missing_exception": "bankruptcy or insolvency proceedings",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "NDA-Template-Media-News-Group-inc.pdf",
+      "governing_state": "New York",
+      "missing_exception": "independent development",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "NDA.pdf",
+      "governing_state": "New York",
+      "missing_exception": "Attorney-Client Privilege",
+      "direction": "Unilateral"
+    },
+    {
+      "document_id": "NMLS%20Accessibility%20NDA.pdf",
+      "governing_state": "New York",
+      "missing_exception": "disclosure required by law or court order (compelled disclosure)",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "NRSC_2015_NDAForm.pdf",
+      "governing_state": "New York",
+      "missing_exception": "independent development",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "Non Disclosure Agreement - CP Specific NDA (CreativeNDA-CPS121.1014).pdf",
+      "governing_state": "Delaware",
+      "missing_exception": "independent development",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "O00216-000899A.pdf",
+      "governing_state": "California",
+      "missing_exception": "disclosure required by the Ralph M. Brown Act",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "PSGT Agreement NDA New Supplier Non Disclosure Template DC.pdf",
+      "governing_state": "New York",
+      "missing_exception": "independent development",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "RFP_Telephony-NDA_Attachment-F.pdf",
+      "governing_state": "California",
+      "missing_exception": "disclosure pursuant to a court order or other legal process",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "SONGS%20RFP%20Confidentiality%20Agreement_201705051754392249.pdf",
+      "governing_state": "California",
+      "missing_exception": "independent development",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "Supplier_Non_Disclosure.pdf",
+      "governing_state": "Delaware",
+      "missing_exception": "Compelled disclosure to a government regulatory body (e.g., SEC) without a court order.",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "ccporappdev-rfp-att8.pdf",
+      "governing_state": "California",
+      "missing_exception": "court order",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "d828431dex101.htm",
+      "governing_state": "Delaware",
+      "missing_exception": "disclosure to professional advisors (e.g., attorneys, accountants, consultants) who are not Representatives",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "helpjuice_production%2Fuploads%2Fupload%2Fimage%2F2329%2Fdirect%2F1526996160411-FullStory+Mutual+Non-Disclosure+Agreement+2018.pdf",
+      "governing_state": "Delaware",
+      "missing_exception": "disclosure required by a subpoena",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "khronos-mutual-nda.pdf",
+      "governing_state": "California",
+      "missing_exception": "subpoena or other compulsory legal process",
+      "direction": "mutual"
+    },
+    {
+      "document_id": "lti-two-way-cda-template.pdf",
+      "governing_state": "Delaware",
+      "missing_exception": "Independent development",
+      "direction": "Mutual"
+    },
+    {
+      "document_id": "nda_1.pdf",
+      "governing_state": "California",
+      "missing_exception": "disclosure required by law or regulation (independent of a court order or subpoena)",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "non-disclosure-agreement-en.pdf",
+      "governing_state": "Brazil or New York (conditional on Company location)",
+      "missing_exception": "Subpoena or other compulsory legal process (distinct from a court order)",
+      "direction": "Mutual"
+    },
+    {
+      "document_id": "tpi-non-disclosure-agreement_1.pdf",
+      "governing_state": "Delaware",
+      "missing_exception": "independently developed information",
+      "direction": "unilateral"
+    },
+    {
+      "document_id": "vmw-certification-conduct-policy.pdf",
+      "governing_state": "California",
+      "missing_exception": "Compelled by law or court order",
+      "direction": "unilateral"
+    }
+  ],
+  "elapsed_seconds": 499.64,
+  "cost_usd": 3.850621,
+  "total_tokens": 7362549
+}

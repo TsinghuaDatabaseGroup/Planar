@@ -1,0 +1,28 @@
+{
+  "task_id": "vehicle_safety-045",
+  "answer": [
+    {
+      "rank": 1,
+      "defect_theme": "brake pedal travels to floorboard",
+      "matched_complaint_count": 2,
+      "distinct_campaign_count": 3,
+      "related_report_ids": [
+        "txt_investigation_8be18f99e74db448.txt"
+      ],
+      "odi_risk_summary": "Answer: Sudden hard brake pedal and extended stopping distance caused by vacuum pump failure due to oil sludge clogging."
+    },
+    {
+      "rank": 2,
+      "defect_theme": "brake failure and loss of stopping power",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 1,
+      "related_report_ids": [
+        "txt_investigation_8be18f99e74db448.txt"
+      ],
+      "odi_risk_summary": "Answer: Sudden hard brake pedal and extended stopping distance caused by vacuum pump failure due to oil sludge clogging."
+    }
+  ],
+  "elapsed_seconds": 466.3,
+  "cost_usd": 0.559678,
+  "total_tokens": 1285599
+}

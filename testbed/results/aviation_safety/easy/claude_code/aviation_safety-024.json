@@ -1,0 +1,68 @@
+{
+  "task_id": "aviation_safety-024",
+  "answer": [
+    {
+      "rank": 1,
+      "incident_date": "202512",
+      "left_incident_id": "asrs_150233",
+      "right_incident_id": "asrs_150254"
+    },
+    {
+      "rank": 2,
+      "incident_date": "202101",
+      "left_incident_id": "asrs_124179",
+      "right_incident_id": "asrs_124335"
+    },
+    {
+      "rank": 3,
+      "incident_date": "202101",
+      "left_incident_id": "asrs_124179",
+      "right_incident_id": "asrs_124342"
+    },
+    {
+      "rank": 4,
+      "incident_date": "202101",
+      "left_incident_id": "asrs_124335",
+      "right_incident_id": "asrs_124342"
+    },
+    {
+      "rank": 5,
+      "incident_date": "201910",
+      "left_incident_id": "asrs_117457",
+      "right_incident_id": "asrs_117492"
+    },
+    {
+      "rank": 6,
+      "incident_date": "201802",
+      "left_incident_id": "asrs_107892",
+      "right_incident_id": "asrs_107920"
+    },
+    {
+      "rank": 7,
+      "incident_date": "201510",
+      "left_incident_id": "asrs_095021",
+      "right_incident_id": "asrs_095022"
+    },
+    {
+      "rank": 8,
+      "incident_date": "201206",
+      "left_incident_id": "asrs_078757",
+      "right_incident_id": "asrs_078758"
+    },
+    {
+      "rank": 9,
+      "incident_date": "200907",
+      "left_incident_id": "asrs_062903",
+      "right_incident_id": "asrs_062944"
+    },
+    {
+      "rank": 10,
+      "incident_date": "200312",
+      "left_incident_id": "asrs_031644",
+      "right_incident_id": "asrs_031659"
+    }
+  ],
+  "elapsed_seconds": 462.908,
+  "cost_usd": 1.91500236,
+  "total_tokens": 4778043
+}

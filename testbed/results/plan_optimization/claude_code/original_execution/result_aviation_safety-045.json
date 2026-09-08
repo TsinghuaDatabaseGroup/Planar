@@ -1,0 +1,89 @@
+{
+  "task_id": "aviation_safety-045",
+  "answer": [
+    {
+      "rank": 1,
+      "maintenance_status": "released_to_service",
+      "discovery_phase": "after_takeoff",
+      "chain_category": "released_item_failed",
+      "incident_count": 6,
+      "canonical_affected_item": "Engine and bleed air systems",
+      "recurring_discrepancy": "System malfunction causing inflight failure"
+    },
+    {
+      "rank": 2,
+      "maintenance_status": "released_to_service",
+      "discovery_phase": "after_takeoff",
+      "chain_category": "incomplete_repair_or_signoff",
+      "incident_count": 4,
+      "canonical_affected_item": "Aircraft systems and components",
+      "recurring_discrepancy": "Malfunction or improper operation"
+    },
+    {
+      "rank": 3,
+      "maintenance_status": "both",
+      "discovery_phase": "after_takeoff",
+      "chain_category": "maintenance_limitation_escalated",
+      "incident_count": 3,
+      "canonical_affected_item": "Flight control and engine systems",
+      "recurring_discrepancy": "System malfunction causing in-flight failures"
+    },
+    {
+      "rank": 4,
+      "maintenance_status": "both",
+      "discovery_phase": "after_takeoff",
+      "chain_category": "released_item_failed",
+      "incident_count": 3,
+      "canonical_affected_item": "Engine systems",
+      "recurring_discrepancy": "Performance degradation and failure"
+    },
+    {
+      "rank": 5,
+      "maintenance_status": "released_to_service",
+      "discovery_phase": "before_departure",
+      "chain_category": "incomplete_repair_or_signoff",
+      "incident_count": 3,
+      "canonical_affected_item": "Engine and brake systems",
+      "recurring_discrepancy": "Malfunction causing fire or failure"
+    },
+    {
+      "rank": 6,
+      "maintenance_status": "deferred",
+      "discovery_phase": "before_departure",
+      "chain_category": "maintenance_limitation_escalated",
+      "incident_count": 2,
+      "canonical_affected_item": "Engine and Propeller Systems",
+      "recurring_discrepancy": "Component failure before departure"
+    },
+    {
+      "rank": 7,
+      "maintenance_status": "both",
+      "discovery_phase": "before_departure",
+      "chain_category": "maintenance_limitation_escalated",
+      "incident_count": 1,
+      "canonical_affected_item": "Right engine fuel flow valve",
+      "recurring_discrepancy": "Engine failed to shut down"
+    },
+    {
+      "rank": 8,
+      "maintenance_status": "deferred",
+      "discovery_phase": "before_departure",
+      "chain_category": "incomplete_repair_or_signoff",
+      "incident_count": 1,
+      "canonical_affected_item": "Right Engine HP Shut-Off Valve",
+      "recurring_discrepancy": "Zero duct pressure on both sides"
+    },
+    {
+      "rank": 9,
+      "maintenance_status": "released_to_service",
+      "discovery_phase": "after_landing",
+      "chain_category": "incomplete_repair_or_signoff",
+      "incident_count": 1,
+      "canonical_affected_item": "Nose landing gear actuator",
+      "recurring_discrepancy": "Actuator rod end separation"
+    }
+  ],
+  "elapsed_seconds": 322.693,
+  "cost_usd": 0.52769655,
+  "total_tokens": 269875
+}

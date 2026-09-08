@@ -1,0 +1,24 @@
+{
+  "task_id": "vehicle_safety-042",
+  "answer": [
+    {
+      "campaign_number": "21V846000",
+      "matched_complaint_count": 16,
+      "dominant_adas_topic": "unexpected_braking",
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_ef731290c14111ae.txt"
+      ]
+    },
+    {
+      "campaign_number": "23V085000",
+      "matched_complaint_count": 2,
+      "dominant_adas_topic": "warning_or_supervision_gap",
+      "related_report_ids": [
+        "investigation_reports/txt_investigation_da22923fc5523800.txt"
+      ]
+    }
+  ],
+  "elapsed_seconds": 552.773,
+  "cost_usd": 1.06657497,
+  "total_tokens": 1407498
+}

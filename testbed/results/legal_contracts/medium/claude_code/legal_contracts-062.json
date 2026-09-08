@@ -1,0 +1,20 @@
+{
+  "task_id": "legal_contracts-062",
+  "answer": [
+    {
+      "restriction_category": "Employees Only",
+      "agreement_count": 5,
+      "avg_effective_duration_years": 3.4,
+      "most_common_governing_law": "Delaware"
+    },
+    {
+      "restriction_category": "Both",
+      "agreement_count": 44,
+      "avg_effective_duration_years": 2.8823529411764706,
+      "most_common_governing_law": "Delaware"
+    }
+  ],
+  "elapsed_seconds": 75.062,
+  "cost_usd": 0.24670578,
+  "total_tokens": 489696
+}

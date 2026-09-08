@@ -1,0 +1,58 @@
+{
+  "task_id": "finance-015",
+  "answer": [
+    {
+      "company_name": "Planet Labs PBC",
+      "industry": "Earth Observation",
+      "word_count": 81367
+    },
+    {
+      "company_name": "E2open Parent Holdings, Inc.",
+      "industry": "Supply Chain Management (SCM) Software",
+      "word_count": 75852
+    },
+    {
+      "company_name": "C3.ai, Inc.",
+      "industry": "Enterprise AI application software",
+      "word_count": 75147
+    },
+    {
+      "company_name": "RALPH LAUREN CORPORATION",
+      "industry": "Luxury lifestyle products (Apparel and Fashion)",
+      "word_count": 75077
+    },
+    {
+      "company_name": "Samsara Inc.",
+      "industry": "Internet of Things (IoT)",
+      "word_count": 73194
+    },
+    {
+      "company_name": "Phreesia, Inc.",
+      "industry": "Healthcare Technology",
+      "word_count": 68808
+    },
+    {
+      "company_name": "GitLab Inc.",
+      "industry": "Software",
+      "word_count": 68620
+    },
+    {
+      "company_name": "Signet Jewelers Limited",
+      "industry": "Jewelry Retailing",
+      "word_count": 67457
+    },
+    {
+      "company_name": "SentinelOne, Inc.",
+      "industry": "Cybersecurity",
+      "word_count": 67417
+    },
+    {
+      "company_name": "MongoDB, Inc.",
+      "industry": "Software",
+      "word_count": 66666
+    }
+  ],
+  "elapsed_seconds": 1670.39,
+  "cost_usd": 7.611881,
+  "total_tokens": 19180531
+}

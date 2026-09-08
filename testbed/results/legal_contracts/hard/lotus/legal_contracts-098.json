@@ -1,0 +1,52 @@
+{
+  "task_id": "legal_contracts-098",
+  "answer": [
+    {
+      "restriction_profile": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "member_count": 263,
+      "avg_duration_years": 4.18
+    },
+    {
+      "restriction_profile": [
+        false,
+        false,
+        true,
+        true,
+        false
+      ],
+      "member_count": 46,
+      "avg_duration_years": 2.32
+    },
+    {
+      "restriction_profile": [
+        false,
+        false,
+        true,
+        false,
+        false
+      ],
+      "member_count": 17,
+      "avg_duration_years": 2.6
+    },
+    {
+      "restriction_profile": [
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "member_count": 10,
+      "avg_duration_years": 3.35
+    }
+  ],
+  "elapsed_seconds": 546.85,
+  "cost_usd": 5.240475,
+  "total_tokens": 9832829
+}

@@ -1,0 +1,3439 @@
+[
+  {
+    "task_id": "aviation_safety-001",
+    "gold_answer": [
+      {
+        "primary_trigger": "unstable_approach",
+        "incident_count": 122,
+        "most_common_initiating_role": "captain"
+      },
+      {
+        "primary_trigger": "traffic_spacing",
+        "incident_count": 13,
+        "most_common_initiating_role": "captain"
+      },
+      {
+        "primary_trigger": "runway_occupancy",
+        "incident_count": 10,
+        "most_common_initiating_role": "atc"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, far_part, mission])\n-> FILTER(far_part = 'Part 121' AND mission = 'Passenger')\n-> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n-> SEM_EXTRACT(\"Emit one row only when the reporting aircraft performed a go-around or missed approach primarily because of unstable approach, traffic spacing, or runway occupancy rather than equipment failure. Extract primary_trigger from {unstable_approach,traffic_spacing,runway_occupancy} and initiating_role as a short crew or ATC role.\", {incident_id:string, primary_trigger:string, initiating_role:string}, {incident_id,text})\n-> GROUP_BY([primary_trigger], {incident_count:COUNT_DISTINCT(incident_id), most_common_initiating_role:MODE(initiating_role)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "primary_trigger",
+        "incident_count",
+        "most_common_initiating_role"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-002",
+    "gold_answer": [
+      {
+        "primary_reason": "late_clearance",
+        "incident_count": 24,
+        "with_numeric_time_count": 1,
+        "with_numeric_distance_count": 10
+      },
+      {
+        "primary_reason": "confusing_or_ambiguous",
+        "incident_count": 28,
+        "with_numeric_time_count": 0,
+        "with_numeric_distance_count": 6
+      },
+      {
+        "primary_reason": "workload_or_timing_pressure",
+        "incident_count": 106,
+        "with_numeric_time_count": 6,
+        "with_numeric_distance_count": 14
+      },
+      {
+        "primary_reason": "expectation_or_readback_error",
+        "incident_count": 188,
+        "with_numeric_time_count": 8,
+        "with_numeric_distance_count": 32
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, primary_problem])\n-> FILTER(primary_problem = 'Human Factors')\n-> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n-> SEM_EXTRACT(\"Emit one row only when a specific ATC clearance or restriction could not be followed for a non-mechanical reason. Assign primary_reason from {late_clearance,confusing_or_ambiguous,workload_or_timing_pressure,expectation_or_readback_error}, and indicate separately whether a numeric available-time value and a numeric available-distance value are stated.\", {incident_id:string, primary_reason:string, has_numeric_time:boolean, has_numeric_distance:boolean}, {incident_id,text})\n-> GROUP_BY([primary_reason], {incident_count:COUNT_DISTINCT(incident_id), with_numeric_time_count:COUNT_DISTINCT_IF(incident_id,has_numeric_time=true), with_numeric_distance_count:COUNT_DISTINCT_IF(incident_id,has_numeric_distance=true)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "primary_reason",
+        "incident_count",
+        "with_numeric_time_count",
+        "with_numeric_distance_count"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "integer",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-003",
+    "gold_answer": [
+      {
+        "operational_response": "oxygen_masks_used",
+        "incident_count": 59,
+        "most_common_suspected_source_category": "unknown_or_other"
+      },
+      {
+        "operational_response": "emergency_declared",
+        "incident_count": 64,
+        "most_common_suspected_source_category": "unknown_or_other"
+      },
+      {
+        "operational_response": "diverted",
+        "incident_count": 67,
+        "most_common_suspected_source_category": "unknown_or_other"
+      },
+      {
+        "operational_response": "returned",
+        "incident_count": 28,
+        "most_common_suspected_source_category": "unknown_or_other"
+      },
+      {
+        "operational_response": "precautionary_landing",
+        "incident_count": 110,
+        "most_common_suspected_source_category": "unknown_or_other"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, primary_problem, result_summary])\n-> FILTER(primary_problem = 'Aircraft')\n-> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n-> SEM_EXTRACT(\"Emit one row per supported response when smoke, fumes, or odor caused that response and no visible fire was reported. Normalize operational_response to {oxygen_masks_used,emergency_declared,diverted,returned,precautionary_landing} and suspected_source_category to {electrical,oil_or_hydraulic,air_conditioning_or_bleed,engine_or_apu,unknown_or_other}. Structured result_summary may establish emergency, diversion, or return responses when consistent with the narrative.\", {incident_id:string, operational_response:string, suspected_source_category:string}, {incident_id,result_summary,text})\n-> GROUP_BY([operational_response], {incident_count:COUNT_DISTINCT(incident_id), most_common_suspected_source_category:MODE(suspected_source_category)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "operational_response",
+        "incident_count",
+        "most_common_suspected_source_category"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-004",
+    "gold_answer": [
+      {
+        "field_compared": "altitude",
+        "incident_count": 164,
+        "most_common_consequence": "altitude_deviation"
+      },
+      {
+        "field_compared": "heading",
+        "incident_count": 113,
+        "most_common_consequence": "heading_or_route_deviation"
+      },
+      {
+        "field_compared": "speed",
+        "incident_count": 63,
+        "most_common_consequence": "speed_deviation"
+      },
+      {
+        "field_compared": "runway",
+        "incident_count": 59,
+        "most_common_consequence": "runway_deviation"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, local_time_of_day])\n-> FILTER(local_time_of_day = '1201-1800')\n-> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n-> SEM_EXTRACT(\"Emit one row only when different values for the same altitude, heading, speed, or runway were understood by the crew and expected by ATC, automation, or a procedure, and the mismatch contributed to a deviation. Extract field_compared from {altitude,heading,speed,runway} and consequence_category from {altitude_deviation,heading_or_route_deviation,speed_deviation,runway_deviation,other_operational_consequence}.\", {incident_id:string, field_compared:string, consequence_category:string}, {incident_id,text})\n-> GROUP_BY([field_compared], {incident_count:COUNT_DISTINCT(incident_id), most_common_consequence:MODE(consequence_category)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "field_compared",
+        "incident_count",
+        "most_common_consequence"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-005",
+    "gold_answer": 21,
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, state_reference])\n-> FILTER(state_reference = 'US')\n-> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n-> SEM_FILTER(\"Keep reports that state horizontal and vertical separation for the same closest-approach event and allow both dimensions to be converted to feet using yards=3ft, NM approximately 6076ft, and mi=5280ft.\", {text})\n-> GROUP_BY([], {count_incidents:COUNT_DISTINCT(incident_id)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "scalar",
+      "value_type": "integer",
+      "description": "Number of qualifying US-reference incidents."
+    }
+  },
+  {
+    "task_id": "aviation_safety-006",
+    "gold_answer": 11,
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, aircraft_operator, locale_reference_type])\n-> FILTER(aircraft_operator = 'Air Carrier' AND locale_reference_type = 'Airport')\n-> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n-> SEM_FILTER(\"Keep reports describing a taxi, crossing, or hold-short clearance conflict that was explicitly caught or stopped before the threatened aircraft entered the conflicting runway.\", {text})\n-> GROUP_BY([], {count_incidents:COUNT_DISTINCT(incident_id)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "scalar",
+      "value_type": "integer",
+      "description": "Number of qualifying Air Carrier airport incidents."
+    }
+  },
+  {
+    "task_id": "aviation_safety-007",
+    "gold_answer": [
+      {
+        "decision_label": "attempt_approach",
+        "incident_count": 68,
+        "with_numeric_fuel_value_count": 50,
+        "with_numeric_time_value_count": 7
+      },
+      {
+        "decision_label": "divert",
+        "incident_count": 71,
+        "with_numeric_fuel_value_count": 51,
+        "with_numeric_time_value_count": 16
+      },
+      {
+        "decision_label": "return",
+        "incident_count": 14,
+        "with_numeric_fuel_value_count": 10,
+        "with_numeric_time_value_count": 4
+      },
+      {
+        "decision_label": "hold",
+        "incident_count": 37,
+        "with_numeric_fuel_value_count": 20,
+        "with_numeric_time_value_count": 10
+      },
+      {
+        "decision_label": "leave_holding",
+        "incident_count": 27,
+        "with_numeric_fuel_value_count": 18,
+        "with_numeric_time_value_count": 9
+      },
+      {
+        "decision_label": "continue",
+        "incident_count": 71,
+        "with_numeric_fuel_value_count": 56,
+        "with_numeric_time_value_count": 13
+      },
+      {
+        "decision_label": "declare_minimum_fuel",
+        "incident_count": 38,
+        "with_numeric_fuel_value_count": 34,
+        "with_numeric_time_value_count": 3
+      },
+      {
+        "decision_label": "declare_fuel_emergency",
+        "incident_count": 16,
+        "with_numeric_fuel_value_count": 16,
+        "with_numeric_time_value_count": 3
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, mission, aircraft_operator, result_summary])\n-> FILTER(mission = 'Passenger' AND aircraft_operator = 'Air Carrier')\n-> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n-> SEM_EXTRACT(\"Emit one row per affected decision when a fuel quantity, reserve, burn estimate, or remaining-flight-time calculation directly shaped it. Normalize decision_label to {attempt_approach,divert,return,hold,leave_holding,continue,declare_minimum_fuel,declare_fuel_emergency}, and separately mark whether numeric fuel and time values are stated. Structured result_summary may establish diversion, return, or emergency outcomes when the narrative confirms the fuel relationship.\", {incident_id:string, decision_label:string, has_numeric_fuel_value:boolean, has_numeric_time_value:boolean}, {incident_id,result_summary,text})\n-> GROUP_BY([decision_label], {incident_count:COUNT_DISTINCT(incident_id), with_numeric_fuel_value_count:COUNT_DISTINCT_IF(incident_id,has_numeric_fuel_value=true), with_numeric_time_value_count:COUNT_DISTINCT_IF(incident_id,has_numeric_time_value=true)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "decision_label",
+        "incident_count",
+        "with_numeric_fuel_value_count",
+        "with_numeric_time_value_count"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "integer",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-008",
+    "gold_answer": 38,
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, far_part, mission])\n-> FILTER(far_part = 'Part 121' AND mission = 'Passenger')\n-> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n-> SEM_FILTER(\"Keep reports describing an ATC clearance, readback, or hearback problem that the crew detected or corrected before it caused a loss of separation, altitude deviation, runway incursion, or another operational consequence.\", {text})\n-> GROUP_BY([], {count_incidents:COUNT_DISTINCT(incident_id)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "scalar",
+      "value_type": "integer",
+      "description": "Number of qualifying Part 121 passenger incidents."
+    }
+  },
+  {
+    "task_id": "aviation_safety-009",
+    "gold_answer": [
+      {
+        "correcting_actor": "atc",
+        "prevention_action": "stop_or_hold",
+        "incident_count": 6
+      },
+      {
+        "correcting_actor": "atc",
+        "prevention_action": "reroute_or_turnoff",
+        "incident_count": 1
+      },
+      {
+        "correcting_actor": "atc",
+        "prevention_action": "clearance_or_instruction_correction",
+        "incident_count": 2
+      },
+      {
+        "correcting_actor": "flight_crew",
+        "prevention_action": "stop_or_hold",
+        "incident_count": 8
+      },
+      {
+        "correcting_actor": "flight_crew",
+        "prevention_action": "clearance_or_instruction_correction",
+        "incident_count": 1
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, aircraft_operator, locale_reference_type])\n-> FILTER(aircraft_operator = 'Air Carrier' AND locale_reference_type = 'Airport')\n-> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n-> SEM_EXTRACT(\"Emit one row only when a surface conflict was resolved before the threatened aircraft entered the runway and both fields are clear. Extract correcting_actor from {atc,flight_crew,ground_vehicle_operator} and prevention_action from {stop_or_hold,reroute_or_turnoff,clearance_or_instruction_correction}.\", {incident_id:string, correcting_actor:string, prevention_action:string}, {incident_id,text})\n-> GROUP_BY([correcting_actor,prevention_action], {incident_count:COUNT_DISTINCT(incident_id)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "correcting_actor",
+        "prevention_action",
+        "incident_count"
+      ],
+      "types": [
+        "string",
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-010",
+    "gold_answer": [
+      {
+        "cabin_side_source": "medical_event",
+        "incident_count": 26
+      },
+      {
+        "cabin_side_source": "security_issue",
+        "incident_count": 17
+      },
+      {
+        "cabin_side_source": "policy_issue",
+        "incident_count": 19
+      },
+      {
+        "cabin_side_source": "door_issue",
+        "incident_count": 9
+      },
+      {
+        "cabin_side_source": "slide_issue",
+        "incident_count": 0
+      },
+      {
+        "cabin_side_source": "cabin_equipment_issue",
+        "incident_count": 14
+      },
+      {
+        "cabin_side_source": "passenger_behavior",
+        "incident_count": 7
+      },
+      {
+        "cabin_side_source": "boarding_issue",
+        "incident_count": 9
+      },
+      {
+        "cabin_side_source": "deplaning_issue",
+        "incident_count": 1
+      },
+      {
+        "cabin_side_source": "flight_attendant_communication",
+        "incident_count": 8
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, primary_problem])\n-> FILTER(primary_problem = 'Human Factors')\n-> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n-> SEM_CLASSIFY(\"Assign one cabin_side_source using this precedence: medical_event, security_issue, policy_issue, door_issue, slide_issue, cabin_equipment_issue, passenger_behavior, boarding_issue, deplaning_issue, flight_attendant_communication. Omit reports where no cabin-side issue affected a flight-deck decision.\", target_labels=[medical_event,security_issue,policy_issue,door_issue,slide_issue,cabin_equipment_issue,passenger_behavior,boarding_issue,deplaning_issue,flight_attendant_communication], input_bindings={incident_id,text})\n-> GROUP_BY([cabin_side_source], {incident_count:COUNT_DISTINCT(incident_id)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "cabin_side_source",
+        "incident_count"
+      ],
+      "types": [
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-011",
+    "gold_answer": [
+      {
+        "system_category": "engine",
+        "response_category": "return_to_departure",
+        "incident_count": 47
+      },
+      {
+        "system_category": "engine",
+        "response_category": "emergency_or_divert",
+        "incident_count": 66
+      },
+      {
+        "system_category": "engine",
+        "response_category": "continue_after_troubleshooting",
+        "incident_count": 4
+      },
+      {
+        "system_category": "engine",
+        "response_category": "maintenance_action_only",
+        "incident_count": 5
+      },
+      {
+        "system_category": "pressurization_or_bleed_or_pack",
+        "response_category": "return_to_departure",
+        "incident_count": 25
+      },
+      {
+        "system_category": "pressurization_or_bleed_or_pack",
+        "response_category": "emergency_or_divert",
+        "incident_count": 42
+      },
+      {
+        "system_category": "pressurization_or_bleed_or_pack",
+        "response_category": "continue_after_troubleshooting",
+        "incident_count": 8
+      },
+      {
+        "system_category": "pressurization_or_bleed_or_pack",
+        "response_category": "maintenance_action_only",
+        "incident_count": 2
+      },
+      {
+        "system_category": "hydraulic",
+        "response_category": "return_to_departure",
+        "incident_count": 7
+      },
+      {
+        "system_category": "hydraulic",
+        "response_category": "emergency_or_divert",
+        "incident_count": 31
+      },
+      {
+        "system_category": "hydraulic",
+        "response_category": "continue_after_troubleshooting",
+        "incident_count": 4
+      },
+      {
+        "system_category": "flight_control",
+        "response_category": "return_to_departure",
+        "incident_count": 21
+      },
+      {
+        "system_category": "flight_control",
+        "response_category": "emergency_or_divert",
+        "incident_count": 25
+      },
+      {
+        "system_category": "flight_control",
+        "response_category": "continue_after_troubleshooting",
+        "incident_count": 5
+      },
+      {
+        "system_category": "flight_control",
+        "response_category": "maintenance_action_only",
+        "incident_count": 6
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, far_part, anomaly_summary, result_summary, flight_phase])\n-> FILTER(anomaly_summary CONTAINS 'Aircraft Equipment Problem')\n-> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n-> SEM_CLASSIFY(\"Assign system_category to engine, pressurization_or_bleed_or_pack, hydraulic, flight_control, or not_target. Use not_target for ground-only problems or another system.\", target_labels=[engine,pressurization_or_bleed_or_pack,hydraulic,flight_control,not_target], input_bindings={flight_phase,anomaly_summary,text})\n-> FILTER(far_part = 'Part 121' AND anomaly_summary CONTAINS 'Aircraft Equipment Problem Critical' AND system_category != 'not_target')\n-> PROJECT([incident_id, system_category, response_category=CASE WHEN result_summary CONTAINS 'Flight Crew Returned To Departure Airport' THEN 'return_to_departure' WHEN result_summary CONTAINS ANY OF ['General Declared Emergency','Flight Crew Diverted','Flight Crew Landed in Emergency Condition'] THEN 'emergency_or_divert' WHEN result_summary CONTAINS 'Flight Crew Overcame Equipment Problem' THEN 'continue_after_troubleshooting' WHEN result_summary CONTAINS 'General Maintenance Action' THEN 'maintenance_action_only' ELSE NULL END])\n-> FILTER(response_category IS NOT NULL)\n-> GROUP_BY([system_category,response_category], {incident_count:COUNT_DISTINCT(incident_id)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "system_category",
+        "response_category",
+        "incident_count"
+      ],
+      "types": [
+        "string",
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-012",
+    "gold_answer": [
+      {
+        "post_troubleshooting_status": "still_unsafe",
+        "incident_count": 1142
+      },
+      {
+        "post_troubleshooting_status": "intermittent",
+        "incident_count": 228
+      },
+      {
+        "post_troubleshooting_status": "resolved",
+        "incident_count": 133
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, anomaly_summary, result_summary])\n-> FILTER(anomaly_summary CONTAINS 'Aircraft Equipment Problem')\n-> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n-> SEM_CLASSIFY(\"Assign post_troubleshooting_status using this precedence: still_unsafe when the problem persisted or left the aircraft unsafe; intermittent when it disappeared but remained uncertain or later recurred; resolved when corrective action clearly cleared it; not_target when no active troubleshooting and resulting status are described. A structured result stating that the equipment problem dissipated may establish resolved when the narrative is consistent.\", target_labels=[still_unsafe,intermittent,resolved,not_target], input_bindings={incident_id,result_summary,text})\n-> FILTER(post_troubleshooting_status != 'not_target')\n-> GROUP_BY([post_troubleshooting_status], {incident_count:COUNT_DISTINCT(incident_id)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "post_troubleshooting_status",
+        "incident_count"
+      ],
+      "types": [
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-013",
+    "gold_answer": [
+      {
+        "symptom_category": "thrust_loss",
+        "incident_count": 94,
+        "most_common_immediate_action": "checked engine indications",
+        "most_common_outcome": "emergency"
+      },
+      {
+        "symptom_category": "other_engine_indication",
+        "incident_count": 50,
+        "most_common_immediate_action": "checked engine indications",
+        "most_common_outcome": "emergency"
+      },
+      {
+        "symptom_category": "oil_indication",
+        "incident_count": 46,
+        "most_common_immediate_action": "checked engine indications",
+        "most_common_outcome": "emergency"
+      },
+      {
+        "symptom_category": "flameout",
+        "incident_count": 35,
+        "most_common_immediate_action": "stabilized aircraft",
+        "most_common_outcome": "emergency"
+      },
+      {
+        "symptom_category": "temperature",
+        "incident_count": 31,
+        "most_common_immediate_action": "checked engine indications",
+        "most_common_outcome": "emergency"
+      },
+      {
+        "symptom_category": "vibration",
+        "incident_count": 17,
+        "most_common_immediate_action": "checked engine indications",
+        "most_common_outcome": "emergency"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, primary_problem, result_summary])\n-> FILTER(primary_problem = 'Aircraft')\n-> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n-> SEM_EXTRACT(\"Emit one row only for an engine thrust, power, oil, temperature, vibration, or flameout problem. Assign symptom_category from {thrust_loss,oil_indication,temperature,vibration,flameout,other_engine_indication}, immediate_crew_action as a phrase of at most six words, and primary_outcome from {emergency,diversion,return,continued_flight,maintenance_only}.\", {incident_id:string, symptom_category:string, immediate_crew_action:string, primary_outcome:string}, {incident_id,result_summary,text})\n-> GROUP_BY([symptom_category], {incident_count:COUNT_DISTINCT(incident_id), most_common_immediate_action:MODE(immediate_crew_action), most_common_outcome:MODE(primary_outcome)})\n-> ORDER_BY([incident_count DESC, symptom_category ASC])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "symptom_category",
+        "incident_count",
+        "most_common_immediate_action",
+        "most_common_outcome"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "string",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-014",
+    "gold_answer": 40,
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, state_reference, result_summary])\n-> FILTER(state_reference = 'US')\n-> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n-> SEM_FILTER(\"Keep reports that explicitly state the flight neither diverted nor returned and instead continued to the planned destination or completed a normal landing.\", {text})\n-> FILTER(result_summary CONTAINS 'General Declared Emergency')\n-> GROUP_BY([], {count_incidents:COUNT_DISTINCT(incident_id)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "scalar",
+      "value_type": "integer",
+      "description": "Number of qualifying US-reference emergency incidents."
+    }
+  },
+  {
+    "task_id": "aviation_safety-015",
+    "gold_answer": [
+      {
+        "rank": 1,
+        "incident_id": "asrs_024642",
+        "fuel_values_normalized": [
+          "6300 lb",
+          "3200 lb",
+          "~9000 lb"
+        ],
+        "time_values_normalized": [
+          "~30 min prior holding",
+          "40 min expected holding"
+        ],
+        "operational_consequence": "emergency_declaration"
+      },
+      {
+        "rank": 2,
+        "incident_id": "asrs_034863",
+        "fuel_values_normalized": [
+          "1200 lb extra fuel",
+          "17800 lb release fuel",
+          "~200 lb route difference",
+          "3.7 FMC arrival fuel",
+          "3.2 FMC arrival fuel",
+          "2.4 FMC arrival fuel"
+        ],
+        "time_values_normalized": [
+          "2-3 min expected vector"
+        ],
+        "operational_consequence": "emergency_declaration"
+      },
+      {
+        "rank": 3,
+        "incident_id": "asrs_045270",
+        "fuel_values_normalized": [
+          "~800 lb imbalance",
+          ">1000 lb/hr leak rate",
+          "<4000 lb predicted landing fuel",
+          "3300 lb reserve",
+          "600 lb above reserve"
+        ],
+        "time_values_normalized": [
+          "10 min fuel-log interval",
+          "30 min leak assessment"
+        ],
+        "operational_consequence": "emergency_declaration"
+      },
+      {
+        "rank": 4,
+        "incident_id": "asrs_049409",
+        "fuel_values_normalized": [
+          "1750 lb imbalance",
+          "100 lb/min indicated tank decrease",
+          "50 lb/min indicated fuel flow",
+          "6700 lb assumed tank quantity",
+          "2000 lb indicated at flameout"
+        ],
+        "time_values_normalized": [
+          ">45 min endurance if leaking",
+          ">120 min endurance if gauge faulty"
+        ],
+        "operational_consequence": "emergency_declaration"
+      },
+      {
+        "rank": 5,
+        "incident_id": "asrs_056805",
+        "fuel_values_normalized": [
+          "<5000 lb remaining",
+          "~4000 lb at emergency declaration"
+        ],
+        "time_values_normalized": [
+          "13 min dispatch response delay"
+        ],
+        "operational_consequence": "emergency_declaration"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, far_part, mission, result_summary])\n-> FILTER(far_part = 'Part 121' AND mission = 'Passenger')\n-> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n-> SEM_EXTRACT(\"Emit one row when a fuel quantity, reserve, calculation, or dispatch-release decision directly affected the operation. Extract fuel values and time values as separate normalized lists and assign the highest applicable consequence from {emergency_declaration,diversion,return,holding,continued_with_concern}; use result_summary for directly recorded emergency, diversion, or return outcomes when consistent with the narrative.\", {incident_id:string, fuel_values_normalized:list[string], time_values_normalized:list[string], operational_consequence:string}, {incident_id,result_summary,text})\n-> PROJECT([incident_id,fuel_values_normalized,time_values_normalized,operational_consequence,consequence_priority=CASE operational_consequence WHEN 'emergency_declaration' THEN 1 WHEN 'diversion' THEN 2 WHEN 'return' THEN 3 WHEN 'holding' THEN 4 WHEN 'continued_with_concern' THEN 5 END,has_numeric_value=(LENGTH(fuel_values_normalized)>0 OR LENGTH(time_values_normalized)>0)])\n-> ORDER_BY([consequence_priority ASC, has_numeric_value DESC, incident_id ASC])\n-> LIMIT(5)\n-> PROJECT([rank=ROW_NUMBER(),incident_id,fuel_values_normalized,time_values_normalized,operational_consequence])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "rank",
+        "incident_id",
+        "fuel_values_normalized",
+        "time_values_normalized",
+        "operational_consequence"
+      ],
+      "types": [
+        "integer",
+        "string",
+        "list[string]",
+        "list[string]",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-016",
+    "gold_answer": [
+      {
+        "communication_pair": "flight_crew_atc",
+        "breakdown_mode": "assumption_or_expectation",
+        "incident_count": 28
+      },
+      {
+        "communication_pair": "flight_crew_atc",
+        "breakdown_mode": "failure_to_challenge",
+        "incident_count": 2
+      },
+      {
+        "communication_pair": "flight_crew_atc",
+        "breakdown_mode": "phraseology",
+        "incident_count": 44
+      },
+      {
+        "communication_pair": "flight_crew_atc",
+        "breakdown_mode": "timing_or_late_information",
+        "incident_count": 37
+      },
+      {
+        "communication_pair": "flight_crew_flight_crew",
+        "breakdown_mode": "assumption_or_expectation",
+        "incident_count": 24
+      },
+      {
+        "communication_pair": "flight_crew_flight_crew",
+        "breakdown_mode": "failure_to_challenge",
+        "incident_count": 38
+      },
+      {
+        "communication_pair": "flight_crew_flight_crew",
+        "breakdown_mode": "phraseology",
+        "incident_count": 13
+      },
+      {
+        "communication_pair": "flight_crew_flight_crew",
+        "breakdown_mode": "task_division_or_role",
+        "incident_count": 24
+      },
+      {
+        "communication_pair": "flight_crew_flight_crew",
+        "breakdown_mode": "timing_or_late_information",
+        "incident_count": 20
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "semantic_pairs := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, primary_problem])\n  -> FILTER(primary_problem = 'Human Factors')\n  -> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n  -> SEM_EXTRACT(\"Emit one row for every clearly supported participant group, using communication_pair from {flight_crew_atc,flight_crew_flight_crew} and one primary breakdown_mode from {phraseology,timing_or_late_information,assumption_or_expectation,task_division_or_role,failure_to_challenge}.\", {incident_id:string, communication_pair:string, breakdown_mode:string}, {incident_id,text})\n)\ncommunication_pair_records := (\n  SCAN_TABLE(NASA_ASRS, person_factors.csv, [incident_id, factor_type, value])\n  -> FILTER(factor_type = 'communication_breakdown' AND value CONTAINS 'Flight Crew')\n  -> GROUP_BY([incident_id], {communication_pair_records:COLLECT(value)})\n)\njoined := JOIN(left=semantic_pairs, right=communication_pair_records, join_type=inner, condition=semantic_pairs.incident_id = communication_pair_records.incident_id AND ((communication_pair = 'flight_crew_atc' AND EXISTS(record IN communication_pair_records WHERE (record CONTAINS 'Party1 Flight Crew' AND record CONTAINS 'Party2 ATC') OR (record CONTAINS 'Party1 ATC' AND record CONTAINS 'Party2 Flight Crew'))) OR (communication_pair = 'flight_crew_flight_crew' AND EXISTS(record IN communication_pair_records WHERE record CONTAINS 'Party1 Flight Crew' AND record CONTAINS 'Party2 Flight Crew'))))\njoined\n-> GROUP_BY([communication_pair,breakdown_mode], {incident_count:COUNT_DISTINCT(incident_id)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "communication_pair",
+        "breakdown_mode",
+        "incident_count"
+      ],
+      "types": [
+        "string",
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-017",
+    "gold_answer": 1494,
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id,text_file,anomaly_summary,result_summary])\n-> FILTER(anomaly_summary CONTAINS 'Aircraft Equipment Problem')\n-> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id,text])\n-> SEM_FILTER(\"Keep reports that describe active crew or maintenance troubleshooting and support a clear resulting status: resolved when corrective action cleared the problem, intermittent when it disappeared but remained uncertain or recurred, or still unsafe when it persisted or left the aircraft unsafe.\", {incident_id,result_summary,text})\n-> GROUP_BY([], {count_incidents:COUNT_DISTINCT(incident_id)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "scalar",
+      "value_type": "integer"
+    }
+  },
+  {
+    "task_id": "aviation_safety-018",
+    "gold_answer": [
+      {
+        "symptom_category": "thrust_loss",
+        "incident_count": 94,
+        "most_common_outcome": "emergency"
+      },
+      {
+        "symptom_category": "other_engine_indication",
+        "incident_count": 50,
+        "most_common_outcome": "emergency"
+      },
+      {
+        "symptom_category": "oil_indication",
+        "incident_count": 46,
+        "most_common_outcome": "emergency"
+      },
+      {
+        "symptom_category": "flameout",
+        "incident_count": 35,
+        "most_common_outcome": "emergency"
+      },
+      {
+        "symptom_category": "temperature",
+        "incident_count": 31,
+        "most_common_outcome": "emergency"
+      },
+      {
+        "symptom_category": "vibration",
+        "incident_count": 17,
+        "most_common_outcome": "emergency"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id,text_file,primary_problem,result_summary])\n-> FILTER(primary_problem = 'Aircraft')\n-> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id,text])\n-> SEM_EXTRACT(\"Emit one row only for an engine thrust, power, oil, temperature, vibration, or flameout problem. Assign symptom_category from {thrust_loss,oil_indication,temperature,vibration,flameout,other_engine_indication} and primary_outcome from {emergency,diversion,return,continued_flight,maintenance_only}.\", {incident_id:string,symptom_category:string,primary_outcome:string}, {incident_id,result_summary,text})\n-> GROUP_BY([symptom_category], {incident_count:COUNT_DISTINCT(incident_id),most_common_outcome:MODE(primary_outcome)})\n-> ORDER_BY([incident_count DESC,symptom_category ASC])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "symptom_category",
+        "incident_count",
+        "most_common_outcome"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "string"
+      ],
+      "order_by": [
+        "incident_count DESC",
+        "symptom_category ASC"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-019",
+    "gold_answer": [
+      {
+        "operational_consequence": "emergency_declaration",
+        "incident_count": 23,
+        "with_numeric_fuel_value_count": 18,
+        "with_numeric_time_value_count": 3
+      },
+      {
+        "operational_consequence": "diversion",
+        "incident_count": 69,
+        "with_numeric_fuel_value_count": 46,
+        "with_numeric_time_value_count": 13
+      },
+      {
+        "operational_consequence": "return",
+        "incident_count": 15,
+        "with_numeric_fuel_value_count": 7,
+        "with_numeric_time_value_count": 2
+      },
+      {
+        "operational_consequence": "holding",
+        "incident_count": 27,
+        "with_numeric_fuel_value_count": 14,
+        "with_numeric_time_value_count": 2
+      },
+      {
+        "operational_consequence": "continued_with_concern",
+        "incident_count": 15,
+        "with_numeric_fuel_value_count": 12,
+        "with_numeric_time_value_count": 2
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id,text_file,far_part,mission,result_summary])\n-> FILTER(far_part = 'Part 121' AND mission = 'Passenger')\n-> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id,text])\n-> SEM_EXTRACT(\"Emit one row when a fuel quantity, reserve, calculation, or dispatch-release decision directly affected the operation. Assign the highest applicable operational_consequence under emergency_declaration > diversion > return > holding > continued_with_concern, and indicate separately whether the report states a numeric fuel value and a numeric time value.\", {incident_id:string,operational_consequence:string,has_numeric_fuel_value:boolean,has_numeric_time_value:boolean}, {incident_id,result_summary,text})\n-> GROUP_BY([operational_consequence], {incident_count:COUNT_DISTINCT(incident_id),with_numeric_fuel_value_count:COUNT_DISTINCT_IF(incident_id,has_numeric_fuel_value=true),with_numeric_time_value_count:COUNT_DISTINCT_IF(incident_id,has_numeric_time_value=true)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "operational_consequence",
+        "incident_count",
+        "with_numeric_fuel_value_count",
+        "with_numeric_time_value_count"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "integer",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-020",
+    "gold_answer": [
+      {
+        "disruption_reason": "inflight_component_or_system_problem",
+        "incident_count": 538
+      },
+      {
+        "disruption_reason": "maintenance_documentation_or_release",
+        "incident_count": 35
+      },
+      {
+        "disruption_reason": "mel_or_deferred_item",
+        "incident_count": 123
+      },
+      {
+        "disruption_reason": "postflight_inspection_or_repair",
+        "incident_count": 35
+      },
+      {
+        "disruption_reason": "predeparture_component_discrepancy",
+        "incident_count": 221
+      },
+      {
+        "disruption_reason": "not_target",
+        "incident_count": 98
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NASA_ASRS, operator_implement/inputs/OP-SEM_GROUP_BY-003.jsonl, [incident_id,result_labels,contributing_labels,text])\n-> SEM_CLASSIFY(\"Assign exactly one primary disruption_reason from predeparture_component_discrepancy, mel_or_deferred_item, maintenance_documentation_or_release, inflight_component_or_system_problem, postflight_inspection_or_repair, and not_target when none clearly fits.\", target_labels=[predeparture_component_discrepancy,mel_or_deferred_item,maintenance_documentation_or_release,inflight_component_or_system_problem,postflight_inspection_or_repair,not_target], input_bindings={incident_id,result_labels,contributing_labels,text})\n-> GROUP_BY([disruption_reason], {incident_count:COUNT_DISTINCT(incident_id)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "disruption_reason",
+        "incident_count"
+      ],
+      "types": [
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-021",
+    "gold_answer": [
+      {
+        "barrier_status": "successful_barrier",
+        "incident_count": 1644
+      },
+      {
+        "barrier_status": "not_fully_supported",
+        "incident_count": 111
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NASA_ASRS, operator_implement/inputs/NASA_ASRS-030_safety_barrier_candidates.jsonl, [incident_id,text])\n-> SEM_CLASSIFY(\"Assign exactly one barrier_status. Use successful_barrier only when the narrative clearly establishes hazard detection, a concrete intervention, and avoidance of a worse consequence or stabilization of the situation; otherwise use not_fully_supported.\", target_labels=[successful_barrier,not_fully_supported], input_bindings={incident_id,text})\n-> GROUP_BY([barrier_status], {incident_count:COUNT_DISTINCT(incident_id)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "barrier_status",
+        "incident_count"
+      ],
+      "types": [
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-022",
+    "gold_answer": [
+      {
+        "rank": 1,
+        "flight_phase": "Final Approach",
+        "aircraft_operator": "Personal",
+        "candidate_incident_count": 27,
+        "successful_barrier_count": 27,
+        "successful_barrier_rate": 1.0
+      },
+      {
+        "rank": 2,
+        "flight_phase": "Climb; Initial Climb",
+        "aircraft_operator": "Air Carrier",
+        "candidate_incident_count": 24,
+        "successful_barrier_count": 24,
+        "successful_barrier_rate": 1.0
+      },
+      {
+        "rank": 3,
+        "flight_phase": "Initial Climb",
+        "aircraft_operator": "Personal",
+        "candidate_incident_count": 21,
+        "successful_barrier_count": 21,
+        "successful_barrier_rate": 1.0
+      },
+      {
+        "rank": 4,
+        "flight_phase": "Cruise",
+        "aircraft_operator": "Air Carrier",
+        "candidate_incident_count": 196,
+        "successful_barrier_count": 190,
+        "successful_barrier_rate": 0.9693877551020408
+      },
+      {
+        "rank": 5,
+        "flight_phase": "Climb",
+        "aircraft_operator": "Air Carrier",
+        "candidate_incident_count": 162,
+        "successful_barrier_count": 157,
+        "successful_barrier_rate": 0.9691358024691358
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NASA_ASRS, operator_implement/inputs/NASA_ASRS-030_safety_barrier_candidates.jsonl, [incident_id,flight_phase,aircraft_operator,text])\n-> SEM_AGGREGATE(\"Across all input records, count a successful barrier only when the narrative clearly establishes hazard detection, a concrete intervention, and avoidance of a worse consequence or stabilization. Return the five flight-phase and aircraft-operator combinations with at least twenty candidates and the highest success rates, ranked by rate descending, successful count descending, flight phase ascending, and operator ascending.\", {rows:list[{rank:integer,flight_phase:string,aircraft_operator:string,candidate_incident_count:integer,successful_barrier_count:integer,successful_barrier_rate:float}]}, group_by=null, input_bindings={records:[incident_id,flight_phase,aircraft_operator,text]})\n-> PROJECT(rows)"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "rank",
+        "flight_phase",
+        "aircraft_operator",
+        "candidate_incident_count",
+        "successful_barrier_count",
+        "successful_barrier_rate"
+      ],
+      "types": [
+        "integer",
+        "string",
+        "string",
+        "integer",
+        "integer",
+        "float"
+      ],
+      "order_by": [
+        "successful_barrier_rate DESC",
+        "successful_barrier_count DESC",
+        "flight_phase ASC",
+        "aircraft_operator ASC"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-023",
+    "gold_answer": [
+      {
+        "canonical_human_factor": "communication_breakdown",
+        "incident_factor_pair_count": 408
+      },
+      {
+        "canonical_human_factor": "confusion",
+        "incident_factor_pair_count": 256
+      },
+      {
+        "canonical_human_factor": "situational_awareness",
+        "incident_factor_pair_count": 489
+      },
+      {
+        "canonical_human_factor": "workload",
+        "incident_factor_pair_count": 177
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "incident_docs := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id,text_file,primary_problem])\n  -> FILTER(primary_problem = 'Human Factors')\n  -> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id,text])\n)\ncommunication_rows := (\n  SCAN_TABLE(NASA_ASRS, person_factors.csv, [incident_id,factor_type,value])\n  -> FILTER(factor_type = 'human_factors' AND value CONTAINS 'Communication Breakdown')\n  -> PROJECT([incident_id,canonical_human_factor='communication_breakdown'])\n)\nworkload_rows := (\n  SCAN_TABLE(NASA_ASRS, person_factors.csv, [incident_id,factor_type,value])\n  -> FILTER(factor_type = 'human_factors' AND value CONTAINS 'Workload')\n  -> PROJECT([incident_id,canonical_human_factor='workload'])\n)\nconfusion_rows := (\n  SCAN_TABLE(NASA_ASRS, person_factors.csv, [incident_id,factor_type,value])\n  -> FILTER(factor_type = 'human_factors' AND value CONTAINS 'Confusion')\n  -> PROJECT([incident_id,canonical_human_factor='confusion'])\n)\nsituational_awareness_rows := (\n  SCAN_TABLE(NASA_ASRS, person_factors.csv, [incident_id,factor_type,value])\n  -> FILTER(factor_type = 'human_factors' AND value CONTAINS 'Situational Awareness')\n  -> PROJECT([incident_id,canonical_human_factor='situational_awareness'])\n)\nfactor_rows := UNION(communication_rows,workload_rows,confusion_rows,situational_awareness_rows)\n-> DEDUP([incident_id,canonical_human_factor])\ncausally_supported_pairs := SEM_JOIN(left=incident_docs, right=factor_rows, instruction=\"Evaluate only rows with the same incident_id. Keep an incident-factor pair only when the narrative portrays the named structured factor as causally contributing to the event, rather than merely mentioning it or providing background context.\", input_bindings_left={incident_id,text}, input_bindings_right={incident_id,canonical_human_factor})\ncausally_supported_pairs\n-> GROUP_BY([right.canonical_human_factor], {incident_factor_pair_count:COUNT_DISTINCT(left.incident_id,right.canonical_human_factor)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "canonical_human_factor",
+        "incident_factor_pair_count"
+      ],
+      "types": [
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-024",
+    "gold_answer": [
+      {
+        "rank": 1,
+        "incident_date": "202512",
+        "left_incident_id": "asrs_150233",
+        "right_incident_id": "asrs_150254"
+      },
+      {
+        "rank": 2,
+        "incident_date": "202402",
+        "left_incident_id": "asrs_139386",
+        "right_incident_id": "asrs_139501"
+      },
+      {
+        "rank": 3,
+        "incident_date": "202101",
+        "left_incident_id": "asrs_124179",
+        "right_incident_id": "asrs_124335"
+      },
+      {
+        "rank": 4,
+        "incident_date": "202101",
+        "left_incident_id": "asrs_124179",
+        "right_incident_id": "asrs_124342"
+      },
+      {
+        "rank": 5,
+        "incident_date": "202101",
+        "left_incident_id": "asrs_124335",
+        "right_incident_id": "asrs_124342"
+      },
+      {
+        "rank": 6,
+        "incident_date": "201910",
+        "left_incident_id": "asrs_117457",
+        "right_incident_id": "asrs_117492"
+      },
+      {
+        "rank": 7,
+        "incident_date": "201802",
+        "left_incident_id": "asrs_107892",
+        "right_incident_id": "asrs_107920"
+      },
+      {
+        "rank": 8,
+        "incident_date": "201510",
+        "left_incident_id": "asrs_095021",
+        "right_incident_id": "asrs_095022"
+      },
+      {
+        "rank": 9,
+        "incident_date": "201206",
+        "left_incident_id": "asrs_078757",
+        "right_incident_id": "asrs_078758"
+      },
+      {
+        "rank": 10,
+        "incident_date": "200907",
+        "left_incident_id": "asrs_062903",
+        "right_incident_id": "asrs_062944"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "left_reports := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv AS left_incident, [incident_id,incident_date,state_reference,locale_reference_type,primary_problem,text_file])\n  -> SCAN_DOCS(NASA_ASRS, selector=left_incident.text_file, [incident_id,text])\n)\nright_reports := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv AS right_incident, [incident_id,incident_date,state_reference,locale_reference_type,primary_problem,text_file])\n  -> SCAN_DOCS(NASA_ASRS, selector=right_incident.text_file, [incident_id,text])\n)\nmatched_pairs := SEM_JOIN(left=left_reports, right=right_reports, instruction=\"Evaluate only pairs where left incident_id is smaller than right incident_id and incident month, state reference, locale-reference type, and primary problem are equal. Keep a pair only when both narratives describe the same underlying occurrence, requiring a compatible distinctive event progression, measurements, actions, and outcome; generic topical similarity is insufficient.\", input_bindings_left={incident_id,incident_date,state_reference,locale_reference_type,primary_problem,text}, input_bindings_right={incident_id,incident_date,state_reference,locale_reference_type,primary_problem,text})\nmatched_pairs\n-> PROJECT([incident_date=left.incident_date,left_incident_id=left.incident_id,right_incident_id=right.incident_id])\n-> ORDER_BY([incident_date DESC,left_incident_id ASC,right_incident_id ASC])\n-> PROJECT([rank=ROW_NUMBER(),incident_date,left_incident_id,right_incident_id])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "rank",
+        "incident_date",
+        "left_incident_id",
+        "right_incident_id"
+      ],
+      "types": [
+        "integer",
+        "string",
+        "string",
+        "string"
+      ],
+      "order_by": [
+        "incident_date DESC",
+        "left_incident_id ASC",
+        "right_incident_id ASC"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-025",
+    "gold_answer": [
+      {
+        "confusion_mechanism": "data_entry_or_programming",
+        "incident_count": 100
+      },
+      {
+        "confusion_mechanism": "alert_interpretation",
+        "incident_count": 36
+      },
+      {
+        "confusion_mechanism": "automation_disengagement",
+        "incident_count": 15
+      },
+      {
+        "confusion_mechanism": "unexpected_capture_or_leveloff",
+        "incident_count": 4
+      },
+      {
+        "confusion_mechanism": "mode_awareness",
+        "incident_count": 37
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, primary_problem])\n-> FILTER(primary_problem = 'Human Factors')\n-> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n-> SEM_FILTER(\"Keep reports where misunderstanding or surprise about automation materially contributed to the event.\", {text})\n-> SEM_FILTER(\"Keep reports whose primary issue was not an aircraft equipment failure and not an ordinary manual-flying error without automation confusion.\", {text})\n-> SEM_CLASSIFY(\"Assign exactly one dominant mechanism using this precedence: data_entry_or_programming, alert_interpretation, automation_disengagement, unexpected_capture_or_leveloff, mode_awareness. Omit reports that do not clearly fit one.\", target_labels=[data_entry_or_programming,alert_interpretation,automation_disengagement,unexpected_capture_or_leveloff,mode_awareness], input_bindings={incident_id,text})\n-> GROUP_BY([confusion_mechanism], {incident_count:COUNT_DISTINCT(incident_id)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "confusion_mechanism",
+        "incident_count"
+      ],
+      "types": [
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-026",
+    "gold_answer": [
+      {
+        "measurement_type": "altitude",
+        "comparison_count": 431,
+        "most_common_deviation": "altitude_deviation"
+      },
+      {
+        "measurement_type": "speed",
+        "comparison_count": 160,
+        "most_common_deviation": "speed_deviation"
+      },
+      {
+        "measurement_type": "heading",
+        "comparison_count": 35,
+        "most_common_deviation": "heading_or_route_deviation"
+      },
+      {
+        "measurement_type": "runway",
+        "comparison_count": 22,
+        "most_common_deviation": "runway_deviation"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, state_reference])\n-> FILTER(state_reference = 'US')\n-> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n-> SEM_FILTER(\"Keep reports containing at least one numeric cleared-versus-flown or expected-versus-actual comparison for altitude, speed, heading, or runway, with the two values belonging to the same comparison.\", {text})\n-> SEM_EXTRACT(\"Emit one row per distinct comparison. Normalize measurement_type to {altitude,speed,heading,runway}, keep expected and actual values separate, and summarize the resulting deviation in at most six words.\", {incident_id:string, measurement_type:string, expected_value:string, actual_value:string, deviation:string}, {incident_id,text})\n-> GROUP_BY([measurement_type], {comparison_count:COUNT_DISTINCT(incident_id,expected_value,actual_value), most_common_deviation:MODE(deviation)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "measurement_type",
+        "comparison_count",
+        "most_common_deviation"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-027",
+    "gold_answer": [
+      {
+        "decision_change_type": "diversion",
+        "incident_count": 61
+      },
+      {
+        "decision_change_type": "airport_change",
+        "incident_count": 8
+      },
+      {
+        "decision_change_type": "holding",
+        "incident_count": 16
+      },
+      {
+        "decision_change_type": "approach_change",
+        "incident_count": 59
+      },
+      {
+        "decision_change_type": "altitude_change",
+        "incident_count": 60
+      },
+      {
+        "decision_change_type": "route_change",
+        "incident_count": 53
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, local_time_of_day])\n-> FILTER(local_time_of_day = '1201-1800')\n-> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n-> SEM_FILTER(\"Keep reports where weather or visibility was the primary cause of an operational decision change rather than incidental background.\", {text})\n-> SEM_FILTER(\"Exclude reports where turbulence affected only passenger comfort and did not change the flight's operation.\", {text})\n-> SEM_CLASSIFY(\"Assign one decision_change_type using this precedence: diversion, airport_change, holding, approach_change, altitude_change, route_change. Omit reports without one of these changes.\", target_labels=[diversion,airport_change,holding,approach_change,altitude_change,route_change], input_bindings={incident_id,text})\n-> GROUP_BY([decision_change_type], {incident_count:COUNT_DISTINCT(incident_id)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "decision_change_type",
+        "incident_count"
+      ],
+      "types": [
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-028",
+    "gold_answer": [
+      {
+        "response_pattern": "followed_automation",
+        "incident_count": 47
+      },
+      {
+        "response_pattern": "overrode_or_disconnected",
+        "incident_count": 19
+      },
+      {
+        "response_pattern": "sought_atc_clarification",
+        "incident_count": 1
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "semantic_responses := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, far_part, locale_reference_type])\n  -> FILTER(far_part = 'Part 121' AND locale_reference_type = 'Airport')\n  -> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n  -> SEM_EXTRACT(\"Extract one dominant narrative_response from {followed_automation,overrode_or_disconnected,sought_atc_clarification} when the crew action is clear, using that precedence; otherwise output null.\", {incident_id:string, narrative_response:string|null}, {incident_id,text})\n)\nnavigation_records := (\n  SCAN_TABLE(NASA_ASRS, aircraft_attributes.csv, [incident_id, attribute, value])\n  -> FILTER(attribute = 'nav_in_use' AND (value CONTAINS 'FMS Or FMC' OR value CONTAINS 'GPS'))\n  -> GROUP_BY([incident_id], {navigation_in_use:COLLECT(value)})\n)\nresponses_with_navigation := JOIN(left=semantic_responses, right=navigation_records, join_type=inner, condition=semantic_responses.incident_id = navigation_records.incident_id)\nautomation_events := (\n  SCAN_TABLE(NASA_ASRS, events.csv, [incident_id, event_type, label])\n  -> FILTER(event_type IN ('detector','result') AND label CONTAINS 'Automation')\n  -> GROUP_BY([incident_id], {automation_event_labels:COLLECT(event_type,label)})\n)\njoined := JOIN(left=responses_with_navigation, right=automation_events, join_type=inner, condition=responses_with_navigation.incident_id = automation_events.incident_id)\njoined\n-> PROJECT([incident_id,response_pattern=COALESCE(narrative_response,CASE WHEN automation_event_labels CONTAINS 'Flight Crew FLC complied w / Automation / Advisory' THEN 'followed_automation' WHEN automation_event_labels CONTAINS ANY OF ['Flight Crew FLC Overrode Automation','Flight Crew Overrode Automation'] THEN 'overrode_or_disconnected' ELSE NULL END)])\n-> FILTER(response_pattern IS NOT NULL)\n-> GROUP_BY([response_pattern], {incident_count:COUNT_DISTINCT(incident_id)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "response_pattern",
+        "incident_count"
+      ],
+      "types": [
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-029",
+    "gold_answer": [
+      {
+        "flight_conditions": "IMC",
+        "recorded_result": "go_around_or_missed_approach",
+        "incident_count": 8
+      },
+      {
+        "flight_conditions": "IMC",
+        "recorded_result": "new_clearance",
+        "incident_count": 8
+      },
+      {
+        "flight_conditions": "Marginal",
+        "recorded_result": "new_clearance",
+        "incident_count": 2
+      },
+      {
+        "flight_conditions": "Mixed",
+        "recorded_result": "go_around_or_missed_approach",
+        "incident_count": 2
+      },
+      {
+        "flight_conditions": "Mixed",
+        "recorded_result": "new_clearance",
+        "incident_count": 3
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "semantic_candidates := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, local_time_of_day, flight_phase])\n  -> FILTER(local_time_of_day = '1201-1800')\n  -> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n  -> SEM_FILTER(\"Keep reports where weather or visibility explicitly caused a go-around, missed approach, or new clearance.\", {text})\n  -> SEM_FILTER(\"Exclude reports where traffic spacing, runway occupancy, or aircraft equipment was the primary cause of that result.\", {text})\n)\nenvironment_records := (\n  SCAN_TABLE(NASA_ASRS, environment_attributes.csv, [incident_id, attribute, value])\n  -> FILTER(attribute = 'flight_conditions' AND value IN ('IMC','Marginal','Mixed'))\n)\ncandidates_with_environment := JOIN(left=semantic_candidates, right=environment_records, join_type=inner, condition=semantic_candidates.incident_id = environment_records.incident_id)\nresult_events := (\n  SCAN_TABLE(NASA_ASRS, events.csv, [incident_id, event_type, label])\n  -> FILTER(event_type = 'result' AND label IN ('Flight Crew Executed Go Around / Missed Approach','Air Traffic Control Issued New Clearance'))\n)\njoined := JOIN(left=candidates_with_environment, right=result_events, join_type=inner, condition=candidates_with_environment.incident_id = result_events.incident_id)\njoined\n-> FILTER(flight_phase CONTAINS 'Approach' OR flight_phase CONTAINS 'Landing')\n-> GROUP_BY([flight_conditions:value, recorded_result=CASE label WHEN 'Flight Crew Executed Go Around / Missed Approach' THEN 'go_around_or_missed_approach' ELSE 'new_clearance' END], {incident_count:COUNT_DISTINCT(incident_id)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "flight_conditions",
+        "recorded_result",
+        "incident_count"
+      ],
+      "types": [
+        "string",
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-030",
+    "gold_answer": [
+      {
+        "rank": 1,
+        "incident_id": "asrs_080973",
+        "parties_involved": "C152 pilot and tower controller",
+        "structured_horizontal_ft": 0,
+        "structured_vertical_ft": 0,
+        "narrative_horizontal_ft": null,
+        "narrative_vertical_ft": null,
+        "horizontal_comparison": "not_stated",
+        "vertical_comparison": "not_stated"
+      },
+      {
+        "rank": 2,
+        "incident_id": "asrs_109150",
+        "parties_involved": "EMB-170 and parked Airbus",
+        "structured_horizontal_ft": 0,
+        "structured_vertical_ft": 0,
+        "narrative_horizontal_ft": null,
+        "narrative_vertical_ft": null,
+        "horizontal_comparison": "not_stated",
+        "vertical_comparison": "not_stated"
+      },
+      {
+        "rank": 3,
+        "incident_id": "asrs_134237",
+        "parties_involved": "A321 flight crew and ATC",
+        "structured_horizontal_ft": 0,
+        "structured_vertical_ft": 0,
+        "narrative_horizontal_ft": null,
+        "narrative_vertical_ft": null,
+        "horizontal_comparison": "not_stated",
+        "vertical_comparison": "not_stated"
+      },
+      {
+        "rank": 4,
+        "incident_id": "asrs_141094",
+        "parties_involved": "reporting aircraft and trailing arrival",
+        "structured_horizontal_ft": 0,
+        "structured_vertical_ft": 0,
+        "narrative_horizontal_ft": null,
+        "narrative_vertical_ft": null,
+        "horizontal_comparison": "not_stated",
+        "vertical_comparison": "not_stated"
+      },
+      {
+        "rank": 5,
+        "incident_id": "asrs_124473",
+        "parties_involved": "R22 helicopter and overflying airplane",
+        "structured_horizontal_ft": 0,
+        "structured_vertical_ft": 20,
+        "narrative_horizontal_ft": null,
+        "narrative_vertical_ft": 20,
+        "horizontal_comparison": "not_stated",
+        "vertical_comparison": "matches"
+      },
+      {
+        "rank": 6,
+        "incident_id": "asrs_072492",
+        "parties_involved": "C172 and departing LSA",
+        "structured_horizontal_ft": 0,
+        "structured_vertical_ft": 100,
+        "narrative_horizontal_ft": null,
+        "narrative_vertical_ft": 100,
+        "horizontal_comparison": "not_stated",
+        "vertical_comparison": "matches"
+      },
+      {
+        "rank": 7,
+        "incident_id": "asrs_122921",
+        "parties_involved": "departing aircraft and landing aircraft",
+        "structured_horizontal_ft": 0,
+        "structured_vertical_ft": 200,
+        "narrative_horizontal_ft": null,
+        "narrative_vertical_ft": null,
+        "horizontal_comparison": "not_stated",
+        "vertical_comparison": "not_stated"
+      },
+      {
+        "rank": 8,
+        "incident_id": "asrs_123517",
+        "parties_involved": "helicopter and departing jet",
+        "structured_horizontal_ft": 0,
+        "structured_vertical_ft": 200,
+        "narrative_horizontal_ft": null,
+        "narrative_vertical_ft": null,
+        "horizontal_comparison": "not_stated",
+        "vertical_comparison": "not_stated"
+      },
+      {
+        "rank": 9,
+        "incident_id": "asrs_137300",
+        "parties_involved": "C172 and low-wing airplane",
+        "structured_horizontal_ft": 0,
+        "structured_vertical_ft": 250,
+        "narrative_horizontal_ft": null,
+        "narrative_vertical_ft": 200,
+        "horizontal_comparison": "not_stated",
+        "vertical_comparison": "differs"
+      },
+      {
+        "rank": 10,
+        "incident_id": "asrs_086351",
+        "parties_involved": "C177 and formation aircraft",
+        "structured_horizontal_ft": 0,
+        "structured_vertical_ft": 400,
+        "narrative_horizontal_ft": null,
+        "narrative_vertical_ft": null,
+        "horizontal_comparison": "not_stated",
+        "vertical_comparison": "not_stated"
+      },
+      {
+        "rank": 11,
+        "incident_id": "asrs_136400",
+        "parties_involved": "SR-20 and Diamond Star",
+        "structured_horizontal_ft": 0,
+        "structured_vertical_ft": 500,
+        "narrative_horizontal_ft": null,
+        "narrative_vertical_ft": null,
+        "horizontal_comparison": "not_stated",
+        "vertical_comparison": "not_stated"
+      },
+      {
+        "rank": 12,
+        "incident_id": "asrs_137985",
+        "parties_involved": "PC-12 and terrain",
+        "structured_horizontal_ft": 2,
+        "structured_vertical_ft": 1000,
+        "narrative_horizontal_ft": null,
+        "narrative_vertical_ft": null,
+        "horizontal_comparison": "not_stated",
+        "vertical_comparison": "not_stated"
+      },
+      {
+        "rank": 13,
+        "incident_id": "asrs_080839",
+        "parties_involved": "two C172 aircraft",
+        "structured_horizontal_ft": 10,
+        "structured_vertical_ft": 0,
+        "narrative_horizontal_ft": 15,
+        "narrative_vertical_ft": null,
+        "horizontal_comparison": "differs",
+        "vertical_comparison": "not_stated"
+      },
+      {
+        "rank": 14,
+        "incident_id": "asrs_150483",
+        "parties_involved": "landing C172 and departing MQ-9",
+        "structured_horizontal_ft": 10,
+        "structured_vertical_ft": 150,
+        "narrative_horizontal_ft": null,
+        "narrative_vertical_ft": 150,
+        "horizontal_comparison": "not_stated",
+        "vertical_comparison": "matches"
+      },
+      {
+        "rank": 15,
+        "incident_id": "asrs_136804",
+        "parties_involved": "Cessna 152 and towed King Air",
+        "structured_horizontal_ft": 20,
+        "structured_vertical_ft": 0,
+        "narrative_horizontal_ft": 20,
+        "narrative_vertical_ft": null,
+        "horizontal_comparison": "matches",
+        "vertical_comparison": "not_stated"
+      },
+      {
+        "rank": 16,
+        "incident_id": "asrs_069314",
+        "parties_involved": "C172 and glider",
+        "structured_horizontal_ft": 30,
+        "structured_vertical_ft": 10,
+        "narrative_horizontal_ft": 30,
+        "narrative_vertical_ft": 10,
+        "horizontal_comparison": "matches",
+        "vertical_comparison": "matches"
+      },
+      {
+        "rank": 17,
+        "incident_id": "asrs_070251",
+        "parties_involved": "BE33 and Ercoupe",
+        "structured_horizontal_ft": 30,
+        "structured_vertical_ft": 30,
+        "narrative_horizontal_ft": null,
+        "narrative_vertical_ft": 25,
+        "horizontal_comparison": "not_stated",
+        "vertical_comparison": "differs"
+      },
+      {
+        "rank": 18,
+        "incident_id": "asrs_121884",
+        "parties_involved": "training aircraft and aerobatic aircraft",
+        "structured_horizontal_ft": 50,
+        "structured_vertical_ft": 0,
+        "narrative_horizontal_ft": null,
+        "narrative_vertical_ft": null,
+        "horizontal_comparison": "not_stated",
+        "vertical_comparison": "not_stated"
+      },
+      {
+        "rank": 19,
+        "incident_id": "asrs_149915",
+        "parties_involved": "departing turboprop and crossing Citation",
+        "structured_horizontal_ft": 50,
+        "structured_vertical_ft": 0,
+        "narrative_horizontal_ft": 50,
+        "narrative_vertical_ft": null,
+        "horizontal_comparison": "matches",
+        "vertical_comparison": "not_stated"
+      },
+      {
+        "rank": 20,
+        "incident_id": "asrs_127925",
+        "parties_involved": "helicopter and landing airplane",
+        "structured_horizontal_ft": 50,
+        "structured_vertical_ft": 30,
+        "narrative_horizontal_ft": null,
+        "narrative_vertical_ft": null,
+        "horizontal_comparison": "not_stated",
+        "vertical_comparison": "not_stated"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "semantic_distances := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, state_reference])\n  -> FILTER(state_reference = 'US')\n  -> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n  -> SEM_EXTRACT(\"Identify the parties involved in the closest conflict as a phrase of at most six words and extract explicitly stated narrative horizontal and vertical closest-separation values in feet; use null for an unstated dimension.\", {incident_id:string, parties_involved:string, narrative_horizontal_ft:integer|null, narrative_vertical_ft:integer|null}, {incident_id,text})\n)\nstructured_distances := (\n  SCAN_TABLE(NASA_ASRS, events.csv, [incident_id, event_type, label])\n  -> FILTER(event_type = 'miss_distance')\n  -> GROUP_BY([incident_id], {structured_horizontal_ft:MIN_IF(PARSE_INTEGER(label),label STARTS_WITH 'Horizontal '), structured_vertical_ft:MIN_IF(PARSE_INTEGER(label),label STARTS_WITH 'Vertical ')})\n  -> FILTER(structured_horizontal_ft IS NOT NULL AND structured_vertical_ft IS NOT NULL)\n)\njoined := JOIN(left=semantic_distances, right=structured_distances, join_type=inner, condition=semantic_distances.incident_id = structured_distances.incident_id)\njoined\n-> PROJECT([incident_id,parties_involved,structured_horizontal_ft,structured_vertical_ft,narrative_horizontal_ft,narrative_vertical_ft,horizontal_comparison=CASE WHEN narrative_horizontal_ft IS NULL THEN 'not_stated' WHEN narrative_horizontal_ft=structured_horizontal_ft THEN 'matches' ELSE 'differs' END,vertical_comparison=CASE WHEN narrative_vertical_ft IS NULL THEN 'not_stated' WHEN narrative_vertical_ft=structured_vertical_ft THEN 'matches' ELSE 'differs' END])\n-> ORDER_BY([structured_horizontal_ft ASC, structured_vertical_ft ASC, incident_id ASC])\n-> LIMIT(20)\n-> PROJECT([rank=ROW_NUMBER(),incident_id,parties_involved,structured_horizontal_ft,structured_vertical_ft,narrative_horizontal_ft,narrative_vertical_ft,horizontal_comparison,vertical_comparison])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "rank",
+        "incident_id",
+        "parties_involved",
+        "structured_horizontal_ft",
+        "structured_vertical_ft",
+        "narrative_horizontal_ft",
+        "narrative_vertical_ft",
+        "horizontal_comparison",
+        "vertical_comparison"
+      ],
+      "types": [
+        "integer",
+        "string",
+        "string",
+        "integer",
+        "integer",
+        "integer|null",
+        "integer|null",
+        "string",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-031",
+    "gold_answer": [
+      {
+        "flight_phase_group": "climb_or_cruise",
+        "clearance_conflict_type": "altitude_or_speed_restriction",
+        "incident_count": 16
+      },
+      {
+        "flight_phase_group": "climb_or_cruise",
+        "clearance_conflict_type": "late_or_changed_clearance",
+        "incident_count": 5
+      },
+      {
+        "flight_phase_group": "climb_or_cruise",
+        "clearance_conflict_type": "misunderstood_clearance",
+        "incident_count": 1
+      },
+      {
+        "flight_phase_group": "climb_or_cruise",
+        "clearance_conflict_type": "readback_hearback_failure",
+        "incident_count": 4
+      },
+      {
+        "flight_phase_group": "climb_or_cruise",
+        "clearance_conflict_type": "route_or_heading_confusion",
+        "incident_count": 20
+      },
+      {
+        "flight_phase_group": "descent_or_approach",
+        "clearance_conflict_type": "altitude_or_speed_restriction",
+        "incident_count": 29
+      },
+      {
+        "flight_phase_group": "descent_or_approach",
+        "clearance_conflict_type": "late_or_changed_clearance",
+        "incident_count": 16
+      },
+      {
+        "flight_phase_group": "descent_or_approach",
+        "clearance_conflict_type": "misunderstood_clearance",
+        "incident_count": 6
+      },
+      {
+        "flight_phase_group": "descent_or_approach",
+        "clearance_conflict_type": "readback_hearback_failure",
+        "incident_count": 12
+      },
+      {
+        "flight_phase_group": "descent_or_approach",
+        "clearance_conflict_type": "route_or_heading_confusion",
+        "incident_count": 35
+      },
+      {
+        "flight_phase_group": "ground_or_departure",
+        "clearance_conflict_type": "altitude_or_speed_restriction",
+        "incident_count": 5
+      },
+      {
+        "flight_phase_group": "ground_or_departure",
+        "clearance_conflict_type": "late_or_changed_clearance",
+        "incident_count": 6
+      },
+      {
+        "flight_phase_group": "ground_or_departure",
+        "clearance_conflict_type": "misunderstood_clearance",
+        "incident_count": 11
+      },
+      {
+        "flight_phase_group": "ground_or_departure",
+        "clearance_conflict_type": "readback_hearback_failure",
+        "incident_count": 13
+      },
+      {
+        "flight_phase_group": "ground_or_departure",
+        "clearance_conflict_type": "route_or_heading_confusion",
+        "incident_count": 32
+      },
+      {
+        "flight_phase_group": "landing_or_other",
+        "clearance_conflict_type": "late_or_changed_clearance",
+        "incident_count": 3
+      },
+      {
+        "flight_phase_group": "landing_or_other",
+        "clearance_conflict_type": "misunderstood_clearance",
+        "incident_count": 1
+      },
+      {
+        "flight_phase_group": "landing_or_other",
+        "clearance_conflict_type": "readback_hearback_failure",
+        "incident_count": 1
+      },
+      {
+        "flight_phase_group": "landing_or_other",
+        "clearance_conflict_type": "route_or_heading_confusion",
+        "incident_count": 2
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "semantic_mechanisms := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, primary_problem, flight_phase])\n  -> FILTER(primary_problem = 'Human Factors')\n  -> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n  -> SEM_CLASSIFY(\"Assign one primary clearance-conflict mechanism from late_or_changed_clearance, misunderstood_clearance, readback_hearback_failure, route_or_heading_confusion, and altitude_or_speed_restriction. Omit reports without one clearly primary mechanism.\", target_labels=[late_or_changed_clearance,misunderstood_clearance,readback_hearback_failure,route_or_heading_confusion,altitude_or_speed_restriction], input_bindings={incident_id,text})\n)\nifr_incidents := (\n  SCAN_TABLE(NASA_ASRS, aircraft_attributes.csv, [incident_id, attribute, value])\n  -> FILTER(attribute = 'flight_plan' AND value = 'IFR')\n  -> DEDUP([incident_id])\n)\nmechanisms_with_ifr := JOIN(left=semantic_mechanisms, right=ifr_incidents, join_type=inner, condition=semantic_mechanisms.incident_id = ifr_incidents.incident_id)\nclearance_anomalies := (\n  SCAN_TABLE(NASA_ASRS, events.csv, [incident_id, event_type, label])\n  -> FILTER(event_type = 'anomaly' AND label IN ('ATC Issue All Types','Deviation / Discrepancy - Procedural Clearance'))\n  -> DEDUP([incident_id])\n)\njoined := JOIN(left=mechanisms_with_ifr, right=clearance_anomalies, join_type=inner, condition=mechanisms_with_ifr.incident_id = clearance_anomalies.incident_id)\njoined\n-> PROJECT([incident_id,clearance_conflict_type,flight_phase_group=CASE WHEN flight_phase CONTAINS ANY OF ['Parked','Taxi','Takeoff','Initial Climb'] THEN 'ground_or_departure' WHEN flight_phase CONTAINS ANY OF ['Climb','Cruise'] THEN 'climb_or_cruise' WHEN flight_phase CONTAINS ANY OF ['Descent','Approach'] THEN 'descent_or_approach' ELSE 'landing_or_other' END])\n-> GROUP_BY([flight_phase_group,clearance_conflict_type], {incident_count:COUNT_DISTINCT(incident_id)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "flight_phase_group",
+        "clearance_conflict_type",
+        "incident_count"
+      ],
+      "types": [
+        "string",
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-032",
+    "gold_answer": [
+      {
+        "rank": 1,
+        "issue_category": "passenger_medical",
+        "decision_category": "return_or_divert",
+        "incident_count": 6
+      },
+      {
+        "rank": 2,
+        "issue_category": "security_or_behavior",
+        "decision_category": "delay_or_cancel",
+        "incident_count": 4
+      },
+      {
+        "rank": 3,
+        "issue_category": "cabin_equipment_or_door",
+        "decision_category": "delay_or_cancel",
+        "incident_count": 3
+      },
+      {
+        "rank": 4,
+        "issue_category": "passenger_medical",
+        "decision_category": "continue_changed",
+        "incident_count": 2
+      },
+      {
+        "rank": 5,
+        "issue_category": "boarding_or_deplaning",
+        "decision_category": "delay_or_cancel",
+        "incident_count": 1
+      },
+      {
+        "rank": 6,
+        "issue_category": "boarding_or_deplaning",
+        "decision_category": "other_operational_change",
+        "incident_count": 1
+      },
+      {
+        "rank": 7,
+        "issue_category": "cabin_equipment_or_door",
+        "decision_category": "continue_changed",
+        "incident_count": 1
+      },
+      {
+        "rank": 8,
+        "issue_category": "cabin_equipment_or_door",
+        "decision_category": "return_or_divert",
+        "incident_count": 1
+      },
+      {
+        "rank": 9,
+        "issue_category": "passenger_medical",
+        "decision_category": "other_operational_change",
+        "incident_count": 1
+      },
+      {
+        "rank": 10,
+        "issue_category": "security_or_behavior",
+        "decision_category": "continue_changed",
+        "incident_count": 1
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "semantic_decisions := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, far_part, mission])\n  -> FILTER(far_part = 'Part 121' AND mission = 'Passenger')\n  -> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n  -> SEM_EXTRACT(\"Emit one row only when a cabin-side issue directly caused a flight-deck operational change rather than only affecting cabin service. Assign issue_category from {passenger_medical,security_or_behavior,cabin_equipment_or_door,boarding_or_deplaning,flight_attendant_communication} and decision_category from {delay_or_cancel,return_or_divert,continue_changed,other_operational_change}.\", {incident_id:string, issue_category:string, decision_category:string}, {incident_id,text})\n)\npassenger_events := (\n  SCAN_TABLE(NASA_ASRS, events.csv, [incident_id, event_type, label])\n  -> FILTER(event_type = 'passengers_involved' AND label = 'Y')\n)\njoined := JOIN(left=semantic_decisions, right=passenger_events, join_type=inner, condition=semantic_decisions.incident_id = passenger_events.incident_id)\njoined\n-> GROUP_BY([issue_category,decision_category], {incident_count:COUNT_DISTINCT(incident_id)})\n-> ORDER_BY([incident_count DESC, issue_category ASC, decision_category ASC])\n-> LIMIT(10)\n-> PROJECT([rank=ROW_NUMBER(),issue_category,decision_category,incident_count])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "rank",
+        "issue_category",
+        "decision_category",
+        "incident_count"
+      ],
+      "types": [
+        "integer",
+        "string",
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-033",
+    "gold_answer": [
+      {
+        "disruption_reason": "inflight_component_or_system_problem",
+        "incident_count": 538
+      },
+      {
+        "disruption_reason": "maintenance_documentation_or_release",
+        "incident_count": 35
+      },
+      {
+        "disruption_reason": "mel_or_deferred_item",
+        "incident_count": 123
+      },
+      {
+        "disruption_reason": "postflight_inspection_or_repair",
+        "incident_count": 35
+      },
+      {
+        "disruption_reason": "predeparture_component_discrepancy",
+        "incident_count": 221
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "result_labels := (\n  SCAN_TABLE(NASA_ASRS, events.csv, [incident_id, event_type, label])\n  -> FILTER(event_type = 'result' AND label IN ('General Maintenance Action','General Flight Cancelled / Delayed','Flight Crew Returned To Departure Airport'))\n  -> GROUP_BY([incident_id], {result_labels:COLLECT(label)})\n)\ncontributing_labels := (\n  SCAN_TABLE(NASA_ASRS, assessments.csv, [incident_id, assessment_type, label])\n  -> FILTER(assessment_type = 'contributing_factor' AND label IN ('Aircraft','MEL'))\n  -> GROUP_BY([incident_id], {contributing_labels:COLLECT(label)})\n)\nlabel_candidates := JOIN(left=result_labels, right=contributing_labels, join_type=inner, condition=result_labels.incident_id = contributing_labels.incident_id)\nincidents := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file])\n)\njoined := JOIN(left=label_candidates, right=incidents, join_type=inner, condition=label_candidates.incident_id = incidents.incident_id)\njoined\n-> SCAN_DOCS(NASA_ASRS, selector=joined.text_file, [incident_id, text])\n-> SEM_CLASSIFY(\"Assign one primary disruption_reason from predeparture_component_discrepancy, mel_or_deferred_item, maintenance_documentation_or_release, inflight_component_or_system_problem, and postflight_inspection_or_repair. Omit reports that do not clearly fit.\", target_labels=[predeparture_component_discrepancy,mel_or_deferred_item,maintenance_documentation_or_release,inflight_component_or_system_problem,postflight_inspection_or_repair], input_bindings={incident_id,result_labels,contributing_labels,text})\n-> GROUP_BY([disruption_reason], {incident_count:COUNT_DISTINCT(incident_id)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "disruption_reason",
+        "incident_count"
+      ],
+      "types": [
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-034",
+    "gold_answer": [
+      {
+        "rank": 1,
+        "incident_id": "asrs_060926",
+        "reconciliation_pattern": "direct_conflict",
+        "automation_guidance": "TCAS commanded 2,000-2,500 FPM descent",
+        "atc_instruction": "ATC required crossing SSCOT at 10,000 feet",
+        "horizontal_separation_ft": 3000,
+        "vertical_separation_ft": 200
+      },
+      {
+        "rank": 2,
+        "incident_id": "asrs_027994",
+        "reconciliation_pattern": "direct_conflict",
+        "automation_guidance": "TCAS commanded 4,000 FPM descent",
+        "atc_instruction": "ATC instructed immediate climb",
+        "horizontal_separation_ft": 3000,
+        "vertical_separation_ft": 300
+      },
+      {
+        "rank": 3,
+        "incident_id": "asrs_052410",
+        "reconciliation_pattern": "direct_conflict",
+        "automation_guidance": "TCAS commanded descent over 3,000 FPM",
+        "atc_instruction": "ATC instructed maintain 11,000 feet",
+        "horizontal_separation_ft": 4500,
+        "vertical_separation_ft": 1000
+      },
+      {
+        "rank": 4,
+        "incident_id": "asrs_053566",
+        "reconciliation_pattern": "direct_conflict",
+        "automation_guidance": "TCAS commanded climb",
+        "atc_instruction": "ATC instructed maintain 11,000 feet",
+        "horizontal_separation_ft": 7000,
+        "vertical_separation_ft": 300
+      },
+      {
+        "rank": 5,
+        "incident_id": "asrs_036230",
+        "reconciliation_pattern": "direct_conflict",
+        "automation_guidance": "TCAS commanded continued climb",
+        "atc_instruction": "ATC instructed maintain FL230",
+        "horizontal_separation_ft": 21280,
+        "vertical_separation_ft": 700
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "semantic_conflicts := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, far_part, locale_reference_type])\n  -> FILTER(far_part = 'Part 121' AND locale_reference_type = 'Airport')\n  -> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n  -> SEM_EXTRACT(\"Emit one row only when automation guidance and an ATC instruction were difficult to reconcile in the same episode. Assign reconciliation_pattern from {direct_conflict,modified_or_delayed_compliance,clarification_required}, and express automation_guidance and atc_instruction in at most eight words each.\", {incident_id:string, reconciliation_pattern:string, automation_guidance:string, atc_instruction:string}, {incident_id,text})\n)\nevent_records := (\n  SCAN_TABLE(NASA_ASRS, events.csv, [incident_id, event_type, label])\n  -> FILTER((event_type = 'detector' AND label IN ('Automation Aircraft RA','Automation Aircraft TA')) OR event_type = 'miss_distance')\n  -> GROUP_BY([incident_id], {automation_detectors:COLLECT_IF(label,event_type='detector'),horizontal_separation_ft:MIN_IF(PARSE_INTEGER(label),event_type='miss_distance' AND label STARTS_WITH 'Horizontal '),vertical_separation_ft:MIN_IF(PARSE_INTEGER(label),event_type='miss_distance' AND label STARTS_WITH 'Vertical ')})\n  -> FILTER(automation_detectors IS NOT EMPTY AND horizontal_separation_ft IS NOT NULL AND vertical_separation_ft IS NOT NULL)\n)\njoined := JOIN(left=semantic_conflicts, right=event_records, join_type=inner, condition=semantic_conflicts.incident_id = event_records.incident_id)\njoined\n-> PROJECT([incident_id,reconciliation_pattern,automation_guidance,atc_instruction,horizontal_separation_ft,vertical_separation_ft,severity_order=CASE reconciliation_pattern WHEN 'direct_conflict' THEN 1 WHEN 'modified_or_delayed_compliance' THEN 2 ELSE 3 END])\n-> ORDER_BY([severity_order ASC,horizontal_separation_ft ASC,vertical_separation_ft ASC,incident_id ASC])\n-> LIMIT(5)\n-> PROJECT([rank=ROW_NUMBER(),incident_id,reconciliation_pattern,automation_guidance,atc_instruction,horizontal_separation_ft,vertical_separation_ft])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "rank",
+        "incident_id",
+        "reconciliation_pattern",
+        "automation_guidance",
+        "atc_instruction",
+        "horizontal_separation_ft",
+        "vertical_separation_ft"
+      ],
+      "types": [
+        "integer",
+        "string",
+        "string",
+        "string",
+        "string",
+        "integer",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-035",
+    "gold_answer": [
+      {
+        "light_group": "daylight",
+        "visual_factor": "missed_visual_scan",
+        "incident_count": 5
+      },
+      {
+        "light_group": "daylight",
+        "visual_factor": "reduced_visibility",
+        "incident_count": 1
+      },
+      {
+        "light_group": "low_light",
+        "visual_factor": "glare",
+        "incident_count": 1
+      },
+      {
+        "light_group": "low_light",
+        "visual_factor": "inadequate_or_confusing_lighting",
+        "incident_count": 15
+      },
+      {
+        "light_group": "low_light",
+        "visual_factor": "missed_visual_scan",
+        "incident_count": 5
+      },
+      {
+        "light_group": "low_light",
+        "visual_factor": "obscured_signage_or_markings",
+        "incident_count": 7
+      },
+      {
+        "light_group": "low_light",
+        "visual_factor": "reduced_visibility",
+        "incident_count": 15
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "semantic_factors := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id,text_file,aircraft_operator,locale_reference_type])\n  -> FILTER(aircraft_operator = 'Air Carrier' AND locale_reference_type = 'Airport')\n  -> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id,text])\n  -> SEM_EXTRACT(\"Emit one row for every visual factor materially contributing to the ground conflict, normalized to reduced_visibility, inadequate_or_confusing_lighting, glare, missed_visual_scan, or obscured_signage_or_markings. Do not emit incidental mentions.\", {incident_id:string,visual_factor:string}, {incident_id,text})\n)\nlight_records := (\n  SCAN_TABLE(NASA_ASRS, environment_attributes.csv, [incident_id,attribute,value])\n  -> FILTER(attribute = 'light' AND value IN ('Night','Dusk','Dawn','Daylight'))\n  -> PROJECT([incident_id,light_group=CASE WHEN value IN ('Night','Dusk','Dawn') THEN 'low_light' ELSE 'daylight' END])\n  -> DEDUP([incident_id,light_group])\n)\nfactors_with_light := JOIN(left=semantic_factors, right=light_records, join_type=inner, condition=semantic_factors.incident_id = light_records.incident_id)\nground_events := (\n  SCAN_TABLE(NASA_ASRS, events.csv, [incident_id,label])\n  -> FILTER(label = 'Conflict Ground Conflict' OR label STARTS_WITH 'Ground Incursion ' OR label STARTS_WITH 'Ground Excursion ')\n  -> DEDUP([incident_id])\n)\njoined := JOIN(left=factors_with_light, right=ground_events, join_type=inner, condition=factors_with_light.incident_id = ground_events.incident_id)\njoined\n-> GROUP_BY([light_group,visual_factor], {incident_count:COUNT_DISTINCT(incident_id)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "light_group",
+        "visual_factor",
+        "incident_count"
+      ],
+      "types": [
+        "string",
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-036",
+    "gold_answer": [
+      {
+        "crew_function": "captain",
+        "experience_role": "causal",
+        "person_count": 102,
+        "median_total_hours": 9500.0,
+        "median_type_hours": 1221.0,
+        "median_last_90_days_hours": 115.0
+      },
+      {
+        "crew_function": "captain",
+        "experience_role": "incidental",
+        "person_count": 71,
+        "median_total_hours": 10000.0,
+        "median_type_hours": 2000.0,
+        "median_last_90_days_hours": 125.1
+      },
+      {
+        "crew_function": "captain",
+        "experience_role": "not_mentioned",
+        "person_count": 146,
+        "median_total_hours": 9177.5,
+        "median_type_hours": 2345.0,
+        "median_last_90_days_hours": 152.5
+      },
+      {
+        "crew_function": "first_officer",
+        "experience_role": "causal",
+        "person_count": 88,
+        "median_total_hours": 6530.0,
+        "median_type_hours": 650.0,
+        "median_last_90_days_hours": 105.0
+      },
+      {
+        "crew_function": "first_officer",
+        "experience_role": "incidental",
+        "person_count": 54,
+        "median_total_hours": 7800.0,
+        "median_type_hours": 950.0,
+        "median_last_90_days_hours": 150.0
+      },
+      {
+        "crew_function": "first_officer",
+        "experience_role": "not_mentioned",
+        "person_count": 114,
+        "median_total_hours": 4600.0,
+        "median_type_hours": 1113.0,
+        "median_last_90_days_hours": 155.0
+      },
+      {
+        "crew_function": "instructor",
+        "experience_role": "causal",
+        "person_count": 25,
+        "median_total_hours": 1222.0,
+        "median_type_hours": 155.0,
+        "median_last_90_days_hours": 90.0
+      },
+      {
+        "crew_function": "instructor",
+        "experience_role": "incidental",
+        "person_count": 37,
+        "median_total_hours": 1100.0,
+        "median_type_hours": 323.55,
+        "median_last_90_days_hours": 100.0
+      },
+      {
+        "crew_function": "instructor",
+        "experience_role": "not_mentioned",
+        "person_count": 31,
+        "median_total_hours": 1444.0,
+        "median_type_hours": 402.0,
+        "median_last_90_days_hours": 101.0
+      },
+      {
+        "crew_function": "other_flight_crew",
+        "experience_role": "causal",
+        "person_count": 40,
+        "median_total_hours": 259.0,
+        "median_type_hours": 100.0,
+        "median_last_90_days_hours": 30.45
+      },
+      {
+        "crew_function": "other_flight_crew",
+        "experience_role": "incidental",
+        "person_count": 36,
+        "median_total_hours": 315.0,
+        "median_type_hours": 33.35,
+        "median_last_90_days_hours": 25.0
+      },
+      {
+        "crew_function": "other_flight_crew",
+        "experience_role": "not_mentioned",
+        "person_count": 17,
+        "median_total_hours": 6000.0,
+        "median_type_hours": 349.0,
+        "median_last_90_days_hours": 49.0
+      },
+      {
+        "crew_function": "single_pilot",
+        "experience_role": "causal",
+        "person_count": 92,
+        "median_total_hours": 492.0,
+        "median_type_hours": 156.0,
+        "median_last_90_days_hours": 25.0
+      },
+      {
+        "crew_function": "single_pilot",
+        "experience_role": "incidental",
+        "person_count": 78,
+        "median_total_hours": 1189.0,
+        "median_type_hours": 250.0,
+        "median_last_90_days_hours": 30.0
+      },
+      {
+        "crew_function": "single_pilot",
+        "experience_role": "not_mentioned",
+        "person_count": 49,
+        "median_total_hours": 1250.0,
+        "median_type_hours": 326.0,
+        "median_last_90_days_hours": 36.5
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "experience_rows := (\n  SCAN_TABLE(NASA_ASRS, person_factors.csv, [incident_id,person_ref,factor_type,value])\n  -> FILTER(factor_type = 'experience' AND value CONTAINS 'Flight Crew')\n  -> PROJECT([incident_id,person_ref,total_hours=PARSE_NUMBER_AFTER(value,'Flight Crew Total'),type_hours=PARSE_NUMBER_AFTER(value,'Flight Crew Type'),last_90_days_hours=PARSE_NUMBER_AFTER(value,'Flight Crew Last 90 Days')])\n)\nperson_rows := (\n  SCAN_TABLE(NASA_ASRS, person_attributes.csv, [incident_id,person_ref,attribute,value])\n  -> FILTER(attribute IN ('function','qualification','location_of_person'))\n  -> GROUP_BY([incident_id,person_ref], {function_value:MAX_IF(value,attribute='function'),qualification:MAX_IF(value,attribute='qualification'),location_of_person:MAX_IF(value,attribute='location_of_person')})\n)\nperson_experience := JOIN(left=experience_rows, right=person_rows, join_type=inner, condition=experience_rows.incident_id = person_rows.incident_id AND experience_rows.person_ref = person_rows.person_ref)\nstructured_people := (\n  person_experience\n  -> PROJECT([incident_id,person_ref,crew_function=CASE WHEN function_value CONTAINS 'Captain' THEN 'captain' WHEN function_value CONTAINS 'First Officer' THEN 'first_officer' WHEN function_value CONTAINS 'Single Pilot' THEN 'single_pilot' WHEN function_value CONTAINS 'Instructor' THEN 'instructor' ELSE 'other_flight_crew' END,total_hours,type_hours,last_90_days_hours,qualification,location_of_person])\n)\nincidents := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id,primary_problem,text_file])\n  -> FILTER(primary_problem IN ('Human Factors','Procedure'))\n)\njoined := JOIN(left=structured_people, right=incidents, join_type=inner, condition=structured_people.incident_id = incidents.incident_id)\njoined\n-> SCAN_DOCS(NASA_ASRS, selector=joined.text_file, [incident_id,text])\n-> SEM_CLASSIFY(\"For each structured person, classify that person's experience as causal when low or recent experience, training, qualification, or unfamiliarity contributed; incidental when mentioned only as context; or not_mentioned when absent. Use function, qualification, and location to resolve the narrative role.\", target_labels=[causal,incidental,not_mentioned], input_bindings={incident_id,person_ref,crew_function,qualification,location_of_person,text})\n-> GROUP_BY([crew_function,experience_role], {person_count:COUNT_DISTINCT(incident_id,person_ref),median_total_hours:MEDIAN(total_hours),median_type_hours:MEDIAN(type_hours),median_last_90_days_hours:MEDIAN(last_90_days_hours)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "crew_function",
+        "experience_role",
+        "person_count",
+        "median_total_hours",
+        "median_type_hours",
+        "median_last_90_days_hours"
+      ],
+      "types": [
+        "string",
+        "string",
+        "integer",
+        "float|null",
+        "float|null",
+        "float|null"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-037",
+    "gold_answer": [
+      {
+        "rank": 1,
+        "flight_phase": "Final Approach",
+        "aircraft_operator": "Personal",
+        "candidate_incident_count": 27,
+        "successful_barrier_count": 27,
+        "successful_barrier_rate": 1.0
+      },
+      {
+        "rank": 2,
+        "flight_phase": "Climb; Initial Climb",
+        "aircraft_operator": "Air Carrier",
+        "candidate_incident_count": 24,
+        "successful_barrier_count": 24,
+        "successful_barrier_rate": 1.0
+      },
+      {
+        "rank": 3,
+        "flight_phase": "Initial Climb",
+        "aircraft_operator": "Personal",
+        "candidate_incident_count": 21,
+        "successful_barrier_count": 21,
+        "successful_barrier_rate": 1.0
+      },
+      {
+        "rank": 4,
+        "flight_phase": "Cruise",
+        "aircraft_operator": "Air Carrier",
+        "candidate_incident_count": 196,
+        "successful_barrier_count": 190,
+        "successful_barrier_rate": 0.9693877551020408
+      },
+      {
+        "rank": 5,
+        "flight_phase": "Climb",
+        "aircraft_operator": "Air Carrier",
+        "candidate_incident_count": 162,
+        "successful_barrier_count": 157,
+        "successful_barrier_rate": 0.9691358024691358
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "candidate_events := (\n  SCAN_TABLE(NASA_ASRS, events.csv, [incident_id,event_type,label])\n  -> FILTER(event_type = 'result' AND label IN ('Air Traffic Control Provided Assistance','Flight Crew Took Evasive Action','Flight Crew Became Reoriented','Flight Crew Overcame Equipment Problem','Air Traffic Control Issued Advisory / Alert','Flight Crew Executed Go Around / Missed Approach'))\n  -> DEDUP([incident_id])\n)\nincidents := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id,flight_phase,aircraft_operator,text_file])\n  -> FILTER(flight_phase IS NOT NULL AND aircraft_operator IS NOT NULL)\n)\njoined := JOIN(left=candidate_events, right=incidents, join_type=inner, condition=candidate_events.incident_id = incidents.incident_id)\njoined\n-> SCAN_DOCS(NASA_ASRS, selector=joined.text_file, [incident_id,text])\n-> SEM_CLASSIFY(\"Classify every candidate as successful_barrier only when the narrative explicitly describes a hazard being detected, an intervention being made, and a worse consequence being avoided or the situation being stabilized; otherwise classify it as not_fully_supported.\", target_labels=[successful_barrier,not_fully_supported], input_bindings={incident_id,text})\n-> GROUP_BY([flight_phase,aircraft_operator], {candidate_incident_count:COUNT_DISTINCT(incident_id),successful_barrier_count:COUNT_DISTINCT_IF(incident_id,barrier_status='successful_barrier')})\n-> FILTER(candidate_incident_count >= 20)\n-> PROJECT([flight_phase,aircraft_operator,candidate_incident_count,successful_barrier_count,successful_barrier_rate=successful_barrier_count/candidate_incident_count])\n-> ORDER_BY([successful_barrier_rate DESC,successful_barrier_count DESC,flight_phase ASC,aircraft_operator ASC])\n-> LIMIT(5)\n-> PROJECT([rank=ROW_NUMBER(),flight_phase,aircraft_operator,candidate_incident_count,successful_barrier_count,successful_barrier_rate])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "rank",
+        "flight_phase",
+        "aircraft_operator",
+        "candidate_incident_count",
+        "successful_barrier_count",
+        "successful_barrier_rate"
+      ],
+      "types": [
+        "integer",
+        "string",
+        "string",
+        "integer",
+        "integer",
+        "float"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-038",
+    "gold_answer": [
+      {
+        "canonical_human_factor": "communication_breakdown",
+        "incident_count": 404,
+        "most_common_actor": "flight crew",
+        "most_common_operational_effect": "loss of separation"
+      },
+      {
+        "canonical_human_factor": "confusion",
+        "incident_count": 261,
+        "most_common_actor": "flight crew",
+        "most_common_operational_effect": "delayed corrective action"
+      },
+      {
+        "canonical_human_factor": "situational_awareness",
+        "incident_count": 481,
+        "most_common_actor": "flight crew",
+        "most_common_operational_effect": "altitude deviation"
+      },
+      {
+        "canonical_human_factor": "workload",
+        "incident_count": 175,
+        "most_common_actor": "flight crew",
+        "most_common_operational_effect": "altitude deviation"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "extracted_factors := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, primary_problem])\n  -> FILTER(primary_problem = 'Human Factors')\n  -> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n  -> SEM_EXTRACT(\"Emit one row for each human-factor phrase that the narrative explicitly portrays as contributing to the event. Keep the narrative_factor_phrase, actor, and operational_effect as phrases of at most six words.\", {incident_id:string, narrative_factor_phrase:string, actor:string, operational_effect:string}, {incident_id,text})\n)\nincident_factor_records := (\n  SCAN_TABLE(NASA_ASRS, person_factors.csv, [incident_id, factor_type, value])\n  -> FILTER(factor_type = 'human_factors' AND value CONTAINS ANY OF ['Communication Breakdown','Workload','Confusion','Situational Awareness'])\n)\nfactor_candidates := JOIN(left=extracted_factors, right=incident_factor_records, join_type=inner, condition=extracted_factors.incident_id = incident_factor_records.incident_id)\nfactor_vocabulary := (\n  SCAN_TABLE(NASA_ASRS, person_factors.csv, [factor_type, value])\n  -> FILTER(factor_type = 'human_factors' AND value CONTAINS ANY OF ['Communication Breakdown','Workload','Confusion','Situational Awareness'])\n  -> DEDUP([value])\n)\nsemantic_factor_matches := SEM_JOIN(left=factor_candidates, right=factor_vocabulary, instruction=\"Match narrative_factor_phrase to exactly one canonical factor in {communication_breakdown,workload,confusion,situational_awareness} represented by the global structured vocabulary. The match is semantic and must also be compatible with the joined incident's structured factor record; exact wording and the vocabulary row's incident ID are irrelevant.\", input_bindings_left={incident_id,narrative_factor_phrase,actor,operational_effect,value}, input_bindings_right={factor_vocabulary:value})\nsemantic_factor_matches\n-> GROUP_BY([canonical_human_factor], {incident_count:COUNT_DISTINCT(incident_id), most_common_actor:MODE(actor), most_common_operational_effect:MODE(operational_effect)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "canonical_human_factor",
+        "incident_count",
+        "most_common_actor",
+        "most_common_operational_effect"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "string",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-039",
+    "gold_answer": [
+      {
+        "rank": 1,
+        "documentation_issue_type": "incomplete_or_inaccurate_logbook",
+        "records_complete": "Y",
+        "correct_document_on_board": "Y",
+        "incident_count": 2,
+        "canonical_affected_item": "engine 1 fadec"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "documentation_issues := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id,text_file,primary_problem])\n  -> FILTER(primary_problem = 'Aircraft')\n  -> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id,text])\n  -> SEM_FILTER(\"Keep reports describing an actual maintenance-documentation problem that affected a component or required item, rather than a mechanical discrepancy alone.\", {text})\n  -> SEM_EXTRACT(\"Assign documentation_issue_type from {incomplete_or_inaccurate_logbook,missing_or_incomplete_work_card,incorrect_or_incomplete_mel_procedure,missing_required_document,release_or_signoff_error}, and extract the affected item as a phrase of at most six words.\", {incident_id:string,documentation_issue_type:string,affected_item:string}, {incident_id,text})\n)\ndocumentation_status := (\n  SCAN_TABLE(NASA_ASRS, aircraft_attributes.csv, [incident_id,attribute,value])\n  -> FILTER(attribute IN ('maintenance_status_records_complete','maintenance_status_required_correct_doc_on_board'))\n  -> GROUP_BY([incident_id], {records_complete:MAX_IF(value,attribute='maintenance_status_records_complete'),correct_document_on_board:MAX_IF(value,attribute='maintenance_status_required_correct_doc_on_board')})\n)\nissues_with_status := JOIN(left=documentation_issues, right=documentation_status, join_type=inner, condition=documentation_issues.incident_id = documentation_status.incident_id)\ncomponent_records := (\n  SCAN_TABLE(NASA_ASRS, components.csv, [incident_id,attribute,value])\n  -> FILTER(attribute IN ('aircraft_component','problem'))\n  -> GROUP_BY([incident_id], {structured_components:COLLECT_IF(value,attribute='aircraft_component'),structured_problems:COLLECT_IF(value,attribute='problem')})\n)\njoined := JOIN(left=issues_with_status, right=component_records, join_type=inner, condition=issues_with_status.incident_id = component_records.incident_id)\njoined\n-> GROUP_BY([documentation_issue_type,records_complete,correct_document_on_board], {incident_count:COUNT_DISTINCT(incident_id),canonical_affected_item:MODE(affected_item)})\n-> ORDER_BY([incident_count DESC,documentation_issue_type ASC,records_complete ASC,correct_document_on_board ASC])\n-> LIMIT(15)\n-> PROJECT([rank=ROW_NUMBER(),documentation_issue_type,records_complete,correct_document_on_board,incident_count,canonical_affected_item])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "rank",
+        "documentation_issue_type",
+        "records_complete",
+        "correct_document_on_board",
+        "incident_count",
+        "canonical_affected_item"
+      ],
+      "types": [
+        "integer",
+        "string",
+        "string|null",
+        "string|null",
+        "integer",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-040",
+    "gold_answer": [
+      {
+        "rank": 1,
+        "left_incident_id": "asrs_012561",
+        "right_incident_id": "asrs_124805",
+        "alert_or_advisory": "Takeoff configuration warning",
+        "left_response": "follow_advisory",
+        "right_response": "override_advisory"
+      },
+      {
+        "rank": 2,
+        "left_incident_id": "asrs_029527",
+        "right_incident_id": "asrs_124805",
+        "alert_or_advisory": "Takeoff configuration warning",
+        "left_response": "follow_advisory",
+        "right_response": "override_advisory"
+      },
+      {
+        "rank": 3,
+        "left_incident_id": "asrs_033125",
+        "right_incident_id": "asrs_066949",
+        "alert_or_advisory": "GPWS glideslope warning",
+        "left_response": "follow_advisory",
+        "right_response": "override_advisory"
+      },
+      {
+        "rank": 4,
+        "left_incident_id": "asrs_056328",
+        "right_incident_id": "asrs_070466",
+        "alert_or_advisory": "Windshear warning on final",
+        "left_response": "follow_advisory",
+        "right_response": "override_advisory"
+      },
+      {
+        "rank": 5,
+        "left_incident_id": "asrs_069247",
+        "right_incident_id": "asrs_124805",
+        "alert_or_advisory": "Takeoff flap configuration warning",
+        "left_response": "follow_advisory",
+        "right_response": "override_advisory"
+      },
+      {
+        "rank": 6,
+        "left_incident_id": "asrs_070466",
+        "right_incident_id": "asrs_079037",
+        "alert_or_advisory": "Stick-shaker stall warning",
+        "left_response": "override_advisory",
+        "right_response": "follow_advisory"
+      },
+      {
+        "rank": 7,
+        "left_incident_id": "asrs_070466",
+        "right_incident_id": "asrs_093373",
+        "alert_or_advisory": "Stick-shaker stall warning",
+        "left_response": "override_advisory",
+        "right_response": "follow_advisory"
+      },
+      {
+        "rank": 8,
+        "left_incident_id": "asrs_072506",
+        "right_incident_id": "asrs_090514",
+        "alert_or_advisory": "Flap Disagree alert",
+        "left_response": "follow_advisory",
+        "right_response": "override_advisory"
+      },
+      {
+        "rank": 9,
+        "left_incident_id": "asrs_074425",
+        "right_incident_id": "asrs_093556",
+        "alert_or_advisory": "Brake fault warning",
+        "left_response": "follow_advisory",
+        "right_response": "override_advisory"
+      },
+      {
+        "rank": 10,
+        "left_incident_id": "asrs_075088",
+        "right_incident_id": "asrs_122679",
+        "alert_or_advisory": "Engine hydraulic pump low pressure",
+        "left_response": "follow_advisory",
+        "right_response": "override_advisory"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "extracted_alerts := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, far_part, locale_reference_type, result_summary])\n  -> FILTER(far_part = 'Part 121' AND locale_reference_type = 'Airport')\n  -> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n  -> SEM_EXTRACT(\"Emit one row when an automation alert or aircraft advisory and the crew's first response are clear. Extract alert_or_advisory in at most six words, first_crew_action, operational_context in at most eight words, and highest_outcome from {emergency_or_diversion,go_around_or_evasive_action,continued_operation}.\", {incident_id:string, alert_or_advisory:string, first_crew_action:string, operational_context:string, highest_outcome:string}, {incident_id,result_summary,text})\n)\nautomation_events := (\n  SCAN_TABLE(NASA_ASRS, events.csv, [incident_id, event_type, label])\n  -> FILTER(event_type IN ('detector','result') AND label CONTAINS 'Automation')\n  -> GROUP_BY([incident_id], {automation_event_labels:COLLECT(label)})\n)\nalert_candidates := JOIN(left=extracted_alerts, right=automation_events, join_type=inner, condition=extracted_alerts.incident_id = automation_events.incident_id)\nresponse_records := (\n  alert_candidates\n  -> SEM_CLASSIFY(\"Classify the first crew action as follow_advisory, override_advisory, or seek_clarification_before_acting.\", target_labels=[follow_advisory,override_advisory,seek_clarification_before_acting], input_bindings={first_crew_action,alert_or_advisory,text})\n)\nleft_responses := (response_records)\nright_responses := (response_records)\nmatched_pairs := SEM_JOIN(left=left_responses, right=right_responses, instruction=\"Match two different incidents only when their alerts and operational contexts are semantically equivalent rather than merely sharing generic automation vocabulary, and when one response is follow_advisory while the other is override_advisory or seek_clarification_before_acting.\", input_bindings_left={incident_id,alert_or_advisory,operational_context,response_label,highest_outcome}, input_bindings_right={incident_id,alert_or_advisory,operational_context,response_label,highest_outcome})\nmatched_pairs\n-> FILTER(left.incident_id < right.incident_id)\n-> PROJECT([left_incident_id=left.incident_id,right_incident_id=right.incident_id,alert_or_advisory=left.alert_or_advisory,left_response=left.response_label,right_response=right.response_label,pair_priority=LEAST(CASE left.highest_outcome WHEN 'emergency_or_diversion' THEN 1 WHEN 'go_around_or_evasive_action' THEN 2 ELSE 3 END,CASE right.highest_outcome WHEN 'emergency_or_diversion' THEN 1 WHEN 'go_around_or_evasive_action' THEN 2 ELSE 3 END)])\n-> ORDER_BY([pair_priority ASC, left_incident_id ASC, right_incident_id ASC])\n-> LIMIT(10)\n-> PROJECT([rank=ROW_NUMBER(), left_incident_id, right_incident_id, alert_or_advisory, left_response, right_response])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "rank",
+        "left_incident_id",
+        "right_incident_id",
+        "alert_or_advisory",
+        "left_response",
+        "right_response"
+      ],
+      "types": [
+        "integer",
+        "string",
+        "string",
+        "string",
+        "string",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-041",
+    "gold_answer": [
+      {
+        "flight_phase": "climb_or_cruise",
+        "clearance_conflict_type": "ambiguous_or_incomplete_clearance",
+        "incident_count": 4
+      },
+      {
+        "flight_phase": "climb_or_cruise",
+        "clearance_conflict_type": "late_or_changed_clearance",
+        "incident_count": 5
+      },
+      {
+        "flight_phase": "climb_or_cruise",
+        "clearance_conflict_type": "misunderstood_clearance",
+        "incident_count": 5
+      },
+      {
+        "flight_phase": "climb_or_cruise",
+        "clearance_conflict_type": "readback_hearback_failure",
+        "incident_count": 8
+      },
+      {
+        "flight_phase": "descent_or_approach",
+        "clearance_conflict_type": "ambiguous_or_incomplete_clearance",
+        "incident_count": 13
+      },
+      {
+        "flight_phase": "descent_or_approach",
+        "clearance_conflict_type": "late_or_changed_clearance",
+        "incident_count": 37
+      },
+      {
+        "flight_phase": "descent_or_approach",
+        "clearance_conflict_type": "misunderstood_clearance",
+        "incident_count": 13
+      },
+      {
+        "flight_phase": "descent_or_approach",
+        "clearance_conflict_type": "readback_hearback_failure",
+        "incident_count": 10
+      },
+      {
+        "flight_phase": "ground_or_departure",
+        "clearance_conflict_type": "ambiguous_or_incomplete_clearance",
+        "incident_count": 9
+      },
+      {
+        "flight_phase": "ground_or_departure",
+        "clearance_conflict_type": "late_or_changed_clearance",
+        "incident_count": 10
+      },
+      {
+        "flight_phase": "ground_or_departure",
+        "clearance_conflict_type": "misunderstood_clearance",
+        "incident_count": 11
+      },
+      {
+        "flight_phase": "ground_or_departure",
+        "clearance_conflict_type": "readback_hearback_failure",
+        "incident_count": 10
+      },
+      {
+        "flight_phase": "landing_or_other",
+        "clearance_conflict_type": "late_or_changed_clearance",
+        "incident_count": 6
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "ifr_flights := (\n  SCAN_TABLE(NASA_ASRS, aircraft_attributes.csv, [incident_id,attribute,value])\n  -> FILTER(attribute = 'flight_plan' AND value = 'IFR')\n  -> DEDUP([incident_id])\n)\nclearance_events := (\n  SCAN_TABLE(NASA_ASRS, events.csv, [incident_id,event_type,label])\n  -> FILTER(event_type = 'anomaly' AND label IN ('ATC Issue All Types','Deviation / Discrepancy - Procedural Clearance'))\n  -> GROUP_BY([incident_id], {clearance_event_labels:COLLECT(label)})\n)\nifr_clearance_candidates := JOIN(left=ifr_flights, right=clearance_events, join_type=inner, condition=ifr_flights.incident_id = clearance_events.incident_id)\nincident_records := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id,text_file,flight_phase])\n)\ncandidate_reports := JOIN(left=ifr_clearance_candidates, right=incident_records, join_type=inner, condition=ifr_clearance_candidates.incident_id = incident_records.incident_id)\ncandidate_narratives := (\n  candidate_reports\n  -> SCAN_DOCS(NASA_ASRS, selector=candidate_reports.text_file, [incident_id,text])\n)\nproblematic_clearances := (\n  candidate_narratives\n  -> SEM_FILTER(\"Keep reports in which an ATC clearance or instruction was late, confusing, ambiguous, incomplete, misunderstood, or involved an uncorrected readback/hearback failure.\", {clearance_event_labels,text})\n)\nactual_deviations := (\n  problematic_clearances\n  -> SEM_FILTER(\"Keep reports in which that clearance problem subsequently triggered an actual deviation from an assigned altitude, heading or track, or airspace boundary; exclude potential deviations corrected before occurrence and cases where ATC only detected or corrected an independently caused deviation.\", {text})\n)\ntyped_conflicts := (\n  actual_deviations\n  -> SEM_EXTRACT(\"Assign clearance_conflict_type to late_or_changed_clearance, ambiguous_or_incomplete_clearance, misunderstood_clearance, or readback_hearback_failure, and extract concise supporting evidence for the classification.\", {incident_id:string,clearance_conflict_type:string,evidence:string}, {incident_id,text})\n)\ntyped_conflicts\n-> GROUP_BY([flight_phase=CASE WHEN flight_phase CONTAINS ANY OF ['Parked','Taxi','Takeoff','Initial Climb'] THEN 'ground_or_departure' WHEN flight_phase CONTAINS ANY OF ['Climb','Cruise'] THEN 'climb_or_cruise' WHEN flight_phase CONTAINS ANY OF ['Descent','Approach'] THEN 'descent_or_approach' ELSE 'landing_or_other' END,clearance_conflict_type], {incident_count:COUNT_DISTINCT(incident_id)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "flight_phase",
+        "clearance_conflict_type",
+        "incident_count"
+      ],
+      "types": [
+        "string",
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-042",
+    "gold_answer": [
+      {
+        "rank": 1,
+        "canonical_component": "Autopilot",
+        "narrative_component_term": "autopilot",
+        "incident_count": 116,
+        "most_common_detection_cue": "autopilot disconnected"
+      },
+      {
+        "rank": 2,
+        "canonical_component": "Engine",
+        "narrative_component_term": "engine",
+        "incident_count": 103,
+        "most_common_detection_cue": "engine began sputtering"
+      },
+      {
+        "rank": 3,
+        "canonical_component": "Engine",
+        "narrative_component_term": "left engine",
+        "incident_count": 48,
+        "most_common_detection_cue": "abrupt bangs and severe vibration"
+      },
+      {
+        "rank": 4,
+        "canonical_component": "Landing Gear",
+        "narrative_component_term": "landing gear",
+        "incident_count": 40,
+        "most_common_detection_cue": "gear would not retract"
+      },
+      {
+        "rank": 5,
+        "canonical_component": "Engine",
+        "narrative_component_term": "right engine",
+        "incident_count": 39,
+        "most_common_detection_cue": "abnormally loud noise noticed"
+      },
+      {
+        "rank": 6,
+        "canonical_component": "Flight Director",
+        "narrative_component_term": "flight director",
+        "incident_count": 35,
+        "most_common_detection_cue": "flight director disappeared"
+      },
+      {
+        "rank": 7,
+        "canonical_component": "APU",
+        "narrative_component_term": "apu",
+        "incident_count": 34,
+        "most_common_detection_cue": "apu oil pressure low indicated"
+      },
+      {
+        "rank": 8,
+        "canonical_component": "Flap Control (Trailing & Leading Edge)",
+        "narrative_component_term": "flaps",
+        "incident_count": 31,
+        "most_common_detection_cue": "airspeed entered the zipper"
+      },
+      {
+        "rank": 9,
+        "canonical_component": "Propeller",
+        "narrative_component_term": "propeller",
+        "incident_count": 27,
+        "most_common_detection_cue": "propeller struck the runway"
+      },
+      {
+        "rank": 10,
+        "canonical_component": "Transponder",
+        "narrative_component_term": "transponder",
+        "incident_count": 25,
+        "most_common_detection_cue": "altitude output became stuck"
+      },
+      {
+        "rank": 11,
+        "canonical_component": "Brake System",
+        "narrative_component_term": "brakes",
+        "incident_count": 23,
+        "most_common_detection_cue": "aircraft rolled with brakes applied"
+      },
+      {
+        "rank": 12,
+        "canonical_component": "Engine",
+        "narrative_component_term": "number 2 engine",
+        "incident_count": 23,
+        "most_common_detection_cue": "bangs accompanied by noticeable yaw"
+      },
+      {
+        "rank": 13,
+        "canonical_component": "Airspeed Indicator",
+        "narrative_component_term": "airspeed indicator",
+        "incident_count": 21,
+        "most_common_detection_cue": "airspeed displays sharply disagreed"
+      },
+      {
+        "rank": 14,
+        "canonical_component": "FMS/FMC",
+        "narrative_component_term": "fms",
+        "incident_count": 21,
+        "most_common_detection_cue": "aircraft remained right of course"
+      },
+      {
+        "rank": 15,
+        "canonical_component": "FMS/FMC",
+        "narrative_component_term": "fmc",
+        "incident_count": 20,
+        "most_common_detection_cue": "atc reported 12 miles north"
+      },
+      {
+        "rank": 16,
+        "canonical_component": "ACARS",
+        "narrative_component_term": "acars",
+        "incident_count": 19,
+        "most_common_detection_cue": "acars no comm appeared"
+      },
+      {
+        "rank": 17,
+        "canonical_component": "GPS & Other Satellite Navigation",
+        "narrative_component_term": "gps",
+        "incident_count": 18,
+        "most_common_detection_cue": "became intermittent during descent"
+      },
+      {
+        "rank": 18,
+        "canonical_component": "PFD",
+        "narrative_component_term": "pfd",
+        "incident_count": 18,
+        "most_common_detection_cue": "airspeed became erratic"
+      },
+      {
+        "rank": 19,
+        "canonical_component": "Altimeter",
+        "narrative_component_term": "altimeter",
+        "incident_count": 17,
+        "most_common_detection_cue": "alt disagree alert appeared"
+      },
+      {
+        "rank": 20,
+        "canonical_component": "Autothrottle/Speed Control",
+        "narrative_component_term": "autothrottles",
+        "incident_count": 17,
+        "most_common_detection_cue": "advanced rapidly toward maximum power"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "equipment_events := (\n  SCAN_TABLE(NASA_ASRS, events.csv, [incident_id, event_type, label])\n  -> FILTER(label CONTAINS 'Aircraft Equipment Problem')\n  -> DEDUP([incident_id])\n)\nincidents := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file])\n)\nequipment_incidents := JOIN(left=equipment_events, right=incidents, join_type=inner, condition=equipment_events.incident_id = incidents.incident_id)\nnarrative_components := (\n  equipment_incidents\n  -> SCAN_DOCS(NASA_ASRS, selector=equipment_incidents.text_file, [incident_id, text])\n  -> SEM_EXTRACT(\"Emit one row for each aircraft component actually involved in the reported problem. Extract the narrative_component_term as used in the report and the first_detection_cue in at most six words.\", {incident_id:string, narrative_component_term:string, first_detection_cue:string}, {incident_id,text})\n)\ncomponent_vocabulary := (\n  SCAN_TABLE(NASA_ASRS, components.csv, [attribute, value])\n  -> FILTER(attribute = 'aircraft_component')\n  -> DEDUP([value])\n)\nsemantic_component_matches := SEM_JOIN(left=narrative_components, right=component_vocabulary, instruction=\"Match each narrative component term to a canonical component label when they denote the same component or a clear part-to-system relationship. Exact spelling and incident ID are not required and generic topical similarity is insufficient.\", input_bindings_left={incident_id,narrative_component_term,first_detection_cue}, input_bindings_right={canonical_component:value})\nsemantic_component_matches\n-> GROUP_BY([canonical_component,narrative_component_term], {incident_count:COUNT_DISTINCT(incident_id), most_common_detection_cue:MODE(first_detection_cue)})\n-> ORDER_BY([incident_count DESC, canonical_component ASC, narrative_component_term ASC])\n-> LIMIT(20)\n-> PROJECT([rank=ROW_NUMBER(),canonical_component,narrative_component_term,incident_count,most_common_detection_cue])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "rank",
+        "canonical_component",
+        "narrative_component_term",
+        "incident_count",
+        "most_common_detection_cue"
+      ],
+      "types": [
+        "integer",
+        "string",
+        "string",
+        "integer",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-043",
+    "gold_answer": [
+      {
+        "rank": 1,
+        "weather_mechanism": "convective_weather",
+        "recorded_decision": "new_clearance",
+        "incident_count": 19
+      },
+      {
+        "rank": 2,
+        "weather_mechanism": "low_ceiling",
+        "recorded_decision": "new_clearance",
+        "incident_count": 15
+      },
+      {
+        "rank": 3,
+        "weather_mechanism": "strong_or_gusty_wind",
+        "recorded_decision": "diversion",
+        "incident_count": 13
+      },
+      {
+        "rank": 4,
+        "weather_mechanism": "icing",
+        "recorded_decision": "diversion",
+        "incident_count": 12
+      },
+      {
+        "rank": 5,
+        "weather_mechanism": "strong_or_gusty_wind",
+        "recorded_decision": "new_clearance",
+        "incident_count": 12
+      },
+      {
+        "rank": 6,
+        "weather_mechanism": "icing",
+        "recorded_decision": "new_clearance",
+        "incident_count": 11
+      },
+      {
+        "rank": 7,
+        "weather_mechanism": "precipitation",
+        "recorded_decision": "new_clearance",
+        "incident_count": 11
+      },
+      {
+        "rank": 8,
+        "weather_mechanism": "convective_weather",
+        "recorded_decision": "diversion",
+        "incident_count": 9
+      },
+      {
+        "rank": 9,
+        "weather_mechanism": "turbulence",
+        "recorded_decision": "new_clearance",
+        "incident_count": 9
+      },
+      {
+        "rank": 10,
+        "weather_mechanism": "low_visibility",
+        "recorded_decision": "diversion",
+        "incident_count": 8
+      },
+      {
+        "rank": 11,
+        "weather_mechanism": "low_visibility",
+        "recorded_decision": "new_clearance",
+        "incident_count": 8
+      },
+      {
+        "rank": 12,
+        "weather_mechanism": "low_ceiling",
+        "recorded_decision": "diversion",
+        "incident_count": 7
+      },
+      {
+        "rank": 13,
+        "weather_mechanism": "windshear",
+        "recorded_decision": "diversion",
+        "incident_count": 6
+      },
+      {
+        "rank": 14,
+        "weather_mechanism": "icing",
+        "recorded_decision": "emergency_declaration",
+        "incident_count": 5
+      },
+      {
+        "rank": 15,
+        "weather_mechanism": "low_ceiling",
+        "recorded_decision": "emergency_declaration",
+        "incident_count": 5
+      },
+      {
+        "rank": 16,
+        "weather_mechanism": "precipitation",
+        "recorded_decision": "diversion",
+        "incident_count": 5
+      },
+      {
+        "rank": 17,
+        "weather_mechanism": "turbulence",
+        "recorded_decision": "diversion",
+        "incident_count": 5
+      },
+      {
+        "rank": 18,
+        "weather_mechanism": "windshear",
+        "recorded_decision": "new_clearance",
+        "incident_count": 5
+      },
+      {
+        "rank": 19,
+        "weather_mechanism": "low_visibility",
+        "recorded_decision": "emergency_declaration",
+        "incident_count": 4
+      },
+      {
+        "rank": 20,
+        "weather_mechanism": "convective_weather",
+        "recorded_decision": "emergency_declaration",
+        "incident_count": 1
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "semantic_pairs := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, local_time_of_day])\n  -> FILTER(local_time_of_day = '1201-1800')\n  -> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n  -> SEM_FILTER(\"Keep reports where weather or visibility explicitly caused an operational decision rather than merely co-occurring with it.\", {text})\n  -> SEM_FILTER(\"Exclude incidental weather mentions and turbulence that affected only passenger comfort.\", {text})\n  -> SEM_EXTRACT(\"Emit one row for every explicitly supported causal pair. Normalize weather_mechanism to {convective_weather,turbulence,windshear,icing,low_visibility,low_ceiling,strong_or_gusty_wind,precipitation} and recorded_decision to {diversion,emergency_declaration,new_clearance}.\", {incident_id:string, weather_mechanism:string, recorded_decision:string}, {incident_id,text})\n)\nrecorded_results := (\n  SCAN_TABLE(NASA_ASRS, events.csv, [incident_id, event_type, label])\n  -> FILTER(event_type = 'result' AND label IN ('Flight Crew Diverted','General Declared Emergency','Air Traffic Control Issued New Clearance'))\n  -> GROUP_BY([incident_id], {recorded_result_labels:COLLECT(label)})\n)\njoined := JOIN(left=semantic_pairs, right=recorded_results, join_type=inner, condition=semantic_pairs.incident_id = recorded_results.incident_id AND ((recorded_decision = 'diversion' AND recorded_result_labels CONTAINS 'Flight Crew Diverted') OR (recorded_decision = 'emergency_declaration' AND recorded_result_labels CONTAINS 'General Declared Emergency') OR (recorded_decision = 'new_clearance' AND recorded_result_labels CONTAINS 'Air Traffic Control Issued New Clearance')))\njoined\n-> GROUP_BY([weather_mechanism,recorded_decision], {incident_count:COUNT_DISTINCT(incident_id)})\n-> ORDER_BY([incident_count DESC, weather_mechanism ASC, recorded_decision ASC])\n-> LIMIT(20)\n-> PROJECT([rank=ROW_NUMBER(),weather_mechanism,recorded_decision,incident_count])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "rank",
+        "weather_mechanism",
+        "recorded_decision",
+        "incident_count"
+      ],
+      "types": [
+        "integer",
+        "string",
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-044",
+    "gold_answer": [
+      {
+        "cause_category": "environmental_contamination",
+        "incident_count": 2,
+        "canonical_system": "environmental control system",
+        "dominant_operational_outcome": "inflight operational response"
+      },
+      {
+        "cause_category": "equipment_malfunction",
+        "incident_count": 56,
+        "canonical_system": "pressurization system",
+        "dominant_operational_outcome": "return or diversion"
+      },
+      {
+        "cause_category": "maintenance_or_release_decision",
+        "incident_count": 12,
+        "canonical_system": "air conditioning pack",
+        "dominant_operational_outcome": "return or diversion"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "causal_records := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, primary_problem])\n  -> FILTER(primary_problem = 'Aircraft')\n  -> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n  -> SEM_FILTER(\"Keep reports whose narrative states one clearly primary cause for the smoke, fumes, odor, or equipment event.\", {text})\n  -> SEM_FILTER(\"Keep reports that describe an operational response or consequence beyond a maintenance-record entry alone.\", {text})\n  -> SEM_EXTRACT(\"Extract the initiating condition, relevant system phrase, crew or maintenance intervention, and operational outcome as phrases of at most eight words.\", {incident_id:string, initiating_condition:string, system_phrase:string, intervention:string, operational_outcome:string}, {incident_id,text})\n  -> SEM_CLASSIFY(\"Assign primary cause to equipment_malfunction, maintenance_or_release_decision, environmental_contamination, or crew_procedure.\", target_labels=[equipment_malfunction,maintenance_or_release_decision,environmental_contamination,crew_procedure], input_bindings={initiating_condition,system_phrase,intervention,operational_outcome,text})\n)\ncomponent_records := (\n  SCAN_TABLE(NASA_ASRS, components.csv, [incident_id, attribute, value])\n  -> FILTER(attribute = 'aircraft_component' AND (value CONTAINS 'Pressurization' OR value CONTAINS 'Pack' OR value CONTAINS 'Bleed' OR value CONTAINS 'Air Conditioning'))\n  -> GROUP_BY([incident_id], {component_records:COLLECT(value)})\n)\ncauses_with_components := JOIN(left=causal_records, right=component_records, join_type=inner, condition=causal_records.incident_id = component_records.incident_id)\nevent_labels := (\n  SCAN_TABLE(NASA_ASRS, events.csv, [incident_id, event_type, label])\n  -> FILTER(label = 'Flight Deck / Cabin / Aircraft Event Smoke / Fire / Fumes / Odor' OR label CONTAINS 'Aircraft Equipment Problem')\n  -> GROUP_BY([incident_id], {event_labels:COLLECT(event_type,label)})\n)\njoined := JOIN(left=causes_with_components, right=event_labels, join_type=inner, condition=causes_with_components.incident_id = event_labels.incident_id)\njoined\n-> GROUP_BY([cause_category], {incident_count:COUNT_DISTINCT(incident_id), causal_records:COLLECT(system_phrase,operational_outcome,component_records,event_labels)})\n-> SEM_AGGREGATE(\"For each cause category, produce the canonical system and dominant operational outcome as phrases of at most six words.\", {canonical_system:string, dominant_operational_outcome:string}, group_by=[cause_category], input_bindings={causal_records})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "cause_category",
+        "incident_count",
+        "canonical_system",
+        "dominant_operational_outcome"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "string",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-045",
+    "gold_answer": [
+      {
+        "rank": 1,
+        "maintenance_status": "released_to_service",
+        "discovery_phase": "after_takeoff",
+        "chain_category": "released_item_failed",
+        "incident_count": 6,
+        "canonical_affected_item": "left bleed air system",
+        "recurring_discrepancy": "left bleed malfunction recurred"
+      },
+      {
+        "rank": 2,
+        "maintenance_status": "both",
+        "discovery_phase": "after_takeoff",
+        "chain_category": "released_item_failed",
+        "incident_count": 3,
+        "canonical_affected_item": "engine system",
+        "recurring_discrepancy": "engine system malfunction"
+      },
+      {
+        "rank": 3,
+        "maintenance_status": "both",
+        "discovery_phase": "after_takeoff",
+        "chain_category": "deferred_item_recurred",
+        "incident_count": 2,
+        "canonical_affected_item": "aircraft system",
+        "recurring_discrepancy": "deferred discrepancy recurred"
+      },
+      {
+        "rank": 4,
+        "maintenance_status": "both",
+        "discovery_phase": "after_takeoff",
+        "chain_category": "maintenance_limitation_escalated",
+        "incident_count": 2,
+        "canonical_affected_item": "automatic control systems",
+        "recurring_discrepancy": "right-side system failure"
+      },
+      {
+        "rank": 5,
+        "maintenance_status": "deferred",
+        "discovery_phase": "before_departure",
+        "chain_category": "deferred_item_recurred",
+        "incident_count": 2,
+        "canonical_affected_item": "propulsion system",
+        "recurring_discrepancy": "recurrent propulsion-system discrepancy"
+      },
+      {
+        "rank": 6,
+        "maintenance_status": "released_to_service",
+        "discovery_phase": "after_takeoff",
+        "chain_category": "incomplete_repair_or_signoff",
+        "incident_count": 2,
+        "canonical_affected_item": "engine systems",
+        "recurring_discrepancy": "engine system malfunction"
+      },
+      {
+        "rank": 7,
+        "maintenance_status": "both",
+        "discovery_phase": "after_landing",
+        "chain_category": "released_item_failed",
+        "incident_count": 1,
+        "canonical_affected_item": "right engine fuel cutoff",
+        "recurring_discrepancy": "engine failed to shut down"
+      },
+      {
+        "rank": 8,
+        "maintenance_status": "both",
+        "discovery_phase": "after_takeoff",
+        "chain_category": "incomplete_repair_or_signoff",
+        "incident_count": 1,
+        "canonical_affected_item": "engine electronic control system",
+        "recurring_discrepancy": "first officer pitot blockage"
+      },
+      {
+        "rank": 9,
+        "maintenance_status": "deferred",
+        "discovery_phase": "before_departure",
+        "chain_category": "maintenance_limitation_escalated",
+        "incident_count": 1,
+        "canonical_affected_item": "right high-stage bleed system",
+        "recurring_discrepancy": "left duct pressure absent"
+      },
+      {
+        "rank": 10,
+        "maintenance_status": "released_to_service",
+        "discovery_phase": "after_landing",
+        "chain_category": "released_item_failed",
+        "incident_count": 1,
+        "canonical_affected_item": "nose gear actuator rod end",
+        "recurring_discrepancy": "actuator rod end separated"
+      },
+      {
+        "rank": 11,
+        "maintenance_status": "released_to_service",
+        "discovery_phase": "before_departure",
+        "chain_category": "incomplete_repair_or_signoff",
+        "incident_count": 1,
+        "canonical_affected_item": "passenger door window frame",
+        "recurring_discrepancy": "enlarged door gap persisted"
+      },
+      {
+        "rank": 12,
+        "maintenance_status": "released_to_service",
+        "discovery_phase": "before_departure",
+        "chain_category": "released_item_failed",
+        "incident_count": 1,
+        "canonical_affected_item": "brake system",
+        "recurring_discrepancy": "complete loss of braking"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "semantic_chains := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, primary_problem])\n  -> FILTER(primary_problem = 'Aircraft')\n  -> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n  -> SEM_FILTER(\"Keep reports that explicitly connect an earlier maintenance deferral or release-to-service decision to a later component discrepancy.\", {text})\n  -> SEM_FILTER(\"Keep reports that clearly place discovery in before_departure, after_takeoff, or after_landing.\", {text})\n  -> SEM_EXTRACT(\"Extract the earlier maintenance decision, affected item, later discrepancy, operational effect, and discovery_phase from {before_departure,after_takeoff,after_landing}, using short phrases for free-text fields.\", {incident_id:string, earlier_decision:string, affected_item:string, later_discrepancy:string, operational_effect:string, discovery_phase:string}, {incident_id,text})\n  -> SEM_CLASSIFY(\"Assign chain_category to deferred_item_recurred, released_item_failed, incomplete_repair_or_signoff, or maintenance_limitation_escalated.\", target_labels=[deferred_item_recurred,released_item_failed,incomplete_repair_or_signoff,maintenance_limitation_escalated], input_bindings={earlier_decision,affected_item,later_discrepancy,operational_effect,text})\n)\nmaintenance_flags := (\n  SCAN_TABLE(NASA_ASRS, aircraft_attributes.csv, [incident_id, attribute, value])\n  -> FILTER((attribute = 'maintenance_status_maintenance_deferred' OR attribute = 'maintenance_status_released_for_service') AND value = 'Y')\n  -> GROUP_BY([incident_id], {maintenance_flags:COLLECT(attribute)})\n  -> PROJECT([incident_id,maintenance_status=CASE WHEN maintenance_flags CONTAINS 'maintenance_status_maintenance_deferred' AND maintenance_flags CONTAINS 'maintenance_status_released_for_service' THEN 'both' WHEN maintenance_flags CONTAINS 'maintenance_status_maintenance_deferred' THEN 'deferred' ELSE 'released_to_service' END])\n)\nchains_with_status := JOIN(left=semantic_chains, right=maintenance_flags, join_type=inner, condition=semantic_chains.incident_id = maintenance_flags.incident_id)\ncomponent_records := (\n  SCAN_TABLE(NASA_ASRS, components.csv, [incident_id, attribute, value])\n  -> FILTER(attribute IN ('aircraft_component','problem'))\n  -> GROUP_BY([incident_id], {structured_components:COLLECT_IF(value,attribute='aircraft_component'), structured_problems:COLLECT_IF(value,attribute='problem')})\n)\njoined := JOIN(left=chains_with_status, right=component_records, join_type=inner, condition=chains_with_status.incident_id = component_records.incident_id)\njoined\n-> GROUP_BY([maintenance_status,discovery_phase,chain_category], {incident_count:COUNT_DISTINCT(incident_id), chain_records:COLLECT(affected_item,later_discrepancy,structured_components,structured_problems)})\n-> SEM_AGGREGATE(\"For each group, provide one canonical affected item and recurring discrepancy, each in at most six words.\", {canonical_affected_item:string, recurring_discrepancy:string}, group_by=[maintenance_status,discovery_phase,chain_category], input_bindings={chain_records})\n-> ORDER_BY([incident_count DESC, maintenance_status ASC, discovery_phase ASC, chain_category ASC])\n-> LIMIT(12)\n-> PROJECT([rank=ROW_NUMBER(),maintenance_status,discovery_phase,chain_category,incident_count,canonical_affected_item,recurring_discrepancy])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "rank",
+        "maintenance_status",
+        "discovery_phase",
+        "chain_category",
+        "incident_count",
+        "canonical_affected_item",
+        "recurring_discrepancy"
+      ],
+      "types": [
+        "integer",
+        "string",
+        "string",
+        "string",
+        "integer",
+        "string",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-046",
+    "gold_answer": [
+      {
+        "rank": 1,
+        "left_incident_id": "asrs_150233",
+        "right_incident_id": "asrs_150254",
+        "incident_date": 202512,
+        "shared_primary_event_type": "equipment_failure",
+        "differing_structured_fields": [
+          "anomaly_summary",
+          "result_summary"
+        ]
+      },
+      {
+        "rank": 2,
+        "left_incident_id": "asrs_139386",
+        "right_incident_id": "asrs_139501",
+        "incident_date": 202402,
+        "shared_primary_event_type": "other",
+        "differing_structured_fields": [
+          "flight_phase",
+          "anomaly_summary",
+          "result_summary"
+        ]
+      },
+      {
+        "rank": 3,
+        "left_incident_id": "asrs_124179",
+        "right_incident_id": "asrs_124335",
+        "incident_date": 202101,
+        "shared_primary_event_type": "other",
+        "differing_structured_fields": [
+          "anomaly_summary",
+          "result_summary"
+        ]
+      },
+      {
+        "rank": 4,
+        "left_incident_id": "asrs_124179",
+        "right_incident_id": "asrs_124342",
+        "incident_date": 202101,
+        "shared_primary_event_type": "other",
+        "differing_structured_fields": [
+          "anomaly_summary",
+          "result_summary"
+        ]
+      },
+      {
+        "rank": 5,
+        "left_incident_id": "asrs_124335",
+        "right_incident_id": "asrs_124342",
+        "incident_date": 202101,
+        "shared_primary_event_type": "clearance_deviation",
+        "differing_structured_fields": [
+          "anomaly_summary",
+          "result_summary"
+        ]
+      },
+      {
+        "rank": 6,
+        "left_incident_id": "asrs_117457",
+        "right_incident_id": "asrs_117492",
+        "incident_date": 201910,
+        "shared_primary_event_type": "cabin_event",
+        "differing_structured_fields": [
+          "flight_phase",
+          "anomaly_summary",
+          "result_summary"
+        ]
+      },
+      {
+        "rank": 7,
+        "left_incident_id": "asrs_107892",
+        "right_incident_id": "asrs_107920",
+        "incident_date": 201802,
+        "shared_primary_event_type": "weather_event",
+        "differing_structured_fields": [
+          "result_summary"
+        ]
+      },
+      {
+        "rank": 8,
+        "left_incident_id": "asrs_095021",
+        "right_incident_id": "asrs_095022",
+        "incident_date": 201510,
+        "shared_primary_event_type": "clearance_deviation",
+        "differing_structured_fields": [
+          "anomaly_summary",
+          "result_summary"
+        ]
+      },
+      {
+        "rank": 9,
+        "left_incident_id": "asrs_078757",
+        "right_incident_id": "asrs_078758",
+        "incident_date": 201206,
+        "shared_primary_event_type": "equipment_failure",
+        "differing_structured_fields": [
+          "flight_phase",
+          "result_summary"
+        ]
+      },
+      {
+        "rank": 10,
+        "left_incident_id": "asrs_062903",
+        "right_incident_id": "asrs_062944",
+        "incident_date": 200907,
+        "shared_primary_event_type": "weather_event",
+        "differing_structured_fields": [
+          "anomaly_summary",
+          "result_summary"
+        ]
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "left_incidents := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv AS left_incident, [incident_id,incident_date,state_reference,locale_reference_type,primary_problem,flight_phase,anomaly_summary,result_summary,text_file])\n)\nright_incidents := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv AS right_incident, [incident_id,incident_date,state_reference,locale_reference_type,primary_problem,flight_phase,anomaly_summary,result_summary,text_file])\n)\nblocked_pairs := JOIN(left=left_incidents, right=right_incidents, join_type=inner, condition=left_incident.incident_id < right_incident.incident_id AND left_incident.incident_date = right_incident.incident_date AND left_incident.state_reference = right_incident.state_reference AND left_incident.locale_reference_type = right_incident.locale_reference_type AND left_incident.primary_problem = right_incident.primary_problem)\nleft_signatures := (\n  blocked_pairs\n  -> SCAN_DOCS(NASA_ASRS, selector=blocked_pairs.left_incident.text_file, [left_incident_id, right_incident_id, left_text])\n  -> SEM_EXTRACT(\"Preserve both blocked-pair incident IDs and extract a normalized primary_event_type from {equipment_failure,airborne_conflict,ground_conflict,clearance_deviation,weather_event,maintenance_event,cabin_event,other}, plus distinctive measurements, action sequence, and outcome from the left report.\", {left_incident_id:string,right_incident_id:string,left_primary_event_type:string,left_measurements:list[string],left_action_sequence:list[string],left_outcome:string}, {left_incident_id,right_incident_id,left_text})\n)\nright_signatures := (\n  blocked_pairs\n  -> SCAN_DOCS(NASA_ASRS, selector=blocked_pairs.right_incident.text_file, [left_incident_id, right_incident_id, right_text])\n  -> SEM_EXTRACT(\"Preserve both blocked-pair incident IDs and extract the same normalized event signature from the right report.\", {left_incident_id:string,right_incident_id:string,right_primary_event_type:string,right_measurements:list[string],right_action_sequence:list[string],right_outcome:string}, {left_incident_id,right_incident_id,right_text})\n)\nmatched_pairs := SEM_JOIN(left=left_signatures, right=right_signatures, instruction=\"Compare only signature rows carrying the same left and right blocked-pair incident IDs. Keep the pair only when both narratives describe the same underlying occurrence, requiring agreement on a distinctive event progression and compatible measurements, actions, and outcome. Generic topical similarity is insufficient.\", input_bindings_left={left_incident_id,right_incident_id,left_primary_event_type,left_measurements,left_action_sequence,left_outcome}, input_bindings_right={left_incident_id,right_incident_id,right_primary_event_type,right_measurements,right_action_sequence,right_outcome})\nmatched_pairs\n-> PROJECT([left_incident_id,right_incident_id,incident_date=left_incident.incident_date,shared_primary_event_type=left_primary_event_type,differing_structured_fields=DIFF_FIELD_NAMES(left_incident,right_incident,[flight_phase,anomaly_summary,result_summary])])\n-> ORDER_BY([incident_date DESC,left_incident_id ASC,right_incident_id ASC])\n-> LIMIT(20)\n-> PROJECT([rank=ROW_NUMBER(),left_incident_id,right_incident_id,incident_date,shared_primary_event_type,differing_structured_fields])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "rank",
+        "left_incident_id",
+        "right_incident_id",
+        "incident_date",
+        "shared_primary_event_type",
+        "differing_structured_fields"
+      ],
+      "types": [
+        "integer",
+        "string",
+        "string",
+        "integer",
+        "string",
+        "list[string]"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-047",
+    "gold_answer": [
+      {
+        "attribution_category": "mainly_equipment_driven",
+        "incident_count": 269,
+        "dominant_initiating_factor": "engine malfunction and power loss",
+        "dominant_intervention": "return to departure airport"
+      },
+      {
+        "attribution_category": "mainly_human_factor_driven",
+        "incident_count": 299,
+        "dominant_initiating_factor": "maintenance installation and closeout errors",
+        "dominant_intervention": "aircraft removed from service"
+      },
+      {
+        "attribution_category": "mixed_equipment_human_factor",
+        "incident_count": 227,
+        "dominant_initiating_factor": "maintenance mishandling of aircraft defects",
+        "dominant_intervention": "return to airport"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "dual_factor_incidents := (\n  SCAN_TABLE(NASA_ASRS, assessments.csv, [incident_id,assessment_type,label])\n  -> FILTER(assessment_type = 'contributing_factor' AND label IN ('Aircraft','Human Factors'))\n  -> GROUP_BY([incident_id], {contributing_labels:COLLECT(label)})\n  -> FILTER(contributing_labels CONTAINS 'Aircraft' AND contributing_labels CONTAINS 'Human Factors')\n)\nincidents := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id,text_file])\n)\ndual_factor_reports := JOIN(left=dual_factor_incidents, right=incidents, join_type=inner, condition=dual_factor_incidents.incident_id = incidents.incident_id)\nattributed_incidents := (\n  dual_factor_reports\n  -> SCAN_DOCS(NASA_ASRS, selector=dual_factor_reports.text_file, [incident_id,text])\n  -> SEM_EXTRACT(\"Extract the initiating event, human action or condition, intervention, and causal order as short phrases; omit reports whose causal chain cannot be recovered.\", {incident_id:string,initiating_event:string,human_factor_event:string,intervention:string,causal_order:string}, {incident_id,contributing_labels,text})\n  -> SEM_CLASSIFY(\"Assign attribution_category to mainly_equipment_driven when equipment initiated the chain and human actions were secondary, mainly_human_factor_driven when a decision, procedure, communication, or awareness failure was primary despite equipment context, or mixed_equipment_human_factor when both were necessary. Omit unclear cases.\", target_labels=[mainly_equipment_driven,mainly_human_factor_driven,mixed_equipment_human_factor], input_bindings={initiating_event,human_factor_event,intervention,causal_order,text})\n)\ncomponent_records := (\n  SCAN_TABLE(NASA_ASRS, components.csv, [incident_id,attribute,value])\n  -> FILTER(attribute IN ('aircraft_component','problem'))\n  -> GROUP_BY([incident_id], {component_records:COLLECT(attribute,value)})\n)\nattributions_with_components := JOIN(left=attributed_incidents, right=component_records, join_type=left, condition=attributed_incidents.incident_id = component_records.incident_id)\nhuman_factor_records := (\n  SCAN_TABLE(NASA_ASRS, person_factors.csv, [incident_id,factor_type,value])\n  -> FILTER(factor_type IN ('human_factors','communication_breakdown','experience'))\n  -> GROUP_BY([incident_id], {human_factor_records:COLLECT(factor_type,value)})\n)\njoined := JOIN(left=attributions_with_components, right=human_factor_records, join_type=left, condition=attributions_with_components.incident_id = human_factor_records.incident_id)\njoined\n-> GROUP_BY([attribution_category], {incident_count:COUNT_DISTINCT(incident_id),causal_records:COLLECT(initiating_event,human_factor_event,intervention,component_records,human_factor_records)})\n-> SEM_AGGREGATE(\"For each attribution category, summarize the dominant initiating factor and intervention in at most six words each.\", {dominant_initiating_factor:string,dominant_intervention:string}, group_by=[attribution_category], input_bindings={causal_records})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "attribution_category",
+        "incident_count",
+        "dominant_initiating_factor",
+        "dominant_intervention"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "string",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "aviation_safety-048",
+    "gold_answer": [
+      {
+        "rank": 1,
+        "maintenance_driver": "component_discrepancy_or_failure",
+        "canonical_component": "Turbine Engine",
+        "incident_count": 74,
+        "recorded_result_labels": [
+          "General Flight Cancelled / Delayed",
+          "Flight Crew Returned To Departure Airport",
+          "General Maintenance Action"
+        ]
+      },
+      {
+        "rank": 2,
+        "maintenance_driver": "component_discrepancy_or_failure",
+        "canonical_component": "Hydraulic Main System",
+        "incident_count": 25,
+        "recorded_result_labels": [
+          "General Flight Cancelled / Delayed",
+          "Flight Crew Returned To Departure Airport",
+          "General Maintenance Action"
+        ]
+      },
+      {
+        "rank": 3,
+        "maintenance_driver": "component_discrepancy_or_failure",
+        "canonical_component": "Main Gear Tire",
+        "incident_count": 25,
+        "recorded_result_labels": [
+          "General Flight Cancelled / Delayed",
+          "Flight Crew Returned To Departure Airport",
+          "General Maintenance Action"
+        ]
+      },
+      {
+        "rank": 4,
+        "maintenance_driver": "component_discrepancy_or_failure",
+        "canonical_component": "Reciprocating Engine Assembly",
+        "incident_count": 18,
+        "recorded_result_labels": [
+          "General Flight Cancelled / Delayed",
+          "Flight Crew Returned To Departure Airport",
+          "General Maintenance Action"
+        ]
+      },
+      {
+        "rank": 5,
+        "maintenance_driver": "documentation_or_release_to_service",
+        "canonical_component": "Aircraft Documentation",
+        "incident_count": 16,
+        "recorded_result_labels": [
+          "General Flight Cancelled / Delayed",
+          "General Maintenance Action"
+        ]
+      },
+      {
+        "rank": 6,
+        "maintenance_driver": "component_discrepancy_or_failure",
+        "canonical_component": "Powerplant Lubrication System",
+        "incident_count": 15,
+        "recorded_result_labels": [
+          "General Flight Cancelled / Delayed",
+          "Flight Crew Returned To Departure Airport",
+          "General Maintenance Action"
+        ]
+      },
+      {
+        "rank": 7,
+        "maintenance_driver": "component_discrepancy_or_failure",
+        "canonical_component": "Brake System",
+        "incident_count": 14,
+        "recorded_result_labels": [
+          "General Flight Cancelled / Delayed",
+          "Flight Crew Returned To Departure Airport",
+          "General Maintenance Action"
+        ]
+      },
+      {
+        "rank": 8,
+        "maintenance_driver": "component_discrepancy_or_failure",
+        "canonical_component": "Pressurization System",
+        "incident_count": 14,
+        "recorded_result_labels": [
+          "General Flight Cancelled / Delayed",
+          "Flight Crew Returned To Departure Airport",
+          "General Maintenance Action"
+        ]
+      },
+      {
+        "rank": 9,
+        "maintenance_driver": "documentation_or_release_to_service",
+        "canonical_component": "Aircraft Logbook(s)",
+        "incident_count": 14,
+        "recorded_result_labels": [
+          "General Flight Cancelled / Delayed",
+          "General Maintenance Action"
+        ]
+      },
+      {
+        "rank": 10,
+        "maintenance_driver": "component_discrepancy_or_failure",
+        "canonical_component": "Exterior Pax/Crew Door",
+        "incident_count": 11,
+        "recorded_result_labels": [
+          "General Flight Cancelled / Delayed",
+          "Flight Crew Returned To Departure Airport",
+          "General Maintenance Action"
+        ]
+      },
+      {
+        "rank": 11,
+        "maintenance_driver": "component_discrepancy_or_failure",
+        "canonical_component": "Pitot-Static System",
+        "incident_count": 11,
+        "recorded_result_labels": [
+          "General Flight Cancelled / Delayed",
+          "Flight Crew Returned To Departure Airport",
+          "General Maintenance Action"
+        ]
+      },
+      {
+        "rank": 12,
+        "maintenance_driver": "component_discrepancy_or_failure",
+        "canonical_component": "Main Gear",
+        "incident_count": 10,
+        "recorded_result_labels": [
+          "General Flight Cancelled / Delayed",
+          "Flight Crew Returned To Departure Airport",
+          "General Maintenance Action"
+        ]
+      },
+      {
+        "rank": 13,
+        "maintenance_driver": "component_discrepancy_or_failure",
+        "canonical_component": "Switch",
+        "incident_count": 10,
+        "recorded_result_labels": [
+          "General Flight Cancelled / Delayed",
+          "Flight Crew Returned To Departure Airport",
+          "General Maintenance Action"
+        ]
+      },
+      {
+        "rank": 14,
+        "maintenance_driver": "component_discrepancy_or_failure",
+        "canonical_component": "Air Conditioning and Pressurization Pack",
+        "incident_count": 9,
+        "recorded_result_labels": [
+          "General Flight Cancelled / Delayed",
+          "Flight Crew Returned To Departure Airport",
+          "General Maintenance Action"
+        ]
+      },
+      {
+        "rank": 15,
+        "maintenance_driver": "component_discrepancy_or_failure",
+        "canonical_component": "Landing Gear",
+        "incident_count": 9,
+        "recorded_result_labels": [
+          "General Flight Cancelled / Delayed",
+          "Flight Crew Returned To Departure Airport",
+          "General Maintenance Action"
+        ]
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "recorded_results := (\n  SCAN_TABLE(NASA_ASRS, events.csv, [incident_id,event_type,label])\n  -> FILTER(event_type = 'result' AND label IN ('General Flight Cancelled / Delayed','Flight Crew Returned To Departure Airport','General Maintenance Action'))\n  -> GROUP_BY([incident_id], {recorded_results:COLLECT(label)})\n)\nincidents := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id,text_file])\n)\nresult_incidents := JOIN(left=recorded_results, right=incidents, join_type=inner, condition=recorded_results.incident_id = incidents.incident_id)\nmaintenance_candidates := (\n  result_incidents\n  -> SCAN_DOCS(NASA_ASRS, selector=result_incidents.text_file, [incident_id,text])\n  -> SEM_FILTER(\"Keep reports where maintenance rather than weather, crew legality, or passenger issues was the primary driver of the recorded disruption.\", {text})\n  -> SEM_FILTER(\"Keep reports where a specific affected component or required item can be identified.\", {text})\n  -> SEM_EXTRACT(\"Extract the narrative affected-item phrase and a concise maintenance-driver phrase.\", {incident_id:string,narrative_affected_item:string,maintenance_driver_phrase:string}, {incident_id,recorded_results,text})\n)\ncomponent_vocabulary := (\n  SCAN_TABLE(NASA_ASRS, components.csv, [attribute,value])\n  -> FILTER(attribute = 'aircraft_component')\n  -> DEDUP([value])\n)\nsemantic_component_matches := SEM_JOIN(left=maintenance_candidates, right=component_vocabulary, instruction=\"Match narrative_affected_item to a canonical component label when they are synonyms, abbreviations, or a clear part-to-system relationship. Do not use incident ID or generic topical similarity.\", input_bindings_left={incident_id,narrative_affected_item,maintenance_driver_phrase,recorded_results}, input_bindings_right={canonical_component:value})\nmaintenance_status_records := (\n  SCAN_TABLE(NASA_ASRS, aircraft_attributes.csv, [incident_id,attribute,value])\n  -> FILTER(attribute IN ('maintenance_status_maintenance_deferred','maintenance_status_released_for_service','maintenance_status_records_complete','maintenance_status_required_correct_doc_on_board'))\n  -> GROUP_BY([incident_id], {maintenance_status_records:COLLECT(attribute,value)})\n)\njoined := JOIN(left=semantic_component_matches, right=maintenance_status_records, join_type=left, condition=semantic_component_matches.incident_id = maintenance_status_records.incident_id)\njoined\n-> SEM_CLASSIFY(\"Assign maintenance_driver to component_discrepancy_or_failure, mel_or_deferred_item, troubleshooting_or_repair, documentation_or_release_to_service, or required_inspection.\", target_labels=[component_discrepancy_or_failure,mel_or_deferred_item,troubleshooting_or_repair,documentation_or_release_to_service,required_inspection], input_bindings={maintenance_driver_phrase,recorded_results,maintenance_status_records,text})\n-> GROUP_BY([maintenance_driver,canonical_component], {incident_count:COUNT_DISTINCT(incident_id),recorded_result_labels:SET_UNION(recorded_results)})\n-> ORDER_BY([incident_count DESC,maintenance_driver ASC,canonical_component ASC])\n-> LIMIT(15)\n-> PROJECT([rank=ROW_NUMBER(),maintenance_driver,canonical_component,incident_count,recorded_result_labels])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "rank",
+        "maintenance_driver",
+        "canonical_component",
+        "incident_count",
+        "recorded_result_labels"
+      ],
+      "types": [
+        "integer",
+        "string",
+        "string",
+        "integer",
+        "list[string]"
+      ]
+    }
+  }
+]

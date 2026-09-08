@@ -1,0 +1,12 @@
+{
+  "task_id": "legal_contracts-023",
+  "answer": [
+    {"document_id": "1010552_0000912057-01-520246_a2051644zex-99_20.htm", "governing_law": "Massachusetts", "missing_exception": "independent_development", "standstill_months": 18, "longest_solicitation_months": 18},
+    {"document_id": "1020416_0001193125-16-701566_d250247dex99d2.htm", "governing_law": "New York", "missing_exception": "prior_knowledge", "standstill_months": 15, "longest_solicitation_months": 18},
+    {"document_id": "1049210_0001047469-13-009461_a2216846zex-99_d3.htm", "governing_law": "California", "missing_exception": "consent", "standstill_months": 12, "longest_solicitation_months": 12},
+    {"document_id": "1142512_0001193125-14-269726_d757168dex99e3.htm", "governing_law": "California", "missing_exception": "independent_development", "standstill_months": 24, "longest_solicitation_months": 24}
+  ],
+  "elapsed_seconds": 2296.44,
+  "cost_usd": 3.745686,
+  "total_tokens": 7088748
+}

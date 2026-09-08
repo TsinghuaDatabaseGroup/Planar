@@ -1,0 +1,78 @@
+datasets:
+  nhtsa_recalls:
+    type: file
+    path: data/nhtsa_vehicle_safety/recalls.jsonl
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_seatbelt_recalls
+    type: code_filter
+    code: |
+      def transform(doc):
+          component = doc.get("component") or {}
+          return component.get("component_id") == "SEATBELT"
+
+  - name: assess_all_seatbelt_defects
+    type: reduce
+    optimize: true
+    recursively_optimize: false
+    synthesize_resolve: false
+    synthesize_merge: true
+    reduce_key: _all
+    prompt: |
+      Consider every NHTSA seatbelt-recall defect summary below.
+
+      Return answer=Yes only if both universal conditions hold:
+      1. Every summary describes a defect that could prevent or impair the seatbelt
+         from restraining an occupant during a crash.
+      2. No summary describes an issue that is purely cosmetic or comfort-only and
+         has no potential effect on occupant restraint during a crash.
+
+      Return answer=No if either condition fails. Evaluate the complete collection;
+      do not decide from a subset or from general knowledge about seatbelt recalls.
+
+      {% for item in inputs %}
+      Defect summary:
+      {{ item.risk.defect_summary }}
+      ---
+      {% endfor %}
+    output:
+      mode: structured_output
+      schema:
+        answer: enum[Yes, No]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+pipeline:
+  steps:
+    - name: seatbelt_recall_assessment
+      input: nhtsa_recalls
+      operations:
+        - filter_seatbelt_recalls
+        - assess_all_seatbelt_defects
+  output:
+    type: file
+    path: raw_outputs/vehicle_safety/output_vehicle_safety-002.json

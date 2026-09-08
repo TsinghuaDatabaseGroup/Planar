@@ -1,0 +1,104 @@
+{
+  "task_id": "finance-040",
+  "answer": [
+    {
+      "company_a": "ansys,",
+      "company_b": "synopsys,"
+    },
+    {
+      "company_a": "apex technology acquisition",
+      "company_b": "avepoint"
+    },
+    {
+      "company_a": "broadcom",
+      "company_b": "vmware,"
+    },
+    {
+      "company_a": "btrs holdings",
+      "company_b": "legacy billtrust"
+    },
+    {
+      "company_a": "cerner",
+      "company_b": "oracle"
+    },
+    {
+      "company_a": "cloudera",
+      "company_b": "hortonworks"
+    },
+    {
+      "company_a": "cloudera",
+      "company_b": "hortonworks,"
+    },
+    {
+      "company_a": "credit karma",
+      "company_b": "intuit"
+    },
+    {
+      "company_a": "fg merger",
+      "company_b": "icoreconnect"
+    },
+    {
+      "company_a": "iac/interactivecorp",
+      "company_b": "match group,"
+    },
+    {
+      "company_a": "informa plc",
+      "company_b": "techtarget,"
+    },
+    {
+      "company_a": "inspro technologies",
+      "company_b": "majesco"
+    },
+    {
+      "company_a": "international business machines",
+      "company_b": "red hat"
+    },
+    {
+      "company_a": "international business machines",
+      "company_b": "red hat,"
+    },
+    {
+      "company_a": "microsoft",
+      "company_b": "nuance communications,"
+    },
+    {
+      "company_a": "momentive global",
+      "company_b": "zendesk,"
+    },
+    {
+      "company_a": "otonomo technologies ltd.",
+      "company_b": "software acquisition group"
+    },
+    {
+      "company_a": "qualtrics international",
+      "company_b": "sap se"
+    },
+    {
+      "company_a": "qumu",
+      "company_b": "synacor,"
+    },
+    {
+      "company_a": "salesforce",
+      "company_b": "slack technologies,"
+    },
+    {
+      "company_a": "salesforce",
+      "company_b": "tableau software"
+    },
+    {
+      "company_a": "take-two interactive software,",
+      "company_b": "zynga"
+    },
+    {
+      "company_a": "telaria,",
+      "company_b": "the rubicon project,"
+    },
+    {
+      "company_a": "tivo",
+      "company_b": "xperi"
+    }
+  ],
+  "elapsed_seconds": 14400.0,
+  "cost_usd": 61.35808944,
+  "total_tokens": 155635726
+}

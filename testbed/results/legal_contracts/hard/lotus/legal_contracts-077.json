@@ -1,0 +1,15 @@
+{
+  "task_id": "legal_contracts-077",
+  "answer": [
+    {
+      "company_name": "HG Holdings, Inc.",
+      "nda_document_id": "ex_684281.htm",
+      "restrictive_document_id": "ex_684280.htm",
+      "nda_duration_years": 5,
+      "noncompete_duration_years": 1
+    }
+  ],
+  "elapsed_seconds": 8330.16,
+  "cost_usd": 11.477831,
+  "total_tokens": 21536131
+}

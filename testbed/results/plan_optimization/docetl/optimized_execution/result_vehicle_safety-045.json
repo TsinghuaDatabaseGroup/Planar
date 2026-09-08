@@ -1,0 +1,28 @@
+{
+  "task_id": "vehicle_safety-045",
+  "answer": [
+    {
+      "rank": 1,
+      "defect_theme": "decreased vacuum pump output reducing brake assist",
+      "matched_complaint_count": 6,
+      "distinct_campaign_count": 1,
+      "related_report_ids": [
+        "txt_investigation_8be18f99e74db448.txt"
+      ],
+      "odi_risk_summary": "Brake vacuum pump failure due to oil sludge clogging causes loss of power assist, resulting in a hard brake pedal and extended stopping distance."
+    },
+    {
+      "rank": 2,
+      "defect_theme": "decreasing vacuum pump output over time",
+      "matched_complaint_count": 4,
+      "distinct_campaign_count": 1,
+      "related_report_ids": [
+        "txt_investigation_8be18f99e74db448.txt"
+      ],
+      "odi_risk_summary": "Brake vacuum pump failure due to oil sludge clogging causes loss of power assist, resulting in a hard brake pedal and extended stopping distance."
+    }
+  ],
+  "elapsed_seconds": 859.88,
+  "cost_usd": 4.929089,
+  "total_tokens": 11579389
+}

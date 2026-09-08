@@ -1,0 +1,68 @@
+{
+  "task_id": "finance-037",
+  "answer": [
+    {
+      "company_name": "Sadot Group, Inc.",
+      "industry_sector": "Agri-food Commodity Supply Chain",
+      "growth_strategy": "The company is executing a strategic transformation from a U.S.-centric restaurant business into a global organization focused on the agri-food commodity supply chain, engaging in sustainable farming, commodity trading, and international shipping of food and feed.",
+      "foreign_country_count": 29
+    },
+    {
+      "company_name": "XOMA Corporation",
+      "industry_sector": "Biotechnology (Royalty Aggregation)",
+      "growth_strategy": "XOMA employs a capital-efficient strategy focused on acquiring royalty interests and milestone payments from diverse biopharmaceutical partners rather than conducting internal drug discovery, thereby generating recurring revenue streams from a diversified portfolio of approved and developmental therapies.",
+      "foreign_country_count": 5
+    },
+    {
+      "company_name": "ARS Pharmaceuticals, Inc.",
+      "industry_sector": "Pharmaceuticals",
+      "growth_strategy": "The company's growth strategy centers on securing FDA approval and commercially launching its lead product candidate, neffy (a needle-free epinephrine delivery system), for the treatment of anaphylaxis, while simultaneously pursuing regulatory approvals and partnerships to expand into international markets including Europe, Japan, and China.",
+      "foreign_country_count": 2
+    },
+    {
+      "company_name": "ARCUTIS BIOTHERAPEUTICS, INC.",
+      "industry_sector": "Pharmaceuticals",
+      "growth_strategy": "The company focuses on developing and commercializing immuno-dermatology drugs, specifically advancing its current products like ZORYVE® and pipeline candidates (ARQ-234, ARQ-252, ARQ-255) for indications such as plaque psoriasis and atopic dermatitis, while seeking necessary funding and regulatory approvals to expand market presence in the U.S. and Canada.",
+      "foreign_country_count": 1
+    },
+    {
+      "company_name": "DURECT Corporation",
+      "industry_sector": "Pharmaceutical Drug Delivery",
+      "growth_strategy": "The company pursues growth by leveraging its proprietary drug delivery technologies through strategic collaborations, licensing agreements, and generating revenue from development, regulatory, and sales-based milestones.",
+      "foreign_country_count": 1
+    },
+    {
+      "company_name": "Neurogene Inc.",
+      "industry_sector": "Biotechnology",
+      "growth_strategy": "The company focuses on advancing its early-stage product candidates, specifically NGN-401 and NGN-101, through clinical trials while relying on academic collaborations, such as with the University of Edinburgh, to drive preclinical research and pipeline discovery for rare genetic disorders like Rett syndrome.",
+      "foreign_country_count": 1
+    },
+    {
+      "company_name": "Safe Green Holdings, Inc.",
+      "industry_sector": "Modular Construction and Engineering Services",
+      "growth_strategy": "The company focuses on expanding its specialized modular construction capabilities, particularly for the healthcare and life sciences sectors (e.g., mobile laboratories), while continuing to serve commercial, industrial, and government infrastructure markets.",
+      "foreign_country_count": 1
+    },
+    {
+      "company_name": "Agilon Health, Inc.",
+      "industry_sector": "Value-Based Primary Care Services",
+      "growth_strategy": "The excerpt indicates a strategy of acquiring complementary assets, specifically the acquisition of MyPersonalHealthRecordExpressInc. in February 2023, to enhance their medical services and technology platform.",
+      "foreign_country_count": 0
+    },
+    {
+      "company_name": "Agrify Corporation",
+      "industry_sector": "Indoor Agriculture Technology",
+      "growth_strategy": "The company aims to drive growth by expanding its Total Turn-Key Solution (TTK) offerings and integrating complementary businesses and technologies through strategic acquisitions to strengthen its brand and market position in the indoor agriculture industry.",
+      "foreign_country_count": 0
+    },
+    {
+      "company_name": "Aileron Therapeutics, Inc.",
+      "industry_sector": "Biopharmaceuticals",
+      "growth_strategy": "The company's strategy focuses on developing and commercializing novel peptide therapeutics, specifically LTI-03 and LTI-01, targeting fibrotic diseases through a Caveolin-1 (Cav1) related mechanism, while seeking potential collaborations to fund operations and advance clinical trials.",
+      "foreign_country_count": 0
+    }
+  ],
+  "elapsed_seconds": 1009.404,
+  "cost_usd": 0.35213091,
+  "total_tokens": 590530
+}

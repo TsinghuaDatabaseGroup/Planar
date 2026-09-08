@@ -1,0 +1,32 @@
+{
+  "task_id": "vehicle_safety-044",
+  "answer": [
+    {
+      "rank": 1,
+      "campaign_number": "18V777000",
+      "matched_complaint_count": 30,
+      "severe_complaint_rate": 0.5595238095,
+      "dominant_braking_failure_mode": "reduced brake performance due to gas pockets",
+      "dominant_recall_severity": "critical"
+    },
+    {
+      "rank": 2,
+      "campaign_number": "23V458000",
+      "matched_complaint_count": 18,
+      "severe_complaint_rate": 0.5555555556,
+      "dominant_braking_failure_mode": "master cylinder separation from booster",
+      "dominant_recall_severity": "critical"
+    },
+    {
+      "rank": 3,
+      "campaign_number": "25V391000",
+      "matched_complaint_count": 12,
+      "severe_complaint_rate": 0.5394736842,
+      "dominant_braking_failure_mode": "brake pedal shifts out of position",
+      "dominant_recall_severity": "critical"
+    }
+  ],
+  "elapsed_seconds": 121.91,
+  "cost_usd": 0.20054,
+  "total_tokens": 464449
+}

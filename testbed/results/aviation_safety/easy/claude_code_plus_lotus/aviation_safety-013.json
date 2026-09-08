@@ -1,0 +1,44 @@
+{
+  "task_id": "aviation_safety-013",
+  "answer": [
+    {
+      "symptom_category": "thrust_loss",
+      "incident_count": 27,
+      "most_common_immediate_action": "shut down left engine",
+      "most_common_outcome": "returned to departure airport"
+    },
+    {
+      "symptom_category": "oil_indication",
+      "incident_count": 20,
+      "most_common_immediate_action": "shut down engine and diverted",
+      "most_common_outcome": "diverted and landed safely"
+    },
+    {
+      "symptom_category": "vibration",
+      "incident_count": 12,
+      "most_common_immediate_action": "declared emergency and diverted",
+      "most_common_outcome": "diverted and landed safely"
+    },
+    {
+      "symptom_category": "temperature",
+      "incident_count": 7,
+      "most_common_immediate_action": "declared emergency, shut down engine",
+      "most_common_outcome": "diverted and landed safely"
+    },
+    {
+      "symptom_category": "flameout",
+      "incident_count": 4,
+      "most_common_immediate_action": "executed engine inflight restart",
+      "most_common_outcome": "landed at destination airport"
+    },
+    {
+      "symptom_category": "other_engine_indication",
+      "incident_count": 3,
+      "most_common_immediate_action": "shut down left engine",
+      "most_common_outcome": "overran runway onto road"
+    }
+  ],
+  "elapsed_seconds": 237.666,
+  "cost_usd": 0.38883159,
+  "total_tokens": 570209
+}

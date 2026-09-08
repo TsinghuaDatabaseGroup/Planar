@@ -1,0 +1,1008 @@
+{
+  "task_id": "vehicle_safety-042",
+  "status": "failed",
+  "selected_plan_persisted_before_execution": false,
+  "source": "queries/queries.json reference_semantic_plan",
+  "input_plan": {
+    "task_id": "vehicle_safety-042",
+    "query": "For Tesla ADAS recall campaigns whose defect summaries describe the same driver-assistance or automation-control problem as complaint narratives and an investigation report, what's the matched complaint count, dominant defect topic in {autopilot_misuse, unexpected_braking, steering_control, warning_or_supervision_gap, other}, and related investigation report IDs correspond to each campaign number?",
+    "inputs": [
+      {
+        "source_id": "complaints_csv",
+        "dataset": "NHTSA Vehicle Safety",
+        "source_type": "table",
+        "role": "primary"
+      },
+      {
+        "source_id": "recalls_jsonl",
+        "dataset": "NHTSA Vehicle Safety",
+        "source_type": "document",
+        "role": "primary"
+      },
+      {
+        "source_id": "investigation_reports_txt",
+        "dataset": "NHTSA Vehicle Safety",
+        "source_type": "document",
+        "role": "primary"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(NHTSA, complaints, [complaint_id, make, component_id, summary_text]) -> FILTER(make='TESLA' AND component_id='ADAS') -> SEM_JOIN('Within Tesla ADAS records, match a complaint to a recall only when the complaint narrative and recall defect summary describe the same driver-assistance or automation-control problem.', input_bindings_left={complaint_summary: summary_text, component_id: component_id}, input_bindings_right={recall_defect: r.risk.defect_summary, component_id: r.component_id}, right=( SCAN_DOCS(NHTSA, recalls AS r, [campaign.number, vehicle.make AS make, component.component_id AS component_id, risk.defect_summary, risk.consequence_summary]) -> FILTER(vehicle.make='TESLA' AND component.component_id='ADAS') )) -> SEM_FILTER('the complaint describes a driving-context ADAS safety issue rather than general infotainment or account software behavior', input_bindings={text: summary_text}) -> SEM_CLASSIFY('Assign the dominant Tesla ADAS defect topic.', target_labels=['autopilot_misuse','unexpected_braking','steering_control','warning_or_supervision_gap','other'], input_bindings={text: summary_text}) -> SEM_JOIN('Match the Tesla ADAS complaint-recall issue to an investigation report only when the report discusses the same driver-assistance safety issue or ODI human-factors concern.', input_bindings_left={topic: group, complaint_text: summary_text, recall_text: r.risk.defect_summary}, input_bindings_right={report_body: body}, right=( SCAN_DOCS(NHTSA, investigation_reports, selector='*.txt', columns=[file_id, body]) -> FILTER(body CONTAINS 'Tesla' OR body CONTAINS 'Autopilot' OR body CONTAINS 'driver assistance') )) -> GROUP_BY([r.campaign.number], aggs={matched_complaint_count: count_distinct(complaint_id), dominant_adas_topic: mode_with_tiebreak(group, tiebreak='alpha_asc'), related_report_ids: collect_distinct_sorted(file_id, 'asc')}) -> PROJECT([campaign_number: r.campaign.number, matched_complaint_count, dominant_adas_topic, related_report_ids])"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "campaign_number",
+        "matched_complaint_count",
+        "dominant_adas_topic",
+        "related_report_ids"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "string",
+        "list[string]"
+      ]
+    }
+  },
+  "input_palimpzest_logical_plan": {
+    "root_dataset_id": "45fb032c60",
+    "nodes": [
+      {
+        "dataset_id": "vehicle_safety-042-complaints-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "806d0e1d39",
+        "unique_logical_op_id": "0-806d0e1d39",
+        "depends_on": [],
+        "generated_fields": [
+          "complaint_id",
+          "component_id",
+          "summary_text"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "complaint_id",
+          "component_id",
+          "summary_text"
+        ]
+      },
+      {
+        "dataset_id": "vehicle_safety-042-recalls-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "4fd95e9b2c",
+        "unique_logical_op_id": "1-4fd95e9b2c",
+        "depends_on": [],
+        "generated_fields": [
+          "campaign_number",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_defect_summary"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "campaign_number",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_defect_summary"
+        ]
+      },
+      {
+        "dataset_id": "1fcf65f4b5",
+        "source_dataset_ids": [
+          "vehicle_safety-042-complaints-semantic-input",
+          "vehicle_safety-042-recalls-semantic-input"
+        ],
+        "logical_operator": "JoinOp",
+        "logical_op_id": "d7321b36da",
+        "unique_logical_op_id": "2-d7321b36da",
+        "depends_on": [
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "recall_component_id",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "condition": "Within Tesla ADAS records, match a complaint to a recall only when component_id equals recall_component_id and the complaint narrative and recall defect summary describe the same driver-assistance or automation-control problem.",
+        "how": "inner"
+      },
+      {
+        "dataset_id": "130bd33039",
+        "source_dataset_ids": [
+          "1fcf65f4b5"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "443561dde1",
+        "unique_logical_op_id": "3-443561dde1",
+        "depends_on": [
+          "summary_text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "filter": "Keep this pair only if the complaint describes a driving-context ADAS safety issue rather than general infotainment or account software behavior."
+      },
+      {
+        "dataset_id": "3f9e736eeb",
+        "source_dataset_ids": [
+          "130bd33039"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "8a2bfe8e00",
+        "unique_logical_op_id": "4-8a2bfe8e00",
+        "depends_on": [
+          "summary_text"
+        ],
+        "generated_fields": [
+          "adas_topic"
+        ],
+        "input_fields": [
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "output_fields": [
+          "adas_topic",
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "desc": "Assign the dominant Tesla ADAS defect topic.",
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "c90520aedd",
+        "source_dataset_ids": [
+          "3f9e736eeb"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "633b4c8e31",
+        "unique_logical_op_id": "5-633b4c8e31",
+        "depends_on": [
+          "adas_topic"
+        ],
+        "generated_fields": [
+          "normalized_adas_topic"
+        ],
+        "input_fields": [
+          "adas_topic",
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "output_fields": [
+          "adas_topic",
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "normalized_adas_topic",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "d958a4f54f",
+        "source_dataset_ids": [
+          "c90520aedd"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "c5033466dd",
+        "unique_logical_op_id": "6-c5033466dd",
+        "depends_on": [
+          "normalized_adas_topic"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "adas_topic",
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "normalized_adas_topic",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "output_fields": [
+          "adas_topic",
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "normalized_adas_topic",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "filter": "valid_topic"
+      },
+      {
+        "dataset_id": "vehicle_safety-042-reports-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "868cb4535a",
+        "unique_logical_op_id": "7-868cb4535a",
+        "depends_on": [],
+        "generated_fields": [
+          "body",
+          "file_id"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "body",
+          "file_id"
+        ]
+      },
+      {
+        "dataset_id": "ac37942b8c",
+        "source_dataset_ids": [
+          "d958a4f54f",
+          "vehicle_safety-042-reports-semantic-input"
+        ],
+        "logical_operator": "JoinOp",
+        "logical_op_id": "b21ecfdf52",
+        "unique_logical_op_id": "8-b21ecfdf52",
+        "depends_on": [
+          "body",
+          "campaign_number",
+          "complaint_id",
+          "file_id",
+          "normalized_adas_topic",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "adas_topic",
+          "body",
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "file_id",
+          "normalized_adas_topic",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "output_fields": [
+          "adas_topic",
+          "body",
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "file_id",
+          "normalized_adas_topic",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "condition": "Match the Tesla ADAS complaint-recall issue to an investigation report only when the report discusses the same driver-assistance safety issue or ODI human-factors concern.",
+        "how": "inner"
+      },
+      {
+        "dataset_id": "45fb032c60",
+        "source_dataset_ids": [
+          "ac37942b8c"
+        ],
+        "logical_operator": "GroupByAggregate",
+        "logical_op_id": "41d84fb363",
+        "unique_logical_op_id": "9-41d84fb363",
+        "depends_on": [],
+        "generated_fields": [
+          "list(complaint_id)",
+          "list(file_id)",
+          "list(normalized_adas_topic)"
+        ],
+        "input_fields": [
+          "adas_topic",
+          "body",
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "file_id",
+          "normalized_adas_topic",
+          "recall_component_id",
+          "recall_consequence_summary",
+          "recall_defect_summary",
+          "summary_text"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "list(complaint_id)",
+          "list(file_id)",
+          "list(normalized_adas_topic)"
+        ],
+        "group_by": "GroupBy({'group_by_fields': ['campaign_number'], 'agg_funcs': ['list', 'list', 'list'], 'agg_fields': ['complaint_id', 'normalized_adas_topic', 'file_id']})"
+      }
+    ],
+    "topological_logical_sequence": [
+      "0-806d0e1d39",
+      "1-4fd95e9b2c",
+      "2-d7321b36da",
+      "3-443561dde1",
+      "4-8a2bfe8e00",
+      "5-633b4c8e31",
+      "6-c5033466dd",
+      "7-868cb4535a",
+      "8-b21ecfdf52",
+      "9-41d84fb363"
+    ]
+  },
+  "optimizer": {
+    "strategy": "pareto",
+    "policy": "MaxQuality",
+    "physical_implementation_candidates": {
+      "allow_bonded_query": true,
+      "allow_model_selection": false,
+      "allow_rag_reduction": false,
+      "allow_mixtures": true,
+      "allow_critic": true,
+      "allow_split_merge": false,
+      "force_rag": false,
+      "execution_strategy": "parallel",
+      "max_workers": 64,
+      "join_parallelism": 64
+    },
+    "dynamic_learning_requested": true,
+    "dynamic_learning_pipeline_supported": true,
+    "dynamic_learning": true,
+    "dynamic_learning_support": {
+      "supported": true,
+      "reason": null,
+      "terminal_only_operator_violations": []
+    },
+    "allow_unsupported_sentinel_plans": true,
+    "dynamic_learning_fallback": null,
+    "sentinel_execution_strategy": "mab",
+    "sentinel_k": 6,
+    "sentinel_j": 4,
+    "sentinel_sample_budget": 100,
+    "sentinel_seed": 42,
+    "available_models": [
+      "Qwen3.5-397B-A17B",
+      "openai/Qwen3-Embedding-8B"
+    ]
+  },
+  "sentinel_join_sampling": [
+    {
+      "unique_logical_op_id": "2-d7321b36da",
+      "frontier_representative_operator_class": "EmbeddingJoin",
+      "root_dataset_count": 2,
+      "left_available_source_indices": 95,
+      "right_available_source_indices": 11,
+      "theoretical_combination_count": 1045,
+      "available_combination_count": 1045,
+      "sample_limit": 100,
+      "sampled_combination_count": 100,
+      "sampling_method": "seeded_uniform_without_replacement_flat_indices",
+      "seed": 42
+    },
+    {
+      "unique_logical_op_id": "8-b21ecfdf52",
+      "frontier_representative_operator_class": "EmbeddingJoin",
+      "root_dataset_count": 3,
+      "left_available_source_indices": 100,
+      "right_available_source_indices": 22,
+      "theoretical_combination_count": 22990,
+      "available_combination_count": 2200,
+      "sample_limit": 100,
+      "sampled_combination_count": 100,
+      "sampling_method": "seeded_uniform_without_replacement_flat_indices",
+      "seed": 42
+    }
+  ],
+  "sentinel_sampling_exhaustion": null,
+  "failure_type": "AssertionError",
+  "failure_message": "Non-join operator must have zero or one input groups.",
+  "partial_optimization_metrics": {
+    "elapsed_seconds": 145.44025874,
+    "sentinel_sampling_seconds": 145.30610967,
+    "optimizer_search_and_bookkeeping_seconds": 0.13414907,
+    "cost_usd": 0.25745336,
+    "text_llm_calls": 349,
+    "embedding_calls": 0,
+    "input_text_tokens": 285382,
+    "output_text_tokens": 62339,
+    "total_text_tokens": 347721,
+    "embedding_input_tokens": 0,
+    "cache_read_tokens": 0,
+    "cache_creation_tokens": 0,
+    "sampled_operators": {
+      "text_llm_calls": 261,
+      "embedding_calls": 0,
+      "input_text_tokens": 198190,
+      "output_text_tokens": 41904,
+      "embedding_input_tokens": 0,
+      "cost_usd": 0.17563058
+    },
+    "validator": {
+      "text_llm_calls": 88,
+      "input_text_tokens": 87192,
+      "output_text_tokens": 20435,
+      "total_text_tokens": 107627,
+      "cost_usd": 0.08182278
+    },
+    "model_usage_by_model": {
+      "Qwen3.5-397B-A17B": {
+        "roles": [
+          "text",
+          "validator"
+        ],
+        "calls": 349,
+        "input_tokens": 285382,
+        "output_tokens": 62339,
+        "total_tokens": 347721,
+        "cost_usd": 0.25745336
+      }
+    }
+  },
+  "partial_sentinel": {
+    "plan_id": "f8c85be4a0",
+    "plan_string": "0. Schema['adas_topic', 'body', 'campaign_number', 'complaint_id', 'component_id', 'file_id', 'normalized_adas_topic', 'recall_component_id', 'recall_consequence_summary', 'recall_defect_summary', 'summary_text'] -> ApplyGroupByOp -> Schema['campaign_number', 'list(complaint_id)', 'list(file_id)', 'list(normalized_adas_topic)']\n    (adas_topic, body, campaign_num) -> (campaign_number, list(complain)\n    Group-by Signature: GroupBy({'group_by_fields': ['campaign_number'], 'agg_funcs': ['list', 'list', 'list'], 'agg_fields': ['complaint_id', 'normalized_adas_topic', 'file_id']})\n\n  1.1 - 2. Schema['adas_topic', 'body', 'campaign_number', 'complaint_id', 'component_id', 'file_id', 'normalized_adas_topic', 'recall_component_id', 'recall_consequence_summary', 'recall_defect_summary', 'summary_text'] -> EmbeddingJoin -> Schema['adas_topic', 'body', 'campaign_number', 'complaint_id', 'component_id', 'file_id', 'normalized_adas_topic', 'recall_component_id', 'recall_consequence_summary', 'recall_defect_summary', 'summary_text']\n    (adas_topic, body, campaign_num) -> (adas_topic, body, campaign_num)\n    Model: Qwen3.5-397B-A17B\n    Condition: Match the Tesla ADAS complaint-recall issue to an investigation report only when the report discusses the same driver-assistance safety issue or ODI human-factors concern.\n    How: inner\n    On: None\n    Model: Qwen3.5-397B-A17B\n    Reasoning Effort: default\n    Prompt Strategy: join\n    Embedding Model: openai/Qwen3-Embedding-8B\n    Num Samples: 10\n\n    2. Schema['adas_topic', 'campaign_number', 'complaint_id', 'component_id', 'normalized_adas_topic', 'recall_component_id', 'recall_consequence_summary', 'recall_defect_summary', 'summary_text'] -> NonLLMFilter -> Schema['adas_topic', 'campaign_number', 'complaint_id', 'component_id', 'normalized_adas_topic', 'recall_component_id', 'recall_consequence_summary', 'recall_defect_summary', 'summary_text']\n    (adas_topic, campaign_number, c) -> (adas_topic, campaign_number, c)\n    Filter: valid_topic\n\n      3. Schema['adas_topic', 'campaign_number', 'complaint_id', 'component_id', 'recall_component_id', 'recall_consequence_summary', 'recall_defect_summary', 'summary_text'] -> NonLLMConvert -> Schema['adas_topic', 'campaign_number', 'complaint_id', 'component_id', 'normalized_adas_topic', 'recall_component_id', 'recall_consequence_summary', 'recall_defect_summary', 'summary_text']\n    (adas_topic, campaign_number, c) -> (adas_topic, campaign_number, c)\n    UDF: normalize_topic\n\n        4.1 - 5. Schema['campaign_number', 'complaint_id', 'component_id', 'recall_component_id', 'recall_consequence_summary', 'recall_defect_summary', 'summary_text'] -> CritiqueAndRefineConvert -> Schema['adas_topic', 'campaign_number', 'complaint_id', 'component_id', 'recall_component_id', 'recall_consequence_summary', 'recall_defect_summary', 'summary_text']\n    (campaign_number, complaint_id,) -> (adas_topic, campaign_number, c)\n    Model: Qwen3.5-397B-A17B\n    Prompt Strategy: PromptStrategy.MAP\n    Reasoning Effort: default\n    Critic Model: Qwen3.5-397B-A17B\n    Refine Model: Qwen3.5-397B-A17B\n\n          5.1 - 5. Schema['campaign_number', 'complaint_id', 'component_id', 'recall_component_id', 'recall_consequence_summary', 'recall_defect_summary', 'summary_text'] -> CritiqueAndRefineFilter -> Schema['campaign_number', 'complaint_id', 'component_id', 'recall_component_id', 'recall_consequence_summary', 'recall_defect_summary', 'summary_text']\n    (campaign_number, complaint_id,) -> (campaign_number, complaint_id,)\n    Model: Qwen3.5-397B-A17B\n    Filter: Keep this pair only if the complaint describes a driving-context ADAS safety issue rather than general infotainment or account software behavior.\n    Critic Model: Qwen3.5-397B-A17B\n    Refine Model: Qwen3.5-397B-A17B\n\n            6.1 - 2. Schema['campaign_number', 'complaint_id', 'component_id', 'recall_component_id', 'recall_consequence_summary', 'recall_defect_summary', 'summary_text'] -> EmbeddingJoin -> Schema['campaign_number', 'complaint_id', 'component_id', 'recall_component_id', 'recall_consequence_summary', 'recall_defect_summary', 'summary_text']\n    (campaign_number, complaint_id,) -> (campaign_number, complaint_id,)\n    Model: Qwen3.5-397B-A17B\n    Condition: Within Tesla ADAS records, match a complaint to a recall only when component_id equals recall_component_id and the complaint narrative and recall defect summary describe the same driver-assistance or automation-control problem.\n    How: inner\n    On: None\n    Model: Qwen3.5-397B-A17B\n    Reasoning Effort: default\n    Prompt Strategy: join\n    Embedding Model: openai/Qwen3-Embedding-8B\n    Num Samples: 10\n\n              7. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['complaint_id', 'component_id', 'summary_text']'>, id=vehicle_safety-042-complaints-semantic-input, op_id=806d0e1d39)) -> <class 'palimpzest.core.lib.schemas.Schema['complaint_id', 'component_id', 'summary_text']'>\n    (complaint_id, component_id, su)\n\n              7. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['campaign_number', 'recall_component_id', 'recall_consequence_summary', 'recall_defect_summary']'>, id=vehicle_safety-042-recalls-semantic-input, op_id=4fd95e9b2c)) -> <class 'palimpzest.core.lib.schemas.Schema['campaign_number', 'recall_component_id', 'recall_consequence_summary', 'recall_defect_summary']'>\n    (campaign_number, recall_compon)\n\n    2. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['body', 'file_id']'>, id=vehicle_safety-042-reports-semantic-input, op_id=868cb4535a)) -> <class 'palimpzest.core.lib.schemas.Schema['body', 'file_id']'>\n    (file_id, body)\n\n",
+    "operators": [
+      {
+        "physical_operator": "MarshalAndScanDataOp",
+        "full_op_id": "806d0e1d39-7b24e221a7",
+        "input_cardinality_observed": 0,
+        "output_cardinality_observed": 49,
+        "record_stats_count": 49,
+        "quality_scores_observed": 49,
+        "quality_scores_missing": 0,
+        "llm_calls": 0,
+        "text_llm_calls": 0,
+        "embedding_calls": 0,
+        "input_text_tokens": 0,
+        "output_text_tokens": 0,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.0,
+        "elapsed_seconds": 0.00413036,
+        "operator_details": {
+          "datasource_id": "vehicle_safety-042-complaints-semantic-input"
+        }
+      },
+      {
+        "physical_operator": "MarshalAndScanDataOp",
+        "full_op_id": "4fd95e9b2c-6dc8549a0a",
+        "input_cardinality_observed": 0,
+        "output_cardinality_observed": 11,
+        "record_stats_count": 11,
+        "quality_scores_observed": 11,
+        "quality_scores_missing": 0,
+        "llm_calls": 0,
+        "text_llm_calls": 0,
+        "embedding_calls": 0,
+        "input_text_tokens": 0,
+        "output_text_tokens": 0,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.0,
+        "elapsed_seconds": 0.00079608,
+        "operator_details": {
+          "datasource_id": "vehicle_safety-042-recalls-semantic-input"
+        }
+      },
+      {
+        "physical_operator": "EmbeddingJoin",
+        "full_op_id": "d7321b36da-015c62fe4d",
+        "input_cardinality_observed": 57,
+        "output_cardinality_observed": 6,
+        "record_stats_count": 57,
+        "quality_scores_observed": 57,
+        "quality_scores_missing": 0,
+        "llm_calls": 10,
+        "text_llm_calls": 10,
+        "embedding_calls": 0,
+        "input_text_tokens": 10098,
+        "output_text_tokens": 2637,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.01032617,
+        "elapsed_seconds": 41.25338674,
+        "operator_details": {
+          "embedding_model": "openai/Qwen3-Embedding-8B",
+          "num_samples": "10",
+          "model": "Qwen3.5-397B-A17B",
+          "prompt_strategy": "join",
+          "reasoning_effort": "default",
+          "condition": "Within Tesla ADAS records, match a complaint to a recall only when component_id equals recall_component_id and the complaint narrative and recall defect summary describe the same driver-assistance or automation-control problem.",
+          "join_parallelism": "64",
+          "desc": "None",
+          "how": "inner",
+          "on": "None"
+        }
+      },
+      {
+        "physical_operator": "NestedLoopsJoin",
+        "full_op_id": "d7321b36da-33145e63ee",
+        "input_cardinality_observed": 57,
+        "output_cardinality_observed": 9,
+        "record_stats_count": 57,
+        "quality_scores_observed": 57,
+        "quality_scores_missing": 0,
+        "llm_calls": 57,
+        "text_llm_calls": 57,
+        "embedding_calls": 0,
+        "input_text_tokens": 56945,
+        "output_text_tokens": 13727,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.05432973,
+        "elapsed_seconds": 556.48176813,
+        "operator_details": {
+          "model": "Qwen3.5-397B-A17B",
+          "prompt_strategy": "join",
+          "reasoning_effort": "default",
+          "condition": "Within Tesla ADAS records, match a complaint to a recall only when component_id equals recall_component_id and the complaint narrative and recall defect summary describe the same driver-assistance or automation-control problem.",
+          "join_parallelism": "64",
+          "desc": "None",
+          "how": "inner",
+          "on": "None"
+        }
+      },
+      {
+        "physical_operator": "CritiqueAndRefineFilter",
+        "full_op_id": "443561dde1-1c6ba2a53d",
+        "input_cardinality_observed": 9,
+        "output_cardinality_observed": 0,
+        "record_stats_count": 9,
+        "quality_scores_observed": 9,
+        "quality_scores_missing": 0,
+        "llm_calls": 27,
+        "text_llm_calls": 27,
+        "embedding_calls": 0,
+        "input_text_tokens": 5368,
+        "output_text_tokens": 1025,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.00449202,
+        "elapsed_seconds": 107.76197791,
+        "operator_details": {
+          "critic_model": "Qwen3.5-397B-A17B",
+          "refine_model": "Qwen3.5-397B-A17B",
+          "model": "Qwen3.5-397B-A17B",
+          "prompt_strategy": "filter",
+          "reasoning_effort": "default",
+          "filter": "Keep this pair only if the complaint describes a driving-context ADAS safety issue rather than general infotainment or account software behavior.",
+          "desc": "None"
+        }
+      },
+      {
+        "physical_operator": "MixtureOfAgentsFilter",
+        "full_op_id": "443561dde1-35a9e61b57",
+        "input_cardinality_observed": 9,
+        "output_cardinality_observed": 9,
+        "record_stats_count": 9,
+        "quality_scores_observed": 9,
+        "quality_scores_missing": 0,
+        "llm_calls": 18,
+        "text_llm_calls": 18,
+        "embedding_calls": 0,
+        "input_text_tokens": 12796,
+        "output_text_tokens": 2549,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.0109551,
+        "elapsed_seconds": 133.04104209,
+        "operator_details": {
+          "proposer_models": "['Qwen3.5-397B-A17B']",
+          "temperatures": "[0.0]",
+          "aggregator_model": "Qwen3.5-397B-A17B",
+          "model": "None",
+          "prompt_strategy": "None",
+          "reasoning_effort": "default",
+          "filter": "Keep this pair only if the complaint describes a driving-context ADAS safety issue rather than general infotainment or account software behavior.",
+          "desc": "None"
+        }
+      },
+      {
+        "physical_operator": "MixtureOfAgentsFilter",
+        "full_op_id": "443561dde1-793a006f08",
+        "input_cardinality_observed": 9,
+        "output_cardinality_observed": 9,
+        "record_stats_count": 9,
+        "quality_scores_observed": 9,
+        "quality_scores_missing": 0,
+        "llm_calls": 18,
+        "text_llm_calls": 18,
+        "embedding_calls": 0,
+        "input_text_tokens": 12847,
+        "output_text_tokens": 2699,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.01132599,
+        "elapsed_seconds": 120.62095213,
+        "operator_details": {
+          "proposer_models": "['Qwen3.5-397B-A17B']",
+          "temperatures": "[0.4]",
+          "aggregator_model": "Qwen3.5-397B-A17B",
+          "model": "None",
+          "prompt_strategy": "None",
+          "reasoning_effort": "default",
+          "filter": "Keep this pair only if the complaint describes a driving-context ADAS safety issue rather than general infotainment or account software behavior.",
+          "desc": "None"
+        }
+      },
+      {
+        "physical_operator": "MixtureOfAgentsFilter",
+        "full_op_id": "443561dde1-d62c78202d",
+        "input_cardinality_observed": 9,
+        "output_cardinality_observed": 9,
+        "record_stats_count": 9,
+        "quality_scores_observed": 9,
+        "quality_scores_missing": 0,
+        "llm_calls": 18,
+        "text_llm_calls": 18,
+        "embedding_calls": 0,
+        "input_text_tokens": 12931,
+        "output_text_tokens": 2821,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.01164423,
+        "elapsed_seconds": 108.61163783,
+        "operator_details": {
+          "proposer_models": "['Qwen3.5-397B-A17B']",
+          "temperatures": "[0.8]",
+          "aggregator_model": "Qwen3.5-397B-A17B",
+          "model": "None",
+          "prompt_strategy": "None",
+          "reasoning_effort": "default",
+          "filter": "Keep this pair only if the complaint describes a driving-context ADAS safety issue rather than general infotainment or account software behavior.",
+          "desc": "None"
+        }
+      },
+      {
+        "physical_operator": "LLMFilter",
+        "full_op_id": "443561dde1-fd66175f9c",
+        "input_cardinality_observed": 9,
+        "output_cardinality_observed": 9,
+        "record_stats_count": 9,
+        "quality_scores_observed": 9,
+        "quality_scores_missing": 0,
+        "llm_calls": 9,
+        "text_llm_calls": 9,
+        "embedding_calls": 0,
+        "input_text_tokens": 5368,
+        "output_text_tokens": 1002,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.0044382,
+        "elapsed_seconds": 83.98060727,
+        "operator_details": {
+          "model": "Qwen3.5-397B-A17B",
+          "prompt_strategy": "filter",
+          "reasoning_effort": "default",
+          "filter": "Keep this pair only if the complaint describes a driving-context ADAS safety issue rather than general infotainment or account software behavior.",
+          "desc": "None"
+        }
+      },
+      {
+        "physical_operator": "CritiqueAndRefineConvert",
+        "full_op_id": "8a2bfe8e00-1509c0d9e1",
+        "input_cardinality_observed": 9,
+        "output_cardinality_observed": 9,
+        "record_stats_count": 9,
+        "quality_scores_observed": 4,
+        "quality_scores_missing": 5,
+        "llm_calls": 27,
+        "text_llm_calls": 27,
+        "embedding_calls": 0,
+        "input_text_tokens": 7465,
+        "output_text_tokens": 2774,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.00940251,
+        "elapsed_seconds": 149.23094964,
+        "operator_details": {
+          "critic_model": "Qwen3.5-397B-A17B",
+          "refine_model": "Qwen3.5-397B-A17B",
+          "model": "Qwen3.5-397B-A17B",
+          "prompt_strategy": "map",
+          "reasoning_effort": "default",
+          "cardinality": "one-to-one",
+          "udf": "None",
+          "desc": "Assign the dominant Tesla ADAS defect topic."
+        }
+      },
+      {
+        "physical_operator": "MixtureOfAgentsConvert",
+        "full_op_id": "8a2bfe8e00-2045d375e3",
+        "input_cardinality_observed": 9,
+        "output_cardinality_observed": 9,
+        "record_stats_count": 9,
+        "quality_scores_observed": 8,
+        "quality_scores_missing": 1,
+        "llm_calls": 18,
+        "text_llm_calls": 18,
+        "embedding_calls": 0,
+        "input_text_tokens": 15422,
+        "output_text_tokens": 2838,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.0126555,
+        "elapsed_seconds": 137.07350683,
+        "operator_details": {
+          "proposer_models": "['Qwen3.5-397B-A17B']",
+          "temperatures": "[0.8]",
+          "aggregator_model": "Qwen3.5-397B-A17B",
+          "model": "None",
+          "prompt_strategy": "None",
+          "reasoning_effort": "default",
+          "cardinality": "one-to-one",
+          "udf": "None",
+          "desc": "Assign the dominant Tesla ADAS defect topic."
+        }
+      },
+      {
+        "physical_operator": "LLMConvertBonded",
+        "full_op_id": "8a2bfe8e00-40ef2597cc",
+        "input_cardinality_observed": 9,
+        "output_cardinality_observed": 9,
+        "record_stats_count": 9,
+        "quality_scores_observed": 7,
+        "quality_scores_missing": 2,
+        "llm_calls": 9,
+        "text_llm_calls": 9,
+        "embedding_calls": 0,
+        "input_text_tokens": 7465,
+        "output_text_tokens": 2365,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.00844545,
+        "elapsed_seconds": 113.3182056,
+        "operator_details": {
+          "model": "Qwen3.5-397B-A17B",
+          "prompt_strategy": "map",
+          "reasoning_effort": "default",
+          "cardinality": "one-to-one",
+          "udf": "None",
+          "desc": "Assign the dominant Tesla ADAS defect topic."
+        }
+      },
+      {
+        "physical_operator": "MixtureOfAgentsConvert",
+        "full_op_id": "8a2bfe8e00-51f94f8073",
+        "input_cardinality_observed": 9,
+        "output_cardinality_observed": 9,
+        "record_stats_count": 9,
+        "quality_scores_observed": 7,
+        "quality_scores_missing": 2,
+        "llm_calls": 18,
+        "text_llm_calls": 18,
+        "embedding_calls": 0,
+        "input_text_tokens": 15031,
+        "output_text_tokens": 2441,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.01157403,
+        "elapsed_seconds": 115.13483834,
+        "operator_details": {
+          "proposer_models": "['Qwen3.5-397B-A17B']",
+          "temperatures": "[0.0]",
+          "aggregator_model": "Qwen3.5-397B-A17B",
+          "model": "None",
+          "prompt_strategy": "None",
+          "reasoning_effort": "default",
+          "cardinality": "one-to-one",
+          "udf": "None",
+          "desc": "Assign the dominant Tesla ADAS defect topic."
+        }
+      },
+      {
+        "physical_operator": "MixtureOfAgentsConvert",
+        "full_op_id": "8a2bfe8e00-73be1018ca",
+        "input_cardinality_observed": 9,
+        "output_cardinality_observed": 9,
+        "record_stats_count": 9,
+        "quality_scores_observed": 8,
+        "quality_scores_missing": 1,
+        "llm_calls": 18,
+        "text_llm_calls": 18,
+        "embedding_calls": 0,
+        "input_text_tokens": 14970,
+        "output_text_tokens": 2466,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.01160874,
+        "elapsed_seconds": 153.58344746,
+        "operator_details": {
+          "proposer_models": "['Qwen3.5-397B-A17B']",
+          "temperatures": "[0.4]",
+          "aggregator_model": "Qwen3.5-397B-A17B",
+          "model": "None",
+          "prompt_strategy": "None",
+          "reasoning_effort": "default",
+          "cardinality": "one-to-one",
+          "udf": "None",
+          "desc": "Assign the dominant Tesla ADAS defect topic."
+        }
+      },
+      {
+        "physical_operator": "NonLLMConvert",
+        "full_op_id": "633b4c8e31-0792c854ce",
+        "input_cardinality_observed": 9,
+        "output_cardinality_observed": 9,
+        "record_stats_count": 9,
+        "quality_scores_observed": 9,
+        "quality_scores_missing": 0,
+        "llm_calls": 0,
+        "text_llm_calls": 0,
+        "embedding_calls": 0,
+        "input_text_tokens": 0,
+        "output_text_tokens": 0,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.0,
+        "elapsed_seconds": 0.00374722,
+        "operator_details": {
+          "cardinality": "one-to-one",
+          "udf": "<function normalize_topic at 0x7b43431da520>",
+          "desc": "None"
+        }
+      },
+      {
+        "physical_operator": "NonLLMFilter",
+        "full_op_id": "c5033466dd-b37e91c146",
+        "input_cardinality_observed": 9,
+        "output_cardinality_observed": 9,
+        "record_stats_count": 9,
+        "quality_scores_observed": 9,
+        "quality_scores_missing": 0,
+        "llm_calls": 0,
+        "text_llm_calls": 0,
+        "embedding_calls": 0,
+        "input_text_tokens": 0,
+        "output_text_tokens": 0,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.0,
+        "elapsed_seconds": 0.00383854,
+        "operator_details": {
+          "filter": "valid_topic",
+          "desc": "None"
+        }
+      },
+      {
+        "physical_operator": "MarshalAndScanDataOp",
+        "full_op_id": "868cb4535a-36f3b5d99b",
+        "input_cardinality_observed": 0,
+        "output_cardinality_observed": 22,
+        "record_stats_count": 22,
+        "quality_scores_observed": 22,
+        "quality_scores_missing": 0,
+        "llm_calls": 0,
+        "text_llm_calls": 0,
+        "embedding_calls": 0,
+        "input_text_tokens": 0,
+        "output_text_tokens": 0,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.0,
+        "elapsed_seconds": 0.00134754,
+        "operator_details": {
+          "datasource_id": "vehicle_safety-042-reports-semantic-input"
+        }
+      },
+      {
+        "physical_operator": "EmbeddingJoin",
+        "full_op_id": "b21ecfdf52-5645a1cdf8",
+        "input_cardinality_observed": 7,
+        "output_cardinality_observed": 1,
+        "record_stats_count": 7,
+        "quality_scores_observed": 7,
+        "quality_scores_missing": 0,
+        "llm_calls": 7,
+        "text_llm_calls": 7,
+        "embedding_calls": 0,
+        "input_text_tokens": 10742,
+        "output_text_tokens": 1271,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.00722727,
+        "elapsed_seconds": 11.15114355,
+        "operator_details": {
+          "embedding_model": "openai/Qwen3-Embedding-8B",
+          "num_samples": "10",
+          "model": "Qwen3.5-397B-A17B",
+          "prompt_strategy": "join",
+          "reasoning_effort": "default",
+          "condition": "Match the Tesla ADAS complaint-recall issue to an investigation report only when the report discusses the same driver-assistance safety issue or ODI human-factors concern.",
+          "join_parallelism": "64",
+          "desc": "None",
+          "how": "inner",
+          "on": "None"
+        }
+      },
+      {
+        "physical_operator": "NestedLoopsJoin",
+        "full_op_id": "b21ecfdf52-d588856c08",
+        "input_cardinality_observed": 7,
+        "output_cardinality_observed": 1,
+        "record_stats_count": 7,
+        "quality_scores_observed": 7,
+        "quality_scores_missing": 0,
+        "llm_calls": 7,
+        "text_llm_calls": 7,
+        "embedding_calls": 0,
+        "input_text_tokens": 10742,
+        "output_text_tokens": 1289,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.00720564,
+        "elapsed_seconds": 16.63028526,
+        "operator_details": {
+          "model": "Qwen3.5-397B-A17B",
+          "prompt_strategy": "join",
+          "reasoning_effort": "default",
+          "condition": "Match the Tesla ADAS complaint-recall issue to an investigation report only when the report discusses the same driver-assistance safety issue or ODI human-factors concern.",
+          "join_parallelism": "64",
+          "desc": "None",
+          "how": "inner",
+          "on": "None"
+        }
+      },
+      {
+        "physical_operator": "ApplyGroupByOp",
+        "full_op_id": "41d84fb363-a958ccc725",
+        "input_cardinality_observed": 1,
+        "output_cardinality_observed": 1,
+        "record_stats_count": 1,
+        "quality_scores_observed": 1,
+        "quality_scores_missing": 0,
+        "llm_calls": 0,
+        "text_llm_calls": 0,
+        "embedding_calls": 0,
+        "input_text_tokens": 0,
+        "output_text_tokens": 0,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.0,
+        "elapsed_seconds": 0.00029588,
+        "operator_details": {
+          "group_by_sig": "{'group_by_fields': ['campaign_number'], 'agg_funcs': ['list', 'list', 'list'], 'agg_fields': ['complaint_id', 'normalized_adas_topic', 'file_id']}"
+        }
+      }
+    ],
+    "validation_llm_calls": 88,
+    "validation_input_text_tokens": 87192,
+    "validation_output_text_tokens": 20435,
+    "validation_cost_usd": 0.08182278
+  }
+}

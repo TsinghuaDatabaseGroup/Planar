@@ -1,0 +1,44 @@
+{
+  "task_id": "finance-004",
+  "answer": [
+    {
+      "revenue_model": "service_fees",
+      "filing_count": 49
+    },
+    {
+      "revenue_model": "product_sales",
+      "filing_count": 50
+    },
+    {
+      "revenue_model": "licensing_royalties",
+      "filing_count": 38
+    },
+    {
+      "revenue_model": "mixed",
+      "filing_count": 98
+    },
+    {
+      "revenue_model": "investment_returns",
+      "filing_count": 27
+    },
+    {
+      "revenue_model": "interest_income",
+      "filing_count": 68
+    },
+    {
+      "revenue_model": "subscription",
+      "filing_count": 5
+    },
+    {
+      "revenue_model": "rental_income",
+      "filing_count": 12
+    },
+    {
+      "revenue_model": "commission",
+      "filing_count": 2
+    }
+  ],
+  "elapsed_seconds": 910.78,
+  "cost_usd": 27.689523,
+  "total_tokens": 77518737
+}

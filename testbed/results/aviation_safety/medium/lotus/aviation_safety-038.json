@@ -1,0 +1,32 @@
+{
+  "task_id": "aviation_safety-038",
+  "answer": [
+    {
+      "canonical_human_factor": "communication_breakdown",
+      "incident_count": 749,
+      "most_common_actor": "Captain",
+      "most_common_operational_effect": "reduced situational awareness"
+    },
+    {
+      "canonical_human_factor": "confusion",
+      "incident_count": 536,
+      "most_common_actor": "Captain",
+      "most_common_operational_effect": "reduced situational awareness"
+    },
+    {
+      "canonical_human_factor": "situational_awareness",
+      "incident_count": 718,
+      "most_common_actor": "Captain",
+      "most_common_operational_effect": "reduced situational awareness"
+    },
+    {
+      "canonical_human_factor": "workload",
+      "incident_count": 336,
+      "most_common_actor": "Captain",
+      "most_common_operational_effect": "reduced situational awareness"
+    }
+  ],
+  "elapsed_seconds": 7581.96,
+  "cost_usd": 5.667191,
+  "total_tokens": 11203575
+}

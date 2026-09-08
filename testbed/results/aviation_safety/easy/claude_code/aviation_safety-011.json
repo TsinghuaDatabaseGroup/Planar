@@ -1,0 +1,83 @@
+{
+  "task_id": "aviation_safety-011",
+  "answer": [
+    {
+      "system_category": "airborne_engine",
+      "response_category": "continue_after_troubleshooting",
+      "incident_count": 2
+    },
+    {
+      "system_category": "airborne_engine",
+      "response_category": "emergency_or_divert",
+      "incident_count": 50
+    },
+    {
+      "system_category": "airborne_engine",
+      "response_category": "maintenance_action_only",
+      "incident_count": 9
+    },
+    {
+      "system_category": "airborne_engine",
+      "response_category": "return_to_departure",
+      "incident_count": 46
+    },
+    {
+      "system_category": "flight_control",
+      "response_category": "continue_after_troubleshooting",
+      "incident_count": 3
+    },
+    {
+      "system_category": "flight_control",
+      "response_category": "emergency_or_divert",
+      "incident_count": 26
+    },
+    {
+      "system_category": "flight_control",
+      "response_category": "maintenance_action_only",
+      "incident_count": 12
+    },
+    {
+      "system_category": "flight_control",
+      "response_category": "return_to_departure",
+      "incident_count": 19
+    },
+    {
+      "system_category": "hydraulic",
+      "response_category": "emergency_or_divert",
+      "incident_count": 36
+    },
+    {
+      "system_category": "hydraulic",
+      "response_category": "maintenance_action_only",
+      "incident_count": 9
+    },
+    {
+      "system_category": "hydraulic",
+      "response_category": "return_to_departure",
+      "incident_count": 15
+    },
+    {
+      "system_category": "pressurization_or_bleed_or_pack",
+      "response_category": "continue_after_troubleshooting",
+      "incident_count": 2
+    },
+    {
+      "system_category": "pressurization_or_bleed_or_pack",
+      "response_category": "emergency_or_divert",
+      "incident_count": 34
+    },
+    {
+      "system_category": "pressurization_or_bleed_or_pack",
+      "response_category": "maintenance_action_only",
+      "incident_count": 9
+    },
+    {
+      "system_category": "pressurization_or_bleed_or_pack",
+      "response_category": "return_to_departure",
+      "incident_count": 20
+    }
+  ],
+  "elapsed_seconds": 90.05,
+  "cost_usd": 0.12011625,
+  "total_tokens": 166555
+}

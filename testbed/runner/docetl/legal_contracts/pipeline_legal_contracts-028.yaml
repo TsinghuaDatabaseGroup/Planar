@@ -1,0 +1,111 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body: {chat_template_kwargs: {enable_thinking: false}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+
+operations:
+  - name: filter_nda_types
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is a mutual NDA, unilateral NDA, or
+      confidentiality-and-standstill agreement.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_qualifying_nda_type: boolean}}
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body: {chat_template_kwargs: {enable_thinking: false}}
+
+  - name: filter_standstill_employee_non_solicit_no_noncompete
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this agreement only if it contains operative standstill and employee
+      non-solicitation restrictions and contains no operative non-compete
+      restriction.
+
+      Agreement:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {has_required_restrictions: boolean}}
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body: {chat_template_kwargs: {enable_thinking: false}}
+
+  - name: extract_law_and_periods
+    type: map
+    optimize: true
+    prompt: |
+      Extract the governing law, standstill duration, and employee
+      non-solicitation duration. Normalize years by multiplying by 12. For a
+      fixed-date interval, compute elapsed_days*12/365 and round to two decimals.
+      Use each availability flag to represent whether that value is stated and
+      quantifiable; use an empty string or 0 only as the required placeholder
+      when unavailable.
+
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        governing_law_available: boolean
+        governing_law_value: string
+        standstill_available: boolean
+        standstill_months_value: float
+        employee_non_solicitation_available: boolean
+        employee_non_solicitation_months_value: float
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body: {chat_template_kwargs: {enable_thinking: false}}
+
+  - name: normalize_nullable_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "document_id": str(doc.get("doc_id") or ""),
+              "governing_law": str(doc.get("governing_law_value") or "") if doc.get("governing_law_available") is True else None,
+              "standstill_months": round(float(doc.get("standstill_months_value") or 0), 2) if doc.get("standstill_available") is True else None,
+              "employee_non_solicitation_months": round(float(doc.get("employee_non_solicitation_months_value") or 0), 2) if doc.get("employee_non_solicitation_available") is True else None,
+          }
+
+  - name: filter_period_comparison
+    type: code_filter
+    code: |
+      def transform(doc):
+          standstill = doc.get("standstill_months")
+          employee = doc.get("employee_non_solicitation_months")
+          return standstill is not None and employee is not None and float(standstill) <= float(employee)
+
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations:
+        - filter_nda_types
+        - filter_standstill_employee_non_solicit_no_noncompete
+        - extract_law_and_periods
+        - normalize_nullable_fields
+        - filter_period_comparison
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-028.json

@@ -1,0 +1,38 @@
+{
+  "task_id": "legal_contracts-073",
+  "answer": [
+    {
+      "document_name": "ex971globalstarincclawback.htm",
+      "policy_title": "Globalstar, Inc. Clawback Policy",
+      "lookback_period": "Not specified in excerpt",
+      "expanded_covered_group": "Covered Executives"
+    },
+    {
+      "document_name": "eh250596666_ex1005.htm",
+      "policy_title": "Clawback/Forfeiture",
+      "lookback_period": "Not explicitly specified in excerpt (references compliance with Section 10D of the Exchange Act)",
+      "expanded_covered_group": "Participant (includes any employee, director, or consultant holding an Award under the Plan)"
+    },
+    {
+      "document_name": "ex10-9.htm",
+      "policy_title": "Clawback (Section 5 of RSU Agreement)",
+      "lookback_period": "2 years (for misconduct); Plan/Applicable Laws (for restatement)",
+      "expanded_covered_group": "All employees/RSU recipients"
+    },
+    {
+      "document_name": "ex19-2.htm",
+      "policy_title": "Incentive Compensation Recoupment Policy",
+      "lookback_period": "within one year following the filing of the financial report giving rise to the Restatement",
+      "expanded_covered_group": "such other senior executives as may be determined by the Committee"
+    },
+    {
+      "document_name": "ex19-2_1.htm",
+      "policy_title": "Incentive Compensation Recoupment Policy",
+      "lookback_period": "within one year following the filing of the financial report giving rise to the Restatement",
+      "expanded_covered_group": "such other senior executives as may be determined by the Committee"
+    }
+  ],
+  "elapsed_seconds": 465.34,
+  "cost_usd": 4.151799,
+  "total_tokens": 7790120
+}

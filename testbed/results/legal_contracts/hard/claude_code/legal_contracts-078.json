@@ -1,0 +1,191 @@
+{
+  "task_id": "legal_contracts-078",
+  "answer": [
+    {
+      "document_id": "a202410kex191insidertrading.htm",
+      "company_names": [
+        "HUDSON PACIFIC PROPERTIES, INC.",
+        "Hudson Pacific Properties, Inc."
+      ]
+    },
+    {
+      "document_id": "avah-ex19_1.htm",
+      "company_names": [
+        "Aveanna Healthcare Holdings Inc."
+      ]
+    },
+    {
+      "document_id": "ayi-20240831xex19.htm",
+      "company_names": [
+        "Acuity Brands, Inc.",
+        "Acuity"
+      ]
+    },
+    {
+      "document_id": "ayi-20250831xex19.htm",
+      "company_names": [
+        "Acuity Inc.",
+        "Acuity",
+        "Securities and Exchange Commission"
+      ]
+    },
+    {
+      "document_id": "cto-20241231xex19d1.htm",
+      "company_names": [
+        "CTO Realty Growth, Inc.",
+        "Alpine Income Property Trust, Inc."
+      ]
+    },
+    {
+      "document_id": "d779517dex191.htm",
+      "company_names": [
+        "Digimarc Corporation"
+      ]
+    },
+    {
+      "document_id": "d917002dex19.htm",
+      "company_names": [
+        "Marblegate Acquisition Corp."
+      ]
+    },
+    {
+      "document_id": "ex-191insidertradingcompli.htm",
+      "company_names": [
+        "Rivian Automotive, Inc.",
+        "Rivian"
+      ]
+    },
+    {
+      "document_id": "ex191-globalstarincinsider.htm",
+      "company_names": [
+        "Globalstar, Inc.",
+        "GSAT"
+      ]
+    },
+    {
+      "document_id": "ex191evercommerce_-xinside.htm",
+      "company_names": [
+        "EverCommerce Inc."
+      ]
+    },
+    {
+      "document_id": "ex42rivian6tharira.htm",
+      "company_names": [
+        "Rivian Automotive, Inc.",
+        "Amazon.com NV Investment Holdings LLC"
+      ]
+    },
+    {
+      "document_id": "ex_775611.htm",
+      "company_names": [
+        "Byrna Technologies Inc."
+      ]
+    },
+    {
+      "document_id": "exhibit101893024.htm",
+      "company_names": [
+        "Franklin Resources, Inc.",
+        "Franklin",
+        "Franklin Templeton"
+      ]
+    },
+    {
+      "document_id": "exhibit1025formofstockopti.htm",
+      "company_names": [
+        "TransDigm Group Incorporated",
+        "TransDigm, Inc."
+      ]
+    },
+    {
+      "document_id": "exhibit1026formofstockopti.htm",
+      "company_names": [
+        "TransDigm Group Incorporated",
+        "TransDigm, Inc."
+      ]
+    },
+    {
+      "document_id": "exhibit19-insidertradingpo.htm",
+      "company_names": [
+        "SKYWORKS SOLUTIONS, INC.",
+        "Skyworks Solutions, Inc."
+      ]
+    },
+    {
+      "document_id": "exhibit19-insidertradingpo_1.htm",
+      "company_names": [
+        "SKYWORKS SOLUTIONS, INC.",
+        "Skyworks Solutions, Inc."
+      ]
+    },
+    {
+      "document_id": "exhibit191-insidertradingp_3.htm",
+      "company_names": [
+        "Hertz Global Holdings, Inc.",
+        "The Hertz Corporation"
+      ]
+    },
+    {
+      "document_id": "exhibit19106302025.htm",
+      "company_names": [
+        "KLA Corporation",
+        "KLA",
+        "Securities and Exchange Commission",
+        "Nasdaq Stock Market"
+      ]
+    },
+    {
+      "document_id": "exhibit191taskusincsecurit.htm",
+      "company_names": [
+        "TASKUS, INC.",
+        "TaskUs, Inc.",
+        "Securities and Exchange Commission"
+      ]
+    },
+    {
+      "document_id": "icfi-ex19_0.htm",
+      "company_names": [
+        "ICF International, Inc.",
+        "ICF"
+      ]
+    },
+    {
+      "document_id": "krus-ex19_1.htm",
+      "company_names": [
+        "Kura Sushi USA, Inc.",
+        "Kura",
+        "Securities and Exchange Commission",
+        "Department of Justice",
+        "Kura Sushi, Inc.",
+        "Kura Japan",
+        "Nasdaq Stock Market"
+      ]
+    },
+    {
+      "document_id": "prdo-ex19_1.htm",
+      "company_names": [
+        "Perdoceo Education Corporation",
+        "Securities and Exchange Commission",
+        "National Association of Securities Dealers",
+        "Department of Education",
+        "The Nasdaq Global Select Market"
+      ]
+    },
+    {
+      "document_id": "rh-20250201xex19d1.htm",
+      "company_names": [
+        "RH",
+        "Waterworks"
+      ]
+    },
+    {
+      "document_id": "tygo-ex19_1.htm",
+      "company_names": [
+        "Tigo Energy, Inc.",
+        "The Nasdaq Stock Market"
+      ]
+    }
+  ],
+  "elapsed_seconds": 45.53,
+  "cost_usd": 0.12572208,
+  "total_tokens": 221325
+}

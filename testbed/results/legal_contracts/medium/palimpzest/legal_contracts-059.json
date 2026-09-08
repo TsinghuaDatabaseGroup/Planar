@@ -1,0 +1,10 @@
+{
+  "task_id": "legal_contracts-059",
+  "answer": [
+    {"officer_count": 1, "certification_count": 307},
+    {"officer_count": 2, "certification_count": 55}
+  ],
+  "elapsed_seconds": 1723.35,
+  "cost_usd": 2.352426,
+  "total_tokens": 4451988
+}

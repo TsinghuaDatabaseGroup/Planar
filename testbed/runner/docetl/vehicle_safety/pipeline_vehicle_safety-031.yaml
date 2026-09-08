@@ -1,0 +1,152 @@
+datasets:
+  nhtsa_complaints:
+    type: file
+    path: data/nhtsa_vehicle_safety/complaints.csv
+  nhtsa_recalls:
+    type: file
+    path: data/nhtsa_vehicle_safety/recalls.jsonl
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_airbag_complaints
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("component_id") == "AIRBAG"
+
+  - name: classify_serious_airbag_deployment_hazard
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether this complaint describes airbag non-deployment, unintended
+      deployment, inflator rupture, shrapnel, or another serious airbag deployment
+      hazard.
+
+      Qualify an airbag that failed to deploy in a relevant crash, deployed without
+      a corresponding impact or command, or experienced an inflator rupture,
+      explosion, fragment release, or comparably serious deployment failure. Do not
+      qualify a warning light, routine service issue, cosmetic concern, or generic
+      airbag mention without such a hazard.
+
+      Complaint summary:
+      {{ input.summary_text }}
+    output:
+      mode: structured_output
+      schema:
+        describes_serious_airbag_deployment_hazard: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_airbag_recalls
+    type: code_filter
+    code: |
+      def transform(doc):
+          component = doc.get("component") or {}
+          return component.get("component_id") == "AIRBAG"
+
+  - name: flatten_airbag_recall_remedy_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          campaign = doc.get("campaign") or {}
+          vehicle = doc.get("vehicle") or {}
+          remedy = doc.get("remedy") or {}
+          return {
+              "campaign_number": campaign.get("number"),
+              "vehicle_id": vehicle.get("vehicle_id"),
+              "corrective_action": remedy.get("corrective_action") or "",
+          }
+
+  - name: classify_inflator_or_airbag_module_replacement
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether this recall corrective action describes replacement of an
+      airbag inflator, airbag module, or inflator assembly.
+
+      Qualify replacement of the complete inflator or airbag module and replacement
+      of an assembly whose stated airbag component is the inflator. Do not qualify
+      inspection only, software updates, replacement of unrelated restraint parts,
+      generic repairs, reimbursement language, or a remedy that does not specify
+      replacement of one of those airbag components.
+
+      Corrective action:
+      {{ input.corrective_action }}
+    output:
+      mode: structured_output
+      schema:
+        replaces_inflator_or_airbag_module: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: join_airbag_complaints_to_same_vehicle_recalls
+    type: equijoin
+    deterministic: true
+    blocking_conditions:
+      - left["vehicle_id"] == right["vehicle_id"]
+
+  - name: count_distinct_matching_airbag_campaigns
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          campaign_numbers = {
+              item.get("campaign_number")
+              for item in items
+              if item.get("campaign_number")
+          }
+          return {"n": len(campaign_numbers)}
+
+pipeline:
+  steps:
+    - name: qualifying_airbag_complaints
+      input: nhtsa_complaints
+      operations:
+        - filter_airbag_complaints
+        - classify_serious_airbag_deployment_hazard
+    - name: qualifying_airbag_recall_remedies
+      input: nhtsa_recalls
+      operations:
+        - filter_airbag_recalls
+        - flatten_airbag_recall_remedy_fields
+        - classify_inflator_or_airbag_module_replacement
+    - name: matched_airbag_complaints_and_recalls
+      operations:
+        - join_airbag_complaints_to_same_vehicle_recalls:
+            left: qualifying_airbag_complaints
+            right: qualifying_airbag_recall_remedies
+    - name: matching_airbag_campaign_count
+      input: matched_airbag_complaints_and_recalls
+      operations:
+        - count_distinct_matching_airbag_campaigns
+  output:
+    type: file
+    path: raw_outputs/vehicle_safety/output_vehicle_safety-031.json

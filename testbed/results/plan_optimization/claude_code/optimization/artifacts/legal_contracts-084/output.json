@@ -1,0 +1,27 @@
+{
+  "task_id": "legal_contracts-084",
+  "optimization_analysis": "Three reductions applied: (1) CLAWBACK's two sequential SEM_FILTERs are merged into one combined predicate, saving one LLM call per document that passes the first filter. (2) All three SEM_EXTRACT calls are updated to request a canonical/normalized legal company name, which makes company identity consistent across branches and lets the two SEM_JOINs be replaced with deterministic exact JOINs—eliminating LLM cost that scales with join-input sizes. (3) The 70-subsidiary threshold is pushed into the SUBSIDIARIES SEM_FILTER so documents with obviously fewer subsidiaries are dropped before the more expensive SEM_EXTRACT step; the scalar FILTER(subsidiary_count >= 70) is retained after extraction to preserve correctness against any LLM miscounts.",
+  "optimized_semantic_plan": [
+    {
+      "type": "operator_dag",
+      "program": "SOX = SCAN_DOCS(CONTRACTEXHIBIT, all) -> SEM_FILTER('Is this a SOX Section 302 certification document?') -> SEM_EXTRACT('Extract the certified company normalized to its canonical legal name, and the certifying officer with title', {company: str, certifying_officer: str}) -> GROUP_BY(company, certifying_officers = SORT_ASC(DISTINCT(certifying_officer))); CLAWBACK = SCAN_DOCS(CONTRACTEXHIBIT, all) -> SEM_FILTER('Is this a clawback or compensation-recovery policy that permits recovery for misconduct?') -> SEM_EXTRACT('Extract the company normalized to its canonical legal name and normalize the covered-person category to a standard category label', {company: str, covered_person_category: str}) -> DEDUP(company, covered_person_category); SUBSIDIARIES = SCAN_DOCS(CONTRACTEXHIBIT, all) -> SEM_FILTER('Is this a subsidiary-list filing that lists 70 or more subsidiaries?') -> SEM_EXTRACT('Extract the parent company normalized to its canonical legal name and the exact count of listed subsidiaries', {company: str, subsidiary_count: integer}) -> FILTER(subsidiary_count >= 70) -> GROUP_BY(company, largest_subsidiary_count = MAX(subsidiary_count)); JOIN(SOX, CLAWBACK, on=company) -> JOIN(SUBSIDIARIES, on=company) -> ORDER_BY(largest_subsidiary_count DESC, company ASC)"
+    }
+  ],
+  "valid": true,
+  "validation_warnings": [],
+  "elapsed_secs": 57.027,
+  "cost_usd": 0.04436025,
+  "agent_cost_usd": 0.04436025,
+  "usage": {
+    "input": 3,
+    "output": 1967,
+    "cacheRead": 0,
+    "cacheWrite": 3959
+  },
+  "agent_usage": {
+    "input": 3,
+    "output": 1967,
+    "cacheRead": 0,
+    "cacheWrite": 3959
+  }
+}

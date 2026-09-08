@@ -1,0 +1,257 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_us_reference
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("state_reference") == "US"
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: filter_numeric_expected_actual_comparisons
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this NASA ASRS report only if it contains at least one numeric
+      cleared-versus-flown or expected-versus-actual comparison for altitude,
+      speed, heading, or runway.
+
+      Both numeric sides must refer to the same field and the same comparison. The
+      narrative must identify which value was cleared/expected and which value was
+      flown/actual. Exclude a lone number, nonnumeric descriptions, values from
+      unrelated moments, values for different fields, and two numbers that are only
+      coincidentally mentioned near one another. A numeric runway identifier may
+      include a letter suffix such as 27L.
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: extract_numeric_comparisons
+    type: map
+    optimize: true
+    prompt: |
+      Extract every distinct numeric cleared-versus-flown or
+      expected-versus-actual comparison from this NASA ASRS narrative.
+
+      Return one compact JSON object with a comparisons array. Each array item must
+      describe one comparison using these fields:
+      - measurement_type: altitude, speed, heading, or runway;
+      - expected_value: the cleared or expected numeric value;
+      - actual_value: the flown or actual numeric value;
+      - deviation: a concise normalized phrase of at most six words describing the
+        resulting deviation.
+
+      Emit one entry per distinct comparison. Keep expected and actual values
+      separate. Normalize each value to a short canonical form that preserves its
+      number and meaningful unit or runway suffix, such as "5000 ft", "250 kt",
+      "270 deg", "fl230", or "27l". Remove thousands separators and do not add
+      qualifiers or narrative commentary inside a value. Include only pairs whose
+      two numeric sides belong to the same comparison and whose normalized expected
+      and actual values differ. The narrative must explicitly establish the selected
+      measurement type; never force a number for another kind of measurement into
+      one of the four allowed types. Do not duplicate a pair repeated in the text.
+
+      Do not repeat an item. Close the array immediately after all distinct,
+      explicitly supported comparisons have been emitted. Return an empty
+      comparisons array when no qualifying comparison can be extracted.
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        comparisons: "list[{measurement_type: enum[altitude, speed, heading, runway], expected_value: string, actual_value: string, deviation: string}]"
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 512
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: build_comparison_rows
+    type: code_map
+    code: |
+      def transform(doc):
+          import re
+
+          valid_measurements = {"altitude", "speed", "heading", "runway"}
+
+          def normalize_text(value):
+              value = str(value or "").strip().lower().replace(",", "")
+              return re.sub(r"\s+", " ", value)
+
+          def is_compact_numeric(value):
+              return bool(re.search(r"\d", value)) and len(value.split()) <= 2
+
+          rows = []
+          seen = set()
+          for comparison in doc.get("comparisons") or []:
+              if not isinstance(comparison, dict):
+                  continue
+              measurement = str(
+                  comparison.get("measurement_type", "")
+              ).strip().lower()
+              expected = normalize_text(comparison.get("expected_value"))
+              actual = normalize_text(comparison.get("actual_value"))
+              deviation = " ".join(
+                  normalize_text(comparison.get("deviation")).split()[:6]
+              )
+              key = (measurement, expected, actual)
+              if (
+                  measurement not in valid_measurements
+                  or not expected
+                  or not actual
+                  or expected == actual
+                  or not is_compact_numeric(expected)
+                  or not is_compact_numeric(actual)
+                  or not deviation
+                  or key in seen
+              ):
+                  continue
+              seen.add(key)
+              rows.append(
+                  {
+                      "measurement_type": measurement,
+                      "expected_value": expected,
+                      "actual_value": actual,
+                      "deviation": deviation,
+                  }
+              )
+          return {"comparison_rows": rows}
+
+  - name: unnest_comparison_rows
+    type: unnest
+    unnest_key: comparison_rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - measurement_type
+      - expected_value
+      - actual_value
+      - deviation
+
+  - name: aggregate_by_measurement_type
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          from collections import Counter
+
+          measurement_order = ["altitude", "speed", "heading", "runway"]
+          comparison_keys = {
+              measurement: set() for measurement in measurement_order
+          }
+          deviation_counts = {
+              measurement: Counter() for measurement in measurement_order
+          }
+
+          for item in items:
+              incident_id = str(item.get("incident_id", ""))
+              measurement = item.get("measurement_type")
+              key = (
+                  incident_id,
+                  str(item.get("expected_value", "")),
+                  str(item.get("actual_value", "")),
+              )
+              if (
+                  not incident_id
+                  or measurement not in comparison_keys
+                  or key in comparison_keys[measurement]
+              ):
+                  continue
+              comparison_keys[measurement].add(key)
+              deviation_counts[measurement][item.get("deviation")] += 1
+
+          rows = []
+          for measurement in measurement_order:
+              if not comparison_keys[measurement]:
+                  continue
+              mode_deviation = sorted(
+                  deviation_counts[measurement].items(),
+                  key=lambda pair: (-pair[1], pair[0]),
+              )[0][0]
+              rows.append(
+                  {
+                      "measurement_type": measurement,
+                      "comparison_count": len(comparison_keys[measurement]),
+                      "most_common_deviation": mode_deviation,
+                  }
+              )
+          return {"rows": rows}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - measurement_type
+      - comparison_count
+      - most_common_deviation
+
+pipeline:
+  steps:
+    - name: process
+      input: asrs_incidents
+      operations:
+        - filter_us_reference
+        - load_asrs_narrative
+        - filter_numeric_expected_actual_comparisons
+        - extract_numeric_comparisons
+        - build_comparison_rows
+        - unnest_comparison_rows
+        - aggregate_by_measurement_type
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-026.json

@@ -1,0 +1,40 @@
+{
+  "task_id": "finance-018",
+  "answer": {
+    "Subscription": {
+      "filing_count": 189,
+      "average_employee_count": 1087
+    },
+    "Product Sales": {
+      "filing_count": 1111,
+      "average_employee_count": 24832
+    },
+    "Services": {
+      "filing_count": 309,
+      "average_employee_count": 28396
+    },
+    "Advertising": {
+      "filing_count": 31,
+      "average_employee_count": 0
+    },
+    "Transaction Fees": {
+      "filing_count": 364,
+      "average_employee_count": 294
+    },
+    "Licensing/Royalties": {
+      "filing_count": 97,
+      "average_employee_count": 0
+    },
+    "Mixed/Diversified": {
+      "filing_count": 289,
+      "average_employee_count": 60
+    },
+    "Software/SaaS": {
+      "filing_count": 90,
+      "average_employee_count": 0
+    }
+  },
+  "elapsed_seconds": 3629.751,
+  "cost_usd": 15.98884005,
+  "total_tokens": 40700715
+}

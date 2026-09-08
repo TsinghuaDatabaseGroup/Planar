@@ -1,0 +1,308 @@
+{
+  "task_id": "finance-019",
+  "answer": [
+    {
+      "company_name": "Advanced Drainage Systems, Inc.",
+      "industry": "Manufacturer of innovative water management solutions in the stormwater and onsite septic wastewater industries"
+    },
+    {
+      "company_name": "AGILYSYS, INC.",
+      "industry": "Hospitality software solutions"
+    },
+    {
+      "company_name": "AMBARELLA, INC.",
+      "industry": "Semiconductors"
+    },
+    {
+      "company_name": "AMERICAN EAGLE OUTFITTERS, INC.",
+      "industry": "Specialty retailer of apparel, accessories, and personal care products"
+    },
+    {
+      "company_name": "American Superconductor Corporation",
+      "industry": "Power grid and wind power solutions provider"
+    },
+    {
+      "company_name": "American Woodmark Corporation",
+      "industry": "Cabinet manufacturing"
+    },
+    {
+      "company_name": "Anterix Inc.",
+      "industry": "Wireless telecommunications and spectrum licensing for utility and critical infrastructure private broadband networks"
+    },
+    {
+      "company_name": "Apogee Enterprises, Inc.",
+      "industry": "Architectural products and services for enclosing buildings, and high-performance glass and acrylic products"
+    },
+    {
+      "company_name": "APOGEE ENTERPRISES, INC.",
+      "industry": "Architectural glass and glazing products"
+    },
+    {
+      "company_name": "AstroNova, Inc.",
+      "industry": "Specialty printers and data acquisition and analysis systems"
+    },
+    {
+      "company_name": "AUTODESK, INC.",
+      "industry": "3D design, engineering and entertainment technology solutions"
+    },
+    {
+      "company_name": "AZZ Inc.",
+      "industry": "Hot-dip galvanizing and coil coating solutions"
+    },
+    {
+      "company_name": "BARNES & NOBLE EDUCATION, INC.",
+      "industry": "Contract operator of physical and virtual bookstores for college, university, and K-12 institutions; textbook wholesaler and inventory management provider"
+    },
+    {
+      "company_name": "BATH & BODY WORKS, INC.",
+      "industry": "Personal care and home fragrance retailer"
+    },
+    {
+      "company_name": "BJ'S WHOLESALE CLUB HOLDINGS, INC.",
+      "industry": "Membership warehouse clubs"
+    },
+    {
+      "company_name": "BROWN-FORMAN CORPORATION",
+      "industry": "Beverage alcohol products"
+    },
+    {
+      "company_name": "CAPRI HOLDINGS LIMITED",
+      "industry": "Global fashion luxury group"
+    },
+    {
+      "company_name": "CAVCO INDUSTRIES INC.",
+      "industry": "Manufactured housing production and financial services"
+    },
+    {
+      "company_name": "Cineverse Corp.",
+      "industry": "Streaming technology and entertainment"
+    },
+    {
+      "company_name": "CIRRUS LOGIC, INC.",
+      "industry": "Semiconductor"
+    },
+    {
+      "company_name": "COLUMBUS McKINNON CORPORATION",
+      "industry": "Intelligent motion solutions, material handling, and precision conveyance"
+    },
+    {
+      "company_name": "CONSTELLATION BRANDS, INC.",
+      "industry": "Producer and marketer of beer, wine, and spirits"
+    },
+    {
+      "company_name": "Cyanotech Corporation",
+      "industry": "Production of natural products derived from microalgae for the dietary supplements market"
+    },
+    {
+      "company_name": "Daktronics, Inc.",
+      "industry": "Designing and manufacturing electronic scoreboards, programmable display systems and large screen video displays for sporting, commercial and transportation applications"
+    },
+    {
+      "company_name": "DECKERS OUTDOOR CORPORATION",
+      "industry": "Footwear, apparel, and accessories"
+    },
+    {
+      "company_name": "DESTINATION XL GROUP, INC.",
+      "industry": "Specialty retail apparel (big and tall)"
+    },
+    {
+      "company_name": "DESTINATION XL GROUP, INC.",
+      "industry": "Specialty retailer of big & tall men's apparel and shoes"
+    },
+    {
+      "company_name": "DICK'S SPORTING GOODS, INC.",
+      "industry": "Sporting goods retailer"
+    },
+    {
+      "company_name": "DOCUSIGN, INC.",
+      "industry": "Electronic signature and agreement management software"
+    },
+    {
+      "company_name": "DOLLAR TREE, INC.",
+      "industry": "Retail discount stores"
+    },
+    {
+      "company_name": "DXC TECHNOLOGY COMPANY",
+      "industry": "IT services"
+    },
+    {
+      "company_name": "DYCOM INDUSTRIES, INC.",
+      "industry": "Specialty contracting services for telecommunications infrastructure and utilities"
+    },
+    {
+      "company_name": "Eagle Materials Inc.",
+      "industry": "Manufacturing of heavy construction materials and light building materials"
+    },
+    {
+      "company_name": "ELECTRONIC ARTS INC.",
+      "industry": "Digital interactive entertainment"
+    },
+    {
+      "company_name": "Ennis, Inc.",
+      "industry": "Trade printer manufacturing business forms and printed products"
+    },
+    {
+      "company_name": "Gen Digital Inc.",
+      "industry": "Cyber safety solutions, including security, privacy, and identity protection"
+    },
+    {
+      "company_name": "GENERAL MILLS, INC.",
+      "industry": "Manufacturer and marketer of branded consumer foods"
+    },
+    {
+      "company_name": "GMS INC.",
+      "industry": "Distribution of wallboard, ceilings, steel framing and complementary construction products"
+    },
+    {
+      "company_name": "HEALTHEQUITY, INC.",
+      "industry": "Technology-enabled healthcare savings and spending services, including Health Savings Accounts (HSAs) and Consumer-Directed Benefits (CDBs)"
+    },
+    {
+      "company_name": "HELEN OF TROY LIMITED",
+      "industry": "Consumer products"
+    },
+    {
+      "company_name": "Houlihan Lokey, Inc.",
+      "industry": "Investment Banking"
+    },
+    {
+      "company_name": "LIONS GATE ENTERTAINMENT CORP.",
+      "industry": "Motion picture and television studio operations and premium global subscription platform"
+    },
+    {
+      "company_name": "Logitech International S.A.",
+      "industry": "Computer Peripherals"
+    },
+    {
+      "company_name": "Medtronic plc",
+      "industry": "Healthcare Technology"
+    },
+    {
+      "company_name": "MODINE MANUFACTURING COMPANY",
+      "industry": "Thermal management products and solutions for HVAC&R, data center cooling, and vehicular applications"
+    },
+    {
+      "company_name": "MongoDB, Inc.",
+      "industry": "Developer data platform company"
+    },
+    {
+      "company_name": "MOTORCAR PARTS OF AMERICA, INC.",
+      "industry": "Automotive Parts Manufacturing"
+    },
+    {
+      "company_name": "MOTORCAR PARTS OF AMERICA, INC.",
+      "industry": "Automotive aftermarket non-discretionary replacement parts and test solutions"
+    },
+    {
+      "company_name": "Nathan's Famous, Inc.",
+      "industry": "Foodservice"
+    },
+    {
+      "company_name": "National Beverage Corp.",
+      "industry": "Beverage"
+    },
+    {
+      "company_name": "NETSCOUT SYSTEMS, INC.",
+      "industry": "Service assurance and cybersecurity solutions"
+    },
+    {
+      "company_name": "Okta, Inc.",
+      "industry": "Identity and Access Management (IAM) Software"
+    },
+    {
+      "company_name": "RALPH LAUREN CORPORATION",
+      "industry": "Design, marketing, and distribution of luxury lifestyle products"
+    },
+    {
+      "company_name": "Ross Stores, Inc.",
+      "industry": "Off-price retail apparel and home fashion"
+    },
+    {
+      "company_name": "Science Applications International Corporation",
+      "industry": "Technical, engineering and enterprise information technology (IT) services"
+    },
+    {
+      "company_name": "SecureWorks Corp.",
+      "industry": "Cybersecurity"
+    },
+    {
+      "company_name": "SEMTECH CORPORATION",
+      "industry": "High-performance semiconductor, Internet of Things (IoT) systems and cloud connectivity service provider"
+    },
+    {
+      "company_name": "SIGNET JEWELERS LIMITED",
+      "industry": "Retailer of diamond jewelry"
+    },
+    {
+      "company_name": "Skyline Champion Corporation",
+      "industry": "Factory-built housing"
+    },
+    {
+      "company_name": "Smith & Wesson Brands, Inc.",
+      "industry": "Firearms manufacturing"
+    },
+    {
+      "company_name": "Sonoma Pharmaceuticals, Inc.",
+      "industry": "Healthcare"
+    },
+    {
+      "company_name": "SPORTSMAN'S WAREHOUSE HOLDINGS, INC.",
+      "industry": "Outdoor sporting goods retailer"
+    },
+    {
+      "company_name": "TAKE-TWO INTERACTIVE SOFTWARE, INC.",
+      "industry": "Interactive entertainment software development and publishing"
+    },
+    {
+      "company_name": "TEL-INSTRUMENT ELECTRONICS CORP.",
+      "industry": "Designer and manufacturer of avionics test and measurement instruments"
+    },
+    {
+      "company_name": "The J. M. Smucker Company",
+      "industry": "Manufacturing and marketing of branded food and beverage products"
+    },
+    {
+      "company_name": "The TJX Companies, Inc.",
+      "industry": "Off-price apparel and home fashions retailer"
+    },
+    {
+      "company_name": "TITAN MACHINERY INC.",
+      "industry": "Agricultural and construction equipment dealer"
+    },
+    {
+      "company_name": "U-Haul Holding Company",
+      "industry": "Moving and storage"
+    },
+    {
+      "company_name": "ULTA BEAUTY, INC.",
+      "industry": "Specialty beauty retailer"
+    },
+    {
+      "company_name": "Universal Corporation",
+      "industry": "Global business-to-business agriproducts company supplying leaf tobacco and plant-based ingredients"
+    },
+    {
+      "company_name": "Veeva Systems Inc.",
+      "industry": "Cloud software and data solutions for the life sciences industry"
+    },
+    {
+      "company_name": "VIRCO MFG. CORPORATION",
+      "industry": "Manufacturer and supplier of moveable educational furniture and equipment"
+    },
+    {
+      "company_name": "Vista Outdoor Inc.",
+      "industry": "Outdoor recreation and shooting sports products"
+    },
+    {
+      "company_name": "ZUMIEZ INC.",
+      "industry": "Specialty retailer of apparel, footwear, accessories and hardgoods for action sports, streetwear and unique lifestyles"
+    },
+    {
+      "company_name": "Zuora, Inc.",
+      "industry": "Monetization suite for subscription businesses"
+    }
+  ],
+  "elapsed_seconds": 1025.768,
+  "cost_usd": 10.1944809,
+  "total_tokens": 25853305
+}

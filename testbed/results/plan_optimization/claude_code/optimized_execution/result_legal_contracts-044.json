@@ -1,0 +1,56 @@
+{
+  "task_id": "legal_contracts-044",
+  "answer": [
+    {
+      "document_name": "Voya Financial Compensation Recoupment Policy",
+      "company_name": "Voya Financial, Inc.",
+      "effective_date": "2023-10-01",
+      "covered_persons": "All Executive Officers who received Incentive-based Compensation and all employees, including Executive Officers, and directors who engage in misconduct"
+    },
+    {
+      "document_name": "Voya Financial Compensation Recoupment Policy",
+      "company_name": "Voya Financial, Inc.",
+      "effective_date": "2023-10-01",
+      "covered_persons": "All Executive Officers who received Incentive-based Compensation and all employees, including Executive Officers, and directors who engage in misconduct"
+    },
+    {
+      "document_name": "CAVCO INDUSTRIES, INC. CLAWBACK POLICY",
+      "company_name": "Cavco Industries, Inc.",
+      "effective_date": "2023-12-01",
+      "covered_persons": "current or former executive officers"
+    },
+    {
+      "document_name": "Globalstar, Inc. Clawback Policy",
+      "company_name": "Globalstar, Inc.",
+      "effective_date": "2025-02-25",
+      "covered_persons": "Section 16 Officers and Covered Executives"
+    },
+    {
+      "document_name": "Executive Compensation Recovery Policy",
+      "company_name": "Skyworks Solutions, Inc.",
+      "effective_date": "2023-10-02",
+      "covered_persons": "Executive Officers"
+    },
+    {
+      "document_name": "El Pollo Loco Holdings, Inc. Clawback Policy",
+      "company_name": "El Pollo Loco Holdings, Inc.",
+      "effective_date": "2023-10-31",
+      "covered_persons": "Current or former officers of the Company who are or were subject to Section 16 of the Securities Exchange Act of 1934"
+    },
+    {
+      "document_name": "EX-97.1 STRATEGIC EDUCATION, INC. RECOUPMENT POLICY",
+      "company_name": "Strategic Education, Inc.",
+      "effective_date": "2023-10-02",
+      "covered_persons": "current and former Executive Officers"
+    },
+    {
+      "document_name": "CLAWBACK POLICY",
+      "company_name": "zSpace, Inc.",
+      "effective_date": "2024-06-18",
+      "covered_persons": "Executive Officers"
+    }
+  ],
+  "elapsed_seconds": 95.568,
+  "cost_usd": 0.30066873,
+  "total_tokens": 370303
+}

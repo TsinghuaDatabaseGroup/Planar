@@ -1,0 +1,147 @@
+datasets:
+  nhtsa_complaints:
+    type: file
+    path: data/nhtsa_vehicle_safety/complaints.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_toyota_rav4_body_complaints
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("make") == "TOYOTA"
+              and doc.get("model") == "RAV4"
+              and doc.get("component_id") == "BODY"
+          )
+
+  - name: classify_relevant_glass_window_or_water_defect
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether this complaint describes a safety-relevant defect
+      involving glass, a window, the windshield, a sunroof or moonroof, or water
+      inside a door or window area that affects visibility or safe operation.
+
+      Qualifying defects include unexpected breakage, cracking or shattering;
+      impaired window or roof-glass operation; optical distortion or another
+      visibility defect; and water intrusion into a door or window assembly with a
+      safety or visibility consequence. Do not qualify unrelated body damage,
+      ordinary cosmetic concerns, routine service requests, or glass damage clearly
+      caused only by a normal external impact without another alleged defect.
+
+      Complaint summary:
+      {{ input.summary_text }}
+    output:
+      mode: structured_output
+      schema:
+        is_relevant_glass_window_or_water_defect: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: classify_glass_window_root_cause
+    type: map
+    optimize: true
+    prompt: |
+      Classify the likely primary root-cause label for this relevant Toyota RAV4
+      body complaint using exactly one label:
+
+      - spontaneous_glass_breakage: glass cracks, shatters, breaks, or explodes
+        without an identified external impact or other ordinary cause;
+      - door_water_intrusion: water leaks into or accumulates within a door,
+        window channel, or related door/window assembly;
+      - visibility_distortion_or_defect: optical distortion, waviness, haze,
+        delamination, obstruction, or another glass/window defect primarily
+        impairing visibility, without spontaneous breakage as the main event;
+      - other: the complaint is relevant but its primary root cause does not fit
+        the preceding labels.
+
+      Choose the primary alleged cause or failure pattern, not a secondary
+      consequence, repair action, or component mentioned only in passing.
+
+      Complaint summary:
+      {{ input.summary_text }}
+    output:
+      mode: structured_output
+      schema:
+        root_cause_label: enum[spontaneous_glass_breakage, door_water_intrusion, visibility_distortion_or_defect, other]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: count_complaints_by_root_cause
+    type: code_reduce
+    reduce_key: root_cause_label
+    code: |
+      def transform(items):
+          return {"count": len(items)}
+
+  - name: format_root_cause_distribution
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          labels = [
+              "spontaneous_glass_breakage",
+              "door_water_intrusion",
+              "visibility_distortion_or_defect",
+              "other",
+          ]
+          counts = {label: 0 for label in labels}
+          for item in items:
+              label = item.get("root_cause_label")
+              if label in counts:
+                  counts[label] = int(item.get("count") or 0)
+
+          most_common_label = sorted(
+              labels,
+              key=lambda label: (-counts[label], label),
+          )[0]
+          return {
+              "most_common_label": most_common_label,
+              "per_label_counts": {
+                  label: {"count": counts[label]}
+                  for label in labels
+              },
+          }
+
+pipeline:
+  steps:
+    - name: rav4_body_root_causes
+      input: nhtsa_complaints
+      operations:
+        - filter_toyota_rav4_body_complaints
+        - classify_relevant_glass_window_or_water_defect
+        - classify_glass_window_root_cause
+        - count_complaints_by_root_cause
+        - format_root_cause_distribution
+  output:
+    type: file
+    path: raw_outputs/vehicle_safety/output_vehicle_safety-026.json

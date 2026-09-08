@@ -1,0 +1,58 @@
+{
+  "task_id": "legal_contracts-078",
+  "answer": [
+    {
+      "document_id": "a2023q4voyaex191voyafinanc.htm",
+      "company_names": [
+        "Voya Financial, Inc."
+      ]
+    },
+    {
+      "document_id": "a202410kex191insidertrading.htm",
+      "company_names": [
+        "Hudson Pacific Properties, Inc."
+      ]
+    },
+    {
+      "document_id": "a2024q4voyaex191tradingpol.htm",
+      "company_names": [
+        "Voya Financial, Inc."
+      ]
+    },
+    {
+      "document_id": "avah-ex19_1.htm",
+      "company_names": [
+        "Aveanna Healthcare Holdings Inc."
+      ]
+    },
+    {
+      "document_id": "ayi-20240831xex19.htm",
+      "company_names": [
+        "Acuity Brands, Inc."
+      ]
+    },
+    {
+      "document_id": "ayi-20250831xex19.htm",
+      "company_names": [
+        "Acuity Inc."
+      ]
+    },
+    {
+      "document_id": "icfi-ex19_0.htm",
+      "company_names": [
+        "ICF International, Inc.",
+        "ICF"
+      ]
+    },
+    {
+      "document_id": "cto-20241231xex19d1.htm",
+      "company_names": [
+        "CTO Realty Growth, Inc.",
+        "Alpine Income Property Trust, Inc."
+      ]
+    }
+  ],
+  "elapsed_seconds": 487.22,
+  "cost_usd": 4.75972,
+  "total_tokens": 8930777
+}

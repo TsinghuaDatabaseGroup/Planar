@@ -1,0 +1,881 @@
+{
+  "format_version": 1,
+  "purpose": "human_review_of_selected_palimpzest_physical_plan",
+  "task_id": "vehicle_safety-033",
+  "optimization_status": "optimized_only",
+  "selected_plan_id": "fecd19bc7e",
+  "executable_plan": {
+    "file": "optimized_plan_vehicle_safety-033.plan.pkl",
+    "format": "cloudpickle",
+    "version": 1,
+    "sha256": "09ba10dd639e9970c55706736166dde1398872a8b6f8c418fcd4e6624c58a214",
+    "size_bytes": 174492,
+    "selected_plan_id": "fecd19bc7e",
+    "datasources": {
+      "vehicle_safety-033-recalls-semantic-input": {
+        "id": "vehicle_safety-033-recalls-semantic-input",
+        "row_count": 1815,
+        "schema_fields": [
+          "campaign_number",
+          "campaign_report_received_date",
+          "component_id",
+          "risk_defect_summary",
+          "vehicle_id"
+        ]
+      },
+      "vehicle_safety-033-complaints-semantic-input": {
+        "id": "vehicle_safety-033-complaints-semantic-input",
+        "row_count": 9067,
+        "schema_fields": [
+          "complaint_id",
+          "component_id",
+          "received_date",
+          "summary_text",
+          "vehicle_id"
+        ]
+      }
+    },
+    "scan_datasource_records_included": false,
+    "sentinel_record_payloads_included": false
+  },
+  "input_plan": {
+    "task_id": "vehicle_safety-033",
+    "query": "Which complaint-recall pairs involve the same vehicle make, model, model year, and component category, have a recall reported at least 1,500 days after the complaint, and describe the same defect mechanism in the complaint and recall summaries? For each long-lag pair, I want to know the complaint ID, recall campaign number, elapsed days, and a short root-cause phrase from the recall defect summary.",
+    "inputs": [
+      {
+        "source_id": "complaints_csv",
+        "dataset": "NHTSA Vehicle Safety",
+        "source_type": "table",
+        "role": "primary"
+      },
+      {
+        "source_id": "recalls_jsonl",
+        "dataset": "NHTSA Vehicle Safety",
+        "source_type": "document",
+        "role": "primary"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(NHTSA, recalls, [campaign.number, vehicle.vehicle_id AS vehicle_id, component.component_id AS component_id, campaign.report_received_date, risk.defect_summary]) -> FILTER(campaign.report_received_date IS NOT NULL AND campaign.report_received_date <> '') -> SEM_EXTRACT('Extract a short (<=10 words) root-cause phrase from risk.defect_summary.', out_schema={defect_root_cause: string}, input_bindings={text: risk.defect_summary}) -> JOIN(inner, on=[vehicle_id, component_id, complaint.received_date < right.report_received_date AND date_diff(right.report_received_date, complaint.received_date) >= 1500], right=( SCAN_TABLE(NHTSA, complaints, [complaint_id, vehicle_id, component_id, received_date, summary_text]) )) -> SEM_FILTER('the complaint summary describes the same defect mechanism as the recall defect summary', input_bindings={complaint_text: summary_text, recall_text: risk.defect_summary}) -> PROJECT([complaint_id, campaign.number AS campaign_number, date_diff(report_received_date, received_date) AS days_between, defect_root_cause])"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "complaint_id",
+        "campaign_number",
+        "days_between",
+        "defect_root_cause"
+      ],
+      "types": [
+        "string",
+        "string",
+        "integer",
+        "string"
+      ]
+    }
+  },
+  "input_bad_plan": null,
+  "input_logical_plan": {
+    "root_dataset_id": "b6d23093d7",
+    "nodes": [
+      {
+        "dataset_id": "vehicle_safety-033-recalls-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "4f2cb14b34",
+        "unique_logical_op_id": "0-4f2cb14b34",
+        "depends_on": [],
+        "generated_fields": [
+          "campaign_number",
+          "campaign_report_received_date",
+          "component_id",
+          "risk_defect_summary",
+          "vehicle_id"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "campaign_number",
+          "campaign_report_received_date",
+          "component_id",
+          "risk_defect_summary",
+          "vehicle_id"
+        ]
+      },
+      {
+        "dataset_id": "4f9191f531",
+        "source_dataset_ids": [
+          "vehicle_safety-033-recalls-semantic-input"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "1b88d1d46a",
+        "unique_logical_op_id": "1-1b88d1d46a",
+        "depends_on": [
+          "risk_defect_summary"
+        ],
+        "generated_fields": [
+          "defect_root_cause"
+        ],
+        "input_fields": [
+          "campaign_number",
+          "campaign_report_received_date",
+          "component_id",
+          "risk_defect_summary",
+          "vehicle_id"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "campaign_report_received_date",
+          "component_id",
+          "defect_root_cause",
+          "risk_defect_summary",
+          "vehicle_id"
+        ],
+        "desc": "Extract the root cause stated in the recall defect summary.",
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "vehicle_safety-033-complaints-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "2c64cda93f",
+        "unique_logical_op_id": "2-2c64cda93f",
+        "depends_on": [],
+        "generated_fields": [
+          "complaint_id",
+          "component_id",
+          "received_date",
+          "summary_text",
+          "vehicle_id"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "complaint_id",
+          "component_id",
+          "received_date",
+          "summary_text",
+          "vehicle_id"
+        ]
+      },
+      {
+        "dataset_id": "ea95911884",
+        "source_dataset_ids": [
+          "4f9191f531",
+          "vehicle_safety-033-complaints-semantic-input"
+        ],
+        "logical_operator": "JoinOp",
+        "logical_op_id": "892d9bd619",
+        "unique_logical_op_id": "3-892d9bd619",
+        "depends_on": [
+          "component_id",
+          "vehicle_id"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "campaign_number",
+          "campaign_report_received_date",
+          "complaint_id",
+          "component_id",
+          "defect_root_cause",
+          "received_date",
+          "risk_defect_summary",
+          "summary_text",
+          "vehicle_id"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "campaign_report_received_date",
+          "complaint_id",
+          "component_id",
+          "defect_root_cause",
+          "received_date",
+          "risk_defect_summary",
+          "summary_text",
+          "vehicle_id"
+        ],
+        "on": "['vehicle_id', 'component_id']",
+        "how": "inner"
+      },
+      {
+        "dataset_id": "d8e3b91f5c",
+        "source_dataset_ids": [
+          "ea95911884"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "00eb7d5987",
+        "unique_logical_op_id": "4-00eb7d5987",
+        "depends_on": [
+          "campaign_report_received_date",
+          "received_date"
+        ],
+        "generated_fields": [
+          "days_between"
+        ],
+        "input_fields": [
+          "campaign_number",
+          "campaign_report_received_date",
+          "complaint_id",
+          "component_id",
+          "defect_root_cause",
+          "received_date",
+          "risk_defect_summary",
+          "summary_text",
+          "vehicle_id"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "campaign_report_received_date",
+          "complaint_id",
+          "component_id",
+          "days_between",
+          "defect_root_cause",
+          "received_date",
+          "risk_defect_summary",
+          "summary_text",
+          "vehicle_id"
+        ],
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "46046014fb",
+        "source_dataset_ids": [
+          "d8e3b91f5c"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "231f25ba2b",
+        "unique_logical_op_id": "5-231f25ba2b",
+        "depends_on": [
+          "days_between"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "campaign_number",
+          "campaign_report_received_date",
+          "complaint_id",
+          "component_id",
+          "days_between",
+          "defect_root_cause",
+          "received_date",
+          "risk_defect_summary",
+          "summary_text",
+          "vehicle_id"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "campaign_report_received_date",
+          "complaint_id",
+          "component_id",
+          "days_between",
+          "defect_root_cause",
+          "received_date",
+          "risk_defect_summary",
+          "summary_text",
+          "vehicle_id"
+        ],
+        "filter": "is_long_lag"
+      },
+      {
+        "dataset_id": "f75ef21825",
+        "source_dataset_ids": [
+          "46046014fb"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "ec2f8b4a1e",
+        "unique_logical_op_id": "6-ec2f8b4a1e",
+        "depends_on": [
+          "risk_defect_summary",
+          "summary_text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "campaign_number",
+          "campaign_report_received_date",
+          "complaint_id",
+          "component_id",
+          "days_between",
+          "defect_root_cause",
+          "received_date",
+          "risk_defect_summary",
+          "summary_text",
+          "vehicle_id"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "campaign_report_received_date",
+          "complaint_id",
+          "component_id",
+          "days_between",
+          "defect_root_cause",
+          "received_date",
+          "risk_defect_summary",
+          "summary_text",
+          "vehicle_id"
+        ],
+        "filter": "Keep this complaint-recall pair only if the complaint summary describes the same defect mechanism as the recall defect summary."
+      },
+      {
+        "dataset_id": "b6d23093d7",
+        "source_dataset_ids": [
+          "f75ef21825"
+        ],
+        "logical_operator": "Project",
+        "logical_op_id": "7e3dec8e90",
+        "unique_logical_op_id": "7-7e3dec8e90",
+        "depends_on": [],
+        "generated_fields": [],
+        "input_fields": [
+          "campaign_number",
+          "campaign_report_received_date",
+          "complaint_id",
+          "component_id",
+          "days_between",
+          "defect_root_cause",
+          "received_date",
+          "risk_defect_summary",
+          "summary_text",
+          "vehicle_id"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "complaint_id",
+          "days_between",
+          "defect_root_cause"
+        ],
+        "project_cols": "['complaint_id', 'campaign_number', 'days_between', 'defect_root_cause']"
+      }
+    ],
+    "topological_logical_sequence": [
+      "0-4f2cb14b34",
+      "1-1b88d1d46a",
+      "2-2c64cda93f",
+      "3-892d9bd619",
+      "4-00eb7d5987",
+      "5-231f25ba2b",
+      "6-ec2f8b4a1e",
+      "7-7e3dec8e90"
+    ]
+  },
+  "selected_physical_plan": {
+    "plan_id": "fecd19bc7e",
+    "plan_string": "0. Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'] -> ProjectOp -> Schema['campaign_number', 'complaint_id', 'days_between', 'defect_root_cause']\n    (campaign_number, campaign_repo) -> (campaign_number, complaint_id,)\n    Project Columns: ['campaign_number', 'complaint_id', 'days_between', 'defect_root_cause']\n\n  1. Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'] -> MixtureOfAgentsFilter -> Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id']\n    (campaign_number, campaign_repo) -> (campaign_number, campaign_repo)\n    Filter: Keep this complaint-recall pair only if the complaint summary describes the same defect mechanism as the recall defect summary.\n    Proposer Models: [Qwen3.5-397B-A17B]\n    Temperatures: [0.0]\n    Aggregator Model: Qwen3.5-397B-A17B\n\n    2. Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'] -> NonLLMFilter -> Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id']\n    (campaign_number, campaign_repo) -> (campaign_number, campaign_repo)\n    Filter: is_long_lag\n\n      3. Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'] -> NonLLMConvert -> Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id']\n    (campaign_number, campaign_repo) -> (campaign_number, campaign_repo)\n    UDF: add_days_between\n\n        4. Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'] -> RelationalJoin -> Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id']\n    (campaign_number, campaign_repo) -> (campaign_number, campaign_repo)\n    Condition: \n    How: inner\n    On: ['vehicle_id', 'component_id']\n\n          5. Schema['campaign_number', 'campaign_report_received_date', 'component_id', 'risk_defect_summary', 'vehicle_id'] -> LLMConvertBonded -> Schema['campaign_number', 'campaign_report_received_date', 'component_id', 'defect_root_cause', 'risk_defect_summary', 'vehicle_id']\n    (campaign_number, campaign_repo) -> (campaign_number, campaign_repo)\n    Model: Qwen3.5-397B-A17B\n    Prompt Strategy: PromptStrategy.MAP\n    Reasoning Effort: default\n\n            6. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['campaign_number', 'campaign_report_received_date', 'component_id', 'risk_defect_summary', 'vehicle_id']'>, id=vehicle_safety-033-recalls-semantic-input, op_id=4f2cb14b34)) -> <class 'palimpzest.core.lib.schemas.Schema['campaign_number', 'campaign_report_received_date', 'component_id', 'risk_defect_summary', 'vehicle_id']'>\n    (campaign_number, vehicle_id, c)\n\n          5. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['complaint_id', 'component_id', 'received_date', 'summary_text', 'vehicle_id']'>, id=vehicle_safety-033-complaints-semantic-input, op_id=2c64cda93f)) -> <class 'palimpzest.core.lib.schemas.Schema['complaint_id', 'component_id', 'received_date', 'summary_text', 'vehicle_id']'>\n    (complaint_id, received_date, v)\n\n",
+    "root_operator_index": 7,
+    "operators": [
+      {
+        "topological_index": 0,
+        "physical_operator": "MarshalAndScanDataOp",
+        "logical_operator": "BaseScan",
+        "logical_op_id": "4f2cb14b34",
+        "unique_logical_op_id": "0-4f2cb14b34",
+        "full_op_id": "4f2cb14b34-5a287db7c6",
+        "model": null,
+        "depends_on": [],
+        "generated_fields": [
+          "campaign_number",
+          "campaign_report_received_date",
+          "component_id",
+          "risk_defect_summary",
+          "vehicle_id"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "campaign_number",
+          "campaign_report_received_date",
+          "component_id",
+          "risk_defect_summary",
+          "vehicle_id"
+        ],
+        "source_operator_indices": []
+      },
+      {
+        "topological_index": 1,
+        "physical_operator": "LLMConvertBonded",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "1b88d1d46a",
+        "unique_logical_op_id": "1-1b88d1d46a",
+        "full_op_id": "1b88d1d46a-9d51073f2d",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['campaign_number', 'campaign_report_received_date', 'component_id', 'risk_defect_summary', 'vehicle_id'].vehicle_safety-033-recalls-semantic-input.risk_defect_summary"
+        ],
+        "generated_fields": [
+          "defect_root_cause"
+        ],
+        "input_fields": [
+          "campaign_number",
+          "campaign_report_received_date",
+          "component_id",
+          "risk_defect_summary",
+          "vehicle_id"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "campaign_report_received_date",
+          "component_id",
+          "defect_root_cause",
+          "risk_defect_summary",
+          "vehicle_id"
+        ],
+        "source_operator_indices": [
+          0
+        ]
+      },
+      {
+        "topological_index": 2,
+        "physical_operator": "MarshalAndScanDataOp",
+        "logical_operator": "BaseScan",
+        "logical_op_id": "2c64cda93f",
+        "unique_logical_op_id": "2-2c64cda93f",
+        "full_op_id": "2c64cda93f-e110999ff6",
+        "model": null,
+        "depends_on": [],
+        "generated_fields": [
+          "complaint_id",
+          "component_id",
+          "received_date",
+          "summary_text",
+          "vehicle_id"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "complaint_id",
+          "component_id",
+          "received_date",
+          "summary_text",
+          "vehicle_id"
+        ],
+        "source_operator_indices": []
+      },
+      {
+        "topological_index": 3,
+        "physical_operator": "RelationalJoin",
+        "logical_operator": "JoinOp",
+        "logical_op_id": "892d9bd619",
+        "unique_logical_op_id": "3-892d9bd619",
+        "full_op_id": "892d9bd619-a79792ca97",
+        "model": null,
+        "depends_on": [
+          "Schema['campaign_number', 'campaign_report_received_date', 'component_id', 'risk_defect_summary', 'vehicle_id'].vehicle_safety-033-recalls-semantic-input.component_id",
+          "Schema['campaign_number', 'campaign_report_received_date', 'component_id', 'risk_defect_summary', 'vehicle_id'].vehicle_safety-033-recalls-semantic-input.vehicle_id"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "campaign_number",
+          "campaign_report_received_date",
+          "complaint_id",
+          "component_id",
+          "defect_root_cause",
+          "received_date",
+          "risk_defect_summary",
+          "summary_text",
+          "vehicle_id"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "campaign_report_received_date",
+          "complaint_id",
+          "component_id",
+          "defect_root_cause",
+          "received_date",
+          "risk_defect_summary",
+          "summary_text",
+          "vehicle_id"
+        ],
+        "source_operator_indices": [
+          1,
+          2
+        ]
+      },
+      {
+        "topological_index": 4,
+        "physical_operator": "NonLLMConvert",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "00eb7d5987",
+        "unique_logical_op_id": "4-00eb7d5987",
+        "full_op_id": "00eb7d5987-116c2e7983",
+        "model": null,
+        "depends_on": [
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].d8e3b91f5c.campaign_report_received_date",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].d8e3b91f5c.received_date"
+        ],
+        "generated_fields": [
+          "days_between"
+        ],
+        "input_fields": [
+          "campaign_number",
+          "campaign_report_received_date",
+          "complaint_id",
+          "component_id",
+          "defect_root_cause",
+          "received_date",
+          "risk_defect_summary",
+          "summary_text",
+          "vehicle_id"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "campaign_report_received_date",
+          "complaint_id",
+          "component_id",
+          "days_between",
+          "defect_root_cause",
+          "received_date",
+          "risk_defect_summary",
+          "summary_text",
+          "vehicle_id"
+        ],
+        "source_operator_indices": [
+          3
+        ]
+      },
+      {
+        "topological_index": 5,
+        "physical_operator": "NonLLMFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "231f25ba2b",
+        "unique_logical_op_id": "5-231f25ba2b",
+        "full_op_id": "231f25ba2b-cca6c6f579",
+        "model": null,
+        "depends_on": [
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].d8e3b91f5c.days_between"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "campaign_number",
+          "campaign_report_received_date",
+          "complaint_id",
+          "component_id",
+          "days_between",
+          "defect_root_cause",
+          "received_date",
+          "risk_defect_summary",
+          "summary_text",
+          "vehicle_id"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "campaign_report_received_date",
+          "complaint_id",
+          "component_id",
+          "days_between",
+          "defect_root_cause",
+          "received_date",
+          "risk_defect_summary",
+          "summary_text",
+          "vehicle_id"
+        ],
+        "source_operator_indices": [
+          4
+        ]
+      },
+      {
+        "topological_index": 6,
+        "physical_operator": "MixtureOfAgentsFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "ec2f8b4a1e",
+        "unique_logical_op_id": "6-ec2f8b4a1e",
+        "full_op_id": "ec2f8b4a1e-1b7acab392",
+        "model": null,
+        "depends_on": [
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].d8e3b91f5c.risk_defect_summary",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].d8e3b91f5c.summary_text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "campaign_number",
+          "campaign_report_received_date",
+          "complaint_id",
+          "component_id",
+          "days_between",
+          "defect_root_cause",
+          "received_date",
+          "risk_defect_summary",
+          "summary_text",
+          "vehicle_id"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "campaign_report_received_date",
+          "complaint_id",
+          "component_id",
+          "days_between",
+          "defect_root_cause",
+          "received_date",
+          "risk_defect_summary",
+          "summary_text",
+          "vehicle_id"
+        ],
+        "source_operator_indices": [
+          5
+        ]
+      },
+      {
+        "topological_index": 7,
+        "physical_operator": "ProjectOp",
+        "logical_operator": "Project",
+        "logical_op_id": "7e3dec8e90",
+        "unique_logical_op_id": "7-7e3dec8e90",
+        "full_op_id": "7e3dec8e90-ab3a6aba47",
+        "model": null,
+        "depends_on": [
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].46046014fb.campaign_number",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].46046014fb.campaign_report_received_date",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].46046014fb.complaint_id",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].46046014fb.component_id",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].46046014fb.days_between",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].46046014fb.defect_root_cause",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].46046014fb.received_date",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].46046014fb.risk_defect_summary",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].46046014fb.summary_text",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].46046014fb.vehicle_id",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].d8e3b91f5c.campaign_number",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].d8e3b91f5c.campaign_report_received_date",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].d8e3b91f5c.complaint_id",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].d8e3b91f5c.component_id",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].d8e3b91f5c.days_between",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].d8e3b91f5c.defect_root_cause",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].d8e3b91f5c.received_date",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].d8e3b91f5c.risk_defect_summary",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].d8e3b91f5c.summary_text",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].d8e3b91f5c.vehicle_id",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].f75ef21825.campaign_number",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].f75ef21825.campaign_report_received_date",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].f75ef21825.complaint_id",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].f75ef21825.component_id",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].f75ef21825.days_between",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].f75ef21825.defect_root_cause",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].f75ef21825.received_date",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].f75ef21825.risk_defect_summary",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].f75ef21825.summary_text",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'days_between', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].f75ef21825.vehicle_id",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].ea95911884.campaign_number",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].ea95911884.campaign_report_received_date",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].ea95911884.complaint_id",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].ea95911884.component_id",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].ea95911884.defect_root_cause",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].ea95911884.received_date",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].ea95911884.risk_defect_summary",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].ea95911884.summary_text",
+          "Schema['campaign_number', 'campaign_report_received_date', 'complaint_id', 'component_id', 'defect_root_cause', 'received_date', 'risk_defect_summary', 'summary_text', 'vehicle_id'].ea95911884.vehicle_id",
+          "Schema['campaign_number', 'campaign_report_received_date', 'component_id', 'defect_root_cause', 'risk_defect_summary', 'vehicle_id'].4f9191f531.campaign_number",
+          "Schema['campaign_number', 'campaign_report_received_date', 'component_id', 'defect_root_cause', 'risk_defect_summary', 'vehicle_id'].4f9191f531.campaign_report_received_date",
+          "Schema['campaign_number', 'campaign_report_received_date', 'component_id', 'defect_root_cause', 'risk_defect_summary', 'vehicle_id'].4f9191f531.component_id",
+          "Schema['campaign_number', 'campaign_report_received_date', 'component_id', 'defect_root_cause', 'risk_defect_summary', 'vehicle_id'].4f9191f531.defect_root_cause",
+          "Schema['campaign_number', 'campaign_report_received_date', 'component_id', 'defect_root_cause', 'risk_defect_summary', 'vehicle_id'].4f9191f531.risk_defect_summary",
+          "Schema['campaign_number', 'campaign_report_received_date', 'component_id', 'defect_root_cause', 'risk_defect_summary', 'vehicle_id'].4f9191f531.vehicle_id",
+          "Schema['campaign_number', 'campaign_report_received_date', 'component_id', 'risk_defect_summary', 'vehicle_id'].vehicle_safety-033-recalls-semantic-input.campaign_number",
+          "Schema['campaign_number', 'campaign_report_received_date', 'component_id', 'risk_defect_summary', 'vehicle_id'].vehicle_safety-033-recalls-semantic-input.campaign_report_received_date",
+          "Schema['campaign_number', 'campaign_report_received_date', 'component_id', 'risk_defect_summary', 'vehicle_id'].vehicle_safety-033-recalls-semantic-input.component_id",
+          "Schema['campaign_number', 'campaign_report_received_date', 'component_id', 'risk_defect_summary', 'vehicle_id'].vehicle_safety-033-recalls-semantic-input.risk_defect_summary",
+          "Schema['campaign_number', 'campaign_report_received_date', 'component_id', 'risk_defect_summary', 'vehicle_id'].vehicle_safety-033-recalls-semantic-input.vehicle_id",
+          "Schema['complaint_id', 'component_id', 'received_date', 'summary_text', 'vehicle_id'].vehicle_safety-033-complaints-semantic-input.complaint_id",
+          "Schema['complaint_id', 'component_id', 'received_date', 'summary_text', 'vehicle_id'].vehicle_safety-033-complaints-semantic-input.component_id",
+          "Schema['complaint_id', 'component_id', 'received_date', 'summary_text', 'vehicle_id'].vehicle_safety-033-complaints-semantic-input.received_date",
+          "Schema['complaint_id', 'component_id', 'received_date', 'summary_text', 'vehicle_id'].vehicle_safety-033-complaints-semantic-input.summary_text",
+          "Schema['complaint_id', 'component_id', 'received_date', 'summary_text', 'vehicle_id'].vehicle_safety-033-complaints-semantic-input.vehicle_id"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "campaign_number",
+          "campaign_report_received_date",
+          "complaint_id",
+          "component_id",
+          "days_between",
+          "defect_root_cause",
+          "received_date",
+          "risk_defect_summary",
+          "summary_text",
+          "vehicle_id"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "complaint_id",
+          "days_between",
+          "defect_root_cause"
+        ],
+        "source_operator_indices": [
+          6
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "source": 0,
+        "target": 1
+      },
+      {
+        "source": 1,
+        "target": 3
+      },
+      {
+        "source": 2,
+        "target": 3
+      },
+      {
+        "source": 3,
+        "target": 4
+      },
+      {
+        "source": 4,
+        "target": 5
+      },
+      {
+        "source": 5,
+        "target": 6
+      },
+      {
+        "source": 6,
+        "target": 7
+      }
+    ],
+    "estimated_plan_cost": {
+      "cost": 1.239184563157895,
+      "time": 31814.528895032247,
+      "quality": 0.878,
+      "op_estimates": {
+        "cardinality": 0.0,
+        "time_per_record": 0.0,
+        "cost_per_record": 0.0,
+        "quality": 1.0,
+        "cardinality_lower_bound": 0.0,
+        "cardinality_upper_bound": 0.0,
+        "time_per_record_lower_bound": 0.0,
+        "time_per_record_upper_bound": 0.0,
+        "cost_per_record_lower_bound": 0.0,
+        "cost_per_record_upper_bound": 0.0,
+        "quality_lower_bound": 1.0,
+        "quality_upper_bound": 1.0
+      },
+      "cost_lower_bound": 1.239184563157895,
+      "cost_upper_bound": 1.239184563157895,
+      "time_lower_bound": 31814.528895032247,
+      "time_upper_bound": 31814.528895032247,
+      "quality_lower_bound": 0.878,
+      "quality_upper_bound": 0.878
+    },
+    "topological_logical_sequence": [
+      "0-4f2cb14b34",
+      "1-1b88d1d46a",
+      "2-2c64cda93f",
+      "3-892d9bd619",
+      "4-00eb7d5987",
+      "5-231f25ba2b",
+      "6-ec2f8b4a1e",
+      "7-7e3dec8e90"
+    ]
+  },
+  "optimizer_configuration": {
+    "strategy": "pareto",
+    "policy": "MaxQuality",
+    "physical_implementation_candidates": {
+      "allow_bonded_query": true,
+      "allow_model_selection": false,
+      "allow_rag_reduction": false,
+      "allow_mixtures": true,
+      "allow_critic": true,
+      "allow_split_merge": false,
+      "force_rag": false,
+      "execution_strategy": "parallel",
+      "max_workers": 64,
+      "join_parallelism": 64
+    },
+    "dynamic_learning_requested": true,
+    "dynamic_learning_pipeline_supported": true,
+    "dynamic_learning": true,
+    "dynamic_learning_support": {
+      "supported": true,
+      "reason": null,
+      "terminal_only_operator_violations": []
+    },
+    "allow_unsupported_sentinel_plans": true,
+    "dynamic_learning_fallback": null,
+    "sentinel_execution_strategy": "mab",
+    "sentinel_k": 6,
+    "sentinel_j": 4,
+    "sentinel_sample_budget": 100,
+    "sentinel_seed": 42,
+    "available_models": [
+      "Qwen3.5-397B-A17B",
+      "openai/Qwen3-Embedding-8B"
+    ]
+  },
+  "optimizer_search_space": {
+    "group_count": 9,
+    "logical_expression_count": 10,
+    "physical_expression_count": 22,
+    "transformation_rules_explored": [
+      "PushDownFilter",
+      "ReorderConverts"
+    ],
+    "implementation_rules_explored": [
+      "BasicSubstitutionRule",
+      "CritiqueAndRefineRule",
+      "LLMConvertBondedRule",
+      "LLMFilterRule",
+      "MixtureOfAgentsRule",
+      "NonLLMConvertRule",
+      "NonLLMFilterRule",
+      "RelationalJoinRule"
+    ]
+  },
+  "optimization_metrics": {
+    "elapsed_seconds": 52.41580772,
+    "sentinel_sampling_seconds": 52.28262949,
+    "optimizer_search_and_bookkeeping_seconds": 0.13317823,
+    "cost_usd": 0.11556792,
+    "text_llm_calls": 263,
+    "embedding_calls": 0,
+    "input_text_tokens": 168906,
+    "output_text_tokens": 21237,
+    "total_text_tokens": 190143,
+    "embedding_input_tokens": 0,
+    "cache_read_tokens": 0,
+    "cache_creation_tokens": 0,
+    "sampled_operators": {
+      "text_llm_calls": 190,
+      "embedding_calls": 0,
+      "input_text_tokens": 110867,
+      "output_text_tokens": 12723,
+      "embedding_input_tokens": 0,
+      "cost_usd": 0.07300995
+    },
+    "validator": {
+      "text_llm_calls": 73,
+      "input_text_tokens": 58039,
+      "output_text_tokens": 8514,
+      "total_text_tokens": 66553,
+      "cost_usd": 0.04255797
+    },
+    "model_usage_by_model": {
+      "Qwen3.5-397B-A17B": {
+        "roles": [
+          "text",
+          "validator"
+        ],
+        "calls": 263,
+        "input_tokens": 168906,
+        "output_tokens": 21237,
+        "total_tokens": 190143,
+        "cost_usd": 0.11556792
+      }
+    }
+  },
+  "sentinel_join_sampling": [
+    {
+      "unique_logical_op_id": "3-892d9bd619",
+      "frontier_representative_operator_class": "RelationalJoin",
+      "root_dataset_count": 2,
+      "left_available_source_indices": 1815,
+      "right_available_source_indices": 9067,
+      "theoretical_combination_count": 16456605,
+      "available_combination_count": 16456605,
+      "sample_limit": 100,
+      "sampled_combination_count": 100,
+      "sampling_method": "seeded_uniform_without_replacement_flat_indices",
+      "seed": 42
+    }
+  ],
+  "sentinel_sampling_exhaustion": null,
+  "recovery": null
+}

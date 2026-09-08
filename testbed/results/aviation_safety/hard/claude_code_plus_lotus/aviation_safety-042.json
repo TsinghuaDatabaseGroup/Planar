@@ -1,0 +1,148 @@
+{
+  "task_id": "aviation_safety-042",
+  "answer": [
+    {
+      "rank": 1,
+      "canonical_component": "Turbine Engine",
+      "narrative_component_term": "engine",
+      "incident_count": 71,
+      "most_common_detection_cue": "noticed the number one engine quantity"
+    },
+    {
+      "rank": 2,
+      "canonical_component": "X",
+      "narrative_component_term": "oxygen masks",
+      "incident_count": 55,
+      "most_common_detection_cue": "master caution light illuminated"
+    },
+    {
+      "rank": 3,
+      "canonical_component": "Engine",
+      "narrative_component_term": "engine",
+      "incident_count": 51,
+      "most_common_detection_cue": "L ENG oil pressure indicator turned"
+    },
+    {
+      "rank": 4,
+      "canonical_component": "X",
+      "narrative_component_term": "mixture",
+      "incident_count": 38,
+      "most_common_detection_cue": "eng began to miss and sputter"
+    },
+    {
+      "rank": 5,
+      "canonical_component": "X",
+      "narrative_component_term": "oxygen mask",
+      "incident_count": 22,
+      "most_common_detection_cue": "noticed a smell possibly electrical"
+    },
+    {
+      "rank": 6,
+      "canonical_component": "APU",
+      "narrative_component_term": "apu",
+      "incident_count": 21,
+      "most_common_detection_cue": "heard a crunching sound"
+    },
+    {
+      "rank": 7,
+      "canonical_component": "FMS/FMC",
+      "narrative_component_term": "fms",
+      "incident_count": 19,
+      "most_common_detection_cue": "initialization not complete message"
+    },
+    {
+      "rank": 8,
+      "canonical_component": "Turbine Engine",
+      "narrative_component_term": "right engine",
+      "incident_count": 19,
+      "most_common_detection_cue": "heard a loud bang"
+    },
+    {
+      "rank": 9,
+      "canonical_component": "Turbine Engine",
+      "narrative_component_term": "left engine",
+      "incident_count": 16,
+      "most_common_detection_cue": "loud bang along with quick solid"
+    },
+    {
+      "rank": 10,
+      "canonical_component": "Autopilot",
+      "narrative_component_term": "autopilot",
+      "incident_count": 15,
+      "most_common_detection_cue": "autopilot would not follow"
+    },
+    {
+      "rank": 11,
+      "canonical_component": "FMS/FMC",
+      "narrative_component_term": "fmc",
+      "incident_count": 15,
+      "most_common_detection_cue": "MAP display was completely gone"
+    },
+    {
+      "rank": 12,
+      "canonical_component": "Flap Control (Trailing & Leading Edge)",
+      "narrative_component_term": "flaps",
+      "incident_count": 13,
+      "most_common_detection_cue": "received a 'Flaps Fail' caution message"
+    },
+    {
+      "rank": 13,
+      "canonical_component": "Gear Extend/Retract Mechanism",
+      "narrative_component_term": "landing gear",
+      "incident_count": 13,
+      "most_common_detection_cue": "inability to raise the landing gear"
+    },
+    {
+      "rank": 14,
+      "canonical_component": "Hydraulic System",
+      "narrative_component_term": "hydraulic system",
+      "incident_count": 12,
+      "most_common_detection_cue": "noticed three dark areas"
+    },
+    {
+      "rank": 15,
+      "canonical_component": "Landing Gear",
+      "narrative_component_term": "landing gear",
+      "incident_count": 12,
+      "most_common_detection_cue": "right propeller blade hit the runway"
+    },
+    {
+      "rank": 16,
+      "canonical_component": "Reciprocating Engine Assembly",
+      "narrative_component_term": "engine",
+      "incident_count": 12,
+      "most_common_detection_cue": "no response in manifold pressure"
+    },
+    {
+      "rank": 17,
+      "canonical_component": "Autoflight System",
+      "narrative_component_term": "autopilot",
+      "incident_count": 11,
+      "most_common_detection_cue": "noted a 'T' fault light"
+    },
+    {
+      "rank": 18,
+      "canonical_component": "Main Gear Tire",
+      "narrative_component_term": "landing gear",
+      "incident_count": 11,
+      "most_common_detection_cue": "First Officer informed tire was flat"
+    },
+    {
+      "rank": 19,
+      "canonical_component": "GPS & Other Satellite Navigation",
+      "narrative_component_term": "gps",
+      "incident_count": 10,
+      "most_common_detection_cue": "magenta CDIs suddenly went left-of-course"
+    },
+    {
+      "rank": 20,
+      "canonical_component": "Main Gear Tire",
+      "narrative_component_term": "tire",
+      "incident_count": 10,
+      "most_common_detection_cue": "felt as though we hit a"
+    }
+  ],
+  "elapsed_seconds": 1090.241,
+  "cost_usd": 1.99675953,
+  "total_tokens": 3861061
+}

@@ -1,0 +1,384 @@
+{
+  "task_id": "legal_contracts-050",
+  "answer": [
+    {
+      "document_id": "1010471_0000950134-97-006281_document_5.txt",
+      "agreement_type": "Non-Competition and Non-Disclosure Agreement",
+      "matched_covenant_types": [
+        "non-disclosure",
+        "employee non-solicitation",
+        "non-competition"
+      ],
+      "longest_period_months": 60
+    },
+    {
+      "document_id": "1021086_0000950162-99-000581_document_3.txt",
+      "agreement_type": "Non-Competition, Referral and Non-Disclosure Agreement",
+      "matched_covenant_types": [
+        "non-competition",
+        "employee non-solicitation",
+        "non-disclosure"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "1163932_0001193125-13-394191_d606730dex99d2.htm",
+      "agreement_type": "Nondisclosure and Standstill Agreement",
+      "matched_covenant_types": [
+        "employee non-solicitation",
+        "standstill"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "1167294_0001193125-15-218134_d933068dex99d3.htm",
+      "agreement_type": "Mutual Non-Disclosure Agreement",
+      "matched_covenant_types": [
+        "standstill",
+        "employee non-solicitation"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "1177845_0001193125-18-219243_d519554dex99d3.htm",
+      "agreement_type": "Non-Disclosure Agreement",
+      "matched_covenant_types": [
+        "standstill",
+        "employee non-solicitation"
+      ],
+      "longest_period_months": 48
+    },
+    {
+      "document_id": "1280058_0001193125-12-023311_d287213dex99d3.htm",
+      "agreement_type": "Mutual Nondisclosure Agreement",
+      "matched_covenant_types": [
+        "employee non-solicitation",
+        "standstill"
+      ],
+      "longest_period_months": 14
+    },
+    {
+      "document_id": "1316898_0001047469-18-005618_a2236490zex-99_d2.htm",
+      "agreement_type": "Mutual Nondisclosure Agreement",
+      "matched_covenant_types": [
+        "employee non-solicitation",
+        "standstill"
+      ],
+      "longest_period_months": 18
+    },
+    {
+      "document_id": "1329919_0001193125-14-149149_d701401dex99d6.htm",
+      "agreement_type": "Non-Disclosure Agreement",
+      "matched_covenant_types": [
+        "standstill",
+        "employee non-solicitation"
+      ],
+      "longest_period_months": 18
+    },
+    {
+      "document_id": "1373671_0001193125-10-265249_dex99d3.htm",
+      "agreement_type": "Confidentiality Agreement",
+      "matched_covenant_types": [
+        "standstill",
+        "employee non-solicitation"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "1475274_0001567619-17-000751_s001644x1_exd-2.htm",
+      "agreement_type": "Confidentiality Agreement",
+      "matched_covenant_types": [
+        "employee non-solicitation",
+        "standstill"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "1561604_0001193125-12-472390_d438799dex99d3.htm",
+      "agreement_type": "Mutual Nondisclosure Agreement",
+      "matched_covenant_types": [
+        "employee non-solicitation",
+        "standstill"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "1592288_0001193125-17-306543_d469659dex99e2.htm",
+      "agreement_type": "Confidentiality Agreement",
+      "matched_covenant_types": [
+        "employee non-solicitation",
+        "standstill"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "1693664_0001193125-18-171470_d426098dex99d3.htm",
+      "agreement_type": "NDA",
+      "matched_covenant_types": [
+        "employee non-solicitation",
+        "standstill"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "26820_0000936392-03-001111_a92217exv10w5.txt",
+      "agreement_type": "Non-Competition and Non-Disclosure Agreement",
+      "matched_covenant_types": [
+        "non-competition",
+        "employee non-solicitation",
+        "supplier/vendor non-solicitation",
+        "confidentiality"
+      ],
+      "longest_period_months": 29
+    },
+    {
+      "document_id": "55805_0001145443-10-001028_d26631_ex99-d3.htm",
+      "agreement_type": "Mutual Confidentiality Agreement",
+      "matched_covenant_types": [
+        "standstill",
+        "employee non-solicitation"
+      ],
+      "longest_period_months": 24
+    },
+    {
+      "document_id": "736291_0000930661-99-001320_document_3.txt",
+      "agreement_type": "Non-Competition, Referral and Non-Disclosure Agreement",
+      "matched_covenant_types": [
+        "non-competition",
+        "employee non-solicitation",
+        "non-disclosure"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "792130_0001193125-18-326077_d601641dex99d3.htm",
+      "agreement_type": "Mutual Non-Disclosure Agreement",
+      "matched_covenant_types": [
+        "employee non-solicitation",
+        "standstill"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "802724_0001193125-15-331613_d96542dex99d5.htm",
+      "agreement_type": "Mutual Non-Disclosure Agreement",
+      "matched_covenant_types": [
+        "employee non-solicitation",
+        "standstill"
+      ],
+      "longest_period_months": 6
+    },
+    {
+      "document_id": "817516_0001014909-05-000102_exh99_4sept2005.txt",
+      "agreement_type": "Confidentiality, Non-Disclosure and Restrictive Covenant Agreement",
+      "matched_covenant_types": [
+        "non-competition",
+        "confidentiality",
+        "employee non-solicitation"
+      ],
+      "longest_period_months": 48
+    },
+    {
+      "document_id": "86115_0000930661-99-001321_document_3.txt",
+      "agreement_type": "Non-Competition, Referral and Non-Disclosure Agreement",
+      "matched_covenant_types": [
+        "non-competition",
+        "employee non-solicitation",
+        "non-disclosure"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "918541_0001193125-14-328980_d785003dex105.htm",
+      "agreement_type": "Noncompetition and Nondisclosure Agreement",
+      "matched_covenant_types": [
+        "non-competition",
+        "employee non-solicitation",
+        "non-disclosure"
+      ],
+      "longest_period_months": 36
+    },
+    {
+      "document_id": "934545_0000891618-99-004640_document_2.txt",
+      "agreement_type": "NDA",
+      "matched_covenant_types": [
+        "standstill"
+      ],
+      "longest_period_months": 18
+    },
+    {
+      "document_id": "Standard%20NDA%20by%20Axial.pdf",
+      "agreement_type": "NDA",
+      "matched_covenant_types": [
+        "employee non-solicitation",
+        "customer non-solicitation",
+        "non-circumvention"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "a20241231ex1023.htm",
+      "agreement_type": "Performance Restricted Stock Unit Agreement",
+      "matched_covenant_types": [
+        "non-compete",
+        "employee non-solicitation",
+        "non-disparagement",
+        "work product assignment",
+        "non-publicity"
+      ],
+      "longest_period_months": 999
+    },
+    {
+      "document_id": "a20241232ex1021.htm",
+      "agreement_type": "Restricted Stock Unit Agreement",
+      "matched_covenant_types": [
+        "non-compete",
+        "employee non-solicitation",
+        "non-disparagement",
+        "work product assignment",
+        "non-publicity"
+      ],
+      "longest_period_months": 9999
+    },
+    {
+      "document_id": "dvn-ex10_3.htm",
+      "agreement_type": "Restricted Stock Award Agreement",
+      "matched_covenant_types": [
+        "non-disclosure",
+        "employee non-solicitation"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "dvn-ex10_5.htm",
+      "agreement_type": "Performance Share Unit Award Agreement",
+      "matched_covenant_types": [
+        "non-disclosure",
+        "customer non-solicitation",
+        "employee non-solicitation",
+        "non-competition (limited)"
+      ],
+      "longest_period_months": 36
+    },
+    {
+      "document_id": "ea020170401ex10-4_natures.htm",
+      "agreement_type": "Non-Competition and Non-Solicitation Agreement",
+      "matched_covenant_types": [
+        "non-competition",
+        "employee non-solicitation",
+        "customer non-solicitation",
+        "supplier non-solicitation",
+        "non-disparagement",
+        "confidentiality"
+      ],
+      "longest_period_months": 24
+    },
+    {
+      "document_id": "ea020224801ex10-24_gryphon.htm",
+      "agreement_type": "Director Agreement",
+      "matched_covenant_types": [
+        "confidentiality",
+        "employee non-solicitation",
+        "non-compete",
+        "market stand-off",
+        "lock-up"
+      ],
+      "longest_period_months": 999999
+    },
+    {
+      "document_id": "ea191793ex10-10_newhorizon.htm",
+      "agreement_type": "Non-Competition and Non-Solicitation Agreement",
+      "matched_covenant_types": [
+        "non-competition",
+        "employee non-solicitation",
+        "customer non-solicitation",
+        "supplier non-solicitation",
+        "non-disparagement",
+        "confidentiality"
+      ],
+      "longest_period_months": 48
+    },
+    {
+      "document_id": "eh250596666_ex1001.htm",
+      "agreement_type": "Management Agreement",
+      "matched_covenant_types": [
+        "employee non-solicitation",
+        "confidentiality"
+      ],
+      "longest_period_months": 36
+    },
+    {
+      "document_id": "eh250596666_ex1009.htm",
+      "agreement_type": "Employment Agreement",
+      "matched_covenant_types": [
+        "non-competition",
+        "employee non-solicitation",
+        "non-disparagement",
+        "investment opportunities"
+      ],
+      "longest_period_months": 24
+    },
+    {
+      "document_id": "ex10-6_2.htm",
+      "agreement_type": "Non-Competition and Non-Solicitation Agreement",
+      "matched_covenant_types": [
+        "non-competition",
+        "employee non-solicitation",
+        "customer non-solicitation",
+        "supplier non-solicitation"
+      ],
+      "longest_period_months": 60
+    },
+    {
+      "document_id": "ex1034-managementagreement.htm",
+      "agreement_type": "Management Agreement",
+      "matched_covenant_types": [
+        "employee non-solicitation",
+        "confidentiality"
+      ],
+      "longest_period_months": 36
+    },
+    {
+      "document_id": "ex1042-thomasrknottxaroffe.htm",
+      "agreement_type": "Employment Agreement",
+      "matched_covenant_types": [
+        "non-competition",
+        "employee non-solicitation",
+        "non-disparagement",
+        "investment opportunities"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "glp-20231231xex10d27.htm",
+      "agreement_type": "Long-Term Cash Incentive Plan Award Agreement",
+      "matched_covenant_types": [
+        "confidentiality/non-disclosure",
+        "employee non-solicitation",
+        "customer non-solicitation",
+        "vendor non-solicitation"
+      ],
+      "longest_period_months": 99999
+    },
+    {
+      "document_id": "irtc-projectvoyagertechnol.htm",
+      "agreement_type": "Technology License Agreement",
+      "matched_covenant_types": [
+        "employee non-solicitation"
+      ],
+      "longest_period_months": 60
+    },
+    {
+      "document_id": "usac202410-kex1024.htm",
+      "agreement_type": "Restricted Unit Award Agreement",
+      "matched_covenant_types": [
+        "confidentiality",
+        "employee non-solicitation"
+      ],
+      "longest_period_months": 12
+    }
+  ],
+  "elapsed_seconds": 464.8,
+  "cost_usd": 3.673919,
+  "total_tokens": 6990901
+}

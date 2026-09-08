@@ -1,0 +1,58 @@
+{
+  "task_id": "finance-034",
+  "answer": [
+    {
+      "company_name": "CVR Partners, LP",
+      "industry_sector": "Manufacturing",
+      "risk_factor_count": 44
+    },
+    {
+      "company_name": "Southwestern Energy Company",
+      "industry_sector": "Energy",
+      "risk_factor_count": 44
+    },
+    {
+      "company_name": "TENNESSEE VALLEY AUTHORITY",
+      "industry_sector": "Utilities",
+      "risk_factor_count": 42
+    },
+    {
+      "company_name": "Select Water Solutions, Inc.",
+      "industry_sector": "Energy",
+      "risk_factor_count": 34
+    },
+    {
+      "company_name": "Vistra Corp.",
+      "industry_sector": "Energy",
+      "risk_factor_count": 34
+    },
+    {
+      "company_name": "agilon health, inc.",
+      "industry_sector": "Healthcare",
+      "risk_factor_count": 33
+    },
+    {
+      "company_name": "PPL Corporation",
+      "industry_sector": "Utilities",
+      "risk_factor_count": 29
+    },
+    {
+      "company_name": "Northwest Bancshares, Inc.",
+      "industry_sector": "Finance",
+      "risk_factor_count": 28
+    },
+    {
+      "company_name": "PPL Corporation",
+      "industry_sector": "Utilities",
+      "risk_factor_count": 28
+    },
+    {
+      "company_name": "PPL Corporation",
+      "industry_sector": "Utilities",
+      "risk_factor_count": 28
+    }
+  ],
+  "elapsed_seconds": 3588.513,
+  "cost_usd": 40.28414754,
+  "total_tokens": 102873506
+}

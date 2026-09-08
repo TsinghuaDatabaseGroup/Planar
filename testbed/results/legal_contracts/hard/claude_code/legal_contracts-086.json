@@ -1,0 +1,40 @@
+{
+  "task_id": "legal_contracts-086",
+  "answer": [
+    {
+      "governing_law": "California",
+      "matching_count": 7
+    },
+    {
+      "governing_law": "Delaware",
+      "matching_count": 4
+    },
+    {
+      "governing_law": "New York",
+      "matching_count": 3
+    },
+    {
+      "governing_law": "Federal Republic of Germany",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "Florida",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "Minnesota",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "Singapore",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "Zürich, canton of Zürich, Switzerland",
+      "matching_count": 1
+    }
+  ],
+  "elapsed_seconds": 1313.958,
+  "cost_usd": 2.41954371,
+  "total_tokens": 5666684
+}

@@ -1,0 +1,11 @@
+{
+  "task_id": "legal_contracts-008",
+  "answer": [
+    {"document_name": "ea020224801ex10-24_gryphon.htm", "non_compete_months": 6.0, "geographic_scope": "any geographic area in which the Company is then conducting such business", "governing_law": "State of Delaware"},
+    {"document_name": "a1033trv2025mcmperfsharesa.htm", "non_compete_months": 0.0, "geographic_scope": "Employment Jurisdiction and any additional counties, states, or countries where the Travelers Group does business in which the Participant had material involvement or about which the Participant was provided Confidential Information", "governing_law": "Laws of the Participant's Employment Jurisdiction"},
+    {"document_name": "wu-ex10_36.htm", "non_compete_months": 6.0, "geographic_scope": "Italy", "governing_law": "Italy"}
+  ],
+  "elapsed_seconds": 1863.98,
+  "cost_usd": 2.917451,
+  "total_tokens": 5521305
+}

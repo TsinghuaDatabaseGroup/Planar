@@ -1,0 +1,53 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_ex97_clawback_policies
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is an EX-97 clawback or compensation
+      recoupment policy.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_ex97_clawback_policy: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: classify_coverage_and_misconduct_trigger
+    type: map
+    optimize: true
+    prompt: |
+      Classify policy coverage as exactly "beyond_sec_minimum" when recovery
+      extends beyond SEC minimum requirements, otherwise "sec_minimum_only".
+      Separately determine whether employee misconduct is a recovery trigger
+      independent of an accounting restatement.
+
+      Policy:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema: {coverage_group: string, misconduct_trigger: boolean}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: aggregate_by_coverage_group
+    type: code_reduce
+    reduce_key: coverage_group
+    code: |
+      def transform(items):
+          count = len(items)
+          triggered = sum(1 for item in items if item.get("misconduct_trigger") is True)
+          return {"policy_count": count, "misconduct_fraction": round(triggered / count, 4) if count else 0.0}
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations: [filter_ex97_clawback_policies, classify_coverage_and_misconduct_trigger, aggregate_by_coverage_group]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-009.json

@@ -1,0 +1,251 @@
+{
+  "node_id": 11,
+  "sample_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-033/moar-search/pipeline_input_sample_openai_11.yaml",
+  "sample_output_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-033/moar-search/pipeline_input_sample_openai_11.json",
+  "semantic_fidelity": 1.0,
+  "sample_execution_cost_usd": 0.01056978,
+  "fidelity_threshold": 0.9,
+  "selection_reason": "lowest_cost_meeting_fidelity_threshold",
+  "optimization_path": "ROOT → change to Qwen3.5-397B-A17B(filter_recalls_with_report_date) → arbitrary_rewrite(classify_same_defect_mechanism)",
+  "sample_execution_metrics_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-033/moar-search/candidate-metrics/execution_0002_node-11.json",
+  "full_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-033/selected-plan/pipeline_vehicle_safety-033_optimized_full.yaml",
+  "input_plan_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/pipeline-all/pipeline_vehicle_safety-033.yaml",
+  "input_plan_kind": "reference-plan translation used as the MOAR input plan",
+  "operator_execution_policy": {
+    "policy": "structural_rewrite_fixed_operator_execution",
+    "nested_v1_optimizer_invoked": false,
+    "fixed_default_model": "Qwen3.5-397B-A17B",
+    "unchanged_operations": [
+      "filter_recalls_with_report_date",
+      "flatten_dated_recall_fields",
+      "attach_complaint_received_ordinal",
+      "join_long_lag_same_vehicle_component_pairs",
+      "classify_same_defect_mechanism",
+      "project_long_lag_pair_fields"
+    ],
+    "new_or_replaced_operations": [
+      {
+        "name": "process_dates_and_extract_root_cause",
+        "type": "parallel_map",
+        "runtime_template_operation": "classify_same_defect_mechanism",
+        "inherited_execution_fields": []
+      }
+    ],
+    "restored_fields": {},
+    "unchanged_operation_count": 6,
+    "new_or_replaced_operation_count": 1
+  },
+  "input_plan_signature": {
+    "definitions": {
+      "filter_recalls_with_report_date": "code_filter",
+      "flatten_dated_recall_fields": "code_map",
+      "extract_recall_defect_root_cause": "map",
+      "attach_complaint_received_ordinal": "code_map",
+      "join_long_lag_same_vehicle_component_pairs": "equijoin",
+      "classify_same_defect_mechanism": "filter",
+      "project_long_lag_pair_fields": "code_map"
+    },
+    "logical_operations": [
+      {
+        "name": "filter_recalls_with_report_date",
+        "type": "code_filter",
+        "logical_config_sha256": "cc0e8ffdcc51d56fc7e9f085a51ec9005b73b9603d89e4dfcaa985d72687bc43"
+      },
+      {
+        "name": "flatten_dated_recall_fields",
+        "type": "code_map",
+        "logical_config_sha256": "edc79211031e8391cfd1d40984b4b810bade79eb6aea173d9d1b5d7c668462e2"
+      },
+      {
+        "name": "extract_recall_defect_root_cause",
+        "type": "map",
+        "logical_config_sha256": "3e9b1b7087b95e336e2e48aedb9ede0fe83cda3db33149e7ee1d345f251b7d7b"
+      },
+      {
+        "name": "attach_complaint_received_ordinal",
+        "type": "code_map",
+        "logical_config_sha256": "d1ed574d33832fc955bb271e7659e093f6365152fa4853e315f0e3c51d72658b"
+      },
+      {
+        "name": "join_long_lag_same_vehicle_component_pairs",
+        "type": "equijoin",
+        "logical_config_sha256": "3da7f16076e93ee02568c8701adb9fb73404e31e47a7222ca6d947a81cf898a4"
+      },
+      {
+        "name": "classify_same_defect_mechanism",
+        "type": "filter",
+        "logical_config_sha256": "724b099c470cec206b2af4613d3954b74803a768843742cb1b447b9d811e6a3e"
+      },
+      {
+        "name": "project_long_lag_pair_fields",
+        "type": "code_map",
+        "logical_config_sha256": "0f968115767f23ec9068070d125cee77e77b5faa9225a8ce8f3bc5343d279bb6"
+      }
+    ],
+    "steps": [
+      {
+        "name": "dated_recall_root_causes",
+        "input": "nhtsa_recalls",
+        "operations": [
+          {
+            "name": "filter_recalls_with_report_date",
+            "type": "code_filter"
+          },
+          {
+            "name": "flatten_dated_recall_fields",
+            "type": "code_map"
+          },
+          {
+            "name": "extract_recall_defect_root_cause",
+            "type": "map"
+          }
+        ]
+      },
+      {
+        "name": "dated_complaints",
+        "input": "nhtsa_complaints",
+        "operations": [
+          {
+            "name": "attach_complaint_received_ordinal",
+            "type": "code_map"
+          }
+        ]
+      },
+      {
+        "name": "long_lag_candidate_pairs",
+        "input": null,
+        "operations": [
+          {
+            "name": "join_long_lag_same_vehicle_component_pairs",
+            "type": "equijoin",
+            "inputs": {
+              "left": "dated_recall_root_causes",
+              "right": "dated_complaints"
+            }
+          }
+        ]
+      },
+      {
+        "name": "matching_long_lag_pairs",
+        "input": "long_lag_candidate_pairs",
+        "operations": [
+          {
+            "name": "classify_same_defect_mechanism",
+            "type": "filter"
+          },
+          {
+            "name": "project_long_lag_pair_fields",
+            "type": "code_map"
+          }
+        ]
+      }
+    ]
+  },
+  "selected_plan_signature": {
+    "definitions": {
+      "filter_recalls_with_report_date": "code_filter",
+      "flatten_dated_recall_fields": "code_map",
+      "process_dates_and_extract_root_cause": "parallel_map",
+      "attach_complaint_received_ordinal": "code_map",
+      "join_long_lag_same_vehicle_component_pairs": "equijoin",
+      "classify_same_defect_mechanism": "filter",
+      "project_long_lag_pair_fields": "code_map"
+    },
+    "logical_operations": [
+      {
+        "name": "filter_recalls_with_report_date",
+        "type": "code_filter",
+        "logical_config_sha256": "cc0e8ffdcc51d56fc7e9f085a51ec9005b73b9603d89e4dfcaa985d72687bc43"
+      },
+      {
+        "name": "flatten_dated_recall_fields",
+        "type": "code_map",
+        "logical_config_sha256": "edc79211031e8391cfd1d40984b4b810bade79eb6aea173d9d1b5d7c668462e2"
+      },
+      {
+        "name": "process_dates_and_extract_root_cause",
+        "type": "parallel_map",
+        "logical_config_sha256": "2d812c13c3c2b344d34befc1ecfb6ea4391195482fcc77a2d97980ddf181b6c2"
+      },
+      {
+        "name": "attach_complaint_received_ordinal",
+        "type": "code_map",
+        "logical_config_sha256": "d1ed574d33832fc955bb271e7659e093f6365152fa4853e315f0e3c51d72658b"
+      },
+      {
+        "name": "join_long_lag_same_vehicle_component_pairs",
+        "type": "equijoin",
+        "logical_config_sha256": "3da7f16076e93ee02568c8701adb9fb73404e31e47a7222ca6d947a81cf898a4"
+      },
+      {
+        "name": "classify_same_defect_mechanism",
+        "type": "filter",
+        "logical_config_sha256": "5ed6558ca3cf7cc8e34a8064d1ca9cd65c835a11b92c888cd4fd934f70c7d8b0"
+      },
+      {
+        "name": "project_long_lag_pair_fields",
+        "type": "code_map",
+        "logical_config_sha256": "0f968115767f23ec9068070d125cee77e77b5faa9225a8ce8f3bc5343d279bb6"
+      }
+    ],
+    "steps": [
+      {
+        "name": "dated_recall_root_causes",
+        "input": "nhtsa_recalls",
+        "operations": [
+          {
+            "name": "filter_recalls_with_report_date",
+            "type": "code_filter"
+          },
+          {
+            "name": "flatten_dated_recall_fields",
+            "type": "code_map"
+          }
+        ]
+      },
+      {
+        "name": "dated_complaints",
+        "input": "nhtsa_complaints",
+        "operations": [
+          {
+            "name": "attach_complaint_received_ordinal",
+            "type": "code_map"
+          }
+        ]
+      },
+      {
+        "name": "long_lag_candidate_pairs",
+        "input": null,
+        "operations": [
+          {
+            "name": "join_long_lag_same_vehicle_component_pairs",
+            "type": "equijoin",
+            "inputs": {
+              "left": "dated_recall_root_causes",
+              "right": "dated_complaints"
+            }
+          }
+        ]
+      },
+      {
+        "name": "matching_long_lag_pairs",
+        "input": "long_lag_candidate_pairs",
+        "operations": [
+          {
+            "name": "process_dates_and_extract_root_cause",
+            "type": "parallel_map"
+          },
+          {
+            "name": "classify_same_defect_mechanism",
+            "type": "filter"
+          },
+          {
+            "name": "project_long_lag_pair_fields",
+            "type": "code_map"
+          }
+        ]
+      }
+    ]
+  },
+  "plan_changed": true
+}

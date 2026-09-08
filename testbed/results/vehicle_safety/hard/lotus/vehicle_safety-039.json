@@ -1,0 +1,43 @@
+{
+  "task_id": "vehicle_safety-039",
+  "answer": [
+    {
+      "rank": 1,
+      "campaign_number": "21V090000",
+      "component_id": "BODY",
+      "corroborating_complaint_count": 229,
+      "cited_by_investigation": "false"
+    },
+    {
+      "rank": 2,
+      "campaign_number": "25V515000",
+      "component_id": "OTHER",
+      "corroborating_complaint_count": 114,
+      "cited_by_investigation": "false"
+    },
+    {
+      "rank": 3,
+      "campaign_number": "22V414000",
+      "component_id": "FUEL",
+      "corroborating_complaint_count": 107,
+      "cited_by_investigation": "false"
+    },
+    {
+      "rank": 4,
+      "campaign_number": "23V506000",
+      "component_id": "ELECTRICAL",
+      "corroborating_complaint_count": 102,
+      "cited_by_investigation": "false"
+    },
+    {
+      "rank": 5,
+      "campaign_number": "22V684000",
+      "component_id": "AIRBAG",
+      "corroborating_complaint_count": 99,
+      "cited_by_investigation": "false"
+    }
+  ],
+  "elapsed_seconds": 5256.26,
+  "cost_usd": 16.381303,
+  "total_tokens": 39975330
+}

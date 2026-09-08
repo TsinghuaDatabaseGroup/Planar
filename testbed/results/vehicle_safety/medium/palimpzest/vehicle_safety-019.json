@@ -1,0 +1,918 @@
+{
+  "task_id": "vehicle_safety-019",
+  "answer": [
+    {
+      "file_id": "txt_investigation_30f3986188602865.txt",
+      "primary_topic": "braking",
+      "cited_recall_numbers": [
+        "13V454000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_a537d998ca815ea0.txt",
+      "primary_topic": "braking",
+      "cited_recall_numbers": [
+        "20V469000",
+        "25V544000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_999b2fb9ba4aecf2.txt",
+      "primary_topic": "braking",
+      "cited_recall_numbers": [
+        "17V671000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_6e5ef201083ff24a.txt",
+      "primary_topic": "braking",
+      "cited_recall_numbers": [
+        "21V972000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_c98f11104a195c3d.txt",
+      "primary_topic": "other",
+      "cited_recall_numbers": [
+        "20V724000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_88851cb7181f50c2.txt",
+      "primary_topic": "other",
+      "cited_recall_numbers": [
+        "15V573000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_5abaf6de874f592b.txt",
+      "primary_topic": "airbag",
+      "cited_recall_numbers": [
+        "14V438000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_e505f40d3edd40f8.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "24V200000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_37c19cad492e19cb.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "25V455000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_6c8e95783095e3ca.txt",
+      "primary_topic": "other",
+      "cited_recall_numbers": [
+        "18V675000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_a2bbc03859794081.txt",
+      "primary_topic": "braking",
+      "cited_recall_numbers": [
+        "21V042000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_adbbd4c8f56732aa.txt",
+      "primary_topic": "electrical",
+      "cited_recall_numbers": [
+        "22V709000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_82e1fe17a99039ae.txt",
+      "primary_topic": "other",
+      "cited_recall_numbers": [
+        "14V266000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_77da89c8ed63ed47.txt",
+      "primary_topic": "electrical",
+      "cited_recall_numbers": [
+        "21V035000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_546753c540477aaf.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "18V735000",
+        "19V515000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_dfd77acc9e78ba47.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "13V355000",
+        "13V356000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_c9bcec9b6b455621.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "13V583000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_ff80ac56284e6f05.txt",
+      "primary_topic": "steering",
+      "cited_recall_numbers": [
+        "24V744000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_7853ee7777b08bce.txt",
+      "primary_topic": "braking",
+      "cited_recall_numbers": [
+        "15V507000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_4d837e99bf438d50.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "23V905000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_71256379f06f885d.txt",
+      "primary_topic": "airbag",
+      "cited_recall_numbers": [
+        "16V056000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_9e8baf3257492b4d.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "13V173000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_dec57a3b8937e851.txt",
+      "primary_topic": "other",
+      "cited_recall_numbers": [
+        "15V246000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_0035ca0a5c3b107f.txt",
+      "primary_topic": "electrical",
+      "cited_recall_numbers": [
+        "24V951000",
+        "25V695000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_ee5d087133e2493f.txt",
+      "primary_topic": "electrical",
+      "cited_recall_numbers": [
+        "14V391000",
+        "15V879000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_42c3e17189d2b07b.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "14V796000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_685728832d7ff058.txt",
+      "primary_topic": "steering",
+      "cited_recall_numbers": [
+        "15V340000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_35c6363f0571b318.txt",
+      "primary_topic": "electrical",
+      "cited_recall_numbers": [
+        "22V627000",
+        "23V180000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_ddaa5a22b8dac784.txt",
+      "primary_topic": "airbag",
+      "cited_recall_numbers": [
+        "13V282000",
+        "17V640000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_72f5d6d3d4d27632.txt",
+      "primary_topic": "electrical",
+      "cited_recall_numbers": [
+        "14V634000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_64fd85325481e592.txt",
+      "primary_topic": "steering",
+      "cited_recall_numbers": [
+        "22V089000",
+        "24V097000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_b35cf69100ea7662.txt",
+      "primary_topic": "braking",
+      "cited_recall_numbers": [
+        "15V393000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_d106e6c060b949dc.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "15V676000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_b8b862a9751c4144.txt",
+      "primary_topic": "other",
+      "cited_recall_numbers": [
+        "21V197000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_47fd41935c989692.txt",
+      "primary_topic": "electrical",
+      "cited_recall_numbers": [
+        "16V668000",
+        "18V137000",
+        "18V363000",
+        "20V024000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_d7dc58c50115c2c9.txt",
+      "primary_topic": "electrical",
+      "cited_recall_numbers": [
+        "24V267000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_c6b1043bc66992ae.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "25V274000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_3e540e709b495d53.txt",
+      "primary_topic": "steering",
+      "cited_recall_numbers": [
+        "23V838000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_fca5adff66b5638c.txt",
+      "primary_topic": "other",
+      "cited_recall_numbers": [
+        "21V796000",
+        "22V069000",
+        "22V123000",
+        "22V127000",
+        "22V218000",
+        "22V354000",
+        "22V447000",
+        "22V458000",
+        "22V816000",
+        "23V094000",
+        "23V210000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_bb491b3d9a026ff0.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "20V797000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_bec5f42242222b3d.txt",
+      "primary_topic": "airbag",
+      "cited_recall_numbers": [
+        "18V568000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_7ac9beb7fc280c79.txt",
+      "primary_topic": "braking",
+      "cited_recall_numbers": [
+        "08V311000",
+        "09V431000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_d474e3d121904e2e.txt",
+      "primary_topic": "electrical",
+      "cited_recall_numbers": [
+        "19V864000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_15ba420019ead973.txt",
+      "primary_topic": "braking",
+      "cited_recall_numbers": [
+        "15V800000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_8dd794de1b4ea239.txt",
+      "primary_topic": "airbag",
+      "cited_recall_numbers": [
+        "15V665000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_421f53f268bd8f75.txt",
+      "primary_topic": "steering",
+      "cited_recall_numbers": [
+        "15V054000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_f23c5be30f9eef9c.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "14V795000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_4adb097facfb9a53.txt",
+      "primary_topic": "braking",
+      "cited_recall_numbers": [
+        "25V859000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_1aba8edbfb2b2c6b.txt",
+      "primary_topic": "braking",
+      "cited_recall_numbers": [
+        "14V541000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_62d483d67c6ed8cf.txt",
+      "primary_topic": "airbag",
+      "cited_recall_numbers": [
+        "11V139000",
+        "14V047000",
+        "14V373000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_e23a4bb79d52d0ae.txt",
+      "primary_topic": "electrical",
+      "cited_recall_numbers": [
+        "24V267000",
+        "25V019000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_f5707b70ca508686.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "20V701000",
+        "21V560000",
+        "21V650000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_029c56de0e8e61b4.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "16V248000",
+        "19V075000",
+        "19V433000",
+        "24V444000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_0c952e49c1e7a9dd.txt",
+      "primary_topic": "braking",
+      "cited_recall_numbers": [
+        "18V916000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_c56f72fc45a125b9.txt",
+      "primary_topic": "other",
+      "cited_recall_numbers": [
+        "23V213000",
+        "23V312000",
+        "24V651000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_55ab3e3a07bc3e29.txt",
+      "primary_topic": "steering",
+      "cited_recall_numbers": [
+        "18V336000",
+        "12V550000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_1a7dddd2f3a322af.txt",
+      "primary_topic": "braking",
+      "cited_recall_numbers": [
+        "20V389000",
+        "23V724000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_4078106d0340d00c.txt",
+      "primary_topic": "airbag",
+      "cited_recall_numbers": [
+        "16V244000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_de1f0bf1e029a8b2.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "22V412000",
+        "23V687000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_963f25789a1dfa40.txt",
+      "primary_topic": "steering",
+      "cited_recall_numbers": [
+        "19V021000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_21a87149f4bb9bcf.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "13V523000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_a8a91c3c5ac6b4b7.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "15V568000",
+        "17V226000",
+        "20V746000",
+        "21V727000",
+        "17V224000",
+        "19V120000",
+        "20V750000",
+        "21V844000",
+        "23V877000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_7a397b1421fa512b.txt",
+      "primary_topic": "other",
+      "cited_recall_numbers": [
+        "24V099000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_7b10c70876b82275.txt",
+      "primary_topic": "braking",
+      "cited_recall_numbers": [
+        "16V345000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_db52160d7de36fcc.txt",
+      "primary_topic": "electrical",
+      "cited_recall_numbers": [
+        "24V321000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_9d28e2718f7bcdae.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "19V432000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_a161df2726af9f3e.txt",
+      "primary_topic": "electrical",
+      "cited_recall_numbers": [
+        "24V148000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_59594290efc7f9a8.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "24V204000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_e0582ed197ad5d72.txt",
+      "primary_topic": "other",
+      "cited_recall_numbers": [
+        "23V782000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_8be18f99e74db448.txt",
+      "primary_topic": "braking",
+      "cited_recall_numbers": [
+        "19V645000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_6bb46cfa3c2aaa30.txt",
+      "primary_topic": "other",
+      "cited_recall_numbers": [
+        "23V488000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_bfbc6a86158c92e1.txt",
+      "primary_topic": "braking",
+      "cited_recall_numbers": [
+        "20V469000",
+        "23V162000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_0adaa86fa0127f9f.txt",
+      "primary_topic": "other",
+      "cited_recall_numbers": [
+        "19V680000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_3c6068a70799e2c4.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "16V907000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_4a0e2f4555b168e8.txt",
+      "primary_topic": "electrical",
+      "cited_recall_numbers": [
+        "14V755000",
+        "15V519000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_4f052d0a5f538055.txt",
+      "primary_topic": "braking",
+      "cited_recall_numbers": [
+        "24V896000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_2fbdb70e70383260.txt",
+      "primary_topic": "electrical",
+      "cited_recall_numbers": [
+        "23V734000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_1b86083e3e94b94e.txt",
+      "primary_topic": "airbag",
+      "cited_recall_numbers": [
+        "15V483000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_3bbbb3e89f1dc774.txt",
+      "primary_topic": "airbag",
+      "cited_recall_numbers": [
+        "12V527000",
+        "15V046000",
+        "15V673000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_3d59e5e1d5aa5367.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "22V859000",
+        "24V187000",
+        "25V165000",
+        "25V467000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_f9217e5aafe61229.txt",
+      "primary_topic": "other",
+      "cited_recall_numbers": [
+        "20V177000",
+        "15V246000",
+        "16V643000",
+        "17V210000",
+        "20V331000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_4917ede093662e29.txt",
+      "primary_topic": "other",
+      "cited_recall_numbers": [
+        "25V607000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_4627c950ddeecf43.txt",
+      "primary_topic": "electrical",
+      "cited_recall_numbers": [
+        "14V391000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_2fad9b440be659f1.txt",
+      "primary_topic": "other",
+      "cited_recall_numbers": [
+        "16V643000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_b3813da54ee3dda9.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "25V437000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_74e6c7c0ae4bb88b.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "16V647000",
+        "24V110000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_b1b8105af73ec4fe.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "23V751000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_05bd17c9f6b092da.txt",
+      "primary_topic": "electrical",
+      "cited_recall_numbers": [
+        "22V867000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_b452061e4444c05f.txt",
+      "primary_topic": "other",
+      "cited_recall_numbers": [
+        "24V031000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_30789e2407e33aa2.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "25V099000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_d58ed1b6bf651bf9.txt",
+      "primary_topic": "other",
+      "cited_recall_numbers": [
+        "06V181000",
+        "09V491000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_54933417c6dc47ca.txt",
+      "primary_topic": "electrical",
+      "cited_recall_numbers": [
+        "25V552000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_49e1ff012e25233c.txt",
+      "primary_topic": "airbag",
+      "cited_recall_numbers": [
+        "17V144000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_aaff8bd3a8163eb8.txt",
+      "primary_topic": "other",
+      "cited_recall_numbers": [
+        "24V099000",
+        "23V099000",
+        "25V197000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_01f32e30ee9acd46.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "24V635000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_eecb33ba9f820949.txt",
+      "primary_topic": "steering",
+      "cited_recall_numbers": [
+        "16V054000",
+        "21V213000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_6c619374a2441ea0.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "23V010000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_ef12d2cfbf020527.txt",
+      "primary_topic": "airbag",
+      "cited_recall_numbers": [
+        "14V343000",
+        "14V344000",
+        "14V348000",
+        "14V351000",
+        "14V353000",
+        "14V655000",
+        "14V700000",
+        "14V701000",
+        "14V752000",
+        "14V763000",
+        "14V770000",
+        "14V773000",
+        "14V787000",
+        "14V802000",
+        "14V817000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_bb33ce872d92e3ef.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "19V293000",
+        "25V674000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_638ded8941573dd0.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "23V751000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_06eb6243a86354e7.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "14V530000",
+        "15V115000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_8e9ad5653bf294ed.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "15V568000",
+        "17V226000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_eac49ed155cf0f45.txt",
+      "primary_topic": "electrical",
+      "cited_recall_numbers": [
+        "15V861000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_e8883e646b2ba0f9.txt",
+      "primary_topic": "braking",
+      "cited_recall_numbers": [
+        "20V471000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_e17c60c0a37bb3b2.txt",
+      "primary_topic": "braking",
+      "cited_recall_numbers": [
+        "20V332000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_75b45cc24b25760c.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "17V224000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_4441c7de869cda3a.txt",
+      "primary_topic": "other",
+      "cited_recall_numbers": [
+        "22V420000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_40efba00fd61b8a7.txt",
+      "primary_topic": "steering",
+      "cited_recall_numbers": [
+        "23V836000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_c3a46db658574bab.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "18V837000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_f18cadcc9405a945.txt",
+      "primary_topic": "other",
+      "cited_recall_numbers": [
+        "16V582000",
+        "22V165000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_93ab6f9ddf8ca1cb.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "13V535000",
+        "15V175000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_9f7934e5d65007b4.txt",
+      "primary_topic": "airbag",
+      "cited_recall_numbers": [
+        "16V244000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_2bf77ed0aa95c220.txt",
+      "primary_topic": "other",
+      "cited_recall_numbers": [
+        "18V405000",
+        "18V610000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_04d076db351e73db.txt",
+      "primary_topic": "other",
+      "cited_recall_numbers": [
+        "14V571000",
+        "21V473000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_5f2c24ffe8b00042.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "16V248000",
+        "19V075000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_786680a446f7dee1.txt",
+      "primary_topic": "other",
+      "cited_recall_numbers": [
+        "23V236000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_23cca884e0a0a76e.txt",
+      "primary_topic": "airbag",
+      "cited_recall_numbers": [
+        "16V290000",
+        "16V288000"
+      ]
+    },
+    {
+      "file_id": "txt_investigation_cd7dcc0ff5b176ee.txt",
+      "primary_topic": "powertrain",
+      "cited_recall_numbers": [
+        "22V255000",
+        "23V199000",
+        "23V675000"
+      ]
+    }
+  ],
+  "elapsed_seconds": 252.535,
+  "cost_usd": 0.639811,
+  "total_tokens": 938690
+}

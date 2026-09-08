@@ -1,0 +1,38 @@
+{
+  "task_id": "legal_contracts-055",
+  "answer": [
+    {
+      "document_id": "1125892_0000950133-00-004441_w41075a1ex10-7.txt",
+      "exhibit_type": "EX-10",
+      "agreement_type": "mutual_nda",
+      "governing_law": "Washington"
+    },
+    {
+      "document_id": "1420529_0001145549-08-000077_h00839a1exv10w4.txt",
+      "exhibit_type": "OTHER",
+      "agreement_type": "mutual_nda",
+      "governing_law": "People's Republic of China"
+    },
+    {
+      "document_id": "OMA-TestFest-NDA-2017.pdf",
+      "exhibit_type": "OTHER",
+      "agreement_type": "mutual_nda",
+      "governing_law": "England"
+    },
+    {
+      "document_id": "ex1014-kblackwellconsultin.htm",
+      "exhibit_type": "EX-10",
+      "agreement_type": "services_agreement",
+      "governing_law": "Colorado"
+    },
+    {
+      "document_id": "tm254711d1_ex10-3.htm",
+      "exhibit_type": "EX-10",
+      "agreement_type": "employment_agreement",
+      "governing_law": "Colorado"
+    }
+  ],
+  "elapsed_seconds": 518.59,
+  "cost_usd": 4.763021,
+  "total_tokens": 8936971
+}

@@ -1,0 +1,212 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_afternoon_local_time
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("local_time_of_day") == "1201-1800"
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: filter_weather_as_primary_decision_cause
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this NASA ASRS report only when weather or visibility was the primary
+      cause of an operational decision change, rather than incidental background.
+
+      A qualifying report must make a causal connection between weather or
+      visibility and a change such as diverting, changing airport, holding,
+      changing an approach, changing altitude, or changing route. Mere mention of
+      weather, routine weather monitoring, or weather that did not cause an
+      operational change does not qualify.
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_non_comfort_only_turbulence
+    type: filter
+    optimize: true
+    prompt: |
+      This report has already been identified as describing a weather-caused
+      operational decision change. Keep it only if it is not a case where
+      turbulence affected passenger comfort alone without changing the flight's
+      operation.
+
+      Exclude a report when turbulence is mentioned solely because of ride quality,
+      seat-belt concerns, cabin service, or passenger comfort and no operational
+      flight change resulted. Keep it when turbulence or another weather condition
+      actually caused an operational decision change.
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        is_match: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: classify_weather_decision_change
+    type: map
+    optimize: true
+    prompt: |
+      Assign exactly one decision_change_type to this NASA ASRS report. Apply the
+      following precedence from highest to lowest whenever multiple operational
+      changes occurred:
+
+      1. diversion: the flight diverted from its intended destination;
+      2. airport_change: the departure, arrival, alternate, or other operating
+         airport was changed, without a qualifying diversion taking precedence;
+      3. holding: the flight entered, extended, or changed holding because of the
+         weather or visibility;
+      4. approach_change: the approach type, runway approach, approach execution,
+         or approach plan was changed;
+      5. altitude_change: the flight changed requested, assigned, planned, or flown
+         altitude because of the weather or visibility;
+      6. route_change: the flight changed route, course, track, or routing because
+         of the weather or visibility.
+
+      Return not_target when none of these six operational changes is clearly
+      described. Return only the earliest supported category in the precedence
+      list.
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        decision_change_type: enum[diversion, airport_change, holding, approach_change, altitude_change, route_change, not_target]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: keep_target_decision_changes
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("decision_change_type") in {
+              "diversion",
+              "airport_change",
+              "holding",
+              "approach_change",
+              "altitude_change",
+              "route_change",
+          }
+
+  - name: aggregate_by_decision_change
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          decision_order = [
+              "diversion",
+              "airport_change",
+              "holding",
+              "approach_change",
+              "altitude_change",
+              "route_change",
+          ]
+          incident_ids = {decision: set() for decision in decision_order}
+
+          for item in items:
+              incident_id = str(item.get("incident_id", ""))
+              decision = item.get("decision_change_type")
+              if incident_id and decision in incident_ids:
+                  incident_ids[decision].add(incident_id)
+
+          rows = []
+          for decision in decision_order:
+              if not incident_ids[decision]:
+                  continue
+              rows.append(
+                  {
+                      "decision_change_type": decision,
+                      "incident_count": len(incident_ids[decision]),
+                  }
+              )
+          return {"rows": rows}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - decision_change_type
+      - incident_count
+
+pipeline:
+  steps:
+    - name: process
+      input: asrs_incidents
+      operations:
+        - filter_afternoon_local_time
+        - load_asrs_narrative
+        - filter_weather_as_primary_decision_cause
+        - filter_non_comfort_only_turbulence
+        - classify_weather_decision_change
+        - keep_target_decision_changes
+        - aggregate_by_decision_change
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-027.json

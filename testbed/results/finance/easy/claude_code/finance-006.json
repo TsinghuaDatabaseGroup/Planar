@@ -1,0 +1,26 @@
+{
+  "task_id": "finance-006",
+  "answer": [
+    {
+      "company_name": "Pfizer Inc.",
+      "competitive_advantages_count": 7,
+      "subsidiary_count": 10,
+      "industry_sector": "Healthcare"
+    },
+    {
+      "company_name": "Masimo Corporation",
+      "competitive_advantages_count": 6,
+      "subsidiary_count": 10,
+      "industry_sector": "Technology"
+    },
+    {
+      "company_name": "Quest Diagnostics Incorporated",
+      "competitive_advantages_count": 6,
+      "subsidiary_count": 10,
+      "industry_sector": "Healthcare"
+    }
+  ],
+  "elapsed_seconds": 11545.48,
+  "cost_usd": 10.33926324,
+  "total_tokens": 22109690
+}

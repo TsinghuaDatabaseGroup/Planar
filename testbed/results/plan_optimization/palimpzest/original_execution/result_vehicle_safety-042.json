@@ -1,0 +1,35 @@
+{
+  "task_id": "vehicle_safety-042",
+  "answer": [
+    {
+      "campaign_number": "21V846000",
+      "matched_complaint_count": 22,
+      "dominant_adas_topic": "unexpected_braking",
+      "related_report_ids": [
+        "txt_investigation_0dc6b216b5a52248.txt",
+        "txt_investigation_62c81aa5a162e7e4.txt",
+        "txt_investigation_b47da6c1e6001de4.txt",
+        "txt_investigation_ef731290c14111ae.txt",
+        "txt_investigation_f471802508be6b75.txt"
+      ]
+    },
+    {
+      "campaign_number": "22V317000",
+      "matched_complaint_count": 7,
+      "dominant_adas_topic": "warning_or_supervision_gap",
+      "related_report_ids": [
+        "txt_investigation_0dc6b216b5a52248.txt",
+        "txt_investigation_1fac4e5d7de1a68a.txt",
+        "txt_investigation_3e540e709b495d53.txt",
+        "txt_investigation_62c81aa5a162e7e4.txt",
+        "txt_investigation_6a6b8948bfc09aad.txt",
+        "txt_investigation_b47da6c1e6001de4.txt",
+        "txt_investigation_da22923fc5523800.txt",
+        "txt_investigation_ef731290c14111ae.txt"
+      ]
+    }
+  ],
+  "elapsed_seconds": 587.405,
+  "cost_usd": 1.441577,
+  "total_tokens": 2095259
+}

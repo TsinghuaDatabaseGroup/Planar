@@ -1,0 +1,228 @@
+{
+  "task_id": "aviation_safety-030",
+  "answer": [
+    {
+      "rank": 1,
+      "incident_id": "asrs_080973",
+      "parties_involved": "C152 pilot and Tower",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 0,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": null,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "not_stated"
+    },
+    {
+      "rank": 2,
+      "incident_id": "asrs_109150",
+      "parties_involved": "EMB-170 and Airbus",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 0,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": null,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "not_stated"
+    },
+    {
+      "rank": 3,
+      "incident_id": "asrs_116286",
+      "parties_involved": "Cirrus and Cessna",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 0,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": null,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "not_stated"
+    },
+    {
+      "rank": 4,
+      "incident_id": "asrs_134237",
+      "parties_involved": "A321 flight crew",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 0,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": null,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "not_stated"
+    },
+    {
+      "rank": 5,
+      "incident_id": "asrs_141094",
+      "parties_involved": "landing aircraft and departing aircraft",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 0,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": null,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "not_stated"
+    },
+    {
+      "rank": 6,
+      "incident_id": "asrs_124473",
+      "parties_involved": "R22 helicopter and Aircraft X",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 20,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": 25.0,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "differs"
+    },
+    {
+      "rank": 7,
+      "incident_id": "asrs_072492",
+      "parties_involved": "C172 student pilot and LSA aircraft",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 100,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": 100.0,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "matches"
+    },
+    {
+      "rank": 8,
+      "incident_id": "asrs_122921",
+      "parties_involved": "Aircraft X and Aircraft Y",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 200,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": null,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "not_stated"
+    },
+    {
+      "rank": 9,
+      "incident_id": "asrs_123517",
+      "parties_involved": "Helicopter and Aircraft Y",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 200,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": null,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "not_stated"
+    },
+    {
+      "rank": 10,
+      "incident_id": "asrs_137300",
+      "parties_involved": "C172 flight crew and low-wing aircraft",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 250,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": 200.0,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "differs"
+    },
+    {
+      "rank": 11,
+      "incident_id": "asrs_086351",
+      "parties_involved": "C177 pilot and formation flight",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 400,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": null,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "not_stated"
+    },
+    {
+      "rank": 12,
+      "incident_id": "asrs_136400",
+      "parties_involved": "SR-20 pilot and Diamond Star",
+      "structured_horizontal_ft": 0,
+      "structured_vertical_ft": 500,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": null,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "not_stated"
+    },
+    {
+      "rank": 13,
+      "incident_id": "asrs_137985",
+      "parties_involved": "PC12 pilot and departure controller",
+      "structured_horizontal_ft": 2,
+      "structured_vertical_ft": 1000,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": null,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "not_stated"
+    },
+    {
+      "rank": 14,
+      "incident_id": "asrs_080839",
+      "parties_involved": "two C172 aircraft",
+      "structured_horizontal_ft": 10,
+      "structured_vertical_ft": 0,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": 15.0,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "differs"
+    },
+    {
+      "rank": 15,
+      "incident_id": "asrs_150483",
+      "parties_involved": "C172N pilot and MQ-9 UAS crew",
+      "structured_horizontal_ft": 10,
+      "structured_vertical_ft": 150,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": 150.0,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "matches"
+    },
+    {
+      "rank": 16,
+      "incident_id": "asrs_136804",
+      "parties_involved": "Cessna 152 and King Air",
+      "structured_horizontal_ft": 20,
+      "structured_vertical_ft": 0,
+      "narrative_horizontal_ft": 20.0,
+      "narrative_vertical_ft": null,
+      "horizontal_comparison": "matches",
+      "vertical_comparison": "not_stated"
+    },
+    {
+      "rank": 17,
+      "incident_id": "asrs_069314",
+      "parties_involved": "C172 pilot and glider pilot",
+      "structured_horizontal_ft": 30,
+      "structured_vertical_ft": 10,
+      "narrative_horizontal_ft": 30.0,
+      "narrative_vertical_ft": 10.0,
+      "horizontal_comparison": "matches",
+      "vertical_comparison": "matches"
+    },
+    {
+      "rank": 18,
+      "incident_id": "asrs_070251",
+      "parties_involved": "BE33 pilot and Ercoupe",
+      "structured_horizontal_ft": 30,
+      "structured_vertical_ft": 30,
+      "narrative_horizontal_ft": null,
+      "narrative_vertical_ft": 25.0,
+      "horizontal_comparison": "not_stated",
+      "vertical_comparison": "differs"
+    },
+    {
+      "rank": 19,
+      "incident_id": "asrs_121884",
+      "parties_involved": "flight instructor and aerobatic aircraft",
+      "structured_horizontal_ft": 50,
+      "structured_vertical_ft": 0,
+      "narrative_horizontal_ft": 100.0,
+      "narrative_vertical_ft": null,
+      "horizontal_comparison": "differs",
+      "vertical_comparison": "not_stated"
+    },
+    {
+      "rank": 20,
+      "incident_id": "asrs_149915",
+      "parties_involved": "training aircraft and Citation Jet",
+      "structured_horizontal_ft": 50,
+      "structured_vertical_ft": 0,
+      "narrative_horizontal_ft": 50.0,
+      "narrative_vertical_ft": null,
+      "horizontal_comparison": "matches",
+      "vertical_comparison": "not_stated"
+    }
+  ],
+  "elapsed_seconds": 312.96,
+  "cost_usd": 1.516783,
+  "total_tokens": 3468142
+}

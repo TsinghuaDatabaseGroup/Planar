@@ -1,0 +1,26 @@
+{
+  "task_id": "legal_contracts-094",
+  "answer": [
+    {
+      "governing_law": "California",
+      "mutual_count": 2,
+      "unilateral_count": 0,
+      "average_finite_term_years": 0.0
+    },
+    {
+      "governing_law": "Belgium",
+      "mutual_count": 1,
+      "unilateral_count": 0,
+      "average_finite_term_years": 0.0
+    },
+    {
+      "governing_law": "Province of",
+      "mutual_count": 1,
+      "unilateral_count": 0,
+      "average_finite_term_years": 0.0
+    }
+  ],
+  "elapsed_seconds": 71.028,
+  "cost_usd": 0.0660501,
+  "total_tokens": 39078
+}

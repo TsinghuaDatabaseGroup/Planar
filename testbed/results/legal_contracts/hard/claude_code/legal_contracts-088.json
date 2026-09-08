@@ -1,0 +1,37 @@
+{
+  "task_id": "legal_contracts-088",
+  "answer": [
+    {
+      "company": "Cavco Industries, Inc.",
+      "certifying_officers": [
+        "William C. Boor (President and Chief Executive Officer)"
+      ],
+      "covered_person_category": "executive officers"
+    },
+    {
+      "company": "Fulton Financial Corporation",
+      "certifying_officers": [
+        "Beth Ann L. Chivinski (Chief Financial Officer)",
+        "Beth Ann L. Chivinski (Senior Executive Vice President and Interim Chief Financial Officer)",
+        "Curtis J. Myers (Chairman and Chief Executive Officer)",
+        "Curtis J. Myers (Chief Executive Officer)",
+        "Richard S. Kraemer (Chief Financial Officer)",
+        "Richard S. Kraemer (Senior Executive Vice President and Chief Financial Officer)"
+      ],
+      "covered_person_category": "executive officers"
+    },
+    {
+      "company": "Strategic Education, Inc.",
+      "certifying_officers": [
+        "Daniel W. Jackson ()",
+        "Daniel W. Jackson (Executive Vice President and Chief Financial Officer)",
+        "Karl McDonnell ()",
+        "Karl McDonnell (Chief Executive Officer)"
+      ],
+      "covered_person_category": "executive officers"
+    }
+  ],
+  "elapsed_seconds": 182.734,
+  "cost_usd": 0.33577875,
+  "total_tokens": 567776
+}

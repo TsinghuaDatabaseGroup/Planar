@@ -1,0 +1,47 @@
+{
+  "task_id": "legal_contracts-106",
+  "answer": [
+    {
+      "jurisdiction": "State of New York",
+      "qualifying_nda_count": 25,
+      "most_common_restriction_profile": [
+        false,
+        false,
+        true,
+        true,
+        false
+      ],
+      "profile_nda_count": 13,
+      "profile_avg_duration_years": 2.35
+    },
+    {
+      "jurisdiction": "State of Delaware",
+      "qualifying_nda_count": 15,
+      "most_common_restriction_profile": [
+        false,
+        false,
+        true,
+        true,
+        false
+      ],
+      "profile_nda_count": 11,
+      "profile_avg_duration_years": 3.09
+    },
+    {
+      "jurisdiction": "Delaware",
+      "qualifying_nda_count": 12,
+      "most_common_restriction_profile": [
+        false,
+        false,
+        true,
+        true,
+        false
+      ],
+      "profile_nda_count": 3,
+      "profile_avg_duration_years": 2.33
+    }
+  ],
+  "elapsed_seconds": 213.71,
+  "cost_usd": 1.752644,
+  "total_tokens": 3284904
+}

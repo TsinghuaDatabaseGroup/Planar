@@ -1,0 +1,92 @@
+{
+  "task_id": "legal_contracts-082",
+  "answer": [
+    {
+      "document_id": "1023734_0000912057-96-023266_document_16.txt"
+    },
+    {
+      "document_id": "1031896_0000950147-01-501725_ex10-8.txt"
+    },
+    {
+      "document_id": "1044777_0000950124-98-000388_document_7.txt"
+    },
+    {
+      "document_id": "1050277_0001047469-99-000663_document_7.txt"
+    },
+    {
+      "document_id": "1052946_0000950134-98-001627_document_4.txt"
+    },
+    {
+      "document_id": "1053949_0001005150-98-000126_document_8.txt"
+    },
+    {
+      "document_id": "1062760_0001015402-05-001930_doc17.txt"
+    },
+    {
+      "document_id": "1085220_0001014909-04-000090_exh6_3.txt"
+    },
+    {
+      "document_id": "118.3-Non-disclosure-agreement.pdf"
+    },
+    {
+      "document_id": "245490.pdf"
+    },
+    {
+      "document_id": "41629_1.pdf"
+    },
+    {
+      "document_id": "Facility-Tour-Confidentiality-and-Non-Disclosure.pdf"
+    },
+    {
+      "document_id": "Focus-Group-APIC-Seattle-Confidentiality-Agreement-031115.pdf"
+    },
+    {
+      "document_id": "Generic-NDA-Pitch-Deck-Fire.pdf"
+    },
+    {
+      "document_id": "NDA.pdf"
+    },
+    {
+      "document_id": "Non-Disclosure-Agreement-1.pdf"
+    },
+    {
+      "document_id": "Non-Disclosure-Agreement-FORS-Cert-Body.pdf"
+    },
+    {
+      "document_id": "NonDisclosureAgreementNDASAMITT20190002v2.pdf"
+    },
+    {
+      "document_id": "Pitch-Deck-Fire-Workshop-NDA-2.2017.pdf"
+    },
+    {
+      "document_id": "Proctor_Agreement.pdf"
+    },
+    {
+      "document_id": "QSA_NDA.pdf"
+    },
+    {
+      "document_id": "annex-iii---nda-agreement..pdf"
+    },
+    {
+      "document_id": "document_viewer.pdf"
+    },
+    {
+      "document_id": "for-41-supplier-confidentiality-agreement-and-non-disclosure-agreement.pdf"
+    },
+    {
+      "document_id": "nda_19.pdf"
+    },
+    {
+      "document_id": "resolution-2012-03-014r.pdf"
+    },
+    {
+      "document_id": "stevenson_confidentiality_agreement.pdf"
+    },
+    {
+      "document_id": "ws-confidentiality-and-non-disclosure-agreement.pdf"
+    }
+  ],
+  "elapsed_seconds": 534.322,
+  "cost_usd": 4.65323925,
+  "total_tokens": 11364280
+}

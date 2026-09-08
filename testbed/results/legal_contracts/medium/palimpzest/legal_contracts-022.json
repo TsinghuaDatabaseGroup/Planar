@@ -1,0 +1,173 @@
+{
+  "task_id": "legal_contracts-022",
+  "answer": [
+    {
+      "document_id": "Non Disclosure Agreement - CP Specific NDA (CreativeNDA-CPS121.1014).pdf",
+      "governing_law": "Delaware",
+      "term_months": 24
+    },
+    {
+      "document_id": "MutualNonDisclosureAgreement0104.pdf",
+      "governing_law": "State of California",
+      "term_months": 36
+    },
+    {
+      "document_id": "Mutual%20Non%20Disclosure%20Agreement_0.pdf",
+      "governing_law": "State of New York",
+      "term_months": 36
+    },
+    {
+      "document_id": "Non-Disclosure-Agreement-NDA.pdf",
+      "governing_law": "Germany",
+      "term_months": 36
+    },
+    {
+      "document_id": "1138169_0001050234-02-000002_ex10h.txt",
+      "governing_law": "State of North Carolina",
+      "term_months": 36
+    },
+    {
+      "document_id": "Template-NDA-2-way-final-1.pdf",
+      "governing_law": "Province of Ontario",
+      "term_months": 36
+    },
+    {
+      "document_id": "1011344_0001193125-08-097987_dex99d5.htm",
+      "governing_law": "State of California",
+      "term_months": 36
+    },
+    {
+      "document_id": "NDA-Broker-Seller-for-Company-6-19-17.pdf",
+      "governing_law": "Delaware",
+      "term_months": 24
+    },
+    {
+      "document_id": "09-24-2019-04-25-05-3914910473.pdf",
+      "governing_law": "Republic of Italy",
+      "term_months": 36
+    },
+    {
+      "document_id": "UT_Universal_NDA_2014_OIE.pdf",
+      "governing_law": "State of Texas",
+      "term_months": 36
+    },
+    {
+      "document_id": "WEB-NDA-Mutual-Customer-and-Allazo-Electronics-v2.pdf",
+      "governing_law": "State of Texas",
+      "term_months": 36
+    },
+    {
+      "document_id": "NDA-ONSemi_IndustryAnalystConf-2011.pdf",
+      "governing_law": "New York",
+      "term_months": 36
+    },
+    {
+      "document_id": "NDA-Template-Media-News-Group-inc.pdf",
+      "governing_law": "State of New York",
+      "term_months": 12
+    },
+    {
+      "document_id": "Non_Disclosure_Agreement_2.pdf",
+      "governing_law": "England",
+      "term_months": 12
+    },
+    {
+      "document_id": "NDA_10.pdf",
+      "governing_law": "State of Israel",
+      "term_months": 36
+    },
+    {
+      "document_id": "NMLS%20Accessibility%20NDA.pdf",
+      "governing_law": "State of New York",
+      "term_months": 36
+    },
+    {
+      "document_id": "1016503_0000929624-00-000894_0010.txt",
+      "governing_law": "State of New York",
+      "term_months": 12
+    },
+    {
+      "document_id": "1096182_0001144204-06-021678_v043804_ex10-3.txt",
+      "governing_law": "State of Connecticut",
+      "term_months": 36
+    },
+    {
+      "document_id": "900091_0001047469-97-003029_document_4.txt",
+      "governing_law": "Japan",
+      "term_months": 36
+    },
+    {
+      "document_id": "Confidentiality-and-Non-Disclosure-Agreement-LSI-ABC.pdf",
+      "governing_law": "State of Florida",
+      "term_months": 24
+    },
+    {
+      "document_id": "annex-2-sample-non-disclosure-agreement.pdf",
+      "governing_law": "England",
+      "term_months": 36
+    },
+    {
+      "document_id": "Eskom%20Template%20Confidentiality%20and%20Non-disclosure%20Agreement%20Rev%204%20Effective%20August%202017_11.pdf",
+      "governing_law": "South Africa",
+      "term_months": 36
+    },
+    {
+      "document_id": "948850_0000950123-10-020820_p17071exv99wew4.htm",
+      "governing_law": "State of New York",
+      "term_months": 12
+    },
+    {
+      "document_id": "Kenway-NDA-Form-Blank.pdf",
+      "governing_law": "Delaware",
+      "term_months": 24
+    },
+    {
+      "document_id": "850313_0000950149-07-000090_f28028toexv99wxdyx2y.htm",
+      "governing_law": "State of Maryland",
+      "term_months": 24
+    },
+    {
+      "document_id": "859119_0000950123-98-001418_document_15.txt",
+      "governing_law": "State of New York",
+      "term_months": 36
+    },
+    {
+      "document_id": "ExcelerateStandardNDAFormat.pdf",
+      "governing_law": "State of Alabama",
+      "term_months": 36
+    },
+    {
+      "document_id": "d828431dex101.htm",
+      "governing_law": "State of Delaware",
+      "term_months": 18
+    },
+    {
+      "document_id": "813562_0000950117-99-001205_document_14.txt",
+      "governing_law": "state of the defending party",
+      "term_months": 36
+    },
+    {
+      "document_id": "tamu_tees_nda_template.pdf",
+      "governing_law": "State of Texas",
+      "term_months": 36
+    },
+    {
+      "document_id": "non-disclosure-agreement-mutual-generic-blank.pdf",
+      "governing_law": "Arizona",
+      "term_months": 24
+    },
+    {
+      "document_id": "simply-fashion---standard-nda.pdf",
+      "governing_law": "Southern District of Florida",
+      "term_months": 6
+    },
+    {
+      "document_id": "non-disclosure-agreement-en.pdf",
+      "governing_law": "Brazil or New York",
+      "term_months": 36
+    }
+  ],
+  "elapsed_seconds": 1829.17,
+  "cost_usd": 2.850649,
+  "total_tokens": 5415389
+}

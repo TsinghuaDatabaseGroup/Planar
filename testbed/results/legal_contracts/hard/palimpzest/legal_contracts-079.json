@@ -1,0 +1,573 @@
+{
+  "task_id": "legal_contracts-079",
+  "answer": [
+    {
+      "document_id": "NDA_6.pdf",
+      "governing_law": "United States and the State of California",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "LiiON%20NDA%202-27-2015%20v1.0.pdf",
+      "governing_law": "State of Illinois",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "NondisclosureAgreement_2.pdf",
+      "governing_law": "India",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "1402305_0001193125-11-343865_d268167dex99d2.htm",
+      "governing_law": "New York",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "QEP-Williston-Form-of-Confidentiality-Agreement-BMO.pdf",
+      "governing_law": "State of Texas",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "HNBA-2017-18-Confidentiality-Agreement.pdf",
+      "governing_law": "District of Columbia",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "NDA_Mutual_template2_5_2019.pdf",
+      "governing_law": "State of Tennessee",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "NDA_Street_Stream_Franchise.pdf",
+      "governing_law": "England and Wales",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "1609351_0001193125-19-066373_d642137dex99d2.htm",
+      "governing_law": "State of Delaware",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "1020416_0001193125-16-701566_d250247dex99d2.htm",
+      "governing_law": "State of New York",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "NDA_eng.pdf",
+      "governing_law": "Singapore",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "1574111_0001193125-14-440569_d826999dex99d5.htm",
+      "governing_law": "State of California",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "NDA_13.pdf",
+      "governing_law": "Commonwealth of Australia and the State of New South Wales",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "1452751_0001193125-17-086167_d334994dex99e3.htm",
+      "governing_law": "State of Delaware",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "MR_NON-DISCLOSURE-AGREEMENT.pdf",
+      "governing_law": "Austrian law",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "1485469_0001193125-19-222469_d760929dex99d3.htm",
+      "governing_law": "State of New York",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "1424657_0001213900-16-016691_f8k082516ex99iii_nextgroup.htm",
+      "governing_law": null,
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "SE_NDCA_and_PRE-QUAL_PACKAGE_March-2016.pdf",
+      "governing_law": "State of Tennessee",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "1592288_0001193125-17-306543_d469659dex99e2.htm",
+      "governing_law": "State of Delaware",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "SINTEC-UK-LTD-Non-disclosure-agreement-2017.pdf",
+      "governing_law": "England and Wales",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "1438076025NDA_28072015%20-%20AHPL.pdf",
+      "governing_law": "Republic of Singapore",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "1049210_0001047469-13-009461_a2216846zex-99_d3.htm",
+      "governing_law": "State of California",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "1501697_0001193125-19-145463_d944716dex108.htm",
+      "governing_law": null,
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "MelbourneDatathon2017NDA.pdf",
+      "governing_law": "State of Victoria, Australia",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "1693664_0001193125-18-171470_d426098dex99d3.htm",
+      "governing_law": "State of Delaware",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "New_York_City_Bar_Association_Model_Form_of_Non-Disclosure_Agreement_2015.pdf",
+      "governing_law": "New York",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "17.04.01%20BPS%20Non-Disclosure%20and%20Data%20Sharing%20Agreement%20-%20Transportation%20Challenge%20vF.pdf",
+      "governing_law": "Massachusetts",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "US_Non-Disclosure_Agreement_v2_2015.pdf",
+      "governing_law": "State of New Hampshire",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "01_Bosch-Automotive-Service-Solutions-Mutual-Non-Disclosure-Agreement-7-12-17.pdf",
+      "governing_law": "State of Michigan",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "Mutual%20Non-Disclosure%20Agreement.pdf",
+      "governing_law": "Republic of Korea",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "Non-Disclosure-NDA-UW-Oshkosh_FINALV2.pdf",
+      "governing_law": "State of Wisconsin",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "VELCO%20NDA%20rev0%20Dec%2014%202015.pdf",
+      "governing_law": "State of Vermont",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "1413447_0001193125-16-771498_d295023dex99d5.htm",
+      "governing_law": "New York, USA",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "TSE-TSE-OK-WHK-Mutual-NDA-Fill-in-Blanks-4-29-2019.pdf",
+      "governing_law": "Florida",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "703361_0001193125-12-242586_d356019dex9910.htm",
+      "governing_law": "State of California",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "426-2017_Appendix_C-Sample_Non-Disclosure_Agreement.pdf",
+      "governing_law": "Manitoba",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "NRSC_2015_NDAForm.pdf",
+      "governing_law": "State of New York",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "NDA%20Form%20WEB_WITH%20Instructions%20%28RECIPROCAL%29%20%28v%202016-03-18_EN%29.pdf",
+      "governing_law": "Spain",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "NDA-ONSemi_IndustryAnalystConf-2011.pdf",
+      "governing_law": "New York",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "TabunKitchenInvestments-NDA.pdf",
+      "governing_law": "England & Wales",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "20150916-model-sharing-non-disclosure-agreement.pdf",
+      "governing_law": "State of Delaware",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Non-Disclosure-Agreement_ALL_englisch.pdf",
+      "governing_law": "Swiss substantive law",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "NDA-Fintricity-Blank.pdf",
+      "governing_law": "England",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "1053374_0001144204-18-062970_tv508217_ex-d2.htm",
+      "governing_law": "State of New York",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "5-NSK-Confidentiality-Agreement-for-Suppliers.pdf",
+      "governing_law": "England and Wales",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Non-Disclosure-Agreement_4.pdf",
+      "governing_law": "State of Idaho",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "59b1148ff6952b0001bdbedc_20170907_non%20disclosure%20agreement_expert.pdf",
+      "governing_law": "Denmark",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "Non-disclosure-Agreement_9.pdf",
+      "governing_law": "German law",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "865415_0001047469-15-007494_a2226057zex-99_d4.htm",
+      "governing_law": "State of California",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Annexure-3_Confidentiality-Agreement.pdf",
+      "governing_law": "Republic of South Africa",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "1084817_0001193125-14-004957_d648340dex99e2.htm",
+      "governing_law": "State of Delaware",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "845818_0001193125-11-195725_dex99d8.htm",
+      "governing_law": "State of New York",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "Mutual%20confidentiality%20and%20NDA%20-%20Final%20(2)%20(6)%2003%20July%202015.pdf",
+      "governing_law": "Republic of South Africa",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Non-Disclosure-SmartCMS.pdf",
+      "governing_law": "laws of the Republic of Singapore",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Non-disclosure%20Agreement_1.pdf",
+      "governing_law": "laws of the Province of Alberta and the federal laws of Canada applicable in the Province of Alberta",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "858452_0001193125-12-123549_d317599dex99d3.htm",
+      "governing_law": "Commonwealth of Massachusetts",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "880562_0001193125-15-346821_d93800dex3.htm",
+      "governing_law": "Texas",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Attachment B - Intent to Propose and Non-Disclosure Agreement.pdf",
+      "governing_law": "State of Alaska",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Non Disclosure Agreement - CP Specific NDA (CreativeNDA-CPS121.1014).pdf",
+      "governing_law": "Delaware",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "Confidentiality%20Non-Disclosure%20and%20Appropriate%20Use%20Agreement%20-%20FAU.01082016.pdf",
+      "governing_law": "Florida",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "888953_0001193125-13-044630_d480503dex99e6.htm",
+      "governing_law": "State of Delaware",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "1177845_0001193125-18-219243_d519554dex99d3.htm",
+      "governing_law": "State of Delaware",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "1094814_0001140361-18-017998_s002178x1_ex99d7.htm",
+      "governing_law": "State of Delaware",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "1280058_0001193125-12-023311_d287213dex99d3.htm",
+      "governing_law": "State of Delaware",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "792130_0001193125-18-326077_d601641dex99d3.htm",
+      "governing_law": "State of Delaware",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "Cyber Mutual Assistance NDA.pdf",
+      "governing_law": "State of New York",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "NDA-Instructions-Agreement-Attachment.pdf",
+      "governing_law": "State of California",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "881790_0001104659-12-052730_a12-17284_1ex99d1.htm",
+      "governing_law": "State of Delaware",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Disclosure documents.pdf",
+      "governing_law": "England and Wales",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Annex E_Non-Disclosure and Confidentiality Agreement.pdf",
+      "governing_law": "Not specified",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Confidentiality%20Agreement.pdf",
+      "governing_law": "Province of Alberta",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "CopAcc_NDA-and-ToP-Mentors_2.0_2017.pdf",
+      "governing_law": "Federal Republic of Germany",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Data Use Agreement New York City.pdf",
+      "governing_law": "State of New York",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Confidentiality-and-Non-Disclosure-Agreement-LSI-ABC.pdf",
+      "governing_law": "Florida",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "1316898_0001047469-18-005618_a2236490zex-99_d2.htm",
+      "governing_law": "State of Delaware",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "1167294_0001193125-15-218134_d933068dex99d3.htm",
+      "governing_law": "State of Delaware",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "NDA-Template-Media-News-Group-inc.pdf",
+      "governing_law": "State of New York",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "FELLCNDAStandardAgreement-22015.pdf",
+      "governing_law": "State of Texas",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "130806ca141.pdf",
+      "governing_law": "laws of the Province of Nova Scotia and the laws of Canada applicable therein",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "1329919_0001193125-14-149149_d701401dex99d6.htm",
+      "governing_law": "State of Delaware",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "Eskom%20Template%20Confidentiality%20and%20Non-disclosure%20Agreement%20Rev%204%20Effective%20August%202017_11.pdf",
+      "governing_law": "South Africa",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "Acme%20Corporation%20Inc%20NDA%20template.pdf",
+      "governing_law": "State of California",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "mnda-1110.pdf",
+      "governing_law": "State of Georgia",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "064-19 Non Disclosure Agreement 2019.pdf",
+      "governing_law": "State of Florida",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "document_viewer.pdf",
+      "governing_law": "Laws and by-laws of the Town of The Blue Mountains, Province of Ontario, and applicable Canadian federal laws",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "CNDA1218Draft3.pdf",
+      "governing_law": "State of California",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "confidentiality_agreement.pdf",
+      "governing_law": "Sweden",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "nda_gtl_inria.pdf",
+      "governing_law": "France",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ex105ciia.htm",
+      "governing_law": "the laws of the State in which I last rendered services to the Company",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "casino-nondisclosure-agmt.pdf",
+      "governing_law": null,
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ea020415301ex99-2_nordstrom.htm",
+      "governing_law": "State of Washington",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "1094348_0001144204-18-026846_tv493416_exd2.htm",
+      "governing_law": "State of New York",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "d822701dex103.htm",
+      "governing_law": "the laws of the State in which I last rendered services to the Company",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "non-disclosure-agreement-to-public-tender-for-fleet-and-bus-services-f-2854607.pdf",
+      "governing_law": "Russian Federation",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "ex108_confidentialinformat.htm",
+      "governing_law": "the State in which I last rendered services to the Company",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "non-disclosure_201302814_english_.pdf",
+      "governing_law": "Province of Ontario",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "rqnda.pdf",
+      "governing_law": "State of Kansas",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "d828431dex101.htm",
+      "governing_law": "State of Delaware",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "1332602_0001193125-12-512465_d454990dex99d2.htm",
+      "governing_law": "State of Minnesota",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "NDA-SqillerBetaTesters.pdf",
+      "governing_law": "Luxembourg",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "icc-court-non-disclosure-agreement-english.pdf",
+      "governing_law": "France",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "nydol_appendix-nda.pdf",
+      "governing_law": "New York",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ex103consultingservicesagr.htm",
+      "governing_law": "State of Texas",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "nue-ex10_xxxv.htm",
+      "governing_law": "North Carolina",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "catx-ex10_1.htm",
+      "governing_law": "State of Washington",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "non-disclosure-agreement_1.pdf",
+      "governing_law": "English law",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "nda_1.pdf",
+      "governing_law": "State of California",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "sm-fm-14-01-rev-1-reciprocal-non-disclosure-agreement.pdf",
+      "governing_law": "Commonwealth of Pennsylvania",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "non-disclosure-agreement-en.pdf",
+      "governing_law": "Brazil if the Company is located in Latin America; otherwise, the State of New York",
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "ex_684281.htm",
+      "governing_law": "State of North Carolina",
+      "allows_single_archival_copy": true
+    },
+    {
+      "document_id": "MutualNDA_The_Knights_of_Unity.pdf",
+      "governing_law": null,
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "iastate_non_disclosure_agreement.pdf",
+      "governing_law": null,
+      "allows_single_archival_copy": false
+    },
+    {
+      "document_id": "glp-20231231xex10d28.htm",
+      "governing_law": null,
+      "allows_single_archival_copy": true
+    }
+  ],
+  "elapsed_seconds": 1591.35,
+  "cost_usd": 2.021362,
+  "total_tokens": 3839989
+}

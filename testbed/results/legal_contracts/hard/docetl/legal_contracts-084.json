@@ -1,0 +1,55 @@
+{
+  "task_id": "legal_contracts-084",
+  "answer": [
+    {
+      "company": "Peakstone Realty Trust",
+      "certifying_officers": [
+        "Javier F. Bitar, Chief Financial Officer and Treasurer (Principal Financial Officer)",
+        "Michael J. Escalante, Chief Executive Officer and President (Principal Executive Officer)"
+      ],
+      "covered_person_category": "Executive Officers",
+      "largest_subsidiary_count": 173
+    },
+    {
+      "company": "Voya Financial, Inc.",
+      "certifying_officers": [
+        "Donald C. Templin, Chief Financial Officer",
+        "Heather H. Lavallee, Chief Executive Officer",
+        "Michael R. Katz, Chief Financial Officer"
+      ],
+      "covered_person_category": "Executive Officers and Employees",
+      "largest_subsidiary_count": 143
+    },
+    {
+      "company": "Voya Financial, Inc.",
+      "certifying_officers": [
+        "Donald C. Templin, Chief Financial Officer",
+        "Heather H. Lavallee, Chief Executive Officer",
+        "Michael R. Katz, Chief Financial Officer"
+      ],
+      "covered_person_category": "Executive Officers, Directors, and Employees",
+      "largest_subsidiary_count": 143
+    },
+    {
+      "company": "H.B. Fuller Company",
+      "certifying_officers": [
+        "Celeste B. Mastin, President and Chief Executive Officer",
+        "John J. Corkrean, Executive Vice President, Chief Financial Officer"
+      ],
+      "covered_person_category": "Executive Officers and Key Managers",
+      "largest_subsidiary_count": 134
+    },
+    {
+      "company": "Globalstar, Inc.",
+      "certifying_officers": [
+        "Dr. Paul E. Jacobs, Chief Executive Officer (Principal Executive Officer)",
+        "Rebecca S. Clary, Chief Financial Officer (Principal Financial Officer)"
+      ],
+      "covered_person_category": "Section 16 Officers and Covered Executives",
+      "largest_subsidiary_count": 73
+    }
+  ],
+  "elapsed_seconds": 1257.97,
+  "cost_usd": 11.00155,
+  "total_tokens": 21018127
+}

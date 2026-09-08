@@ -1,0 +1,18 @@
+{
+  "task_id": "vehicle_safety-041",
+  "answer": [
+    {
+      "campaign_number": "23V838000",
+      "matched_complaint_count": 1,
+      "related_report_ids": [
+        "txt_investigation_3e540e709b495d53.txt",
+        "txt_investigation_cf5067e3ac47ef78.txt"
+      ],
+      "dominant_defect_mechanism": "insufficient autosteer controls preventing driver misuse",
+      "odi_risk_summary": "foreseeable driver misuse due to weak engagement controls"
+    }
+  ],
+  "elapsed_seconds": 95.9,
+  "cost_usd": 0.199417,
+  "total_tokens": 483665
+}

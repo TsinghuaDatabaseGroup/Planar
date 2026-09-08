@@ -1,0 +1,18 @@
+{
+  "task_id": "legal_contracts-046",
+  "answer": [
+    {
+      "document_id": "20150916-model-sharing-non-disclosure-agreement.pdf",
+      "term_duration_years": "perpetual",
+      "non_disclosure_direction": "mutual"
+    },
+    {
+      "document_id": "lti-two-way-cda-template.pdf",
+      "term_duration_years": 5.0,
+      "non_disclosure_direction": "mutual"
+    }
+  ],
+  "elapsed_seconds": 540.55,
+  "cost_usd": 4.8162,
+  "total_tokens": 9036752
+}

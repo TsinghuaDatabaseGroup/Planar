@@ -1,0 +1,228 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_aircraft_primary
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("primary_problem") == "Aircraft"
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: extract_smoke_fume_responses
+    type: map
+    optimize: true
+    prompt: |
+      Classify this NASA ASRS report using the narrative and structured result
+      summary below.
+
+      Set qualifies=true only when smoke, fumes, or odor involving the reporting
+      aircraft prompted at least one listed crew response and the report does not
+      describe visible fire. Smoke, fumes, or odor must causally prompt each
+      selected response, rather than merely co-occur with it.
+
+      Return every independently supported operational_response:
+      - oxygen_masks_used: crew donned or used oxygen/smoke masks;
+      - emergency_declared: an emergency was explicitly declared;
+      - diverted: the flight changed to an airport other than the departure or
+        originally intended destination;
+      - returned: the flight returned to its departure airport;
+      - precautionary_landing: the crew made or committed to an early,
+        precautionary, or expedited landing because of the smoke/fumes/odor.
+
+      An incident may support multiple responses. The structured result summary
+      may establish emergency_declared, diverted, or returned only when the
+      narrative is consistent with that response being caused by this event.
+
+      Assign one primary suspected_source_category for the smoke/fumes/odor event:
+      electrical, oil_or_hydraulic, air_conditioning_or_bleed, engine_or_apu, or
+      unknown_or_other. Use unknown_or_other when no source is supported, the
+      source is outside the first four categories, or competing sources cannot be
+      resolved. For a non-match, return an empty response list and not_applicable.
+
+      Structured result summary:
+      {{ input.result_summary }}
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        qualifies: boolean
+        operational_responses: list[enum[oxygen_masks_used, emergency_declared, diverted, returned, precautionary_landing]]
+        suspected_source_category: enum[electrical, oil_or_hydraulic, air_conditioning_or_bleed, engine_or_apu, unknown_or_other, not_applicable]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: keep_qualifying_smoke_fume_reports
+    type: code_filter
+    code: |
+      def transform(doc):
+          valid_responses = {
+              "oxygen_masks_used",
+              "emergency_declared",
+              "diverted",
+              "returned",
+              "precautionary_landing",
+          }
+          valid_sources = {
+              "electrical",
+              "oil_or_hydraulic",
+              "air_conditioning_or_bleed",
+              "engine_or_apu",
+              "unknown_or_other",
+          }
+          responses = doc.get("operational_responses") or []
+          return (
+              doc.get("qualifies") is True
+              and any(value in valid_responses for value in responses)
+              and doc.get("suspected_source_category") in valid_sources
+          )
+
+  - name: build_response_rows
+    type: code_map
+    code: |
+      def transform(doc):
+          response_order = [
+              "oxygen_masks_used",
+              "emergency_declared",
+              "diverted",
+              "returned",
+              "precautionary_landing",
+          ]
+          selected = set(doc.get("operational_responses") or [])
+          rows = [
+              {
+                  "operational_response": response,
+                  "suspected_source_category": doc.get(
+                      "suspected_source_category"
+                  ),
+              }
+              for response in response_order
+              if response in selected
+          ]
+          return {"response_rows": rows}
+
+  - name: unnest_response_rows
+    type: unnest
+    unnest_key: response_rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - operational_response
+      - suspected_source_category
+
+  - name: aggregate_by_operational_response
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          from collections import Counter
+
+          response_order = [
+              "oxygen_masks_used",
+              "emergency_declared",
+              "diverted",
+              "returned",
+              "precautionary_landing",
+          ]
+          incident_ids = {response: set() for response in response_order}
+          source_counts = {response: Counter() for response in response_order}
+          seen = set()
+
+          for item in items:
+              incident_id = str(item.get("incident_id", ""))
+              response = item.get("operational_response")
+              source = item.get("suspected_source_category")
+              key = (incident_id, response)
+              if not incident_id or response not in incident_ids or key in seen:
+                  continue
+              seen.add(key)
+              incident_ids[response].add(incident_id)
+              source_counts[response][source] += 1
+
+          rows = []
+          for response in response_order:
+              if not incident_ids[response]:
+                  continue
+              mode_source = sorted(
+                  source_counts[response].items(),
+                  key=lambda pair: (-pair[1], pair[0]),
+              )[0][0]
+              rows.append(
+                  {
+                      "operational_response": response,
+                      "incident_count": len(incident_ids[response]),
+                      "most_common_suspected_source_category": mode_source,
+                  }
+              )
+          return {"rows": rows}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - operational_response
+      - incident_count
+      - most_common_suspected_source_category
+
+pipeline:
+  steps:
+    - name: process
+      input: asrs_incidents
+      operations:
+        - filter_aircraft_primary
+        - load_asrs_narrative
+        - extract_smoke_fume_responses
+        - keep_qualifying_smoke_fume_reports
+        - build_response_rows
+        - unnest_response_rows
+        - aggregate_by_operational_response
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-003.json

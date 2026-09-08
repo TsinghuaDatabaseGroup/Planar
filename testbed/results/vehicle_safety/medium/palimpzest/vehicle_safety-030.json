@@ -1,0 +1,38 @@
+{
+  "task_id": "vehicle_safety-030",
+  "answer": [
+    {
+      "rank": 1,
+      "make": "JEEP",
+      "ev_hybrid_complaint_count": 24,
+      "related_ev_hybrid_recall_count": 6
+    },
+    {
+      "rank": 2,
+      "make": "DODGE",
+      "ev_hybrid_complaint_count": 12,
+      "related_ev_hybrid_recall_count": 1
+    },
+    {
+      "rank": 3,
+      "make": "CHRYSLER",
+      "ev_hybrid_complaint_count": 10,
+      "related_ev_hybrid_recall_count": 1
+    },
+    {
+      "rank": 4,
+      "make": "FORD",
+      "ev_hybrid_complaint_count": 2,
+      "related_ev_hybrid_recall_count": 5
+    },
+    {
+      "rank": 5,
+      "make": "LINCOLN",
+      "ev_hybrid_complaint_count": 1,
+      "related_ev_hybrid_recall_count": 2
+    }
+  ],
+  "elapsed_seconds": 963.075,
+  "cost_usd": 1.349166,
+  "total_tokens": 1784819
+}

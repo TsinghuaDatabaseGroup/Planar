@@ -1,0 +1,446 @@
+datasets:
+  sec_2019_filings:
+    type: file
+    path: data/SEC/CSV/2019.csv
+  sec_2023_filings:
+    type: file
+    path: data/SEC/CSV/2023.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: load_2019_filing_document
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("SEC text path escapes data/SEC")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              document_2019 = handle.read()
+          return {"document_2019": document_2019}
+
+  - name: extract_2019_company_wide_employee_count
+    type: map
+    optimize: true
+    prompt: |
+      Extract only an explicitly disclosed company-wide total employee count from
+      this 2019 SEC 10-K filing.
+
+      Use the total for the latest reporting date covered by the filing. Do not
+      construct a company-wide total by adding partial workforce figures.
+
+      Set employee_count_2019_available=true only when a company-wide total is
+      explicitly disclosed. Otherwise set it to false and return 0 only as the
+      required placeholder; the following deterministic operation converts it to
+      null.
+
+      2019 filing:
+      {{ input.document_2019 }}
+    output:
+      mode: structured_output
+      schema:
+        employee_count_2019_available: boolean
+        employee_count_2019_value: integer
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 256
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: normalize_nullable_2019_employee_count
+    type: code_map
+    code: |
+      def transform(doc):
+          if doc.get("employee_count_2019_available") is not True:
+              return {"employee_count_2019": None}
+          try:
+              return {
+                  "employee_count_2019": int(
+                      doc.get("employee_count_2019_value")
+                  )
+              }
+          except (TypeError, ValueError):
+              return {"employee_count_2019": None}
+
+  - name: filter_2019_employee_count_at_least_1000
+    type: code_filter
+    code: |
+      def transform(doc):
+          value = doc.get("employee_count_2019")
+          return value is not None and int(value) >= 1000
+
+  - name: select_longest_2023_filing_by_cik
+    type: code_reduce
+    reduce_key: cik
+    code: |
+      def transform(items):
+          def word_count(item):
+              try:
+                  return int(item.get("word_count", 0))
+              except (TypeError, ValueError):
+                  return 0
+
+          selected = max(items, key=word_count)
+          return {"primary_text_2023": selected.get("text")}
+
+  - name: load_2023_primary_filing_document
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "SEC"))
+          text_path = os.path.abspath(
+              os.path.join(
+                  base_dir,
+                  str(doc.get("primary_text_2023", "")),
+              )
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("SEC text path escapes data/SEC")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              document_2023 = handle.read()
+          return {"document_2023": document_2023}
+
+  - name: extract_2023_company_and_employee_count
+    type: map
+    optimize: true
+    prompt: |
+      Extract the reporting company's legal name and only an explicitly disclosed
+      company-wide total employee count from this primary 2023 SEC 10-K filing.
+
+      Use the legal registrant name stated in the filing and the employee total for
+      the latest reporting date covered by the filing. Do not construct a
+      company-wide total by adding partial workforce figures.
+
+      Set employee_count_2023_available=true only when a company-wide total is
+      explicitly disclosed. Otherwise set it to false and return 0 only as the
+      required placeholder; the following deterministic operation converts it to
+      null.
+
+      2023 filing:
+      {{ input.document_2023 }}
+    output:
+      mode: structured_output
+      schema:
+        company_name: string
+        employee_count_2023_available: boolean
+        employee_count_2023_value: integer
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 512
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: normalize_nullable_2023_employee_count
+    type: code_map
+    code: |
+      def transform(doc):
+          if doc.get("employee_count_2023_available") is not True:
+              return {"employee_count_2023": None}
+          try:
+              return {
+                  "employee_count_2023": int(
+                      doc.get("employee_count_2023_value")
+                  )
+              }
+          except (TypeError, ValueError):
+              return {"employee_count_2023": None}
+
+  - name: join_eligible_2019_to_2023_employees
+    type: equijoin
+    deterministic: true
+    blocking_conditions:
+      - left["cik"] == right["cik"]
+
+  - name: project_employee_changes
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          from decimal import Decimal, ROUND_HALF_UP
+
+          rows = []
+          for item in items:
+              employee_count_2019 = item.get("employee_count_2019")
+              employee_count_2023 = item.get("employee_count_2023")
+              change_percent = None
+              if (
+                  employee_count_2019 is not None
+                  and int(employee_count_2019) != 0
+                  and employee_count_2023 is not None
+              ):
+                  change_percent = float(
+                      (
+                          Decimal(100)
+                          * (
+                              Decimal(int(employee_count_2023))
+                              - Decimal(int(employee_count_2019))
+                          )
+                          / Decimal(int(employee_count_2019))
+                      ).quantize(Decimal("0.1"), rounding=ROUND_HALF_UP)
+                  )
+              rows.append(
+                  {
+                      "company_name": item.get("company_name"),
+                      "employee_count_2019": employee_count_2019,
+                      "employee_count_2023": employee_count_2023,
+                      "employee_change_percent": change_percent,
+                  }
+              )
+          return {"rows": rows}
+
+  - name: unnest_employee_changes
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - company_name
+      - employee_count_2019
+      - employee_count_2023
+      - employee_change_percent
+
+  - name: filter_positive_employee_changes
+    type: code_filter
+    code: |
+      def transform(doc):
+          value = doc.get("employee_change_percent")
+          return value is not None and float(value) > 0
+
+  - name: order_largest_employee_growth
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          rows = sorted(
+              items,
+              key=lambda item: (
+                  -float(item.get("employee_change_percent", 0.0)),
+                  str(item.get("company_name", "")),
+              ),
+          )
+          return {"rows": rows}
+
+  - name: unnest_ordered_employee_growth
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - company_name
+      - employee_count_2019
+      - employee_count_2023
+      - employee_change_percent
+
+  - name: limit_to_5_growth_companies
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {"rows": items[:5]}
+
+  - name: unnest_limited_employee_growth
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - company_name
+      - employee_count_2019
+      - employee_count_2023
+      - employee_change_percent
+
+  - name: pack_top_5_growth
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {
+              "join_key": "all",
+              "top_5_growth": [
+                  {
+                      "company_name": item.get("company_name"),
+                      "employee_count_2019": item.get("employee_count_2019"),
+                      "employee_count_2023": item.get("employee_count_2023"),
+                      "employee_change_percent": item.get(
+                          "employee_change_percent"
+                      ),
+                  }
+                  for item in items
+              ],
+          }
+
+  - name: filter_negative_employee_changes
+    type: code_filter
+    code: |
+      def transform(doc):
+          value = doc.get("employee_change_percent")
+          return value is not None and float(value) < 0
+
+  - name: order_steepest_employee_decline
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          rows = sorted(
+              items,
+              key=lambda item: (
+                  float(item.get("employee_change_percent", 0.0)),
+                  str(item.get("company_name", "")),
+              ),
+          )
+          return {"rows": rows}
+
+  - name: unnest_ordered_employee_decline
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - company_name
+      - employee_count_2019
+      - employee_count_2023
+      - employee_change_percent
+
+  - name: limit_to_5_decline_companies
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {"rows": items[:5]}
+
+  - name: unnest_limited_employee_decline
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - company_name
+      - employee_count_2019
+      - employee_count_2023
+      - employee_change_percent
+
+  - name: pack_top_5_decline
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {
+              "join_key": "all",
+              "top_5_decline": [
+                  {
+                      "company_name": item.get("company_name"),
+                      "employee_count_2019": item.get("employee_count_2019"),
+                      "employee_count_2023": item.get("employee_count_2023"),
+                      "employee_change_percent": item.get(
+                          "employee_change_percent"
+                      ),
+                  }
+                  for item in items
+              ],
+          }
+
+  - name: join_growth_and_decline_summaries
+    type: equijoin
+    deterministic: true
+    blocking_conditions:
+      - left["join_key"] == right["join_key"]
+
+  - name: project_summary_dictionary
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          if not items:
+              return {"top_5_growth": [], "top_5_decline": []}
+          item = items[0]
+          return {
+              "top_5_growth": item.get("top_5_growth") or [],
+              "top_5_decline": item.get("top_5_decline") or [],
+          }
+
+pipeline:
+  steps:
+    - name: eligible_2019
+      input: sec_2019_filings
+      operations:
+        - load_2019_filing_document
+        - extract_2019_company_wide_employee_count
+        - normalize_nullable_2019_employee_count
+        - filter_2019_employee_count_at_least_1000
+    - name: employees_2023
+      input: sec_2023_filings
+      operations:
+        - select_longest_2023_filing_by_cik
+        - load_2023_primary_filing_document
+        - extract_2023_company_and_employee_count
+        - normalize_nullable_2023_employee_count
+    - name: paired_employees
+      operations:
+        - join_eligible_2019_to_2023_employees:
+            left: eligible_2019
+            right: employees_2023
+    - name: changes
+      input: paired_employees
+      operations:
+        - project_employee_changes
+        - unnest_employee_changes
+    - name: top_5_growth
+      input: changes
+      operations:
+        - filter_positive_employee_changes
+        - order_largest_employee_growth
+        - unnest_ordered_employee_growth
+        - limit_to_5_growth_companies
+        - unnest_limited_employee_growth
+        - pack_top_5_growth
+    - name: top_5_decline
+      input: changes
+      operations:
+        - filter_negative_employee_changes
+        - order_steepest_employee_decline
+        - unnest_ordered_employee_decline
+        - limit_to_5_decline_companies
+        - unnest_limited_employee_decline
+        - pack_top_5_decline
+    - name: combined_summary
+      operations:
+        - join_growth_and_decline_summaries:
+            left: top_5_growth
+            right: top_5_decline
+    - name: process
+      input: combined_summary
+      operations:
+        - project_summary_dictionary
+  output:
+    type: file
+    path: raw_outputs/finance/output_finance-033.json

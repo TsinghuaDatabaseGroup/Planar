@@ -1,0 +1,20 @@
+{
+  "task_id": "legal_contracts-021",
+  "answer": [
+    {
+      "document_id": "1013322_0000912057-00-023405_document_2.txt",
+      "governing_law": "the laws of the United States and all applicable federal conflict of laws principles"
+    },
+    {
+      "document_id": "1089717_0000898430-99-004004_document_2.txt",
+      "governing_law": "laws of the United States and the Commonwealth of Virginia"
+    },
+    {
+      "document_id": "1125576_0000928385-02-000738_dex991d2.txt",
+      "governing_law": "United States"
+    }
+  ],
+  "elapsed_seconds": 1480.85,
+  "cost_usd": 1.852273,
+  "total_tokens": 2988673
+}

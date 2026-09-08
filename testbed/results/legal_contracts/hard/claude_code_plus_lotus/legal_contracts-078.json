@@ -1,0 +1,148 @@
+{
+  "task_id": "legal_contracts-078",
+  "answer": [
+    {
+      "document_id": "a2023q4voyaex191voyafinanc.htm",
+      "company_names": [
+        "['Voya Financial",
+        "Inc.'",
+        "'Voya Financial Advisors",
+        "Inc.']"
+      ]
+    },
+    {
+      "document_id": "a202410kex191insidertrading.htm",
+      "company_names": [
+        "['HUDSON PACIFIC PROPERTIES",
+        "INC.']"
+      ]
+    },
+    {
+      "document_id": "a2024q4voyaex191tradingpol.htm",
+      "company_names": [
+        "['Voya Financial",
+        "Inc.'",
+        "'Voya Financial Advisors",
+        "Inc.']"
+      ]
+    },
+    {
+      "document_id": "avah-ex19_1.htm",
+      "company_names": [
+        "['Aveanna Healthcare Holdings Inc.']"
+      ]
+    },
+    {
+      "document_id": "ayi-20240831xex19.htm",
+      "company_names": [
+        "['Acuity Brands",
+        "Inc.']"
+      ]
+    },
+    {
+      "document_id": "ayi-20250831xex19.htm",
+      "company_names": [
+        "['Acuity Inc.']"
+      ]
+    },
+    {
+      "document_id": "cto-20241231xex19d1.htm",
+      "company_names": [
+        "['CTO Realty Growth",
+        "Inc.'",
+        "'Alpine Income Property Trust",
+        "Inc.']"
+      ]
+    },
+    {
+      "document_id": "cvco-20250339xexhibit19.htm",
+      "company_names": [
+        "['Cavco Industries",
+        "Inc.']"
+      ]
+    },
+    {
+      "document_id": "d779517dex191.htm",
+      "company_names": [
+        "['Digimarc Corporation']"
+      ]
+    },
+    {
+      "document_id": "d917002dex19.htm",
+      "company_names": [
+        "['Marblegate Acquisition Corp.']"
+      ]
+    },
+    {
+      "document_id": "ex191evercommerce_-xinside.htm",
+      "company_names": [
+        "['EverCommerce Inc.']"
+      ]
+    },
+    {
+      "document_id": "ex_775611.htm",
+      "company_names": [
+        "['Byrna Technologies Inc.']"
+      ]
+    },
+    {
+      "document_id": "exhibit19-insidertradingpo.htm",
+      "company_names": [
+        "['Skyworks Solutions",
+        "Inc.']"
+      ]
+    },
+    {
+      "document_id": "exhibit19-insidertradingpo_1.htm",
+      "company_names": [
+        "['Skyworks Solutions",
+        "Inc.']"
+      ]
+    },
+    {
+      "document_id": "exhibit191-insidertradingp_3.htm",
+      "company_names": [
+        "['Hertz Global Holdings",
+        "Inc.'",
+        "'The Hertz Corporation'",
+        "'Merrill Lynch']"
+      ]
+    },
+    {
+      "document_id": "exhibit19106302025.htm",
+      "company_names": [
+        "['KLA Corporation']"
+      ]
+    },
+    {
+      "document_id": "exhibit191insidertradingco.htm",
+      "company_names": [
+        "['Solo Brands",
+        "Inc.']"
+      ]
+    },
+    {
+      "document_id": "icfi-ex19_0.htm",
+      "company_names": [
+        "['ICF International",
+        "Inc.']"
+      ]
+    },
+    {
+      "document_id": "prdo-ex19_1.htm",
+      "company_names": [
+        "['Perdoceo Education Corporation']"
+      ]
+    },
+    {
+      "document_id": "rh-20250201xex19d1.htm",
+      "company_names": [
+        "['RH'",
+        "'Waterworks']"
+      ]
+    }
+  ],
+  "elapsed_seconds": 186.89,
+  "cost_usd": 0.76326474,
+  "total_tokens": 1519036
+}

@@ -1,0 +1,20 @@
+{
+  "task_id": "legal_contracts-010",
+  "answer": [
+    {
+      "document_id": "Petrolube_NDA.pdf",
+      "disclosing_parties": [
+        "['(Your Company Name)']"
+      ],
+      "receiving_parties": [
+        "['Petro-Lubricant Testing Laboratories",
+        "Inc.']"
+      ],
+      "term_duration_years": 1.0,
+      "governing_law": "United States of America and the State of (Your State)"
+    }
+  ],
+  "elapsed_seconds": 269.8,
+  "cost_usd": 0.83809014,
+  "total_tokens": 1464866
+}

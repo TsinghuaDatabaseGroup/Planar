@@ -1,0 +1,173 @@
+{
+  "task_id": "aviation_safety-048",
+  "answer": [
+    {
+      "rank": 1,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "engine",
+      "incident_count": 164,
+      "recorded_result_labels": [
+        "Flight Crew Returned To Departure Airport",
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    },
+    {
+      "rank": 2,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "landing_gear",
+      "incident_count": 105,
+      "recorded_result_labels": [
+        "Flight Crew Returned To Departure Airport",
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    },
+    {
+      "rank": 3,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "air_conditioning",
+      "incident_count": 62,
+      "recorded_result_labels": [
+        "Flight Crew Returned To Departure Airport",
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    },
+    {
+      "rank": 4,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "electrical_system",
+      "incident_count": 60,
+      "recorded_result_labels": [
+        "Flight Crew Returned To Departure Airport",
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    },
+    {
+      "rank": 5,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "hydraulic_system",
+      "incident_count": 58,
+      "recorded_result_labels": [
+        "Flight Crew Returned To Departure Airport",
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    },
+    {
+      "rank": 6,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "fuel_system",
+      "incident_count": 53,
+      "recorded_result_labels": [
+        "Flight Crew Returned To Departure Airport",
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    },
+    {
+      "rank": 7,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "flight_controls",
+      "incident_count": 48,
+      "recorded_result_labels": [
+        "Flight Crew Returned To Departure Airport",
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    },
+    {
+      "rank": 8,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "instruments",
+      "incident_count": 42,
+      "recorded_result_labels": [
+        "Flight Crew Returned To Departure Airport",
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    },
+    {
+      "rank": 9,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "navigation_system",
+      "incident_count": 31,
+      "recorded_result_labels": [
+        "Flight Crew Returned To Departure Airport",
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    },
+    {
+      "rank": 10,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "doors",
+      "incident_count": 30,
+      "recorded_result_labels": [
+        "Flight Crew Returned To Departure Airport",
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    },
+    {
+      "rank": 11,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "flaps_slats",
+      "incident_count": 30,
+      "recorded_result_labels": [
+        "Flight Crew Returned To Departure Airport",
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    },
+    {
+      "rank": 12,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "pressurization",
+      "incident_count": 25,
+      "recorded_result_labels": [
+        "Flight Crew Returned To Departure Airport",
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    },
+    {
+      "rank": 13,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "brakes",
+      "incident_count": 23,
+      "recorded_result_labels": [
+        "Flight Crew Returned To Departure Airport",
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    },
+    {
+      "rank": 14,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "warning_systems",
+      "incident_count": 20,
+      "recorded_result_labels": [
+        "Flight Crew Returned To Departure Airport",
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    },
+    {
+      "rank": 15,
+      "maintenance_driver": "component_discrepancy_or_failure",
+      "canonical_component": "autopilot",
+      "incident_count": 19,
+      "recorded_result_labels": [
+        "Flight Crew Returned To Departure Airport",
+        "General Flight Cancelled / Delayed",
+        "General Maintenance Action"
+      ]
+    }
+  ],
+  "elapsed_seconds": 388.883,
+  "cost_usd": 0.51337962,
+  "total_tokens": 1019057
+}

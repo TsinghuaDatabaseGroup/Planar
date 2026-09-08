@@ -1,0 +1,68 @@
+{
+  "task_id": "legal_contracts-073",
+  "answer": [
+    {
+      "document_name": "a2023q4voyaex97voyafinanci.htm",
+      "policy_title": "Voya Financial Compensation Recoupment Policy",
+      "lookback_period": "Not explicitly stated in excerpt (Rule 10D-1 component typically covers 3 completed fiscal years)",
+      "expanded_covered_group": "All Voya Financial directors and covered employees (including all employees for misconduct-related recovery)"
+    },
+    {
+      "document_name": "a2024q4voyaex97voyafinanci.htm",
+      "policy_title": "Voya Financial Compensation Recoupment Policy",
+      "lookback_period": "Not specified in excerpt",
+      "expanded_covered_group": "All Voya Financial directors and covered employees (including all employees for misconduct-related recovery)"
+    },
+    {
+      "document_name": "eh250596666_ex1005.htm",
+      "policy_title": "Clawback/Forfeiture",
+      "lookback_period": "Not explicitly specified in excerpt (references compliance with Section 10D of the Exchange Act)",
+      "expanded_covered_group": "Participant (includes any employee, director, or consultant holding an Award under the Plan)"
+    },
+    {
+      "document_name": "ex10-9.htm",
+      "policy_title": "Clawback (Section 5 of RSU Agreement)",
+      "lookback_period": "2 years (for misconduct); Plan/Applicable Laws (for restatement)",
+      "expanded_covered_group": "All employees/RSU recipients"
+    },
+    {
+      "document_name": "ex19-2.htm",
+      "policy_title": "Incentive Compensation Recoupment Policy",
+      "lookback_period": "within one year following the filing of the financial report giving rise to the Restatement",
+      "expanded_covered_group": "such other senior executives as may be determined by the Committee"
+    },
+    {
+      "document_name": "ex19-2_1.htm",
+      "policy_title": "Incentive Compensation Recoupment Policy",
+      "lookback_period": "within one year following the filing of the financial report giving rise to the Restatement",
+      "expanded_covered_group": "such other senior executives as may be determined by the Committee"
+    },
+    {
+      "document_name": "ex971globalstarincclawback.htm",
+      "policy_title": "Globalstar, Inc. Clawback Policy",
+      "lookback_period": "Not specified in excerpt",
+      "expanded_covered_group": "Covered Executives"
+    },
+    {
+      "document_name": "ex_612612.htm",
+      "policy_title": "Executive and Key Manager Compensation Recovery Policy",
+      "lookback_period": "3 completed fiscal years",
+      "expanded_covered_group": "Key managers"
+    },
+    {
+      "document_name": "pkst_employeeanddirectorlo.htm",
+      "policy_title": "Compensation Recovery Policy",
+      "lookback_period": "Not specified in excerpt (defers to the Company's compensation recovery policy and/or applicable Award Agreement)",
+      "expanded_covered_group": "All Employees and Trustees (Directors) eligible for Awards under the Plan"
+    },
+    {
+      "document_name": "pkst_employeeanddirectorlo_1.htm",
+      "policy_title": "Compensation Recovery",
+      "lookback_period": "Not specified in excerpt (defers to the Company's adopted compensation recovery policy)",
+      "expanded_covered_group": "All Employees and Trustees (Directors) who receive Awards under the Plan"
+    }
+  ],
+  "elapsed_seconds": 657.255,
+  "cost_usd": 1.01137572,
+  "total_tokens": 1646646
+}

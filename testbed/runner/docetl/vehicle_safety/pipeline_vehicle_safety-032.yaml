@@ -1,0 +1,165 @@
+datasets:
+  nhtsa_complaints:
+    type: file
+    path: data/nhtsa_vehicle_safety/complaints.csv
+  nhtsa_recalls:
+    type: file
+    path: data/nhtsa_vehicle_safety/recalls.jsonl
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_2020_through_2022_tesla_model_3_complaints
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("make") == "TESLA"
+              and doc.get("model") == "MODEL 3"
+              and str(doc.get("model_year") or "")
+              in {"2020", "2021", "2022"}
+          )
+
+  - name: classify_unintended_acceleration_or_stuck_pedal
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether this complaint describes an actual unintended-acceleration
+      event or an accelerator pedal that became stuck, jammed, failed to release,
+      or continued commanding acceleration.
+
+      Qualify sudden or unwanted acceleration not requested by the driver and
+      concrete stuck-pedal behavior. Do not qualify phantom braking, ordinary
+      acceleration, a general speed-control concern without such an event, a
+      hypothetical risk, or a complaint only about pedal appearance or feel.
+
+      Complaint summary:
+      {{ input.summary_text }}
+    output:
+      mode: structured_output
+      schema:
+        describes_unintended_acceleration_or_stuck_pedal: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_2020_through_2022_tesla_model_3_recalls
+    type: code_filter
+    code: |
+      def transform(doc):
+          vehicle = doc.get("vehicle") or {}
+          return (
+              vehicle.get("make") == "TESLA"
+              and vehicle.get("model") == "MODEL 3"
+              and str(vehicle.get("model_year") or "")
+              in {"2020", "2021", "2022"}
+          )
+
+  - name: flatten_tesla_model_3_recall_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          vehicle = doc.get("vehicle") or {}
+          component = doc.get("component") or {}
+          risk = doc.get("risk") or {}
+          return {
+              "recall_id": doc.get("recall_id"),
+              "vehicle_id": vehicle.get("vehicle_id"),
+              "component_id": component.get("component_id"),
+              "defect_summary": risk.get("defect_summary") or "",
+          }
+
+  - name: classify_accelerator_pedal_or_speed_control_recall
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether this recall defect summary describes an
+      accelerator-pedal or vehicle speed-control defect.
+
+      Qualify defects involving a pedal assembly or pedal input, an accelerator
+      that can remain applied or be misread, unintended acceleration, or a control
+      system that can incorrectly command or maintain vehicle speed. Do not qualify
+      unrelated braking, steering, display, cosmetic, or generic software defects
+      without an accelerator-pedal or speed-control failure.
+
+      Recall defect summary:
+      {{ input.defect_summary }}
+    output:
+      mode: structured_output
+      schema:
+        describes_accelerator_pedal_or_speed_control_defect: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: join_complaints_to_same_vehicle_component_recalls
+    type: equijoin
+    deterministic: true
+    blocking_conditions:
+      - left["vehicle_id"] == right["vehicle_id"] and left["component_id"] == right["component_id"]
+
+  - name: determine_at_least_two_distinct_pairs
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          pairs = {
+              (
+                  item.get("complaint_id"),
+                  item.get("recall_id"),
+              )
+              for item in items
+              if item.get("complaint_id") and item.get("recall_id")
+          }
+          return {"label": "Yes" if len(pairs) >= 2 else "No"}
+
+pipeline:
+  steps:
+    - name: qualifying_tesla_model_3_complaints
+      input: nhtsa_complaints
+      operations:
+        - filter_2020_through_2022_tesla_model_3_complaints
+        - classify_unintended_acceleration_or_stuck_pedal
+    - name: qualifying_tesla_model_3_recalls
+      input: nhtsa_recalls
+      operations:
+        - filter_2020_through_2022_tesla_model_3_recalls
+        - flatten_tesla_model_3_recall_fields
+        - classify_accelerator_pedal_or_speed_control_recall
+    - name: matched_tesla_model_3_pairs
+      operations:
+        - join_complaints_to_same_vehicle_component_recalls:
+            left: qualifying_tesla_model_3_complaints
+            right: qualifying_tesla_model_3_recalls
+    - name: pair_threshold_result
+      input: matched_tesla_model_3_pairs
+      operations:
+        - determine_at_least_two_distinct_pairs
+  output:
+    type: file
+    path: raw_outputs/vehicle_safety/output_vehicle_safety-032.json

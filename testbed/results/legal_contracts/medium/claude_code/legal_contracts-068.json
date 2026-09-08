@@ -1,0 +1,64 @@
+{
+  "task_id": "legal_contracts-068",
+  "answer": [
+    {
+      "normalized_agreement_title": "non disclosure agreement",
+      "family_size": 134,
+      "avg_exception_count": 4.82,
+      "return_and_injunctive_share": 0.4104,
+      "all_six_exceptions_share": 0.3955
+    },
+    {
+      "normalized_agreement_title": "mutual non disclosure agreement",
+      "family_size": 84,
+      "avg_exception_count": 5.39,
+      "return_and_injunctive_share": 0.5476,
+      "all_six_exceptions_share": 0.631
+    },
+    {
+      "normalized_agreement_title": "confidentiality and non disclosure agreement",
+      "family_size": 30,
+      "avg_exception_count": 3.8,
+      "return_and_injunctive_share": 0.4,
+      "all_six_exceptions_share": 0.3333
+    },
+    {
+      "normalized_agreement_title": "confidentiality agreement",
+      "family_size": 29,
+      "avg_exception_count": 5.14,
+      "return_and_injunctive_share": 0.1379,
+      "all_six_exceptions_share": 0.4828
+    },
+    {
+      "normalized_agreement_title": "mutual confidentiality and non disclosure agreement",
+      "family_size": 9,
+      "avg_exception_count": 4.67,
+      "return_and_injunctive_share": 0.5556,
+      "all_six_exceptions_share": 0.4444
+    },
+    {
+      "normalized_agreement_title": "mutual nondisclosure agreement",
+      "family_size": 8,
+      "avg_exception_count": 5.0,
+      "return_and_injunctive_share": 0.0,
+      "all_six_exceptions_share": 0.625
+    },
+    {
+      "normalized_agreement_title": "non disclosure and confidentiality agreement",
+      "family_size": 6,
+      "avg_exception_count": 5.5,
+      "return_and_injunctive_share": 0.5,
+      "all_six_exceptions_share": 0.5
+    },
+    {
+      "normalized_agreement_title": "non disclosure confidentiality agreement",
+      "family_size": 5,
+      "avg_exception_count": 4.6,
+      "return_and_injunctive_share": 0.4,
+      "all_six_exceptions_share": 0.6
+    }
+  ],
+  "elapsed_seconds": 397.522,
+  "cost_usd": 1.35829563,
+  "total_tokens": 3177069
+}

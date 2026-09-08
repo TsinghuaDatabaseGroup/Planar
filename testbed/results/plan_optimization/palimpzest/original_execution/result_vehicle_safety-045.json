@@ -1,0 +1,28 @@
+{
+  "task_id": "vehicle_safety-045",
+  "answer": [
+    {
+      "rank": 1,
+      "defect_theme": "loss of braking power due to vacuum pump failure",
+      "matched_complaint_count": 10,
+      "distinct_campaign_count": 1,
+      "related_report_ids": [
+        "txt_investigation_8be18f99e74db448.txt"
+      ],
+      "odi_risk_summary": "Recall remedy deemed sufficient"
+    },
+    {
+      "rank": 2,
+      "defect_theme": "loss of power brake assist due to vacuum pump failure",
+      "matched_complaint_count": 10,
+      "distinct_campaign_count": 2,
+      "related_report_ids": [
+        "txt_investigation_8be18f99e74db448.txt"
+      ],
+      "odi_risk_summary": "Recall remedy deemed sufficient"
+    }
+  ],
+  "elapsed_seconds": 2882.09,
+  "cost_usd": 8.377325,
+  "total_tokens": 13872215
+}

@@ -1,0 +1,16 @@
+{
+  "task_id": "legal_contracts-027",
+  "answer": [
+    {"document_id": "1111682_0000950123-00-003802_document_15.txt", "governing_law": "Connecticut", "agreement_direction": "mutual"},
+    {"document_id": "118.3-Non-disclosure-agreement.pdf", "governing_law": "English law", "agreement_direction": "one-way"},
+    {"document_id": "913949_0000950149-96-000782_document_6.txt", "governing_law": "State of California", "agreement_direction": "one-way"},
+    {"document_id": "Confidentiality_Agreement_1.pdf", "governing_law": "German law", "agreement_direction": "mutual"},
+    {"document_id": "DoiT-ICN-NonDisclosure-Agreement.pdf", "governing_law": "State of Illinois", "agreement_direction": "one-way"},
+    {"document_id": "Example-Mutual-Non-Disclosure-Agreement.pdf", "governing_law": "English law", "agreement_direction": "mutual"},
+    {"document_id": "Example-One-Way-Non-Disclosure-Agreement.pdf", "governing_law": "English law", "agreement_direction": "one-way"},
+    {"document_id": "NDA_5.pdf", "governing_law": "State of California", "agreement_direction": "one-way"}
+  ],
+  "elapsed_seconds": 933.18,
+  "cost_usd": 1.217339,
+  "total_tokens": 2303825
+}

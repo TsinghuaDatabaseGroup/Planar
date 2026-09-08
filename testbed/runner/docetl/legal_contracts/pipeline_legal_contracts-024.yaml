@@ -1,0 +1,119 @@
+datasets:
+  contract_exhibits:
+    type: file
+    path: contract_exhibit_full.json
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_ndas_in_target_states
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is a standalone non-disclosure or
+      confidentiality agreement expressly governed by California, Delaware, or
+      New York law.
+
+      Document:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        is_target_state_nda: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_return_relief_and_five_carve_outs
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this agreement only if it requires return or destruction of
+      confidential materials, provides injunctive, equitable, or
+      specific-performance relief, and contains exactly five of the six standard
+      confidentiality carve-outs: public information, prior knowledge,
+      independent development, lawful unrestricted third-party receipt, legally
+      compelled disclosure, and consent by the disclosing party.
+
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        has_required_terms: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: extract_state_exception_and_direction
+    type: map
+    optimize: true
+    prompt: |
+      Extract the qualifying governing state, the sole missing standard
+      confidentiality carve-out, and classify the nondisclosure obligation as
+      exactly mutual or unilateral.
+
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        governing_state: string
+        missing_exception: string
+        direction: string
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: project_answer_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "document_id": str(doc.get("doc_id") or ""),
+              "governing_state": str(doc.get("governing_state") or ""),
+              "missing_exception": str(doc.get("missing_exception") or ""),
+              "direction": str(doc.get("direction") or ""),
+          }
+
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations:
+        - filter_ndas_in_target_states
+        - filter_return_relief_and_five_carve_outs
+        - extract_state_exception_and_direction
+        - project_answer_fields
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-024.json

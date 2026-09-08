@@ -1,0 +1,116 @@
+{
+  "task_id": "legal_contracts-093",
+  "answer": [
+    {
+      "company": "Hudson Pacific Properties, Inc.",
+      "certifying_officer": "Victor J. Coleman",
+      "ex10_document": "a2024ex1070thirdamendedand.htm",
+      "non_compete_duration_years": 0
+    },
+    {
+      "company": "Hudson Pacific Properties, Inc.",
+      "certifying_officer": "Harout K. Diramerian",
+      "ex10_document": "a2024ex1073amendedandresta.htm",
+      "non_compete_duration_years": 0
+    },
+    {
+      "company": "Hudson Pacific Properties, L.P.",
+      "certifying_officer": "Victor J. Coleman",
+      "ex10_document": "a2024ex1070thirdamendedand.htm",
+      "non_compete_duration_years": 0
+    },
+    {
+      "company": "Hudson Pacific Properties, L.P.",
+      "certifying_officer": "Harout K. Diramerian",
+      "ex10_document": "a2024ex1073amendedandresta.htm",
+      "non_compete_duration_years": 0
+    },
+    {
+      "company": "Sprinklr, Inc.",
+      "certifying_officer": "Rory Read",
+      "ex10_document": "exhibit1026-rreademploymen.htm",
+      "non_compete_duration_years": 0
+    },
+    {
+      "company": "Aveanna Healthcare Holdings Inc.",
+      "certifying_officer": "Matthew Buckhalter",
+      "ex10_document": "avah-ex10_23.htm",
+      "non_compete_duration_years": 1
+    },
+    {
+      "company": "CareDx, Inc.",
+      "certifying_officer": "John W. Hanna",
+      "ex10_document": "d822701dex103.htm",
+      "non_compete_duration_years": 1
+    },
+    {
+      "company": "Kaival Brands Innovations Group, Inc.",
+      "certifying_officer": "Barry Hopkins",
+      "ex10_document": "e5407_ex10-29.htm",
+      "non_compete_duration_years": 0.5
+    },
+    {
+      "company": "Gryphon Digital Mining, Inc.",
+      "certifying_officer": "Simeon Salzman",
+      "ex10_document": "ea020224801ex10-23_gryphon.htm",
+      "non_compete_duration_years": 1
+    },
+    {
+      "company": "IDEXX Laboratories, Inc.",
+      "certifying_officer": "Jonathan J. Mazelsky",
+      "ex10_document": "idxx2024q210-qexhibit104.htm",
+      "non_compete_duration_years": 2
+    },
+    {
+      "company": "IDEXX Laboratories, Inc.",
+      "certifying_officer": "Jonathan J. Mazelsky",
+      "ex10_document": "idxx2024q310-qexhibit101.htm",
+      "non_compete_duration_years": 2
+    },
+    {
+      "company": "IDEAYA Biosciences, Inc.",
+      "certifying_officer": "Andres Ruiz Briseno",
+      "ex10_document": "idya-ex10_2.htm",
+      "non_compete_duration_years": 0
+    },
+    {
+      "company": "Nucor Corporation",
+      "certifying_officer": "Leon J. Topalian",
+      "ex10_document": "nue-ex10_xx.htm",
+      "non_compete_duration_years": 3.5
+    },
+    {
+      "company": "Nucor Corporation",
+      "certifying_officer": "Stephen D. Laxton",
+      "ex10_document": "nue-ex10_xxxi.htm",
+      "non_compete_duration_years": 3.5
+    },
+    {
+      "company": "Key Tronic Corporation",
+      "certifying_officer": "Brett R. Larsen",
+      "ex10_document": "larsenemploymentagreement.htm",
+      "non_compete_duration_years": 1
+    },
+    {
+      "company": "Key Tronic Corporation",
+      "certifying_officer": "Anthony G. Voorhees",
+      "ex10_document": "voorheesemploymentagreement.htm",
+      "non_compete_duration_years": 1
+    },
+    {
+      "company": "Trinity Capital Inc.",
+      "certifying_officer": "Kyle Brown",
+      "ex10_document": "ea023506301_ex10-1.htm",
+      "non_compete_duration_years": 1
+    },
+    {
+      "company": "Trinity Capital Inc.",
+      "certifying_officer": "Michael Testa",
+      "ex10_document": "ea023506301_ex10-4.htm",
+      "non_compete_duration_years": 1
+    }
+  ],
+  "elapsed_seconds": 950.46,
+  "cost_usd": 7.685759,
+  "total_tokens": 14667053
+}

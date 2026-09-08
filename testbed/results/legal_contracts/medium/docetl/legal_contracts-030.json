@@ -1,0 +1,513 @@
+{
+  "task_id": "legal_contracts-030",
+  "answer": [
+    {
+      "document_id": "09-24-2019-04-25-05-3914910473.pdf",
+      "governing_law": "Laws of the Republic of Italy",
+      "missing_exception": "independently developed information"
+    },
+    {
+      "document_id": "1001113_0000950134-07-005231_f27921orexv99wxdyx3y.htm",
+      "governing_law": "the procedural and substantive laws of the state of California",
+      "missing_exception": "independently developed"
+    },
+    {
+      "document_id": "1001917_0000950123-08-007542_y61533exv99wdw3.htm",
+      "governing_law": "State of Washington",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "1002276_0001036050-99-002047_document_13.txt",
+      "governing_law": "State of California",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "1012887_0001193125-07-165503_dex99d6.htm",
+      "governing_law": "laws of India",
+      "missing_exception": "disclosure required by a court order or other legal process"
+    },
+    {
+      "document_id": "1013322_0000912057-00-023405_document_2.txt",
+      "governing_law": "the laws of the United States of America and by the laws of the State of California as such laws are applied to agreements entered into and to be performed entirely within California between California residents",
+      "missing_exception": "disclosure required by a valid order of a court or other governmental body, or as otherwise required by law"
+    },
+    {
+      "document_id": "1014552_0000950148-01-500497_v71961toex99-d3.txt",
+      "governing_law": "the laws of the State of Texas, without giving effect to its principles or rules regarding conflicts of laws, other than such principles directing application of Texas law",
+      "missing_exception": "independently developed information"
+    },
+    {
+      "document_id": "1016503_0000929624-00-000894_0010.txt",
+      "governing_law": "laws of the State of New York",
+      "missing_exception": "disclosure required by court order"
+    },
+    {
+      "document_id": "1017358_0001017358-97-000002_document_4.txt",
+      "governing_law": "the laws of the State of Missouri",
+      "missing_exception": "disclosure to the Recipient's attorneys"
+    },
+    {
+      "document_id": "103884_0001193125-12-338104_d390544dex99d3.htm",
+      "governing_law": "the laws of the State of Colorado without regard to its conflict of laws principles",
+      "missing_exception": "disclosure required by stock exchange rules or regulations"
+    },
+    {
+      "document_id": "1043431_0000950133-00-000090_document_15.txt",
+      "governing_law": "the laws of the Commonwealth of Virginia",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "1063085_0000950134-09-011390_f52580exv99wxeyx3y.htm",
+      "governing_law": "the laws of the State of California",
+      "missing_exception": "disclosure required by a stock exchange rule or regulation"
+    },
+    {
+      "document_id": "1065748_0000950131-00-004465_0016.txt",
+      "governing_law": "State of California",
+      "missing_exception": "Court order"
+    },
+    {
+      "document_id": "1077050_0000950147-99-000049_document_10.txt",
+      "governing_law": "California Law",
+      "missing_exception": "Compelled disclosure by court order or other legal process (without prior notice requirement)"
+    },
+    {
+      "document_id": "1084817_0001193125-14-004957_d648340dex99e2.htm",
+      "governing_law": "State of Delaware",
+      "missing_exception": "disclosure to a party's financing sources (or lenders/investors)"
+    },
+    {
+      "document_id": "1089717_0000898430-99-004004_document_2.txt",
+      "governing_law": "the laws of the United States of America and the Commonwealth of Virginia, USA",
+      "missing_exception": "disclosure required by a government regulatory agency or authority"
+    },
+    {
+      "document_id": "1089786_0000912057-00-052660_a2032473zex-99_e2.txt",
+      "governing_law": "the laws of the State of New York",
+      "missing_exception": "disclosure required by court order or other legal process"
+    },
+    {
+      "document_id": "1094007_0001193125-10-258977_dex101.htm",
+      "governing_law": "The laws of the State of Washington",
+      "missing_exception": "Information disclosed pursuant to a court order or government demand (compelled disclosure)"
+    },
+    {
+      "document_id": "1101204_0001085037-00-000208_0015.txt",
+      "governing_law": "California",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "1119985_0001047469-04-035924_a2147858zex-2_5.htm",
+      "governing_law": "the laws of the Province of Ontario and the federal laws of Canada applicable therein",
+      "missing_exception": "disclosure required by a court order or other legal process (distinct from being 'legally compelled' which triggers a notice/delay procedure, but often explicitly listed as a standalone exception in standard carve-outs alongside public domain, prior knowledge, third-party disclosure, independent development, and authorized release)"
+    },
+    {
+      "document_id": "1123713_0001021408-00-003137_0016.txt",
+      "governing_law": "the laws of the Province of New Brunswick",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "1125576_0000928385-02-000738_dex991d2.txt",
+      "governing_law": "the laws of the United States and the State of California, excluding its conflict of laws rules",
+      "missing_exception": "disclosure required by applicable securities exchange regulations or stock exchange rules"
+    },
+    {
+      "document_id": "1138169_0001050234-02-000002_ex10h.txt",
+      "governing_law": "State of North Carolina",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "1163932_0001193125-13-394191_d606730dex99d2.htm",
+      "governing_law": "the laws of the State of Delaware applicable to agreements made and to be performed entirely within such state",
+      "missing_exception": "disclosure to a court or tribunal in connection with legal proceedings"
+    },
+    {
+      "document_id": "1167294_0001193125-15-218134_d933068dex99d3.htm",
+      "governing_law": "the laws of the State of Delaware applicable to agreements made and to be performed entirely within that state, and without regard to conflicts of laws principles of that state",
+      "missing_exception": "information required to be disclosed by a court order or other legal process where the receiving party has not been afforded the opportunity to seek a protective order (specifically, the agreement lacks a carve-out for disclosures made after a final court order compelling disclosure has been issued and all remedies sought have been exhausted, distinct from the 'legally required' notice and cooperation provisions in Section 3 which still require counsel's advice on what is 'legally required' rather than acknowledging the finality of a judicial command)."
+    },
+    {
+      "document_id": "1173495_0001047469-03-033872_a2118144zex-10_12.txt",
+      "governing_law": "the laws of the State of Delaware, excluding its conflicts of laws rules",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "1177845_0001193125-18-219243_d519554dex99d3.htm",
+      "governing_law": "the law of the State of Delaware",
+      "missing_exception": "disclosure required by a court order or other legal process (independent of a governmental or judicial proceeding request handled under Section 3)"
+    },
+    {
+      "document_id": "1274644_0001193125-17-338759_d485523dex99d2.htm",
+      "governing_law": "State of New York",
+      "missing_exception": "disclosure to a party's attorneys, accountants, or other professional advisors"
+    },
+    {
+      "document_id": "1280058_0001193125-12-023311_d287213dex99d3.htm",
+      "governing_law": "the laws of the State of Delaware applicable to agreements made and to be performed entirely within such state",
+      "missing_exception": "disclosure required by stock exchange rules or regulations"
+    },
+    {
+      "document_id": "1288379_0000950123-07-003101_y31044exv99wdw6.htm",
+      "governing_law": "the laws of the State of New York applicable to agreements made and to be fully performed therein (excluding conflicts of laws provisions thereof)",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "130806ca141.pdf",
+      "governing_law": "the laws of the Province of Nova Scotia and the laws of Canada applicable therein",
+      "missing_exception": "disclosure required by law, court order, or governmental authority"
+    },
+    {
+      "document_id": "1316898_0001047469-18-005618_a2236490zex-99_d2.htm",
+      "governing_law": "the laws of the State of Delaware applicable to agreements made and to be performed entirely within such state",
+      "missing_exception": "disclosure to a Recipient's professional advisors (attorneys, accountants, consultants, bankers, and financial advisors) who have a need to know the information for the purpose of evaluating the Possible Transaction"
+    },
+    {
+      "document_id": "1329919_0001193125-14-149149_d701401dex99d6.htm",
+      "governing_law": "the internal procedural and substantive laws of the State of Delaware, without reference to the conflict of law principles of that state",
+      "missing_exception": "disclosure required by stock exchange rules or regulations"
+    },
+    {
+      "document_id": "1332602_0001193125-12-512465_d454990dex99d2.htm",
+      "governing_law": "State of Minnesota",
+      "missing_exception": "disclosure required by a governmental regulatory authority (e.g., the SEC) in the absence of a legal compulsion such as a subpoena or court order"
+    },
+    {
+      "document_id": "1366649_0001193125-14-380778_d808213dex99d2.htm",
+      "governing_law": "the laws of the Province of Québec and the laws of Canada applicable to agreements made in or to be performed within such province",
+      "missing_exception": "disclosure compelled by a court order or other judicial mandate"
+    },
+    {
+      "document_id": "1372664_0001193125-12-159071_d333885dex99d9.htm",
+      "governing_law": "State of Georgia",
+      "missing_exception": "independently developed information"
+    },
+    {
+      "document_id": "1373671_0001193125-10-265249_dex99d3.htm",
+      "governing_law": "State of Delaware",
+      "missing_exception": "disclosure required by stock exchange rules or regulations"
+    },
+    {
+      "document_id": "1402305_0001193125-11-343865_d268167dex99d2.htm",
+      "governing_law": "the laws of the State of New York, United States of America",
+      "missing_exception": "disclosure required by a court order or other legal process (compelled disclosure)"
+    },
+    {
+      "document_id": "1413447_0001193125-16-771498_d295023dex99d5.htm",
+      "governing_law": "laws of New York, USA",
+      "missing_exception": "disclosure to a Receiving Party's auditors"
+    },
+    {
+      "document_id": "1561604_0001193125-12-472390_d438799dex99d3.htm",
+      "governing_law": "the laws of the State of Delaware applicable to agreements made and to be performed entirely within such state",
+      "missing_exception": "disclosure to comply with tax reporting requirements"
+    },
+    {
+      "document_id": "1574111_0001193125-14-440569_d826999dex99d5.htm",
+      "governing_law": "the laws of the State of California",
+      "missing_exception": "disclosure to professional advisors (such as attorneys, accountants, or financial advisors) under a duty of confidentiality"
+    },
+    {
+      "document_id": "1592288_0001193125-17-306543_d469659dex99e2.htm",
+      "governing_law": "State of Delaware",
+      "missing_exception": "disclosure required by a court order or other legal process where the disclosing party has not provided prior notice to the Company or sought a protective order (specifically, the agreement lacks an explicit exception permitting disclosure *without* prior notice and assistance efforts if such notice or assistance is legally prohibited or would result in a waiver of privilege, though Paragraph 4 covers the general process, standard carve-outs often explicitly state 'unless such notice is prohibited by law' which is implied but not expressly stated as a standalone exception to the notice requirement in the same breath as the compulsion)."
+    },
+    {
+      "document_id": "1693664_0001193125-18-171470_d426098dex99d3.htm",
+      "governing_law": "State of Delaware",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "32251_0000950133-99-003991_document_17.txt",
+      "governing_law": "the laws of the Commonwealth of Virginia, excluding its choice of law rules",
+      "missing_exception": "disclosure required by a court order or other legal process without prior notice to the Disclosing Party to allow them to seek a protective order"
+    },
+    {
+      "document_id": "354452_0000950123-99-011178_document_13.txt",
+      "governing_law": "State of Florida",
+      "missing_exception": "Independent development"
+    },
+    {
+      "document_id": "69067_0000927016-00-002123_0010.txt",
+      "governing_law": "State of Minnesota",
+      "missing_exception": "Bankruptcy or insolvency proceedings"
+    },
+    {
+      "document_id": "741696_0001193125-10-290887_dex99d9.htm",
+      "governing_law": "California",
+      "missing_exception": "disclosure required by stock exchange rules"
+    },
+    {
+      "document_id": "792130_0001193125-18-326077_d601641dex99d3.htm",
+      "governing_law": "State of Delaware",
+      "missing_exception": "disclosure required by a court order or other judicial mandate"
+    },
+    {
+      "document_id": "801338_0000950134-07-015617_c16542toexv99wxdyx5y.htm",
+      "governing_law": "State of Delaware",
+      "missing_exception": "Attorney-Client Privilege"
+    },
+    {
+      "document_id": "803647_0001047469-17-006266_a2233487zex-99_d2.htm",
+      "governing_law": "laws of the Commonwealth of Virginia",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "832995_0000912057-00-054331_a2033550zex-99_d13.htm",
+      "governing_law": "the internal laws of the State of Minnesota, without giving effect to the principles of conflicts of laws thereof",
+      "missing_exception": "disclosure required by a court order or other legal process (in the absence of a protective order or waiver)"
+    },
+    {
+      "document_id": "845818_0001193125-11-195725_dex99d8.htm",
+      "governing_law": "State of New York",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "874265_0001193125-05-138436_dex99d1.htm",
+      "governing_law": "the laws of the State of New York applicable to agreements made and to be performed entirely within the State of New York",
+      "missing_exception": "disclosure required by stock exchange rules or regulations"
+    },
+    {
+      "document_id": "913610_0001047469-03-027395_a2116567zex-99_e3.htm",
+      "governing_law": "State of New York",
+      "missing_exception": "disclosure to a third party without a duty of confidentiality"
+    },
+    {
+      "document_id": "ADVANIDE-NON-DISCLOSURE-AGREEMENT.pdf",
+      "governing_law": "Singapore",
+      "missing_exception": "court order"
+    },
+    {
+      "document_id": "AfriGIS_Client-NDA_Template_2019.pdf",
+      "governing_law": "the laws of the Republic of South Africa",
+      "missing_exception": "disclosure required by a government regulatory authority or agency"
+    },
+    {
+      "document_id": "Agreement_6_28_07.pdf",
+      "governing_law": "State of South Carolina",
+      "missing_exception": "Disclosure required by a governmental or regulatory body (e.g., the SEC) in connection with a public offering or other mandatory filing, where such disclosure is not compelled by a specific court order or subpoena but is mandated by statute or regulation."
+    },
+    {
+      "document_id": "Annexure-3_Confidentiality-Agreement.pdf",
+      "governing_law": "the laws of the Republic of South Africa",
+      "missing_exception": "disclosure required by a stock exchange or regulatory authority with jurisdiction over the Receiving Party"
+    },
+    {
+      "document_id": "Confidentiality_and_Non-Disclosure_Agreement.pdf",
+      "governing_law": "the laws of the Province of Ontario, Canada",
+      "missing_exception": "independent development without reference to Confidential Information"
+    },
+    {
+      "document_id": "Cyber Mutual Assistance NDA.pdf",
+      "governing_law": "the laws of the State of New York",
+      "missing_exception": "disclosure to a Participating Entity's professional advisors (such as attorneys, accountants, or consultants) who are bound by confidentiality obligations"
+    },
+    {
+      "document_id": "Eskom%20Template%20Confidentiality%20and%20Non-disclosure%20Agreement%20Rev%204%20Effective%20August%202017_11.pdf",
+      "governing_law": "South Africa",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "HNBA-2017-18-Confidentiality-Agreement.pdf",
+      "governing_law": "District of Columbia",
+      "missing_exception": "Subpoena or court order"
+    },
+    {
+      "document_id": "IMOA%20Molybdenum%20Consortium%20NDA%20Agreement%20amended%20Jan%2008,%20valid%20March%2009%20onwards.pdf",
+      "governing_law": "laws of England and Wales",
+      "missing_exception": "disclosure required by a court order or other legal process where the Receiving Party is not permitted to notify the Disclosing Party prior to disclosure"
+    },
+    {
+      "document_id": "Kerber_Non_Disclosure_Agreement.pdf",
+      "governing_law": "Province of Ontario",
+      "missing_exception": "Disclosure required by law or court order without prior notice to the disclosing party (specifically, the agreement lacks an exception allowing disclosure without prior notice when such notice is prohibited by law or a court order)."
+    },
+    {
+      "document_id": "MR_NON-DISCLOSURE-AGREEMENT.pdf",
+      "governing_law": "Austrian law excluding its conflict of law rules",
+      "missing_exception": "Independent development"
+    },
+    {
+      "document_id": "MUTUAL-CONFIDENTIAL-NON-DISCLOSURE.pdf",
+      "governing_law": "the laws of the Province of Ontario and the laws of Canada applicable therein",
+      "missing_exception": "information received from a third party without breach of any confidentiality obligation"
+    },
+    {
+      "document_id": "Mutual%20Non%20Disclosure%20Agreement_0.pdf",
+      "governing_law": "State of New York",
+      "missing_exception": "disclosure required by a court order or judicial decree"
+    },
+    {
+      "document_id": "Mutual+Confidentiality+Agreement_1.pdf",
+      "governing_law": "the laws of the State of Texas without regard to conflict of law principles",
+      "missing_exception": "independently developed by or for Recipient without use or reference to the Proprietary Information"
+    },
+    {
+      "document_id": "Mutual-Non-Disclosure-Agreement-Inventor-Product-Development-Experts-Inc..pdf",
+      "governing_law": "State of Florida, U.S.A.",
+      "missing_exception": "disclosure required by a court order or other legal process"
+    },
+    {
+      "document_id": "NDA%20Form%20WEB_WITH%20Instructions%20%28RECIPROCAL%29%20%28v%202016-03-18_EN%29.pdf",
+      "governing_law": "laws of Spain",
+      "missing_exception": "disclosure to professional advisors (e.g., attorneys, accountants) under a duty of confidentiality"
+    },
+    {
+      "document_id": "NDA%20for%20Tender%20Ref%202201000050.pdf",
+      "governing_law": "the laws of Singapore",
+      "missing_exception": "disclosure to professional advisors (e.g., accountants, consultants) under a duty of confidentiality"
+    },
+    {
+      "document_id": "NDA-2015-2.pdf",
+      "governing_law": "the laws of the Province of Ontario and the federal laws of Canada applicable therein",
+      "missing_exception": "disclosure required by a government regulatory authority (e.g., SEC, stock exchange rules) absent a court order or specific statute"
+    },
+    {
+      "document_id": "NDA-2016-DAB.pdf",
+      "governing_law": "English Law",
+      "missing_exception": "Compelled disclosure by court order or legal process"
+    },
+    {
+      "document_id": "NDA-ONSemi_IndustryAnalystConf-2011.pdf",
+      "governing_law": "The law of the state of New York, U.S.A. except for its choice of laws rules",
+      "missing_exception": "The agreement does not contain an exception for Confidential Information that is disclosed to the Recipient's professional advisors (such as attorneys, accountants, or financial advisors) who are bound by professional duties of confidentiality."
+    },
+    {
+      "document_id": "NDATyre%20Plant.pdf",
+      "governing_law": "the laws of South Africa",
+      "missing_exception": "disclosure required by a stock exchange or regulatory authority (e.g., in connection with a public offering or listing)"
+    },
+    {
+      "document_id": "NDA_22.pdf",
+      "governing_law": "Republic of South Africa",
+      "missing_exception": "disclosure required by a governmental or regulatory authority (in the absence of a court order)"
+    },
+    {
+      "document_id": "NEW_moi_ndform.pdf",
+      "governing_law": "State of New York",
+      "missing_exception": "Independent development"
+    },
+    {
+      "document_id": "Non Disclosure Agreement - CP Specific NDA (CreativeNDA-CPS121.1014).pdf",
+      "governing_law": "the laws of the state of Delaware, of the United States of America, without regard to conflict of law rules thereof",
+      "missing_exception": "independently developed information"
+    },
+    {
+      "document_id": "Non-disclosure%20Agreement_1.pdf",
+      "governing_law": "the laws of the Province of Alberta and the federal laws of Canada applicable in the Province of Alberta",
+      "missing_exception": "disclosure required by a court order or other legal process (compelled disclosure without prior notice opportunity)"
+    },
+    {
+      "document_id": "Non_Disclosure_Agreement_2.pdf",
+      "governing_law": "laws of England",
+      "missing_exception": "independent development"
+    },
+    {
+      "document_id": "OMA-TestFest-NDA-2017.pdf",
+      "governing_law": "the laws of England",
+      "missing_exception": "disclosure required by law or court order"
+    },
+    {
+      "document_id": "Project%20LAS%20RFI%20Non-Disclosure%20Agreement.pdf",
+      "governing_law": "laws of Malaysia",
+      "missing_exception": "disclosure required by applicable securities laws or stock exchange rules"
+    },
+    {
+      "document_id": "QEP-Williston-Form-of-Confidentiality-Agreement-BMO.pdf",
+      "governing_law": "the laws of the State of Texas, excluding any choice of law rules that may direct application of laws of another jurisdiction",
+      "missing_exception": "disclosure required by a stock exchange rule or regulation"
+    },
+    {
+      "document_id": "SONGS%20RFP%20Confidentiality%20Agreement_201705051754392249.pdf",
+      "governing_law": "State of California",
+      "missing_exception": "disclosure required by court order or subpoena"
+    },
+    {
+      "document_id": "Sample%20NDA%202018.pdf",
+      "governing_law": "the internal laws of the State of North Carolina",
+      "missing_exception": "disclosure required by a court order or governmental authority (without prior notice and opportunity to seek a protective order)"
+    },
+    {
+      "document_id": "Template-NDA-2-way-final-1.pdf",
+      "governing_law": "the laws of the Province of Ontario and the laws of Canada",
+      "missing_exception": "disclosure required by a court order or other legal process (independent of a general statutory requirement to disclose by law)"
+    },
+    {
+      "document_id": "Template-NDA.pdf",
+      "governing_law": "the laws of the Commonwealth of Pennsylvania",
+      "missing_exception": "disclosure required by a court order or other legal process (independent of the voluntary compliance mechanism described in Section 3(b))"
+    },
+    {
+      "document_id": "WEBSITE%20MNDA.pdf",
+      "governing_law": "the laws of the Province of British Columbia and the federal laws of Canada applicable therein",
+      "missing_exception": "disclosure required by a court order, subpoena, or governmental agency (compelled disclosure)"
+    },
+    {
+      "document_id": "annex-2-sample-non-disclosure-agreement.pdf",
+      "governing_law": "laws of England",
+      "missing_exception": "disclosure required by a court order or legal process"
+    },
+    {
+      "document_id": "ccporappdev-rfp-att8.pdf",
+      "governing_law": "the laws of the State of California without regard to choice of law principles",
+      "missing_exception": "disclosure required by a court order or other legal process (distinct from general statutory requirements or governmental agency requests)"
+    },
+    {
+      "document_id": "confidentiality_agreement.pdf",
+      "governing_law": "the substantive laws of Sweden",
+      "missing_exception": "disclosure required by a court order or other legal process"
+    },
+    {
+      "document_id": "jmu_cise_mutual_nda.pdf",
+      "governing_law": "Commonwealth of Virginia, U.S.A.",
+      "missing_exception": "Compelled disclosure by law or court order"
+    },
+    {
+      "document_id": "modelnondisclosureagreement1.pdf",
+      "governing_law": "English Law",
+      "missing_exception": "Compelled by law or court order"
+    },
+    {
+      "document_id": "mutual_non_disclosure_agreement-20171020.pdf",
+      "governing_law": "State of California",
+      "missing_exception": "Compelled disclosure by law or court order"
+    },
+    {
+      "document_id": "nda_1.pdf",
+      "governing_law": "State of California",
+      "missing_exception": "disclosure required by law or regulation (independent of a specific court order or subpoena)"
+    },
+    {
+      "document_id": "nda_11.pdf",
+      "governing_law": "laws of England",
+      "missing_exception": "disclosure required by applicable securities laws or regulations (other than stock exchange rules specifically mentioned) without the specific safeguard of prior notice, or more broadly, the absence of an explicit exception for disclosures required by other governmental or regulatory authorities (e.g., tax authorities, data protection regulators) which is a standard carve-out often found alongside court orders."
+    },
+    {
+      "document_id": "nda_8.pdf",
+      "governing_law": "laws of England",
+      "missing_exception": "disclosure to professional advisors (e.g., legal counsel, accountants) under a duty of confidentiality"
+    },
+    {
+      "document_id": "nistmodelndareceiptofproprietaryinformationv20162fillableforwebsitedoc003pdf.pdf",
+      "governing_law": "the laws of the United States",
+      "missing_exception": "independent development without reference to the Proprietary Information"
+    },
+    {
+      "document_id": "non-disclosure-agreement_5.pdf",
+      "governing_law": "State of Minnesota",
+      "missing_exception": "Compelled disclosure by operation of law (e.g., court order, subpoena) without the requirement to provide prior notice to the Disclosing Party."
+    },
+    {
+      "document_id": "pp%2011%20-%20non-disclosure%20agreement%20mutual.pdf",
+      "governing_law": "laws of Malaysia",
+      "missing_exception": "disclosure required by a court order or other legal process"
+    },
+    {
+      "document_id": "v71961toex99-d3.txt",
+      "governing_law": "the laws of the State of Texas, without giving effect to its principles or rules regarding conflicts of laws, other than such principles directing application of Texas law",
+      "missing_exception": "independently developed"
+    }
+  ],
+  "elapsed_seconds": 442.32,
+  "cost_usd": 4.086899,
+  "total_tokens": 7810053
+}

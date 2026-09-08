@@ -1,0 +1,103 @@
+{
+  "task_id": "legal_contracts-027",
+  "answer": [
+    {
+      "document_id": "1111682_0000950123-00-003802_document_15.txt",
+      "governing_law": "Connecticut",
+      "agreement_direction": "mutual"
+    },
+    {
+      "document_id": "118.3-Non-disclosure-agreement.pdf",
+      "governing_law": "English law",
+      "agreement_direction": "one-way"
+    },
+    {
+      "document_id": "913949_0000950149-96-000782_document_6.txt",
+      "governing_law": "State of California",
+      "agreement_direction": "one-way"
+    },
+    {
+      "document_id": "Confidentiality_Agreement_1.pdf",
+      "governing_law": "German law",
+      "agreement_direction": "mutual"
+    },
+    {
+      "document_id": "DoiT-ICN-NonDisclosure-Agreement.pdf",
+      "governing_law": "State of Illinois",
+      "agreement_direction": "one-way"
+    },
+    {
+      "document_id": "Example-Mutual-Non-Disclosure-Agreement.pdf",
+      "governing_law": "English law",
+      "agreement_direction": "mutual"
+    },
+    {
+      "document_id": "Example-One-Way-Non-Disclosure-Agreement.pdf",
+      "governing_law": "English law",
+      "agreement_direction": "one-way"
+    },
+    {
+      "document_id": "Kerber_Non_Disclosure_Agreement.pdf",
+      "governing_law": "Province of Ontario",
+      "agreement_direction": "mutual"
+    },
+    {
+      "document_id": "Lead-NDA.pdf",
+      "governing_law": "England and Wales",
+      "agreement_direction": "one-way"
+    },
+    {
+      "document_id": "NDA_5.pdf",
+      "governing_law": "State of California",
+      "agreement_direction": "one-way"
+    },
+    {
+      "document_id": "NDA_7.pdf",
+      "governing_law": "Spain",
+      "agreement_direction": "mutual"
+    },
+    {
+      "document_id": "Non%20Disclosure%20Agreement_1.pdf",
+      "governing_law": "State of Georgia",
+      "agreement_direction": "mutual"
+    },
+    {
+      "document_id": "UALR-Standard-Non-disclosure-AgreementTemplate.pdf",
+      "governing_law": "State of Arkansas",
+      "agreement_direction": "mutual"
+    },
+    {
+      "document_id": "annex-iii---nda-agreement..pdf",
+      "governing_law": "English law",
+      "agreement_direction": "mutual"
+    },
+    {
+      "document_id": "confidentialityandnondisclosureagreement.pdf",
+      "governing_law": "Inventor's/Disclosing Party's home country",
+      "agreement_direction": "one-way"
+    },
+    {
+      "document_id": "example-NDA-one-way-short-form-2012-1.pdf",
+      "governing_law": "English law",
+      "agreement_direction": "one-way"
+    },
+    {
+      "document_id": "for-41-supplier-confidentiality-agreement-and-non-disclosure-agreement.pdf",
+      "governing_law": "Manitoba",
+      "agreement_direction": "one-way"
+    },
+    {
+      "document_id": "modelnondisclosureagreement1.pdf",
+      "governing_law": "English Law",
+      "agreement_direction": "one-way"
+    },
+    {
+      "document_id": "nda_gtl_inria.pdf",
+      "governing_law": "France",
+      "agreement_direction": "one-way"
+    }
+  ],
+  "elapsed_seconds": 299.109,
+  "cost_usd": 0.62787108,
+  "total_tokens": 861252
+}

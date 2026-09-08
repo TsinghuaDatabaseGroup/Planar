@@ -1,0 +1,32 @@
+{
+  "task_id": "legal_contracts-036",
+  "answer": [
+    {
+      "document_id": "1125576_0000928385-02-000738_dex991d2.txt",
+      "governing_law": "the laws of the United States and the State of California, excluding its conflict of laws rules"
+    },
+    {
+      "document_id": "801338_0000950134-07-015617_c16542toexv99wxdyx5y.htm",
+      "governing_law": "State of Delaware"
+    },
+    {
+      "document_id": "Business-Sale-Non-Disclosure-Agreement.pdf",
+      "governing_law": "England and Wales"
+    },
+    {
+      "document_id": "ICTSC-NDA-General-MandA-signed.pdf",
+      "governing_law": "New South Wales, Australia"
+    },
+    {
+      "document_id": "NDA_7.pdf",
+      "governing_law": "Spain"
+    },
+    {
+      "document_id": "Non_Disclosure_Agreement_3.pdf",
+      "governing_law": "United Kingdom"
+    }
+  ],
+  "elapsed_seconds": 13.5,
+  "cost_usd": 0.078264,
+  "total_tokens": 144785
+}

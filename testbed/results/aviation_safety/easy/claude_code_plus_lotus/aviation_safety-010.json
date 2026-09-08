@@ -1,0 +1,28 @@
+{
+  "task_id": "aviation_safety-010",
+  "answer": [
+    {
+      "cabin_side_source": "cabin_equipment_issue",
+      "incident_count": 6
+    },
+    {
+      "cabin_side_source": "door_issue",
+      "incident_count": 1
+    },
+    {
+      "cabin_side_source": "medical_event",
+      "incident_count": 14
+    },
+    {
+      "cabin_side_source": "passenger_behavior",
+      "incident_count": 11
+    },
+    {
+      "cabin_side_source": "security_issue",
+      "incident_count": 1
+    }
+  ],
+  "elapsed_seconds": 209.003,
+  "cost_usd": 0.43788675,
+  "total_tokens": 716246
+}

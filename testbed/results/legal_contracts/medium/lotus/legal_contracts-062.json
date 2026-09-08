@@ -1,0 +1,26 @@
+{
+  "task_id": "legal_contracts-062",
+  "answer": [
+    {
+      "restriction_category": "Both",
+      "agreement_count": 44,
+      "avg_effective_duration_years": 2.8823529411764706,
+      "most_common_governing_law": "Delaware"
+    },
+    {
+      "restriction_category": "Customers Only",
+      "agreement_count": 9,
+      "avg_effective_duration_years": 1.88,
+      "most_common_governing_law": "Indiana"
+    },
+    {
+      "restriction_category": "Employees Only",
+      "agreement_count": 27,
+      "avg_effective_duration_years": 1.39,
+      "most_common_governing_law": "California"
+    }
+  ],
+  "elapsed_seconds": 479.24,
+  "cost_usd": 4.618176,
+  "total_tokens": 8665195
+}

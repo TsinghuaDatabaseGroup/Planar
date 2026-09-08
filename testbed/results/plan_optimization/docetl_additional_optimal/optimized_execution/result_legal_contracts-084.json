@@ -1,0 +1,33 @@
+{
+  "task_id": "legal_contracts-084",
+  "answer": [
+    {
+      "company": "Becton, Dickinson and Company",
+      "covered_person_category": "Executive Officers",
+      "largest_subsidiary_count": 278
+    },
+    {
+      "company": "Peakstone Realty Trust",
+      "covered_person_category": "Executive Officers",
+      "largest_subsidiary_count": 147
+    },
+    {
+      "company": "Voya Financial, Inc.",
+      "covered_person_category": "Executive Officers and Employees",
+      "largest_subsidiary_count": 143
+    },
+    {
+      "company": "H.B. Fuller Company",
+      "covered_person_category": "Executive Officers and Key Managers",
+      "largest_subsidiary_count": 134
+    },
+    {
+      "company": "Globalstar, Inc.",
+      "covered_person_category": "Section 16 Officers and Covered Executives",
+      "largest_subsidiary_count": 73
+    }
+  ],
+  "elapsed_seconds": 976.64,
+  "cost_usd": 11.152669,
+  "total_tokens": 27885649
+}

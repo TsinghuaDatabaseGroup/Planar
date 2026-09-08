@@ -1,0 +1,850 @@
+{
+  "task_id": "legal_contracts-043",
+  "answer": [
+    {
+      "document_name": "1074663_0001090002-01-500104_ex102.txt",
+      "parties": [
+        "Perma-Tune Electronics Inc.",
+        "Linda Decker"
+      ],
+      "agreement_type": "NON-DISCLOSURE AND NON-CIRCUMVENTION AGREEMENT",
+      "effective_date": "1993-06-01"
+    },
+    {
+      "document_name": "917253_0000917253-00-000008_document_8.txt",
+      "parties": [
+        "ENVIROMETRICS PRODUCTS COMPANY",
+        "ZELLWEGER ANALYTICS, INC."
+      ],
+      "agreement_type": "license_confidentiality_non_disclosure",
+      "effective_date": "1996-01-01"
+    },
+    {
+      "document_name": "1018761_0000950130-96-004285_document_6.txt",
+      "parties": [
+        "TeleService Resources",
+        "Computer Generated Solutions, Inc."
+      ],
+      "agreement_type": "non_disclosure_and_noncompete_agreement",
+      "effective_date": "1996-03-01"
+    },
+    {
+      "document_name": "920729_0000891618-96-000819_document_6.txt",
+      "parties": [
+        "HNC Software Inc.",
+        "Infoseek Corporation"
+      ],
+      "agreement_type": "mutual_confidentiality_and_non_disclosure_agreement",
+      "effective_date": "1996-04-02"
+    },
+    {
+      "document_name": "1029445_0000940180-97-000212_document_12.txt",
+      "parties": [
+        "Assessment Systems, Inc.",
+        "Telesector Resources Group, Inc."
+      ],
+      "agreement_type": "non_disclosure_agreement",
+      "effective_date": "1996-04-15"
+    },
+    {
+      "document_name": "71297_0000071297-97-000059_document_6.txt",
+      "parties": [
+        "Granite State Energy, Inc.",
+        "New England Power Company"
+      ],
+      "agreement_type": "non_disclosure_agreement",
+      "effective_date": "1996-05-21"
+    },
+    {
+      "document_name": "1017545_0001012870-97-001500_document_2.txt",
+      "parties": [
+        "SoloPoint, Inc.",
+        "Pacific Bell Information Services"
+      ],
+      "agreement_type": "non_disclosure_agreement",
+      "effective_date": "1996-08-21"
+    },
+    {
+      "document_name": "24104_0000024104-96-000010_document_3.txt",
+      "parties": [
+        "Valco Inc.",
+        "Thomas E. Brubaker",
+        "Continental Materials Corporation"
+      ],
+      "agreement_type": "non-competition and non-disclosure agreement",
+      "effective_date": "1996-10-21"
+    },
+    {
+      "document_name": "1052303_0000950109-98-003654_document_16.txt",
+      "parties": [
+        "DIGITAL EQUIPMENT CORPORATION",
+        "TERAYON Corporation"
+      ],
+      "agreement_type": "nondisclosure_agreement",
+      "effective_date": "1996-12-09"
+    },
+    {
+      "document_name": "1052946_0000950134-98-001627_document_4.txt",
+      "parties": [
+        "Delta Steel, Inc.",
+        "FWT, Inc."
+      ],
+      "agreement_type": "non_disclosure_agreement",
+      "effective_date": "1997-03-10"
+    },
+    {
+      "document_name": "859119_0000950123-98-001418_document_15.txt",
+      "parties": [
+        "CANADIAN NATIONAL RAILWAY COMPANY",
+        "ILLINOIS CENTRAL CORP."
+      ],
+      "agreement_type": "non_disclosure_agreement",
+      "effective_date": "1997-03-13"
+    },
+    {
+      "document_name": "1044777_0000950124-98-000388_document_7.txt",
+      "parties": [
+        "VASCO DATA SECURITY, INC.",
+        "HUCOM, INC."
+      ],
+      "agreement_type": "confidentiality_agreement",
+      "effective_date": "1997-06-03"
+    },
+    {
+      "document_name": "1077050_0000950147-99-000049_document_10.txt",
+      "parties": [
+        "Creative Labs, Inc.",
+        "Pacific Magtron, Inc."
+      ],
+      "agreement_type": "non_disclosure_agreement",
+      "effective_date": "1997-09-10"
+    },
+    {
+      "document_name": "1061148_0001047469-98-018914_document_17.txt",
+      "parties": [
+        "Kevin Bennis",
+        "Pathnet, Inc."
+      ],
+      "agreement_type": "Non-Disclosure, Assignment of Inventions and Non-Competition Agreement",
+      "effective_date": "1998-02-02"
+    },
+    {
+      "document_name": "1095558_0000944209-00-000518_document_3.txt",
+      "parties": [
+        "Twentieth Century Fox Home Entertainment, Inc.",
+        "Artisan Home Entertainment, Inc."
+      ],
+      "agreement_type": "mutual_confidentiality_and_non_disclosure_agreement",
+      "effective_date": "1998-03-01"
+    },
+    {
+      "document_name": "912592_0000929624-98-000842_document_20.txt",
+      "parties": [
+        "Renaissance Golf Products, Inc.",
+        "World Golf Federation, Inc.",
+        "Joseph P. Connors",
+        "William Petmecky",
+        "Kip Gundry",
+        "Troy Horton"
+      ],
+      "agreement_type": "Non-Competition and Non-Disclosure Agreement",
+      "effective_date": "1998-04-02"
+    },
+    {
+      "document_name": "1077150_0001077048-99-000003_document_23.txt",
+      "parties": [
+        "Anonymous Data Corporation",
+        "BATTELLE MEMORIAL INSTITUTE, PACIFIC NORTHWEST DIVISION"
+      ],
+      "agreement_type": "non_disclosure_agreement",
+      "effective_date": "1998-05-08"
+    },
+    {
+      "document_name": "1077150_0001077048-99-000003_document_25.txt",
+      "parties": [
+        "Anonymous Data Corporation",
+        "Polaroid Corporation"
+      ],
+      "agreement_type": "non_disclosure_and_non_circumvent_agreement",
+      "effective_date": "1998-06-18"
+    },
+    {
+      "document_name": "1103062_0001017951-00-000016_document_13.txt",
+      "parties": [
+        "NetVoice Technologies, Inc.",
+        "Unlimited Tech, Inc."
+      ],
+      "agreement_type": "non-disclosure_agreement",
+      "effective_date": "1998-09-18"
+    },
+    {
+      "document_name": "1105503_0000950123-00-006736_ex10-14.txt",
+      "parties": [
+        "NATIONAL NETWORK TECHNOLOGIES, LLC",
+        "LEVEL 3 COMMUNICATIONS, LLC"
+      ],
+      "agreement_type": "non-disclosure agreement",
+      "effective_date": "1998-10-14"
+    },
+    {
+      "document_name": "813562_0000950117-99-001205_document_14.txt",
+      "parties": [
+        "National Medical Health Card Systems, Inc.",
+        "John Ciufo"
+      ],
+      "agreement_type": "confidentiality_and_non_disclosure_agreement",
+      "effective_date": "1998-11-19"
+    },
+    {
+      "document_name": "1013322_0000912057-00-023405_document_2.txt",
+      "parties": [
+        "Yahoo! Inc.",
+        "Restrac, Inc."
+      ],
+      "agreement_type": "mutual_nondisclosure_agreement",
+      "effective_date": "1998-12-10"
+    },
+    {
+      "document_name": "1100182_0001107049-00-000014_document_23.txt",
+      "parties": [
+        "High Speed Net Solutions",
+        "R. J. Seifert Enterprises"
+      ],
+      "agreement_type": "non_circumvention_and_non_disclosure_agreement",
+      "effective_date": "1999-02-06"
+    },
+    {
+      "document_name": "1104332_0000950144-00-008876_ex10-26.txt",
+      "parties": [
+        "High Speed Net Solutions",
+        "R. J. Seifert Enterprises"
+      ],
+      "agreement_type": "non_circumvention_and_non_disclosure_agreement",
+      "effective_date": "1999-02-06"
+    },
+    {
+      "document_name": "1094017_0000921895-00-000237_document_5.txt",
+      "parties": [
+        "Sulzer Orthopedics Biologics Inc.",
+        "BIOSYNTECH LTD."
+      ],
+      "agreement_type": "non_disclosure_agreement",
+      "effective_date": "1999-02-23"
+    },
+    {
+      "document_name": "86115_0000930661-99-001321_document_3.txt",
+      "parties": [
+        "CompuCom Systems, Inc.",
+        "ENTEX Information Services, Inc."
+      ],
+      "agreement_type": "non-competition, referral and non-disclosure agreement",
+      "effective_date": "1999-05-10"
+    },
+    {
+      "document_name": "1021086_0000950162-99-000581_document_3.txt",
+      "parties": [
+        "CompuCom Systems, Inc.",
+        "ENTEX Information Services, Inc."
+      ],
+      "agreement_type": "non_competition_referral_and_non_disclosure_agreement",
+      "effective_date": "1999-05-10"
+    },
+    {
+      "document_name": "736291_0000930661-99-001320_document_3.txt",
+      "parties": [
+        "CompuCom Systems, Inc.",
+        "ENTEX Information Services, Inc."
+      ],
+      "agreement_type": "non-competition, referral and non-disclosure",
+      "effective_date": "1999-05-10"
+    },
+    {
+      "document_name": "1043431_0000950133-00-000090_document_15.txt",
+      "parties": [
+        "Best Software, Inc.",
+        "Sage Software, Inc."
+      ],
+      "agreement_type": "non_disclosure_agreement",
+      "effective_date": "1999-10-14"
+    },
+    {
+      "document_name": "1175638_0000912057-02-024619_a2082526zex-10_3.htm",
+      "parties": [
+        "Network Printing Solutions",
+        "Accu-Tech Systems"
+      ],
+      "agreement_type": "non_disclosure_agreement",
+      "effective_date": "1999-11-16"
+    },
+    {
+      "document_name": "69067_0000927016-00-002123_0010.txt",
+      "parties": [
+        "New England Business Service, Inc.",
+        "Premium Wear, Inc."
+      ],
+      "agreement_type": "non-disclosure agreement",
+      "effective_date": "2000-02-10"
+    },
+    {
+      "document_name": "1173495_0001047469-03-033872_a2118144zex-10_12.txt",
+      "parties": [
+        "DUNC, LLC",
+        "NORTHWEST AIRLINES, INC."
+      ],
+      "agreement_type": "confidentiality_agreement",
+      "effective_date": "2000-03-06"
+    },
+    {
+      "document_name": "799485_0000950136-00-001643_0013.txt",
+      "parties": [
+        "Cangene Corporation",
+        "Chesapeake Biological Laboratories, Inc."
+      ],
+      "agreement_type": "non_disclosure_agreement",
+      "effective_date": "2000-05-05"
+    },
+    {
+      "document_name": "1089786_0000912057-00-052660_a2032473zex-99_e2.txt",
+      "parties": [
+        "Lanier Worldwide, Inc.",
+        "Ricoh Company, Ltd."
+      ],
+      "agreement_type": "confidentiality_agreement",
+      "effective_date": "2000-06-22"
+    },
+    {
+      "document_name": "832995_0000912057-00-054331_a2033550zex-99_d13.htm",
+      "parties": [
+        "Best Buy Co., Inc.",
+        "Musicland Stores Corporation"
+      ],
+      "agreement_type": "mutual_nondisclosure_nonsolicitation_and_exclusivity_agreement",
+      "effective_date": "2000-08-31"
+    },
+    {
+      "document_name": "1125892_0000950133-00-004441_w41075a1ex10-7.txt",
+      "parties": [
+        "Microsoft Corporation",
+        "StarBand Communications Inc."
+      ],
+      "agreement_type": "non_disclosure_agreement",
+      "effective_date": "2000-11-11"
+    },
+    {
+      "document_name": "1070052_0000950130-01-501801_dex99d2.txt",
+      "parties": [
+        "Proxicom, Inc.",
+        "Dimension Data"
+      ],
+      "agreement_type": "non_disclosure_agreement",
+      "effective_date": "2001-02-09"
+    },
+    {
+      "document_name": "880458_0001021408-01-510269_dex1087.txt",
+      "parties": [
+        "Hai-Perng, aka Alex Kuo",
+        "Vertel Corporation"
+      ],
+      "agreement_type": "non-competition and non-disclosure agreement",
+      "effective_date": "2001-05-30"
+    },
+    {
+      "document_name": "1031896_0000950147-01-501725_ex10-8.txt",
+      "parties": [
+        "American Soil Technologies Inc. AgriBlend Division",
+        "BioPlusNutrients"
+      ],
+      "agreement_type": "non_disclosure_and_non_circumvent_agreement",
+      "effective_date": "2001-07-25"
+    },
+    {
+      "document_name": "917639_0000912057-01-537118_a2062042zex-99_d7.htm",
+      "parties": [
+        "EarthLink, Inc.",
+        "CIDCO, Incorporated"
+      ],
+      "agreement_type": "mutual_non_disclosure_and_non_solicitation_agreement",
+      "effective_date": "2001-09-06"
+    },
+    {
+      "document_name": "1109551_0000912057-02-024714_a2082535zex-99_d3.htm",
+      "parties": [
+        "EarthLink, Inc.",
+        "PeoplePC, Inc."
+      ],
+      "agreement_type": "mutual_non_disclosure_and_non_solicitation_agreement",
+      "effective_date": "2001-09-17"
+    },
+    {
+      "document_name": "1100772_0001038838-02-000125_ex1032sb2no5.txt",
+      "parties": [
+        "SMART CHIP TECHNOLOGIES, LLC",
+        "CONSUMER ECONOMIC OPPORTUNITIES INC."
+      ],
+      "agreement_type": "mutual_non_disclosure_agreement",
+      "effective_date": "2001-11-07"
+    },
+    {
+      "document_name": "1138169_0001050234-02-000002_ex10h.txt",
+      "parties": [
+        "Cyberlux Corporation",
+        "International Consolidated Technologies"
+      ],
+      "agreement_type": "non_disclosure_agreement",
+      "effective_date": "2001-11-30"
+    },
+    {
+      "document_name": "769592_0000950133-02-003341_w64132exv10w4.txt",
+      "parties": [
+        "NeoReach, Inc.",
+        "Prime Circuits, Inc."
+      ],
+      "agreement_type": "confidentiality_and_non_disclosure_agreement",
+      "effective_date": "2002-04-09"
+    },
+    {
+      "document_name": "1094038_0000950134-05-007541_d23996exv10w4.htm",
+      "parties": [
+        "THE UNIVERSITY OF BRITISH COLUMBIA",
+        "GENEMAX PHARMACEUTICALS INC."
+      ],
+      "agreement_type": "non_disclosure_agreement",
+      "effective_date": "2002-10-03"
+    },
+    {
+      "document_name": "109261_0000950172-02-002217_los283194.txt",
+      "parties": [
+        "MERITAGE CORPORATION",
+        "MTH-HOMES NEVADA, INC.",
+        "ZENITH NATIONAL INSURANCE CORP.",
+        "PERMA-BILT"
+      ],
+      "agreement_type": "non_disclosure_and_non_compete_agreement",
+      "effective_date": "2002-10-07"
+    },
+    {
+      "document_name": "1021096_0000914317-03-001205_ex2-2.txt",
+      "parties": [
+        "BELCAN CORPORATION",
+        "ARC COMMUNICATIONS, INC."
+      ],
+      "agreement_type": "non-competition and non-disclosure agreement",
+      "effective_date": "2003-04-01"
+    },
+    {
+      "document_name": "1240722_0001161697-03-000454_exhibit_10-12.txt",
+      "parties": [
+        "Solomon Technologies, Inc.",
+        "Pinetree (Barbados) Inc."
+      ],
+      "agreement_type": "non-disclosure_agreement",
+      "effective_date": "2003-07-31"
+    },
+    {
+      "document_name": "1089029_0000950123-07-007908_y31303a1exv10w13.htm",
+      "parties": [
+        "Flow Capital Advisors, Inc.",
+        "JAG Media Holdings, Inc."
+      ],
+      "agreement_type": "Non-Circumvention/Non-Disclosure Agreement",
+      "effective_date": "2004-01-01"
+    },
+    {
+      "document_name": "1013240_0001047469-04-010350_a2132633zex-10_22.htm",
+      "parties": [
+        "Level 3 Communications, LLC",
+        "ICG Communications, Inc.",
+        "ICG Telecom Group, Inc."
+      ],
+      "agreement_type": "non_disclosure_non_competition_and_non_solicitation_agreement",
+      "effective_date": "2004-04-01"
+    },
+    {
+      "document_name": "814457_0000950137-04-009790_c89545exv99wxdyx6y.htm",
+      "parties": [
+        "Home Products International, Inc.",
+        "Triyar Companies, Inc."
+      ],
+      "agreement_type": "confidentiality_agreement",
+      "effective_date": "2004-04-29"
+    },
+    {
+      "document_name": "1062760_0001015402-05-001930_doc17.txt",
+      "parties": [
+        "Bill Woo",
+        "Gateway Venture Holdings, Inc."
+      ],
+      "agreement_type": "non_circumvention_non_disclosure_confidentiality_agreement",
+      "effective_date": "2004-08-02"
+    },
+    {
+      "document_name": "1120792_0001019687-05-001599_morgan_sb2a1-ex1408.txt",
+      "parties": [
+        "Morgan Beaumont, Inc.",
+        "Mtel Communications Inc."
+      ],
+      "agreement_type": "non_circumvention_non_disclosure_confidentiality_agreement",
+      "effective_date": "2005-02-01"
+    },
+    {
+      "document_name": "1285543_0001013762-05-000550_may52005sb2ex1019.txt",
+      "parties": [
+        "StrikeForce Technologies, Inc.",
+        "the Company"
+      ],
+      "agreement_type": "mutual_non_disclosure_agreement",
+      "effective_date": "2005-04-05"
+    },
+    {
+      "document_name": "1277090_0001104659-05-057084_a05-20673_1ex10.htm",
+      "parties": [
+        "Serena Software, Inc.",
+        "Silver Lake Management Company, L.L.C."
+      ],
+      "agreement_type": "non-disclosure agreement",
+      "effective_date": "2005-06-24"
+    },
+    {
+      "document_name": "770461_0001144204-05-023830_v022988_ex10-6.txt",
+      "parties": [
+        "John Ermilio",
+        "National Investment Managers Inc."
+      ],
+      "agreement_type": "non-competition, non-disclosure and non-solicitation agreement",
+      "effective_date": "2005-08-02"
+    },
+    {
+      "document_name": "1367408_0001367408-06-000002_risb2ex106.htm",
+      "parties": [
+        "Raphael Industries Ltd.",
+        "ListFusion"
+      ],
+      "agreement_type": "Non-Disclosure & Business Relationship Agreement",
+      "effective_date": "2005-11-28"
+    },
+    {
+      "document_name": "850313_0000950149-07-000090_f28028toexv99wxdyx2y.htm",
+      "parties": [
+        "SafeNet, Inc.",
+        "Vector Capital Corporation"
+      ],
+      "agreement_type": "mutual_non_disclosure_agreement",
+      "effective_date": "2006-09-28"
+    },
+    {
+      "document_name": "770461_0001144204-06-041516_v054278_ex10-7.txt",
+      "parties": [
+        "THE LAMCO GROUP, INC.",
+        "Nicholas J. Lamoriello",
+        "National Investment Managers Inc."
+      ],
+      "agreement_type": "non_competition_non_disclosure_non_solicitation",
+      "effective_date": "2006-10-03"
+    },
+    {
+      "document_name": "1288379_0000950123-07-003101_y31044exv99wdw6.htm",
+      "parties": [
+        "Shire Pharmaceuticals, Inc.",
+        "L.E.K. Consulting LLC",
+        "New River Pharmaceuticals Inc."
+      ],
+      "agreement_type": "non_disclosure_agreement",
+      "effective_date": "2006-11-28"
+    },
+    {
+      "document_name": "1053352_0001104659-07-049383_a07-17151_1ex10d5.htm",
+      "parties": [
+        "Heritage Commerce Corp",
+        "Heritage Bank of Commerce",
+        "James Mayer"
+      ],
+      "agreement_type": "non-compete, non-solicitation and confidentiality agreement",
+      "effective_date": "2007-02-08"
+    },
+    {
+      "document_name": "801338_0000950134-07-015617_c16542toexv99wxdyx5y.htm",
+      "parties": [
+        "GUIDELINE, Inc.",
+        "info USA Inc."
+      ],
+      "agreement_type": "non_disclosure_agreement",
+      "effective_date": "2007-02-15"
+    },
+    {
+      "document_name": "1068874_0001068874-07-000012_ex10_2.htm",
+      "parties": [
+        "Accurel Systems International Corporation",
+        "Implant Sciences Corporation",
+        "Evans Analytical Group LLC"
+      ],
+      "agreement_type": "non_compete_and_nondisclosure",
+      "effective_date": "2007-04-30"
+    },
+    {
+      "document_name": "25895_0000950134-07-023464_d51356exv10w1.htm",
+      "parties": [
+        "Springs Global US, Inc.",
+        "Crown Crafts Infant Products, Inc."
+      ],
+      "agreement_type": "noncompetition_and_non-disclosure_agreement",
+      "effective_date": "2007-11-05"
+    },
+    {
+      "document_name": "1094007_0001193125-10-258977_dex101.htm",
+      "parties": [
+        "Rainmaker Systems",
+        "Microsoft Corporation"
+      ],
+      "agreement_type": "non_disclosure_agreement",
+      "effective_date": "2008-05-19"
+    },
+    {
+      "document_name": "1112999_0001193125-08-214471_dex105.htm",
+      "parties": [
+        "e-Smart technologies, Inc.",
+        "Lee & Pak Company, Ltd."
+      ],
+      "agreement_type": "mutual_non_disclosure_agreement",
+      "effective_date": "2008-05-30"
+    },
+    {
+      "document_name": "1096147_0001193125-08-206038_dex4.htm",
+      "parties": [
+        "Financial Investments Corporation",
+        "Taylor Capital Group, Inc."
+      ],
+      "agreement_type": "nondisclosure_agreement",
+      "effective_date": "2008-07-22"
+    },
+    {
+      "document_name": "1289434_0001047469-10-008010_a2200117zex-99_d3.htm",
+      "parties": [
+        "3M Company",
+        "Cogent, Inc."
+      ],
+      "agreement_type": "non_disclosure_agreement",
+      "effective_date": "2008-07-31"
+    },
+    {
+      "document_name": "948850_0000950123-10-020820_p17071exv99wew4.htm",
+      "parties": [
+        "Manpower Inc.",
+        "Comsys IT Partners, Inc."
+      ],
+      "agreement_type": "confidentiality_agreement",
+      "effective_date": "2009-11-19"
+    },
+    {
+      "document_name": "1466739_0001002014-12-000470_exh10-4.htm",
+      "parties": [
+        "Monnit Corp.",
+        "iMetrik M2M Solutions Inc."
+      ],
+      "agreement_type": "Non-Circumvention, Non-Disclosure, Brokerage and Working Agreement",
+      "effective_date": "2012-02-12"
+    },
+    {
+      "document_name": "1473637_0001432093-12-000764_ex10-34.htm",
+      "parties": [
+        "KLEEN-FLO TUMBLER INDUSTRIES LIMITED",
+        "ECO-TEK GROUP INC."
+      ],
+      "agreement_type": "non_disclosure_agreement",
+      "effective_date": "2012-09-18"
+    },
+    {
+      "document_name": "1457829_0000898822-13-000086_exhibit-ndaexecutionversion.htm",
+      "parties": [
+        "Central European Distribution Corporation",
+        "W&L Enterprises Ltd."
+      ],
+      "agreement_type": "non-disclosure_agreement",
+      "effective_date": "2013-02-18"
+    },
+    {
+      "document_name": "1049210_0001047469-13-009461_a2216846zex-99_d3.htm",
+      "parties": [
+        "Verenium Corporation",
+        "BASF Corporation"
+      ],
+      "agreement_type": "confidentiality_agreement",
+      "effective_date": "2013-05-01"
+    },
+    {
+      "document_name": "contrato_ingles_corporativo_mal.pdf",
+      "parties": [
+        "INTERMEDIARY",
+        "PROVIDER"
+      ],
+      "agreement_type": "non_circumvention_and_non_disclosure_agreement",
+      "effective_date": "2013-06-01"
+    },
+    {
+      "document_name": "1253176_0001193125-18-317778_d567323dex1024.htm",
+      "parties": [
+        "Vapotherm, Inc.",
+        "John Coolidge"
+      ],
+      "agreement_type": "confidentiality_and_non_disclosure_agreement",
+      "effective_date": "2014-01-28"
+    },
+    {
+      "document_name": "916457_0000916457-14-000028_exhibit104-confidentiality.htm",
+      "parties": [
+        "Calpine Corporation",
+        "LS Power Equity Advisors, LLC"
+      ],
+      "agreement_type": "confidentiality_agreement",
+      "effective_date": "2014-02-19"
+    },
+    {
+      "document_name": "1335239_0001019687-14-003760_epazz_ex1034.htm",
+      "parties": [
+        "TROY HOLDINGS INTERNATIONAL, INC.",
+        "EPAZZ, INC.",
+        "TELECORP PRODUCTS, INC.",
+        "Troy Inc.",
+        "ANA MISRA",
+        "SCOTT MacCANNELL"
+      ],
+      "agreement_type": "non_disclosure_non_compete_agreement",
+      "effective_date": "2014-02-28"
+    },
+    {
+      "document_name": "918541_0001193125-14-328980_d785003dex105.htm",
+      "parties": [
+        "NN, Inc.",
+        "John C. Kennedy"
+      ],
+      "agreement_type": "noncompetition_and_nondisclosure_agreement",
+      "effective_date": "2014-07-18"
+    },
+    {
+      "document_name": "865415_0001047469-15-007494_a2226057zex-99_d4.htm",
+      "parties": [
+        "Adept Technology, Inc.",
+        "Omron Electronics LLC"
+      ],
+      "agreement_type": "mutual_non_disclosure_agreement",
+      "effective_date": "2014-11-07"
+    },
+    {
+      "document_name": "1438076025NDA_28072015%20-%20AHPL.pdf",
+      "parties": [],
+      "agreement_type": "non_disclosure_agreement",
+      "effective_date": "2015-07-28"
+    },
+    {
+      "document_name": "20150916-model-sharing-non-disclosure-agreement.pdf",
+      "parties": [
+        "PJM Interconnection, L.L.C.",
+        "Undersigned Transmission Owner"
+      ],
+      "agreement_type": "non-disclosure_agreement",
+      "effective_date": "2015-08-11"
+    },
+    {
+      "document_name": "Cyber Mutual Assistance NDA.pdf",
+      "parties": [
+        "Participating Entities"
+      ],
+      "agreement_type": "non_disclosure_agreement",
+      "effective_date": "2016-06-15"
+    },
+    {
+      "document_name": "1475274_0001567619-17-000751_s001644x1_exd-2.htm",
+      "parties": [
+        "RetailMeNot, Inc.",
+        "Valassis Communications, Inc."
+      ],
+      "agreement_type": "confidentiality_agreement",
+      "effective_date": "2017-01-10"
+    },
+    {
+      "document_name": "CopAcc_NDA-and-ToP-Mentors_2.0_2017.pdf",
+      "parties": [
+        "Anwendungszentrum GmbH Oberpfaffenhofen",
+        "Mentor"
+      ],
+      "agreement_type": "non_disclosure_agreement_and_terms_of_participation",
+      "effective_date": "2017-05-02"
+    },
+    {
+      "document_name": "helpjuice_production%2Fuploads%2Fupload%2Fimage%2F2329%2Fdirect%2F1526996160411-FullStory+Mutual+Non-Disclosure+Agreement+2018.pdf",
+      "parties": [
+        "FullStory, Inc."
+      ],
+      "agreement_type": "mutual_non_disclosure_agreement",
+      "effective_date": "2018-05-08"
+    },
+    {
+      "document_name": "1041550_0001104659-19-001346_a18-42231_6ex10d8.htm",
+      "parties": [
+        "First Financial Corporation",
+        "First Financial Bank, N.A.",
+        "HopFed Bancorp, Inc.",
+        "Heritage Bank USA, Inc.",
+        "Billy C. Duvall"
+      ],
+      "agreement_type": "non_disclosure_and_non_solicitation_agreement",
+      "effective_date": "2019-01-07"
+    },
+    {
+      "document_name": "1041550_0001193125-19-004977_d663808dex106.htm",
+      "parties": [
+        "First Financial Corporation",
+        "First Financial Bank, N.A.",
+        "HopFed Bancorp, Inc.",
+        "Heritage Bank USA, Inc.",
+        "John E. Peck"
+      ],
+      "agreement_type": "non-disclosure and non-solicitation agreement",
+      "effective_date": "2019-01-07"
+    },
+    {
+      "document_name": "a18-42231_6ex10d8.htm",
+      "parties": [
+        "First Financial Corporation",
+        "First Financial Bank, N.A.",
+        "HopFed Bancorp, Inc.",
+        "Heritage Bank USA, Inc.",
+        "Billy C. Duvall"
+      ],
+      "agreement_type": "non_disclosure_and_non_solicitation_agreement",
+      "effective_date": "2019-01-07"
+    },
+    {
+      "document_name": "714562_0001104659-19-001345_a18-42231_6ex10d8.htm",
+      "parties": [
+        "First Financial Corporation",
+        "First Financial Bank, N.A.",
+        "HopFed Bancorp, Inc.",
+        "Heritage Bank USA, Inc.",
+        "Billy C. Duvall"
+      ],
+      "agreement_type": "non-disclosure_and_non-solicitation_agreement",
+      "effective_date": "2019-01-07"
+    },
+    {
+      "document_name": "d828431dex101.htm",
+      "parties": [
+        "CVS Health Corporation",
+        "Glenview Capital Management, LLC"
+      ],
+      "agreement_type": "nda",
+      "effective_date": "2024-11-17"
+    },
+    {
+      "document_name": "d854072dex105.htm",
+      "parties": [
+        "Zimmer Biomet Holdings, Inc.",
+        "Kevin Thornal"
+      ],
+      "agreement_type": "employee_non_disclosure_trade_secret_and_intellectual_property_agreement",
+      "effective_date": "2025-05-24"
+    }
+  ],
+  "elapsed_seconds": 4748.62,
+  "cost_usd": 4.461629,
+  "total_tokens": 8475774
+}

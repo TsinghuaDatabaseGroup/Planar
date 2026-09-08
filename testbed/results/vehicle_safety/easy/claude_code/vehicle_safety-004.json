@@ -1,0 +1,36 @@
+{
+  "task_id": "vehicle_safety-004",
+  "answer": [
+    {
+      "campaign_number": "15V089000",
+      "failure_mechanism": "焊点不良"
+    },
+    {
+      "campaign_number": "16V770000",
+      "failure_mechanism": "焊接接头不足"
+    },
+    {
+      "campaign_number": "16V862000",
+      "failure_mechanism": "拖车挂钩模块故障"
+    },
+    {
+      "campaign_number": "22V703000",
+      "failure_mechanism": "Debris and moisture accumulation causing electrical short"
+    },
+    {
+      "campaign_number": "23V579000",
+      "failure_mechanism": "安全气囊警告标签脱落"
+    },
+    {
+      "campaign_number": "23V610000",
+      "failure_mechanism": "后视摄像头安装卡扣断裂"
+    },
+    {
+      "campaign_number": "23V639000",
+      "failure_mechanism": "制造错误导致水渗入后视摄像头"
+    }
+  ],
+  "elapsed_seconds": 32.009,
+  "cost_usd": 0.03834291,
+  "total_tokens": 27687
+}

@@ -1,0 +1,21 @@
+{
+  "task_id": "finance-019",
+  "answer": [
+    {"company_name": "Advanced Drainage Systems, Inc.", "industry": "Plastic Pipe Manufacturing"},
+    {"company_name": "AstroNova, Inc.", "industry": "Printing Technology"},
+    {"company_name": "COLUMBUS McKINNON CORPORATION", "industry": "Material Handling Equipment"},
+    {"company_name": "Constellation Brands, Inc.", "industry": "Beverage Alcohol"},
+    {"company_name": "Deckers Outdoor Corporation", "industry": "Footwear and Accessories"},
+    {"company_name": "Destination XL Group, Inc.", "industry": "Specialty Clothing Stores"},
+    {"company_name": "DocuSign, Inc.", "industry": "Software"},
+    {"company_name": "ENERSYS", "industry": "Energy Storage Systems"},
+    {"company_name": "Electronic Arts Inc.", "industry": "Interactive Entertainment"},
+    {"company_name": "Ennis, Inc.", "industry": "Commercial Printing"},
+    {"company_name": "HealthEquity, Inc.", "industry": "Healthcare Technology"},
+    {"company_name": "Houlihan Lokey, Inc.", "industry": "Financial Advisory"},
+    {"company_name": "McKesson Corporation", "industry": "Healthcare Distribution"}
+  ],
+  "elapsed_seconds": 14400.0,
+  "cost_usd": 53.428310,
+  "total_tokens": 114998493
+}

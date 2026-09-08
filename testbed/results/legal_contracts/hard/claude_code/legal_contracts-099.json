@@ -1,0 +1,25 @@
+{
+  "task_id": "legal_contracts-099",
+  "answer": [
+    {
+      "nda_category": "mutual_nda",
+      "total_agreement_count": 129,
+      "audit_linked_agreement_count": 1,
+      "matched_audit_client_companies": [
+        "RH"
+      ]
+    },
+    {
+      "nda_category": "unilateral_nda",
+      "total_agreement_count": 141,
+      "audit_linked_agreement_count": 2,
+      "matched_audit_client_companies": [
+        "RH",
+        "Sanmina Corporation"
+      ]
+    }
+  ],
+  "elapsed_seconds": 314.883,
+  "cost_usd": 0.25461186,
+  "total_tokens": 425404
+}

@@ -1,0 +1,27 @@
+{
+  "task_id": "vehicle_safety-036",
+  "optimization_analysis": "Three semantic-operator cost reductions, all semantics-preserving: (1) SEM_FILTER is pushed before SEM_JOIN — the filter predicate depends only on complaint summary_text, which is available before the join, so pre-filtering reduces the number of complaints fed into the expensive SEM_JOIN. (2) SEM_CLASSIFY for complaint severity is also pushed before SEM_JOIN — severity depends solely on complaint summary_text, so classifying before the join costs O(filtered_complaints) LLM calls instead of O(matched_pairs), eliminating redundant re-classification whenever one complaint matches multiple recalls. (3) SEM_CLASSIFY for recall remedy style is moved inside the right sub-plan of SEM_JOIN — remedy style depends only on the recall's corrective_action text, so classifying once per recall costs O(Ford_airbag_recalls) LLM calls instead of O(matched_pairs), eliminating redundant re-classification whenever one recall is matched by multiple complaints. Together these reduce total semantic-operator invocations from O(matched_pairs) for three operators to O(filtered_complaints) + O(Ford_airbag_recalls) + O(filtered_complaints × Ford_airbag_recalls) for the join itself, which is the dominant unavoidable cost.",
+  "optimized_semantic_plan": [
+    {
+      "type": "operator_dag",
+      "program": "SCAN_TABLE(NHTSA, complaints, [complaint_id, make, component_id, crash_flag, injury_count, vehicle_towed_flag, summary_text]) -> FILTER(make='FORD' AND component_id='AIRBAG') -> SEM_FILTER('the complaint narrative describes a concrete airbag safety event rather than a cosmetic warning-light-only concern', input_bindings={text: summary_text}) -> SEM_CLASSIFY('Classify the complaint severity.', target_labels=['minor_inconvenience','moderate_safety_event','severe_safety_event'], input_bindings={text: summary_text}) -> PROJECT([complaint_id, component_id, crash_flag, injury_count, vehicle_towed_flag, summary_text, complaint_severity: group]) -> SEM_JOIN('Within Ford AIRBAG records, match a complaint to a recall only when the complaint narrative and recall defect summary describe the same airbag failure mechanism.', input_bindings_left={complaint_summary: summary_text, component_id: component_id}, input_bindings_right={recall_defect: r.risk.defect_summary, component_id: r.component_id}, right=( SCAN_DOCS(NHTSA, recalls AS r, [campaign.number, vehicle.make AS make, component.component_id AS component_id, risk.defect_summary, remedy.corrective_action]) -> FILTER(vehicle.make='FORD' AND component.component_id='AIRBAG') -> SEM_CLASSIFY('Classify the recall remedy style.', target_labels=['software_update','part_replacement','other'], input_bindings={text: remedy.corrective_action}) -> PROJECT([campaign.number, component_id, risk.defect_summary, recall_remedy_style: group]) )) -> PROJECT([complaint_id, crash_flag, injury_count, vehicle_towed_flag, r.campaign.number, complaint_severity, r.recall_remedy_style]) -> GROUP_BY([r.campaign.number], aggs={matched_complaint_count: count_distinct(complaint_id), severe_indicator_rate: avg(crash_flag='true' OR injury_count > 0 OR vehicle_towed_flag='true'), dominant_complaint_severity: mode_with_tiebreak(complaint_severity, tiebreak='alpha_asc'), dominant_recall_remedy_style: mode_with_tiebreak(r.recall_remedy_style, tiebreak='alpha_asc')}) -> ORDER_BY([matched_complaint_count DESC, r.campaign.number ASC]) -> LIMIT(5) -> PROJECT([rank: row_number(), campaign_number: r.campaign.number, matched_complaint_count, severe_indicator_rate, dominant_complaint_severity, dominant_recall_remedy_style])"
+    }
+  ],
+  "valid": true,
+  "validation_warnings": [],
+  "elapsed_secs": 119.572,
+  "cost_usd": 0.16609275,
+  "agent_cost_usd": 0.16609275,
+  "usage": {
+    "input": 3,
+    "output": 9138,
+    "cacheRead": 0,
+    "cacheWrite": 7737
+  },
+  "agent_usage": {
+    "input": 3,
+    "output": 9138,
+    "cacheRead": 0,
+    "cacheWrite": 7737
+  }
+}

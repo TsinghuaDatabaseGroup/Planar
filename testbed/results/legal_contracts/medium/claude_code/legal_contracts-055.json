@@ -1,0 +1,32 @@
+{
+  "task_id": "legal_contracts-055",
+  "answer": [
+    {
+      "document_id": "1013322_0000912057-00-023405_document_2.txt",
+      "exhibit_type": "",
+      "agreement_type": "Mutual Nondisclosure Agreement",
+      "governing_law": "California"
+    },
+    {
+      "document_id": "180314-March-14-2018-SOW-M.pdf",
+      "exhibit_type": "",
+      "agreement_type": "Confidentiality and Non-Disclosure Agreement",
+      "governing_law": "Alberta"
+    },
+    {
+      "document_id": "Sony%20Pictures%20Television%20NDA%20(Executed).pdf",
+      "exhibit_type": "",
+      "agreement_type": "Mutual Non-Disclosure Agreement",
+      "governing_law": "California"
+    },
+    {
+      "document_id": "Standard%20NDA%20by%20Axial.pdf",
+      "exhibit_type": "",
+      "agreement_type": "Non-Disclosure Agreement",
+      "governing_law": "Delaware"
+    }
+  ],
+  "elapsed_seconds": 74.054,
+  "cost_usd": 0.11950818,
+  "total_tokens": 134810
+}

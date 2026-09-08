@@ -1,0 +1,56 @@
+{
+  "task_id": "legal_contracts-057",
+  "answer": [
+    {
+      "document_id": "1010471_0000950134-97-006281_document_5.txt",
+      "duration_years": 5.0,
+      "geographic_scope": "United States, Canada, Mexico or the Caribbean within a ten (10)-mile radius of any hotel now or hereafter operated under the \"Wyndham,\" \"ClubHouse,\" or \"Homegate\" brand",
+      "prohibited_activity_scope": "Soliciting or diverting customers, suppliers, or accounts; hiring employees; owning, leasing, operating, franchising, licensing, managing, investing in, or providing financing for Hilton Garden, Courtyard by Marriott, Doubletree Club, Upscale Hotels, or Extended Stay Hotels within the restricted geographic area."
+    },
+    {
+      "document_id": "1068874_0001068874-07-000012_ex10_2.htm",
+      "duration_years": 5.0,
+      "geographic_scope": "anywhere in the world",
+      "prohibited_activity_scope": "engage in, be employed by, own, manage, operate, provide financing to, control or participate in any business that directly or indirectly competes with the Restricted Business; solicit or enter into business orders from customers or active prospects of the Seller"
+    },
+    {
+      "document_id": "25895_0000950134-07-023464_d51356exv10w1.htm",
+      "duration_years": 4.0,
+      "geographic_scope": "United States",
+      "prohibited_activity_scope": "own, manage, operate, control, invest in or acquire an interest in, or otherwise engage or participate in the establishment, management or operation of, any Competitive Business that sells or distributes Competitive Products; solicit, induce or influence any customer, supplier, lender, lessor or any other Person to discontinue or reduce business relationship; disclose or use Confidential Information"
+    },
+    {
+      "document_id": "817516_0001014909-05-000102_exh99_4sept2005.txt",
+      "duration_years": 4.0,
+      "geographic_scope": "anywhere in the world",
+      "prohibited_activity_scope": "engage in The Company's Business, own an interest in, manage, operate, join, control, lend money or render financial or other assistance to or participate in any Person that competes with The Company's Business, solicit customers, interfere with or hire officers, employees or consultants of the Buyer Parties"
+    },
+    {
+      "document_id": "87888_0000912057-97-029111_document_6.txt",
+      "duration_years": 5.0,
+      "geographic_scope": "any state, territory, province or other jurisdiction of the United States of America or Canada in which the Company or the Company's Affiliates engage in or solicit business, or plan to engage in or solicit business... at any time during Shareholder's employment... deemed to include, at a minimum, the States of Illinois, Indiana, Michigan, Ohio, Kentucky and Wisconsin",
+      "prohibited_activity_scope": "manage, operate, control, or participate in, or have any ownership interest in, or make loans to, or guaranty loans for, or act as surety for, or aid or advise as an employee, officer, director, consultant, agent or otherwise... any business... which is engaged in any business in which the Company or the Company's Affiliates is engaged; promote the business of any person or entity engaged in a business which Competes; solicit, divert or take away customers, distributors, suppliers or patronage; cause clients or customers to refrain from patronizing the Company; employ or engage any person employed or contracted by the Company"
+    },
+    {
+      "document_id": "880458_0001021408-01-510269_dex1087.txt",
+      "duration_years": 4.0,
+      "geographic_scope": "any California county, or in any other state, country or geographic area, listed in Exhibit \"A\" hereof",
+      "prohibited_activity_scope": "engaging in a business similar to and directly or indirectly offering products or services in competition with the Company's business (specifically developing, selling, or distributing network management software using CORBA or providing related consulting services), soliciting customers, soliciting or hiring employees, and soliciting consultants."
+    },
+    {
+      "document_id": "935703_0001047469-98-030238_document_4.txt",
+      "duration_years": 5.0,
+      "geographic_scope": "If Selling Shareholder is a resident of California: all counties and cities in the States of California and Nevada in which SAI, as of the Effective Time, carries on the Business. If Selling Shareholder ceases to be a resident of California: each state in which either Dollar Tree or SAI, as of the Effective Time, has a store or otherwise carries on the Business.",
+      "prohibited_activity_scope": "Engaging in Restricted Activities (operation of a wholesale merchandise business supplying single price point stores or any store where at least 80% of goods are sold at or below $2.00) within the Restricted Area; operating or promoting a store using a single price point retail concept selling goods at or below $2.00 within the Restricted Area; operating any variety, clearance, or close-out retail store in the same shopping center as any existing SAI location or within one-quarter mile of such location if not in a shopping center; operating a business under specific prohibited names (e.g., '98 CENTS Clearance Center', 'Step Ahead Investments') or names containing '98 CENTS', 'Tree', or 'Super Dollar'; advertising using prohibited terms."
+    },
+    {
+      "document_id": "ex10-6_2.htm",
+      "duration_years": 5.0,
+      "geographic_scope": "anywhere in the United States and in any other jurisdictions in which the Company is engaged, or is actively contemplating to become engaged, in the Business as of the Closing Date",
+      "prohibited_activity_scope": "engage in the Business, own, manage, finance, or control a Competitor, serve as an officer, director, employee, agent, consultant, or advisor of a Competitor, solicit employees or consultants, solicit customers or suppliers, interfere with customer or supplier relationships, or divert business relating to the Business"
+    }
+  ],
+  "elapsed_seconds": 290.429,
+  "cost_usd": 1.23855309,
+  "total_tokens": 2684956
+}

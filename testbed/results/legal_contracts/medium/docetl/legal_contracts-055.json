@@ -1,0 +1,152 @@
+{
+  "task_id": "legal_contracts-055",
+  "answer": [
+    {
+      "document_id": "1011344_0001193125-08-097987_dex99d5.htm",
+      "exhibit_type": "Exhibit (d)(5)",
+      "agreement_type": "Two Way Non-Disclosure and Confidentiality Agreement",
+      "governing_law": "State of California"
+    },
+    {
+      "document_id": "1013322_0000912057-00-023405_document_2.txt",
+      "exhibit_type": "NDA",
+      "agreement_type": "Mutual Nondisclosure Agreement",
+      "governing_law": "United States of America and the State of California"
+    },
+    {
+      "document_id": "1042282_0000893220-02-000791_e61414toexv99wxdywx1y.txt",
+      "exhibit_type": "Exhibit (d)(1)",
+      "agreement_type": "Mutual Non-Disclosure Agreement",
+      "governing_law": "Utah"
+    },
+    {
+      "document_id": "1095563_0000950168-99-002585_document_2.txt",
+      "exhibit_type": "Exhibit O",
+      "agreement_type": "Microsoft Corporation Non-Disclosure Agreement (Standard Reciprocal)",
+      "governing_law": "State of Washington"
+    },
+    {
+      "document_id": "1109551_0000912057-02-024714_a2082535zex-99_d3.htm",
+      "exhibit_type": "NDA",
+      "agreement_type": "Mutual Non-Disclosure and Non-Solicitation Agreement",
+      "governing_law": "State of Georgia"
+    },
+    {
+      "document_id": "1112422_0000950153-08-001257_p75864exv99wxeyx4y.htm",
+      "exhibit_type": "Exhibit (e)(4)",
+      "agreement_type": "Nondisclosure Agreement",
+      "governing_law": "State of New York"
+    },
+    {
+      "document_id": "1125892_0000950133-00-004441_w41075a1ex10-7.txt",
+      "exhibit_type": "NDA",
+      "agreement_type": "Microsoft Corporation Non-Disclosure Agreement (Standard Reciprocal)",
+      "governing_law": "State of Washington"
+    },
+    {
+      "document_id": "1167294_0001193125-15-218134_d933068dex99d3.htm",
+      "exhibit_type": "Exhibit d(3)",
+      "agreement_type": "Mutual Non-Disclosure Agreement",
+      "governing_law": "State of Delaware"
+    },
+    {
+      "document_id": "1402305_0001193125-11-343865_d268167dex99d2.htm",
+      "exhibit_type": "Exhibit (d)(2)",
+      "agreement_type": "Mutual Non-Disclosure Agreement",
+      "governing_law": "State of New York, United States of America"
+    },
+    {
+      "document_id": "1420529_0001145549-08-000077_h00839a1exv10w4.txt",
+      "exhibit_type": "NDA",
+      "agreement_type": "Non-Disclosure Agreement (Standard Reciprocal)",
+      "governing_law": "People's Republic of China"
+    },
+    {
+      "document_id": "1452751_0001193125-17-086167_d334994dex99e3.htm",
+      "exhibit_type": "Exhibit (e)(3)",
+      "agreement_type": "Mutual Nondisclosure Agreement",
+      "governing_law": "State of Delaware"
+    },
+    {
+      "document_id": "917639_0000912057-01-537118_a2062042zex-99_d7.htm",
+      "exhibit_type": "Mutual Non-Disclosure and Non-Solicitation Agreement",
+      "agreement_type": "Mutual Non-Disclosure and Non-Solicitation Agreement",
+      "governing_law": "State of Georgia"
+    },
+    {
+      "document_id": "934545_0000891618-99-004640_document_2.txt",
+      "exhibit_type": "NDA",
+      "agreement_type": "Corporate Non-Disclosure Agreement",
+      "governing_law": "State of Delaware"
+    },
+    {
+      "document_id": "Acme%20Corporation%20Inc%20NDA%20template.pdf",
+      "exhibit_type": "NDA",
+      "agreement_type": "Non-Disclosure Agreement",
+      "governing_law": "State of California"
+    },
+    {
+      "document_id": "INFOMAGNET%20NDA.pdf",
+      "exhibit_type": "NDA",
+      "agreement_type": "Two-Way Non-Disclosure Agreement",
+      "governing_law": "England and Wales"
+    },
+    {
+      "document_id": "NDA_118.pdf",
+      "exhibit_type": "NDA",
+      "agreement_type": "Non-Disclosure Agreement",
+      "governing_law": "Province of Ontario"
+    },
+    {
+      "document_id": "New_York_City_Bar_Association_Model_Form_of_Non-Disclosure_Agreement_2015.pdf",
+      "exhibit_type": "Non-Disclosure Agreement",
+      "agreement_type": "Model Form of Non-Disclosure Agreement",
+      "governing_law": "State of New York"
+    },
+    {
+      "document_id": "Non-Disclosure%20Agreement_5.pdf",
+      "exhibit_type": "NDA",
+      "agreement_type": "Non-Disclosure Agreement",
+      "governing_law": "South Africa"
+    },
+    {
+      "document_id": "O00216-000899A.pdf",
+      "exhibit_type": "NDA",
+      "agreement_type": "Non-Disclosure Agreement",
+      "governing_law": "State of California"
+    },
+    {
+      "document_id": "OMA-TestFest-NDA-2017.pdf",
+      "exhibit_type": "NDA",
+      "agreement_type": "Interoperability Testing Non-Disclosure Agreement",
+      "governing_law": "England"
+    },
+    {
+      "document_id": "QEP-Williston-Form-of-Confidentiality-Agreement-BMO.pdf",
+      "exhibit_type": "NDA",
+      "agreement_type": "Confidentiality and Nondisclosure Agreement",
+      "governing_law": "State of Texas"
+    },
+    {
+      "document_id": "Standard%20NDA%20by%20Axial.pdf",
+      "exhibit_type": "NDA",
+      "agreement_type": "Axial Standard Non-Disclosure Agreement",
+      "governing_law": "State of Delaware"
+    },
+    {
+      "document_id": "ex1014-kblackwellconsultin.htm",
+      "exhibit_type": "Consulting Agreement",
+      "agreement_type": "Consulting Agreement",
+      "governing_law": "Colorado state law"
+    },
+    {
+      "document_id": "ttp-nda.pdf",
+      "exhibit_type": "NDA",
+      "agreement_type": "TTP Non-Disclosure Agreement",
+      "governing_law": "Utah"
+    }
+  ],
+  "elapsed_seconds": 526.0,
+  "cost_usd": 4.806943,
+  "total_tokens": 9146869
+}

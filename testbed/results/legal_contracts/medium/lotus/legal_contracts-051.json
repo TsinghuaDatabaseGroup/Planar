@@ -1,0 +1,168 @@
+{
+  "task_id": "legal_contracts-051",
+  "answer": [
+    {
+      "document_id": "hghthcq42024exhibit211.htm",
+      "parent_company": "Hertz Global Holdings, Inc.",
+      "subsidiary_count": 125,
+      "distinct_jurisdiction_count": 28,
+      "top_jurisdictions": [
+        {
+          "jurisdiction": "Delaware",
+          "subsidiary_count": 51
+        },
+        {
+          "jurisdiction": "United Kingdom",
+          "subsidiary_count": 9
+        },
+        {
+          "jurisdiction": "Oklahoma",
+          "subsidiary_count": 8
+        }
+      ]
+    },
+    {
+      "document_id": "a2024q4voyaex211listofsubs.htm",
+      "parent_company": "Voya Financial, Inc.",
+      "subsidiary_count": 110,
+      "distinct_jurisdiction_count": 15,
+      "top_jurisdictions": [
+        {
+          "jurisdiction": "Delaware",
+          "subsidiary_count": 85
+        },
+        {
+          "jurisdiction": "Connecticut",
+          "subsidiary_count": 5
+        },
+        {
+          "jurisdiction": "United Kingdom",
+          "subsidiary_count": 4
+        }
+      ]
+    },
+    {
+      "document_id": "a2023q4voyaex211listofsubs.htm",
+      "parent_company": "Voya Financial, Inc.",
+      "subsidiary_count": 95,
+      "distinct_jurisdiction_count": 15,
+      "top_jurisdictions": [
+        {
+          "jurisdiction": "Delaware",
+          "subsidiary_count": 70
+        },
+        {
+          "jurisdiction": "Connecticut",
+          "subsidiary_count": 5
+        },
+        {
+          "jurisdiction": "United Kingdom",
+          "subsidiary_count": 4
+        }
+      ]
+    },
+    {
+      "document_id": "ip-20231231exhibit21.htm",
+      "parent_company": "International Paper Company (NY)",
+      "subsidiary_count": 89,
+      "distinct_jurisdiction_count": 28,
+      "top_jurisdictions": [
+        {
+          "jurisdiction": "Delaware",
+          "subsidiary_count": 32
+        },
+        {
+          "jurisdiction": "France",
+          "subsidiary_count": 8
+        },
+        {
+          "jurisdiction": "Spain",
+          "subsidiary_count": 6
+        }
+      ]
+    },
+    {
+      "document_id": "ip-20241231exhibit21.htm",
+      "parent_company": "International Paper Company (NY)",
+      "subsidiary_count": 85,
+      "distinct_jurisdiction_count": 29,
+      "top_jurisdictions": [
+        {
+          "jurisdiction": "Delaware",
+          "subsidiary_count": 33
+        },
+        {
+          "jurisdiction": "France",
+          "subsidiary_count": 7
+        },
+        {
+          "jurisdiction": "Spain",
+          "subsidiary_count": 7
+        }
+      ]
+    },
+    {
+      "document_id": "exhibit21-subsidiariesx123.htm",
+      "parent_company": "Polaris Inc.",
+      "subsidiary_count": 78,
+      "distinct_jurisdiction_count": 31,
+      "top_jurisdictions": [
+        {
+          "jurisdiction": "France",
+          "subsidiary_count": 16
+        },
+        {
+          "jurisdiction": "Delaware",
+          "subsidiary_count": 10
+        },
+        {
+          "jurisdiction": "Minnesota",
+          "subsidiary_count": 9
+        }
+      ]
+    },
+    {
+      "document_id": "gsat-20241231xexx211.htm",
+      "parent_company": "Globalstar, Inc.",
+      "subsidiary_count": 74,
+      "distinct_jurisdiction_count": 49,
+      "top_jurisdictions": [
+        {
+          "jurisdiction": "Delaware",
+          "subsidiary_count": 15
+        },
+        {
+          "jurisdiction": "British Virgin Islands",
+          "subsidiary_count": 4
+        },
+        {
+          "jurisdiction": "Nicaragua",
+          "subsidiary_count": 3
+        }
+      ]
+    },
+    {
+      "document_id": "exhibit21106302025.htm",
+      "parent_company": "KLA Corporation",
+      "subsidiary_count": 69,
+      "distinct_jurisdiction_count": 24,
+      "top_jurisdictions": [
+        {
+          "jurisdiction": "Delaware",
+          "subsidiary_count": 13
+        },
+        {
+          "jurisdiction": "Israel",
+          "subsidiary_count": 7
+        },
+        {
+          "jurisdiction": "California",
+          "subsidiary_count": 6
+        }
+      ]
+    }
+  ],
+  "elapsed_seconds": 437.11,
+  "cost_usd": 3.980383,
+  "total_tokens": 7468488
+}

@@ -1,0 +1,356 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+  asrs_events:
+    type: file
+    path: data/asrs/events.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_part121_airport_reports
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("far_part") == "Part 121"
+              and doc.get("locale_reference_type") == "Airport"
+          )
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: extract_automation_alert_response_context
+    type: map
+    optimize: true
+    prompt: |
+      Extract one record only when this NASA ASRS report clearly describes both an
+      automation alert or aircraft advisory and the crew's first response to it.
+      The alert/advisory and response must belong to the same operational episode.
+      Routine automation use without a clear alert/advisory and first action does
+      not qualify.
+
+      Return:
+      - alert_or_advisory: a specific phrase of at most six words naming the alert,
+        warning, advisory, command, or automation indication;
+      - first_crew_action: a concise phrase describing the crew's first action in
+        response, before later actions or the final outcome;
+      - operational_context: a phrase of at most eight words identifying the phase,
+        maneuver, conflict, or operational situation in which it occurred;
+      - highest_outcome: the most consequential supported outcome using this order:
+        emergency_or_diversion, go_around_or_evasive_action, continued_operation.
+
+      The structured result summary may establish an outcome when it describes the
+      same episode and is consistent with the narrative. Set is_qualifying_alert to
+      false when the alert/advisory or first response is unclear; in that case use
+      "not stated" for the three phrases and continued_operation as the required
+      placeholder outcome.
+
+      Structured result summary:
+      {{ input.result_summary }}
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        is_qualifying_alert: boolean
+        alert_or_advisory: string
+        first_crew_action: string
+        operational_context: string
+        highest_outcome: enum[emergency_or_diversion, go_around_or_evasive_action, continued_operation]
+    validate:
+      - 1 <= len(output["alert_or_advisory"].split()) <= 6
+      - 1 <= len(output["operational_context"].split()) <= 8
+      - len(output["first_crew_action"].strip()) > 0
+    num_retries_on_validate_failure: 2
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: keep_qualifying_alert_records
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("is_qualifying_alert") is True
+
+  - name: attach_automation_event_labels
+    type: code_map
+    code: |
+      import csv
+      import os
+      import threading
+
+      _automation_event_index = None
+      _automation_event_lock = threading.Lock()
+
+      def load_automation_event_index():
+          global _automation_event_index
+          if _automation_event_index is None:
+              with _automation_event_lock:
+                  if _automation_event_index is None:
+                      index = {}
+                      path = os.path.abspath(
+                          os.path.join("data", "asrs", "events.csv")
+                      )
+                      with open(
+                          path, "r", encoding="utf-8", errors="replace", newline=""
+                      ) as handle:
+                          for row in csv.DictReader(handle):
+                              event_type = row.get("event_type")
+                              label = str(row.get("label", ""))
+                              if (
+                                  event_type in {"detector", "result"}
+                                  and "Automation" in label
+                              ):
+                                  index.setdefault(
+                                      str(row.get("incident_id", "")), []
+                                  ).append(label)
+                      _automation_event_index = {
+                          incident_id: list(dict.fromkeys(labels))
+                          for incident_id, labels in index.items()
+                      }
+          return _automation_event_index
+
+      def transform(doc):
+          labels = load_automation_event_index().get(
+              str(doc.get("incident_id", "")), []
+          )
+          return {"automation_event_labels": labels}
+
+  - name: inner_join_automation_events
+    type: code_filter
+    code: |
+      def transform(doc):
+          return bool(doc.get("automation_event_labels"))
+
+  - name: classify_first_crew_response
+    type: map
+    optimize: true
+    prompt: |
+      Classify the crew's first action in response to this automation alert or
+      aircraft advisory as exactly one response_label:
+
+      - follow_advisory: the crew initially complied with or followed the advisory,
+        alert guidance, or automation-directed action;
+      - override_advisory: the crew initially rejected, overrode, disconnected,
+        countermanded, or deliberately acted contrary to the advisory;
+      - seek_clarification_before_acting: before following or overriding, the crew
+        first sought clarification, confirmation, or resolution from ATC or another
+        relevant source.
+
+      Classify the first response, not a later action. Use the extracted action and
+      alert as the primary evidence and consult the narrative only to resolve their
+      meaning.
+
+      Alert or advisory: {{ input.alert_or_advisory }}
+      Extracted first action: {{ input.first_crew_action }}
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        response_label: enum[follow_advisory, override_advisory, seek_clarification_before_acting]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: semantic_pair_join
+    type: equijoin
+    optimize: true
+    comparison_prompt: |
+      Compare these two different NASA ASRS incidents. Return is_match=true only
+      when both conditions hold:
+
+      1. Their specific alerts or advisories and operational contexts are
+         semantically equivalent. They must describe the same kind of alert or
+         advisory in a genuinely comparable operational situation; generic shared
+         words such as automation, warning, approach, or crew are insufficient.
+      2. One response_label is follow_advisory and the other is either
+         override_advisory or seek_clarification_before_acting.
+
+      Return false for the same incident, non-equivalent alert/context episodes,
+      or response pairs that do not have the required contrast.
+
+      LEFT INCIDENT
+      ID: {{ left.incident_id }}
+      ALERT: {{ left.alert_or_advisory }}
+      CONTEXT: {{ left.operational_context }}
+      RESPONSE: {{ left.response_label }}
+      OUTCOME: {{ left.highest_outcome }}
+
+      RIGHT INCIDENT
+      ID: {{ right.incident_id }}
+      ALERT: {{ right.alert_or_advisory }}
+      CONTEXT: {{ right.operational_context }}
+      RESPONSE: {{ right.response_label }}
+      OUTCOME: {{ right.highest_outcome }}
+    blocking_keys:
+      left:
+        - alert_or_advisory
+        - operational_context
+      right:
+        - alert_or_advisory
+        - operational_context
+    blocking_target_recall: 0.95
+    embedding_model: Qwen3-Embedding-8B
+    blocking_conditions:
+      - left['incident_id'] != right['incident_id']
+    comparison_model: Qwen3.5-397B-A17B
+    timeout: 120
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: keep_ascending_incident_pairs
+    type: code_filter
+    code: |
+      def transform(doc):
+          return str(doc.get("incident_id_left", "")) < str(
+              doc.get("incident_id_right", "")
+          )
+
+  - name: project_pair_priority
+    type: code_map
+    code: |
+      def transform(doc):
+          outcome_priority = {
+              "emergency_or_diversion": 1,
+              "go_around_or_evasive_action": 2,
+              "continued_operation": 3,
+          }
+          pair_priority = min(
+              outcome_priority[doc.get("highest_outcome_left")],
+              outcome_priority[doc.get("highest_outcome_right")],
+          )
+          return {
+              "left_incident_id": doc.get("incident_id_left"),
+              "right_incident_id": doc.get("incident_id_right"),
+              "alert_or_advisory": doc.get("alert_or_advisory_left"),
+              "left_response": doc.get("response_label_left"),
+              "right_response": doc.get("response_label_right"),
+              "pair_priority": pair_priority,
+          }
+
+  - name: order_limit_and_rank_pairs
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          ordered = sorted(
+              items,
+              key=lambda item: (
+                  item.get("pair_priority"),
+                  str(item.get("left_incident_id", "")),
+                  str(item.get("right_incident_id", "")),
+              ),
+          )
+
+          rows = []
+          seen_pairs = set()
+          for item in ordered:
+              pair = (
+                  str(item.get("left_incident_id", "")),
+                  str(item.get("right_incident_id", "")),
+              )
+              if not all(pair) or pair in seen_pairs:
+                  continue
+              seen_pairs.add(pair)
+              rows.append(
+                  {
+                      "rank": len(rows) + 1,
+                      "left_incident_id": item.get("left_incident_id"),
+                      "right_incident_id": item.get("right_incident_id"),
+                      "alert_or_advisory": item.get("alert_or_advisory"),
+                      "left_response": item.get("left_response"),
+                      "right_response": item.get("right_response"),
+                  }
+              )
+              if len(rows) == 10:
+                  break
+          return {"rows": rows}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - rank
+      - left_incident_id
+      - right_incident_id
+      - alert_or_advisory
+      - left_response
+      - right_response
+
+pipeline:
+  steps:
+    - name: response_records
+      input: asrs_incidents
+      operations:
+        - filter_part121_airport_reports
+        - load_asrs_narrative
+        - extract_automation_alert_response_context
+        - keep_qualifying_alert_records
+        - attach_automation_event_labels
+        - inner_join_automation_events
+        - classify_first_crew_response
+    - name: matched_pairs
+      operations:
+        - semantic_pair_join:
+            left: response_records
+            right: response_records
+    - name: ranked_pairs
+      input: matched_pairs
+      operations:
+        - keep_ascending_incident_pairs
+        - project_pair_priority
+        - order_limit_and_rank_pairs
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-040.json

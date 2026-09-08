@@ -1,0 +1,2444 @@
+[
+  {
+    "task_id": "finance-001",
+    "gold_answer": [
+      {
+        "company_name": "Walmart Inc.",
+        "employee_count": 2100000,
+        "retail_subsector": "Retail - General Merchandise"
+      },
+      {
+        "company_name": "Target Corporation",
+        "employee_count": 415000,
+        "retail_subsector": "Retail - General Merchandise"
+      },
+      {
+        "company_name": "The Kroger Co.",
+        "employee_count": 414000,
+        "retail_subsector": "Retail - Grocery"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2024.csv, [text])\n-> SCAN_DOCS(SEC10K, text)\n-> SEM_FILTER('The filing describes a company operating in a retail industry.', {document: text})\n-> SEM_EXTRACT('Extract the company legal name, reported employee count, and specific retail subsector.', {company_name: string, employee_count: integer, retail_subsector: string}, {document: text})\n-> ORDER_BY([employee_count DESC, company_name ASC])\n-> LIMIT(3)"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "company_name",
+        "employee_count",
+        "retail_subsector"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-002",
+    "gold_answer": [
+      {
+        "fiscal_year_end": "03-31",
+        "count": 145
+      },
+      {
+        "fiscal_year_end": "01-31",
+        "count": 86
+      },
+      {
+        "fiscal_year_end": "02-29",
+        "count": 42
+      },
+      {
+        "fiscal_year_end": "02-03",
+        "count": 22
+      },
+      {
+        "fiscal_year_end": "04-30",
+        "count": 16
+      },
+      {
+        "fiscal_year_end": "01-28",
+        "count": 15
+      },
+      {
+        "fiscal_year_end": "03-30",
+        "count": 12
+      },
+      {
+        "fiscal_year_end": "04-27",
+        "count": 6
+      },
+      {
+        "fiscal_year_end": "01-29",
+        "count": 3
+      },
+      {
+        "fiscal_year_end": "02-02",
+        "count": 3
+      },
+      {
+        "fiscal_year_end": "02-04",
+        "count": 3
+      },
+      {
+        "fiscal_year_end": "01-02",
+        "count": 2
+      },
+      {
+        "fiscal_year_end": "02-28",
+        "count": 2
+      },
+      {
+        "fiscal_year_end": "03-29",
+        "count": 2
+      },
+      {
+        "fiscal_year_end": "04-26",
+        "count": 2
+      },
+      {
+        "fiscal_year_end": "01-01",
+        "count": 1
+      },
+      {
+        "fiscal_year_end": "01-27",
+        "count": 1
+      },
+      {
+        "fiscal_year_end": "02-23",
+        "count": 1
+      },
+      {
+        "fiscal_year_end": "02-24",
+        "count": 1
+      },
+      {
+        "fiscal_year_end": "03-02",
+        "count": 1
+      },
+      {
+        "fiscal_year_end": "03-03",
+        "count": 1
+      },
+      {
+        "fiscal_year_end": "04-28",
+        "count": 1
+      },
+      {
+        "fiscal_year_end": "05-26",
+        "count": 1
+      },
+      {
+        "fiscal_year_end": "05-31",
+        "count": 1
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2024.csv, [text])\n-> SCAN_DOCS(SEC10K, text)\n-> SEM_EXTRACT('Extract the fiscal year-end date and normalize it to MM-DD format.', {fiscal_year_end: string}, {document: text})\n-> FILTER(fiscal_year_end != '12-31')\n-> GROUP_BY([fiscal_year_end], [COUNT(*) AS count])\n-> ORDER_BY([count DESC, fiscal_year_end ASC])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "fiscal_year_end",
+        "count"
+      ],
+      "types": [
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-003",
+    "gold_answer": [
+      {
+        "industry": "Private Credit",
+        "avg_risk_factor_count": 41.1,
+        "filing_count": 14
+      },
+      {
+        "industry": "Blank Check SPAC",
+        "avg_risk_factor_count": 37.3,
+        "filing_count": 121
+      },
+      {
+        "industry": "Business Development Company",
+        "avg_risk_factor_count": 33.7,
+        "filing_count": 76
+      },
+      {
+        "industry": "Cryptocurrency Mining",
+        "avg_risk_factor_count": 32.5,
+        "filing_count": 11
+      },
+      {
+        "industry": "Cannabis",
+        "avg_risk_factor_count": 30.7,
+        "filing_count": 20
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2023.csv, [text])\n-> SCAN_DOCS(SEC10K, text)\n-> SEM_EXTRACT('Extract the industry sector and count the distinct risk factors listed in Item 1A; return null for the count when it cannot be determined reliably.', {industry: string, risk_factor_count: integer|null}, {document: text})\n-> GROUP_BY([industry], [ROUND(AVG(risk_factor_count), 1) AS avg_risk_factor_count, COUNT(risk_factor_count) AS filing_count])\n-> FILTER(filing_count >= 10)\n-> ORDER_BY([avg_risk_factor_count DESC, industry ASC])\n-> LIMIT(5)"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "industry",
+        "avg_risk_factor_count",
+        "filing_count"
+      ],
+      "types": [
+        "string",
+        "float",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-004",
+    "gold_answer": [
+      {
+        "revenue_model": "mixed",
+        "filing_count": 157
+      },
+      {
+        "revenue_model": "product_sales",
+        "filing_count": 110
+      },
+      {
+        "revenue_model": "interest_income",
+        "filing_count": 62
+      },
+      {
+        "revenue_model": "service_fees",
+        "filing_count": 24
+      },
+      {
+        "revenue_model": "licensing_royalties",
+        "filing_count": 19
+      },
+      {
+        "revenue_model": "rental_income",
+        "filing_count": 11
+      },
+      {
+        "revenue_model": "investment_returns",
+        "filing_count": 4
+      },
+      {
+        "revenue_model": "subscription",
+        "filing_count": 2
+      },
+      {
+        "revenue_model": "commission",
+        "filing_count": 1
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2023.csv, [text, word_count]) -> FILTER(word_count > 100000) -> SCAN_DOCS(SEC10K, doc_ids=text) -> SEM_CLASSIFY('Assign each filing to exactly one primary revenue-model category; leave it unassigned only when no primary model can be determined', target_labels=['mixed', 'product_sales', 'interest_income', 'service_fees', 'licensing_royalties', 'rental_income', 'investment_returns', 'subscription', 'commission'], input_bindings={filing_text: document_text}) -> FILTER(revenue_model IS NOT NULL) -> GROUP_BY([revenue_model], [COUNT(*) AS filing_count])"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "revenue_model",
+        "filing_count"
+      ],
+      "types": [
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-005",
+    "gold_answer": [
+      {
+        "industry_sector": "Shell Company",
+        "going_concern_rate_percent": 94.6,
+        "filing_count": 56
+      },
+      {
+        "industry_sector": "Blank Check SPAC",
+        "going_concern_rate_percent": 87.0,
+        "filing_count": 476
+      },
+      {
+        "industry_sector": "Medical Device Manufacturing",
+        "going_concern_rate_percent": 50.0,
+        "filing_count": 20
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2022.csv, [text]) -> SCAN_DOCS(SEC10K, doc_ids=text) -> SEM_EXTRACT('Extract a canonical industry sector and whether the filing expresses going-concern doubt; normalize case, separators, and synonymous sector labels, including blank-check and SPAC naming variants', {industry_sector: string, has_going_concern_doubt: boolean}, {filing_text: document_text}) -> GROUP_BY([industry_sector], [COUNT(*) AS filing_count, SUM(has_going_concern_doubt) AS going_concern_count, SUM(has_going_concern_doubt) / COUNT(*) AS unrounded_rate, ROUND(100.0 * SUM(has_going_concern_doubt) / COUNT(*), 1) AS going_concern_rate_percent]) -> FILTER(filing_count >= 20) -> ORDER_BY(unrounded_rate DESC, industry_sector ASC) -> LIMIT(3)"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "industry_sector",
+        "going_concern_rate_percent",
+        "filing_count"
+      ],
+      "types": [
+        "string",
+        "float",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-006",
+    "gold_answer": [
+      {
+        "company_name": "1847 HOLDINGS LLC",
+        "competitive_advantages_count": 8,
+        "subsidiary_count": 10,
+        "industry_sector": "Holding Company"
+      },
+      {
+        "company_name": "1st Source Corporation",
+        "competitive_advantages_count": 8,
+        "subsidiary_count": 10,
+        "industry_sector": "Commercial Banking"
+      },
+      {
+        "company_name": "A-Mark Precious Metals, Inc.",
+        "competitive_advantages_count": 8,
+        "subsidiary_count": 10,
+        "industry_sector": "Precious Metals Trading"
+      },
+      {
+        "company_name": "AGBA Group Holding Limited",
+        "competitive_advantages_count": 8,
+        "subsidiary_count": 10,
+        "industry_sector": "Financial Services"
+      },
+      {
+        "company_name": "AMMO, Inc.",
+        "competitive_advantages_count": 8,
+        "subsidiary_count": 10,
+        "industry_sector": "Ammunition Manufacturing"
+      },
+      {
+        "company_name": "AS-IP Tech Inc.",
+        "competitive_advantages_count": 8,
+        "subsidiary_count": 10,
+        "industry_sector": "Aerospace & Defense - Avionics"
+      },
+      {
+        "company_name": "AXT, Inc.",
+        "competitive_advantages_count": 8,
+        "subsidiary_count": 10,
+        "industry_sector": "Semiconductor Manufacturing"
+      },
+      {
+        "company_name": "Accel Entertainment, Inc.",
+        "competitive_advantages_count": 8,
+        "subsidiary_count": 10,
+        "industry_sector": "Gaming"
+      },
+      {
+        "company_name": "AdaptHealth Corp.",
+        "competitive_advantages_count": 8,
+        "subsidiary_count": 10,
+        "industry_sector": "Healthcare - Home Medical Equipment"
+      },
+      {
+        "company_name": "Advantage Solutions Inc.",
+        "competitive_advantages_count": 8,
+        "subsidiary_count": 10,
+        "industry_sector": "Marketing Services"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2022.csv, [cik, text, word_count]) -> SCAN_DOCS(SEC10K, doc_ids=text) -> SEM_EXTRACT('Extract the company legal name and industry sector; record up to ten distinct named subsidiaries and up to eight distinct competitive-advantage themes, and return both capped counts', {company_name: string, industry_sector: string, subsidiary_count: integer, competitive_advantages_count: integer}, {filing_text: document_text}) -> FILTER(subsidiary_count >= 8 AND competitive_advantages_count >= 6) -> GROUP_BY([cik], [MAX_BY(STRUCT(company_name, industry_sector, competitive_advantages_count, subsidiary_count, competitive_advantages_count + subsidiary_count AS combined_count) ORDER BY combined_count DESC, word_count DESC) AS selected_record]) -> ORDER_BY(selected_record.combined_count DESC, selected_record.company_name ASC) -> LIMIT(10) -> PROJECT([selected_record.company_name AS company_name, selected_record.competitive_advantages_count AS competitive_advantages_count, selected_record.subsidiary_count AS subsidiary_count, selected_record.industry_sector AS industry_sector])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "company_name",
+        "competitive_advantages_count",
+        "subsidiary_count",
+        "industry_sector"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "integer",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-007",
+    "gold_answer": [
+      {
+        "year": 2019,
+        "ai_ml_mention_rate_percent": 9.9
+      },
+      {
+        "year": 2020,
+        "ai_ml_mention_rate_percent": 12.9
+      },
+      {
+        "year": 2021,
+        "ai_ml_mention_rate_percent": 16.0
+      },
+      {
+        "year": 2022,
+        "ai_ml_mention_rate_percent": 16.7
+      },
+      {
+        "year": 2023,
+        "ai_ml_mention_rate_percent": 26.1
+      },
+      {
+        "year": 2024,
+        "ai_ml_mention_rate_percent": 39.1
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV, [year, text]) -> SCAN_DOCS(SEC10K, doc_ids=text) -> SEM_EXTRACT('Determine whether the filing specifically mentions artificial intelligence, machine learning, deep learning, neural networks, AI-powered or similar AI/ML technologies in the context of the company's business, products, or strategy', {ai_ml_mentioned: boolean}, {filing_text: document_text}) -> GROUP_BY([year], [ROUND(100.0 * SUM(ai_ml_mentioned) / COUNT(*), 1) AS ai_ml_mention_rate_percent]) -> ORDER_BY(year ASC)"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "year",
+        "ai_ml_mention_rate_percent"
+      ],
+      "types": [
+        "integer",
+        "float"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-008",
+    "gold_answer": [
+      {
+        "year": 2019,
+        "going_concern_rate_percent": 23.9
+      },
+      {
+        "year": 2020,
+        "going_concern_rate_percent": 22.6
+      },
+      {
+        "year": 2021,
+        "going_concern_rate_percent": 24.6
+      },
+      {
+        "year": 2022,
+        "going_concern_rate_percent": 26.7
+      },
+      {
+        "year": 2023,
+        "going_concern_rate_percent": 23.7
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV, [year, text]) -> FILTER(year BETWEEN 2019 AND 2023) -> SCAN_DOCS(SEC10K, doc_ids=text) -> SEM_EXTRACT('Determine whether the filing expresses substantial doubt about the company's ability to continue as a going concern', {has_going_concern: boolean}, {filing_text: document_text}) -> GROUP_BY([year], [ROUND(100.0 * SUM(has_going_concern) / COUNT(*), 1) AS going_concern_rate_percent]) -> ORDER_BY(year ASC)"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "year",
+        "going_concern_rate_percent"
+      ],
+      "types": [
+        "integer",
+        "float"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-009",
+    "gold_answer": {
+      "high_advantage_group": {
+        "filing_count": 1345,
+        "market_leader_rate_percent": 25.5
+      },
+      "low_advantage_group": {
+        "filing_count": 5382,
+        "market_leader_rate_percent": 9.1
+      }
+    },
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2023.csv, [text]) -> SCAN_DOCS(SEC10K, doc_ids=text) -> SEM_EXTRACT('Record from zero to eight distinct competitive-advantage themes and classify the company as market_leader when the filing describes it as a market leader, or other otherwise', {competitive_advantage_count: integer, competitive_position: string}, {filing_text: document_text}) -> PROJECT([CASE WHEN competitive_advantage_count = 8 THEN 'high_advantage_group' ELSE 'low_advantage_group' END AS advantage_group, competitive_position = 'market_leader' AS is_market_leader]) -> GROUP_BY([advantage_group], [COUNT(*) AS filing_count, ROUND(100.0 * AVG(is_market_leader), 1) AS market_leader_rate_percent])"
+      }
+    ],
+    "answer_schema": {
+      "type": "dictionary",
+      "key_description": "advantage-count group (high_advantage_group or low_advantage_group)",
+      "value_schema": {
+        "filing_count": "integer — number of filings in the group",
+        "market_leader_rate_percent": "float — percentage classified as market leaders, rounded to one decimal"
+      }
+    }
+  },
+  {
+    "task_id": "finance-010",
+    "gold_answer": {
+      "both_esg_and_ai_ml": 1520,
+      "esg_only": 3134,
+      "ai_ml_only": 236,
+      "neither": 1837
+    },
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2023.csv, [text]) -> SCAN_DOCS(SEC10K, doc_ids=text) -> SEM_EXTRACT('Determine whether the filing mentions ESG or sustainability topics and whether it contains a qualifying AI/ML technology reference', {esg_mentioned: boolean, ai_ml_mentioned: boolean}, {filing_text: document_text}) -> GROUP_BY([], [SUM(CASE WHEN esg_mentioned = true AND ai_ml_mentioned = true THEN 1 ELSE 0 END) AS both_esg_and_ai_ml, SUM(CASE WHEN esg_mentioned = true AND ai_ml_mentioned = false THEN 1 ELSE 0 END) AS esg_only, SUM(CASE WHEN esg_mentioned = false AND ai_ml_mentioned = true THEN 1 ELSE 0 END) AS ai_ml_only, SUM(CASE WHEN esg_mentioned = false AND ai_ml_mentioned = false THEN 1 ELSE 0 END) AS neither])"
+      }
+    ],
+    "answer_schema": {
+      "type": "dictionary",
+      "keys": [
+        "both_esg_and_ai_ml",
+        "esg_only",
+        "ai_ml_only",
+        "neither"
+      ],
+      "value_types": [
+        "integer",
+        "integer",
+        "integer",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-011",
+    "gold_answer": {
+      "limited_international": {
+        "filing_count": 1027,
+        "foreign_currency_risk_rate_percent": 43.8,
+        "international_operations_rate_percent": 73.8,
+        "litigation_rate_percent": 45.8
+      },
+      "domestic_only": {
+        "filing_count": 2854,
+        "foreign_currency_risk_rate_percent": 12.3,
+        "international_operations_rate_percent": 18.1,
+        "litigation_rate_percent": 52.0
+      },
+      "globally_diversified": {
+        "filing_count": 2844,
+        "foreign_currency_risk_rate_percent": 76.0,
+        "international_operations_rate_percent": 89.7,
+        "litigation_rate_percent": 67.0
+      }
+    },
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2023.csv, [text]) -> SCAN_DOCS(SEC10K, doc_ids=text) -> SEM_EXTRACT('Classify geographic operating scope as domestic_only, limited_international, globally_diversified, or unassigned, and determine whether the filing reports foreign-currency risk, international operations, and litigation or legal proceedings', {geographic_level: string, foreign_currency_risk: boolean, has_international_ops: boolean, has_litigation: boolean}, {filing_text: document_text}) -> FILTER(geographic_level IN ['domestic_only', 'limited_international', 'globally_diversified']) -> GROUP_BY([geographic_level], [COUNT(*) AS filing_count, ROUND(100.0 * AVG(foreign_currency_risk), 1) AS foreign_currency_risk_rate_percent, ROUND(100.0 * AVG(has_international_ops), 1) AS international_operations_rate_percent, ROUND(100.0 * AVG(has_litigation), 1) AS litigation_rate_percent])"
+      }
+    ],
+    "answer_schema": {
+      "type": "dictionary",
+      "key_description": "geographic level (string)",
+      "value_schema": {
+        "filing_count": "integer",
+        "foreign_currency_risk_rate_percent": "float",
+        "international_operations_rate_percent": "float",
+        "litigation_rate_percent": "float"
+      }
+    }
+  },
+  {
+    "task_id": "finance-012",
+    "gold_answer": [
+      {
+        "industry_sector": "Commercial Banking",
+        "ai_ml_filings_2022": 14,
+        "ai_ml_filings_2023": 68,
+        "total_filings_2023": 393
+      },
+      {
+        "industry_sector": "Electric Utilities",
+        "ai_ml_filings_2022": 2,
+        "ai_ml_filings_2023": 46,
+        "total_filings_2023": 160
+      },
+      {
+        "industry_sector": "Real Estate Investment Trust",
+        "ai_ml_filings_2022": 11,
+        "ai_ml_filings_2023": 47,
+        "total_filings_2023": 560
+      },
+      {
+        "industry_sector": "Semiconductor Manufacturing",
+        "ai_ml_filings_2022": 49,
+        "ai_ml_filings_2023": 72,
+        "total_filings_2023": 131
+      },
+      {
+        "industry_sector": "Pharmaceutical",
+        "ai_ml_filings_2022": 74,
+        "ai_ml_filings_2023": 95,
+        "total_filings_2023": 701
+      },
+      {
+        "industry_sector": "Software",
+        "ai_ml_filings_2022": 277,
+        "ai_ml_filings_2023": 297,
+        "total_filings_2023": 406
+      },
+      {
+        "industry_sector": "Business Development Company",
+        "ai_ml_filings_2022": 1,
+        "ai_ml_filings_2023": 16,
+        "total_filings_2023": 86
+      },
+      {
+        "industry_sector": "Asset Management",
+        "ai_ml_filings_2022": 1,
+        "ai_ml_filings_2023": 12,
+        "total_filings_2023": 36
+      },
+      {
+        "industry_sector": "Investment Management",
+        "ai_ml_filings_2022": 5,
+        "ai_ml_filings_2023": 16,
+        "total_filings_2023": 40
+      },
+      {
+        "industry_sector": "Insurance",
+        "ai_ml_filings_2022": 8,
+        "ai_ml_filings_2023": 18,
+        "total_filings_2023": 40
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV, [year, text]) -> FILTER(year IN [2022, 2023]) -> SCAN_DOCS(SEC10K, doc_ids=text) -> SEM_EXTRACT('Extract the industry sector and determine whether the filing mentions AI or machine-learning technologies', {industry_sector: string, ai_ml_mentioned: boolean}, {filing_text: document_text}) -> GROUP_BY([industry_sector], [SUM(CASE WHEN year = 2022 AND ai_ml_mentioned THEN 1 ELSE 0 END) AS ai_ml_filings_2022, SUM(CASE WHEN year = 2023 AND ai_ml_mentioned THEN 1 ELSE 0 END) AS ai_ml_filings_2023, SUM(CASE WHEN year = 2023 THEN 1 ELSE 0 END) AS total_filings_2023]) -> FILTER(total_filings_2023 >= 20 AND ai_ml_filings_2023 > ai_ml_filings_2022) -> ORDER_BY(ai_ml_filings_2023 - ai_ml_filings_2022 DESC, industry_sector ASC) -> LIMIT(10)"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "industry_sector",
+        "ai_ml_filings_2022",
+        "ai_ml_filings_2023",
+        "total_filings_2023"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "integer",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-013",
+    "gold_answer": 91,
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV, [year, text, word_count]) -> FILTER(year IN [2019, 2020, 2021, 2022, 2023] AND word_count > 95000) -> SCAN_DOCS(SEC10K, doc_ids=text) -> SEM_FILTER('Keep filings that explicitly report exactly zero employees', {filing_text: document_text}) -> GROUP_BY([], [COUNT(*) AS count])"
+      }
+    ],
+    "answer_schema": {
+      "type": "scalar",
+      "value_type": "integer"
+    }
+  },
+  {
+    "task_id": "finance-014",
+    "gold_answer": 127,
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV, [year, text, word_count]) -> FILTER(year IN [2020, 2021, 2022, 2023] AND word_count > 90000) -> SCAN_DOCS(SEC10K, doc_ids=text) -> SEM_FILTER('Keep filings with an identifiable disclosed fiscal-year-end date that, after month-day normalization, is not December 31', {filing_text: document_text}) -> GROUP_BY([], [COUNT(*) AS count])"
+      }
+    ],
+    "answer_schema": {
+      "type": "scalar",
+      "value_type": "integer"
+    }
+  },
+  {
+    "task_id": "finance-015",
+    "gold_answer": [
+      {
+        "company_name": "Roivant Sciences Ltd.",
+        "industry": "Pharmaceutical",
+        "word_count": 130746
+      },
+      {
+        "company_name": "23andMe Holding Co.",
+        "industry": "Genetic Testing & Biotechnology",
+        "word_count": 102522
+      },
+      {
+        "company_name": "ZeroFox Holdings, Inc.",
+        "industry": "Software",
+        "word_count": 97527
+      },
+      {
+        "company_name": "StepStone Group Inc.",
+        "industry": "Asset Management",
+        "word_count": 92048
+      },
+      {
+        "company_name": "Autodesk, Inc.",
+        "industry": "Software",
+        "word_count": 83517
+      },
+      {
+        "company_name": "VIASAT, INC.",
+        "industry": "Satellite Communications",
+        "word_count": 82562
+      },
+      {
+        "company_name": "Planet Labs PBC",
+        "industry": "Satellite Imagery",
+        "word_count": 81367
+      },
+      {
+        "company_name": "Booz Allen Hamilton Holding Corporation",
+        "industry": "Management Consulting",
+        "word_count": 77726
+      },
+      {
+        "company_name": "E2open Parent Holdings, Inc.",
+        "industry": "Software",
+        "word_count": 75852
+      },
+      {
+        "company_name": "AeroVironment, Inc.",
+        "industry": "Aerospace & Defense",
+        "word_count": 75150
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2024.csv, [text, word_count])\n-> FILTER(word_count > 50000)\n-> SCAN_DOCS(SEC10K, text)\n-> SEM_FILTER('Keep filings that describe operational use of artificial intelligence or machine learning.', {document: text})\n-> SEM_FILTER('Keep filings that do not report substantial doubt about continuing as a going concern.', {document: text})\n-> SEM_EXTRACT('Extract the company legal name and its industry sector.', {company_name: string, industry: string}, {document: text})\n-> ORDER_BY([word_count DESC, company_name ASC])\n-> LIMIT(10)"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "company_name",
+        "industry",
+        "word_count"
+      ],
+      "types": [
+        "string",
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-016",
+    "gold_answer": [
+      {
+        "industry_sector": "Commercial Banking",
+        "company_count": 118
+      },
+      {
+        "industry_sector": "Pharmaceutical",
+        "company_count": 105
+      },
+      {
+        "industry_sector": "Software",
+        "company_count": 66
+      },
+      {
+        "industry_sector": "Electric Utilities",
+        "company_count": 64
+      },
+      {
+        "industry_sector": "Real Estate Investment Trust",
+        "company_count": 58
+      },
+      {
+        "industry_sector": "Semiconductor Manufacturing",
+        "company_count": 32
+      },
+      {
+        "industry_sector": "Insurance",
+        "company_count": 26
+      },
+      {
+        "industry_sector": "Medical Devices",
+        "company_count": 21
+      },
+      {
+        "industry_sector": "Oil & Gas Exploration",
+        "company_count": 17
+      },
+      {
+        "industry_sector": "Property & Casualty Insurance",
+        "company_count": 15
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2019.csv, [cik, text AS text_2019]) AS filings_2019\nSCAN_TABLE(SEC10K, CSV/2023.csv, [cik, text AS text_2023]) AS filings_2023\nfilings_2019 -> JOIN(inner, filings_2019.cik = filings_2023.cik) <- filings_2023\n-> SCAN_DOCS(SEC10K, text_2023)\n-> FILTER(CONTAINS_CASE_INSENSITIVE(document_2023, 'artificial intelligence') OR CONTAINS_CASE_INSENSITIVE(document_2023, 'machine learning'))\n-> DEDUP([cik], keep=first)\n-> SCAN_DOCS(SEC10K, text_2019)\n-> FILTER(NOT CONTAINS_CASE_INSENSITIVE(document_2019, 'artificial intelligence') AND NOT CONTAINS_CASE_INSENSITIVE(document_2019, 'machine learning'))\n-> SEM_EXTRACT('Extract the 2023 industry sector.', {industry_sector: string}, {document: document_2023})\n-> GROUP_BY([industry_sector], [COUNT(*) AS company_count])\n-> ORDER_BY([company_count DESC, industry_sector ASC])\n-> LIMIT(10)"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "industry_sector",
+        "company_count"
+      ],
+      "types": [
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-017",
+    "gold_answer": [
+      {
+        "company_name": "Entergy Corporation",
+        "word_count": 274768,
+        "industry_sector": "Electric Utilities"
+      },
+      {
+        "company_name": "Prospect Capital Corporation",
+        "word_count": 188096,
+        "industry_sector": "Business Development Company"
+      },
+      {
+        "company_name": "Federal National Mortgage Association",
+        "word_count": 179273,
+        "industry_sector": "Mortgage Finance"
+      },
+      {
+        "company_name": "American Electric Power Company, Inc.",
+        "word_count": 170357,
+        "industry_sector": "Electric Utilities"
+      },
+      {
+        "company_name": "Southern Company",
+        "word_count": 162070,
+        "industry_sector": "Electric Utilities"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2022.csv, [text, word_count])\n-> SCAN_DOCS(SEC10K, text)\n-> SEM_FILTER('The filing does not describe substantive business operations outside the United States.', {document: text})\n-> SEM_FILTER('The filing discusses environmental, social, or governance topics.', {document: text})\n-> SEM_EXTRACT('Extract and normalize the company legal name and industry sector.', {company_name: string, industry_sector: string}, {document: text})\n-> DEDUP([company_name], keep=max(word_count))\n-> ORDER_BY([word_count DESC, company_name ASC])\n-> LIMIT(5)"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "company_name",
+        "word_count",
+        "industry_sector"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-018",
+    "gold_answer": {
+      "advertising": {
+        "filing_count": 21,
+        "average_employee_count": 7780
+      },
+      "commission": {
+        "filing_count": 37,
+        "average_employee_count": 2078
+      },
+      "interest_income": {
+        "filing_count": 1323,
+        "average_employee_count": 4058
+      },
+      "investment_returns": {
+        "filing_count": 54,
+        "average_employee_count": 2
+      },
+      "licensing_royalties": {
+        "filing_count": 172,
+        "average_employee_count": 204
+      },
+      "mixed": {
+        "filing_count": 1787,
+        "average_employee_count": 10248
+      },
+      "product_sales": {
+        "filing_count": 2107,
+        "average_employee_count": 10377
+      },
+      "rental_income": {
+        "filing_count": 241,
+        "average_employee_count": 1133
+      },
+      "service_fees": {
+        "filing_count": 534,
+        "average_employee_count": 14630
+      },
+      "subscription": {
+        "filing_count": 137,
+        "average_employee_count": 3397
+      }
+    },
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2023.csv, [text]) -> SCAN_DOCS(SEC10K, doc_ids=text) -> SEM_CLASSIFY('Assign each filing to exactly one primary revenue-model category; leave it unassigned only when no primary model can be determined', target_labels=['advertising', 'commission', 'interest_income', 'investment_returns', 'licensing_royalties', 'mixed', 'product_sales', 'rental_income', 'service_fees', 'subscription'], input_bindings={filing_text: document_text}) -> FILTER(revenue_model IS NOT NULL) -> SEM_EXTRACT('Extract the reported employee count; return null when no explicit total is disclosed', {employee_count: integer|null}, {filing_text: document_text}) -> GROUP_BY([revenue_model], [COUNT(*) AS filing_count, ROUND(AVG(employee_count IGNORE NULLS), 0) AS average_employee_count])"
+      }
+    ],
+    "answer_schema": {
+      "type": "dictionary",
+      "key_description": "revenue model (string)",
+      "value_schema": {
+        "filing_count": "integer",
+        "average_employee_count": "integer"
+      }
+    }
+  },
+  {
+    "task_id": "finance-019",
+    "gold_answer": [
+      {
+        "company_name": "Advanced Drainage Systems, Inc.",
+        "industry": "Plastic Pipe Manufacturing"
+      },
+      {
+        "company_name": "AstroNova, Inc.",
+        "industry": "Electronics Manufacturing"
+      },
+      {
+        "company_name": "COLUMBUS McKINNON CORPORATION",
+        "industry": "Industrial Manufacturing"
+      },
+      {
+        "company_name": "Constellation Brands, Inc.",
+        "industry": "Beverage Alcohol"
+      },
+      {
+        "company_name": "Deckers Outdoor Corporation",
+        "industry": "Retail - Apparel"
+      },
+      {
+        "company_name": "Destination XL Group, Inc.",
+        "industry": "Retail - Apparel"
+      },
+      {
+        "company_name": "DocuSign, Inc.",
+        "industry": "Software"
+      },
+      {
+        "company_name": "ENERSYS",
+        "industry": "Battery Manufacturing"
+      },
+      {
+        "company_name": "Electronic Arts Inc.",
+        "industry": "Video Games"
+      },
+      {
+        "company_name": "Ennis, Inc.",
+        "industry": "Commercial Printing"
+      },
+      {
+        "company_name": "HealthEquity, Inc.",
+        "industry": "Financial Services - Benefits Administration"
+      },
+      {
+        "company_name": "Houlihan Lokey, Inc.",
+        "industry": "Investment Banking"
+      },
+      {
+        "company_name": "McKesson Corporation",
+        "industry": "Healthcare Distribution"
+      },
+      {
+        "company_name": "Medtronic plc",
+        "industry": "Medical Devices"
+      },
+      {
+        "company_name": "Okta, Inc.",
+        "industry": "Software"
+      },
+      {
+        "company_name": "RBC Bearings Incorporated",
+        "industry": "Precision Bearings Manufacturing"
+      },
+      {
+        "company_name": "Ross Stores, Inc.",
+        "industry": "Retail - Apparel"
+      },
+      {
+        "company_name": "STERIS plc",
+        "industry": "Medical Equipment & Supplies"
+      },
+      {
+        "company_name": "Salesforce, Inc.",
+        "industry": "Software"
+      },
+      {
+        "company_name": "Signet Jewelers Limited",
+        "industry": "Retail - Jewelry"
+      },
+      {
+        "company_name": "Smith & Wesson Brands, Inc.",
+        "industry": "Firearms Manufacturing"
+      },
+      {
+        "company_name": "Take-Two Interactive Software, Inc.",
+        "industry": "Video Games"
+      },
+      {
+        "company_name": "The J. M. Smucker Company",
+        "industry": "Food & Beverage Manufacturing"
+      },
+      {
+        "company_name": "The TJX Companies, Inc.",
+        "industry": "Retail - Apparel"
+      },
+      {
+        "company_name": "U-Haul Holding Company",
+        "industry": "Moving and Storage"
+      },
+      {
+        "company_name": "Ulta Beauty, Inc.",
+        "industry": "Retail - Beauty"
+      },
+      {
+        "company_name": "Universal Corporation",
+        "industry": "Agricultural Products"
+      },
+      {
+        "company_name": "Veeva Systems Inc.",
+        "industry": "Software"
+      },
+      {
+        "company_name": "Virco Mfg. Corporation",
+        "industry": "Furniture Manufacturing"
+      },
+      {
+        "company_name": "Vista Outdoor Inc.",
+        "industry": "Sporting Goods Manufacturing"
+      },
+      {
+        "company_name": "Walmart Inc.",
+        "industry": "Retail - General Merchandise"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV, [cik, year, text, word_count]) -> SCAN_DOCS(SEC10K, doc_ids=text) -> SEM_CLASSIFY('Assign each filing to one competitive-position category', target_labels=['market_leader', 'major_player', 'challenger', 'niche_player', 'emerging'], input_bindings={filing_text: document_text}) -> GROUP_BY([cik], [COUNT(DISTINCT CASE WHEN competitive_position = 'market_leader' THEN year END) AS leader_years, MAX_BY(CASE WHEN year = 2024 AND NOT CONTAINS_CASE_INSENSITIVE(document_text, 'FORM 10-K/A') THEN document_text END, CASE WHEN year = 2024 AND NOT CONTAINS_CASE_INSENSITIVE(document_text, 'FORM 10-K/A') THEN word_count END) AS primary_2024_filing]) -> FILTER(leader_years = 6) -> SEM_EXTRACT('Extract the company legal name and industry sector from the retained non-amended 2024 filing', {company_name: string, industry: string}, {filing_text: primary_2024_filing}) -> ORDER_BY(company_name ASC)"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "company_name",
+        "industry"
+      ],
+      "types": [
+        "string",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-020",
+    "gold_answer": {
+      "Pharmaceutical": {
+        "filing_count": 701,
+        "ai_ml_mention_rate_percent": 13.6,
+        "going_concern_rate_percent": 38.9,
+        "international_operations_rate_percent": 73.3,
+        "litigation_rate_percent": 31.0
+      },
+      "Software": {
+        "filing_count": 406,
+        "ai_ml_mention_rate_percent": 73.2,
+        "going_concern_rate_percent": 29.8,
+        "international_operations_rate_percent": 83.5,
+        "litigation_rate_percent": 61.1
+      }
+    },
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2023.csv, [text]) -> SCAN_DOCS(SEC10K, doc_ids=text) -> SEM_CLASSIFY('Assign each filing to its industry sector for this comparison', target_labels=['Pharmaceutical', 'Software', 'Other'], input_bindings={filing_text: document_text}) -> FILTER(industry_sector IN ['Pharmaceutical', 'Software']) -> SEM_EXTRACT('Determine whether the filing contains a qualifying AI/ML reference, expresses going-concern doubt, describes international operations, and reports litigation or legal proceedings', {ai_ml_mentioned: boolean, has_going_concern: boolean, has_international_ops: boolean, has_litigation: boolean}, {filing_text: document_text}) -> GROUP_BY([industry_sector], [COUNT(*) AS filing_count, ROUND(100.0 * AVG(ai_ml_mentioned), 1) AS ai_ml_mention_rate_percent, ROUND(100.0 * AVG(has_going_concern), 1) AS going_concern_rate_percent, ROUND(100.0 * AVG(has_international_ops), 1) AS international_operations_rate_percent, ROUND(100.0 * AVG(has_litigation), 1) AS litigation_rate_percent])"
+      }
+    ],
+    "answer_schema": {
+      "type": "dictionary",
+      "key_description": "industry sector (string)",
+      "value_schema": {
+        "filing_count": "integer — number of filings in the industry",
+        "ai_ml_mention_rate_percent": "float — percentage mentioning AI/ML, rounded to one decimal",
+        "going_concern_rate_percent": "float — percentage expressing going-concern doubt, rounded to one decimal",
+        "international_operations_rate_percent": "float — percentage describing international operations, rounded to one decimal",
+        "litigation_rate_percent": "float — percentage reporting litigation, rounded to one decimal"
+      }
+    }
+  },
+  {
+    "task_id": "finance-021",
+    "gold_answer": [
+      {
+        "transition": "product_sales -> mixed",
+        "count": 212
+      },
+      {
+        "transition": "mixed -> product_sales",
+        "count": 179
+      },
+      {
+        "transition": "mixed -> interest_income",
+        "count": 120
+      },
+      {
+        "transition": "mixed -> service_fees",
+        "count": 91
+      },
+      {
+        "transition": "service_fees -> mixed",
+        "count": 62
+      },
+      {
+        "transition": "mixed -> licensing_royalties",
+        "count": 34
+      },
+      {
+        "transition": "product_sales -> service_fees",
+        "count": 30
+      },
+      {
+        "transition": "licensing_royalties -> mixed",
+        "count": 29
+      },
+      {
+        "transition": "subscription -> mixed",
+        "count": 22
+      },
+      {
+        "transition": "service_fees -> product_sales",
+        "count": 19
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2019.csv, [cik, text, word_count]) -> GROUP_BY([cik], [MAX_BY(text, word_count) AS primary_text_2019]) -> SCAN_DOCS(SEC10K, doc_ids=primary_text_2019) -> SEM_CLASSIFY('Assign the filing to its primary revenue-model category', target_labels=['advertising', 'commission', 'interest_income', 'investment_returns', 'licensing_royalties', 'mixed', 'product_sales', 'rental_income', 'service_fees', 'subscription', 'undetermined'], input_bindings={filing_text: document_text}) AS models_2019 ||| SCAN_TABLE(SEC10K, CSV/2023.csv, [cik, text, word_count]) -> GROUP_BY([cik], [MAX_BY(text, word_count) AS primary_text_2023]) -> SCAN_DOCS(SEC10K, doc_ids=primary_text_2023) -> SEM_CLASSIFY('Assign the filing to its primary revenue-model category', target_labels=['advertising', 'commission', 'interest_income', 'investment_returns', 'licensing_royalties', 'mixed', 'product_sales', 'rental_income', 'service_fees', 'subscription', 'undetermined'], input_bindings={filing_text: document_text}) AS models_2023 ||| JOIN(inner, models_2019.cik = models_2023.cik) -> FILTER(models_2019.revenue_model != 'undetermined' AND models_2023.revenue_model != 'undetermined' AND models_2019.revenue_model != models_2023.revenue_model) -> PROJECT([models_2019.revenue_model || ' -> ' || models_2023.revenue_model AS transition]) -> GROUP_BY([transition], [COUNT(*) AS count]) -> ORDER_BY(count DESC, transition ASC) -> LIMIT(10)"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "transition",
+        "count"
+      ],
+      "types": [
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-022",
+    "gold_answer": 19,
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV, [year, text, word_count]) -> FILTER(year IN [2021, 2022, 2023] AND word_count > 90000) -> SCAN_DOCS(SEC10K, doc_ids=text) -> SEM_FILTER('Keep filings for companies incorporated in one of the 50 U.S. states or the District of Columbia', {filing_text: document_text}) -> SEM_FILTER('Keep filings whose headquarters country is outside the United States', {filing_text: document_text}) -> GROUP_BY([], [COUNT(*) AS count])"
+      }
+    ],
+    "answer_schema": {
+      "type": "scalar",
+      "value_type": "integer"
+    }
+  },
+  {
+    "task_id": "finance-023",
+    "gold_answer": 46,
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV, [year, text, word_count]) -> FILTER(year IN [2022, 2023] AND word_count > 80000) -> SCAN_DOCS(SEC10K, doc_ids=text) -> SEM_FILTER('Keep filings that describe artificial-intelligence or machine-learning use in the company business', {filing_text: document_text}) -> SEM_FILTER('Keep filings that do not mention environmental, social, governance, ESG, or sustainability topics', {filing_text: document_text}) -> GROUP_BY([], [COUNT(*) AS count])"
+      }
+    ],
+    "answer_schema": {
+      "type": "scalar",
+      "value_type": "integer"
+    }
+  },
+  {
+    "task_id": "finance-024",
+    "gold_answer": 475,
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV, [year, text, word_count]) -> FILTER(year IN [2019, 2020, 2021] AND word_count > 80000) -> SCAN_DOCS(SEC10K, doc_ids=text) -> SEM_FILTER('Keep filings that state the company has international operations', {filing_text: document_text}) -> SEM_FILTER('Keep filings that do not disclose foreign-currency risk', {filing_text: document_text}) -> GROUP_BY([], [COUNT(*) AS count])"
+      }
+    ],
+    "answer_schema": {
+      "type": "scalar",
+      "value_type": "integer"
+    }
+  },
+  {
+    "task_id": "finance-025",
+    "gold_answer": [
+      {
+        "company_name": "Tenet Healthcare Corporation",
+        "industry_sector": "Healthcare Services",
+        "employee_count": 113600
+      },
+      {
+        "company_name": "Genesis Healthcare, Inc.",
+        "industry_sector": "Post-Acute Care",
+        "employee_count": 55000
+      },
+      {
+        "company_name": "Humana Inc.",
+        "industry_sector": "Health Insurance",
+        "employee_count": 45000
+      },
+      {
+        "company_name": "Five Star Senior Living Inc.",
+        "industry_sector": "Senior Living Services",
+        "employee_count": 23000
+      },
+      {
+        "company_name": "Discover Financial Services",
+        "industry_sector": "Commercial Banking",
+        "employee_count": 18000
+      },
+      {
+        "company_name": "SHUSA",
+        "industry_sector": "Commercial Banking",
+        "employee_count": 16900
+      },
+      {
+        "company_name": "National Vision Holdings, Inc.",
+        "industry_sector": "Retail - Optical",
+        "employee_count": 11781
+      },
+      {
+        "company_name": "Realogy Group",
+        "industry_sector": "Real Estate Services",
+        "employee_count": 10150
+      },
+      {
+        "company_name": "Ally Financial Inc.",
+        "industry_sector": "Financial Services",
+        "employee_count": 8700
+      },
+      {
+        "company_name": "American Financial Group, Inc.",
+        "industry_sector": "Insurance",
+        "employee_count": 6800
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2019.csv, [cik, text, word_count])\n-> FILTER(word_count > 45000)\n-> SCAN_DOCS(SEC10K, doc_ids=text)\n-> SEM_FILTER('Keep filings that disclose dependence on a major customer or material customer concentration', {filing_text: document_text})\n-> SEM_FILTER('Keep filings that do not disclose foreign-currency or exchange-rate risk', {filing_text: document_text})\n-> SEM_FILTER('Keep filings that describe operations outside the United States', {filing_text: document_text})\n-> SEM_EXTRACT('Extract the company legal name, industry sector, and reported employee count', {company_name: string, industry_sector: string, employee_count: integer|null}, {filing_text: document_text})\n-> FILTER(employee_count IS NOT NULL)\n-> DEDUP([company_name], keep=max_by(employee_count, word_count, cik))\n-> ORDER_BY([employee_count DESC, LOWER(company_name) ASC])\n-> LIMIT(10)\n-> PROJECT([company_name, industry_sector, employee_count])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "company_name",
+        "industry_sector",
+        "employee_count"
+      ],
+      "types": [
+        "string",
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-026",
+    "gold_answer": [
+      {
+        "growth_strategy": "hybrid",
+        "filing_count": 118,
+        "median_employee_count": 122.5,
+        "median_risk_factor_count": 25.0
+      },
+      {
+        "growth_strategy": "organic",
+        "filing_count": 53,
+        "median_employee_count": 24.0,
+        "median_risk_factor_count": 24.0
+      },
+      {
+        "growth_strategy": "not_applicable",
+        "filing_count": 22,
+        "median_employee_count": 3.0,
+        "median_risk_factor_count": 41.0
+      },
+      {
+        "growth_strategy": "acquisition_driven",
+        "filing_count": 10,
+        "median_employee_count": 46.0,
+        "median_risk_factor_count": 30.5
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2020.csv, [text, word_count])\n-> FILTER(word_count > 50000)\n-> SCAN_DOCS(SEC10K, doc_ids=text)\n-> SEM_FILTER('Keep filings that express substantial doubt about continuing as a going concern', {filing_text: document_text})\n-> SEM_FILTER('Keep filings that report pending, threatened, or ongoing litigation, legal proceedings, lawsuits, or regulatory investigations', {filing_text: document_text})\n-> SEM_CLASSIFY('Assign each filing to its stated growth-strategy category', target_labels=['organic', 'acquisition_driven', 'hybrid', 'not_applicable', 'undetermined'], input_bindings={filing_text: document_text})\n-> FILTER(growth_strategy != 'undetermined')\n-> SEM_EXTRACT('Extract the reported employee count and total number of risk factors', {employee_count: integer|null, risk_factor_count: integer|null}, {filing_text: document_text})\n-> GROUP_BY([growth_strategy], [COUNT(*) AS filing_count, ROUND(MEDIAN(employee_count IGNORE NULLS), 1) AS median_employee_count, ROUND(MEDIAN(risk_factor_count IGNORE NULLS), 1) AS median_risk_factor_count])\n-> FILTER(filing_count >= 10)\n-> ORDER_BY([filing_count DESC, growth_strategy ASC])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "growth_strategy",
+        "filing_count",
+        "median_employee_count",
+        "median_risk_factor_count"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "float",
+        "float"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-027",
+    "gold_answer": [
+      {
+        "revenue_model": "mixed",
+        "competitive_position": "major_player",
+        "filing_count": 72,
+        "esg_mention_rate_percent": 97.2,
+        "median_risk_factor_count": 24.5
+      },
+      {
+        "revenue_model": "mixed",
+        "competitive_position": "market_leader",
+        "filing_count": 70,
+        "esg_mention_rate_percent": 100.0,
+        "median_risk_factor_count": 25.0
+      },
+      {
+        "revenue_model": "mixed",
+        "competitive_position": "challenger",
+        "filing_count": 64,
+        "esg_mention_rate_percent": 87.5,
+        "median_risk_factor_count": 25.0
+      },
+      {
+        "revenue_model": "product_sales",
+        "competitive_position": "challenger",
+        "filing_count": 33,
+        "esg_mention_rate_percent": 84.8,
+        "median_risk_factor_count": 25.0
+      },
+      {
+        "revenue_model": "product_sales",
+        "competitive_position": "major_player",
+        "filing_count": 30,
+        "esg_mention_rate_percent": 96.7,
+        "median_risk_factor_count": 20.0
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2021.csv, [text, word_count])\n-> FILTER(word_count > 60000)\n-> SCAN_DOCS(SEC10K, doc_ids=text)\n-> SEM_FILTER('Keep filings that mention artificial intelligence or machine learning', {filing_text: document_text})\n-> SEM_CLASSIFY('Assign each filing to its primary revenue-model category', target_labels=['advertising', 'commission', 'interest_income', 'investment_returns', 'licensing_royalties', 'mixed', 'product_sales', 'rental_income', 'service_fees', 'subscription', 'undetermined'], input_bindings={filing_text: document_text})\n-> SEM_CLASSIFY('Assign each filing to its competitive-position category', target_labels=['emerging', 'niche_player', 'challenger', 'major_player', 'market_leader', 'undetermined'], input_bindings={filing_text: document_text})\n-> FILTER(revenue_model != 'undetermined' AND competitive_position != 'undetermined')\n-> SEM_EXTRACT('Extract whether ESG or sustainability topics are mentioned and the total number of risk factors', {esg_mentioned: boolean, risk_factor_count: integer|null}, {filing_text: document_text})\n-> GROUP_BY([revenue_model, competitive_position], [COUNT(*) AS filing_count, ROUND(100.0 * AVG(esg_mentioned), 1) AS esg_mention_rate_percent, ROUND(MEDIAN(risk_factor_count IGNORE NULLS), 1) AS median_risk_factor_count])\n-> FILTER(filing_count >= 10)\n-> ORDER_BY([filing_count DESC, revenue_model ASC, competitive_position ASC])\n-> LIMIT(5)"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "revenue_model",
+        "competitive_position",
+        "filing_count",
+        "esg_mention_rate_percent",
+        "median_risk_factor_count"
+      ],
+      "types": [
+        "string",
+        "string",
+        "integer",
+        "float",
+        "float"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-028",
+    "gold_answer": [
+      {
+        "industry_sector": "Pharmaceutical",
+        "company_count": 32
+      },
+      {
+        "industry_sector": "Software",
+        "company_count": 21
+      },
+      {
+        "industry_sector": "Medical Devices",
+        "company_count": 10
+      },
+      {
+        "industry_sector": "Semiconductor Manufacturing",
+        "company_count": 8
+      },
+      {
+        "industry_sector": "Biotechnology",
+        "company_count": 7
+      },
+      {
+        "industry_sector": "Oil & Gas Exploration",
+        "company_count": 7
+      },
+      {
+        "industry_sector": "Real Estate Investment Trust",
+        "company_count": 6
+      },
+      {
+        "industry_sector": "Cannabis",
+        "company_count": 5
+      },
+      {
+        "industry_sector": "Environmental Technology",
+        "company_count": 4
+      },
+      {
+        "industry_sector": "Healthcare Services",
+        "company_count": 4
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2021.csv, [cik, text])\n-> SCAN_DOCS(SEC10K, text)\n-> SEM_FILTER('The filing reports substantial doubt about continuing as a going concern.', {document: text})\n-> SEM_FILTER('The filing reports pending litigation.', {document: text})\n-> SEM_FILTER('The filing reports that a single customer accounts for at least 10% of revenue.', {document: text})\n-> SEM_EXTRACT('Extract the industry sector.', {industry_sector: string}, {document: text})\n-> DEDUP([cik], keep=first)\n-> GROUP_BY([industry_sector], [COUNT(*) AS company_count])\n-> ORDER_BY([company_count DESC, industry_sector ASC])\n-> LIMIT(10)"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "industry_sector",
+        "company_count"
+      ],
+      "types": [
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-029",
+    "gold_answer": [
+      {
+        "company_name": "AppFolio, Inc.",
+        "industry_sector": "Software"
+      },
+      {
+        "company_name": "Axcelis Technologies, Inc.",
+        "industry_sector": "Semiconductor Manufacturing"
+      },
+      {
+        "company_name": "CORMEDIX INC.",
+        "industry_sector": "Pharmaceutical"
+      },
+      {
+        "company_name": "Franklin Wireless Corp.",
+        "industry_sector": "Wireless Communications Equipment"
+      },
+      {
+        "company_name": "RumbleOn, Inc.",
+        "industry_sector": "Retail - Powersports"
+      },
+      {
+        "company_name": "Safehold Inc.",
+        "industry_sector": "Real Estate Investment Trust"
+      },
+      {
+        "company_name": "Smith Micro Software, Inc.",
+        "industry_sector": "Software"
+      },
+      {
+        "company_name": "TransMedics Group, Inc.",
+        "industry_sector": "Medical Devices"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2019.csv, [cik, text]) -> SCAN_DOCS(SEC10K, doc_ids=text) -> SEM_FILTER('Keep filings that describe the company as holding a challenger competitive position in 2019', {filing_text: document_text}) -> PROJECT([cik]) AS challengers_2019 ||| SCAN_TABLE(SEC10K, CSV/2023.csv, [cik, text]) -> SCAN_DOCS(SEC10K, doc_ids=text) -> SEM_FILTER('Keep filings that describe the company as a recognized industry or market leader in 2023', {filing_text: document_text}) -> DEDUP([cik], keep=first) -> SEM_EXTRACT('Extract the company legal name and industry sector stated or clearly supported by the filing', {company_name: string, industry_sector: string}, {filing_text: document_text}) AS leaders_2023 ||| JOIN(inner, challengers_2019.cik = leaders_2023.cik) -> PROJECT([company_name, industry_sector])"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "company_name",
+        "industry_sector"
+      ],
+      "types": [
+        "string",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-030",
+    "gold_answer": [
+      {
+        "company_name": "Philip Morris International Inc.",
+        "industry_sector": "Tobacco",
+        "growth_strategy": "hybrid",
+        "country_count": 52,
+        "subsidiary_count": 5
+      },
+      {
+        "company_name": "Jacobs Solutions Inc.",
+        "industry_sector": "Engineering & Construction Services",
+        "growth_strategy": "hybrid",
+        "country_count": 35,
+        "subsidiary_count": 9
+      },
+      {
+        "company_name": "Roivant Sciences Ltd.",
+        "industry_sector": "Pharmaceutical",
+        "growth_strategy": "hybrid",
+        "country_count": 34,
+        "subsidiary_count": 10
+      },
+      {
+        "company_name": "Tyson Foods, Inc.",
+        "industry_sector": "Food Processing",
+        "growth_strategy": "hybrid",
+        "country_count": 32,
+        "subsidiary_count": 8
+      },
+      {
+        "company_name": "Stagwell Inc.",
+        "industry_sector": "Marketing Services",
+        "growth_strategy": "hybrid",
+        "country_count": 31,
+        "subsidiary_count": 10
+      },
+      {
+        "company_name": "Spectrum Brands Holdings, Inc.",
+        "industry_sector": "Consumer Products",
+        "growth_strategy": "hybrid",
+        "country_count": 31,
+        "subsidiary_count": 3
+      },
+      {
+        "company_name": "Compass Diversified Holdings",
+        "industry_sector": "Holding Company",
+        "growth_strategy": "acquisition_driven",
+        "country_count": 29,
+        "subsidiary_count": 10
+      },
+      {
+        "company_name": "BGC Partners, Inc.",
+        "industry_sector": "Financial Brokerage",
+        "growth_strategy": "hybrid",
+        "country_count": 28,
+        "subsidiary_count": 10
+      },
+      {
+        "company_name": "Ecolab Inc.",
+        "industry_sector": "Chemical Manufacturing",
+        "growth_strategy": "hybrid",
+        "country_count": 28,
+        "subsidiary_count": 3
+      },
+      {
+        "company_name": "Digital Realty Trust, Inc.",
+        "industry_sector": "Real Estate Investment Trust",
+        "growth_strategy": "hybrid",
+        "country_count": 27,
+        "subsidiary_count": 7
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2022.csv, [cik, text, word_count])\n-> FILTER(word_count > 60000)\n-> SCAN_DOCS(SEC10K, doc_ids=text)\n-> SEM_FILTER('Keep filings that disclose dependence on a major customer or material customer concentration', {filing_text: document_text})\n-> SEM_FILTER('Keep filings that disclose foreign-currency or exchange-rate risk', {filing_text: document_text})\n-> SEM_CLASSIFY('Assign each filing to its stated growth-strategy category', target_labels=['organic', 'acquisition_driven', 'hybrid', 'not_applicable', 'undetermined'], input_bindings={filing_text: document_text})\n-> FILTER(growth_strategy IN ['acquisition_driven', 'hybrid'])\n-> SEM_EXTRACT('Extract the company legal name, industry sector, countries of operation, and names of disclosed subsidiaries', {company_name: string, industry_sector: string, countries_of_operation: list[string], subsidiary_names: list[string]}, {filing_text: document_text})\n-> PROJECT([cik, word_count, company_name, industry_sector, growth_strategy, COUNT_DISTINCT(NORMALIZE_COUNTRY(countries_of_operation) EXCLUDING 'United States') AS country_count, COUNT_DISTINCT(NORMALIZE_ENTITY(subsidiary_names)) AS subsidiary_count])\n-> FILTER(country_count > 0)\n-> DEDUP([company_name], keep=max_by(country_count, subsidiary_count, word_count, cik))\n-> ORDER_BY([country_count DESC, subsidiary_count DESC, LOWER(company_name) ASC])\n-> LIMIT(10)\n-> PROJECT([company_name, industry_sector, growth_strategy, country_count, subsidiary_count])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "company_name",
+        "industry_sector",
+        "growth_strategy",
+        "country_count",
+        "subsidiary_count"
+      ],
+      "types": [
+        "string",
+        "string",
+        "string",
+        "integer",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-031",
+    "gold_answer": {
+      "top_sectors": {
+        "Commercial Banking": 291,
+        "Pharmaceutical": 237,
+        "Real Estate Investment Trust": 225,
+        "Software": 129,
+        "Oil & Gas Exploration": 86,
+        "Medical Devices": 77,
+        "Electric Utilities": 70,
+        "Semiconductor Manufacturing": 70,
+        "Business Development Company": 39,
+        "Retail - Apparel": 33
+      },
+      "mean_risk_factor_count_change": -1.5
+    },
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2019.csv, [cik, text]) -> SCAN_DOCS(SEC10K, doc_ids=text) AS filings_2019 ||| SCAN_TABLE(SEC10K, CSV/2020.csv, [cik, text]) -> SCAN_DOCS(SEC10K, doc_ids=text) AS filings_2020 ||| JOIN(inner, filings_2019.cik = filings_2020.cik) AS paired_filings -> SEM_FILTER('Keep filing pairs whose 2020 filing includes a pandemic or public-health risk factor', {filing_text: filings_2020.document_text}) -> SEM_FILTER('Keep filing pairs whose 2019 filing does not include a pandemic or public-health risk factor', {filing_text: filings_2019.document_text}) -> SEM_EXTRACT('Extract the total risk-factor count from each annual filing and the 2020 industry sector', {risk_factor_count_2019: integer|null, risk_factor_count_2020: integer|null, industry_sector_2020: string}, {filing_text_2019: filings_2019.document_text, filing_text_2020: filings_2020.document_text}) AS adopters ||| adopters -> GROUP_BY([industry_sector_2020], [COUNT(DISTINCT cik) AS adopter_count]) -> ORDER_BY(adopter_count DESC, industry_sector_2020 ASC) -> LIMIT(10) AS top_sectors ||| adopters -> GROUP_BY([], [ROUND(AVG(risk_factor_count_2020 - risk_factor_count_2019 IGNORE NULLS), 1) AS mean_risk_factor_count_change]) AS change_summary"
+      }
+    ],
+    "answer_schema": {
+      "type": "dictionary",
+      "keys": [
+        "top_sectors",
+        "mean_risk_factor_count_change"
+      ],
+      "value_types": [
+        "dictionary",
+        "float"
+      ],
+      "items": {
+        "top_sectors": {
+          "key_description": "2020 industry sector (string)",
+          "value_type": "integer — number of first-time adopter companies"
+        }
+      }
+    }
+  },
+  {
+    "task_id": "finance-032",
+    "gold_answer": [
+      {
+        "company_name": "AGBA Group Holding Limited",
+        "industry_sector": "Financial Services",
+        "employee_count_2019": 2,
+        "employee_count_2023": 176
+      },
+      {
+        "company_name": "Advantage Solutions Inc.",
+        "industry_sector": "Sales and Marketing Services",
+        "employee_count_2019": 2,
+        "employee_count_2023": 70000
+      },
+      {
+        "company_name": "ChargePoint Holdings, Inc.",
+        "industry_sector": "Electric Vehicle Charging",
+        "employee_count_2019": 3,
+        "employee_count_2023": 1650
+      },
+      {
+        "company_name": "Cibus, Inc.",
+        "industry_sector": "Agricultural Biotechnology",
+        "employee_count_2019": 75,
+        "employee_count_2023": 183
+      },
+      {
+        "company_name": "Luminar Technologies, Inc.",
+        "industry_sector": "Automotive Technology",
+        "employee_count_2019": 3,
+        "employee_count_2023": 800
+      },
+      {
+        "company_name": "Madrigal Pharmaceuticals, Inc.",
+        "industry_sector": "Pharmaceutical",
+        "employee_count_2019": 29,
+        "employee_count_2023": 376
+      },
+      {
+        "company_name": "Moderna, Inc.",
+        "industry_sector": "Pharmaceutical",
+        "employee_count_2019": 860,
+        "employee_count_2023": 5600
+      },
+      {
+        "company_name": "Scientific Energy, Inc",
+        "industry_sector": "Retail - Food Delivery",
+        "employee_count_2019": 3,
+        "employee_count_2023": 847
+      },
+      {
+        "company_name": "Transphorm, Inc.",
+        "industry_sector": "Semiconductor Manufacturing",
+        "employee_count_2019": null,
+        "employee_count_2023": 126
+      },
+      {
+        "company_name": "UWM Holdings Corporation",
+        "industry_sector": "Mortgage Lending",
+        "employee_count_2019": 3,
+        "employee_count_2023": 6700
+      },
+      {
+        "company_name": "WM Technology, Inc.",
+        "industry_sector": "Software",
+        "employee_count_2019": 3,
+        "employee_count_2023": 440
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2019.csv, [cik, text]) -> SCAN_DOCS(SEC10K, doc_ids=text) -> SEM_FILTER('Keep filings that describe the company as an early-stage or emerging competitor in 2019', {filing_text: document_text}) -> SEM_EXTRACT('Extract the reported employee count; return null when no explicit total is disclosed', {employee_count_2019: integer|null}, {filing_text: document_text}) AS emerging_2019 ||| SCAN_TABLE(SEC10K, CSV/2023.csv, [cik, text]) -> SCAN_DOCS(SEC10K, doc_ids=text) -> SEM_FILTER('Keep filings that describe the company as a recognized industry or market leader in 2023', {filing_text: document_text}) -> SEM_EXTRACT('Extract the company legal name, industry sector, and reported employee count', {company_name: string, industry_sector: string, employee_count_2023: integer}, {filing_text: document_text}) AS leaders_2023 ||| JOIN(inner, emerging_2019.cik = leaders_2023.cik) -> PROJECT([company_name, industry_sector, employee_count_2019, employee_count_2023])"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "company_name",
+        "industry_sector",
+        "employee_count_2019",
+        "employee_count_2023"
+      ],
+      "types": [
+        "string",
+        "string",
+        "integer|null",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-033",
+    "gold_answer": {
+      "top_5_growth": {
+        "ModivCare Inc.": {
+          "employee_count_2019": 3800,
+          "employee_count_2023": 21200,
+          "employee_change_percent": 457.9
+        },
+        "AdaptHealth Corp.": {
+          "employee_count_2019": 2590,
+          "employee_count_2023": 10700,
+          "employee_change_percent": 313.1
+        },
+        "Zscaler, Inc.": {
+          "employee_count_2019": 1480,
+          "employee_count_2023": 5962,
+          "employee_change_percent": 302.8
+        },
+        "NRG Energy, Inc.": {
+          "employee_count_2019": 4577,
+          "employee_count_2023": 18131,
+          "employee_change_percent": 296.1
+        },
+        "Okta, Inc.": {
+          "employee_count_2019": 1561,
+          "employee_count_2023": 6013,
+          "employee_change_percent": 285.2
+        }
+      },
+      "top_5_decline": {
+        "Regis Corporation": {
+          "employee_count_2019": 20000,
+          "employee_count_2023": 435,
+          "employee_change_percent": -97.8
+        },
+        "KASPIEN HOLDINGS INC.": {
+          "employee_count_2019": 2200,
+          "employee_count_2023": 80,
+          "employee_change_percent": -96.4
+        },
+        "TD SYNNEX Corporation": {
+          "employee_count_2019": 240000,
+          "employee_count_2023": 23000,
+          "employee_change_percent": -90.4
+        },
+        "Wyndham Hotels & Resorts, Inc.": {
+          "employee_count_2019": 14200,
+          "employee_count_2023": 2300,
+          "employee_change_percent": -83.8
+        },
+        "Dine Brands Global, Inc.": {
+          "employee_count_2019": 3560,
+          "employee_count_2023": 596,
+          "employee_change_percent": -83.3
+        }
+      }
+    },
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2019.csv, [cik, text]) -> SCAN_DOCS(SEC10K, doc_ids=text) -> SEM_EXTRACT('Extract only an explicitly disclosed company-wide total employee count; return null for partial workforce counts or non-headcount figures', {employee_count_2019: integer|null}, {filing_text: document_text}) -> FILTER(employee_count_2019 >= 1000) AS eligible_2019 ||| SCAN_TABLE(SEC10K, CSV/2023.csv, [cik, text, word_count]) -> GROUP_BY([cik], [MAX_BY(text, word_count) AS primary_text_2023]) -> SCAN_DOCS(SEC10K, doc_ids=primary_text_2023) -> SEM_EXTRACT('Extract the company legal name and only an explicitly disclosed company-wide total employee count; return null for partial workforce counts or non-headcount figures', {company_name: string, employee_count_2023: integer|null}, {filing_text: document_text}) AS employees_2023 ||| JOIN(inner, eligible_2019.cik = employees_2023.cik) -> PROJECT([company_name, employee_count_2019, employee_count_2023, ROUND(100.0 * (employee_count_2023 - employee_count_2019) / employee_count_2019, 1) AS employee_change_percent]) AS changes ||| changes -> FILTER(employee_change_percent > 0) -> ORDER_BY(employee_change_percent DESC, company_name ASC) -> LIMIT(5) AS top_5_growth ||| changes -> FILTER(employee_change_percent < 0) -> ORDER_BY(employee_change_percent ASC, company_name ASC) -> LIMIT(5) AS top_5_decline"
+      }
+    ],
+    "answer_schema": {
+      "type": "dictionary",
+      "keys": [
+        "top_5_growth",
+        "top_5_decline"
+      ],
+      "value_types": [
+        "dictionary",
+        "dictionary"
+      ],
+      "items": {
+        "top_5_growth": {
+          "key_description": "company name (string)",
+          "value_schema": {
+            "employee_count_2019": "integer — explicitly disclosed company-wide headcount in 2019",
+            "employee_count_2023": "integer — explicitly disclosed company-wide headcount in 2023",
+            "employee_change_percent": "float — signed percentage change from 2019, rounded to one decimal"
+          }
+        },
+        "top_5_decline": {
+          "key_description": "company name (string)",
+          "value_schema": {
+            "employee_count_2019": "integer — explicitly disclosed company-wide headcount in 2019",
+            "employee_count_2023": "integer — explicitly disclosed company-wide headcount in 2023",
+            "employee_change_percent": "float — signed percentage change from 2019, rounded to one decimal"
+          }
+        }
+      }
+    }
+  },
+  {
+    "task_id": "finance-034",
+    "gold_answer": [
+      {
+        "company_name": "Blue Owl Credit Income Corp.",
+        "industry_sector": "Commercial Banking",
+        "risk_factor_count": 100
+      },
+      {
+        "company_name": "SLR Private Credit BDC II LLC",
+        "industry_sector": "Business Development Company",
+        "risk_factor_count": 100
+      },
+      {
+        "company_name": "Steele Creek Capital Corporation",
+        "industry_sector": "Business Development Company",
+        "risk_factor_count": 74
+      },
+      {
+        "company_name": "Swiftmerge Acquisition Corp.",
+        "industry_sector": "Blank Check SPAC",
+        "risk_factor_count": 57
+      },
+      {
+        "company_name": "ARYA Sciences Acquisition Corp IV",
+        "industry_sector": "Blank Check SPAC",
+        "risk_factor_count": 54
+      },
+      {
+        "company_name": "SLR HC BDC LLC",
+        "industry_sector": "Business Development Company",
+        "risk_factor_count": 50
+      },
+      {
+        "company_name": "DermTech, Inc.",
+        "industry_sector": "Diagnostics",
+        "risk_factor_count": 46
+      },
+      {
+        "company_name": "Healthcare AI Acquisition Corp.",
+        "industry_sector": "Blank Check SPAC",
+        "risk_factor_count": 45
+      },
+      {
+        "company_name": "LGAM Private Credit LLC",
+        "industry_sector": "Private Credit",
+        "risk_factor_count": 45
+      },
+      {
+        "company_name": "Plum Acquisition Corp. I",
+        "industry_sector": "Blank Check SPAC",
+        "risk_factor_count": 45
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2023.csv, [cik, text, word_count])\n-> FILTER(word_count > 60000)\n-> SCAN_DOCS(SEC10K, doc_ids=text)\n-> SEM_FILTER('Keep filings that describe the company operating footprint as exclusively domestic, with no operations outside the United States', {filing_text: document_text})\n-> SEM_FILTER('Keep filings that disclose foreign-currency or exchange-rate risk', {filing_text: document_text})\n-> SEM_EXTRACT('Extract the company legal name, industry sector, and total number of risk factors', {company_name: string, industry_sector: string, risk_factor_count: integer|null}, {filing_text: document_text})\n-> FILTER(company_name IS NOT NULL AND industry_sector IS NOT NULL AND risk_factor_count IS NOT NULL)\n-> DEDUP([company_name], keep=max_by(risk_factor_count, word_count, cik))\n-> ORDER_BY([risk_factor_count DESC, LOWER(company_name) ASC])\n-> LIMIT(10)\n-> PROJECT([company_name, industry_sector, risk_factor_count])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "company_name",
+        "industry_sector",
+        "risk_factor_count"
+      ],
+      "types": [
+        "string",
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-035",
+    "gold_answer": [
+      {
+        "company_name": "United Parcel Service, Inc.",
+        "industry_sector": "Logistics & Delivery",
+        "competitive_position": "market_leader",
+        "employee_count": 500000,
+        "ma_transaction_count": 4
+      },
+      {
+        "company_name": "Walgreens Boots Alliance, Inc.",
+        "industry_sector": "Retail - Pharmacy",
+        "competitive_position": "market_leader",
+        "employee_count": 331000,
+        "ma_transaction_count": 3
+      },
+      {
+        "company_name": "Tyson Foods, Inc.",
+        "industry_sector": "Food Processing",
+        "competitive_position": "market_leader",
+        "employee_count": 139000,
+        "ma_transaction_count": 5
+      },
+      {
+        "company_name": "Amphenol Corporation",
+        "industry_sector": "Electrical Components & Equipment",
+        "competitive_position": "market_leader",
+        "employee_count": 95000,
+        "ma_transaction_count": 5
+      },
+      {
+        "company_name": "Mondelēz International, Inc.",
+        "industry_sector": "Food & Beverage Manufacturing",
+        "competitive_position": "market_leader",
+        "employee_count": 91000,
+        "ma_transaction_count": 7
+      },
+      {
+        "company_name": "Philip Morris International Inc.",
+        "industry_sector": "Tobacco",
+        "competitive_position": "market_leader",
+        "employee_count": 82700,
+        "ma_transaction_count": 5
+      },
+      {
+        "company_name": "Baxter International Inc.",
+        "industry_sector": "Medical Devices & Equipment",
+        "competitive_position": "major_player",
+        "employee_count": 60000,
+        "ma_transaction_count": 5
+      },
+      {
+        "company_name": "Jacobs Solutions Inc.",
+        "industry_sector": "Engineering & Construction Services",
+        "competitive_position": "market_leader",
+        "employee_count": 60000,
+        "ma_transaction_count": 4
+      },
+      {
+        "company_name": "Aon plc",
+        "industry_sector": "Professional Services",
+        "competitive_position": "major_player",
+        "employee_count": 50000,
+        "ma_transaction_count": 6
+      },
+      {
+        "company_name": "Boston Scientific Corporation",
+        "industry_sector": "Medical Devices",
+        "competitive_position": "major_player",
+        "employee_count": 48000,
+        "ma_transaction_count": 4
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2023.csv, [cik, text, word_count])\n-> FILTER(word_count > 60000)\n-> SCAN_DOCS(SEC10K, doc_ids=text)\n-> SEM_FILTER('Keep filings that identify acquisition-integration risk', {filing_text: document_text})\n-> SEM_FILTER('Keep filings that report pending, threatened, or ongoing litigation, legal proceedings, lawsuits, or regulatory investigations', {filing_text: document_text})\n-> SEM_CLASSIFY('Assign each filing to its competitive-position category', target_labels=['emerging', 'niche_player', 'challenger', 'major_player', 'market_leader', 'undetermined'], input_bindings={filing_text: document_text})\n-> SEM_EXTRACT('Extract the company legal name, industry sector, reported employee count, and number of distinct merger or acquisition transactions mentioned', {company_name: string, industry_sector: string, employee_count: integer|null, ma_transaction_count: integer}, {filing_text: document_text})\n-> FILTER(competitive_position != 'undetermined' AND ma_transaction_count >= 3 AND employee_count IS NOT NULL)\n-> DEDUP([company_name], keep=max_by(employee_count, ma_transaction_count, word_count, cik))\n-> ORDER_BY([employee_count DESC, LOWER(company_name) ASC])\n-> LIMIT(10)\n-> PROJECT([company_name, industry_sector, competitive_position, employee_count, ma_transaction_count])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "company_name",
+        "industry_sector",
+        "competitive_position",
+        "employee_count",
+        "ma_transaction_count"
+      ],
+      "types": [
+        "string",
+        "string",
+        "string",
+        "integer",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-036",
+    "gold_answer": [
+      {
+        "company_name": "Investcorp Credit Management BDC, Inc.",
+        "industry_sector": "Business Development Company",
+        "entity_type": "operating_company",
+        "growth_strategy": "organic",
+        "risk_factor_count": 45
+      },
+      {
+        "company_name": "SC Health Corporation",
+        "industry_sector": "Blank Check Company",
+        "entity_type": "shell_company",
+        "growth_strategy": "not_applicable",
+        "risk_factor_count": 45
+      },
+      {
+        "company_name": "South State Corporation",
+        "industry_sector": "Commercial Banking",
+        "entity_type": "holding_company",
+        "growth_strategy": "hybrid",
+        "risk_factor_count": 40
+      },
+      {
+        "company_name": "Global Partners LP",
+        "industry_sector": "Oil & Gas Midstream",
+        "entity_type": "operating_company",
+        "growth_strategy": "hybrid",
+        "risk_factor_count": 30
+      },
+      {
+        "company_name": "Noble Midstream Partners LP",
+        "industry_sector": "Oil & Gas Midstream",
+        "entity_type": "operating_company",
+        "growth_strategy": "hybrid",
+        "risk_factor_count": 30
+      },
+      {
+        "company_name": "Alexander & Baldwin, Inc.",
+        "industry_sector": "Real Estate Investment Trust",
+        "entity_type": "operating_company",
+        "growth_strategy": "hybrid",
+        "risk_factor_count": 24
+      },
+      {
+        "company_name": "American Electric Power Company, Inc.",
+        "industry_sector": "Electric Utilities",
+        "entity_type": "holding_company",
+        "growth_strategy": "hybrid",
+        "risk_factor_count": 24
+      },
+      {
+        "company_name": "Berkshire Hathaway Energy",
+        "industry_sector": "Energy - Utilities & Pipelines",
+        "entity_type": "holding_company",
+        "growth_strategy": "hybrid",
+        "risk_factor_count": 24
+      },
+      {
+        "company_name": "CenterPoint Energy, Inc.",
+        "industry_sector": "Electric Utilities",
+        "entity_type": "holding_company",
+        "growth_strategy": "hybrid",
+        "risk_factor_count": 24
+      },
+      {
+        "company_name": "Metropolitan Life Insurance Company",
+        "industry_sector": "Insurance",
+        "entity_type": "operating_company",
+        "growth_strategy": "hybrid",
+        "risk_factor_count": 24
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2020.csv, [cik, text, word_count])\n-> FILTER(word_count > 55000)\n-> SCAN_DOCS(SEC10K, doc_ids=text)\n-> SEM_FILTER('Keep filings that identify climate-change risk', {filing_text: document_text})\n-> SEM_CLASSIFY('Assign each filing to its entity-type category', target_labels=['operating_company', 'holding_company', 'investment_fund', 'blank_check_SPAC', 'shell_company', 'limited_partnership', 'business_development_company', 'undetermined'], input_bindings={filing_text: document_text})\n-> SEM_CLASSIFY('Assign each filing to its stated growth-strategy category', target_labels=['organic', 'acquisition_driven', 'hybrid', 'not_applicable', 'undetermined'], input_bindings={filing_text: document_text})\n-> SEM_EXTRACT('Extract the company legal name, industry sector, and total number of risk factors', {company_name: string, industry_sector: string, risk_factor_count: integer|null}, {filing_text: document_text})\n-> FILTER(entity_type != 'undetermined' AND growth_strategy != 'undetermined' AND risk_factor_count IS NOT NULL)\n-> DEDUP([company_name], keep=max_by(risk_factor_count, word_count, cik))\n-> ORDER_BY([risk_factor_count DESC, LOWER(company_name) ASC])\n-> LIMIT(10)\n-> PROJECT([company_name, industry_sector, entity_type, growth_strategy, risk_factor_count])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "company_name",
+        "industry_sector",
+        "entity_type",
+        "growth_strategy",
+        "risk_factor_count"
+      ],
+      "types": [
+        "string",
+        "string",
+        "string",
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-037",
+    "gold_answer": [
+      {
+        "company_name": "Bakkt Holdings, Inc.",
+        "industry_sector": "Software",
+        "growth_strategy": "hybrid",
+        "foreign_country_count": 20
+      },
+      {
+        "company_name": "Catheter Precision, Inc.",
+        "industry_sector": "Medical Devices",
+        "growth_strategy": "organic",
+        "foreign_country_count": 20
+      },
+      {
+        "company_name": "Trinity Capital Inc.",
+        "industry_sector": "Commercial Banking",
+        "growth_strategy": "organic",
+        "foreign_country_count": 20
+      },
+      {
+        "company_name": "Rubicon Technologies, Inc.",
+        "industry_sector": "Software",
+        "growth_strategy": "hybrid",
+        "foreign_country_count": 19
+      },
+      {
+        "company_name": "Global Business Travel Group, Inc.",
+        "industry_sector": "Travel Management Services",
+        "growth_strategy": "hybrid",
+        "foreign_country_count": 15
+      },
+      {
+        "company_name": "NUBURU, INC.",
+        "industry_sector": "Semiconductor Manufacturing",
+        "growth_strategy": "organic",
+        "foreign_country_count": 15
+      },
+      {
+        "company_name": "Tourmaline Bio, Inc.",
+        "industry_sector": "Pharmaceutical",
+        "growth_strategy": "organic",
+        "foreign_country_count": 3
+      },
+      {
+        "company_name": "Conduit Pharmaceuticals Inc.",
+        "industry_sector": "Pharmaceutical",
+        "growth_strategy": "organic",
+        "foreign_country_count": 2
+      },
+      {
+        "company_name": "iAnthus Capital Holdings, Inc.",
+        "industry_sector": "Cannabis",
+        "growth_strategy": "hybrid",
+        "foreign_country_count": 1
+      },
+      {
+        "company_name": "Republic Services, Inc.",
+        "industry_sector": "Waste Management",
+        "growth_strategy": "hybrid",
+        "foreign_country_count": 1
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2021.csv, [cik, text, word_count])\n-> FILTER(word_count > 60000)\n-> SCAN_DOCS(SEC10K, doc_ids=text)\n-> SEM_CLASSIFY('Assign each filing to its geographic operating-footprint category', target_labels=['domestic_only', 'limited_international', 'globally_diversified', 'undetermined'], input_bindings={filing_text: document_text})\n-> FILTER(geographic_diversification = 'domestic_only')\n-> SEM_FILTER('Keep filings that do not disclose foreign-currency or exchange-rate risk', {filing_text: document_text})\n-> DEDUP([cik], keep=max_by(word_count)) AS baseline_2021\n|||\nSCAN_TABLE(SEC10K, CSV/2023.csv, [cik, text, word_count])\n-> FILTER(word_count > 60000)\n-> SCAN_DOCS(SEC10K, doc_ids=text)\n-> SEM_CLASSIFY('Assign each filing to its geographic operating-footprint category', target_labels=['domestic_only', 'limited_international', 'globally_diversified', 'undetermined'], input_bindings={filing_text: document_text})\n-> FILTER(geographic_diversification = 'globally_diversified')\n-> SEM_FILTER('Keep filings that disclose foreign-currency or exchange-rate risk', {filing_text: document_text})\n-> DEDUP([cik], keep=max_by(word_count)) AS expanded_2023\n|||\nJOIN(inner, baseline_2021.cik = expanded_2023.cik) AS transitions\n-> SEM_CLASSIFY('Assign the 2023 filing to its stated growth-strategy category', target_labels=['organic', 'acquisition_driven', 'hybrid', 'not_applicable', 'undetermined'], input_bindings={filing_text: expanded_2023.document_text})\n-> SEM_EXTRACT('Extract the 2023 company legal name, industry sector, and countries of operation', {company_name: string, industry_sector: string, countries_of_operation: list[string]}, {filing_text: expanded_2023.document_text})\n-> PROJECT([company_name, industry_sector, growth_strategy, COUNT_DISTINCT(NORMALIZE_COUNTRY(countries_of_operation) EXCLUDING 'United States') AS foreign_country_count])\n-> ORDER_BY([foreign_country_count DESC, LOWER(company_name) ASC])\n-> LIMIT(10)\n-> PROJECT([company_name, industry_sector, growth_strategy, foreign_country_count])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "company_name",
+        "industry_sector",
+        "growth_strategy",
+        "foreign_country_count"
+      ],
+      "types": [
+        "string",
+        "string",
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-038",
+    "gold_answer": [
+      {
+        "competitive_position": "challenger",
+        "filing_count": 179,
+        "median_employee_count": 76.0,
+        "top_risk_theme": "regulatory_compliance"
+      },
+      {
+        "competitive_position": "emerging",
+        "filing_count": 89,
+        "median_employee_count": 3.0,
+        "top_risk_theme": "regulatory_compliance"
+      },
+      {
+        "competitive_position": "major_player",
+        "filing_count": 30,
+        "median_employee_count": 1034.5,
+        "top_risk_theme": "cybersecurity"
+      },
+      {
+        "competitive_position": "market_leader",
+        "filing_count": 11,
+        "median_employee_count": 728.0,
+        "top_risk_theme": "cybersecurity"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2022.csv, [text, word_count])\n-> FILTER(word_count > 65000)\n-> SCAN_DOCS(SEC10K, doc_ids=text)\n-> SEM_FILTER('Keep filings that express substantial doubt about continuing as a going concern', {filing_text: document_text})\n-> SEM_FILTER('Keep filings that describe operations outside the United States', {filing_text: document_text})\n-> SEM_CLASSIFY('Assign each filing to its competitive-position category', target_labels=['emerging', 'niche_player', 'challenger', 'major_player', 'market_leader', 'undetermined'], input_bindings={filing_text: document_text})\n-> FILTER(competitive_position != 'undetermined')\n-> SEM_EXTRACT('Extract the reported employee count', {employee_count: integer|null}, {filing_text: document_text}) AS qualified_filings\n|||\nqualified_filings\n-> GROUP_BY([competitive_position], [COUNT(*) AS filing_count, ROUND(MEDIAN(employee_count IGNORE NULLS), 1) AS median_employee_count]) AS position_stats\n|||\nqualified_filings\n-> SEM_AGGREGATE('For each competitive-position group, identify the most prevalent risk theme from debt_financing, regulatory_compliance, litigation_legal, key_personnel, customer_concentration, intellectual_property, and cybersecurity; break frequency ties alphabetically', {top_risk_theme: string}, group_by=[competitive_position], input_bindings={filing_text: document_text}) AS theme_summary\n|||\nJOIN(inner, position_stats.competitive_position = theme_summary.competitive_position)\n-> FILTER(filing_count >= 10)\n-> PROJECT([competitive_position, filing_count, median_employee_count, top_risk_theme])\n-> ORDER_BY([filing_count DESC, competitive_position ASC])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "competitive_position",
+        "filing_count",
+        "median_employee_count",
+        "top_risk_theme"
+      ],
+      "types": [
+        "string",
+        "integer",
+        "float",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-039",
+    "gold_answer": [
+      {
+        "acquirer": "NCR Corporation",
+        "target": "Cardtronics plc",
+        "target_sector": "Automated Consumer Financial Services",
+        "target_risk_factor_count": 28
+      },
+      {
+        "acquirer": "Teladoc Health, Inc.",
+        "target": "Livongo Health, Inc.",
+        "target_sector": "Digital Health",
+        "target_risk_factor_count": 30
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV/2020.csv, [cik, text, word_count])\n-> FILTER(word_count > 50000)\n-> SCAN_DOCS(SEC10K, doc_ids=text)\n-> SEM_FILTER('Keep filings for companies whose primary business is software or a technology platform', {filing_text: document_text})\n-> SEM_EXTRACT('Extract the acquirer legal name, its industry sector, and names of whole companies it acquired or agreed to acquire; exclude asset purchases, minority-stake investments, spin-offs, and SPAC or blank-check combinations', {acquirer: string, acquirer_sector: string, acquired_company_names: list[string]}, {filing_text: document_text})\n-> FILTER(LENGTH(acquired_company_names) > 0) AS acquisition_events\n|||\nSCAN_TABLE(SEC10K, CSV/2019.csv, [cik, text, word_count])\n-> FILTER(word_count > 50000)\n-> SCAN_DOCS(SEC10K, doc_ids=text)\n-> SEM_EXTRACT('Extract the registrant legal name, industry sector, and total number of risk factors', {registry_company_name: string, target_sector: string, target_risk_factor_count: integer|null}, {filing_text: document_text}) AS registry_2019\n|||\nSEM_JOIN('Match each acquired-company reference to the 2019 filing registrant that is the same legal entity despite abbreviations, former names, spelling variants, or legal-suffix differences; reject merely similar but unrelated names', input_bindings_left={acquired_company_names: acquisition_events.acquired_company_names, acquisition_context: acquisition_events.document_text}, input_bindings_right={registry_company_name: registry_2019.registry_company_name, registry_context: registry_2019.document_text})\n-> FILTER(acquisition_events.cik != registry_2019.cik AND acquisition_events.acquirer_sector != registry_2019.target_sector AND registry_2019.target_risk_factor_count IS NOT NULL)\n-> PROJECT([acquisition_events.acquirer AS acquirer, registry_2019.registry_company_name AS target, registry_2019.target_sector AS target_sector, registry_2019.target_risk_factor_count AS target_risk_factor_count])\n-> DEDUP([acquirer, target])"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "acquirer",
+        "target",
+        "target_sector",
+        "target_risk_factor_count"
+      ],
+      "types": [
+        "string",
+        "string",
+        "string",
+        "integer"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-040",
+    "gold_answer": [
+      {
+        "company_a": "Activision Blizzard, Inc.",
+        "company_b": "Microsoft Corporation"
+      },
+      {
+        "company_a": "InsPro Technologies Corporation",
+        "company_b": "Majesco"
+      },
+      {
+        "company_a": "International Business Machines Corporation",
+        "company_b": "Red Hat, Inc."
+      },
+      {
+        "company_a": "Microsoft Corporation",
+        "company_b": "Nuance Communications, Inc."
+      },
+      {
+        "company_a": "Momentive Global Inc.",
+        "company_b": "Zendesk, Inc."
+      },
+      {
+        "company_a": "NIC Inc.",
+        "company_b": "Tyler Technologies, Inc."
+      },
+      {
+        "company_a": "Open Text Corporation",
+        "company_b": "Zix Corporation"
+      },
+      {
+        "company_a": "Pivotal Software, Inc.",
+        "company_b": "VMware, Inc."
+      },
+      {
+        "company_a": "Qumu Corporation",
+        "company_b": "Synacor, Inc."
+      },
+      {
+        "company_a": "salesforce.com, inc.",
+        "company_b": "Slack Technologies, Inc."
+      },
+      {
+        "company_a": "Take-Two Interactive Software, Inc.",
+        "company_b": "Zynga Inc."
+      },
+      {
+        "company_a": "Telaria, Inc.",
+        "company_b": "The Rubicon Project, Inc."
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV, [text]) -> SCAN_DOCS(SEC10K, doc_ids=text) -> SEM_FILTER('Keep filings for companies in the Software industry sector', {filing_text: document_text}) -> SEM_EXTRACT('Extract the filing company legal name and names of whole-company merger or acquisition counterparties; exclude asset purchases, minority investments, spin-offs, single-company going-private recapitalizations, and SPAC or blank-check combinations', {company_name: string, counterparty_names: list[string]}, {filing_text: document_text}) AS software_events ||| software_events -> FILTER(LENGTH(counterparty_names) > 0) AS candidate_events ||| software_events -> DEDUP([company_name]) AS software_registry ||| SEM_JOIN('Match each named counterparty to the same legal entity in the software-company filing registry despite harmless naming variations', input_bindings_left={counterparty_names: candidate_events.counterparty_names}, input_bindings_right={registry_company_name: software_registry.company_name}) -> FILTER(candidate_events.company_name != software_registry.company_name) -> PROJECT([CASE WHEN LOWER(candidate_events.company_name) <= LOWER(software_registry.company_name) THEN candidate_events.company_name ELSE software_registry.company_name END AS company_a, CASE WHEN LOWER(candidate_events.company_name) <= LOWER(software_registry.company_name) THEN software_registry.company_name ELSE candidate_events.company_name END AS company_b]) -> DEDUP([company_a, company_b])"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "company_a",
+        "company_b"
+      ],
+      "types": [
+        "string",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-041",
+    "gold_answer": [
+      {
+        "acquirer": "Alphabet Inc.",
+        "target": "Fitbit, Inc.",
+        "target_sector": "Wearable Technology"
+      },
+      {
+        "acquirer": "NCR Corporation",
+        "target": "Cardtronics plc",
+        "target_sector": "Automated Consumer Financial Services"
+      },
+      {
+        "acquirer": "Oracle Corporation",
+        "target": "Cerner Corporation",
+        "target_sector": "Health Care Information Technology"
+      },
+      {
+        "acquirer": "Teladoc Health, Inc.",
+        "target": "Livongo Health, Inc.",
+        "target_sector": "Digital Health"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV, [text]) -> SCAN_DOCS(SEC10K, doc_ids=text) -> SEM_FILTER('Keep filings for companies whose primary business is software or a technology platform', {filing_text: document_text}) -> SEM_EXTRACT('Extract the acquirer legal name, its industry sector, and names of whole companies it acquired or agreed to acquire; exclude asset purchases, minority investments, spin-offs, and SPAC or blank-check combinations', {acquirer: string, acquirer_sector: string, acquired_company_names: list[string]}, {filing_text: document_text}) -> FILTER(LENGTH(acquired_company_names) > 0) AS acquisition_events ||| SCAN_TABLE(SEC10K, CSV, [cik, year, text, word_count]) -> GROUP_BY([cik], [MIN_BY(text, year ASC, word_count DESC) AS registry_text]) -> SCAN_DOCS(SEC10K, doc_ids=registry_text) -> SEM_EXTRACT('Extract the filing company legal name and industry sector', {registry_company_name: string, target_sector: string}, {filing_text: document_text}) AS company_registry ||| SEM_JOIN('Match each acquired-company name to the same legal entity in the filing registry despite harmless naming variations', input_bindings_left={acquired_company_names: acquisition_events.acquired_company_names}, input_bindings_right={registry_company_name: company_registry.registry_company_name}) -> FILTER(acquisition_events.acquirer != company_registry.registry_company_name AND acquisition_events.acquirer_sector != company_registry.target_sector) -> PROJECT([acquisition_events.acquirer AS acquirer, company_registry.registry_company_name AS target, company_registry.target_sector AS target_sector]) -> DEDUP([acquirer, target])"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "acquirer",
+        "target",
+        "target_sector"
+      ],
+      "types": [
+        "string",
+        "string",
+        "string"
+      ]
+    }
+  },
+  {
+    "task_id": "finance-042",
+    "gold_answer": [
+      {
+        "company": "International Business Machines Corporation",
+        "ma_counterparty": "Red Hat, Inc.",
+        "finance_subsidiary": "IBM Credit LLC"
+      },
+      {
+        "company": "CNH Industrial N.V.",
+        "ma_counterparty": "Raven Industries, Inc.",
+        "finance_subsidiary": "CNH Industrial Capital LLC"
+      },
+      {
+        "company": "Discover Financial Services",
+        "ma_counterparty": "Capital One Financial Corporation",
+        "finance_subsidiary": "Discover Funding LLC"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_TABLE(SEC10K, CSV, [text]) -> SCAN_DOCS(SEC10K, doc_ids=text) -> SEM_EXTRACT('Extract the filing company legal name and names of wholly-owned finance or funding subsidiaries', {company_name: string, finance_subsidiary_names: list[string]}, {filing_text: document_text}) -> GROUP_BY([company_name], [UNION_DISTINCT(finance_subsidiary_names) AS finance_subsidiary_names, COLLECT(document_text) AS filing_texts]) AS companies ||| companies -> FILTER(LENGTH(finance_subsidiary_names) > 0) AS finance_candidates ||| SEM_JOIN('Match each finance-subsidiary name to the same legal entity in the filer registry and emit the matched registry name as finance_company_name', input_bindings_left={finance_subsidiary_names: finance_candidates.finance_subsidiary_names}, input_bindings_right={registry_name: companies.company_name}) AS finance_matches -> FILTER(finance_matches.company_name != finance_company_name) -> SEM_EXTRACT('Extract names of qualifying whole-company merger or acquisition counterparties; exclude asset purchases, minority-stake investments, spin-offs, and SPAC or blank-check combinations', {ma_counterparty_names: list[string]}, {filing_texts: finance_matches.filing_texts}) AS ma_candidates -> SEM_JOIN('Match each M&A-counterparty name to the same legal entity in the filer registry and emit the matched registry name as ma_company_name', input_bindings_left={ma_counterparty_names: ma_candidates.ma_counterparty_names}, input_bindings_right={registry_name: companies.company_name}) -> FILTER(ma_candidates.company_name != ma_company_name AND finance_company_name != ma_company_name) -> PROJECT([ma_candidates.company_name AS company, ma_company_name AS ma_counterparty, finance_company_name AS finance_subsidiary]) -> DEDUP([company, ma_counterparty, finance_subsidiary])"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "company",
+        "ma_counterparty",
+        "finance_subsidiary"
+      ],
+      "types": [
+        "string",
+        "string",
+        "string"
+      ]
+    }
+  }
+]

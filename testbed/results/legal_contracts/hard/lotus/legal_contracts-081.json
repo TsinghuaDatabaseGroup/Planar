@@ -1,0 +1,11 @@
+{
+  "task_id": "legal_contracts-081",
+  "answer": [
+    {
+      "company": "Strategic Education, Inc."
+    }
+  ],
+  "elapsed_seconds": 34.04,
+  "cost_usd": 0.298296,
+  "total_tokens": 559700
+}

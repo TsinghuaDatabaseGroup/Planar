@@ -1,0 +1,232 @@
+datasets:
+  nhtsa_complaints:
+    type: file
+    path: data/nhtsa_vehicle_safety/complaints.csv
+  nhtsa_recalls:
+    type: file
+    path: data/nhtsa_vehicle_safety/recalls.jsonl
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: https://llm-endpoint.example/v1
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: https://llm-endpoint.example/v1
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types:
+    - chunk
+    - proj_synthesis
+    - glean
+  equijoin:
+    target_recall: 0.95
+operations:
+- name: filter_ford_airbag_complaints
+  type: code_filter
+  code: "def transform(doc):\n    return (\n        doc.get(\"make\") == \"FORD\"\n        and doc.get(\"\
+    component_id\") == \"AIRBAG\"\n    )\n"
+- name: filter_ford_airbag_recalls
+  type: code_filter
+  code: "def transform(doc):\n    vehicle = doc.get(\"vehicle\") or {}\n    component = doc.get(\"component\"\
+    ) or {}\n    return (\n        vehicle.get(\"make\") == \"FORD\"\n        and component.get(\"component_id\"\
+    ) == \"AIRBAG\"\n    )\n"
+- name: flatten_ford_airbag_recall_fields
+  type: code_map
+  code: "def transform(doc):\n    campaign = doc.get(\"campaign\") or {}\n    vehicle = doc.get(\"vehicle\"\
+    ) or {}\n    component = doc.get(\"component\") or {}\n    risk = doc.get(\"risk\") or {}\n    remedy\
+    \ = doc.get(\"remedy\") or {}\n    return {\n        \"campaign_number\": campaign.get(\"number\"\
+    ),\n        \"make\": vehicle.get(\"make\"),\n        \"component_id\": component.get(\"component_id\"\
+    ),\n        \"defect_summary\": risk.get(\"defect_summary\") or \"\",\n        \"corrective_action\"\
+    : remedy.get(\"corrective_action\") or \"\",\n    }\n"
+- name: match_ford_airbag_complaints_to_recalls
+  type: equijoin
+  comparison_prompt: 'Determine whether this Ford airbag complaint and Ford airbag recall describe
+
+    the same airbag failure mechanism.
+
+
+    Match when both records identify the same concrete non-deployment,
+
+    unintended-deployment, inflator, restraint-control, sensor, wiring, or other
+
+    airbag failure mechanism. A shared AIRBAG component, warning light, injury,
+
+    crash, or broad deployment vocabulary alone is not sufficient.
+
+
+    COMPLAINT:
+
+    {{ left.summary_text }}
+
+
+    RECALL DEFECT:
+
+    {{ right.defect_summary }}
+
+    '
+  blocking_conditions:
+  - left["component_id"] == right["component_id"]
+  comparison_model: Qwen3.5-397B-A17B
+  timeout: 120
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 4096
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: classify_complaints_parallel
+  type: parallel_map
+  prompts:
+  - prompt: 'Determine whether this complaint narrative describes a concrete airbag safety event rather
+      than a cosmetic or warning-light-only concern.
+
+
+      Qualifying events include actual non-deployment in a relevant crash, unintended deployment, inflator
+      rupture or fragments, physical restraint malfunction, occupant injury, or another experienced deployment
+      hazard. Do not qualify an indicator light, diagnostic code, cosmetic condition, routine service,
+      or generic concern without a concrete airbag event.
+
+
+      Complaint narrative:
+
+      {{ input.summary_text }}
+
+
+      Return true if it describes a concrete airbag safety event, false otherwise.'
+    output_keys:
+    - describes_concrete_airbag_safety_event
+    model: Qwen3.5-397B-A17B
+  - prompt: 'Classify the complaint severity using exactly one label:
+
+
+      - minor_inconvenience: a limited concrete event with little immediate safety impact, no injury or
+      crash exposure, and no substantial loss of restraint protection;
+
+      - moderate_safety_event: a meaningful airbag or restraint malfunction that impairs safety or creates
+      a hazard, but the narrative does not establish a severe outcome or immediately life-threatening
+      event;
+
+      - severe_safety_event: a crash with failed protection, unintended deployment causing injury, inflator
+      rupture or fragments, serious injury exposure, towing after the event, or another high-consequence
+      airbag failure.
+
+
+      Classify from the narrative only and choose the highest severity directly supported by it.
+
+
+      Complaint narrative:
+
+      {{ input.summary_text }}'
+    output_keys:
+    - complaint_severity
+    model: Qwen3.5-397B-A17B
+  output:
+    schema:
+      describes_concrete_airbag_safety_event: boolean
+      complaint_severity: enum[minor_inconvenience, moderate_safety_event, severe_safety_event]
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 4096
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  model: Qwen3.5-397B-A17B
+- name: classify_recall_remedy_style
+  type: map
+  optimize: true
+  prompt: "Classify the dominant recall remedy style using exactly one label:\n\n- software_update: software,\
+    \ firmware, calibration, or control-module\n  reprogramming is the principal corrective action;\n\
+    - part_replacement: replacement of a physical component, module, inflator,\n  assembly, wiring part,\
+    \ or hardware is the principal corrective action;\n- other: the remedy does not primarily fit either\
+    \ preceding style.\n\nIgnore notification dates, reimbursement language, contact information, and\n\
+    interim owner instructions.\n\nRecall corrective action:\n{{ input.corrective_action }}\n"
+  output:
+    mode: structured_output
+    schema:
+      recall_remedy_style: enum[software_update, part_replacement, other]
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 4096
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: aggregate_ford_airbag_campaign_metrics
+  type: code_reduce
+  reduce_key: campaign_number
+  code: "def transform(items):\n    from collections import Counter\n\n    complaint_ids = {\n       \
+    \ item.get(\"complaint_id\")\n        for item in items\n        if item.get(\"complaint_id\")\n \
+    \   }\n    severe_indicators = []\n    for item in items:\n        try:\n            injury_count\
+    \ = float(item.get(\"injury_count\") or 0)\n        except (TypeError, ValueError):\n            injury_count\
+    \ = 0.0\n        severe_indicators.append(\n            item.get(\"crash_flag\") == \"true\"\n   \
+    \         or injury_count > 0\n            or item.get(\"vehicle_towed_flag\") == \"true\"\n     \
+    \   )\n\n    severity_counts = Counter(\n        item.get(\"complaint_severity\")\n        for item\
+    \ in items\n        if item.get(\"complaint_severity\")\n    )\n    remedy_counts = Counter(\n   \
+    \     item.get(\"recall_remedy_style\")\n        for item in items\n        if item.get(\"recall_remedy_style\"\
+    )\n    )\n\n    dominant_severity = (\n        sorted(\n            severity_counts,\n           \
+    \ key=lambda label: (-severity_counts[label], label),\n        )[0]\n        if severity_counts\n\
+    \        else None\n    )\n    dominant_remedy = (\n        sorted(\n            remedy_counts,\n\
+    \            key=lambda label: (-remedy_counts[label], label),\n        )[0]\n        if remedy_counts\n\
+    \        else None\n    )\n    return {\n        \"matched_complaint_count\": len(complaint_ids),\n\
+    \        \"severe_indicator_rate\": (\n            sum(severe_indicators) / len(severe_indicators)\n\
+    \            if severe_indicators\n            else 0.0\n        ),\n        \"dominant_complaint_severity\"\
+    : dominant_severity,\n        \"dominant_recall_remedy_style\": dominant_remedy,\n    }\n"
+- name: order_limit_and_rank_ford_campaigns
+  type: code_reduce
+  reduce_key: _all
+  code: "def transform(items):\n    ordered = sorted(\n        items,\n        key=lambda item: (\n  \
+    \          -int(item.get(\"matched_complaint_count\") or 0),\n            str(item.get(\"campaign_number\"\
+    ) or \"\"),\n        ),\n    )\n    rows = [\n        {\n            \"rank\": index,\n          \
+    \  \"campaign_number\": item.get(\"campaign_number\"),\n            \"matched_complaint_count\": item.get(\n\
+    \                \"matched_complaint_count\"\n            ),\n            \"severe_indicator_rate\"\
+    : item.get(\n                \"severe_indicator_rate\"\n            ),\n            \"dominant_complaint_severity\"\
+    : item.get(\n                \"dominant_complaint_severity\"\n            ),\n            \"dominant_recall_remedy_style\"\
+    : item.get(\n                \"dominant_recall_remedy_style\"\n            ),\n        }\n       \
+    \ for index, item in enumerate(ordered[:5], start=1)\n    ]\n    return {\"rows\": rows}\n"
+- name: unnest_ranked_ford_campaigns
+  type: unnest
+  unnest_key: rows
+  recursive: true
+  depth: 2
+  expand_fields:
+  - rank
+  - campaign_number
+  - matched_complaint_count
+  - severe_indicator_rate
+  - dominant_complaint_severity
+  - dominant_recall_remedy_style
+pipeline:
+  steps:
+  - name: ford_airbag_complaints
+    input: nhtsa_complaints
+    operations:
+    - filter_ford_airbag_complaints
+  - name: ford_airbag_recalls
+    input: nhtsa_recalls
+    operations:
+    - filter_ford_airbag_recalls
+    - flatten_ford_airbag_recall_fields
+  - name: matching_ford_airbag_pairs
+    operations:
+    - match_ford_airbag_complaints_to_recalls:
+        left: ford_airbag_complaints
+        right: ford_airbag_recalls
+  - name: classified_ford_airbag_pairs
+    input: matching_ford_airbag_pairs
+    operations:
+    - classify_complaints_parallel
+    - classify_recall_remedy_style
+    - aggregate_ford_airbag_campaign_metrics
+    - order_limit_and_rank_ford_campaigns
+    - unnest_ranked_ford_campaigns
+  output:
+    type: file
+    path: /home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-036/outputs/output_vehicle_safety-036.json
+    intermediate_dir: /home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-036/intermediates
+bypass_cache: true

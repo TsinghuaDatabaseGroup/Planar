@@ -1,0 +1,16 @@
+{
+  "task_id": "legal_contracts-064",
+  "answer": [
+    {
+      "document_id": "TabunKitchenInvestments-NDA.pdf",
+      "word_count": 1529
+    },
+    {
+      "document_id": "exhibit101-contentlicensea.htm",
+      "word_count": 9865
+    }
+  ],
+  "elapsed_seconds": 53.029,
+  "cost_usd": 0.06056499,
+  "total_tokens": 37930
+}

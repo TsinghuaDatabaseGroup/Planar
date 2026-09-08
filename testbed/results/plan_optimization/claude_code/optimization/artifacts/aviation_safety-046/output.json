@@ -1,0 +1,27 @@
+{
+  "task_id": "aviation_safety-046",
+  "optimization_analysis": "The original plan uses two separate SEM_EXTRACT passes (one per document side) followed by a SEM_JOIN, costing 3 LM calls per blocked pair and an O(n²) SEM_JOIN cross-product. The optimization replaces this with: (1) a deterministic regular JOIN that pairs left_text and right_text for each blocked pair by matching incident IDs (O(n), no LM cost), then (2) a single SEM_EXTRACT per pair that reads both narratives together and simultaneously determines whether they describe the same underlying occurrence AND extracts the shared event type — reducing to 1 LM call per blocked pair. A cheap scalar FILTER on the returned boolean then replaces the SEM_JOIN filter. Total LM calls drop by ~66% (3→1 per pair) and the O(n²) SEM_JOIN cross-product is eliminated entirely. Blocking conditions, semantic matching criteria, output schema, sort order, and LIMIT are all preserved unchanged.",
+  "optimized_semantic_plan": [
+    {
+      "type": "operator_dag",
+      "program": "left_incidents := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv AS left_incident, [incident_id,incident_date,state_reference,locale_reference_type,primary_problem,flight_phase,anomaly_summary,result_summary,text_file])\n)\nright_incidents := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv AS right_incident, [incident_id,incident_date,state_reference,locale_reference_type,primary_problem,flight_phase,anomaly_summary,result_summary,text_file])\n)\nblocked_pairs := JOIN(left=left_incidents, right=right_incidents, join_type=inner, condition=left_incident.incident_id < right_incident.incident_id AND left_incident.incident_date = right_incident.incident_date AND left_incident.state_reference = right_incident.state_reference AND left_incident.locale_reference_type = right_incident.locale_reference_type AND left_incident.primary_problem = right_incident.primary_problem)\nleft_docs := (\n  blocked_pairs\n  -> SCAN_DOCS(NASA_ASRS, selector=blocked_pairs.left_incident.text_file, [left_incident, right_incident, left_text])\n)\nright_docs := (\n  blocked_pairs\n  -> SCAN_DOCS(NASA_ASRS, selector=blocked_pairs.right_incident.text_file, [left_incident, right_incident, right_text])\n)\npaired_docs := JOIN(left=left_docs, right=right_docs, join_type=inner, condition=left_docs.left_incident.incident_id = right_docs.left_incident.incident_id AND left_docs.right_incident.incident_id = right_docs.right_incident.incident_id, output=[left_incident, right_incident, left_text, right_text])\nmatched_pairs := (\n  paired_docs\n  -> SEM_EXTRACT(\"Determine whether the two incident narratives describe the same underlying occurrence: they must agree on a distinctive event progression, compatible measurements, actions taken, and outcome — generic topical similarity is insufficient. Set is_same_occurrence=true only when the narratives agree on all of these; otherwise set is_same_occurrence=false. When true, also extract the shared primary event type normalized to one of {equipment_failure,airborne_conflict,ground_conflict,clearance_deviation,weather_event,maintenance_event,cabin_event,other}.\", {is_same_occurrence:bool, shared_primary_event_type:string}, {left_text, right_text})\n  -> FILTER(is_same_occurrence = true)\n)\nmatched_pairs\n-> PROJECT([left_incident_id=left_incident.incident_id, right_incident_id=right_incident.incident_id, incident_date=left_incident.incident_date, shared_primary_event_type, differing_structured_fields=DIFF_FIELD_NAMES(left_incident, right_incident, [flight_phase,anomaly_summary,result_summary])])\n-> ORDER_BY([incident_date DESC, left_incident_id ASC, right_incident_id ASC])\n-> LIMIT(20)\n-> PROJECT([rank=ROW_NUMBER(), left_incident_id, right_incident_id, incident_date, shared_primary_event_type, differing_structured_fields])"
+    }
+  ],
+  "valid": true,
+  "validation_warnings": [],
+  "elapsed_secs": 118.067,
+  "cost_usd": 0.1441875,
+  "agent_cost_usd": 0.1441875,
+  "usage": {
+    "input": 3,
+    "output": 8130,
+    "cacheRead": 2320,
+    "cacheWrite": 5742
+  },
+  "agent_usage": {
+    "input": 3,
+    "output": 8130,
+    "cacheRead": 2320,
+    "cacheWrite": 5742
+  }
+}

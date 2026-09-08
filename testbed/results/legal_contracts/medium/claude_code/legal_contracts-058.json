@@ -1,0 +1,59 @@
+{
+  "task_id": "legal_contracts-058",
+  "answer": [
+    {
+      "non_disclosure_direction": "mutual",
+      "recognized_exceptions": [
+        "already known",
+        "approved for disclosure",
+        "independently developed",
+        "publicly available",
+        "required by law",
+        "rightfully received from third party"
+      ],
+      "agreement_count": 129
+    },
+    {
+      "non_disclosure_direction": "unilateral",
+      "recognized_exceptions": [
+        "already known",
+        "approved for disclosure",
+        "independently developed",
+        "publicly available",
+        "required by law",
+        "rightfully received from third party"
+      ],
+      "agreement_count": 53
+    },
+    {
+      "non_disclosure_direction": "unilateral",
+      "recognized_exceptions": [],
+      "agreement_count": 44
+    },
+    {
+      "non_disclosure_direction": "mutual",
+      "recognized_exceptions": [
+        "already known",
+        "independently developed",
+        "publicly available",
+        "required by law",
+        "rightfully received from third party"
+      ],
+      "agreement_count": 33
+    },
+    {
+      "non_disclosure_direction": "unilateral",
+      "recognized_exceptions": [
+        "already known",
+        "independently developed",
+        "publicly available",
+        "required by law",
+        "rightfully received from third party"
+      ],
+      "agreement_count": 30
+    }
+  ],
+  "elapsed_seconds": 497.673,
+  "cost_usd": 1.40206545,
+  "total_tokens": 3283816
+}

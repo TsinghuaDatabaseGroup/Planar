@@ -1,0 +1,15 @@
+{
+  "task_id": "legal_contracts-096",
+  "answer": [
+    {
+      "company": "",
+      "certifying_officer": "",
+      "ex10_document": "",
+      "certification_count": null,
+      "non_compete_duration_years": null
+    }
+  ],
+  "elapsed_seconds": 1063.002,
+  "cost_usd": 1.59839985,
+  "total_tokens": 3706794
+}

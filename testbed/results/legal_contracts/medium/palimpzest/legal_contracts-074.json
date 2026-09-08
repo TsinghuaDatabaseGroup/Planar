@@ -1,0 +1,88 @@
+{
+  "task_id": "legal_contracts-074",
+  "answer": [
+    {
+      "blackout_period": true,
+      "pre_clearance": true,
+      "rule_10b5_1": true,
+      "family_household_coverage": true,
+      "pledging_prohibited": true,
+      "policy_count": 73
+    },
+    {
+      "blackout_period": true,
+      "pre_clearance": true,
+      "rule_10b5_1": true,
+      "family_household_coverage": true,
+      "pledging_prohibited": false,
+      "policy_count": 59
+    },
+    {
+      "blackout_period": true,
+      "pre_clearance": true,
+      "rule_10b5_1": false,
+      "family_household_coverage": true,
+      "pledging_prohibited": true,
+      "policy_count": 2
+    },
+    {
+      "blackout_period": false,
+      "pre_clearance": false,
+      "rule_10b5_1": false,
+      "family_household_coverage": true,
+      "pledging_prohibited": false,
+      "policy_count": 1
+    },
+    {
+      "blackout_period": false,
+      "pre_clearance": true,
+      "rule_10b5_1": false,
+      "family_household_coverage": false,
+      "pledging_prohibited": false,
+      "policy_count": 1
+    },
+    {
+      "blackout_period": false,
+      "pre_clearance": true,
+      "rule_10b5_1": true,
+      "family_household_coverage": true,
+      "pledging_prohibited": false,
+      "policy_count": 1
+    },
+    {
+      "blackout_period": true,
+      "pre_clearance": false,
+      "rule_10b5_1": false,
+      "family_household_coverage": true,
+      "pledging_prohibited": false,
+      "policy_count": 1
+    },
+    {
+      "blackout_period": true,
+      "pre_clearance": false,
+      "rule_10b5_1": true,
+      "family_household_coverage": true,
+      "pledging_prohibited": false,
+      "policy_count": 1
+    },
+    {
+      "blackout_period": true,
+      "pre_clearance": true,
+      "rule_10b5_1": false,
+      "family_household_coverage": false,
+      "pledging_prohibited": false,
+      "policy_count": 1
+    },
+    {
+      "blackout_period": true,
+      "pre_clearance": true,
+      "rule_10b5_1": false,
+      "family_household_coverage": true,
+      "pledging_prohibited": false,
+      "policy_count": 1
+    }
+  ],
+  "elapsed_seconds": 1108.02,
+  "cost_usd": 1.257518,
+  "total_tokens": 2388912
+}

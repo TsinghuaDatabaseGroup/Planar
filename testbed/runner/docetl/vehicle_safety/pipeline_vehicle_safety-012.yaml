@@ -1,0 +1,169 @@
+datasets:
+  nhtsa_complaints:
+    type: file
+    path: data/nhtsa_vehicle_safety/complaints.csv
+  nhtsa_recalls:
+    type: file
+    path: data/nhtsa_vehicle_safety/recalls.jsonl
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_hyundai_kia_complaints
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("make") in {"KIA", "HYUNDAI"}
+
+  - name: classify_fire_smoke_burning_melting_or_short
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether this complaint describes fire, smoke, a burning smell,
+      melting, or an electrical short related to a vehicle system.
+
+      Qualify an experienced or alleged thermal or electrical event involving the
+      vehicle, its wiring, components, or systems. Do not qualify a recall notice,
+      general fire-risk statement, unrelated external fire, ordinary hot
+      temperature, or a merely hypothetical concern without such an event in the
+      complaint.
+
+      Complaint summary:
+      {{ input.summary_text }}
+    output:
+      mode: structured_output
+      schema:
+        describes_fire_smoke_burning_melting_or_short: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_hyundai_kia_park_outside_recalls
+    type: code_filter
+    code: |
+      def transform(doc):
+          vehicle = doc.get("vehicle") or {}
+          risk = doc.get("risk") or {}
+          return (
+              vehicle.get("make") in {"KIA", "HYUNDAI"}
+              and risk.get("park_outside") == "TRUE"
+          )
+
+  - name: flatten_park_outside_recall_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          campaign = doc.get("campaign") or {}
+          vehicle = doc.get("vehicle") or {}
+          component = doc.get("component") or {}
+          risk = doc.get("risk") or {}
+          return {
+              "campaign_number": campaign.get("number"),
+              "make": vehicle.get("make"),
+              "component_id": component.get("component_id"),
+              "defect_summary": risk.get("defect_summary") or "",
+          }
+
+  - name: deduplicate_park_outside_campaigns
+    type: code_reduce
+    reduce_key: campaign_number
+    code: |
+      def transform(items):
+          first = items[0]
+          return {
+              "make": first.get("make"),
+              "component_id": first.get("component_id"),
+              "defect_summary": first.get("defect_summary") or "",
+          }
+
+  - name: join_complaints_to_park_outside_campaigns
+    type: equijoin
+    deterministic: true
+    blocking_conditions:
+      - left["make"] == right["make"] and left["component_id"] == right["component_id"]
+
+  - name: aggregate_campaign_complaint_counts
+    type: code_reduce
+    reduce_key:
+      - campaign_number
+      - make_right
+      - component_id_right
+    code: |
+      def transform(items):
+          complaint_ids = {
+              item.get("complaint_id")
+              for item in items
+              if item.get("complaint_id")
+          }
+          defect_summary = next(
+              (
+                  item.get("defect_summary")
+                  for item in items
+                  if item.get("defect_summary")
+              ),
+              "",
+          )
+          return {
+              "matched_complaint_count": len(complaint_ids),
+              "defect_summary": defect_summary,
+          }
+
+  - name: project_campaign_complaint_summary
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "campaign_number": doc.get("campaign_number"),
+              "make": doc.get("make_right"),
+              "component_id": doc.get("component_id_right"),
+              "matched_complaint_count": doc.get("matched_complaint_count"),
+              "defect_summary": doc.get("defect_summary"),
+          }
+
+pipeline:
+  steps:
+    - name: qualifying_complaints
+      input: nhtsa_complaints
+      operations:
+        - filter_hyundai_kia_complaints
+        - classify_fire_smoke_burning_melting_or_short
+    - name: park_outside_campaigns
+      input: nhtsa_recalls
+      operations:
+        - filter_hyundai_kia_park_outside_recalls
+        - flatten_park_outside_recall_fields
+        - deduplicate_park_outside_campaigns
+    - name: matched_complaints_and_campaigns
+      operations:
+        - join_complaints_to_park_outside_campaigns:
+            left: qualifying_complaints
+            right: park_outside_campaigns
+    - name: campaign_complaint_summary
+      input: matched_complaints_and_campaigns
+      operations:
+        - aggregate_campaign_complaint_counts
+        - project_campaign_complaint_summary
+  output:
+    type: file
+    path: raw_outputs/vehicle_safety/output_vehicle_safety-012.json

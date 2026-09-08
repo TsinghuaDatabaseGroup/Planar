@@ -1,0 +1,53 @@
+{
+  "task_id": "vehicle_safety-040",
+  "answer": [
+    {
+      "failure_mode": "engine stall",
+      "matched_complaint_count": 7,
+      "distinct_campaign_count": 4,
+      "earliest_complaint_date": "2019-10-16",
+      "earliest_recall_date": "2020-08-13",
+      "pre_recall_complaint_count": 1,
+      "dominant_complaint_sentiment": "negative"
+    },
+    {
+      "failure_mode": "engine fire",
+      "matched_complaint_count": 6,
+      "distinct_campaign_count": 1,
+      "earliest_complaint_date": "2019-03-11",
+      "earliest_recall_date": "2020-12-11",
+      "pre_recall_complaint_count": 3,
+      "dominant_complaint_sentiment": "negative"
+    },
+    {
+      "failure_mode": "coolant leak into engine",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 1,
+      "earliest_complaint_date": "2025-05-12",
+      "earliest_recall_date": "2020-12-11",
+      "pre_recall_complaint_count": 0,
+      "dominant_complaint_sentiment": "negative"
+    },
+    {
+      "failure_mode": "loss of motive power",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 1,
+      "earliest_complaint_date": "2024-09-17",
+      "earliest_recall_date": "2022-10-13",
+      "pre_recall_complaint_count": 0,
+      "dominant_complaint_sentiment": "negative"
+    },
+    {
+      "failure_mode": "spontaneous vehicle fire",
+      "matched_complaint_count": 1,
+      "distinct_campaign_count": 1,
+      "earliest_complaint_date": "2019-02-14",
+      "earliest_recall_date": "2020-12-11",
+      "pre_recall_complaint_count": 1,
+      "dominant_complaint_sentiment": "negative"
+    }
+  ],
+  "elapsed_seconds": 525.134,
+  "cost_usd": 0.97725564,
+  "total_tokens": 891513
+}

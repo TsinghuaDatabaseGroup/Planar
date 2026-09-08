@@ -1,0 +1,88 @@
+{
+  "task_id": "legal_contracts-039",
+  "answer": [
+    {
+      "document_name": "1020416_0001193125-16-701566_d250247dex99d2.htm",
+      "governing_law": "State of New York"
+    },
+    {
+      "document_name": "1289434_0001047469-10-008010_a2200117zex-99_d3.htm",
+      "governing_law": "State of Minnesota"
+    },
+    {
+      "document_name": "5bfbcabf0627e70bdcfc5b32_nda-ready4s.pdf",
+      "governing_law": "England"
+    },
+    {
+      "document_name": "897730_0000950136-98-001457_document_7.txt",
+      "governing_law": "Commonwealth of Pennsylvania"
+    },
+    {
+      "document_name": "899240_0000912057-01-007226_a2040095zex-99_9d1.txt",
+      "governing_law": "Florida"
+    },
+    {
+      "document_name": "JB-Machine-LLC-NDA-1.pdf",
+      "governing_law": "Florida"
+    },
+    {
+      "document_name": "Non-Disclosure-Agreement_3.pdf",
+      "governing_law": "Florida"
+    },
+    {
+      "document_name": "a1028trv2025mcmoptionagree.htm",
+      "governing_law": "Participant's Employment Jurisdiction"
+    },
+    {
+      "document_name": "a1029trv2025restrictedstoc.htm",
+      "governing_law": "Participant's Employment Jurisdiction"
+    },
+    {
+      "document_name": "a1033trv2025mcmperfsharesa.htm",
+      "governing_law": "Participant's Employment Jurisdiction"
+    },
+    {
+      "document_name": "cornell_non-disclosure_agreement.pdf",
+      "governing_law": "State of New York"
+    },
+    {
+      "document_name": "ea023506301_ex10-1.htm",
+      "governing_law": "Arizona"
+    },
+    {
+      "document_name": "ea023506301_ex10-2.htm",
+      "governing_law": "Arizona"
+    },
+    {
+      "document_name": "ea023506301_ex10-3.htm",
+      "governing_law": "Arizona"
+    },
+    {
+      "document_name": "ea023506301_ex10-4.htm",
+      "governing_law": "Arizona"
+    },
+    {
+      "document_name": "ex10-3_1.htm",
+      "governing_law": "Texas"
+    },
+    {
+      "document_name": "nda-format-approved-by-legal-section.pdf",
+      "governing_law": "India"
+    },
+    {
+      "document_name": "nda_8.pdf",
+      "governing_law": "England"
+    },
+    {
+      "document_name": "non-disclosure-agreement_5.pdf",
+      "governing_law": "State of Minnesota"
+    },
+    {
+      "document_name": "oceaneering-non-disclosure-agreement.pdf",
+      "governing_law": "Texas"
+    }
+  ],
+  "elapsed_seconds": 525.85,
+  "cost_usd": 4.976429,
+  "total_tokens": 9337394
+}

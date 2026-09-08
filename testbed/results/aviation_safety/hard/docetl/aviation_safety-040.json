@@ -1,0 +1,88 @@
+{
+  "task_id": "aviation_safety-040",
+  "answer": [
+    {
+      "rank": 1,
+      "left_incident_id": "asrs_029527",
+      "right_incident_id": "asrs_124805",
+      "alert_or_advisory": "TKOF WARNING HORN SOUNDED",
+      "left_response": "follow_advisory",
+      "right_response": "override_advisory"
+    },
+    {
+      "rank": 2,
+      "left_incident_id": "asrs_039128",
+      "right_incident_id": "asrs_045417",
+      "alert_or_advisory": "ECAM DUAL AUTO PRESSURIZATION CONTROLLER FAILURE",
+      "left_response": "follow_advisory",
+      "right_response": "seek_clarification_before_acting"
+    },
+    {
+      "rank": 3,
+      "left_incident_id": "asrs_043539",
+      "right_incident_id": "asrs_136260",
+      "alert_or_advisory": "ECAM message 'ENG #1 FAIL'",
+      "left_response": "follow_advisory",
+      "right_response": "override_advisory"
+    },
+    {
+      "rank": 4,
+      "left_incident_id": "asrs_045417",
+      "right_incident_id": "asrs_060204",
+      "alert_or_advisory": "CABIN ALT WARNING HORN WENT OFF",
+      "left_response": "seek_clarification_before_acting",
+      "right_response": "follow_advisory"
+    },
+    {
+      "rank": 5,
+      "left_incident_id": "asrs_045417",
+      "right_incident_id": "asrs_064906",
+      "alert_or_advisory": "CABIN ALT WARNING HORN WENT OFF",
+      "left_response": "seek_clarification_before_acting",
+      "right_response": "follow_advisory"
+    },
+    {
+      "rank": 6,
+      "left_incident_id": "asrs_045417",
+      "right_incident_id": "asrs_090017",
+      "alert_or_advisory": "CABIN ALT WARNING HORN WENT OFF",
+      "left_response": "seek_clarification_before_acting",
+      "right_response": "follow_advisory"
+    },
+    {
+      "rank": 7,
+      "left_incident_id": "asrs_045417",
+      "right_incident_id": "asrs_097275",
+      "alert_or_advisory": "CABIN ALT WARNING HORN WENT OFF",
+      "left_response": "seek_clarification_before_acting",
+      "right_response": "follow_advisory"
+    },
+    {
+      "rank": 8,
+      "left_incident_id": "asrs_056805",
+      "right_incident_id": "asrs_076264",
+      "alert_or_advisory": "LEADING EDGE FLAPS TRANSIT LIGHT ILLUMINATED",
+      "left_response": "override_advisory",
+      "right_response": "follow_advisory"
+    },
+    {
+      "rank": 9,
+      "left_incident_id": "asrs_056805",
+      "right_incident_id": "asrs_079655",
+      "alert_or_advisory": "LEADING EDGE FLAPS TRANSIT LIGHT ILLUMINATED",
+      "left_response": "override_advisory",
+      "right_response": "seek_clarification_before_acting"
+    },
+    {
+      "rank": 10,
+      "left_incident_id": "asrs_056805",
+      "right_incident_id": "asrs_134981",
+      "alert_or_advisory": "LEADING EDGE FLAPS TRANSIT LIGHT ILLUMINATED",
+      "left_response": "override_advisory",
+      "right_response": "follow_advisory"
+    }
+  ],
+  "elapsed_seconds": 3201.29,
+  "cost_usd": 18.381518,
+  "total_tokens": 43321682
+}

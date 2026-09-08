@@ -1,0 +1,29 @@
+{
+  "task_id": "vehicle_safety-027",
+  "answer": {
+    "dominant_label": "other",
+    "per_label_counts": {
+      "sensor_misfire": {
+        "count": 0
+      },
+      "software_logic_error": {
+        "count": 0
+      },
+      "inflator_defect": {
+        "count": 0
+      },
+      "other": {
+        "count": 3
+      }
+    },
+    "per_label_percentages": {
+      "sensor_misfire": 0.0,
+      "software_logic_error": 0.0,
+      "inflator_defect": 0.0,
+      "other": 100.0
+    }
+  },
+  "elapsed_seconds": 15.2,
+  "cost_usd": 0.047662,
+  "total_tokens": 95950
+}

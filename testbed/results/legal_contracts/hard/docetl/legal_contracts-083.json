@@ -1,0 +1,36 @@
+{
+  "task_id": "legal_contracts-083",
+  "answer": [
+    {
+      "governing_law": "State of New York",
+      "agreement_count": 6,
+      "term_lengths_years": [
+        1,
+        2,
+        3,
+        5
+      ]
+    },
+    {
+      "governing_law": "England",
+      "agreement_count": 4,
+      "term_lengths_years": [
+        3,
+        5,
+        7
+      ]
+    },
+    {
+      "governing_law": "State of Delaware",
+      "agreement_count": 3,
+      "term_lengths_years": [
+        2,
+        3,
+        5
+      ]
+    }
+  ],
+  "elapsed_seconds": 442.75,
+  "cost_usd": 4.105268,
+  "total_tokens": 7876442
+}

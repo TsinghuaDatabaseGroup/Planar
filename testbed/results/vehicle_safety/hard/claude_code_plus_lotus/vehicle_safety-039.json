@@ -1,0 +1,43 @@
+{
+  "task_id": "vehicle_safety-039",
+  "answer": [
+    {
+      "rank": 1,
+      "campaign_number": "17V398000",
+      "component_id": "AIRBAG",
+      "corroborating_complaint_count": 38,
+      "cited_by_investigation": "No"
+    },
+    {
+      "rank": 2,
+      "campaign_number": "18V471000",
+      "component_id": "POWERTRAIN",
+      "corroborating_complaint_count": 29,
+      "cited_by_investigation": "No"
+    },
+    {
+      "rank": 3,
+      "campaign_number": "22V413000",
+      "component_id": "POWERTRAIN",
+      "corroborating_complaint_count": 24,
+      "cited_by_investigation": "No"
+    },
+    {
+      "rank": 4,
+      "campaign_number": "16V345000",
+      "component_id": "BRAKES",
+      "corroborating_complaint_count": 23,
+      "cited_by_investigation": "No"
+    },
+    {
+      "rank": 5,
+      "campaign_number": "25V488000",
+      "component_id": "BRAKES",
+      "corroborating_complaint_count": 20,
+      "cited_by_investigation": "No"
+    }
+  ],
+  "elapsed_seconds": 1340.071,
+  "cost_usd": 2.51187474,
+  "total_tokens": 4572274
+}

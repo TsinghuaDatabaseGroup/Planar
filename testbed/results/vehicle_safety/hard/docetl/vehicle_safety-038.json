@@ -1,0 +1,22 @@
+{
+  "task_id": "vehicle_safety-038",
+  "answer": [
+    {
+      "campaign_number": "25V744000",
+      "matched_complaint_count": 1,
+      "dominant_complaint_sentiment": "acute_safety_event",
+      "dominant_recall_severity": "severe",
+      "shared_defect_phrase": "rearview camera freezes or displays blank screen"
+    },
+    {
+      "campaign_number": "19V576000",
+      "matched_complaint_count": 1,
+      "dominant_complaint_sentiment": "acute_safety_event",
+      "dominant_recall_severity": "severe",
+      "shared_defect_phrase": "backup camera fails to activate"
+    }
+  ],
+  "elapsed_seconds": 94.98,
+  "cost_usd": 0.50923,
+  "total_tokens": 1112267
+}

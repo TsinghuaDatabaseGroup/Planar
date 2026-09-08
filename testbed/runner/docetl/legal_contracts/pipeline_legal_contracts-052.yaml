@@ -1,0 +1,60 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_nda_types
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is a mutual NDA, unilateral NDA, or
+      confidentiality-and-standstill agreement.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_qualifying_nda_type: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: filter_affiliate_assignment_without_consent
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this agreement only if an assignment provision permits assignment of
+      the agreement or contractual rights or obligations to a corporate affiliate
+      without the counterparty's consent.
+
+      Agreement:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {allows_affiliate_assignment_without_consent: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: filter_us_federal_court_venue
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this agreement only if a forum-selection, venue, jurisdiction, or
+      enforcement provision expressly identifies a U.S. federal court as a forum
+      for disputes under the agreement.
+
+      Agreement:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {has_us_federal_court_forum: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: count_matching_agreements
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          return {"count": len(items)}
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations: [filter_nda_types, filter_affiliate_assignment_without_consent, filter_us_federal_court_venue, count_matching_agreements]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-052.json

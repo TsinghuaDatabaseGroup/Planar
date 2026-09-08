@@ -1,0 +1,22 @@
+{
+  "task_id": "legal_contracts-070",
+  "answer": [
+    {
+      "residual_information_present": false,
+      "agreement_count": 347,
+      "most_common_governing_law": "State of California",
+      "return_of_materials_rate": 0.9078,
+      "injunctive_relief_rate": 0.755
+    },
+    {
+      "residual_information_present": true,
+      "agreement_count": 27,
+      "most_common_governing_law": "State of Delaware",
+      "return_of_materials_rate": 0.963,
+      "injunctive_relief_rate": 0.7407
+    }
+  ],
+  "elapsed_seconds": 468.33,
+  "cost_usd": 4.109258,
+  "total_tokens": 7781834
+}

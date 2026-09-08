@@ -1,0 +1,28 @@
+{
+  "task_id": "finance-008",
+  "answer": [
+    {
+      "year": 2019,
+      "going_concern_rate_percent": 22.1
+    },
+    {
+      "year": 2020,
+      "going_concern_rate_percent": 20.1
+    },
+    {
+      "year": 2021,
+      "going_concern_rate_percent": 24.1
+    },
+    {
+      "year": 2022,
+      "going_concern_rate_percent": 26.0
+    },
+    {
+      "year": 2023,
+      "going_concern_rate_percent": 22.3
+    }
+  ],
+  "elapsed_seconds": 2892.962,
+  "cost_usd": 26.94517191,
+  "total_tokens": 68520044
+}

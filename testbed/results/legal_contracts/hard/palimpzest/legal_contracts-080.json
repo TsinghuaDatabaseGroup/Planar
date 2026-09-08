@@ -1,0 +1,26 @@
+{
+  "task_id": "legal_contracts-080",
+  "answer": [
+    {"company": "ANI Pharmaceuticals, Inc.", "covered_person_categories": ["directors", "officers_or_executives", "employees_or_personnel", "external_service_providers", "family_or_household", "controlled_entities_or_accounts"]},
+    {"company": "AUTOLUS THERAPEUTICS PLC", "covered_person_categories": ["directors", "officers_or_executives", "employees_or_personnel", "external_service_providers", "family_or_household", "controlled_entities_or_accounts"]},
+    {"company": "Acuity Brands, Inc.", "covered_person_categories": ["directors", "officers_or_executives", "employees_or_personnel", "external_service_providers", "family_or_household", "controlled_entities_or_accounts"]},
+    {"company": "Advanced Drainage Systems, Inc.", "covered_person_categories": ["directors", "officers_or_executives", "employees_or_personnel", "external_service_providers", "family_or_household", "controlled_entities_or_accounts"]},
+    {"company": "Annexon, Inc.", "covered_person_categories": ["directors", "officers_or_executives", "employees_or_personnel", "external_service_providers", "family_or_household", "controlled_entities_or_accounts"]},
+    {"company": "Aveanna Healthcare Holdings Inc.", "covered_person_categories": ["directors", "officers_or_executives", "employees_or_personnel", "external_service_providers", "family_or_household", "controlled_entities_or_accounts"]},
+    {"company": "BROADWAY FINANCIAL CORPORATION", "covered_person_categories": ["directors", "officers_or_executives", "employees_or_personnel", "external_service_providers", "family_or_household", "controlled_entities_or_accounts"]},
+    {"company": "Becton, Dickinson and Company", "covered_person_categories": ["directors", "officers_or_executives", "employees_or_personnel", "external_service_providers", "family_or_household", "controlled_entities_or_accounts"]},
+    {"company": "Byrna Technologies Inc.", "covered_person_categories": ["directors", "officers_or_executives", "employees_or_personnel", "external_service_providers", "family_or_household", "controlled_entities_or_accounts"]},
+    {"company": "CEVA, INC.", "covered_person_categories": ["directors", "officers_or_executives", "employees_or_personnel", "external_service_providers", "family_or_household", "controlled_entities_or_accounts"]},
+    {"company": "Cocrystal Pharma, Inc.", "covered_person_categories": ["directors", "officers_or_executives", "employees_or_personnel", "external_service_providers", "family_or_household", "controlled_entities_or_accounts"]},
+    {"company": "Cousins Properties Incorporated", "covered_person_categories": ["directors", "officers_or_executives", "employees_or_personnel", "external_service_providers", "family_or_household", "controlled_entities_or_accounts"]},
+    {"company": "Digimarc Corporation", "covered_person_categories": ["directors", "officers_or_executives", "employees_or_personnel", "external_service_providers", "family_or_household", "controlled_entities_or_accounts"]},
+    {"company": "Dorman Products, Inc.", "covered_person_categories": ["directors", "officers_or_executives", "employees_or_personnel", "external_service_providers", "family_or_household", "controlled_entities_or_accounts"]},
+    {"company": "El Pollo Loco Holdings, Inc.", "covered_person_categories": ["directors", "officers_or_executives", "employees_or_personnel", "external_service_providers", "family_or_household", "controlled_entities_or_accounts"]},
+    {"company": "Harmonic Inc.", "covered_person_categories": ["directors", "officers_or_executives", "employees_or_personnel", "external_service_providers", "family_or_household", "controlled_entities_or_accounts"]},
+    {"company": "Hertz Global Holdings, Inc.", "covered_person_categories": ["directors", "officers_or_executives", "employees_or_personnel", "external_service_providers", "family_or_household", "controlled_entities_or_accounts"]},
+    {"company": "IDEAYA BIOSCIENCES, INC.", "covered_person_categories": ["directors", "officers_or_executives", "employees_or_personnel", "external_service_providers", "family_or_household", "controlled_entities_or_accounts"]}
+  ],
+  "elapsed_seconds": 6171.48,
+  "cost_usd": 10.506809,
+  "total_tokens": 19884238
+}

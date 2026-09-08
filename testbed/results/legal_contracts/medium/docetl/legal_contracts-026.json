@@ -1,0 +1,16 @@
+{
+  "task_id": "legal_contracts-026",
+  "answer": [
+    {
+      "document_id": "801338_0000950134-07-015617_c16542toexv99wxdyx5y.htm",
+      "governing_law": "State of Delaware"
+    },
+    {
+      "document_id": "NDA_7.pdf",
+      "governing_law": "Spain"
+    }
+  ],
+  "elapsed_seconds": 62.59,
+  "cost_usd": 0.340612,
+  "total_tokens": 613863
+}

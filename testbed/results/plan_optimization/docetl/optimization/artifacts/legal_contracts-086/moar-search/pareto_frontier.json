@@ -1,0 +1,18 @@
+[
+  {
+    "node": 28,
+    "path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-086/moar-search/pipeline_legal_contracts-086_input_sample_openai_Qwen3.5-397B-A17B.yaml",
+    "cost": 0.25159914,
+    "accuracy": 0.7250000000000001,
+    "value": -1.0035714285714286,
+    "is_frontier": true
+  },
+  {
+    "node": 31,
+    "path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-086/moar-search/pipeline_input_sample_openai_31.yaml",
+    "cost": 0.21325590000000003,
+    "accuracy": 0.03333333333333333,
+    "value": 0.03333333333333333,
+    "is_frontier": true
+  }
+]

@@ -1,0 +1,278 @@
+{
+  "task_id": "vehicle_safety-003",
+  "answer": [
+    {
+      "complaint_id": "complaint_11485145",
+      "model_year": 2014,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11210797",
+      "model_year": 2014,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11522698",
+      "model_year": 2014,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11256894",
+      "model_year": 2014,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11372828",
+      "model_year": 2014,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11044353",
+      "model_year": 2014,
+      "airbag_failure_mode": "injuries due to airbag system"
+    },
+    {
+      "complaint_id": "complaint_10971161",
+      "model_year": 2015,
+      "airbag_failure_mode": "non-deployment during side impact"
+    },
+    {
+      "complaint_id": "complaint_11443991",
+      "model_year": 2016,
+      "airbag_failure_mode": "no air bags deployed"
+    },
+    {
+      "complaint_id": "complaint_11312248",
+      "model_year": 2017,
+      "airbag_failure_mode": "front airbags failed to deploy"
+    },
+    {
+      "complaint_id": "complaint_11288524",
+      "model_year": 2018,
+      "airbag_failure_mode": "passenger lower airbag non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11317082",
+      "model_year": 2018,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11462881",
+      "model_year": 2019,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11503303",
+      "model_year": 2019,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11614203",
+      "model_year": 2019,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11230535",
+      "model_year": 2019,
+      "airbag_failure_mode": "unintended deployment"
+    },
+    {
+      "complaint_id": "complaint_11503306",
+      "model_year": 2020,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11429710",
+      "model_year": 2020,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11496766",
+      "model_year": 2020,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11721443",
+      "model_year": 2020,
+      "airbag_failure_mode": "airbag deployed without crash"
+    },
+    {
+      "complaint_id": "complaint_11503929",
+      "model_year": 2022,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11363370",
+      "model_year": 2014,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11228595",
+      "model_year": 2014,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_10850966",
+      "model_year": 2014,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11421579",
+      "model_year": 2014,
+      "airbag_failure_mode": "headrest deployed without crash"
+    },
+    {
+      "complaint_id": "complaint_10898999",
+      "model_year": 2014,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11619698",
+      "model_year": 2014,
+      "airbag_failure_mode": "active head restraint unintended deployment"
+    },
+    {
+      "complaint_id": "complaint_11437749",
+      "model_year": 2014,
+      "airbag_failure_mode": "headrest deployed without crash"
+    },
+    {
+      "complaint_id": "complaint_11535229",
+      "model_year": 2014,
+      "airbag_failure_mode": "unintended deployment"
+    },
+    {
+      "complaint_id": "complaint_11438209",
+      "model_year": 2014,
+      "airbag_failure_mode": "unintended head restraint deployment"
+    },
+    {
+      "complaint_id": "complaint_10839698",
+      "model_year": 2014,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11099374",
+      "model_year": 2014,
+      "airbag_failure_mode": "airbag deployed without crash"
+    },
+    {
+      "complaint_id": "complaint_11546116",
+      "model_year": 2014,
+      "airbag_failure_mode": "unintended deployment"
+    },
+    {
+      "complaint_id": "complaint_11721043",
+      "model_year": 2014,
+      "airbag_failure_mode": "unintended headrest deployment"
+    },
+    {
+      "complaint_id": "complaint_10781565",
+      "model_year": 2014,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11161298",
+      "model_year": 2015,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11475193",
+      "model_year": 2015,
+      "airbag_failure_mode": "unintended deployment"
+    },
+    {
+      "complaint_id": "complaint_11445424",
+      "model_year": 2015,
+      "airbag_failure_mode": "headrest inadvertently deployed"
+    },
+    {
+      "complaint_id": "complaint_11698901",
+      "model_year": 2015,
+      "airbag_failure_mode": "airbag deployed without crash"
+    },
+    {
+      "complaint_id": "complaint_11341897",
+      "model_year": 2015,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11514831",
+      "model_year": 2015,
+      "airbag_failure_mode": "unintended deployment without crash"
+    },
+    {
+      "complaint_id": "complaint_10925961",
+      "model_year": 2016,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11474475",
+      "model_year": 2016,
+      "airbag_failure_mode": "unknown"
+    },
+    {
+      "complaint_id": "complaint_10903739",
+      "model_year": 2016,
+      "airbag_failure_mode": "unintended deployment without crash"
+    },
+    {
+      "complaint_id": "complaint_11281321",
+      "model_year": 2016,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11433155",
+      "model_year": 2017,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11354002",
+      "model_year": 2018,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11182599",
+      "model_year": 2018,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11606456",
+      "model_year": 2018,
+      "airbag_failure_mode": "unintended headrest deployment"
+    },
+    {
+      "complaint_id": "complaint_11282340",
+      "model_year": 2019,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11571930",
+      "model_year": 2019,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11557257",
+      "model_year": 2021,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11510847",
+      "model_year": 2021,
+      "airbag_failure_mode": "airbag failed to deploy"
+    },
+    {
+      "complaint_id": "complaint_11705096",
+      "model_year": 2021,
+      "airbag_failure_mode": "non-deployment"
+    },
+    {
+      "complaint_id": "complaint_11660838",
+      "model_year": 2023,
+      "airbag_failure_mode": "non-deployment"
+    }
+  ],
+  "elapsed_seconds": 164.088,
+  "cost_usd": 0.53261472,
+  "total_tokens": 316895
+}

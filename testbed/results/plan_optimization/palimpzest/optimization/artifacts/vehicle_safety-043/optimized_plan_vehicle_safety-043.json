@@ -1,0 +1,1258 @@
+{
+  "format_version": 1,
+  "purpose": "human_review_of_selected_palimpzest_physical_plan",
+  "task_id": "vehicle_safety-043",
+  "optimization_status": "optimized_only",
+  "selected_plan_id": "2e0eaee7ee",
+  "executable_plan": {
+    "file": "optimized_plan_vehicle_safety-043.plan.pkl",
+    "format": "cloudpickle",
+    "version": 1,
+    "sha256": "b4282710e55c90b17e8acd5e90a13348dc355a38f835ba9acf13652595818d43",
+    "size_bytes": 1140302,
+    "selected_plan_id": "2e0eaee7ee",
+    "datasources": {
+      "vehicle_safety-043-recall-overview-semantic-input": {
+        "id": "vehicle_safety-043-recall-overview-semantic-input",
+        "row_count": 764,
+        "schema_fields": [
+          "campaign_number",
+          "component_id",
+          "make",
+          "recall_defect_summary"
+        ]
+      },
+      "vehicle_safety-043-complaints-semantic-input": {
+        "id": "vehicle_safety-043-complaints-semantic-input",
+        "row_count": 2370,
+        "schema_fields": [
+          "complaint_id",
+          "component_id",
+          "make",
+          "summary_text"
+        ]
+      },
+      "vehicle_safety-043-semantic-recalls-semantic-input": {
+        "id": "vehicle_safety-043-semantic-recalls-semantic-input",
+        "row_count": 764,
+        "schema_fields": [
+          "campaign_number",
+          "recall_component_id",
+          "recall_defect_summary",
+          "recall_make"
+        ]
+      },
+      "vehicle_safety-043-reports-semantic-input": {
+        "id": "vehicle_safety-043-reports-semantic-input",
+        "row_count": 297,
+        "schema_fields": [
+          "body",
+          "file_id"
+        ]
+      }
+    },
+    "scan_datasource_records_included": false,
+    "sentinel_record_payloads_included": false
+  },
+  "input_plan": {
+    "task_id": "vehicle_safety-043",
+    "query": "For Ford, Jeep, Honda, and Tesla, how well do complaints, recalls, and NHTSA investigation reports align for each make? I want to know the number of distinct recall campaigns, the number of distinct complaints that match one of the make's recalls in the same component category and describe the same underlying defect, and whether any campaign is cited by an investigation report, labeled as cited or not_cited.",
+    "inputs": [
+      {
+        "source_id": "investigation_reports_txt",
+        "dataset": "NHTSA Vehicle Safety",
+        "source_type": "document",
+        "role": "primary"
+      },
+      {
+        "source_id": "recalls_jsonl",
+        "dataset": "NHTSA Vehicle Safety",
+        "source_type": "document",
+        "role": "primary"
+      },
+      {
+        "source_id": "complaints_csv",
+        "dataset": "NHTSA Vehicle Safety",
+        "source_type": "table",
+        "role": "primary"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(NHTSA, investigation_reports, selector='*.txt', columns=[file_id, body]) -> SEM_EXTRACT('Extract every NHTSA recall number cited in the body; normalize to the NHTSA canonical core (2-digit year + 3-digit campaign sequence) and deduplicate.', out_schema={cited_recall_cores: list[string]}, input_bindings={text: body}) -> GROUP_BY([], aggs={investigation_cited_cores: collect_distinct(cited_recall_cores)}) -> JOIN(cross, right=( SCAN_DOCS(NHTSA, recalls, [campaign.number, vehicle.make AS make]) -> FILTER(vehicle.make IN ['FORD','JEEP','HONDA','TESLA']) -> GROUP_BY([make], aggs={recall_campaign_count: count_distinct(campaign.number), all_recall_cores: collect_distinct(core(campaign.number))}) -> JOIN(left, on=[make = right.make], right=( SCAN_TABLE(NHTSA, complaints, [complaint_id, make, component_id, summary_text]) -> FILTER(make IN ['FORD','JEEP','HONDA','TESLA']) -> SEM_JOIN('Within the same make and component category, match a complaint to a recall only when the complaint narrative describes the same underlying defect as the recall defect summary.', input_bindings_left={make: make, component_id: component_id, complaint_summary: summary_text}, input_bindings_right={make: r.make, component_id: r.component_id, recall_defect_summary: r.defect_summary}, right=( SCAN_DOCS(NHTSA, recalls AS r, [campaign.number, vehicle.make AS make, component.component_id AS component_id, risk.defect_summary AS defect_summary]) -> FILTER(vehicle.make IN ['FORD','JEEP','HONDA','TESLA']) )) -> GROUP_BY([make], aggs={corroborated_complaint_count: count_distinct(complaint_id)}) )) )) -> PROJECT(format_as_dictionary, key=make, value={corroborated_complaint_count: coalesce(corroborated_complaint_count, 0), recall_campaign_count, alignment_label: (intersects(all_recall_cores, investigation_cited_cores) ? 'cited' : 'not_cited')})"
+      }
+    ],
+    "answer_schema": {
+      "type": "dictionary",
+      "key_description": "vehicle make (string, one of FORD, JEEP, HONDA, TESLA)",
+      "value_schema": {
+        "corroborated_complaint_count": "integer - distinct complaints of this make whose narrative semantically matches one of the make's recalls in the same component category",
+        "recall_campaign_count": "integer - distinct recall campaign numbers for this make",
+        "alignment_label": "string in {cited, not_cited}"
+      }
+    }
+  },
+  "input_bad_plan": null,
+  "input_logical_plan": {
+    "root_dataset_id": "fd8e3d0964",
+    "nodes": [
+      {
+        "dataset_id": "vehicle_safety-043-recall-overview-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "a433d79e15",
+        "unique_logical_op_id": "0-a433d79e15",
+        "depends_on": [],
+        "generated_fields": [
+          "campaign_number",
+          "component_id",
+          "make",
+          "recall_defect_summary"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "campaign_number",
+          "component_id",
+          "make",
+          "recall_defect_summary"
+        ]
+      },
+      {
+        "dataset_id": "68e3e0b167",
+        "source_dataset_ids": [
+          "vehicle_safety-043-recall-overview-semantic-input"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "cd407297a2",
+        "unique_logical_op_id": "1-cd407297a2",
+        "depends_on": [
+          "campaign_number"
+        ],
+        "generated_fields": [
+          "recall_core"
+        ],
+        "input_fields": [
+          "campaign_number",
+          "component_id",
+          "make",
+          "recall_defect_summary"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "component_id",
+          "make",
+          "recall_core",
+          "recall_defect_summary"
+        ],
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "bae7ccfd4a",
+        "source_dataset_ids": [
+          "68e3e0b167"
+        ],
+        "logical_operator": "GroupByAggregate",
+        "logical_op_id": "893e82fab2",
+        "unique_logical_op_id": "2-893e82fab2",
+        "depends_on": [],
+        "generated_fields": [
+          "list(campaign_number)",
+          "list(recall_core)"
+        ],
+        "input_fields": [
+          "campaign_number",
+          "component_id",
+          "make",
+          "recall_core",
+          "recall_defect_summary"
+        ],
+        "output_fields": [
+          "list(campaign_number)",
+          "list(recall_core)",
+          "make"
+        ],
+        "group_by": "GroupBy({'group_by_fields': ['make'], 'agg_funcs': ['list', 'list'], 'agg_fields': ['campaign_number', 'recall_core']})"
+      },
+      {
+        "dataset_id": "vehicle_safety-043-complaints-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "db36db5429",
+        "unique_logical_op_id": "3-db36db5429",
+        "depends_on": [],
+        "generated_fields": [
+          "complaint_id",
+          "component_id",
+          "make",
+          "summary_text"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "complaint_id",
+          "component_id",
+          "make",
+          "summary_text"
+        ]
+      },
+      {
+        "dataset_id": "vehicle_safety-043-semantic-recalls-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "c4e0def5eb",
+        "unique_logical_op_id": "4-c4e0def5eb",
+        "depends_on": [],
+        "generated_fields": [
+          "campaign_number",
+          "recall_component_id",
+          "recall_defect_summary",
+          "recall_make"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "campaign_number",
+          "recall_component_id",
+          "recall_defect_summary",
+          "recall_make"
+        ]
+      },
+      {
+        "dataset_id": "c80aac4712",
+        "source_dataset_ids": [
+          "vehicle_safety-043-complaints-semantic-input",
+          "vehicle_safety-043-semantic-recalls-semantic-input"
+        ],
+        "logical_operator": "JoinOp",
+        "logical_op_id": "520a6c4efd",
+        "unique_logical_op_id": "5-520a6c4efd",
+        "depends_on": [
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "make",
+          "recall_component_id",
+          "recall_defect_summary",
+          "recall_make",
+          "summary_text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "make",
+          "recall_component_id",
+          "recall_defect_summary",
+          "recall_make",
+          "summary_text"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "make",
+          "recall_component_id",
+          "recall_defect_summary",
+          "recall_make",
+          "summary_text"
+        ],
+        "condition": "Match only when make equals recall_make, component_id equals recall_component_id, and the complaint narrative describes the same underlying defect as the recall defect summary.",
+        "how": "inner"
+      },
+      {
+        "dataset_id": "7dc34e558f",
+        "source_dataset_ids": [
+          "c80aac4712"
+        ],
+        "logical_operator": "GroupByAggregate",
+        "logical_op_id": "78ab9f9c30",
+        "unique_logical_op_id": "6-78ab9f9c30",
+        "depends_on": [],
+        "generated_fields": [
+          "list(complaint_id)"
+        ],
+        "input_fields": [
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "make",
+          "recall_component_id",
+          "recall_defect_summary",
+          "recall_make",
+          "summary_text"
+        ],
+        "output_fields": [
+          "list(complaint_id)",
+          "make"
+        ],
+        "group_by": "GroupBy({'group_by_fields': ['make'], 'agg_funcs': ['list'], 'agg_fields': ['complaint_id']})"
+      },
+      {
+        "dataset_id": "1289b2516c",
+        "source_dataset_ids": [
+          "bae7ccfd4a",
+          "7dc34e558f"
+        ],
+        "logical_operator": "JoinOp",
+        "logical_op_id": "7d5a6aa7ae",
+        "unique_logical_op_id": "7-7d5a6aa7ae",
+        "depends_on": [
+          "make"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "list(campaign_number)",
+          "list(complaint_id)",
+          "list(recall_core)",
+          "make"
+        ],
+        "output_fields": [
+          "list(campaign_number)",
+          "list(complaint_id)",
+          "list(recall_core)",
+          "make"
+        ],
+        "on": "['make']",
+        "how": "left"
+      },
+      {
+        "dataset_id": "36a0fd9f9d",
+        "source_dataset_ids": [
+          "1289b2516c"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "1e72138d83",
+        "unique_logical_op_id": "8-1e72138d83",
+        "depends_on": [
+          "make"
+        ],
+        "generated_fields": [
+          "join_key"
+        ],
+        "input_fields": [
+          "list(campaign_number)",
+          "list(complaint_id)",
+          "list(recall_core)",
+          "make"
+        ],
+        "output_fields": [
+          "join_key",
+          "list(campaign_number)",
+          "list(complaint_id)",
+          "list(recall_core)",
+          "make"
+        ],
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "vehicle_safety-043-reports-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "8b3276a496",
+        "unique_logical_op_id": "9-8b3276a496",
+        "depends_on": [],
+        "generated_fields": [
+          "body",
+          "file_id"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "body",
+          "file_id"
+        ]
+      },
+      {
+        "dataset_id": "94e8e09fac",
+        "source_dataset_ids": [
+          "vehicle_safety-043-reports-semantic-input"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "13ba1ef057",
+        "unique_logical_op_id": "10-13ba1ef057",
+        "depends_on": [
+          "body"
+        ],
+        "generated_fields": [
+          "cited_recall_cores"
+        ],
+        "input_fields": [
+          "body",
+          "file_id"
+        ],
+        "output_fields": [
+          "body",
+          "cited_recall_cores",
+          "file_id"
+        ],
+        "desc": "Extract every NHTSA recall number cited in the report body.",
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "0346743d8d",
+        "source_dataset_ids": [
+          "94e8e09fac"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "089cfb8824",
+        "unique_logical_op_id": "11-089cfb8824",
+        "depends_on": [
+          "cited_recall_cores"
+        ],
+        "generated_fields": [
+          "normalized_cited_recall_cores"
+        ],
+        "input_fields": [
+          "body",
+          "cited_recall_cores",
+          "file_id"
+        ],
+        "output_fields": [
+          "body",
+          "cited_recall_cores",
+          "file_id",
+          "normalized_cited_recall_cores"
+        ],
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "8114845002",
+        "source_dataset_ids": [
+          "0346743d8d"
+        ],
+        "logical_operator": "GroupByAggregate",
+        "logical_op_id": "b348ef972f",
+        "unique_logical_op_id": "12-b348ef972f",
+        "depends_on": [],
+        "generated_fields": [
+          "list(normalized_cited_recall_cores)"
+        ],
+        "input_fields": [
+          "body",
+          "cited_recall_cores",
+          "file_id",
+          "normalized_cited_recall_cores"
+        ],
+        "output_fields": [
+          "list(normalized_cited_recall_cores)"
+        ],
+        "group_by": "GroupBy({'group_by_fields': [], 'agg_funcs': ['list'], 'agg_fields': ['normalized_cited_recall_cores']})"
+      },
+      {
+        "dataset_id": "646005709c",
+        "source_dataset_ids": [
+          "8114845002"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "1e72138d83",
+        "unique_logical_op_id": "13-1e72138d83",
+        "depends_on": [
+          "list(normalized_cited_recall_cores)"
+        ],
+        "generated_fields": [
+          "join_key"
+        ],
+        "input_fields": [
+          "list(normalized_cited_recall_cores)"
+        ],
+        "output_fields": [
+          "join_key",
+          "list(normalized_cited_recall_cores)"
+        ],
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "fd8e3d0964",
+        "source_dataset_ids": [
+          "36a0fd9f9d",
+          "646005709c"
+        ],
+        "logical_operator": "JoinOp",
+        "logical_op_id": "9b2ab4327d",
+        "unique_logical_op_id": "14-9b2ab4327d",
+        "depends_on": [
+          "join_key"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "join_key",
+          "list(campaign_number)",
+          "list(complaint_id)",
+          "list(normalized_cited_recall_cores)",
+          "list(recall_core)",
+          "make"
+        ],
+        "output_fields": [
+          "join_key",
+          "list(campaign_number)",
+          "list(complaint_id)",
+          "list(normalized_cited_recall_cores)",
+          "list(recall_core)",
+          "make"
+        ],
+        "on": "['join_key']",
+        "how": "inner"
+      }
+    ],
+    "topological_logical_sequence": [
+      "0-a433d79e15",
+      "1-cd407297a2",
+      "2-893e82fab2",
+      "3-db36db5429",
+      "4-c4e0def5eb",
+      "5-520a6c4efd",
+      "6-78ab9f9c30",
+      "7-7d5a6aa7ae",
+      "8-1e72138d83",
+      "9-8b3276a496",
+      "10-13ba1ef057",
+      "11-089cfb8824",
+      "12-b348ef972f",
+      "13-1e72138d83",
+      "14-9b2ab4327d"
+    ]
+  },
+  "selected_physical_plan": {
+    "plan_id": "2e0eaee7ee",
+    "plan_string": "0. Schema['join_key', 'list(campaign_number)', 'list(complaint_id)', 'list(normalized_cited_recall_cores)', 'list(recall_core)', 'make'] -> RelationalJoin -> Schema['join_key', 'list(campaign_number)', 'list(complaint_id)', 'list(normalized_cited_recall_cores)', 'list(recall_core)', 'make']\n    (join_key, list(campaign_number) -> (join_key, list(campaign_number)\n    Condition: \n    How: inner\n    On: ['join_key']\n\n  1. Schema['list(campaign_number)', 'list(complaint_id)', 'list(recall_core)', 'make'] -> NonLLMConvert -> Schema['join_key', 'list(campaign_number)', 'list(complaint_id)', 'list(recall_core)', 'make']\n    (list(campaign_number), list(co) -> (join_key, list(campaign_number)\n    UDF: add_join_key\n\n    2. Schema['list(campaign_number)', 'list(complaint_id)', 'list(recall_core)', 'make'] -> RelationalJoin -> Schema['list(campaign_number)', 'list(complaint_id)', 'list(recall_core)', 'make']\n    (list(campaign_number), list(co) -> (list(campaign_number), list(co)\n    Condition: \n    How: left\n    On: ['make']\n\n      3. Schema['campaign_number', 'component_id', 'make', 'recall_core', 'recall_defect_summary'] -> ApplyGroupByOp -> Schema['list(campaign_number)', 'list(recall_core)', 'make']\n    (campaign_number, component_id,) -> (list(campaign_number), list(re)\n    Group-by Signature: GroupBy({'group_by_fields': ['make'], 'agg_funcs': ['list', 'list'], 'agg_fields': ['campaign_number', 'recall_core']})\n\n        4. Schema['campaign_number', 'component_id', 'make', 'recall_defect_summary'] -> NonLLMConvert -> Schema['campaign_number', 'component_id', 'make', 'recall_core', 'recall_defect_summary']\n    (campaign_number, component_id,) -> (campaign_number, component_id,)\n    UDF: add_recall_core\n\n          5. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['campaign_number', 'component_id', 'make', 'recall_defect_summary']'>, id=vehicle_safety-043-recall-overview-semantic-input, op_id=a433d79e15)) -> <class 'palimpzest.core.lib.schemas.Schema['campaign_number', 'component_id', 'make', 'recall_defect_summary']'>\n    (campaign_number, make, compone)\n\n      3. Schema['campaign_number', 'complaint_id', 'component_id', 'make', 'recall_component_id', 'recall_defect_summary', 'recall_make', 'summary_text'] -> ApplyGroupByOp -> Schema['list(complaint_id)', 'make']\n    (campaign_number, complaint_id,) -> (list(complaint_id), make)\n    Group-by Signature: GroupBy({'group_by_fields': ['make'], 'agg_funcs': ['list'], 'agg_fields': ['complaint_id']})\n\n        4. Schema['campaign_number', 'complaint_id', 'component_id', 'make', 'recall_component_id', 'recall_defect_summary', 'recall_make', 'summary_text'] -> EmbeddingJoin -> Schema['campaign_number', 'complaint_id', 'component_id', 'make', 'recall_component_id', 'recall_defect_summary', 'recall_make', 'summary_text']\n    (campaign_number, complaint_id,) -> (campaign_number, complaint_id,)\n    Model: Qwen3.5-397B-A17B\n    Condition: Match only when make equals recall_make, component_id equals recall_component_id, and the complaint narrative describes the same underlying defect as the recall defect summary.\n    How: inner\n    On: None\n    Model: Qwen3.5-397B-A17B\n    Reasoning Effort: default\n    Prompt Strategy: join\n    Embedding Model: openai/Qwen3-Embedding-8B\n    Num Samples: 10\n\n          5. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['complaint_id', 'component_id', 'make', 'summary_text']'>, id=vehicle_safety-043-complaints-semantic-input, op_id=db36db5429)) -> <class 'palimpzest.core.lib.schemas.Schema['complaint_id', 'component_id', 'make', 'summary_text']'>\n    (complaint_id, make, component_)\n\n          5. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['campaign_number', 'recall_component_id', 'recall_defect_summary', 'recall_make']'>, id=vehicle_safety-043-semantic-recalls-semantic-input, op_id=c4e0def5eb)) -> <class 'palimpzest.core.lib.schemas.Schema['campaign_number', 'recall_component_id', 'recall_defect_summary', 'recall_make']'>\n    (campaign_number, recall_make, )\n\n  1. Schema['list(normalized_cited_recall_cores)'] -> NonLLMConvert -> Schema['join_key', 'list(normalized_cited_recall_cores)']\n    (list(normalized_cited_recall_c) -> (join_key, list(normalized_cite)\n    UDF: add_join_key\n\n    2. Schema['body', 'cited_recall_cores', 'file_id', 'normalized_cited_recall_cores'] -> ApplyGroupByOp -> Schema['list(normalized_cited_recall_cores)']\n    (body, cited_recall_cores, file) -> (list(normalized_cited_recall_c)\n    Group-by Signature: GroupBy({'group_by_fields': [], 'agg_funcs': ['list'], 'agg_fields': ['normalized_cited_recall_cores']})\n\n      3. Schema['body', 'cited_recall_cores', 'file_id'] -> NonLLMConvert -> Schema['body', 'cited_recall_cores', 'file_id', 'normalized_cited_recall_cores']\n    (body, cited_recall_cores, file) -> (body, cited_recall_cores, file)\n    UDF: normalize_recall_citations\n\n        4. Schema['body', 'file_id'] -> MixtureOfAgentsConvert -> Schema['body', 'cited_recall_cores', 'file_id']\n    (body, file_id) -> (body, cited_recall_cores, file)\n    Prompt Strategy: None\n    Reasoning Effort: default\n    Proposer Models: [Qwen3.5-397B-A17B]\n    Temperatures: [0.0]\n    Aggregator Model: Qwen3.5-397B-A17B\n\n          5. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['body', 'file_id']'>, id=vehicle_safety-043-reports-semantic-input, op_id=8b3276a496)) -> <class 'palimpzest.core.lib.schemas.Schema['body', 'file_id']'>\n    (file_id, body)\n\n",
+    "root_operator_index": 14,
+    "operators": [
+      {
+        "topological_index": 0,
+        "physical_operator": "MarshalAndScanDataOp",
+        "logical_operator": "BaseScan",
+        "logical_op_id": "a433d79e15",
+        "unique_logical_op_id": "0-a433d79e15",
+        "full_op_id": "a433d79e15-14e6e29251",
+        "model": null,
+        "depends_on": [],
+        "generated_fields": [
+          "campaign_number",
+          "component_id",
+          "make",
+          "recall_defect_summary"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "campaign_number",
+          "component_id",
+          "make",
+          "recall_defect_summary"
+        ],
+        "source_operator_indices": []
+      },
+      {
+        "topological_index": 1,
+        "physical_operator": "NonLLMConvert",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "cd407297a2",
+        "unique_logical_op_id": "1-cd407297a2",
+        "full_op_id": "cd407297a2-18a0103ca6",
+        "model": null,
+        "depends_on": [
+          "Schema['campaign_number', 'component_id', 'make', 'recall_core', 'recall_defect_summary'].68e3e0b167.campaign_number"
+        ],
+        "generated_fields": [
+          "recall_core"
+        ],
+        "input_fields": [
+          "campaign_number",
+          "component_id",
+          "make",
+          "recall_defect_summary"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "component_id",
+          "make",
+          "recall_core",
+          "recall_defect_summary"
+        ],
+        "source_operator_indices": [
+          0
+        ]
+      },
+      {
+        "topological_index": 2,
+        "physical_operator": "ApplyGroupByOp",
+        "logical_operator": "GroupByAggregate",
+        "logical_op_id": "893e82fab2",
+        "unique_logical_op_id": "2-893e82fab2",
+        "full_op_id": "893e82fab2-b9c4a848b7",
+        "model": null,
+        "depends_on": [
+          "Schema['campaign_number', 'component_id', 'make', 'recall_core', 'recall_defect_summary'].68e3e0b167.campaign_number",
+          "Schema['campaign_number', 'component_id', 'make', 'recall_core', 'recall_defect_summary'].68e3e0b167.component_id",
+          "Schema['campaign_number', 'component_id', 'make', 'recall_core', 'recall_defect_summary'].68e3e0b167.make",
+          "Schema['campaign_number', 'component_id', 'make', 'recall_core', 'recall_defect_summary'].68e3e0b167.recall_core",
+          "Schema['campaign_number', 'component_id', 'make', 'recall_core', 'recall_defect_summary'].68e3e0b167.recall_defect_summary",
+          "Schema['campaign_number', 'component_id', 'make', 'recall_defect_summary'].vehicle_safety-043-recall-overview-semantic-input.campaign_number",
+          "Schema['campaign_number', 'component_id', 'make', 'recall_defect_summary'].vehicle_safety-043-recall-overview-semantic-input.component_id",
+          "Schema['campaign_number', 'component_id', 'make', 'recall_defect_summary'].vehicle_safety-043-recall-overview-semantic-input.make",
+          "Schema['campaign_number', 'component_id', 'make', 'recall_defect_summary'].vehicle_safety-043-recall-overview-semantic-input.recall_defect_summary"
+        ],
+        "generated_fields": [
+          "list(campaign_number)",
+          "list(recall_core)"
+        ],
+        "input_fields": [
+          "campaign_number",
+          "component_id",
+          "make",
+          "recall_core",
+          "recall_defect_summary"
+        ],
+        "output_fields": [
+          "list(campaign_number)",
+          "list(recall_core)",
+          "make"
+        ],
+        "source_operator_indices": [
+          1
+        ]
+      },
+      {
+        "topological_index": 3,
+        "physical_operator": "MarshalAndScanDataOp",
+        "logical_operator": "BaseScan",
+        "logical_op_id": "db36db5429",
+        "unique_logical_op_id": "3-db36db5429",
+        "full_op_id": "db36db5429-f058b45567",
+        "model": null,
+        "depends_on": [],
+        "generated_fields": [
+          "complaint_id",
+          "component_id",
+          "make",
+          "summary_text"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "complaint_id",
+          "component_id",
+          "make",
+          "summary_text"
+        ],
+        "source_operator_indices": []
+      },
+      {
+        "topological_index": 4,
+        "physical_operator": "MarshalAndScanDataOp",
+        "logical_operator": "BaseScan",
+        "logical_op_id": "c4e0def5eb",
+        "unique_logical_op_id": "4-c4e0def5eb",
+        "full_op_id": "c4e0def5eb-59b9009566",
+        "model": null,
+        "depends_on": [],
+        "generated_fields": [
+          "campaign_number",
+          "recall_component_id",
+          "recall_defect_summary",
+          "recall_make"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "campaign_number",
+          "recall_component_id",
+          "recall_defect_summary",
+          "recall_make"
+        ],
+        "source_operator_indices": []
+      },
+      {
+        "topological_index": 5,
+        "physical_operator": "EmbeddingJoin",
+        "logical_operator": "JoinOp",
+        "logical_op_id": "520a6c4efd",
+        "unique_logical_op_id": "5-520a6c4efd",
+        "full_op_id": "520a6c4efd-0052277722",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['campaign_number', 'component_id', 'make', 'recall_core', 'recall_defect_summary'].68e3e0b167.campaign_number",
+          "Schema['campaign_number', 'component_id', 'make', 'recall_core', 'recall_defect_summary'].68e3e0b167.component_id",
+          "Schema['campaign_number', 'component_id', 'make', 'recall_core', 'recall_defect_summary'].68e3e0b167.make",
+          "Schema['campaign_number', 'component_id', 'make', 'recall_core', 'recall_defect_summary'].68e3e0b167.recall_defect_summary",
+          "Schema['campaign_number', 'recall_component_id', 'recall_defect_summary', 'recall_make'].vehicle_safety-043-semantic-recalls-semantic-input.recall_component_id",
+          "Schema['campaign_number', 'recall_component_id', 'recall_defect_summary', 'recall_make'].vehicle_safety-043-semantic-recalls-semantic-input.recall_make",
+          "Schema['complaint_id', 'component_id', 'make', 'summary_text'].vehicle_safety-043-complaints-semantic-input.complaint_id",
+          "Schema['complaint_id', 'component_id', 'make', 'summary_text'].vehicle_safety-043-complaints-semantic-input.summary_text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "make",
+          "recall_component_id",
+          "recall_defect_summary",
+          "recall_make",
+          "summary_text"
+        ],
+        "output_fields": [
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "make",
+          "recall_component_id",
+          "recall_defect_summary",
+          "recall_make",
+          "summary_text"
+        ],
+        "source_operator_indices": [
+          3,
+          4
+        ]
+      },
+      {
+        "topological_index": 6,
+        "physical_operator": "ApplyGroupByOp",
+        "logical_operator": "GroupByAggregate",
+        "logical_op_id": "78ab9f9c30",
+        "unique_logical_op_id": "6-78ab9f9c30",
+        "full_op_id": "78ab9f9c30-cd86e47063",
+        "model": null,
+        "depends_on": [
+          "Schema['campaign_number', 'complaint_id', 'component_id', 'make', 'recall_component_id', 'recall_defect_summary', 'recall_make', 'summary_text'].c80aac4712.campaign_number",
+          "Schema['campaign_number', 'complaint_id', 'component_id', 'make', 'recall_component_id', 'recall_defect_summary', 'recall_make', 'summary_text'].c80aac4712.complaint_id",
+          "Schema['campaign_number', 'complaint_id', 'component_id', 'make', 'recall_component_id', 'recall_defect_summary', 'recall_make', 'summary_text'].c80aac4712.component_id",
+          "Schema['campaign_number', 'complaint_id', 'component_id', 'make', 'recall_component_id', 'recall_defect_summary', 'recall_make', 'summary_text'].c80aac4712.make",
+          "Schema['campaign_number', 'complaint_id', 'component_id', 'make', 'recall_component_id', 'recall_defect_summary', 'recall_make', 'summary_text'].c80aac4712.recall_component_id",
+          "Schema['campaign_number', 'complaint_id', 'component_id', 'make', 'recall_component_id', 'recall_defect_summary', 'recall_make', 'summary_text'].c80aac4712.recall_defect_summary",
+          "Schema['campaign_number', 'complaint_id', 'component_id', 'make', 'recall_component_id', 'recall_defect_summary', 'recall_make', 'summary_text'].c80aac4712.recall_make",
+          "Schema['campaign_number', 'complaint_id', 'component_id', 'make', 'recall_component_id', 'recall_defect_summary', 'recall_make', 'summary_text'].c80aac4712.summary_text",
+          "Schema['campaign_number', 'recall_component_id', 'recall_defect_summary', 'recall_make'].vehicle_safety-043-semantic-recalls-semantic-input.campaign_number",
+          "Schema['campaign_number', 'recall_component_id', 'recall_defect_summary', 'recall_make'].vehicle_safety-043-semantic-recalls-semantic-input.recall_component_id",
+          "Schema['campaign_number', 'recall_component_id', 'recall_defect_summary', 'recall_make'].vehicle_safety-043-semantic-recalls-semantic-input.recall_defect_summary",
+          "Schema['campaign_number', 'recall_component_id', 'recall_defect_summary', 'recall_make'].vehicle_safety-043-semantic-recalls-semantic-input.recall_make",
+          "Schema['complaint_id', 'component_id', 'make', 'summary_text'].vehicle_safety-043-complaints-semantic-input.complaint_id",
+          "Schema['complaint_id', 'component_id', 'make', 'summary_text'].vehicle_safety-043-complaints-semantic-input.component_id",
+          "Schema['complaint_id', 'component_id', 'make', 'summary_text'].vehicle_safety-043-complaints-semantic-input.make",
+          "Schema['complaint_id', 'component_id', 'make', 'summary_text'].vehicle_safety-043-complaints-semantic-input.summary_text"
+        ],
+        "generated_fields": [
+          "list(complaint_id)"
+        ],
+        "input_fields": [
+          "campaign_number",
+          "complaint_id",
+          "component_id",
+          "make",
+          "recall_component_id",
+          "recall_defect_summary",
+          "recall_make",
+          "summary_text"
+        ],
+        "output_fields": [
+          "list(complaint_id)",
+          "make"
+        ],
+        "source_operator_indices": [
+          5
+        ]
+      },
+      {
+        "topological_index": 7,
+        "physical_operator": "RelationalJoin",
+        "logical_operator": "JoinOp",
+        "logical_op_id": "7d5a6aa7ae",
+        "unique_logical_op_id": "7-7d5a6aa7ae",
+        "full_op_id": "7d5a6aa7ae-2fff44c3f4",
+        "model": null,
+        "depends_on": [
+          "Schema['campaign_number', 'component_id', 'make', 'recall_core', 'recall_defect_summary'].68e3e0b167.make"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "list(campaign_number)",
+          "list(complaint_id)",
+          "list(recall_core)",
+          "make"
+        ],
+        "output_fields": [
+          "list(campaign_number)",
+          "list(complaint_id)",
+          "list(recall_core)",
+          "make"
+        ],
+        "source_operator_indices": [
+          2,
+          6
+        ]
+      },
+      {
+        "topological_index": 8,
+        "physical_operator": "NonLLMConvert",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "1e72138d83",
+        "unique_logical_op_id": "8-1e72138d83",
+        "full_op_id": "1e72138d83-9d189783e7",
+        "model": null,
+        "depends_on": [
+          "Schema['join_key', 'list(campaign_number)', 'list(complaint_id)', 'list(recall_core)', 'make'].36a0fd9f9d.make"
+        ],
+        "generated_fields": [
+          "join_key"
+        ],
+        "input_fields": [
+          "list(campaign_number)",
+          "list(complaint_id)",
+          "list(recall_core)",
+          "make"
+        ],
+        "output_fields": [
+          "join_key",
+          "list(campaign_number)",
+          "list(complaint_id)",
+          "list(recall_core)",
+          "make"
+        ],
+        "source_operator_indices": [
+          7
+        ]
+      },
+      {
+        "topological_index": 9,
+        "physical_operator": "MarshalAndScanDataOp",
+        "logical_operator": "BaseScan",
+        "logical_op_id": "8b3276a496",
+        "unique_logical_op_id": "9-8b3276a496",
+        "full_op_id": "8b3276a496-4a7ed8bb00",
+        "model": null,
+        "depends_on": [],
+        "generated_fields": [
+          "body",
+          "file_id"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "body",
+          "file_id"
+        ],
+        "source_operator_indices": []
+      },
+      {
+        "topological_index": 10,
+        "physical_operator": "MixtureOfAgentsConvert",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "13ba1ef057",
+        "unique_logical_op_id": "10-13ba1ef057",
+        "full_op_id": "13ba1ef057-14016549b3",
+        "model": null,
+        "depends_on": [
+          "Schema['body', 'file_id'].vehicle_safety-043-reports-semantic-input.body"
+        ],
+        "generated_fields": [
+          "cited_recall_cores"
+        ],
+        "input_fields": [
+          "body",
+          "file_id"
+        ],
+        "output_fields": [
+          "body",
+          "cited_recall_cores",
+          "file_id"
+        ],
+        "source_operator_indices": [
+          9
+        ]
+      },
+      {
+        "topological_index": 11,
+        "physical_operator": "NonLLMConvert",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "089cfb8824",
+        "unique_logical_op_id": "11-089cfb8824",
+        "full_op_id": "089cfb8824-d11dfc3bb6",
+        "model": null,
+        "depends_on": [
+          "Schema['body', 'cited_recall_cores', 'file_id', 'normalized_cited_recall_cores'].0346743d8d.cited_recall_cores"
+        ],
+        "generated_fields": [
+          "normalized_cited_recall_cores"
+        ],
+        "input_fields": [
+          "body",
+          "cited_recall_cores",
+          "file_id"
+        ],
+        "output_fields": [
+          "body",
+          "cited_recall_cores",
+          "file_id",
+          "normalized_cited_recall_cores"
+        ],
+        "source_operator_indices": [
+          10
+        ]
+      },
+      {
+        "topological_index": 12,
+        "physical_operator": "ApplyGroupByOp",
+        "logical_operator": "GroupByAggregate",
+        "logical_op_id": "b348ef972f",
+        "unique_logical_op_id": "12-b348ef972f",
+        "full_op_id": "b348ef972f-0d78b29953",
+        "model": null,
+        "depends_on": [
+          "Schema['body', 'cited_recall_cores', 'file_id', 'normalized_cited_recall_cores'].0346743d8d.body",
+          "Schema['body', 'cited_recall_cores', 'file_id', 'normalized_cited_recall_cores'].0346743d8d.cited_recall_cores",
+          "Schema['body', 'cited_recall_cores', 'file_id', 'normalized_cited_recall_cores'].0346743d8d.file_id",
+          "Schema['body', 'cited_recall_cores', 'file_id', 'normalized_cited_recall_cores'].0346743d8d.normalized_cited_recall_cores",
+          "Schema['body', 'cited_recall_cores', 'file_id'].94e8e09fac.body",
+          "Schema['body', 'cited_recall_cores', 'file_id'].94e8e09fac.cited_recall_cores",
+          "Schema['body', 'cited_recall_cores', 'file_id'].94e8e09fac.file_id",
+          "Schema['body', 'file_id'].vehicle_safety-043-reports-semantic-input.body",
+          "Schema['body', 'file_id'].vehicle_safety-043-reports-semantic-input.file_id"
+        ],
+        "generated_fields": [
+          "list(normalized_cited_recall_cores)"
+        ],
+        "input_fields": [
+          "body",
+          "cited_recall_cores",
+          "file_id",
+          "normalized_cited_recall_cores"
+        ],
+        "output_fields": [
+          "list(normalized_cited_recall_cores)"
+        ],
+        "source_operator_indices": [
+          11
+        ]
+      },
+      {
+        "topological_index": 13,
+        "physical_operator": "NonLLMConvert",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "1e72138d83",
+        "unique_logical_op_id": "13-1e72138d83",
+        "full_op_id": "1e72138d83-9d189783e7",
+        "model": null,
+        "depends_on": [
+          "Schema['join_key', 'list(normalized_cited_recall_cores)'].646005709c.list(normalized_cited_recall_cores)"
+        ],
+        "generated_fields": [
+          "join_key"
+        ],
+        "input_fields": [
+          "list(normalized_cited_recall_cores)"
+        ],
+        "output_fields": [
+          "join_key",
+          "list(normalized_cited_recall_cores)"
+        ],
+        "source_operator_indices": [
+          12
+        ]
+      },
+      {
+        "topological_index": 14,
+        "physical_operator": "RelationalJoin",
+        "logical_operator": "JoinOp",
+        "logical_op_id": "9b2ab4327d",
+        "unique_logical_op_id": "14-9b2ab4327d",
+        "full_op_id": "9b2ab4327d-e4c421e186",
+        "model": null,
+        "depends_on": [
+          "Schema['join_key', 'list(normalized_cited_recall_cores)'].646005709c.join_key"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "join_key",
+          "list(campaign_number)",
+          "list(complaint_id)",
+          "list(normalized_cited_recall_cores)",
+          "list(recall_core)",
+          "make"
+        ],
+        "output_fields": [
+          "join_key",
+          "list(campaign_number)",
+          "list(complaint_id)",
+          "list(normalized_cited_recall_cores)",
+          "list(recall_core)",
+          "make"
+        ],
+        "source_operator_indices": [
+          8,
+          13
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "source": 0,
+        "target": 1
+      },
+      {
+        "source": 1,
+        "target": 2
+      },
+      {
+        "source": 3,
+        "target": 5
+      },
+      {
+        "source": 4,
+        "target": 5
+      },
+      {
+        "source": 5,
+        "target": 6
+      },
+      {
+        "source": 2,
+        "target": 7
+      },
+      {
+        "source": 6,
+        "target": 7
+      },
+      {
+        "source": 7,
+        "target": 8
+      },
+      {
+        "source": 9,
+        "target": 10
+      },
+      {
+        "source": 10,
+        "target": 11
+      },
+      {
+        "source": 11,
+        "target": 12
+      },
+      {
+        "source": 12,
+        "target": 13
+      },
+      {
+        "source": 8,
+        "target": 14
+      },
+      {
+        "source": 13,
+        "target": 14
+      }
+    ],
+    "estimated_plan_cost": {
+      "cost": 347.9649404510622,
+      "time": 8094600.278715845,
+      "quality": 0.9741379310344828,
+      "op_estimates": {
+        "cardinality": 680724.0,
+        "time_per_record": 4.881,
+        "cost_per_record": 0.0,
+        "quality": 1.0,
+        "cardinality_lower_bound": 680724.0,
+        "cardinality_upper_bound": 680724.0,
+        "time_per_record_lower_bound": 4.881,
+        "time_per_record_upper_bound": 4.881,
+        "cost_per_record_lower_bound": 0.0,
+        "cost_per_record_upper_bound": 0.0,
+        "quality_lower_bound": 1.0,
+        "quality_upper_bound": 1.0
+      },
+      "cost_lower_bound": 347.9649404510622,
+      "cost_upper_bound": 347.9649404510622,
+      "time_lower_bound": 8094600.278715845,
+      "time_upper_bound": 8094600.278715845,
+      "quality_lower_bound": 0.9741379310344828,
+      "quality_upper_bound": 0.9741379310344828
+    },
+    "topological_logical_sequence": [
+      "0-a433d79e15",
+      "1-cd407297a2",
+      "2-893e82fab2",
+      "3-db36db5429",
+      "4-c4e0def5eb",
+      "5-520a6c4efd",
+      "6-78ab9f9c30",
+      "7-7d5a6aa7ae",
+      "8-1e72138d83",
+      "9-8b3276a496",
+      "10-13ba1ef057",
+      "11-089cfb8824",
+      "12-b348ef972f",
+      "13-1e72138d83",
+      "14-9b2ab4327d"
+    ]
+  },
+  "optimizer_configuration": {
+    "strategy": "pareto",
+    "policy": "MaxQuality",
+    "physical_implementation_candidates": {
+      "allow_bonded_query": true,
+      "allow_model_selection": false,
+      "allow_rag_reduction": false,
+      "allow_mixtures": true,
+      "allow_critic": true,
+      "allow_split_merge": false,
+      "force_rag": false,
+      "execution_strategy": "parallel",
+      "max_workers": 64,
+      "join_parallelism": 64
+    },
+    "dynamic_learning_requested": true,
+    "dynamic_learning_pipeline_supported": true,
+    "dynamic_learning": true,
+    "dynamic_learning_support": {
+      "supported": false,
+      "reason": "Palimpzest Sentinel/MAB does not preserve source indices after non-final aggregate or limit operators",
+      "terminal_only_operator_violations": [
+        {
+          "dataset_id": "bae7ccfd4a",
+          "unique_logical_op_id": "2-893e82fab2",
+          "logical_operator": "GroupByAggregate",
+          "direct_downstream": [
+            {
+              "dataset_id": "1289b2516c",
+              "unique_logical_op_id": "7-7d5a6aa7ae",
+              "logical_operator": "JoinOp"
+            }
+          ]
+        },
+        {
+          "dataset_id": "7dc34e558f",
+          "unique_logical_op_id": "6-78ab9f9c30",
+          "logical_operator": "GroupByAggregate",
+          "direct_downstream": [
+            {
+              "dataset_id": "1289b2516c",
+              "unique_logical_op_id": "7-7d5a6aa7ae",
+              "logical_operator": "JoinOp"
+            }
+          ]
+        },
+        {
+          "dataset_id": "8114845002",
+          "unique_logical_op_id": "12-b348ef972f",
+          "logical_operator": "GroupByAggregate",
+          "direct_downstream": [
+            {
+              "dataset_id": "646005709c",
+              "unique_logical_op_id": "13-1e72138d83",
+              "logical_operator": "ConvertScan"
+            }
+          ]
+        }
+      ]
+    },
+    "allow_unsupported_sentinel_plans": true,
+    "dynamic_learning_fallback": null,
+    "sentinel_execution_strategy": "mab",
+    "sentinel_k": 6,
+    "sentinel_j": 4,
+    "sentinel_sample_budget": 100,
+    "sentinel_seed": 42,
+    "available_models": [
+      "Qwen3.5-397B-A17B",
+      "openai/Qwen3-Embedding-8B"
+    ]
+  },
+  "optimizer_search_space": {
+    "group_count": 15,
+    "logical_expression_count": 15,
+    "physical_expression_count": 20,
+    "transformation_rules_explored": [
+      "ReorderConverts"
+    ],
+    "implementation_rules_explored": [
+      "BasicSubstitutionRule",
+      "CritiqueAndRefineRule",
+      "EmbeddingJoinRule",
+      "LLMConvertBondedRule",
+      "MixtureOfAgentsRule",
+      "NestedLoopsJoinRule",
+      "NonLLMConvertRule",
+      "RelationalJoinRule"
+    ]
+  },
+  "optimization_metrics": {
+    "elapsed_seconds": 1403.63473034,
+    "sentinel_sampling_seconds": 1403.49810386,
+    "optimizer_search_and_bookkeeping_seconds": 0.13662648,
+    "cost_usd": 3.04558489,
+    "text_llm_calls": 2269,
+    "embedding_calls": 0,
+    "input_text_tokens": 2488026,
+    "output_text_tokens": 886767,
+    "total_text_tokens": 3374793,
+    "embedding_input_tokens": 0,
+    "cache_read_tokens": 0,
+    "cache_creation_tokens": 0,
+    "sampled_operators": {
+      "text_llm_calls": 1765,
+      "embedding_calls": 0,
+      "input_text_tokens": 1786838,
+      "output_text_tokens": 697800,
+      "embedding_input_tokens": 0,
+      "cost_usd": 2.32993879
+    },
+    "validator": {
+      "text_llm_calls": 504,
+      "input_text_tokens": 701188,
+      "output_text_tokens": 188967,
+      "total_text_tokens": 890155,
+      "cost_usd": 0.7156461
+    },
+    "model_usage_by_model": {
+      "Qwen3.5-397B-A17B": {
+        "roles": [
+          "text",
+          "validator"
+        ],
+        "calls": 2269,
+        "input_tokens": 2488026,
+        "output_tokens": 886767,
+        "total_tokens": 3374793,
+        "cost_usd": 3.04558489
+      }
+    }
+  },
+  "sentinel_join_sampling": [
+    {
+      "unique_logical_op_id": "5-520a6c4efd",
+      "frontier_representative_operator_class": "EmbeddingJoin",
+      "root_dataset_count": 2,
+      "left_available_source_indices": 2370,
+      "right_available_source_indices": 764,
+      "theoretical_combination_count": 1810680,
+      "available_combination_count": 1810680,
+      "sample_limit": 100,
+      "sampled_combination_count": 100,
+      "sampling_method": "seeded_uniform_without_replacement_flat_indices",
+      "seed": 42
+    },
+    {
+      "unique_logical_op_id": "7-7d5a6aa7ae",
+      "frontier_representative_operator_class": "RelationalJoin",
+      "root_dataset_count": 3,
+      "left_available_source_indices": 764,
+      "right_available_source_indices": 100,
+      "theoretical_combination_count": 1383359520,
+      "available_combination_count": 76400,
+      "sample_limit": 100,
+      "sampled_combination_count": 100,
+      "sampling_method": "seeded_uniform_without_replacement_flat_indices",
+      "seed": 42
+    },
+    {
+      "unique_logical_op_id": "14-9b2ab4327d",
+      "frontier_representative_operator_class": "RelationalJoin",
+      "root_dataset_count": 4,
+      "left_available_source_indices": 100,
+      "right_available_source_indices": 297,
+      "theoretical_combination_count": 410857777440,
+      "available_combination_count": 29700,
+      "sample_limit": 256,
+      "sampled_combination_count": 256,
+      "sampling_method": "seeded_uniform_without_replacement_flat_indices",
+      "seed": 42
+    }
+  ],
+  "sentinel_sampling_exhaustion": null,
+  "recovery": null
+}

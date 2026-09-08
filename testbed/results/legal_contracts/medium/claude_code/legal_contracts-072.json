@@ -1,0 +1,48 @@
+{
+  "task_id": "legal_contracts-072",
+  "answer": [
+    {
+      "document_name": "exhibit191-insidertradin.htm",
+      "policy_title": "INSIDER TRADING AND WINDOW PERIOD POLICY",
+      "policy_date": "2020-10-16"
+    },
+    {
+      "document_name": "ex191securitiesandinsidert.htm",
+      "policy_title": "Securities and Insider Trading Policy",
+      "policy_date": "2023-02-16"
+    },
+    {
+      "document_name": "exhibit191amendedandrestat.htm",
+      "policy_title": "TransDigm Group Incorporated Amended and Restated Insider Trading and Confidentiality Policy",
+      "policy_date": "2023-04-22"
+    },
+    {
+      "document_name": "hlit-20241231xex191.htm",
+      "policy_title": "HARMONIC INC. INSIDER TRADING COMPLIANCE PROGRAM",
+      "policy_date": "2023-05-03"
+    },
+    {
+      "document_name": "hii-ex19202410xk.htm",
+      "policy_title": "Insider Trading Policy",
+      "policy_date": "2023-08-24"
+    },
+    {
+      "document_name": "ip-20231231exhibit19.htm",
+      "policy_title": "GLOBAL CORPORATE COMPLIANCE POLICY INSIDER TRADING",
+      "policy_date": "2023-09-07"
+    },
+    {
+      "document_name": "a2023q4voyaex191voyafinanc.htm",
+      "policy_title": "Voya Financial Personal Trading Policy",
+      "policy_date": "2023-10-22"
+    },
+    {
+      "document_name": "a2024q4voyaex191tradingpol.htm",
+      "policy_title": "Voya Financial Personal Trading Policy",
+      "policy_date": "2023-10-22"
+    }
+  ],
+  "elapsed_seconds": 91.067,
+  "cost_usd": 0.36611064,
+  "total_tokens": 779709
+}

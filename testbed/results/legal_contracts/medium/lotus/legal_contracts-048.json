@@ -1,0 +1,13 @@
+{
+  "task_id": "legal_contracts-048",
+  "answer": [
+    {
+      "document_id": "18268-001%20Rev%20B%20Form%20Version%20in%20PDF.pdf",
+      "governing_law": "Commonwealth of Virginia",
+      "non_disclosure_direction": "unilateral"
+    }
+  ],
+  "elapsed_seconds": 737.98,
+  "cost_usd": 6.597058,
+  "total_tokens": 12378219
+}

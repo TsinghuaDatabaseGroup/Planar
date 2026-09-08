@@ -1,0 +1,26 @@
+{
+  "task_id": "legal_contracts-075",
+  "answer": [
+    {
+      "comparison_class": "equal",
+      "agreement_count": 87,
+      "average_non_compete_months": 21.91,
+      "average_longest_non_solicitation_months": 21.91
+    },
+    {
+      "comparison_class": "non_compete_longer",
+      "agreement_count": 3,
+      "average_non_compete_months": 80,
+      "average_longest_non_solicitation_months": 18
+    },
+    {
+      "comparison_class": "non_solicitation_longer",
+      "agreement_count": 10,
+      "average_non_compete_months": 9,
+      "average_longest_non_solicitation_months": 18
+    }
+  ],
+  "elapsed_seconds": 597,
+  "cost_usd": 5.686034,
+  "total_tokens": 10896720
+}

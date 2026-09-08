@@ -1,0 +1,18 @@
+{
+  "task_id": "legal_contracts-067",
+  "answer": [
+    {"company": "1st Source Corporation", "trigger_pattern": "restatement_only", "coverage_extends_beyond_executive_officers": false},
+    {"company": "Acuity Inc.", "trigger_pattern": "restatement_only", "coverage_extends_beyond_executive_officers": true},
+    {"company": "Applied Digital Corporation", "trigger_pattern": "restatement_only", "coverage_extends_beyond_executive_officers": false},
+    {"company": "Cavco Industries, Inc.", "trigger_pattern": "restatement_and_misconduct", "coverage_extends_beyond_executive_officers": false},
+    {"company": "CTO Realty Growth, Inc.", "trigger_pattern": "restatement_only", "coverage_extends_beyond_executive_officers": false},
+    {"company": "El Pollo Loco Holdings, Inc.", "trigger_pattern": "restatement_and_misconduct", "coverage_extends_beyond_executive_officers": false},
+    {"company": "Franklin Resources, Inc.", "trigger_pattern": "restatement_and_misconduct", "coverage_extends_beyond_executive_officers": true},
+    {"company": "Fulton Financial Corporation", "trigger_pattern": "restatement_only", "coverage_extends_beyond_executive_officers": false},
+    {"company": "Globalstar, Inc.", "trigger_pattern": "restatement_and_misconduct", "coverage_extends_beyond_executive_officers": true},
+    {"company": "H.B. Fuller Company", "trigger_pattern": "restatement_and_misconduct", "coverage_extends_beyond_executive_officers": true}
+  ],
+  "elapsed_seconds": 819.54,
+  "cost_usd": 0.873538,
+  "total_tokens": 1653178
+}

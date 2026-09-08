@@ -1,0 +1,71 @@
+{
+  "task_id": "aviation_safety-015",
+  "answer": [
+    {
+      "rank": 1,
+      "incident_id": "asrs_024642",
+      "fuel_values_normalized": [
+        "6300 lb",
+        "3200 lb",
+        "9.0k lb",
+        "7.0k lb",
+        "9000 lb",
+        "7200 lb"
+      ],
+      "time_values_normalized": [
+        "40 min",
+        "30 min",
+        "25 min"
+      ],
+      "operational_consequence": "emergency_declaration"
+    },
+    {
+      "rank": 2,
+      "incident_id": "asrs_027451",
+      "fuel_values_normalized": [],
+      "time_values_normalized": [
+        "20 min"
+      ],
+      "operational_consequence": "emergency_declaration"
+    },
+    {
+      "rank": 3,
+      "incident_id": "asrs_032804",
+      "fuel_values_normalized": [
+        "100000 lb",
+        "520000 lb"
+      ],
+      "time_values_normalized": [],
+      "operational_consequence": "emergency_declaration"
+    },
+    {
+      "rank": 4,
+      "incident_id": "asrs_034863",
+      "fuel_values_normalized": [
+        "1200 lbs",
+        "17800 lbs",
+        "3.7",
+        "3.2",
+        "2.4",
+        "3.0"
+      ],
+      "time_values_normalized": [
+        "2-3 min",
+        "1 min"
+      ],
+      "operational_consequence": "emergency_declaration"
+    },
+    {
+      "rank": 5,
+      "incident_id": "asrs_035355",
+      "fuel_values_normalized": [],
+      "time_values_normalized": [
+        "15 min"
+      ],
+      "operational_consequence": "emergency_declaration"
+    }
+  ],
+  "elapsed_seconds": 278.52,
+  "cost_usd": 1.692426,
+  "total_tokens": 3957439
+}

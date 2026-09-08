@@ -1,0 +1,23 @@
+{
+  "task_id": "legal_contracts-056",
+  "answer": [
+    {
+      "agreement_type": "mutual NDA",
+      "document_count": 294,
+      "avg_word_count": 1817.37
+    },
+    {
+      "agreement_type": "unilateral NDA",
+      "document_count": 292,
+      "avg_word_count": 1644.67
+    },
+    {
+      "agreement_type": "confidentiality-and-standstill",
+      "document_count": 5,
+      "avg_word_count": 2268.8
+    }
+  ],
+  "elapsed_seconds": 203.591,
+  "cost_usd": 0.72670881,
+  "total_tokens": 1736006
+}

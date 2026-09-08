@@ -1,0 +1,190 @@
+datasets:
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+  asrs_person_factors:
+    type: file
+    path: data/asrs/person_factors.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+
+operations:
+  - name: filter_human_factors_incidents
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("primary_problem") == "Human Factors"
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              return {"text": handle.read()}
+
+  - name: filter_target_person_factor_rows
+    type: code_filter
+    code: |
+      def transform(doc):
+          value = str(doc.get("value") or "")
+          return (
+              doc.get("factor_type") == "human_factors"
+              and any(
+                  phrase in value
+                  for phrase in {
+                      "Communication Breakdown",
+                      "Workload",
+                      "Confusion",
+                      "Situational Awareness",
+                  }
+              )
+          )
+
+  - name: expand_canonical_human_factors
+    type: code_map
+    code: |
+      def transform(doc):
+          value = str(doc.get("value") or "")
+          mappings = [
+              ("Communication Breakdown", "communication_breakdown"),
+              ("Workload", "workload"),
+              ("Confusion", "confusion"),
+              ("Situational Awareness", "situational_awareness"),
+          ]
+          return {
+              "canonical_rows": [
+                  {"canonical_human_factor": canonical}
+                  for phrase, canonical in mappings
+                  if phrase in value
+              ]
+          }
+
+  - name: unnest_canonical_human_factors
+    type: unnest
+    unnest_key: canonical_rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - canonical_human_factor
+
+  - name: deduplicate_incident_factor_rows
+    type: code_reduce
+    reduce_key:
+      - incident_id
+      - canonical_human_factor
+    code: |
+      def transform(items):
+          return {"is_structured_factor": bool(items)}
+
+  - name: join_causally_supported_factors
+    type: equijoin
+    comparison_prompt: |
+      Evaluate this pair only when the incident_id values are exactly equal. Keep
+      the pair only when the incident narrative portrays the named structured human
+      factor as causally contributing to the event, rather than merely mentioning
+      it or providing background context.
+
+      INCIDENT DOCUMENT ID: {{ left.incident_id }}
+      REPORT:
+      {{ left.text }}
+
+      STRUCTURED FACTOR INCIDENT ID: {{ right.incident_id }}
+      CANONICAL HUMAN FACTOR: {{ right.canonical_human_factor }}
+    blocking_conditions:
+      - left["incident_id"] == right["incident_id"]
+    embedding_model: Qwen3-Embedding-8B
+    comparison_model: Qwen3.5-397B-A17B
+    timeout: 120
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 128
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: aggregate_causally_supported_factors
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          grouped = {}
+          for item in items:
+              factor = str(item.get("canonical_human_factor") or "")
+              incident_id = str(item.get("incident_id_left") or "")
+              if factor and incident_id:
+                  grouped.setdefault(factor, set()).add((incident_id, factor))
+          label_order = [
+              "communication_breakdown",
+              "workload",
+              "confusion",
+              "situational_awareness",
+          ]
+          return {
+              "rows": [
+                  {
+                      "canonical_human_factor": factor,
+                      "incident_factor_pair_count": len(grouped[factor]),
+                  }
+                  for factor in label_order
+                  if factor in grouped
+              ]
+          }
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - canonical_human_factor
+      - incident_factor_pair_count
+
+pipeline:
+  steps:
+    - name: incident_docs
+      input: asrs_incidents
+      operations:
+        - filter_human_factors_incidents
+        - load_asrs_narrative
+    - name: factor_rows
+      input: asrs_person_factors
+      operations:
+        - filter_target_person_factor_rows
+        - expand_canonical_human_factors
+        - unnest_canonical_human_factors
+        - deduplicate_incident_factor_rows
+    - name: matched_pairs
+      operations:
+        - join_causally_supported_factors:
+            left: incident_docs
+            right: factor_rows
+    - name: answer
+      input: matched_pairs
+      operations:
+        - aggregate_causally_supported_factors
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-023.json

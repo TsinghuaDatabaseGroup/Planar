@@ -1,0 +1,176 @@
+datasets:
+  nhtsa_complaints:
+    type: file
+    path: data/nhtsa_vehicle_safety/complaints.csv
+  nhtsa_recalls:
+    type: file
+    path: data/nhtsa_vehicle_safety/recalls.jsonl
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_nissan_altima_airbag_injury_complaints
+    type: code_filter
+    code: |
+      def transform(doc):
+          try:
+              injury_count = int(doc.get("injury_count") or 0)
+          except (TypeError, ValueError):
+              injury_count = 0
+          try:
+              death_count = int(doc.get("death_count") or 0)
+          except (TypeError, ValueError):
+              death_count = 0
+          return (
+              doc.get("make") == "NISSAN"
+              and doc.get("model") == "ALTIMA"
+              and doc.get("component_id") == "AIRBAG"
+              and (injury_count > 0 or death_count > 0)
+          )
+
+  - name: classify_rupture_explosion_or_fragment_injury
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether this complaint describes an airbag inflator rupture, an
+      airbag or inflator explosion, shrapnel, or metal fragments that caused an
+      injury or could plausibly cause serious injury.
+
+      The complaint must describe one of those physical failure modes. A generic
+      airbag deployment, a failure to deploy, an airbag warning light, or an injury
+      allegation without a rupture, explosion, shrapnel, or metal-fragment failure
+      does not qualify.
+
+      Complaint summary:
+      {{ input.summary_text }}
+    output:
+      mode: structured_output
+      schema:
+        describes_rupture_explosion_or_fragment_injury: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: extract_primary_airbag_failure_mode
+    type: map
+    optimize: true
+    prompt: |
+      Extract the primary airbag failure mode described in this complaint as a
+      short canonical phrase.
+
+      Return only the physical failure mode, preferably in two to eight lowercase
+      words. Do not include the vehicle identity, injury consequence, collision
+      details, repair, recall status, or explanatory prose.
+
+      Complaint summary:
+      {{ input.summary_text }}
+    output:
+      mode: structured_output
+      schema:
+        airbag_failure_mode: string
+    validate:
+      - len(output["airbag_failure_mode"].strip()) > 0
+    num_retries_on_validate_failure: 2
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_airbag_recalls
+    type: code_filter
+    code: |
+      def transform(doc):
+          component = doc.get("component") or {}
+          return component.get("component_id") == "AIRBAG"
+
+  - name: flatten_airbag_recall_keys
+    type: code_map
+    code: |
+      def transform(doc):
+          campaign = doc.get("campaign") or {}
+          vehicle = doc.get("vehicle") or {}
+          return {
+              "vehicle_id": vehicle.get("vehicle_id"),
+              "campaign_number": campaign.get("number"),
+          }
+
+  - name: deduplicate_airbag_recall_vehicle_campaigns
+    type: code_reduce
+    reduce_key:
+      - vehicle_id
+      - campaign_number
+    code: |
+      def transform(items):
+          first = items[0]
+          return {
+              "vehicle_id": first.get("vehicle_id"),
+              "campaign_number": first.get("campaign_number"),
+          }
+
+  - name: join_complaints_to_airbag_recall_campaigns
+    type: equijoin
+    deterministic: true
+    blocking_conditions:
+      - left["vehicle_id"] == right["vehicle_id"]
+
+  - name: project_recalled_airbag_complaint_columns
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "complaint_id": doc.get("complaint_id"),
+              "vehicle_id": doc.get("vehicle_id_left"),
+              "campaign_number": doc.get("campaign_number"),
+              "airbag_failure_mode": doc.get("airbag_failure_mode"),
+          }
+
+pipeline:
+  steps:
+    - name: qualifying_airbag_injury_complaints
+      input: nhtsa_complaints
+      operations:
+        - filter_nissan_altima_airbag_injury_complaints
+        - classify_rupture_explosion_or_fragment_injury
+        - extract_primary_airbag_failure_mode
+    - name: distinct_airbag_recall_vehicle_campaigns
+      input: nhtsa_recalls
+      operations:
+        - filter_airbag_recalls
+        - flatten_airbag_recall_keys
+        - deduplicate_airbag_recall_vehicle_campaigns
+    - name: recalled_airbag_injury_complaints
+      operations:
+        - join_complaints_to_airbag_recall_campaigns:
+            left: qualifying_airbag_injury_complaints
+            right: distinct_airbag_recall_vehicle_campaigns
+    - name: projected_recalled_airbag_injury_complaints
+      input: recalled_airbag_injury_complaints
+      operations:
+        - project_recalled_airbag_complaint_columns
+  output:
+    type: file
+    path: raw_outputs/vehicle_safety/output_vehicle_safety-021.json

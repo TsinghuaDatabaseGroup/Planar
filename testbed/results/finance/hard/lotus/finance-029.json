@@ -1,0 +1,31 @@
+{
+  "task_id": "finance-029",
+  "answer": [
+    {"company_name": "A-MARK PRECIOUS METALS, INC.", "industry_sector": "Precious Metals Trading and Distribution"},
+    {"company_name": "ACCO Brands Corporation", "industry_sector": "Consumer and Business Branded Products"},
+    {"company_name": "AGCO Corporation", "industry_sector": "Agricultural Machinery"},
+    {"company_name": "ALLIANCEBERNSTEIN L.P.", "industry_sector": "Asset Management"},
+    {"company_name": "ALTO INGREDIENTS, INC.", "industry_sector": "Renewable Fuels and Specialty Alcohols"},
+    {"company_name": "AMERICAN AXLE & MANUFACTURING HOLDINGS, INC.", "industry_sector": "Automotive Parts and Accessories"},
+    {"company_name": "ARCH CAPITAL GROUP LTD.", "industry_sector": "Insurance and Reinsurance"},
+    {"company_name": "ARISTA NETWORKS, INC.", "industry_sector": "Data Center and Cloud Networking"},
+    {"company_name": "ASGN Incorporated", "industry_sector": "IT Services and Solutions"},
+    {"company_name": "AdvanSix Inc.", "industry_sector": "Chemicals"},
+    {"company_name": "Alpha Metallurgical Resources, Inc.", "industry_sector": "Metallurgical Coal Mining"},
+    {"company_name": "Ameriprise Financial, Inc.", "industry_sector": "Financial Services"},
+    {"company_name": "AppFolio, Inc.", "industry_sector": "Cloud property management accounting leasing workflow customer relationship and investment management software platform for real estate"},
+    {"company_name": "Aramark", "industry_sector": "Food and Support Services"},
+    {"company_name": "Arbor Realty Trust, Inc.", "industry_sector": "Real Estate Finance"},
+    {"company_name": "Arch Resources, Inc.", "industry_sector": "Coal Mining"},
+    {"company_name": "Arcosa, Inc.", "industry_sector": "Infrastructure Products and Solutions"},
+    {"company_name": "BLOCK, INC.", "industry_sector": "Financial Technology"},
+    {"company_name": "BOK FINANCIAL CORP", "industry_sector": "Banking and Financial Services"},
+    {"company_name": "BROWN & BROWN, INC.", "industry_sector": "Insurance Brokerage and Services"},
+    {"company_name": "Bank of Hawaii Corporation", "industry_sector": "Banking"},
+    {"company_name": "Bio-Rad Laboratories, Inc.", "industry_sector": "Life Science Research and Clinical Diagnostics"},
+    {"company_name": "CACI International Inc", "industry_sector": "Government IT Services and Defense Contracting"}
+  ],
+  "elapsed_seconds": 7099.18,
+  "cost_usd": 27.437590,
+  "total_tokens": 59038439
+}

@@ -1,0 +1,32 @@
+{
+  "task_id": "vehicle_safety-004",
+  "answer": [
+    {
+      "campaign_number": "23V610000",
+      "failure_mechanism": "Rearview camera mounting clips break"
+    },
+    {
+      "campaign_number": "23V639000",
+      "failure_mechanism": "Water leakage into rearview camera"
+    },
+    {
+      "campaign_number": "23V579000",
+      "failure_mechanism": "Air bag warning labels detaching"
+    },
+    {
+      "campaign_number": "15V089000",
+      "failure_mechanism": "improperly soldered accelerator pedal component"
+    },
+    {
+      "campaign_number": "16V862000",
+      "failure_mechanism": "tow hitch module malfunction"
+    },
+    {
+      "campaign_number": "16V770000",
+      "failure_mechanism": "Inadequate weld joints in seatback frame"
+    }
+  ],
+  "elapsed_seconds": 29.81,
+  "cost_usd": 0.000712,
+  "total_tokens": 1356
+}

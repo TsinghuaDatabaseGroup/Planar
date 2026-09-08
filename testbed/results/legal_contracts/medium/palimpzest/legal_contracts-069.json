@@ -1,0 +1,11 @@
+{
+  "task_id": "legal_contracts-069",
+  "answer": [
+    {"normalized_agreement_title": "non disclosure agreement", "family_size": 170, "distinct_finite_term_years": [0, 0.08, 1, 1.5, 1.79, 2, 3, 4, 5, 6, 7, 9.17, 10, 25], "perpetual_member_count": 36, "distinct_stated_governing_law_count": 79},
+    {"normalized_agreement_title": "mutual non disclosure agreement", "family_size": 86, "distinct_finite_term_years": [0, 1, 1.5, 2, 3, 4, 5], "perpetual_member_count": 7, "distinct_stated_governing_law_count": 47},
+    {"normalized_agreement_title": "confidentiality and non disclosure agreement", "family_size": 41, "distinct_finite_term_years": [0.5, 1, 2, 3, 5], "perpetual_member_count": 6, "distinct_stated_governing_law_count": 29}
+  ],
+  "elapsed_seconds": 6604.65,
+  "cost_usd": 12.124718,
+  "total_tokens": 22946148
+}

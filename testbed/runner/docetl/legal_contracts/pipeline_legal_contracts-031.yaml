@@ -1,0 +1,86 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body: {chat_template_kwargs: {enable_thinking: false}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+
+operations:
+  - name: filter_compensation_recovery_policies
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is a compensation-recovery or clawback
+      policy.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_compensation_recovery_policy: boolean}}
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body: {chat_template_kwargs: {enable_thinking: false}}
+
+  - name: filter_misconduct_executive_officer_scope
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this policy only if it authorizes recovery for misconduct and limits
+      the persons covered by that misconduct trigger to current or former
+      executive officers. Exclude policies whose misconduct-triggered scope also
+      covers directors, key managers, other employees, or senior executives who
+      are not executive officers.
+
+      Policy:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {has_required_trigger_and_scope: boolean}}
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body: {chat_template_kwargs: {enable_thinking: false}}
+
+  - name: extract_company_name
+    type: map
+    optimize: true
+    prompt: |
+      Extract the company name stated by this compensation-recovery policy.
+
+      Policy:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {company_name: string}}
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body: {chat_template_kwargs: {enable_thinking: false}}
+
+  - name: project_answer_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          return {"document_id": str(doc.get("doc_id") or ""), "company_name": str(doc.get("company_name") or "")}
+
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations:
+        - filter_compensation_recovery_policies
+        - filter_misconduct_executive_officer_scope
+        - extract_company_name
+        - project_answer_fields
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-031.json

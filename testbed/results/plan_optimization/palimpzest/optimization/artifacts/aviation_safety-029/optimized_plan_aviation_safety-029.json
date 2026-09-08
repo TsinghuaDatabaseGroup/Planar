@@ -1,0 +1,810 @@
+{
+  "task_id": "aviation_safety-029",
+  "status": "failed",
+  "selected_plan_persisted_before_execution": false,
+  "source": "queries/queries.json reference_semantic_plan",
+  "input_plan": {
+    "task_id": "aviation_safety-029",
+    "query": "For reports from the 1201-1800 local-time period, how are approach or landing incidents distributed by flight condition and recorded result when weather or visibility, rather than traffic spacing, runway occupancy, or equipment, caused a go-around, missed approach, or new clearance? Flight conditions are IMC, Marginal, and Mixed; results are go_around_or_missed_approach and new_clearance. Show one row for every represented combination.",
+    "inputs": [
+      {
+        "source_id": "incidents.csv",
+        "dataset": "NASA_ASRS",
+        "source_type": "table",
+        "role": "primary"
+      },
+      {
+        "source_id": "environment_attributes.csv",
+        "dataset": "NASA_ASRS",
+        "source_type": "table",
+        "role": "primary"
+      },
+      {
+        "source_id": "events.csv",
+        "dataset": "NASA_ASRS",
+        "source_type": "table",
+        "role": "primary"
+      },
+      {
+        "source_id": "text/*",
+        "dataset": "NASA_ASRS",
+        "source_type": "document",
+        "role": "primary"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "semantic_candidates := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv, [incident_id, text_file, local_time_of_day, flight_phase])\n  -> FILTER(local_time_of_day = '1201-1800')\n  -> SCAN_DOCS(NASA_ASRS, selector=filtered_incidents.text_file, [incident_id, text])\n  -> SEM_FILTER(\"Keep reports where weather or visibility explicitly caused a go-around, missed approach, or new clearance.\", {text})\n  -> SEM_FILTER(\"Exclude reports where traffic spacing, runway occupancy, or aircraft equipment was the primary cause of that result.\", {text})\n)\nenvironment_records := (\n  SCAN_TABLE(NASA_ASRS, environment_attributes.csv, [incident_id, attribute, value])\n  -> FILTER(attribute = 'flight_conditions' AND value IN ('IMC','Marginal','Mixed'))\n)\ncandidates_with_environment := JOIN(left=semantic_candidates, right=environment_records, join_type=inner, condition=semantic_candidates.incident_id = environment_records.incident_id)\nresult_events := (\n  SCAN_TABLE(NASA_ASRS, events.csv, [incident_id, event_type, label])\n  -> FILTER(event_type = 'result' AND label IN ('Flight Crew Executed Go Around / Missed Approach','Air Traffic Control Issued New Clearance'))\n)\njoined := JOIN(left=candidates_with_environment, right=result_events, join_type=inner, condition=candidates_with_environment.incident_id = result_events.incident_id)\njoined\n-> FILTER(flight_phase CONTAINS 'Approach' OR flight_phase CONTAINS 'Landing')\n-> GROUP_BY([flight_conditions:value, recorded_result=CASE label WHEN 'Flight Crew Executed Go Around / Missed Approach' THEN 'go_around_or_missed_approach' ELSE 'new_clearance' END], {incident_count:COUNT_DISTINCT(incident_id)})"
+      }
+    ],
+    "answer_schema": {
+      "type": "table",
+      "columns": [
+        "flight_conditions",
+        "recorded_result",
+        "incident_count"
+      ],
+      "types": [
+        "string",
+        "string",
+        "integer"
+      ]
+    }
+  },
+  "input_palimpzest_logical_plan": {
+    "root_dataset_id": "a452e89960",
+    "nodes": [
+      {
+        "dataset_id": "aviation_safety-029-reports-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "508bdde88d",
+        "unique_logical_op_id": "0-508bdde88d",
+        "depends_on": [],
+        "generated_fields": [
+          "flight_phase",
+          "incident_id",
+          "text"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "flight_phase",
+          "incident_id",
+          "text"
+        ]
+      },
+      {
+        "dataset_id": "d77aa2c166",
+        "source_dataset_ids": [
+          "aviation_safety-029-reports-semantic-input"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "1f3b8b8f97",
+        "unique_logical_op_id": "1-1f3b8b8f97",
+        "depends_on": [
+          "text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "flight_phase",
+          "incident_id",
+          "text"
+        ],
+        "output_fields": [
+          "flight_phase",
+          "incident_id",
+          "text"
+        ],
+        "filter": "Keep this report only if weather or visibility explicitly caused a go-around, missed approach, or new clearance."
+      },
+      {
+        "dataset_id": "5ca5141ccb",
+        "source_dataset_ids": [
+          "d77aa2c166"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "0ab1cee690",
+        "unique_logical_op_id": "2-0ab1cee690",
+        "depends_on": [
+          "text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "flight_phase",
+          "incident_id",
+          "text"
+        ],
+        "output_fields": [
+          "flight_phase",
+          "incident_id",
+          "text"
+        ],
+        "filter": "Keep this report only if traffic spacing, runway occupancy, and aircraft equipment were not the primary cause of that result."
+      },
+      {
+        "dataset_id": "aviation_safety-029-environment-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "70dd66232b",
+        "unique_logical_op_id": "3-70dd66232b",
+        "depends_on": [],
+        "generated_fields": [
+          "incident_id",
+          "value"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "incident_id",
+          "value"
+        ]
+      },
+      {
+        "dataset_id": "2572bcc770",
+        "source_dataset_ids": [
+          "5ca5141ccb",
+          "aviation_safety-029-environment-semantic-input"
+        ],
+        "logical_operator": "JoinOp",
+        "logical_op_id": "e3e63d11e5",
+        "unique_logical_op_id": "4-e3e63d11e5",
+        "depends_on": [
+          "incident_id"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "flight_phase",
+          "incident_id",
+          "text",
+          "value"
+        ],
+        "output_fields": [
+          "flight_phase",
+          "incident_id",
+          "text",
+          "value"
+        ],
+        "on": "['incident_id']",
+        "how": "inner"
+      },
+      {
+        "dataset_id": "aviation_safety-029-events-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "d83749630e",
+        "unique_logical_op_id": "5-d83749630e",
+        "depends_on": [],
+        "generated_fields": [
+          "incident_id",
+          "label"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "incident_id",
+          "label"
+        ]
+      },
+      {
+        "dataset_id": "04771a623e",
+        "source_dataset_ids": [
+          "2572bcc770",
+          "aviation_safety-029-events-semantic-input"
+        ],
+        "logical_operator": "JoinOp",
+        "logical_op_id": "e3e63d11e5",
+        "unique_logical_op_id": "6-e3e63d11e5",
+        "depends_on": [
+          "incident_id"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "flight_phase",
+          "incident_id",
+          "label",
+          "text",
+          "value"
+        ],
+        "output_fields": [
+          "flight_phase",
+          "incident_id",
+          "label",
+          "text",
+          "value"
+        ],
+        "on": "['incident_id']",
+        "how": "inner"
+      },
+      {
+        "dataset_id": "0b9f6e31d3",
+        "source_dataset_ids": [
+          "04771a623e"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "82516070ae",
+        "unique_logical_op_id": "7-82516070ae",
+        "depends_on": [
+          "flight_phase"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "flight_phase",
+          "incident_id",
+          "label",
+          "text",
+          "value"
+        ],
+        "output_fields": [
+          "flight_phase",
+          "incident_id",
+          "label",
+          "text",
+          "value"
+        ],
+        "filter": "is_approach_or_landing"
+      },
+      {
+        "dataset_id": "8199b2de4c",
+        "source_dataset_ids": [
+          "0b9f6e31d3"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "945ae482b6",
+        "unique_logical_op_id": "8-945ae482b6",
+        "depends_on": [
+          "label"
+        ],
+        "generated_fields": [
+          "recorded_result"
+        ],
+        "input_fields": [
+          "flight_phase",
+          "incident_id",
+          "label",
+          "text",
+          "value"
+        ],
+        "output_fields": [
+          "flight_phase",
+          "incident_id",
+          "label",
+          "recorded_result",
+          "text",
+          "value"
+        ],
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "4532f9b3d1",
+        "source_dataset_ids": [
+          "8199b2de4c"
+        ],
+        "logical_operator": "Distinct",
+        "logical_op_id": "d5a4481494",
+        "unique_logical_op_id": "9-d5a4481494",
+        "depends_on": [],
+        "generated_fields": [],
+        "input_fields": [
+          "flight_phase",
+          "incident_id",
+          "label",
+          "recorded_result",
+          "text",
+          "value"
+        ],
+        "output_fields": [
+          "flight_phase",
+          "incident_id",
+          "label",
+          "recorded_result",
+          "text",
+          "value"
+        ],
+        "distinct_cols": "['incident_id', 'recorded_result', 'value']"
+      },
+      {
+        "dataset_id": "a452e89960",
+        "source_dataset_ids": [
+          "4532f9b3d1"
+        ],
+        "logical_operator": "GroupByAggregate",
+        "logical_op_id": "45c0b2d0ce",
+        "unique_logical_op_id": "10-45c0b2d0ce",
+        "depends_on": [],
+        "generated_fields": [
+          "count(incident_id)"
+        ],
+        "input_fields": [
+          "flight_phase",
+          "incident_id",
+          "label",
+          "recorded_result",
+          "text",
+          "value"
+        ],
+        "output_fields": [
+          "count(incident_id)",
+          "recorded_result",
+          "value"
+        ],
+        "group_by": "GroupBy({'group_by_fields': ['value', 'recorded_result'], 'agg_funcs': ['count'], 'agg_fields': ['incident_id']})"
+      }
+    ],
+    "topological_logical_sequence": [
+      "0-508bdde88d",
+      "1-1f3b8b8f97",
+      "2-0ab1cee690",
+      "3-70dd66232b",
+      "4-e3e63d11e5",
+      "5-d83749630e",
+      "6-e3e63d11e5",
+      "7-82516070ae",
+      "8-945ae482b6",
+      "9-d5a4481494",
+      "10-45c0b2d0ce"
+    ]
+  },
+  "optimizer": {
+    "strategy": "pareto",
+    "policy": "MaxQuality",
+    "physical_implementation_candidates": {
+      "allow_bonded_query": true,
+      "allow_model_selection": false,
+      "allow_rag_reduction": false,
+      "allow_mixtures": true,
+      "allow_critic": true,
+      "allow_split_merge": false,
+      "force_rag": false,
+      "execution_strategy": "parallel",
+      "max_workers": 64,
+      "join_parallelism": 64
+    },
+    "dynamic_learning_requested": true,
+    "dynamic_learning_pipeline_supported": true,
+    "dynamic_learning": true,
+    "dynamic_learning_support": {
+      "supported": true,
+      "reason": null,
+      "terminal_only_operator_violations": []
+    },
+    "allow_unsupported_sentinel_plans": true,
+    "dynamic_learning_fallback": null,
+    "sentinel_execution_strategy": "mab",
+    "sentinel_k": 6,
+    "sentinel_j": 4,
+    "sentinel_sample_budget": 100,
+    "sentinel_seed": 42,
+    "available_models": [
+      "Qwen3.5-397B-A17B",
+      "openai/Qwen3-Embedding-8B"
+    ]
+  },
+  "sentinel_join_sampling": [
+    {
+      "unique_logical_op_id": "4-e3e63d11e5",
+      "frontier_representative_operator_class": "RelationalJoin",
+      "root_dataset_count": 2,
+      "left_available_source_indices": 1181,
+      "right_available_source_indices": 607,
+      "theoretical_combination_count": 716867,
+      "available_combination_count": 716867,
+      "sample_limit": 100,
+      "sampled_combination_count": 100,
+      "sampling_method": "seeded_uniform_without_replacement_flat_indices",
+      "seed": 42
+    },
+    {
+      "unique_logical_op_id": "6-e3e63d11e5",
+      "frontier_representative_operator_class": "RelationalJoin",
+      "root_dataset_count": 3,
+      "left_available_source_indices": 100,
+      "right_available_source_indices": 819,
+      "theoretical_combination_count": 587114073,
+      "available_combination_count": 81900,
+      "sample_limit": 100,
+      "sampled_combination_count": 100,
+      "sampling_method": "seeded_uniform_without_replacement_flat_indices",
+      "seed": 42
+    }
+  ],
+  "sentinel_sampling_exhaustion": null,
+  "failure_type": "AssertionError",
+  "failure_message": "Non-join operator must have zero or one input groups.",
+  "partial_optimization_metrics": {
+    "elapsed_seconds": 232.07628703,
+    "sentinel_sampling_seconds": 231.97591829,
+    "optimizer_search_and_bookkeeping_seconds": 0.10036874,
+    "cost_usd": 0.63414312,
+    "text_llm_calls": 640,
+    "embedding_calls": 0,
+    "input_text_tokens": 851504,
+    "output_text_tokens": 129084,
+    "total_text_tokens": 980588,
+    "embedding_input_tokens": 0,
+    "cache_read_tokens": 0,
+    "cache_creation_tokens": 0,
+    "sampled_operators": {
+      "text_llm_calls": 580,
+      "embedding_calls": 0,
+      "input_text_tokens": 736677,
+      "output_text_tokens": 115956,
+      "embedding_input_tokens": 0,
+      "cost_usd": 0.55864107
+    },
+    "validator": {
+      "text_llm_calls": 60,
+      "input_text_tokens": 114827,
+      "output_text_tokens": 13128,
+      "total_text_tokens": 127955,
+      "cost_usd": 0.07550205
+    },
+    "model_usage_by_model": {
+      "Qwen3.5-397B-A17B": {
+        "roles": [
+          "text",
+          "validator"
+        ],
+        "calls": 640,
+        "input_tokens": 851504,
+        "output_tokens": 129084,
+        "total_tokens": 980588,
+        "cost_usd": 0.63414312
+      }
+    }
+  },
+  "partial_sentinel": {
+    "plan_id": "a4692a7c75",
+    "plan_string": "0. Schema['flight_phase', 'incident_id', 'label', 'recorded_result', 'text', 'value'] -> ApplyGroupByOp -> Schema['count(incident_id)', 'recorded_result', 'value']\n    (flight_phase, incident_id, lab) -> (count(incident_id), recorded_r)\n    Group-by Signature: GroupBy({'group_by_fields': ['value', 'recorded_result'], 'agg_funcs': ['count'], 'agg_fields': ['incident_id']})\n\n  1. Schema['flight_phase', 'incident_id', 'label', 'recorded_result', 'text', 'value'] -> DistinctOp -> Schema['flight_phase', 'incident_id', 'label', 'recorded_result', 'text', 'value']\n    (flight_phase, incident_id, lab) -> (flight_phase, incident_id, lab)\n    Distinct Cols: ['incident_id', 'recorded_result', 'value']\n\n    2. Schema['flight_phase', 'incident_id', 'label', 'text', 'value'] -> NonLLMConvert -> Schema['flight_phase', 'incident_id', 'label', 'recorded_result', 'text', 'value']\n    (flight_phase, incident_id, lab) -> (flight_phase, incident_id, lab)\n    UDF: add_recorded_result\n\n      3. Schema['flight_phase', 'incident_id', 'label', 'text', 'value'] -> NonLLMFilter -> Schema['flight_phase', 'incident_id', 'label', 'text', 'value']\n    (flight_phase, incident_id, lab) -> (flight_phase, incident_id, lab)\n    Filter: is_approach_or_landing\n\n        4. Schema['flight_phase', 'incident_id', 'label', 'text', 'value'] -> RelationalJoin -> Schema['flight_phase', 'incident_id', 'label', 'text', 'value']\n    (flight_phase, incident_id, lab) -> (flight_phase, incident_id, lab)\n    Condition: \n    How: inner\n    On: ['incident_id']\n\n          5. Schema['flight_phase', 'incident_id', 'text', 'value'] -> RelationalJoin -> Schema['flight_phase', 'incident_id', 'text', 'value']\n    (flight_phase, incident_id, tex) -> (flight_phase, incident_id, tex)\n    Condition: \n    How: inner\n    On: ['incident_id']\n\n            6.1 - 5. Schema['flight_phase', 'incident_id', 'text'] -> LLMFilter -> Schema['flight_phase', 'incident_id', 'text']\n    (flight_phase, incident_id, tex) -> (flight_phase, incident_id, tex)\n    Model: Qwen3.5-397B-A17B\n    Filter: Keep this report only if traffic spacing, runway occupancy, and aircraft equipment were not the primary cause of that result.\n\n              7.1 - 5. Schema['flight_phase', 'incident_id', 'text'] -> MixtureOfAgentsFilter -> Schema['flight_phase', 'incident_id', 'text']\n    (flight_phase, incident_id, tex) -> (flight_phase, incident_id, tex)\n    Filter: Keep this report only if weather or visibility explicitly caused a go-around, missed approach, or new clearance.\n    Proposer Models: [Qwen3.5-397B-A17B]\n    Temperatures: [0.4]\n    Aggregator Model: Qwen3.5-397B-A17B\n\n                8. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['flight_phase', 'incident_id', 'text']'>, id=aviation_safety-029-reports-semantic-input, op_id=508bdde88d)) -> <class 'palimpzest.core.lib.schemas.Schema['flight_phase', 'incident_id', 'text']'>\n    (incident_id, flight_phase, tex)\n\n            6. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['incident_id', 'value']'>, id=aviation_safety-029-environment-semantic-input, op_id=70dd66232b)) -> <class 'palimpzest.core.lib.schemas.Schema['incident_id', 'value']'>\n    (incident_id, value)\n\n          5. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['incident_id', 'label']'>, id=aviation_safety-029-events-semantic-input, op_id=d83749630e)) -> <class 'palimpzest.core.lib.schemas.Schema['incident_id', 'label']'>\n    (incident_id, label)\n\n",
+    "operators": [
+      {
+        "physical_operator": "MarshalAndScanDataOp",
+        "full_op_id": "508bdde88d-fd405406e3",
+        "input_cardinality_observed": 0,
+        "output_cardinality_observed": 56,
+        "record_stats_count": 56,
+        "quality_scores_observed": 56,
+        "quality_scores_missing": 0,
+        "llm_calls": 0,
+        "text_llm_calls": 0,
+        "embedding_calls": 0,
+        "input_text_tokens": 0,
+        "output_text_tokens": 0,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.0,
+        "elapsed_seconds": 0.00356817,
+        "operator_details": {
+          "datasource_id": "aviation_safety-029-reports-semantic-input"
+        }
+      },
+      {
+        "physical_operator": "MixtureOfAgentsFilter",
+        "full_op_id": "1f3b8b8f97-4aabd0b3f1",
+        "input_cardinality_observed": 56,
+        "output_cardinality_observed": 11,
+        "record_stats_count": 56,
+        "quality_scores_observed": 56,
+        "quality_scores_missing": 0,
+        "llm_calls": 112,
+        "text_llm_calls": 112,
+        "embedding_calls": 0,
+        "input_text_tokens": 163994,
+        "output_text_tokens": 28842,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.13144794,
+        "elapsed_seconds": 2751.03618026,
+        "operator_details": {
+          "proposer_models": "['Qwen3.5-397B-A17B']",
+          "temperatures": "[0.4]",
+          "aggregator_model": "Qwen3.5-397B-A17B",
+          "model": "None",
+          "prompt_strategy": "None",
+          "reasoning_effort": "default",
+          "filter": "Keep this report only if weather or visibility explicitly caused a go-around, missed approach, or new clearance.",
+          "desc": "None"
+        }
+      },
+      {
+        "physical_operator": "LLMFilter",
+        "full_op_id": "1f3b8b8f97-c5396d9891",
+        "input_cardinality_observed": 56,
+        "output_cardinality_observed": 2,
+        "record_stats_count": 56,
+        "quality_scores_observed": 56,
+        "quality_scores_missing": 0,
+        "llm_calls": 56,
+        "text_llm_calls": 56,
+        "embedding_calls": 0,
+        "input_text_tokens": 109742,
+        "output_text_tokens": 11646,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.07005102,
+        "elapsed_seconds": 1497.57876348,
+        "operator_details": {
+          "model": "Qwen3.5-397B-A17B",
+          "prompt_strategy": "filter",
+          "reasoning_effort": "default",
+          "filter": "Keep this report only if weather or visibility explicitly caused a go-around, missed approach, or new clearance.",
+          "desc": "None"
+        }
+      },
+      {
+        "physical_operator": "MixtureOfAgentsFilter",
+        "full_op_id": "1f3b8b8f97-c9d46f0582",
+        "input_cardinality_observed": 56,
+        "output_cardinality_observed": 8,
+        "record_stats_count": 56,
+        "quality_scores_observed": 56,
+        "quality_scores_missing": 0,
+        "llm_calls": 112,
+        "text_llm_calls": 112,
+        "embedding_calls": 0,
+        "input_text_tokens": 163845,
+        "output_text_tokens": 29902,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.13387023,
+        "elapsed_seconds": 2209.00517488,
+        "operator_details": {
+          "proposer_models": "['Qwen3.5-397B-A17B']",
+          "temperatures": "[0.8]",
+          "aggregator_model": "Qwen3.5-397B-A17B",
+          "model": "None",
+          "prompt_strategy": "None",
+          "reasoning_effort": "default",
+          "filter": "Keep this report only if weather or visibility explicitly caused a go-around, missed approach, or new clearance.",
+          "desc": "None"
+        }
+      },
+      {
+        "physical_operator": "CritiqueAndRefineFilter",
+        "full_op_id": "1f3b8b8f97-d99550f7bd",
+        "input_cardinality_observed": 56,
+        "output_cardinality_observed": 0,
+        "record_stats_count": 56,
+        "quality_scores_observed": 56,
+        "quality_scores_missing": 0,
+        "llm_calls": 168,
+        "text_llm_calls": 168,
+        "embedding_calls": 0,
+        "input_text_tokens": 109742,
+        "output_text_tokens": 11682,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.07013526,
+        "elapsed_seconds": 2738.82721782,
+        "operator_details": {
+          "critic_model": "Qwen3.5-397B-A17B",
+          "refine_model": "Qwen3.5-397B-A17B",
+          "model": "Qwen3.5-397B-A17B",
+          "prompt_strategy": "filter",
+          "reasoning_effort": "default",
+          "filter": "Keep this report only if weather or visibility explicitly caused a go-around, missed approach, or new clearance.",
+          "desc": "None"
+        }
+      },
+      {
+        "physical_operator": "MixtureOfAgentsFilter",
+        "full_op_id": "1f3b8b8f97-da3e237249",
+        "input_cardinality_observed": 56,
+        "output_cardinality_observed": 5,
+        "record_stats_count": 56,
+        "quality_scores_observed": 56,
+        "quality_scores_missing": 0,
+        "llm_calls": 112,
+        "text_llm_calls": 112,
+        "embedding_calls": 0,
+        "input_text_tokens": 163171,
+        "output_text_tokens": 27965,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.12907479,
+        "elapsed_seconds": 2323.16923547,
+        "operator_details": {
+          "proposer_models": "['Qwen3.5-397B-A17B']",
+          "temperatures": "[0.0]",
+          "aggregator_model": "Qwen3.5-397B-A17B",
+          "model": "None",
+          "prompt_strategy": "None",
+          "reasoning_effort": "default",
+          "filter": "Keep this report only if weather or visibility explicitly caused a go-around, missed approach, or new clearance.",
+          "desc": "None"
+        }
+      },
+      {
+        "physical_operator": "LLMFilter",
+        "full_op_id": "0ab1cee690-29ff8eb0f5",
+        "input_cardinality_observed": 2,
+        "output_cardinality_observed": 2,
+        "record_stats_count": 2,
+        "quality_scores_observed": 2,
+        "quality_scores_missing": 0,
+        "llm_calls": 2,
+        "text_llm_calls": 2,
+        "embedding_calls": 0,
+        "input_text_tokens": 3971,
+        "output_text_tokens": 974,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.00382785,
+        "elapsed_seconds": 14.2719965,
+        "operator_details": {
+          "model": "Qwen3.5-397B-A17B",
+          "prompt_strategy": "filter",
+          "reasoning_effort": "default",
+          "filter": "Keep this report only if traffic spacing, runway occupancy, and aircraft equipment were not the primary cause of that result.",
+          "desc": "None"
+        }
+      },
+      {
+        "physical_operator": "MixtureOfAgentsFilter",
+        "full_op_id": "0ab1cee690-85d07bb91b",
+        "input_cardinality_observed": 2,
+        "output_cardinality_observed": 2,
+        "record_stats_count": 2,
+        "quality_scores_observed": 2,
+        "quality_scores_missing": 0,
+        "llm_calls": 4,
+        "text_llm_calls": 4,
+        "embedding_calls": 0,
+        "input_text_tokens": 6024,
+        "output_text_tokens": 1274,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.00533052,
+        "elapsed_seconds": 16.83730912,
+        "operator_details": {
+          "proposer_models": "['Qwen3.5-397B-A17B']",
+          "temperatures": "[0.8]",
+          "aggregator_model": "Qwen3.5-397B-A17B",
+          "model": "None",
+          "prompt_strategy": "None",
+          "reasoning_effort": "default",
+          "filter": "Keep this report only if traffic spacing, runway occupancy, and aircraft equipment were not the primary cause of that result.",
+          "desc": "None"
+        }
+      },
+      {
+        "physical_operator": "MixtureOfAgentsFilter",
+        "full_op_id": "0ab1cee690-ac3165145f",
+        "input_cardinality_observed": 2,
+        "output_cardinality_observed": 1,
+        "record_stats_count": 2,
+        "quality_scores_observed": 2,
+        "quality_scores_missing": 0,
+        "llm_calls": 4,
+        "text_llm_calls": 4,
+        "embedding_calls": 0,
+        "input_text_tokens": 6264,
+        "output_text_tokens": 1454,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.00584532,
+        "elapsed_seconds": 18.79574513,
+        "operator_details": {
+          "proposer_models": "['Qwen3.5-397B-A17B']",
+          "temperatures": "[0.0]",
+          "aggregator_model": "Qwen3.5-397B-A17B",
+          "model": "None",
+          "prompt_strategy": "None",
+          "reasoning_effort": "default",
+          "filter": "Keep this report only if traffic spacing, runway occupancy, and aircraft equipment were not the primary cause of that result.",
+          "desc": "None"
+        }
+      },
+      {
+        "physical_operator": "MixtureOfAgentsFilter",
+        "full_op_id": "0ab1cee690-c1704107b1",
+        "input_cardinality_observed": 2,
+        "output_cardinality_observed": 1,
+        "record_stats_count": 2,
+        "quality_scores_observed": 2,
+        "quality_scores_missing": 0,
+        "llm_calls": 4,
+        "text_llm_calls": 4,
+        "embedding_calls": 0,
+        "input_text_tokens": 5953,
+        "output_text_tokens": 1176,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.00507351,
+        "elapsed_seconds": 16.32259154,
+        "operator_details": {
+          "proposer_models": "['Qwen3.5-397B-A17B']",
+          "temperatures": "[0.4]",
+          "aggregator_model": "Qwen3.5-397B-A17B",
+          "model": "None",
+          "prompt_strategy": "None",
+          "reasoning_effort": "default",
+          "filter": "Keep this report only if traffic spacing, runway occupancy, and aircraft equipment were not the primary cause of that result.",
+          "desc": "None"
+        }
+      },
+      {
+        "physical_operator": "CritiqueAndRefineFilter",
+        "full_op_id": "0ab1cee690-d0ea35509f",
+        "input_cardinality_observed": 2,
+        "output_cardinality_observed": 0,
+        "record_stats_count": 2,
+        "quality_scores_observed": 2,
+        "quality_scores_missing": 0,
+        "llm_calls": 6,
+        "text_llm_calls": 6,
+        "embedding_calls": 0,
+        "input_text_tokens": 3971,
+        "output_text_tokens": 1041,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.00398463,
+        "elapsed_seconds": 15.3252027,
+        "operator_details": {
+          "critic_model": "Qwen3.5-397B-A17B",
+          "refine_model": "Qwen3.5-397B-A17B",
+          "model": "Qwen3.5-397B-A17B",
+          "prompt_strategy": "filter",
+          "reasoning_effort": "default",
+          "filter": "Keep this report only if traffic spacing, runway occupancy, and aircraft equipment were not the primary cause of that result.",
+          "desc": "None"
+        }
+      },
+      {
+        "physical_operator": "MarshalAndScanDataOp",
+        "full_op_id": "70dd66232b-92c49de6ee",
+        "input_cardinality_observed": 0,
+        "output_cardinality_observed": 53,
+        "record_stats_count": 53,
+        "quality_scores_observed": 53,
+        "quality_scores_missing": 0,
+        "llm_calls": 0,
+        "text_llm_calls": 0,
+        "embedding_calls": 0,
+        "input_text_tokens": 0,
+        "output_text_tokens": 0,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.0,
+        "elapsed_seconds": 0.00321817,
+        "operator_details": {
+          "datasource_id": "aviation_safety-029-environment-semantic-input"
+        }
+      },
+      {
+        "physical_operator": "RelationalJoin",
+        "full_op_id": "e3e63d11e5-9baa92c4c8",
+        "input_cardinality_observed": 2,
+        "output_cardinality_observed": 0,
+        "record_stats_count": 2,
+        "quality_scores_observed": 2,
+        "quality_scores_missing": 0,
+        "llm_calls": 0,
+        "text_llm_calls": 0,
+        "embedding_calls": 0,
+        "input_text_tokens": 0,
+        "output_text_tokens": 0,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.0,
+        "elapsed_seconds": 0.00011897,
+        "operator_details": {
+          "condition": "",
+          "join_parallelism": "64",
+          "desc": "None",
+          "how": "inner",
+          "on": "['incident_id']"
+        }
+      },
+      {
+        "physical_operator": "MarshalAndScanDataOp",
+        "full_op_id": "d83749630e-676b05fa08",
+        "input_cardinality_observed": 0,
+        "output_cardinality_observed": 59,
+        "record_stats_count": 59,
+        "quality_scores_observed": 59,
+        "quality_scores_missing": 0,
+        "llm_calls": 0,
+        "text_llm_calls": 0,
+        "embedding_calls": 0,
+        "input_text_tokens": 0,
+        "output_text_tokens": 0,
+        "embedding_input_tokens": 0,
+        "cost_usd": 0.0,
+        "elapsed_seconds": 0.00353861,
+        "operator_details": {
+          "datasource_id": "aviation_safety-029-events-semantic-input"
+        }
+      }
+    ],
+    "validation_llm_calls": 60,
+    "validation_input_text_tokens": 114827,
+    "validation_output_text_tokens": 13128,
+    "validation_cost_usd": 0.07550205
+  }
+}

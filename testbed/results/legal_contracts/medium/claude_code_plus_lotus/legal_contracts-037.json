@@ -1,0 +1,28 @@
+{
+  "task_id": "legal_contracts-037",
+  "answer": [
+    {
+      "term_type": "fixed_long",
+      "agreement_count": 147,
+      "most_common_governing_law": "Delaware"
+    },
+    {
+      "term_type": "fixed_short",
+      "agreement_count": 201,
+      "most_common_governing_law": "New York"
+    },
+    {
+      "term_type": "perpetual",
+      "agreement_count": 92,
+      "most_common_governing_law": "unspecified"
+    },
+    {
+      "term_type": "unspecified",
+      "agreement_count": 2353,
+      "most_common_governing_law": "unspecified"
+    }
+  ],
+  "elapsed_seconds": 834.111,
+  "cost_usd": 4.45870644,
+  "total_tokens": 10426111
+}

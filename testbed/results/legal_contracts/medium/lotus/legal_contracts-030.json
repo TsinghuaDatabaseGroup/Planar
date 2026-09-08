@@ -1,0 +1,43 @@
+{
+  "task_id": "legal_contracts-030",
+  "answer": [
+    {
+      "document_id": "1010552_0000912057-01-520246_a2051644zex-99_20.htm",
+      "governing_law": "Massachusetts",
+      "missing_exception": "independent_development"
+    },
+    {
+      "document_id": "1020416_0001193125-16-701566_d250247dex99d2.htm",
+      "governing_law": "New York",
+      "missing_exception": "prior_knowledge"
+    },
+    {
+      "document_id": "1049210_0001047469-13-009461_a2216846zex-99_d3.htm",
+      "governing_law": "California",
+      "missing_exception": "consent"
+    },
+    {
+      "document_id": "1413447_0001193125-16-771498_d295023dex99d5.htm",
+      "governing_law": "New York",
+      "missing_exception": "prior_knowledge"
+    },
+    {
+      "document_id": "354452_0000950123-99-011178_document_13.txt",
+      "governing_law": "Florida",
+      "missing_exception": "independent_development"
+    },
+    {
+      "document_id": "804151_0000950144-97-007563_document_14.txt",
+      "governing_law": "New York",
+      "missing_exception": "prior_knowledge"
+    },
+    {
+      "document_id": "814457_0000950137-04-009790_c89545exv99wxdyx6y.htm",
+      "governing_law": "Illinois",
+      "missing_exception": "prior_knowledge"
+    }
+  ],
+  "elapsed_seconds": 516.59,
+  "cost_usd": 4.897621,
+  "total_tokens": 9189524
+}

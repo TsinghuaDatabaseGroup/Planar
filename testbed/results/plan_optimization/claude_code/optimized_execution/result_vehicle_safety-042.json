@@ -1,0 +1,16 @@
+{
+  "task_id": "vehicle_safety-042",
+  "answer": [
+    {
+      "campaign_number": "21V846000",
+      "matched_complaint_count": 19,
+      "dominant_adas_topic": "steering_control",
+      "related_report_ids": [
+        "txt_investigation_3e540e709b495d53"
+      ]
+    }
+  ],
+  "elapsed_seconds": 243.87,
+  "cost_usd": 0.31712,
+  "total_tokens": 478004
+}

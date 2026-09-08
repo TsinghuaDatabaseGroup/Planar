@@ -1,0 +1,18 @@
+{
+  "task_id": "legal_contracts-089",
+  "answer": [
+    {
+      "coverage_bucket": "medium_3_to_4",
+      "family_count": 8,
+      "average_family_size": 47.88
+    },
+    {
+      "coverage_bucket": "low_0_to_2",
+      "family_count": 6,
+      "average_family_size": 40.33
+    }
+  ],
+  "elapsed_seconds": 543.18,
+  "cost_usd": 5.374859,
+  "total_tokens": 9580729
+}

@@ -1,0 +1,438 @@
+{
+  "format_version": 1,
+  "purpose": "human_review_of_selected_palimpzest_physical_plan",
+  "task_id": "legal_contracts-044",
+  "optimization_status": "optimized_only",
+  "selected_plan_id": "7e359187ef",
+  "executable_plan": {
+    "file": "optimized_plan_legal_contracts-044.plan.pkl",
+    "format": "cloudpickle",
+    "version": 1,
+    "sha256": "bbf10dbc9b0f33d19381c2b7e166bba1c2529a47c68e79a2ee5f1e92eccd6a24",
+    "size_bytes": 110312,
+    "selected_plan_id": "7e359187ef",
+    "datasources": {
+      "legal_contracts-044-semantic-input": {
+        "id": "legal_contracts-044-semantic-input",
+        "row_count": 2793,
+        "schema_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ]
+      }
+    },
+    "scan_datasource_records_included": false,
+    "sentinel_record_payloads_included": false
+  },
+  "input_plan": {
+    "task_id": "legal_contracts-044",
+    "query": "Which EX-97 compensation clawback or recoupment policies treat intentional misconduct as a trigger, extend recovery beyond SEC minimum requirements, and state an effective date? Report the document name, company name, effective date, and covered persons.",
+    "inputs": [
+      {
+        "source_id": "CONTRACTEXHIBIT_corpus",
+        "dataset": "CONTRACTEXHIBIT",
+        "source_type": "document",
+        "role": "primary"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('Keep EX-97 clawback or recoupment policies', input_bindings={document: text})\n-> SEM_FILTER('Keep policies that treat intentional misconduct as a trigger, extend recovery beyond SEC minimum requirements, and explicitly state an effective date', input_bindings={document: text})\n-> SEM_EXTRACT('Return document name, company name, effective date, and concise covered-person scope', out_schema={document_name: string, company_name: string, effective_date: date, covered_persons: string}, input_bindings={document: text})"
+      }
+    ],
+    "answer_schema": {
+      "columns": [
+        "document_name",
+        "company_name",
+        "effective_date",
+        "covered_persons"
+      ],
+      "types": [
+        "string",
+        "string",
+        "date",
+        "string"
+      ]
+    }
+  },
+  "input_bad_plan": null,
+  "input_logical_plan": {
+    "root_dataset_id": "599d5bb820",
+    "nodes": [
+      {
+        "dataset_id": "legal_contracts-044-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "42e328348b",
+        "unique_logical_op_id": "0-42e328348b",
+        "depends_on": [],
+        "generated_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ]
+      },
+      {
+        "dataset_id": "340b021087",
+        "source_dataset_ids": [
+          "legal_contracts-044-semantic-input"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "81938fe9ae",
+        "unique_logical_op_id": "1-81938fe9ae",
+        "depends_on": [
+          "text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "filter": "Keep the document only if it is an EX-97 compensation clawback or recoupment policy."
+      },
+      {
+        "dataset_id": "01a60c1fe7",
+        "source_dataset_ids": [
+          "340b021087"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "4976e655b6",
+        "unique_logical_op_id": "2-4976e655b6",
+        "depends_on": [
+          "text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "filter": "Keep the policy only if it treats intentional misconduct as a recovery trigger, extends recovery beyond SEC minimum requirements, and explicitly states an effective date."
+      },
+      {
+        "dataset_id": "599d5bb820",
+        "source_dataset_ids": [
+          "01a60c1fe7"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "0238c6648e",
+        "unique_logical_op_id": "3-0238c6648e",
+        "depends_on": [
+          "text"
+        ],
+        "generated_fields": [
+          "company_name",
+          "covered_persons",
+          "document_name",
+          "effective_date"
+        ],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "company_name",
+          "covered_persons",
+          "document_id",
+          "document_name",
+          "effective_date",
+          "text",
+          "word_count"
+        ],
+        "desc": "Extract the document name, company name, effective date, and covered-person scope.",
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      }
+    ],
+    "topological_logical_sequence": [
+      "0-42e328348b",
+      "1-81938fe9ae",
+      "2-4976e655b6",
+      "3-0238c6648e"
+    ]
+  },
+  "selected_physical_plan": {
+    "plan_id": "7e359187ef",
+    "plan_string": "0. Schema['document_id', 'text', 'word_count'] -> MixtureOfAgentsConvert -> Schema['company_name', 'covered_persons', 'document_id', 'document_name', 'effective_date', 'text', 'word_count']\n    (document_id, text, word_count) -> (company_name, covered_persons,)\n    Prompt Strategy: None\n    Reasoning Effort: default\n    Proposer Models: [Qwen3.5-397B-A17B]\n    Temperatures: [0.0]\n    Aggregator Model: Qwen3.5-397B-A17B\n\n  1. Schema['document_id', 'text', 'word_count'] -> CritiqueAndRefineFilter -> Schema['document_id', 'text', 'word_count']\n    (document_id, text, word_count) -> (document_id, text, word_count)\n    Model: Qwen3.5-397B-A17B\n    Filter: Keep the policy only if it treats intentional misconduct as a recovery trigger, extends recovery beyond SEC minimum requirements, and explicitly states an effective date.\n    Critic Model: Qwen3.5-397B-A17B\n    Refine Model: Qwen3.5-397B-A17B\n\n    2. Schema['document_id', 'text', 'word_count'] -> LLMFilter -> Schema['document_id', 'text', 'word_count']\n    (document_id, text, word_count) -> (document_id, text, word_count)\n    Model: Qwen3.5-397B-A17B\n    Filter: Keep the document only if it is an EX-97 compensation clawback or recoupment policy.\n\n      3. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['document_id', 'text', 'word_count']'>, id=legal_contracts-044-semantic-input, op_id=42e328348b)) -> <class 'palimpzest.core.lib.schemas.Schema['document_id', 'text', 'word_count']'>\n    (document_id, text, word_count)\n\n",
+    "root_operator_index": 3,
+    "operators": [
+      {
+        "topological_index": 0,
+        "physical_operator": "MarshalAndScanDataOp",
+        "logical_operator": "BaseScan",
+        "logical_op_id": "42e328348b",
+        "unique_logical_op_id": "0-42e328348b",
+        "full_op_id": "42e328348b-54acec27e2",
+        "model": null,
+        "depends_on": [],
+        "generated_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "source_operator_indices": []
+      },
+      {
+        "topological_index": 1,
+        "physical_operator": "LLMFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "81938fe9ae",
+        "unique_logical_op_id": "1-81938fe9ae",
+        "full_op_id": "81938fe9ae-c7af22c978",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-044-semantic-input.text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "source_operator_indices": [
+          0
+        ]
+      },
+      {
+        "topological_index": 2,
+        "physical_operator": "CritiqueAndRefineFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "4976e655b6",
+        "unique_logical_op_id": "2-4976e655b6",
+        "full_op_id": "4976e655b6-5ac91a4a0c",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-044-semantic-input.text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "source_operator_indices": [
+          1
+        ]
+      },
+      {
+        "topological_index": 3,
+        "physical_operator": "MixtureOfAgentsConvert",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "0238c6648e",
+        "unique_logical_op_id": "3-0238c6648e",
+        "full_op_id": "0238c6648e-4ef4a34f83",
+        "model": null,
+        "depends_on": [
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-044-semantic-input.text"
+        ],
+        "generated_fields": [
+          "company_name",
+          "covered_persons",
+          "document_name",
+          "effective_date"
+        ],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "company_name",
+          "covered_persons",
+          "document_id",
+          "document_name",
+          "effective_date",
+          "text",
+          "word_count"
+        ],
+        "source_operator_indices": [
+          2
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "source": 0,
+        "target": 1
+      },
+      {
+        "source": 1,
+        "target": 2
+      },
+      {
+        "source": 2,
+        "target": 3
+      }
+    ],
+    "estimated_plan_cost": {
+      "cost": 4.774886084347825,
+      "time": 8043.68328231314,
+      "quality": 0.878,
+      "op_estimates": {
+        "cardinality": 0.0,
+        "time_per_record": 1.6,
+        "cost_per_record": 0.001248,
+        "quality": 0.878,
+        "cardinality_lower_bound": 0.0,
+        "cardinality_upper_bound": 0.0,
+        "time_per_record_lower_bound": 1.6,
+        "time_per_record_upper_bound": 1.6,
+        "cost_per_record_lower_bound": 0.001248,
+        "cost_per_record_upper_bound": 0.001248,
+        "quality_lower_bound": 0.878,
+        "quality_upper_bound": 0.878
+      },
+      "cost_lower_bound": 4.774886084347825,
+      "cost_upper_bound": 4.774886084347825,
+      "time_lower_bound": 8043.68328231314,
+      "time_upper_bound": 8043.68328231314,
+      "quality_lower_bound": 0.878,
+      "quality_upper_bound": 0.878
+    },
+    "topological_logical_sequence": [
+      "0-42e328348b",
+      "1-81938fe9ae",
+      "2-4976e655b6",
+      "3-0238c6648e"
+    ]
+  },
+  "optimizer_configuration": {
+    "strategy": "pareto",
+    "policy": "MaxQuality",
+    "physical_implementation_candidates": {
+      "allow_bonded_query": true,
+      "allow_model_selection": false,
+      "allow_rag_reduction": false,
+      "allow_mixtures": true,
+      "allow_critic": true,
+      "allow_split_merge": false,
+      "force_rag": false,
+      "execution_strategy": "parallel",
+      "max_workers": 64,
+      "join_parallelism": 64
+    },
+    "dynamic_learning_requested": true,
+    "dynamic_learning_pipeline_supported": true,
+    "dynamic_learning": true,
+    "dynamic_learning_support": {
+      "supported": true,
+      "reason": null,
+      "terminal_only_operator_violations": []
+    },
+    "allow_unsupported_sentinel_plans": true,
+    "dynamic_learning_fallback": null,
+    "sentinel_execution_strategy": "mab",
+    "sentinel_k": 6,
+    "sentinel_j": 4,
+    "sentinel_sample_budget": 100,
+    "sentinel_seed": 42,
+    "available_models": [
+      "Qwen3.5-397B-A17B",
+      "openai/Qwen3-Embedding-8B"
+    ],
+    "static_search_preflight": {
+      "status": "passed",
+      "elapsed_seconds": 0.01729516,
+      "candidate_plan_count": 1,
+      "text_llm_calls": 0,
+      "embedding_calls": 0,
+      "cost_usd": 0.0
+    }
+  },
+  "optimizer_search_space": {
+    "group_count": 5,
+    "logical_expression_count": 6,
+    "physical_expression_count": 26,
+    "transformation_rules_explored": [
+      "PushDownFilter",
+      "ReorderConverts"
+    ],
+    "implementation_rules_explored": [
+      "BasicSubstitutionRule",
+      "CritiqueAndRefineRule",
+      "LLMConvertBondedRule",
+      "LLMFilterRule",
+      "MixtureOfAgentsRule"
+    ]
+  },
+  "optimization_metrics": {
+    "elapsed_seconds": 139.01838589,
+    "sentinel_sampling_seconds": 138.97618508,
+    "optimizer_search_and_bookkeeping_seconds": 0.0422008,
+    "cost_usd": 0.25655799,
+    "text_llm_calls": 226,
+    "embedding_calls": 0,
+    "input_text_tokens": 446623,
+    "output_text_tokens": 35203,
+    "total_text_tokens": 481826,
+    "embedding_input_tokens": 0,
+    "cache_read_tokens": 0,
+    "cache_creation_tokens": 0,
+    "sampled_operators": {
+      "text_llm_calls": 202,
+      "embedding_calls": 0,
+      "input_text_tokens": 370179,
+      "output_text_tokens": 30792,
+      "embedding_input_tokens": 0,
+      "cost_usd": 0.21642309
+    },
+    "validator": {
+      "text_llm_calls": 24,
+      "input_text_tokens": 76444,
+      "output_text_tokens": 4411,
+      "total_text_tokens": 80855,
+      "cost_usd": 0.0401349
+    },
+    "model_usage_by_model": {
+      "Qwen3.5-397B-A17B": {
+        "roles": [
+          "text",
+          "validator"
+        ],
+        "calls": 226,
+        "input_tokens": 446623,
+        "output_tokens": 35203,
+        "total_tokens": 481826,
+        "cost_usd": 0.25655799
+      }
+    }
+  },
+  "sentinel_join_sampling": [],
+  "sentinel_sampling_exhaustion": null,
+  "recovery": null
+}

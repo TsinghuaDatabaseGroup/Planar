@@ -1,0 +1,18 @@
+{
+  "task_id": "aviation_safety-026",
+  "answer": [
+    {
+      "measurement_type": "altitude",
+      "comparison_count": 4,
+      "most_common_deviation": "4000"
+    },
+    {
+      "measurement_type": "runway",
+      "comparison_count": 6,
+      "most_common_deviation": "19R_vs_19L"
+    }
+  ],
+  "elapsed_seconds": 74.039,
+  "cost_usd": 0.0771576,
+  "total_tokens": 55935
+}

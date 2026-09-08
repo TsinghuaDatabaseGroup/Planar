@@ -1,0 +1,153 @@
+{
+  "task_id": "legal_contracts-060",
+  "answer": [
+    {
+      "document_id": "1001113_0000950134-07-005231_f27921orexv99wxdyx3y.htm",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "California"
+    },
+    {
+      "document_id": "1011344_0001193125-08-097987_dex99d5.htm",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "California"
+    },
+    {
+      "document_id": "1013322_0000912057-00-023405_document_2.txt",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "California"
+    },
+    {
+      "document_id": "1042282_0000893220-02-000791_e61414toexv99wxdywx1y.txt",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "Utah"
+    },
+    {
+      "document_id": "1084817_0001193125-14-004957_d648340dex99e2.htm",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "Delaware"
+    },
+    {
+      "document_id": "1094007_0001193125-10-258977_dex101.htm",
+      "non_disclosure_direction": null,
+      "governing_law": "State of Washington"
+    },
+    {
+      "document_id": "1095563_0000950168-99-002585_document_2.txt",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "State of Washington"
+    },
+    {
+      "document_id": "1109551_0000912057-02-024714_a2082535zex-99_d3.htm",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "Georgia"
+    },
+    {
+      "document_id": "1112422_0000950153-08-001257_p75864exv99wxeyx4y.htm",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "New York"
+    },
+    {
+      "document_id": "1125892_0000950133-00-004441_w41075a1ex10-7.txt",
+      "non_disclosure_direction": null,
+      "governing_law": "State of Washington"
+    },
+    {
+      "document_id": "1167294_0001193125-15-218134_d933068dex99d3.htm",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "Delaware"
+    },
+    {
+      "document_id": "1402305_0001193125-11-343865_d268167dex99d2.htm",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "New York"
+    },
+    {
+      "document_id": "1420529_0001145549-08-000077_h00839a1exv10w4.txt",
+      "non_disclosure_direction": null,
+      "governing_law": "People's Republic of China"
+    },
+    {
+      "document_id": "1452751_0001193125-17-086167_d334994dex99e3.htm",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "Delaware"
+    },
+    {
+      "document_id": "180314-March-14-2018-SOW-M.pdf",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "Province of Alberta"
+    },
+    {
+      "document_id": "768262_0001193125-10-128597_dex99d2.htm",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "New York"
+    },
+    {
+      "document_id": "802724_0001193125-15-331613_d96542dex99d5.htm",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "Delaware"
+    },
+    {
+      "document_id": "917639_0000912057-01-537118_a2062042zex-99_d7.htm",
+      "non_disclosure_direction": null,
+      "governing_law": "Georgia"
+    },
+    {
+      "document_id": "934545_0000891618-99-004640_document_2.txt",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "Delaware"
+    },
+    {
+      "document_id": "Acme%20Corporation%20Inc%20NDA%20template.pdf",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "California"
+    },
+    {
+      "document_id": "BCG-Mutual-NDA.pdf",
+      "non_disclosure_direction": null,
+      "governing_law": "Florida"
+    },
+    {
+      "document_id": "INFOMAGNET%20NDA.pdf",
+      "non_disclosure_direction": null,
+      "governing_law": "England and Wales"
+    },
+    {
+      "document_id": "NDA_118.pdf",
+      "non_disclosure_direction": "unilateral",
+      "governing_law": "Province of Ontario"
+    },
+    {
+      "document_id": "New_York_City_Bar_Association_Model_Form_of_Non-Disclosure_Agreement_2015.pdf",
+      "non_disclosure_direction": "unilateral",
+      "governing_law": "New York"
+    },
+    {
+      "document_id": "O00216-000899A.pdf",
+      "non_disclosure_direction": null,
+      "governing_law": "State of California"
+    },
+    {
+      "document_id": "OMA-TestFest-NDA-2017.pdf",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "England"
+    },
+    {
+      "document_id": "QEP-Williston-Form-of-Confidentiality-Agreement-BMO.pdf",
+      "non_disclosure_direction": "unilateral",
+      "governing_law": "Texas"
+    },
+    {
+      "document_id": "Standard%20NDA%20by%20Axial.pdf",
+      "non_disclosure_direction": "unilateral",
+      "governing_law": "Delaware"
+    },
+    {
+      "document_id": "ttp-nda.pdf",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "Utah"
+    }
+  ],
+  "elapsed_seconds": 436.97,
+  "cost_usd": 4.118913,
+  "total_tokens": 10497444
+}

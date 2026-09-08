@@ -1,0 +1,28 @@
+{
+  "task_id": "aviation_safety-026",
+  "answer": [
+    {
+      "measurement_type": "altitude",
+      "comparison_count": 988,
+      "most_common_deviation": "no_deviation_observed"
+    },
+    {
+      "measurement_type": "speed",
+      "comparison_count": 496,
+      "most_common_deviation": "no_deviation_observed"
+    },
+    {
+      "measurement_type": "heading",
+      "comparison_count": 136,
+      "most_common_deviation": "no_deviation_observed"
+    },
+    {
+      "measurement_type": "runway",
+      "comparison_count": 106,
+      "most_common_deviation": "landed_on_different_runway"
+    }
+  ],
+  "elapsed_seconds": 475.76,
+  "cost_usd": 2.338361,
+  "total_tokens": 5134323
+}

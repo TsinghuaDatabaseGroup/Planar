@@ -1,0 +1,88 @@
+{
+  "task_id": "legal_contracts-060",
+  "answer": [
+    {
+      "document_id": "1001113_0000950134-07-005231_f27921orexv99wxdyx3y.htm",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "California"
+    },
+    {
+      "document_id": "1011344_0001193125-08-097987_dex99d5.htm",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "California"
+    },
+    {
+      "document_id": "1013322_0000912057-00-023405_document_2.txt",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "California"
+    },
+    {
+      "document_id": "1084817_0001193125-14-004957_d648340dex99e2.htm",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "California"
+    },
+    {
+      "document_id": "1094007_0001193125-10-258977_dex101.htm",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "Washington"
+    },
+    {
+      "document_id": "1112422_0000950153-08-001257_p75864exv99wxeyx4y.htm",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "Delaware"
+    },
+    {
+      "document_id": "1402305_0001193125-11-343865_d268167dex99d2.htm",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "California"
+    },
+    {
+      "document_id": "768262_0001193125-10-128597_dex99d2.htm",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "Delaware"
+    },
+    {
+      "document_id": "934545_0000891618-99-004640_document_2.txt",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "Not specified"
+    },
+    {
+      "document_id": "Acme%20Corporation%20Inc%20NDA%20template.pdf",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "California"
+    },
+    {
+      "document_id": "BCG-Mutual-NDA.pdf",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "Florida"
+    },
+    {
+      "document_id": "INFOMAGNET%20NDA.pdf",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "England and Wales"
+    },
+    {
+      "document_id": "NDA_118.pdf",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "None"
+    },
+    {
+      "document_id": "OMA-TestFest-NDA-2017.pdf",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "California"
+    },
+    {
+      "document_id": "Standard%20NDA%20by%20Axial.pdf",
+      "non_disclosure_direction": "one-way (Disclosing Party to Recipient)",
+      "governing_law": "Not specified"
+    },
+    {
+      "document_id": "ttp-nda.pdf",
+      "non_disclosure_direction": "mutual",
+      "governing_law": "Utah"
+    }
+  ],
+  "elapsed_seconds": 63.561,
+  "cost_usd": 0.27760746,
+  "total_tokens": 601821
+}

@@ -1,0 +1,18 @@
+{
+  "task_id": "legal_contracts-047",
+  "answer": [
+    {"document_id": "1013322_0000912057-00-023405_document_2.txt", "governing_law": "the laws of the United States of America and by the laws of the State of California", "term_bucket": "perpetual", "allows_one_copy_retention": false},
+    {"document_id": "1042282_0000893220-02-000791_e61414toexv99wxdywx1y.txt", "governing_law": "Utah", "term_bucket": "fixed_months", "allows_one_copy_retention": false},
+    {"document_id": "1061148_0001047469-98-018914_document_17.txt", "governing_law": "District of Columbia", "term_bucket": "perpetual", "allows_one_copy_retention": false},
+    {"document_id": "1084817_0001193125-14-004957_d648340dex99e2.htm", "governing_law": "State of Delaware", "term_bucket": "perpetual", "allows_one_copy_retention": true},
+    {"document_id": "1095563_0000950168-99-002585_document_2.txt", "governing_law": "State of Washington", "term_bucket": "fixed_months", "allows_one_copy_retention": false},
+    {"document_id": "1125576_0000928385-02-000738_dex991d2.txt", "governing_law": "the laws of the United States and the State of California, excluding its conflict of laws rules", "term_bucket": "perpetual", "allows_one_copy_retention": false},
+    {"document_id": "1329919_0001193125-14-149149_d701401dex99d6.htm", "governing_law": "State of Delaware", "term_bucket": "perpetual", "allows_one_copy_retention": true},
+    {"document_id": "1335239_0001019687-14-003760_epazz_ex1034.htm", "governing_law": "State of Illinois", "term_bucket": "fixed_months", "allows_one_copy_retention": false},
+    {"document_id": "1373671_0001193125-10-265249_dex99d3.htm", "governing_law": "State of Delaware", "term_bucket": "fixed_months", "allows_one_copy_retention": false},
+    {"document_id": "1402305_0001193125-11-343865_d268167dex99d2.htm", "governing_law": "State of New York, United States of America", "term_bucket": "fixed_months", "allows_one_copy_retention": false}
+  ],
+  "elapsed_seconds": 1800.27,
+  "cost_usd": 2.692892,
+  "total_tokens": 5096324
+}

@@ -1,0 +1,287 @@
+datasets:
+  asrs_events:
+    type: file
+    path: data/asrs/events.csv
+  asrs_assessments:
+    type: file
+    path: data/asrs/assessments.csv
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_target_result_labels
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("event_type") == "result"
+              and doc.get("label")
+              in {
+                  "General Maintenance Action",
+                  "General Flight Cancelled / Delayed",
+                  "Flight Crew Returned To Departure Airport",
+              }
+          )
+
+  - name: collect_result_labels_by_incident
+    type: code_reduce
+    reduce_key: incident_id
+    code: |
+      def transform(items):
+          labels = sorted(
+              {
+                  str(item.get("label", ""))
+                  for item in items
+                  if str(item.get("label", ""))
+              }
+          )
+          return {"result_labels": labels}
+
+  - name: attach_contributing_labels
+    type: code_map
+    code: |
+      import csv
+      import os
+      import threading
+
+      _contributing_label_index = None
+      _contributing_label_lock = threading.Lock()
+
+      def load_contributing_label_index():
+          global _contributing_label_index
+          if _contributing_label_index is None:
+              with _contributing_label_lock:
+                  if _contributing_label_index is None:
+                      index = {}
+                      path = os.path.abspath(
+                          os.path.join("data", "asrs", "assessments.csv")
+                      )
+                      with open(
+                          path, "r", encoding="utf-8", errors="replace", newline=""
+                      ) as handle:
+                          for row in csv.DictReader(handle):
+                              label = row.get("label")
+                              if (
+                                  row.get("assessment_type")
+                                  == "contributing_factor"
+                                  and label in {"Aircraft", "MEL"}
+                              ):
+                                  index.setdefault(
+                                      str(row.get("incident_id", "")), set()
+                                  ).add(label)
+                      _contributing_label_index = {
+                          incident_id: sorted(labels)
+                          for incident_id, labels in index.items()
+                      }
+          return _contributing_label_index
+
+      def transform(doc):
+          labels = load_contributing_label_index().get(
+              str(doc.get("incident_id", "")), []
+          )
+          return {"contributing_labels": labels}
+
+  - name: inner_join_contributing_labels
+    type: code_filter
+    code: |
+      def transform(doc):
+          return bool(doc.get("contributing_labels"))
+
+  - name: attach_incident_text_file
+    type: code_map
+    code: |
+      import csv
+      import os
+      import threading
+
+      _incident_text_index = None
+      _incident_text_lock = threading.Lock()
+
+      def load_incident_text_index():
+          global _incident_text_index
+          if _incident_text_index is None:
+              with _incident_text_lock:
+                  if _incident_text_index is None:
+                      index = {}
+                      path = os.path.abspath(
+                          os.path.join("data", "asrs", "incidents.csv")
+                      )
+                      with open(
+                          path, "r", encoding="utf-8", errors="replace", newline=""
+                      ) as handle:
+                          for row in csv.DictReader(handle):
+                              incident_id = str(row.get("incident_id", ""))
+                              text_file = str(row.get("text_file", ""))
+                              if incident_id and text_file:
+                                  index.setdefault(incident_id, text_file)
+                      _incident_text_index = index
+          return _incident_text_index
+
+      def transform(doc):
+          return {
+              "text_file": load_incident_text_index().get(
+                  str(doc.get("incident_id", ""))
+              )
+          }
+
+  - name: inner_join_incidents
+    type: code_filter
+    code: |
+      def transform(doc):
+          return bool(doc.get("text_file"))
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: classify_primary_disruption_reason
+    type: map
+    optimize: true
+    prompt: |
+      Assign exactly one primary disruption_reason to this NASA ASRS report when it
+      clearly fits one of the following categories:
+
+      - predeparture_component_discrepancy: an aircraft component, indication, or
+        system discrepancy discovered before takeoff primarily disrupted the
+        planned flight and required evaluation or maintenance;
+      - mel_or_deferred_item: an MEL item, deferred defect, deferral condition,
+        dispatch restriction, or application/interpretation of an MEL primarily
+        caused the disruption;
+      - maintenance_documentation_or_release: maintenance paperwork, logbook entry,
+        signoff, inspection record, airworthiness/release documentation, or
+        maintenance-control authorization primarily caused the disruption;
+      - inflight_component_or_system_problem: a component or aircraft-system
+        problem manifested in flight and primarily caused the return, delay, or
+        maintenance response;
+      - postflight_inspection_or_repair: a discrepancy discovered during or after
+        landing, postflight inspection, or postflight maintenance primarily led to
+        inspection or repair action.
+
+      The labels are not a precedence list. Select the reason most directly
+      responsible for the recorded disruption. Return not_target when none clearly
+      fits or when several reasons are present but no single one is clearly primary.
+      The structured labels establish candidate membership but do not replace the
+      narrative attribution.
+
+      Recorded result labels: {{ input.result_labels }}
+      Contributing-factor labels: {{ input.contributing_labels }}
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        disruption_reason: enum[predeparture_component_discrepancy, mel_or_deferred_item, maintenance_documentation_or_release, inflight_component_or_system_problem, postflight_inspection_or_repair, not_target]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: keep_clear_disruption_reasons
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("disruption_reason") in {
+              "predeparture_component_discrepancy",
+              "mel_or_deferred_item",
+              "maintenance_documentation_or_release",
+              "inflight_component_or_system_problem",
+              "postflight_inspection_or_repair",
+          }
+
+  - name: aggregate_disruption_reasons
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          reason_order = [
+              "predeparture_component_discrepancy",
+              "mel_or_deferred_item",
+              "maintenance_documentation_or_release",
+              "inflight_component_or_system_problem",
+              "postflight_inspection_or_repair",
+          ]
+          incident_ids = {reason: set() for reason in reason_order}
+
+          for item in items:
+              incident_id = str(item.get("incident_id", ""))
+              reason = item.get("disruption_reason")
+              if incident_id and reason in incident_ids:
+                  incident_ids[reason].add(incident_id)
+
+          rows = []
+          for reason in reason_order:
+              if not incident_ids[reason]:
+                  continue
+              rows.append(
+                  {
+                      "disruption_reason": reason,
+                      "incident_count": len(incident_ids[reason]),
+                  }
+              )
+          return {"rows": rows}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - disruption_reason
+      - incident_count
+
+pipeline:
+  steps:
+    - name: process
+      input: asrs_events
+      operations:
+        - filter_target_result_labels
+        - collect_result_labels_by_incident
+        - attach_contributing_labels
+        - inner_join_contributing_labels
+        - attach_incident_text_file
+        - inner_join_incidents
+        - load_asrs_narrative
+        - classify_primary_disruption_reason
+        - keep_clear_disruption_reasons
+        - aggregate_disruption_reasons
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-033.json

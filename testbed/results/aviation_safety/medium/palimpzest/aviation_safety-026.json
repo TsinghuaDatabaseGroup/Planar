@@ -1,0 +1,23 @@
+{
+  "task_id": "aviation_safety-026",
+  "answer": [
+    {
+      "measurement_type": "altitude",
+      "comparison_count": 17,
+      "most_common_deviation": "500 FT above assigned altitude"
+    },
+    {
+      "measurement_type": "speed",
+      "comparison_count": 10,
+      "most_common_deviation": "Approached runway at excessive speed"
+    },
+    {
+      "measurement_type": "heading",
+      "comparison_count": 2,
+      "most_common_deviation": "Flew 280 degrees instead of 180"
+    }
+  ],
+  "elapsed_seconds": 4928.65,
+  "cost_usd": 10.548277,
+  "total_tokens": 9199224
+}

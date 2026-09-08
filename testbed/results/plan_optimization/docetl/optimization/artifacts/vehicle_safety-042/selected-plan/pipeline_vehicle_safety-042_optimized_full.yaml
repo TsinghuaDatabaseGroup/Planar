@@ -1,0 +1,264 @@
+datasets:
+  nhtsa_complaints:
+    type: file
+    path: data/nhtsa_vehicle_safety/complaints.csv
+  nhtsa_recalls:
+    type: file
+    path: data/nhtsa_vehicle_safety/recalls.jsonl
+  nhtsa_investigation_reports:
+    type: file
+    path: data/nhtsa_vehicle_safety/investigation_reports/*.txt
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: https://llm-endpoint.example/v1
+default_embedding_api_base: https://llm-endpoint.example/v1
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: https://llm-endpoint.example/v1
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types:
+    - chunk
+    - proj_synthesis
+    - glean
+  equijoin:
+    target_recall: 0.95
+operations:
+- name: filter_tesla_adas_complaints
+  type: code_filter
+  code: "def transform(doc):\n    return (\n        doc.get(\"make\") == \"TESLA\"\n        and doc.get(\"\
+    component_id\") == \"ADAS\"\n    )\n"
+- name: filter_tesla_adas_recalls
+  type: code_filter
+  code: "def transform(doc):\n    vehicle = doc.get(\"vehicle\") or {}\n    component = doc.get(\"component\"\
+    ) or {}\n    return (\n        vehicle.get(\"make\") == \"TESLA\"\n        and component.get(\"component_id\"\
+    ) == \"ADAS\"\n    )\n"
+- name: flatten_tesla_adas_recall_fields
+  type: code_map
+  code: "def transform(doc):\n    campaign = doc.get(\"campaign\") or {}\n    vehicle = doc.get(\"vehicle\"\
+    ) or {}\n    component = doc.get(\"component\") or {}\n    risk = doc.get(\"risk\") or {}\n    return\
+    \ {\n        \"campaign_number\": campaign.get(\"number\"),\n        \"make\": vehicle.get(\"make\"\
+    ),\n        \"component_id\": component.get(\"component_id\"),\n        \"defect_summary\": risk.get(\"\
+    defect_summary\") or \"\",\n        \"consequence_summary\": risk.get(\"consequence_summary\") or\
+    \ \"\",\n    }\n"
+- name: match_tesla_adas_complaints_to_recalls
+  type: equijoin
+  comparison_prompt: 'Determine whether this Tesla ADAS complaint and Tesla ADAS recall describe
+
+    the same driver-assistance or automation-control problem.
+
+
+    Match only when both texts identify the same concrete behavior, control
+
+    failure, supervision gap, warning defect, or directly equivalent ADAS
+
+    mechanism. Tesla, ADAS, Autopilot, crash risk, or driver-assistance
+
+    vocabulary alone is not sufficient.
+
+
+    COMPLAINT:
+
+    {{ left.summary_text }}
+
+
+    RECALL DEFECT:
+
+    {{ right.defect_summary }}
+
+    '
+  blocking_conditions:
+  - left["component_id"] == right["component_id"]
+  comparison_model: Qwen3.5-397B-A17B
+  timeout: 120
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 4096
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: classify_driving_context_adas_safety_issue
+  type: filter
+  optimize: true
+  prompt: 'Determine whether this complaint describes a driving-context ADAS safety
+
+    issue rather than general infotainment, connectivity, account, mobile-app,
+
+    or other non-driving software behavior.
+
+
+    Qualify only when the narrative concerns driver assistance, automated
+
+    control, braking, steering, supervision, safety warnings, or another ADAS
+
+    behavior occurring in or directly affecting vehicle operation.
+
+
+    Complaint:
+
+    {{ input.summary_text }}
+
+    '
+  output:
+    mode: structured_output
+    schema:
+      is_driving_context_adas_issue: boolean
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 4096
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: classify_tesla_adas_defect_topic
+  type: map
+  optimize: true
+  prompt: "Assign the dominant issue in this complaint to exactly one Tesla ADAS\ndefect-topic label:\n\
+    \n- autopilot_misuse: foreseeable misuse, mode confusion, overreliance, or\n  operation outside the\
+    \ intended domain.\n- unexpected_braking: phantom braking, unwarranted deceleration, or other\n  unexpected\
+    \ brake application.\n- steering_control: lane guidance, steering input, steering intervention,\n\
+    \  or lateral-control behavior.\n- warning_or_supervision_gap: inadequate driver monitoring, alerts,\n\
+    \  escalation, engagement checks, or supervision safeguards.\n- other: a driving-context ADAS safety\
+    \ issue not covered above.\n\nChoose the single dominant topic from the complaint narrative.\n\nComplaint:\n\
+    {{ input.summary_text }}\n"
+  output:
+    mode: structured_output
+    schema:
+      adas_topic: string
+  validate:
+  - output["adas_topic"] in ["autopilot_misuse", "unexpected_braking", "steering_control", "warning_or_supervision_gap",
+    "other"]
+  num_retries_on_validate_failure: 2
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 4096
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: filter_candidate_tesla_adas_investigation_reports
+  type: code_filter
+  code: "def transform(doc):\n    body = str(doc.get(\"body\") or \"\").lower()\n    return (\n      \
+    \  \"tesla\" in body\n        or \"autopilot\" in body\n        or \"driver assistance\" in body\n\
+    \    )\n"
+- name: match_tesla_adas_issues_to_investigation_reports
+  type: equijoin
+  optimize: true
+  comparison_prompt: 'Determine whether this NHTSA investigation report discusses the same Tesla
+
+    driver-assistance safety issue or ODI human-factors concern as the matched
+
+    complaint-recall pair.
+
+
+    Match only when the report addresses the same concrete ADAS behavior,
+
+    control mechanism, warning or supervision gap, foreseeable misuse concern,
+
+    or directly equivalent issue. Generic Tesla, Autopilot, crash, or
+
+    driver-assistance discussion alone is not sufficient.
+
+
+    CLASSIFIED TOPIC:
+
+    {{ left.adas_topic }}
+
+
+    COMPLAINT:
+
+    {{ left.summary_text }}
+
+
+    RECALL DEFECT:
+
+    {{ left.defect_summary }}
+
+
+    INVESTIGATION REPORT:
+
+    {{ right.body }}
+
+    '
+  blocking_keys:
+    left:
+    - adas_topic
+    - summary_text
+    - defect_summary
+    right:
+    - body
+  blocking_target_recall: 0.95
+  embedding_model: openai/Qwen3-Embedding-8B
+  comparison_model: Qwen3.5-397B-A17B
+  timeout: 120
+  litellm_completion_kwargs:
+    temperature: 0
+    max_tokens: 4096
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+- name: aggregate_tesla_adas_campaigns
+  type: code_reduce
+  reduce_key: campaign_number
+  code: "def transform(items):\n    from collections import Counter\n\n    complaint_ids = {\n       \
+    \ item.get(\"complaint_id\")\n        for item in items\n        if item.get(\"complaint_id\")\n \
+    \   }\n    topic_counts = Counter(\n        str(item.get(\"adas_topic\") or \"\").strip()\n      \
+    \  for item in items\n        if str(item.get(\"adas_topic\") or \"\").strip()\n    )\n    dominant_topic\
+    \ = (\n        sorted(\n            topic_counts,\n            key=lambda topic: (-topic_counts[topic],\
+    \ topic),\n        )[0]\n        if topic_counts\n        else \"\"\n    )\n    related_report_ids\
+    \ = sorted(\n        {\n            item.get(\"file_id\")\n            for item in items\n       \
+    \     if item.get(\"file_id\")\n        }\n    )\n    return {\n        \"matched_complaint_count\"\
+    : len(complaint_ids),\n        \"dominant_adas_topic\": dominant_topic,\n        \"related_report_ids\"\
+    : related_report_ids,\n    }\n"
+- name: project_tesla_adas_campaign_summary
+  type: code_map
+  code: "def transform(doc):\n    return {\n        \"campaign_number\": doc.get(\"campaign_number\"),\n\
+    \        \"matched_complaint_count\": doc.get(\n            \"matched_complaint_count\"\n        ),\n\
+    \        \"dominant_adas_topic\": doc.get(\"dominant_adas_topic\"),\n        \"related_report_ids\"\
+    : doc.get(\"related_report_ids\") or [],\n    }\n"
+pipeline:
+  steps:
+  - name: tesla_adas_complaints
+    input: nhtsa_complaints
+    operations:
+    - filter_tesla_adas_complaints
+  - name: tesla_adas_recalls
+    input: nhtsa_recalls
+    operations:
+    - filter_tesla_adas_recalls
+    - flatten_tesla_adas_recall_fields
+  - name: matched_tesla_adas_pairs
+    operations:
+    - match_tesla_adas_complaints_to_recalls:
+        left: tesla_adas_complaints
+        right: tesla_adas_recalls
+  - name: qualified_tesla_adas_pairs
+    input: matched_tesla_adas_pairs
+    operations:
+    - classify_driving_context_adas_safety_issue
+    - classify_tesla_adas_defect_topic
+  - name: candidate_tesla_adas_investigation_reports
+    input: nhtsa_investigation_reports
+    operations:
+    - filter_candidate_tesla_adas_investigation_reports
+  - name: matched_tesla_adas_investigation_reports
+    operations:
+    - match_tesla_adas_issues_to_investigation_reports:
+        left: qualified_tesla_adas_pairs
+        right: candidate_tesla_adas_investigation_reports
+  - name: tesla_adas_campaign_summaries
+    input: matched_tesla_adas_investigation_reports
+    operations:
+    - aggregate_tesla_adas_campaigns
+    - project_tesla_adas_campaign_summary
+  output:
+    type: file
+    path: /home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-042/outputs/output_vehicle_safety-042.json
+    intermediate_dir: /home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-042/intermediates
+bypass_cache: true

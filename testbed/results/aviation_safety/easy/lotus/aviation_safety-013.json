@@ -1,0 +1,44 @@
+{
+  "task_id": "aviation_safety-013",
+  "answer": [
+    {
+      "symptom_category": "thrust_loss",
+      "incident_count": 51,
+      "most_common_immediate_action": "advanced_throttle_and_verified_fuel_settings",
+      "most_common_outcome": "diversion"
+    },
+    {
+      "symptom_category": "oil_indication",
+      "incident_count": 42,
+      "most_common_immediate_action": "shut_down_engine_and_divert",
+      "most_common_outcome": "diversion"
+    },
+    {
+      "symptom_category": "flameout",
+      "incident_count": 40,
+      "most_common_immediate_action": "announced_engine_failure_and_descended",
+      "most_common_outcome": "return"
+    },
+    {
+      "symptom_category": "vibration",
+      "incident_count": 37,
+      "most_common_immediate_action": "shut_down_engine_and_divert",
+      "most_common_outcome": "diversion"
+    },
+    {
+      "symptom_category": "other_engine_indication",
+      "incident_count": 25,
+      "most_common_immediate_action": "accomplish_checklist_and_shutdown_engine",
+      "most_common_outcome": "return"
+    },
+    {
+      "symptom_category": "temperature",
+      "incident_count": 24,
+      "most_common_immediate_action": "abort_takeoff_and_stop_aircraft",
+      "most_common_outcome": "return"
+    }
+  ],
+  "elapsed_seconds": 146.6,
+  "cost_usd": 0.858783,
+  "total_tokens": 1940482
+}

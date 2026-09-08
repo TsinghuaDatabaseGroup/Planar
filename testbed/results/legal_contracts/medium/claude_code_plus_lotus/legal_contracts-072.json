@@ -1,0 +1,98 @@
+{
+  "task_id": "legal_contracts-072",
+  "answer": [
+    {
+      "document_name": "ex_781817.htm",
+      "policy_title": "Securities Trading and Disclosure Policy",
+      "policy_date": "2013-03-21"
+    },
+    {
+      "document_name": "exhibit191-insidertradin.htm",
+      "policy_title": "AUTOLUS THERAPEUTICS PLC INSIDER TRADING AND WINDOW PERIOD POLICY",
+      "policy_date": "2020-10-16"
+    },
+    {
+      "document_name": "q4202410kexhibit19.htm",
+      "policy_title": "Embecta Corp. Insider Trading Policy",
+      "policy_date": "2022-04-01"
+    },
+    {
+      "document_name": "sanm_09282024xex191x10k.htm",
+      "policy_title": "Insider Trading Policy",
+      "policy_date": "2023-03-01"
+    },
+    {
+      "document_name": "annx-ex19_1.htm",
+      "policy_title": "ANNEXON, Inc. INSIDER TRADING compliance POLICY",
+      "policy_date": "2023-03-16"
+    },
+    {
+      "document_name": "exhibit191amendedandrestat.htm",
+      "policy_title": "TransDigm Group Incorporated Amended and Restated Insider Trading and Confidentiality Policy Statement",
+      "policy_date": "2023-04-01"
+    },
+    {
+      "document_name": "d779517dex191.htm",
+      "policy_title": "Insider Trading Policy and Guidelines for Disclosure of Material Non-Public Information",
+      "policy_date": "2023-04-23"
+    },
+    {
+      "document_name": "hlit-20241231xex191.htm",
+      "policy_title": "HARMONIC INC. INSIDER TRADING POLICY",
+      "policy_date": "2023-05-03"
+    },
+    {
+      "document_name": "exhibit191aniinsidertradin.htm",
+      "policy_title": "INSIDER TRADING AND CONFIDENTIALITY NOTICE",
+      "policy_date": "2023-05-07"
+    },
+    {
+      "document_name": "a123124ex191insidertrading.htm",
+      "policy_title": "PROPETRO HOLDING CORP. INSIDER TRADING COMPLIANCE POLICY",
+      "policy_date": "2023-05-12"
+    },
+    {
+      "document_name": "ino-12312024x10kex191.htm",
+      "policy_title": "Insider Trading Policy",
+      "policy_date": "2023-05-16"
+    },
+    {
+      "document_name": "tygo-ex19_1.htm",
+      "policy_title": "TIGO ENERGY, INC. INSIDER TRADING POLICY",
+      "policy_date": "2023-05-24"
+    },
+    {
+      "document_name": "hii-ex19202410xk.htm",
+      "policy_title": "Insider Trading",
+      "policy_date": "2023-08-24"
+    },
+    {
+      "document_name": "ip-20231231exhibit19.htm",
+      "policy_title": "GLOBAL CORPORATE COMPLIANCE POLICY INSIDER TRADING",
+      "policy_date": "2023-09-07"
+    },
+    {
+      "document_name": "a2023q4voyaex191voyafinanc.htm",
+      "policy_title": "Voya Financial Personal Trading Policy",
+      "policy_date": "2023-10-01"
+    },
+    {
+      "document_name": "a2024q4voyaex191tradingpol.htm",
+      "policy_title": "Voya Financial Personal Trading Policy",
+      "policy_date": "2023-10-01"
+    },
+    {
+      "document_name": "ex191insidertradingpolic.htm",
+      "policy_title": "VOLATO GROUP, INC. INSIDER TRADING POLICY",
+      "policy_date": "2023-12-01"
+    },
+    {
+      "document_name": "playtika-insidertradingcom.htm",
+      "policy_title": "PLAYTIKA HOLDING CORP. INSIDER TRADING COMPLIANCE POLICY",
+      "policy_date": "2023-12-20"
+    }
+  ],
+  "elapsed_seconds": 152.919,
+  "cost_usd": 0.25143843,
+  "total_tokens": 163757
+}

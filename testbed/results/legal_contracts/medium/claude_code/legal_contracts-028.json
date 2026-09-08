@@ -1,0 +1,272 @@
+{
+  "task_id": "legal_contracts-028",
+  "answer": [
+    {
+      "document_id": "1010552_0000912057-01-520246_a2051644zex-99_20.htm",
+      "governing_law": "Massachusetts",
+      "standstill_months": 18.0,
+      "employee_non_solicitation_months": 18.0
+    },
+    {
+      "document_id": "1014552_0000950148-01-500497_v71961toex99-d3.txt",
+      "governing_law": "Texas",
+      "standstill_months": 15.0,
+      "employee_non_solicitation_months": 24.0
+    },
+    {
+      "document_id": "1020416_0001193125-16-701566_d250247dex99d2.htm",
+      "governing_law": "New York",
+      "standstill_months": 15.0,
+      "employee_non_solicitation_months": 18.0
+    },
+    {
+      "document_id": "1049210_0001047469-13-009461_a2216846zex-99_d3.htm",
+      "governing_law": "California",
+      "standstill_months": 12.0,
+      "employee_non_solicitation_months": 12.0
+    },
+    {
+      "document_id": "1062478_0001193125-14-442753_d838170dex3.htm",
+      "governing_law": "California",
+      "standstill_months": 10.23,
+      "employee_non_solicitation_months": 12.0
+    },
+    {
+      "document_id": "1070052_0000950130-01-501801_dex99d2.txt",
+      "governing_law": "New York",
+      "standstill_months": 12.0,
+      "employee_non_solicitation_months": 12.0
+    },
+    {
+      "document_id": "1089786_0000912057-00-052660_a2032473zex-99_e2.txt",
+      "governing_law": "New York",
+      "standstill_months": 16.66,
+      "employee_non_solicitation_months": 24.0
+    },
+    {
+      "document_id": "1096147_0001193125-08-206038_dex4.htm",
+      "governing_law": "Illinois",
+      "standstill_months": 18.0,
+      "employee_non_solicitation_months": 18.0
+    },
+    {
+      "document_id": "1109551_0000912057-02-024714_a2082535zex-99_d3.htm",
+      "governing_law": "Georgia",
+      "standstill_months": 12.0,
+      "employee_non_solicitation_months": 12.0
+    },
+    {
+      "document_id": "1112422_0000950153-08-001257_p75864exv99wxeyx4y.htm",
+      "governing_law": "New York",
+      "standstill_months": 24.0,
+      "employee_non_solicitation_months": 24.0
+    },
+    {
+      "document_id": "1163932_0001193125-13-394191_d606730dex99d2.htm",
+      "governing_law": "Delaware",
+      "standstill_months": 12.0,
+      "employee_non_solicitation_months": 12.0
+    },
+    {
+      "document_id": "1177845_0001193125-18-219243_d519554dex99d3.htm",
+      "governing_law": "Delaware",
+      "standstill_months": 18.0,
+      "employee_non_solicitation_months": 18.0
+    },
+    {
+      "document_id": "1316898_0001047469-18-005618_a2236490zex-99_d2.htm",
+      "governing_law": "Delaware",
+      "standstill_months": 12.0,
+      "employee_non_solicitation_months": 20.0
+    },
+    {
+      "document_id": "1334303_0001193125-10-204560_dex99e5.htm",
+      "governing_law": "New York",
+      "standstill_months": 24.0,
+      "employee_non_solicitation_months": 24.0
+    },
+    {
+      "document_id": "1372664_0001193125-12-159071_d333885dex99d9.htm",
+      "governing_law": "Georgia",
+      "standstill_months": 12.0,
+      "employee_non_solicitation_months": 24.0
+    },
+    {
+      "document_id": "1413447_0001193125-16-771498_d295023dex99d5.htm",
+      "governing_law": "New York, USA",
+      "standstill_months": 12.0,
+      "employee_non_solicitation_months": 12.0
+    },
+    {
+      "document_id": "1485469_0001193125-19-222469_d760929dex99d3.htm",
+      "governing_law": "New York",
+      "standstill_months": 18.0,
+      "employee_non_solicitation_months": 18.0
+    },
+    {
+      "document_id": "1487101_0001140361-19-008970_nc10001202x4_ex-d2.htm",
+      "governing_law": "Maryland",
+      "standstill_months": 12.0,
+      "employee_non_solicitation_months": 18.0
+    },
+    {
+      "document_id": "1561604_0001193125-12-472390_d438799dex99d3.htm",
+      "governing_law": "Delaware",
+      "standstill_months": 12.0,
+      "employee_non_solicitation_months": 12.0
+    },
+    {
+      "document_id": "1592288_0001193125-17-306543_d469659dex99e2.htm",
+      "governing_law": "Delaware",
+      "standstill_months": 12.0,
+      "employee_non_solicitation_months": 12.0
+    },
+    {
+      "document_id": "1693664_0001193125-18-171470_d426098dex99d3.htm",
+      "governing_law": "Delaware",
+      "standstill_months": 12.0,
+      "employee_non_solicitation_months": 12.0
+    },
+    {
+      "document_id": "354452_0000950123-99-011178_document_13.txt",
+      "governing_law": "Florida",
+      "standstill_months": 6.0,
+      "employee_non_solicitation_months": 6.0
+    },
+    {
+      "document_id": "41629_1.pdf",
+      "governing_law": "England and Wales",
+      "standstill_months": 999999.0,
+      "employee_non_solicitation_months": 999999.0
+    },
+    {
+      "document_id": "55805_0001145443-10-001028_d26631_ex99-d3.htm",
+      "governing_law": "Delaware",
+      "standstill_months": 12.0,
+      "employee_non_solicitation_months": 24.0
+    },
+    {
+      "document_id": "741696_0001193125-10-290887_dex99d9.htm",
+      "governing_law": "California",
+      "standstill_months": 18.0,
+      "employee_non_solicitation_months": 20.0
+    },
+    {
+      "document_id": "799485_0000950136-00-001643_0013.txt",
+      "governing_law": "Maryland",
+      "standstill_months": 12.0,
+      "employee_non_solicitation_months": 24.0
+    },
+    {
+      "document_id": "804151_0000950144-97-007563_document_14.txt",
+      "governing_law": "New York",
+      "standstill_months": 12.0,
+      "employee_non_solicitation_months": 24.0
+    },
+    {
+      "document_id": "814457_0000950137-04-009790_c89545exv99wxdyx6y.htm",
+      "governing_law": "Illinois",
+      "standstill_months": 24.0,
+      "employee_non_solicitation_months": 24.0
+    },
+    {
+      "document_id": "816955_0000899243-97-001962_document_4.txt",
+      "governing_law": "Louisiana",
+      "standstill_months": 24.0,
+      "employee_non_solicitation_months": 24.0
+    },
+    {
+      "document_id": "832995_0000912057-00-054331_a2033550zex-99_d13.htm",
+      "governing_law": "Minnesota",
+      "standstill_months": 12.0,
+      "employee_non_solicitation_months": 15.0
+    },
+    {
+      "document_id": "845818_0001193125-11-195725_dex99d8.htm",
+      "governing_law": "New York",
+      "standstill_months": 6.0,
+      "employee_non_solicitation_months": 15.0
+    },
+    {
+      "document_id": "874265_0001193125-05-138436_dex99d1.htm",
+      "governing_law": "New York",
+      "standstill_months": 12.0,
+      "employee_non_solicitation_months": 12.0
+    },
+    {
+      "document_id": "912263_0001047469-12-006662_a2209873zex-99_d2.htm",
+      "governing_law": "New York",
+      "standstill_months": 12.0,
+      "employee_non_solicitation_months": 18.0
+    },
+    {
+      "document_id": "912263_0001104659-12-004811_a12-3671_1ex2.htm",
+      "governing_law": "New York",
+      "standstill_months": 12.0,
+      "employee_non_solicitation_months": 18.0
+    },
+    {
+      "document_id": "912263_0001193125-12-285724_d371520dex99e4.htm",
+      "governing_law": "New York",
+      "standstill_months": 12.0,
+      "employee_non_solicitation_months": 18.0
+    },
+    {
+      "document_id": "915191_0001047469-17-003155_a2231967zex-99_8.htm",
+      "governing_law": "New York",
+      "standstill_months": 12.0,
+      "employee_non_solicitation_months": 12.0
+    },
+    {
+      "document_id": "917639_0000912057-01-537118_a2062042zex-99_d7.htm",
+      "governing_law": "Georgia",
+      "standstill_months": 2.0,
+      "employee_non_solicitation_months": 12.0
+    },
+    {
+      "document_id": "925942_0001047469-98-029396_document_13.txt",
+      "governing_law": "New York",
+      "standstill_months": 24.0,
+      "employee_non_solicitation_months": 24.0
+    },
+    {
+      "document_id": "930796_0000950123-05-001407_y05539exv99w5.txt",
+      "governing_law": "New York State",
+      "standstill_months": 18.0,
+      "employee_non_solicitation_months": 18.0
+    },
+    {
+      "document_id": "931784_0001104659-07-068716_a07-23871_1ex2.htm",
+      "governing_law": "New York",
+      "standstill_months": 6.0,
+      "employee_non_solicitation_months": 12.0
+    },
+    {
+      "document_id": "96238_0000950103-97-000583_document_4.txt",
+      "governing_law": "New York",
+      "standstill_months": 24.0,
+      "employee_non_solicitation_months": 24.0
+    },
+    {
+      "document_id": "96238_0000950116-97-001823_document_13.txt",
+      "governing_law": "New York",
+      "standstill_months": 24.0,
+      "employee_non_solicitation_months": 24.0
+    },
+    {
+      "document_id": "RROI_Confidentiality_Agreement_Final.pdf",
+      "governing_law": "Alberta",
+      "standstill_months": 12.0,
+      "employee_non_solicitation_months": 12.0
+    },
+    {
+      "document_id": "v71961toex99-d3.txt",
+      "governing_law": "Texas",
+      "standstill_months": 15.0,
+      "employee_non_solicitation_months": 24.0
+    }
+  ],
+  "elapsed_seconds": 1165.623,
+  "cost_usd": 7.50581628,
+  "total_tokens": 16956350
+}

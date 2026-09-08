@@ -1,0 +1,1625 @@
+{
+  "format_version": 1,
+  "purpose": "human_review_of_selected_palimpzest_physical_plan",
+  "task_id": "aviation_safety-046",
+  "optimization_status": "optimized_only",
+  "selected_plan_id": "0012a35c47",
+  "executable_plan": {
+    "file": "optimized_plan_aviation_safety-046.plan.pkl",
+    "format": "cloudpickle",
+    "version": 1,
+    "sha256": "111d661ceb22cf01fc8da7e5b71d6d8fdab039f5a9f490e5b28b8c92af84d315",
+    "size_bytes": 461177,
+    "selected_plan_id": "0012a35c47",
+    "datasources": {
+      "aviation_safety-046-left-semantic-input": {
+        "id": "aviation_safety-046-left-semantic-input",
+        "row_count": 1416,
+        "schema_fields": [
+          "incident_date",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_result_summary",
+          "left_text",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_result_summary"
+        ]
+      },
+      "aviation_safety-046-right-semantic-input": {
+        "id": "aviation_safety-046-right-semantic-input",
+        "row_count": 1416,
+        "schema_fields": [
+          "left_incident_id",
+          "right_incident_id",
+          "right_text"
+        ]
+      }
+    },
+    "scan_datasource_records_included": false,
+    "sentinel_record_payloads_included": false
+  },
+  "input_plan": {
+    "task_id": "aviation_safety-046",
+    "query": "Which pairs of different ASRS incident IDs, up to twenty in total, most likely describe the same underlying occurrence? Compare only reports sharing incident month, state reference, locale-reference type, and primary problem, but require the narratives to agree on a distinctive event sequence, measurements, actions, and outcome rather than merely discussing the same topic. Rank matched pairs by incident month descending and then both incident IDs ascending. For each pair, give the shared primary event type and list which of flight phase, anomaly summary, and result summary differ between the two structured records.",
+    "inputs": [
+      {
+        "source_id": "incidents.csv",
+        "dataset": "NASA_ASRS",
+        "source_type": "table",
+        "role": "primary"
+      },
+      {
+        "source_id": "text/*",
+        "dataset": "NASA_ASRS",
+        "source_type": "document",
+        "role": "primary"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "left_incidents := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv AS left_incident, [incident_id,incident_date,state_reference,locale_reference_type,primary_problem,flight_phase,anomaly_summary,result_summary,text_file])\n)\nright_incidents := (\n  SCAN_TABLE(NASA_ASRS, incidents.csv AS right_incident, [incident_id,incident_date,state_reference,locale_reference_type,primary_problem,flight_phase,anomaly_summary,result_summary,text_file])\n)\nblocked_pairs := JOIN(left=left_incidents, right=right_incidents, join_type=inner, condition=left_incident.incident_id < right_incident.incident_id AND left_incident.incident_date = right_incident.incident_date AND left_incident.state_reference = right_incident.state_reference AND left_incident.locale_reference_type = right_incident.locale_reference_type AND left_incident.primary_problem = right_incident.primary_problem)\nleft_signatures := (\n  blocked_pairs\n  -> SCAN_DOCS(NASA_ASRS, selector=blocked_pairs.left_incident.text_file, [left_incident_id, right_incident_id, left_text])\n  -> SEM_EXTRACT(\"Preserve both blocked-pair incident IDs and extract a normalized primary_event_type from {equipment_failure,airborne_conflict,ground_conflict,clearance_deviation,weather_event,maintenance_event,cabin_event,other}, plus distinctive measurements, action sequence, and outcome from the left report.\", {left_incident_id:string,right_incident_id:string,left_primary_event_type:string,left_measurements:list[string],left_action_sequence:list[string],left_outcome:string}, {left_incident_id,right_incident_id,left_text})\n)\nright_signatures := (\n  blocked_pairs\n  -> SCAN_DOCS(NASA_ASRS, selector=blocked_pairs.right_incident.text_file, [left_incident_id, right_incident_id, right_text])\n  -> SEM_EXTRACT(\"Preserve both blocked-pair incident IDs and extract the same normalized event signature from the right report.\", {left_incident_id:string,right_incident_id:string,right_primary_event_type:string,right_measurements:list[string],right_action_sequence:list[string],right_outcome:string}, {left_incident_id,right_incident_id,right_text})\n)\nmatched_pairs := SEM_JOIN(left=left_signatures, right=right_signatures, instruction=\"Compare only signature rows carrying the same left and right blocked-pair incident IDs. Keep the pair only when both narratives describe the same underlying occurrence, requiring agreement on a distinctive event progression and compatible measurements, actions, and outcome. Generic topical similarity is insufficient.\", input_bindings_left={left_incident_id,right_incident_id,left_primary_event_type,left_measurements,left_action_sequence,left_outcome}, input_bindings_right={left_incident_id,right_incident_id,right_primary_event_type,right_measurements,right_action_sequence,right_outcome})\nmatched_pairs\n-> PROJECT([left_incident_id,right_incident_id,incident_date=left_incident.incident_date,shared_primary_event_type=left_primary_event_type,differing_structured_fields=DIFF_FIELD_NAMES(left_incident,right_incident,[flight_phase,anomaly_summary,result_summary])])\n-> ORDER_BY([incident_date DESC,left_incident_id ASC,right_incident_id ASC])\n-> LIMIT(20)\n-> PROJECT([rank=ROW_NUMBER(),left_incident_id,right_incident_id,incident_date,shared_primary_event_type,differing_structured_fields])"
+      }
+    ],
+    "answer_schema": {
+      "type": "ordered_list",
+      "columns": [
+        "rank",
+        "left_incident_id",
+        "right_incident_id",
+        "incident_date",
+        "shared_primary_event_type",
+        "differing_structured_fields"
+      ],
+      "types": [
+        "integer",
+        "string",
+        "string",
+        "integer",
+        "string",
+        "list[string]"
+      ]
+    }
+  },
+  "input_bad_plan": null,
+  "input_logical_plan": {
+    "root_dataset_id": "e8906ce527",
+    "nodes": [
+      {
+        "dataset_id": "aviation_safety-046-left-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "6341dad336",
+        "unique_logical_op_id": "0-6341dad336",
+        "depends_on": [],
+        "generated_fields": [
+          "incident_date",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_result_summary",
+          "left_text",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_result_summary"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "incident_date",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_result_summary",
+          "left_text",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_result_summary"
+        ]
+      },
+      {
+        "dataset_id": "be8ecccb96",
+        "source_dataset_ids": [
+          "aviation_safety-046-left-semantic-input"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "e190614af1",
+        "unique_logical_op_id": "1-e190614af1",
+        "depends_on": [
+          "left_incident_id",
+          "left_text",
+          "right_incident_id"
+        ],
+        "generated_fields": [
+          "left_action_sequence",
+          "left_measurements",
+          "left_outcome",
+          "left_primary_event_type"
+        ],
+        "input_fields": [
+          "incident_date",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_result_summary",
+          "left_text",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_result_summary"
+        ],
+        "output_fields": [
+          "incident_date",
+          "left_action_sequence",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_measurements",
+          "left_outcome",
+          "left_primary_event_type",
+          "left_result_summary",
+          "left_text",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_result_summary"
+        ],
+        "desc": "Extract the normalized event signature from the left report.",
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "d0828de79e",
+        "source_dataset_ids": [
+          "be8ecccb96"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "e0aabfffe9",
+        "unique_logical_op_id": "2-e0aabfffe9",
+        "depends_on": [
+          "left_primary_event_type"
+        ],
+        "generated_fields": [
+          "normalized_left_event_type"
+        ],
+        "input_fields": [
+          "incident_date",
+          "left_action_sequence",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_measurements",
+          "left_outcome",
+          "left_primary_event_type",
+          "left_result_summary",
+          "left_text",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_result_summary"
+        ],
+        "output_fields": [
+          "incident_date",
+          "left_action_sequence",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_measurements",
+          "left_outcome",
+          "left_primary_event_type",
+          "left_result_summary",
+          "left_text",
+          "normalized_left_event_type",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_result_summary"
+        ],
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "5ae429ceba",
+        "source_dataset_ids": [
+          "d0828de79e"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "e93f8bc2cf",
+        "unique_logical_op_id": "3-e93f8bc2cf",
+        "depends_on": [
+          "normalized_left_event_type"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "incident_date",
+          "left_action_sequence",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_measurements",
+          "left_outcome",
+          "left_primary_event_type",
+          "left_result_summary",
+          "left_text",
+          "normalized_left_event_type",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_result_summary"
+        ],
+        "output_fields": [
+          "incident_date",
+          "left_action_sequence",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_measurements",
+          "left_outcome",
+          "left_primary_event_type",
+          "left_result_summary",
+          "left_text",
+          "normalized_left_event_type",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_result_summary"
+        ],
+        "filter": "valid_left_signature"
+      },
+      {
+        "dataset_id": "aviation_safety-046-right-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "c9a1b8d28b",
+        "unique_logical_op_id": "4-c9a1b8d28b",
+        "depends_on": [],
+        "generated_fields": [
+          "left_incident_id",
+          "right_incident_id",
+          "right_text"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "left_incident_id",
+          "right_incident_id",
+          "right_text"
+        ]
+      },
+      {
+        "dataset_id": "bf9c734cfb",
+        "source_dataset_ids": [
+          "aviation_safety-046-right-semantic-input"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "22f911ea9c",
+        "unique_logical_op_id": "5-22f911ea9c",
+        "depends_on": [
+          "left_incident_id",
+          "right_incident_id",
+          "right_text"
+        ],
+        "generated_fields": [
+          "right_action_sequence",
+          "right_measurements",
+          "right_outcome",
+          "right_primary_event_type"
+        ],
+        "input_fields": [
+          "left_incident_id",
+          "right_incident_id",
+          "right_text"
+        ],
+        "output_fields": [
+          "left_incident_id",
+          "right_action_sequence",
+          "right_incident_id",
+          "right_measurements",
+          "right_outcome",
+          "right_primary_event_type",
+          "right_text"
+        ],
+        "desc": "Extract the normalized event signature from the right report.",
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "fb54ebba62",
+        "source_dataset_ids": [
+          "bf9c734cfb"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "777a4d53d7",
+        "unique_logical_op_id": "6-777a4d53d7",
+        "depends_on": [
+          "right_primary_event_type"
+        ],
+        "generated_fields": [
+          "normalized_right_event_type"
+        ],
+        "input_fields": [
+          "left_incident_id",
+          "right_action_sequence",
+          "right_incident_id",
+          "right_measurements",
+          "right_outcome",
+          "right_primary_event_type",
+          "right_text"
+        ],
+        "output_fields": [
+          "left_incident_id",
+          "normalized_right_event_type",
+          "right_action_sequence",
+          "right_incident_id",
+          "right_measurements",
+          "right_outcome",
+          "right_primary_event_type",
+          "right_text"
+        ],
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "bbef854d9f",
+        "source_dataset_ids": [
+          "fb54ebba62"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "0eb0a58f9b",
+        "unique_logical_op_id": "7-0eb0a58f9b",
+        "depends_on": [
+          "normalized_right_event_type"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "left_incident_id",
+          "normalized_right_event_type",
+          "right_action_sequence",
+          "right_incident_id",
+          "right_measurements",
+          "right_outcome",
+          "right_primary_event_type",
+          "right_text"
+        ],
+        "output_fields": [
+          "left_incident_id",
+          "normalized_right_event_type",
+          "right_action_sequence",
+          "right_incident_id",
+          "right_measurements",
+          "right_outcome",
+          "right_primary_event_type",
+          "right_text"
+        ],
+        "filter": "valid_right_signature"
+      },
+      {
+        "dataset_id": "09d08250c0",
+        "source_dataset_ids": [
+          "5ae429ceba",
+          "bbef854d9f"
+        ],
+        "logical_operator": "JoinOp",
+        "logical_op_id": "3cddb69bed",
+        "unique_logical_op_id": "8-3cddb69bed",
+        "depends_on": [
+          "left_action_sequence",
+          "left_incident_id",
+          "left_incident_id_right",
+          "left_measurements",
+          "left_outcome",
+          "normalized_left_event_type",
+          "normalized_right_event_type",
+          "right_action_sequence",
+          "right_incident_id",
+          "right_incident_id_right",
+          "right_measurements",
+          "right_outcome"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "incident_date",
+          "left_action_sequence",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_incident_id_right",
+          "left_measurements",
+          "left_outcome",
+          "left_primary_event_type",
+          "left_result_summary",
+          "left_text",
+          "normalized_left_event_type",
+          "normalized_right_event_type",
+          "right_action_sequence",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_incident_id_right",
+          "right_measurements",
+          "right_outcome",
+          "right_primary_event_type",
+          "right_result_summary",
+          "right_text"
+        ],
+        "output_fields": [
+          "incident_date",
+          "left_action_sequence",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_incident_id_right",
+          "left_measurements",
+          "left_outcome",
+          "left_primary_event_type",
+          "left_result_summary",
+          "left_text",
+          "normalized_left_event_type",
+          "normalized_right_event_type",
+          "right_action_sequence",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_incident_id_right",
+          "right_measurements",
+          "right_outcome",
+          "right_primary_event_type",
+          "right_result_summary",
+          "right_text"
+        ],
+        "condition": "Compare only rows carrying the same left and right blocked-pair incident IDs. Match only when both narratives describe the same underlying occurrence, with a distinctive compatible event progression, measurements, actions, and outcome. Generic topical similarity is insufficient.",
+        "how": "inner"
+      },
+      {
+        "dataset_id": "b72f5abab5",
+        "source_dataset_ids": [
+          "09d08250c0"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "a20a003f4e",
+        "unique_logical_op_id": "9-a20a003f4e",
+        "depends_on": [
+          "left_incident_id",
+          "left_incident_id_right",
+          "right_incident_id",
+          "right_incident_id_right"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "incident_date",
+          "left_action_sequence",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_incident_id_right",
+          "left_measurements",
+          "left_outcome",
+          "left_primary_event_type",
+          "left_result_summary",
+          "left_text",
+          "normalized_left_event_type",
+          "normalized_right_event_type",
+          "right_action_sequence",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_incident_id_right",
+          "right_measurements",
+          "right_outcome",
+          "right_primary_event_type",
+          "right_result_summary",
+          "right_text"
+        ],
+        "output_fields": [
+          "incident_date",
+          "left_action_sequence",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_incident_id_right",
+          "left_measurements",
+          "left_outcome",
+          "left_primary_event_type",
+          "left_result_summary",
+          "left_text",
+          "normalized_left_event_type",
+          "normalized_right_event_type",
+          "right_action_sequence",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_incident_id_right",
+          "right_measurements",
+          "right_outcome",
+          "right_primary_event_type",
+          "right_result_summary",
+          "right_text"
+        ],
+        "filter": "same_blocked_pair"
+      },
+      {
+        "dataset_id": "b9600e3ec8",
+        "source_dataset_ids": [
+          "b72f5abab5"
+        ],
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "9bbac61200",
+        "unique_logical_op_id": "10-9bbac61200",
+        "depends_on": [
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_result_summary",
+          "normalized_left_event_type",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_result_summary"
+        ],
+        "generated_fields": [
+          "differing_structured_fields",
+          "shared_primary_event_type"
+        ],
+        "input_fields": [
+          "incident_date",
+          "left_action_sequence",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_incident_id_right",
+          "left_measurements",
+          "left_outcome",
+          "left_primary_event_type",
+          "left_result_summary",
+          "left_text",
+          "normalized_left_event_type",
+          "normalized_right_event_type",
+          "right_action_sequence",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_incident_id_right",
+          "right_measurements",
+          "right_outcome",
+          "right_primary_event_type",
+          "right_result_summary",
+          "right_text"
+        ],
+        "output_fields": [
+          "differing_structured_fields",
+          "incident_date",
+          "left_action_sequence",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_incident_id_right",
+          "left_measurements",
+          "left_outcome",
+          "left_primary_event_type",
+          "left_result_summary",
+          "left_text",
+          "normalized_left_event_type",
+          "normalized_right_event_type",
+          "right_action_sequence",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_incident_id_right",
+          "right_measurements",
+          "right_outcome",
+          "right_primary_event_type",
+          "right_result_summary",
+          "right_text",
+          "shared_primary_event_type"
+        ],
+        "cardinality": "Cardinality.ONE_TO_ONE"
+      },
+      {
+        "dataset_id": "e8906ce527",
+        "source_dataset_ids": [
+          "b9600e3ec8"
+        ],
+        "logical_operator": "Project",
+        "logical_op_id": "b802fb9a70",
+        "unique_logical_op_id": "11-b802fb9a70",
+        "depends_on": [],
+        "generated_fields": [],
+        "input_fields": [
+          "differing_structured_fields",
+          "incident_date",
+          "left_action_sequence",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_incident_id_right",
+          "left_measurements",
+          "left_outcome",
+          "left_primary_event_type",
+          "left_result_summary",
+          "left_text",
+          "normalized_left_event_type",
+          "normalized_right_event_type",
+          "right_action_sequence",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_incident_id_right",
+          "right_measurements",
+          "right_outcome",
+          "right_primary_event_type",
+          "right_result_summary",
+          "right_text",
+          "shared_primary_event_type"
+        ],
+        "output_fields": [
+          "differing_structured_fields",
+          "incident_date",
+          "left_incident_id",
+          "right_incident_id",
+          "shared_primary_event_type"
+        ],
+        "project_cols": "['left_incident_id', 'right_incident_id', 'incident_date', 'shared_primary_event_type', 'differing_structured_fields']"
+      }
+    ],
+    "topological_logical_sequence": [
+      "0-6341dad336",
+      "1-e190614af1",
+      "2-e0aabfffe9",
+      "3-e93f8bc2cf",
+      "4-c9a1b8d28b",
+      "5-22f911ea9c",
+      "6-777a4d53d7",
+      "7-0eb0a58f9b",
+      "8-3cddb69bed",
+      "9-a20a003f4e",
+      "10-9bbac61200",
+      "11-b802fb9a70"
+    ]
+  },
+  "selected_physical_plan": {
+    "plan_id": "0012a35c47",
+    "plan_string": "0. Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'] -> ProjectOp -> Schema['differing_structured_fields', 'incident_date', 'left_incident_id', 'right_incident_id', 'shared_primary_event_type']\n    (differing_structured_fields, i) -> (differing_structured_fields, i)\n    Project Columns: ['differing_structured_fields', 'incident_date', 'left_incident_id', 'right_incident_id', 'shared_primary_event_type']\n\n  1. Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'] -> NonLLMConvert -> Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type']\n    (incident_date, left_action_seq) -> (differing_structured_fields, i)\n    UDF: add_output_fields\n\n    2. Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'] -> NonLLMFilter -> Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text']\n    (incident_date, left_action_seq) -> (incident_date, left_action_seq)\n    Filter: same_blocked_pair\n\n      3. Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'] -> EmbeddingJoin -> Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text']\n    (incident_date, left_action_seq) -> (incident_date, left_action_seq)\n    Model: Qwen3.5-397B-A17B\n    Condition: Compare only rows carrying the same left and right blocked-pair incident IDs. Match only when both narratives describe the same underlying occurrence, with a distinctive compatible event progression, measurements, actions, and outcome. Generic topical similarity is insufficient.\n    How: inner\n    On: None\n    Model: Qwen3.5-397B-A17B\n    Reasoning Effort: default\n    Prompt Strategy: join\n    Embedding Model: openai/Qwen3-Embedding-8B\n    Num Samples: 10\n\n        4. Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'] -> NonLLMFilter -> Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary']\n    (incident_date, left_action_seq) -> (incident_date, left_action_seq)\n    Filter: valid_left_signature\n\n          5. Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'] -> NonLLMConvert -> Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary']\n    (incident_date, left_action_seq) -> (incident_date, left_action_seq)\n    UDF: normalize_left_signature\n\n            6. Schema['incident_date', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'] -> MixtureOfAgentsConvert -> Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary']\n    (incident_date, left_anomaly_su) -> (incident_date, left_action_seq)\n    Prompt Strategy: None\n    Reasoning Effort: default\n    Proposer Models: [Qwen3.5-397B-A17B]\n    Temperatures: [0.8]\n    Aggregator Model: Qwen3.5-397B-A17B\n\n              7. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['incident_date', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary']'>, id=aviation_safety-046-left-semantic-input, op_id=6341dad336)) -> <class 'palimpzest.core.lib.schemas.Schema['incident_date', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary']'>\n    (left_incident_id, right_incide)\n\n        4. Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'] -> NonLLMFilter -> Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text']\n    (left_incident_id, normalized_r) -> (left_incident_id, normalized_r)\n    Filter: valid_right_signature\n\n          5. Schema['left_incident_id', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'] -> NonLLMConvert -> Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text']\n    (left_incident_id, right_action) -> (left_incident_id, normalized_r)\n    UDF: normalize_right_signature\n\n            6. Schema['left_incident_id', 'right_incident_id', 'right_text'] -> MixtureOfAgentsConvert -> Schema['left_incident_id', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text']\n    (left_incident_id, right_incide) -> (left_incident_id, right_action)\n    Prompt Strategy: None\n    Reasoning Effort: default\n    Proposer Models: [Qwen3.5-397B-A17B]\n    Temperatures: [0.4]\n    Aggregator Model: Qwen3.5-397B-A17B\n\n              7. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['left_incident_id', 'right_incident_id', 'right_text']'>, id=aviation_safety-046-right-semantic-input, op_id=c9a1b8d28b)) -> <class 'palimpzest.core.lib.schemas.Schema['left_incident_id', 'right_incident_id', 'right_text']'>\n    (left_incident_id, right_incide)\n\n",
+    "root_operator_index": 11,
+    "operators": [
+      {
+        "topological_index": 0,
+        "physical_operator": "MarshalAndScanDataOp",
+        "logical_operator": "BaseScan",
+        "logical_op_id": "6341dad336",
+        "unique_logical_op_id": "0-6341dad336",
+        "full_op_id": "6341dad336-8d13a7359f",
+        "model": null,
+        "depends_on": [],
+        "generated_fields": [
+          "incident_date",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_result_summary",
+          "left_text",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_result_summary"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "incident_date",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_result_summary",
+          "left_text",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_result_summary"
+        ],
+        "source_operator_indices": []
+      },
+      {
+        "topological_index": 1,
+        "physical_operator": "MixtureOfAgentsConvert",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "e190614af1",
+        "unique_logical_op_id": "1-e190614af1",
+        "full_op_id": "e190614af1-cc089486d6",
+        "model": null,
+        "depends_on": [
+          "Schema['incident_date', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].aviation_safety-046-left-semantic-input.left_incident_id",
+          "Schema['incident_date', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].aviation_safety-046-left-semantic-input.left_text",
+          "Schema['incident_date', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].aviation_safety-046-left-semantic-input.right_incident_id"
+        ],
+        "generated_fields": [
+          "left_action_sequence",
+          "left_measurements",
+          "left_outcome",
+          "left_primary_event_type"
+        ],
+        "input_fields": [
+          "incident_date",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_result_summary",
+          "left_text",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_result_summary"
+        ],
+        "output_fields": [
+          "incident_date",
+          "left_action_sequence",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_measurements",
+          "left_outcome",
+          "left_primary_event_type",
+          "left_result_summary",
+          "left_text",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_result_summary"
+        ],
+        "source_operator_indices": [
+          0
+        ]
+      },
+      {
+        "topological_index": 2,
+        "physical_operator": "NonLLMConvert",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "e0aabfffe9",
+        "unique_logical_op_id": "2-e0aabfffe9",
+        "full_op_id": "e0aabfffe9-d09670085f",
+        "model": null,
+        "depends_on": [
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].d0828de79e.left_primary_event_type"
+        ],
+        "generated_fields": [
+          "normalized_left_event_type"
+        ],
+        "input_fields": [
+          "incident_date",
+          "left_action_sequence",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_measurements",
+          "left_outcome",
+          "left_primary_event_type",
+          "left_result_summary",
+          "left_text",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_result_summary"
+        ],
+        "output_fields": [
+          "incident_date",
+          "left_action_sequence",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_measurements",
+          "left_outcome",
+          "left_primary_event_type",
+          "left_result_summary",
+          "left_text",
+          "normalized_left_event_type",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_result_summary"
+        ],
+        "source_operator_indices": [
+          1
+        ]
+      },
+      {
+        "topological_index": 3,
+        "physical_operator": "NonLLMFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "e93f8bc2cf",
+        "unique_logical_op_id": "3-e93f8bc2cf",
+        "full_op_id": "e93f8bc2cf-39524b3eda",
+        "model": null,
+        "depends_on": [
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].d0828de79e.normalized_left_event_type"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "incident_date",
+          "left_action_sequence",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_measurements",
+          "left_outcome",
+          "left_primary_event_type",
+          "left_result_summary",
+          "left_text",
+          "normalized_left_event_type",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_result_summary"
+        ],
+        "output_fields": [
+          "incident_date",
+          "left_action_sequence",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_measurements",
+          "left_outcome",
+          "left_primary_event_type",
+          "left_result_summary",
+          "left_text",
+          "normalized_left_event_type",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_result_summary"
+        ],
+        "source_operator_indices": [
+          2
+        ]
+      },
+      {
+        "topological_index": 4,
+        "physical_operator": "MarshalAndScanDataOp",
+        "logical_operator": "BaseScan",
+        "logical_op_id": "c9a1b8d28b",
+        "unique_logical_op_id": "4-c9a1b8d28b",
+        "full_op_id": "c9a1b8d28b-fbc94d80a7",
+        "model": null,
+        "depends_on": [],
+        "generated_fields": [
+          "left_incident_id",
+          "right_incident_id",
+          "right_text"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "left_incident_id",
+          "right_incident_id",
+          "right_text"
+        ],
+        "source_operator_indices": []
+      },
+      {
+        "topological_index": 5,
+        "physical_operator": "MixtureOfAgentsConvert",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "22f911ea9c",
+        "unique_logical_op_id": "5-22f911ea9c",
+        "full_op_id": "22f911ea9c-08bacf25e6",
+        "model": null,
+        "depends_on": [
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].d0828de79e.left_incident_id",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].d0828de79e.right_incident_id",
+          "Schema['left_incident_id', 'right_incident_id', 'right_text'].aviation_safety-046-right-semantic-input.right_text"
+        ],
+        "generated_fields": [
+          "right_action_sequence",
+          "right_measurements",
+          "right_outcome",
+          "right_primary_event_type"
+        ],
+        "input_fields": [
+          "left_incident_id",
+          "right_incident_id",
+          "right_text"
+        ],
+        "output_fields": [
+          "left_incident_id",
+          "right_action_sequence",
+          "right_incident_id",
+          "right_measurements",
+          "right_outcome",
+          "right_primary_event_type",
+          "right_text"
+        ],
+        "source_operator_indices": [
+          4
+        ]
+      },
+      {
+        "topological_index": 6,
+        "physical_operator": "NonLLMConvert",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "777a4d53d7",
+        "unique_logical_op_id": "6-777a4d53d7",
+        "full_op_id": "777a4d53d7-9a25e4d5ba",
+        "model": null,
+        "depends_on": [
+          "Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].fb54ebba62.right_primary_event_type"
+        ],
+        "generated_fields": [
+          "normalized_right_event_type"
+        ],
+        "input_fields": [
+          "left_incident_id",
+          "right_action_sequence",
+          "right_incident_id",
+          "right_measurements",
+          "right_outcome",
+          "right_primary_event_type",
+          "right_text"
+        ],
+        "output_fields": [
+          "left_incident_id",
+          "normalized_right_event_type",
+          "right_action_sequence",
+          "right_incident_id",
+          "right_measurements",
+          "right_outcome",
+          "right_primary_event_type",
+          "right_text"
+        ],
+        "source_operator_indices": [
+          5
+        ]
+      },
+      {
+        "topological_index": 7,
+        "physical_operator": "NonLLMFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "0eb0a58f9b",
+        "unique_logical_op_id": "7-0eb0a58f9b",
+        "full_op_id": "0eb0a58f9b-d421a0b041",
+        "model": null,
+        "depends_on": [
+          "Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].fb54ebba62.normalized_right_event_type"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "left_incident_id",
+          "normalized_right_event_type",
+          "right_action_sequence",
+          "right_incident_id",
+          "right_measurements",
+          "right_outcome",
+          "right_primary_event_type",
+          "right_text"
+        ],
+        "output_fields": [
+          "left_incident_id",
+          "normalized_right_event_type",
+          "right_action_sequence",
+          "right_incident_id",
+          "right_measurements",
+          "right_outcome",
+          "right_primary_event_type",
+          "right_text"
+        ],
+        "source_operator_indices": [
+          6
+        ]
+      },
+      {
+        "topological_index": 8,
+        "physical_operator": "EmbeddingJoin",
+        "logical_operator": "JoinOp",
+        "logical_op_id": "3cddb69bed",
+        "unique_logical_op_id": "8-3cddb69bed",
+        "full_op_id": "3cddb69bed-fd04c16870",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].09d08250c0.left_incident_id_right",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].09d08250c0.right_incident_id_right",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].d0828de79e.left_action_sequence",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].d0828de79e.left_measurements",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].d0828de79e.left_outcome",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].d0828de79e.normalized_left_event_type",
+          "Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].fb54ebba62.left_incident_id",
+          "Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].fb54ebba62.normalized_right_event_type",
+          "Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].fb54ebba62.right_action_sequence",
+          "Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].fb54ebba62.right_incident_id",
+          "Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].fb54ebba62.right_measurements",
+          "Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].fb54ebba62.right_outcome"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "incident_date",
+          "left_action_sequence",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_incident_id_right",
+          "left_measurements",
+          "left_outcome",
+          "left_primary_event_type",
+          "left_result_summary",
+          "left_text",
+          "normalized_left_event_type",
+          "normalized_right_event_type",
+          "right_action_sequence",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_incident_id_right",
+          "right_measurements",
+          "right_outcome",
+          "right_primary_event_type",
+          "right_result_summary",
+          "right_text"
+        ],
+        "output_fields": [
+          "incident_date",
+          "left_action_sequence",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_incident_id_right",
+          "left_measurements",
+          "left_outcome",
+          "left_primary_event_type",
+          "left_result_summary",
+          "left_text",
+          "normalized_left_event_type",
+          "normalized_right_event_type",
+          "right_action_sequence",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_incident_id_right",
+          "right_measurements",
+          "right_outcome",
+          "right_primary_event_type",
+          "right_result_summary",
+          "right_text"
+        ],
+        "source_operator_indices": [
+          3,
+          7
+        ]
+      },
+      {
+        "topological_index": 9,
+        "physical_operator": "NonLLMFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "a20a003f4e",
+        "unique_logical_op_id": "9-a20a003f4e",
+        "full_op_id": "a20a003f4e-42b8c267f3",
+        "model": null,
+        "depends_on": [
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].09d08250c0.left_incident_id_right",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].09d08250c0.right_incident_id_right",
+          "Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].fb54ebba62.left_incident_id",
+          "Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].fb54ebba62.right_incident_id"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "incident_date",
+          "left_action_sequence",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_incident_id_right",
+          "left_measurements",
+          "left_outcome",
+          "left_primary_event_type",
+          "left_result_summary",
+          "left_text",
+          "normalized_left_event_type",
+          "normalized_right_event_type",
+          "right_action_sequence",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_incident_id_right",
+          "right_measurements",
+          "right_outcome",
+          "right_primary_event_type",
+          "right_result_summary",
+          "right_text"
+        ],
+        "output_fields": [
+          "incident_date",
+          "left_action_sequence",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_incident_id_right",
+          "left_measurements",
+          "left_outcome",
+          "left_primary_event_type",
+          "left_result_summary",
+          "left_text",
+          "normalized_left_event_type",
+          "normalized_right_event_type",
+          "right_action_sequence",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_incident_id_right",
+          "right_measurements",
+          "right_outcome",
+          "right_primary_event_type",
+          "right_result_summary",
+          "right_text"
+        ],
+        "source_operator_indices": [
+          8
+        ]
+      },
+      {
+        "topological_index": 10,
+        "physical_operator": "NonLLMConvert",
+        "logical_operator": "ConvertScan",
+        "logical_op_id": "9bbac61200",
+        "unique_logical_op_id": "10-9bbac61200",
+        "full_op_id": "9bbac61200-1c4c2d335b",
+        "model": null,
+        "depends_on": [
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.left_anomaly_summary",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.left_flight_phase",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.left_result_summary",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.normalized_left_event_type",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.right_anomaly_summary",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.right_flight_phase",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.right_result_summary"
+        ],
+        "generated_fields": [
+          "differing_structured_fields",
+          "shared_primary_event_type"
+        ],
+        "input_fields": [
+          "incident_date",
+          "left_action_sequence",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_incident_id_right",
+          "left_measurements",
+          "left_outcome",
+          "left_primary_event_type",
+          "left_result_summary",
+          "left_text",
+          "normalized_left_event_type",
+          "normalized_right_event_type",
+          "right_action_sequence",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_incident_id_right",
+          "right_measurements",
+          "right_outcome",
+          "right_primary_event_type",
+          "right_result_summary",
+          "right_text"
+        ],
+        "output_fields": [
+          "differing_structured_fields",
+          "incident_date",
+          "left_action_sequence",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_incident_id_right",
+          "left_measurements",
+          "left_outcome",
+          "left_primary_event_type",
+          "left_result_summary",
+          "left_text",
+          "normalized_left_event_type",
+          "normalized_right_event_type",
+          "right_action_sequence",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_incident_id_right",
+          "right_measurements",
+          "right_outcome",
+          "right_primary_event_type",
+          "right_result_summary",
+          "right_text",
+          "shared_primary_event_type"
+        ],
+        "source_operator_indices": [
+          9
+        ]
+      },
+      {
+        "topological_index": 11,
+        "physical_operator": "ProjectOp",
+        "logical_operator": "Project",
+        "logical_op_id": "b802fb9a70",
+        "unique_logical_op_id": "11-b802fb9a70",
+        "full_op_id": "b802fb9a70-2afe2d74c7",
+        "model": null,
+        "depends_on": [
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.differing_structured_fields",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.incident_date",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.left_action_sequence",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.left_anomaly_summary",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.left_flight_phase",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.left_incident_id",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.left_incident_id_right",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.left_measurements",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.left_outcome",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.left_primary_event_type",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.left_result_summary",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.left_text",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.normalized_left_event_type",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.normalized_right_event_type",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.right_action_sequence",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.right_anomaly_summary",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.right_flight_phase",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.right_incident_id",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.right_incident_id_right",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.right_measurements",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.right_outcome",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.right_primary_event_type",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.right_result_summary",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.right_text",
+          "Schema['differing_structured_fields', 'incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text', 'shared_primary_event_type'].b9600e3ec8.shared_primary_event_type",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].09d08250c0.incident_date",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].09d08250c0.left_action_sequence",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].09d08250c0.left_anomaly_summary",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].09d08250c0.left_flight_phase",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].09d08250c0.left_incident_id",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].09d08250c0.left_incident_id_right",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].09d08250c0.left_measurements",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].09d08250c0.left_outcome",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].09d08250c0.left_primary_event_type",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].09d08250c0.left_result_summary",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].09d08250c0.left_text",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].09d08250c0.normalized_left_event_type",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].09d08250c0.normalized_right_event_type",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].09d08250c0.right_action_sequence",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].09d08250c0.right_anomaly_summary",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].09d08250c0.right_flight_phase",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].09d08250c0.right_incident_id",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].09d08250c0.right_incident_id_right",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].09d08250c0.right_measurements",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].09d08250c0.right_outcome",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].09d08250c0.right_primary_event_type",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].09d08250c0.right_result_summary",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].09d08250c0.right_text",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].b72f5abab5.incident_date",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].b72f5abab5.left_action_sequence",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].b72f5abab5.left_anomaly_summary",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].b72f5abab5.left_flight_phase",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].b72f5abab5.left_incident_id",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].b72f5abab5.left_incident_id_right",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].b72f5abab5.left_measurements",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].b72f5abab5.left_outcome",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].b72f5abab5.left_primary_event_type",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].b72f5abab5.left_result_summary",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].b72f5abab5.left_text",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].b72f5abab5.normalized_left_event_type",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].b72f5abab5.normalized_right_event_type",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].b72f5abab5.right_action_sequence",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].b72f5abab5.right_anomaly_summary",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].b72f5abab5.right_flight_phase",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].b72f5abab5.right_incident_id",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].b72f5abab5.right_incident_id_right",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].b72f5abab5.right_measurements",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].b72f5abab5.right_outcome",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].b72f5abab5.right_primary_event_type",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].b72f5abab5.right_result_summary",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_incident_id_right', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'normalized_right_event_type', 'right_action_sequence', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_incident_id_right', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_result_summary', 'right_text'].b72f5abab5.right_text",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].5ae429ceba.incident_date",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].5ae429ceba.left_action_sequence",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].5ae429ceba.left_anomaly_summary",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].5ae429ceba.left_flight_phase",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].5ae429ceba.left_incident_id",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].5ae429ceba.left_measurements",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].5ae429ceba.left_outcome",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].5ae429ceba.left_primary_event_type",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].5ae429ceba.left_result_summary",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].5ae429ceba.left_text",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].5ae429ceba.normalized_left_event_type",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].5ae429ceba.right_anomaly_summary",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].5ae429ceba.right_flight_phase",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].5ae429ceba.right_incident_id",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].5ae429ceba.right_result_summary",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].d0828de79e.incident_date",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].d0828de79e.left_action_sequence",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].d0828de79e.left_anomaly_summary",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].d0828de79e.left_flight_phase",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].d0828de79e.left_incident_id",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].d0828de79e.left_measurements",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].d0828de79e.left_outcome",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].d0828de79e.left_primary_event_type",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].d0828de79e.left_result_summary",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].d0828de79e.left_text",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].d0828de79e.normalized_left_event_type",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].d0828de79e.right_anomaly_summary",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].d0828de79e.right_flight_phase",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].d0828de79e.right_incident_id",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'normalized_left_event_type', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].d0828de79e.right_result_summary",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].be8ecccb96.incident_date",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].be8ecccb96.left_action_sequence",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].be8ecccb96.left_anomaly_summary",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].be8ecccb96.left_flight_phase",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].be8ecccb96.left_incident_id",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].be8ecccb96.left_measurements",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].be8ecccb96.left_outcome",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].be8ecccb96.left_primary_event_type",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].be8ecccb96.left_result_summary",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].be8ecccb96.left_text",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].be8ecccb96.right_anomaly_summary",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].be8ecccb96.right_flight_phase",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].be8ecccb96.right_incident_id",
+          "Schema['incident_date', 'left_action_sequence', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_measurements', 'left_outcome', 'left_primary_event_type', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].be8ecccb96.right_result_summary",
+          "Schema['incident_date', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].aviation_safety-046-left-semantic-input.incident_date",
+          "Schema['incident_date', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].aviation_safety-046-left-semantic-input.left_anomaly_summary",
+          "Schema['incident_date', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].aviation_safety-046-left-semantic-input.left_flight_phase",
+          "Schema['incident_date', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].aviation_safety-046-left-semantic-input.left_incident_id",
+          "Schema['incident_date', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].aviation_safety-046-left-semantic-input.left_result_summary",
+          "Schema['incident_date', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].aviation_safety-046-left-semantic-input.left_text",
+          "Schema['incident_date', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].aviation_safety-046-left-semantic-input.right_anomaly_summary",
+          "Schema['incident_date', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].aviation_safety-046-left-semantic-input.right_flight_phase",
+          "Schema['incident_date', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].aviation_safety-046-left-semantic-input.right_incident_id",
+          "Schema['incident_date', 'left_anomaly_summary', 'left_flight_phase', 'left_incident_id', 'left_result_summary', 'left_text', 'right_anomaly_summary', 'right_flight_phase', 'right_incident_id', 'right_result_summary'].aviation_safety-046-left-semantic-input.right_result_summary",
+          "Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].bbef854d9f.left_incident_id",
+          "Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].bbef854d9f.normalized_right_event_type",
+          "Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].bbef854d9f.right_action_sequence",
+          "Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].bbef854d9f.right_incident_id",
+          "Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].bbef854d9f.right_measurements",
+          "Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].bbef854d9f.right_outcome",
+          "Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].bbef854d9f.right_primary_event_type",
+          "Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].bbef854d9f.right_text",
+          "Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].fb54ebba62.left_incident_id",
+          "Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].fb54ebba62.normalized_right_event_type",
+          "Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].fb54ebba62.right_action_sequence",
+          "Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].fb54ebba62.right_incident_id",
+          "Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].fb54ebba62.right_measurements",
+          "Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].fb54ebba62.right_outcome",
+          "Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].fb54ebba62.right_primary_event_type",
+          "Schema['left_incident_id', 'normalized_right_event_type', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].fb54ebba62.right_text",
+          "Schema['left_incident_id', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].bf9c734cfb.left_incident_id",
+          "Schema['left_incident_id', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].bf9c734cfb.right_action_sequence",
+          "Schema['left_incident_id', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].bf9c734cfb.right_incident_id",
+          "Schema['left_incident_id', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].bf9c734cfb.right_measurements",
+          "Schema['left_incident_id', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].bf9c734cfb.right_outcome",
+          "Schema['left_incident_id', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].bf9c734cfb.right_primary_event_type",
+          "Schema['left_incident_id', 'right_action_sequence', 'right_incident_id', 'right_measurements', 'right_outcome', 'right_primary_event_type', 'right_text'].bf9c734cfb.right_text",
+          "Schema['left_incident_id', 'right_incident_id', 'right_text'].aviation_safety-046-right-semantic-input.left_incident_id",
+          "Schema['left_incident_id', 'right_incident_id', 'right_text'].aviation_safety-046-right-semantic-input.right_incident_id",
+          "Schema['left_incident_id', 'right_incident_id', 'right_text'].aviation_safety-046-right-semantic-input.right_text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "differing_structured_fields",
+          "incident_date",
+          "left_action_sequence",
+          "left_anomaly_summary",
+          "left_flight_phase",
+          "left_incident_id",
+          "left_incident_id_right",
+          "left_measurements",
+          "left_outcome",
+          "left_primary_event_type",
+          "left_result_summary",
+          "left_text",
+          "normalized_left_event_type",
+          "normalized_right_event_type",
+          "right_action_sequence",
+          "right_anomaly_summary",
+          "right_flight_phase",
+          "right_incident_id",
+          "right_incident_id_right",
+          "right_measurements",
+          "right_outcome",
+          "right_primary_event_type",
+          "right_result_summary",
+          "right_text",
+          "shared_primary_event_type"
+        ],
+        "output_fields": [
+          "differing_structured_fields",
+          "incident_date",
+          "left_incident_id",
+          "right_incident_id",
+          "shared_primary_event_type"
+        ],
+        "source_operator_indices": [
+          10
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "source": 0,
+        "target": 1
+      },
+      {
+        "source": 1,
+        "target": 2
+      },
+      {
+        "source": 2,
+        "target": 3
+      },
+      {
+        "source": 4,
+        "target": 5
+      },
+      {
+        "source": 5,
+        "target": 6
+      },
+      {
+        "source": 6,
+        "target": 7
+      },
+      {
+        "source": 3,
+        "target": 8
+      },
+      {
+        "source": 7,
+        "target": 8
+      },
+      {
+        "source": 8,
+        "target": 9
+      },
+      {
+        "source": 9,
+        "target": 10
+      },
+      {
+        "source": 10,
+        "target": 11
+      }
+    ],
+    "estimated_plan_cost": {
+      "cost": 1205.6487108944093,
+      "time": 2851400.5772374664,
+      "quality": 0.975,
+      "op_estimates": {
+        "cardinality": 0.0,
+        "time_per_record": 0.0,
+        "cost_per_record": 0.0,
+        "quality": 1.0,
+        "cardinality_lower_bound": 0.0,
+        "cardinality_upper_bound": 0.0,
+        "time_per_record_lower_bound": 0.0,
+        "time_per_record_upper_bound": 0.0,
+        "cost_per_record_lower_bound": 0.0,
+        "cost_per_record_upper_bound": 0.0,
+        "quality_lower_bound": 1.0,
+        "quality_upper_bound": 1.0
+      },
+      "cost_lower_bound": 1205.6487108944093,
+      "cost_upper_bound": 1205.6487108944093,
+      "time_lower_bound": 2851400.5772374664,
+      "time_upper_bound": 2851400.5772374664,
+      "quality_lower_bound": 0.975,
+      "quality_upper_bound": 0.975
+    },
+    "topological_logical_sequence": [
+      "0-6341dad336",
+      "1-e190614af1",
+      "2-e0aabfffe9",
+      "3-e93f8bc2cf",
+      "4-c9a1b8d28b",
+      "5-22f911ea9c",
+      "6-777a4d53d7",
+      "7-0eb0a58f9b",
+      "8-3cddb69bed",
+      "9-a20a003f4e",
+      "10-9bbac61200",
+      "11-b802fb9a70"
+    ]
+  },
+  "optimizer_configuration": {
+    "strategy": "pareto",
+    "policy": "MaxQuality",
+    "physical_implementation_candidates": {
+      "allow_bonded_query": true,
+      "allow_model_selection": false,
+      "allow_rag_reduction": false,
+      "allow_mixtures": true,
+      "allow_critic": true,
+      "allow_split_merge": false,
+      "force_rag": false,
+      "execution_strategy": "parallel",
+      "max_workers": 64,
+      "join_parallelism": 64
+    },
+    "dynamic_learning_requested": true,
+    "dynamic_learning_pipeline_supported": true,
+    "dynamic_learning": true,
+    "dynamic_learning_support": {
+      "supported": true,
+      "reason": null,
+      "terminal_only_operator_violations": []
+    },
+    "allow_unsupported_sentinel_plans": true,
+    "dynamic_learning_fallback": null,
+    "sentinel_execution_strategy": "mab",
+    "sentinel_k": 6,
+    "sentinel_j": 4,
+    "sentinel_sample_budget": 100,
+    "sentinel_seed": 42,
+    "available_models": [
+      "Qwen3.5-397B-A17B",
+      "openai/Qwen3-Embedding-8B"
+    ]
+  },
+  "optimizer_search_space": {
+    "group_count": 12,
+    "logical_expression_count": 12,
+    "physical_expression_count": 21,
+    "transformation_rules_explored": [
+      "PushDownFilter",
+      "ReorderConverts"
+    ],
+    "implementation_rules_explored": [
+      "BasicSubstitutionRule",
+      "CritiqueAndRefineRule",
+      "EmbeddingJoinRule",
+      "LLMConvertBondedRule",
+      "MixtureOfAgentsRule",
+      "NestedLoopsJoinRule",
+      "NonLLMConvertRule",
+      "NonLLMFilterRule"
+    ]
+  },
+  "optimization_metrics": {
+    "elapsed_seconds": 600.07998586,
+    "sentinel_sampling_seconds": 599.71211457,
+    "optimizer_search_and_bookkeeping_seconds": 0.36787128,
+    "cost_usd": 1.36901047,
+    "text_llm_calls": 694,
+    "embedding_calls": 0,
+    "input_text_tokens": 1386451,
+    "output_text_tokens": 353947,
+    "total_text_tokens": 1740398,
+    "embedding_input_tokens": 0,
+    "cache_read_tokens": 0,
+    "cache_creation_tokens": 0,
+    "sampled_operators": {
+      "text_llm_calls": 478,
+      "embedding_calls": 0,
+      "input_text_tokens": 843187,
+      "output_text_tokens": 313074,
+      "embedding_input_tokens": 0,
+      "cost_usd": 1.06149469
+    },
+    "validator": {
+      "text_llm_calls": 216,
+      "input_text_tokens": 543264,
+      "output_text_tokens": 40873,
+      "total_text_tokens": 584137,
+      "cost_usd": 0.30751578
+    },
+    "model_usage_by_model": {
+      "Qwen3.5-397B-A17B": {
+        "roles": [
+          "text",
+          "validator"
+        ],
+        "calls": 694,
+        "input_tokens": 1386451,
+        "output_tokens": 353947,
+        "total_tokens": 1740398,
+        "cost_usd": 1.36901047
+      }
+    }
+  },
+  "sentinel_join_sampling": [
+    {
+      "unique_logical_op_id": "8-3cddb69bed",
+      "frontier_representative_operator_class": "NestedLoopsJoin",
+      "root_dataset_count": 2,
+      "left_available_source_indices": 1416,
+      "right_available_source_indices": 1416,
+      "theoretical_combination_count": 2005056,
+      "available_combination_count": 2005056,
+      "sample_limit": 100,
+      "sampled_combination_count": 100,
+      "sampling_method": "seeded_uniform_without_replacement_flat_indices",
+      "seed": 42
+    }
+  ],
+  "sentinel_sampling_exhaustion": null,
+  "recovery": null
+}

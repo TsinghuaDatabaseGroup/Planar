@@ -1,0 +1,138 @@
+{
+  "node_id": 7,
+  "sample_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-044/moar-search/pipeline_legal_contracts-044_input_sample_openai_Qwen3.5-397B-A17B.yaml",
+  "sample_output_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-044/moar-search/pipeline_legal_contracts-044_input_sample_openai_Qwen3.5-397B-A17B.json",
+  "semantic_fidelity": 1.0,
+  "sample_execution_cost_usd": 0.14377584,
+  "fidelity_threshold": 0.9,
+  "selection_reason": "lowest_cost_meeting_fidelity_threshold",
+  "optimization_path": "ROOT → change to Qwen3.5-397B-A17B(filter_ex97_clawback_policies)",
+  "sample_execution_metrics_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-044/moar-search/candidate-metrics/execution_0001_node-7.json",
+  "full_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/legal_contracts-044/selected-plan/pipeline_legal_contracts-044_optimized_full.yaml",
+  "input_plan_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/pipeline-all/pipeline_legal_contracts-044.yaml",
+  "input_plan_kind": "reference-plan translation used as the MOAR input plan",
+  "operator_execution_policy": {
+    "policy": "structural_rewrite_fixed_operator_execution",
+    "nested_v1_optimizer_invoked": false,
+    "fixed_default_model": "Qwen3.5-397B-A17B",
+    "unchanged_operations": [
+      "filter_ex97_clawback_policies",
+      "filter_misconduct_extended_recovery_and_date",
+      "extract_company_date_and_covered_persons",
+      "project_answer_fields"
+    ],
+    "new_or_replaced_operations": [],
+    "restored_fields": {},
+    "unchanged_operation_count": 4,
+    "new_or_replaced_operation_count": 0
+  },
+  "input_plan_signature": {
+    "definitions": {
+      "filter_ex97_clawback_policies": "filter",
+      "filter_misconduct_extended_recovery_and_date": "filter",
+      "extract_company_date_and_covered_persons": "map",
+      "project_answer_fields": "code_map"
+    },
+    "logical_operations": [
+      {
+        "name": "filter_ex97_clawback_policies",
+        "type": "filter",
+        "logical_config_sha256": "fe36f548be619a879de67a2013a23fbc65f195bc54952bd5119341ba0df498cc"
+      },
+      {
+        "name": "filter_misconduct_extended_recovery_and_date",
+        "type": "filter",
+        "logical_config_sha256": "5bc750e1c34ce0d1de639cb382eb9dd44731b259a6a2612b740cca9b7c0b703d"
+      },
+      {
+        "name": "extract_company_date_and_covered_persons",
+        "type": "map",
+        "logical_config_sha256": "ead4110a758060f9b3b834eb9ab1edb0a28c2b91c656bdb1b1e9384289021cbf"
+      },
+      {
+        "name": "project_answer_fields",
+        "type": "code_map",
+        "logical_config_sha256": "46e873d7d9bee990f5c2f22b026c8d840345253e4cf49b8d853834b953cfe3a6"
+      }
+    ],
+    "steps": [
+      {
+        "name": "process",
+        "input": "contract_exhibits",
+        "operations": [
+          {
+            "name": "filter_ex97_clawback_policies",
+            "type": "filter"
+          },
+          {
+            "name": "filter_misconduct_extended_recovery_and_date",
+            "type": "filter"
+          },
+          {
+            "name": "extract_company_date_and_covered_persons",
+            "type": "map"
+          },
+          {
+            "name": "project_answer_fields",
+            "type": "code_map"
+          }
+        ]
+      }
+    ]
+  },
+  "selected_plan_signature": {
+    "definitions": {
+      "filter_ex97_clawback_policies": "filter",
+      "filter_misconduct_extended_recovery_and_date": "filter",
+      "extract_company_date_and_covered_persons": "map",
+      "project_answer_fields": "code_map"
+    },
+    "logical_operations": [
+      {
+        "name": "filter_ex97_clawback_policies",
+        "type": "filter",
+        "logical_config_sha256": "fe36f548be619a879de67a2013a23fbc65f195bc54952bd5119341ba0df498cc"
+      },
+      {
+        "name": "filter_misconduct_extended_recovery_and_date",
+        "type": "filter",
+        "logical_config_sha256": "5bc750e1c34ce0d1de639cb382eb9dd44731b259a6a2612b740cca9b7c0b703d"
+      },
+      {
+        "name": "extract_company_date_and_covered_persons",
+        "type": "map",
+        "logical_config_sha256": "ead4110a758060f9b3b834eb9ab1edb0a28c2b91c656bdb1b1e9384289021cbf"
+      },
+      {
+        "name": "project_answer_fields",
+        "type": "code_map",
+        "logical_config_sha256": "46e873d7d9bee990f5c2f22b026c8d840345253e4cf49b8d853834b953cfe3a6"
+      }
+    ],
+    "steps": [
+      {
+        "name": "process",
+        "input": "contract_exhibits",
+        "operations": [
+          {
+            "name": "filter_ex97_clawback_policies",
+            "type": "filter"
+          },
+          {
+            "name": "filter_misconduct_extended_recovery_and_date",
+            "type": "filter"
+          },
+          {
+            "name": "extract_company_date_and_covered_persons",
+            "type": "map"
+          },
+          {
+            "name": "project_answer_fields",
+            "type": "code_map"
+          }
+        ]
+      }
+    ]
+  },
+  "plan_changed": false
+}

@@ -1,0 +1,372 @@
+datasets:
+  asrs_person_factors:
+    type: file
+    path: data/asrs/person_factors.csv
+  asrs_person_attributes:
+    type: file
+    path: data/asrs/person_attributes.csv
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_flight_crew_experience_rows
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("factor_type") == "experience"
+              and "Flight Crew" in str(doc.get("value", ""))
+          )
+
+  - name: parse_flight_crew_hours
+    type: code_map
+    code: |
+      def transform(doc):
+          import re
+
+          value = str(doc.get("value", ""))
+
+          def parse_after(marker):
+              match = re.search(
+                  rf"{re.escape(marker)}\s+([0-9]+(?:\.[0-9]+)?)",
+                  value,
+              )
+              if not match:
+                  return None
+              number = match.group(1)
+              return float(number) if "." in number else int(number)
+
+          return {
+              "total_hours": parse_after("Flight Crew Total"),
+              "type_hours": parse_after("Flight Crew Type"),
+              "last_90_days_hours": parse_after("Flight Crew Last 90 Days"),
+          }
+
+  - name: attach_person_attributes
+    type: code_map
+    code: |
+      import csv
+      import os
+      import threading
+
+      _person_attribute_index = None
+      _person_attribute_lock = threading.Lock()
+
+      def load_person_attribute_index():
+          global _person_attribute_index
+          if _person_attribute_index is None:
+              with _person_attribute_lock:
+                  if _person_attribute_index is None:
+                      index = {}
+                      path = os.path.abspath(
+                          os.path.join("data", "asrs", "person_attributes.csv")
+                      )
+                      with open(
+                          path, "r", encoding="utf-8", errors="replace", newline=""
+                      ) as handle:
+                          for row in csv.DictReader(handle):
+                              attribute = row.get("attribute")
+                              if attribute not in {
+                                  "function",
+                                  "qualification",
+                                  "location_of_person",
+                              }:
+                                  continue
+                              key = (
+                                  str(row.get("incident_id", "")),
+                                  str(row.get("person_ref", "")),
+                              )
+                              record = index.setdefault(
+                                  key,
+                                  {
+                                      "function_value": None,
+                                      "qualification": None,
+                                      "location_of_person": None,
+                                  },
+                              )
+                              output_key = (
+                                  "function_value"
+                                  if attribute == "function"
+                                  else attribute
+                              )
+                              value = row.get("value")
+                              current = record[output_key]
+                              if value is not None:
+                                  record[output_key] = (
+                                      value if current is None else max(current, value)
+                                  )
+                      _person_attribute_index = index
+          return _person_attribute_index
+
+      def transform(doc):
+          key = (
+              str(doc.get("incident_id", "")),
+              str(doc.get("person_ref", "")),
+          )
+          values = load_person_attribute_index().get(key)
+          if values is None:
+              return {
+                  "has_person_attributes": False,
+                  "function_value": None,
+                  "qualification": None,
+                  "location_of_person": None,
+              }
+          return {"has_person_attributes": True, **values}
+
+  - name: inner_join_person_rows
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("has_person_attributes") is True
+
+  - name: project_crew_function
+    type: code_map
+    code: |
+      def transform(doc):
+          function_value = str(doc.get("function_value", ""))
+          if "Captain" in function_value:
+              crew_function = "captain"
+          elif "First Officer" in function_value:
+              crew_function = "first_officer"
+          elif "Single Pilot" in function_value:
+              crew_function = "single_pilot"
+          elif "Instructor" in function_value:
+              crew_function = "instructor"
+          else:
+              crew_function = "other_flight_crew"
+          return {"crew_function": crew_function}
+
+  - name: attach_target_incident
+    type: code_map
+    code: |
+      import csv
+      import os
+      import threading
+
+      _target_incident_index = None
+      _target_incident_lock = threading.Lock()
+
+      def load_target_incident_index():
+          global _target_incident_index
+          if _target_incident_index is None:
+              with _target_incident_lock:
+                  if _target_incident_index is None:
+                      index = {}
+                      path = os.path.abspath(
+                          os.path.join("data", "asrs", "incidents.csv")
+                      )
+                      with open(
+                          path, "r", encoding="utf-8", errors="replace", newline=""
+                      ) as handle:
+                          for row in csv.DictReader(handle):
+                              if row.get("primary_problem") not in {
+                                  "Human Factors",
+                                  "Procedure",
+                              }:
+                                  continue
+                              incident_id = str(row.get("incident_id", ""))
+                              text_file = str(row.get("text_file", ""))
+                              if incident_id and text_file:
+                                  index.setdefault(incident_id, text_file)
+                      _target_incident_index = index
+          return _target_incident_index
+
+      def transform(doc):
+          text_file = load_target_incident_index().get(
+              str(doc.get("incident_id", ""))
+          )
+          return {
+              "has_target_incident": text_file is not None,
+              "text_file": text_file,
+          }
+
+  - name: inner_join_target_incidents
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("has_target_incident") is True
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: classify_person_experience_role
+    type: map
+    optimize: true
+    prompt: |
+      Classify how this specific structured person's experience is used in the NASA
+      ASRS narrative. Use the person's crew function, qualification, and location
+      only to resolve which narrative participant is being discussed; do not infer
+      an experience role merely from the structured attributes.
+
+      Assign exactly one experience_role:
+      - causal: the narrative states or clearly indicates that this person's low,
+        limited, recent, or missing experience, training status, qualification,
+        transition, recency, or unfamiliarity contributed to the event;
+      - incidental: the narrative mentions this person's experience, training,
+        qualification, recency, or familiarity only as background or context and
+        does not make it contributory;
+      - not_mentioned: the narrative does not mention this specific person's
+        experience, training, qualification, recency, or familiarity.
+
+      Do not classify causal solely because the event involved human factors or
+      procedure, and do not use structured flight-hour values because they are not
+      narrative evidence.
+
+      Person reference: {{ input.person_ref }}
+      Crew function: {{ input.crew_function }}
+      Qualification: {{ input.qualification }}
+      Location: {{ input.location_of_person }}
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        experience_role: enum[causal, incidental, not_mentioned]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: aggregate_crew_experience_distribution
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          function_order = [
+              "captain",
+              "first_officer",
+              "single_pilot",
+              "instructor",
+              "other_flight_crew",
+          ]
+          role_order = ["causal", "incidental", "not_mentioned"]
+          grouped_people = {
+              (crew_function, role): {}
+              for crew_function in function_order
+              for role in role_order
+          }
+
+          for item in items:
+              person_key = (
+                  str(item.get("incident_id", "")),
+                  str(item.get("person_ref", "")),
+              )
+              group_key = (
+                  item.get("crew_function"),
+                  item.get("experience_role"),
+              )
+              if (
+                  not all(person_key)
+                  or group_key not in grouped_people
+                  or person_key in grouped_people[group_key]
+              ):
+                  continue
+              grouped_people[group_key][person_key] = (
+                  item.get("total_hours"),
+                  item.get("type_hours"),
+                  item.get("last_90_days_hours"),
+              )
+
+          def median_recorded(values):
+              ordered = sorted(value for value in values if value is not None)
+              if not ordered:
+                  return None
+              middle = len(ordered) // 2
+              if len(ordered) % 2:
+                  return ordered[middle]
+              return (ordered[middle - 1] + ordered[middle]) / 2
+
+          rows = []
+          for crew_function in function_order:
+              for role in role_order:
+                  people = list(grouped_people[(crew_function, role)].values())
+                  if not people:
+                      continue
+                  rows.append(
+                      {
+                          "crew_function": crew_function,
+                          "experience_role": role,
+                          "person_count": len(people),
+                          "median_total_hours": median_recorded(
+                              [person[0] for person in people]
+                          ),
+                          "median_type_hours": median_recorded(
+                              [person[1] for person in people]
+                          ),
+                          "median_last_90_days_hours": median_recorded(
+                              [person[2] for person in people]
+                          ),
+                      }
+                  )
+          return {"rows": rows}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - crew_function
+      - experience_role
+      - person_count
+      - median_total_hours
+      - median_type_hours
+      - median_last_90_days_hours
+
+pipeline:
+  steps:
+    - name: process
+      input: asrs_person_factors
+      operations:
+        - filter_flight_crew_experience_rows
+        - parse_flight_crew_hours
+        - attach_person_attributes
+        - inner_join_person_rows
+        - project_crew_function
+        - attach_target_incident
+        - inner_join_target_incidents
+        - load_asrs_narrative
+        - classify_person_experience_role
+        - aggregate_crew_experience_distribution
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-036.json

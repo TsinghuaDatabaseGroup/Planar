@@ -1,0 +1,104 @@
+{
+  "task_id": "aviation_safety-036",
+  "answer": [
+    {
+      "crew_function": "captain",
+      "experience_role": "causal",
+      "person_count": 234,
+      "median_total_hours": 9500.0,
+      "median_type_hours": 1800.0,
+      "median_last_90_days_hours": 130.0
+    },
+    {
+      "crew_function": "captain",
+      "experience_role": "incidental",
+      "person_count": 83,
+      "median_total_hours": 9250.0,
+      "median_type_hours": 1514.23,
+      "median_last_90_days_hours": 150.0
+    },
+    {
+      "crew_function": "first_officer",
+      "experience_role": "causal",
+      "person_count": 156,
+      "median_total_hours": 6004.5,
+      "median_type_hours": 1080.55,
+      "median_last_90_days_hours": 150.0
+    },
+    {
+      "crew_function": "first_officer",
+      "experience_role": "incidental",
+      "person_count": 101,
+      "median_total_hours": 4720.0,
+      "median_type_hours": 690.0,
+      "median_last_90_days_hours": 120.0
+    },
+    {
+      "crew_function": "instructor",
+      "experience_role": "causal",
+      "person_count": 42,
+      "median_total_hours": 1165.0,
+      "median_type_hours": 396.0,
+      "median_last_90_days_hours": 77.5
+    },
+    {
+      "crew_function": "instructor",
+      "experience_role": "incidental",
+      "person_count": 55,
+      "median_total_hours": 1400.0,
+      "median_type_hours": 287.5,
+      "median_last_90_days_hours": 114.0
+    },
+    {
+      "crew_function": "other_flight_crew",
+      "experience_role": "causal",
+      "person_count": 42,
+      "median_total_hours": 366.5,
+      "median_type_hours": 119.2,
+      "median_last_90_days_hours": 30.9
+    },
+    {
+      "crew_function": "other_flight_crew",
+      "experience_role": "incidental",
+      "person_count": 41,
+      "median_total_hours": 900.0,
+      "median_type_hours": 78.0,
+      "median_last_90_days_hours": 35.5
+    },
+    {
+      "crew_function": "other_flight_crew",
+      "experience_role": "not_mentioned",
+      "person_count": 1,
+      "median_total_hours": 201.0,
+      "median_type_hours": 198.0,
+      "median_last_90_days_hours": 21.0
+    },
+    {
+      "crew_function": "single_pilot",
+      "experience_role": "causal",
+      "person_count": 150,
+      "median_total_hours": 873.0,
+      "median_type_hours": 266.0,
+      "median_last_90_days_hours": 30.0
+    },
+    {
+      "crew_function": "single_pilot",
+      "experience_role": "incidental",
+      "person_count": 66,
+      "median_total_hours": 733.3,
+      "median_type_hours": 179.0,
+      "median_last_90_days_hours": 25.5
+    },
+    {
+      "crew_function": "single_pilot",
+      "experience_role": "not_mentioned",
+      "person_count": 1,
+      "median_total_hours": 2500.0,
+      "median_type_hours": 2000.0,
+      "median_last_90_days_hours": 20.0
+    }
+  ],
+  "elapsed_seconds": 396.914,
+  "cost_usd": 1.14982269,
+  "total_tokens": 2338782
+}

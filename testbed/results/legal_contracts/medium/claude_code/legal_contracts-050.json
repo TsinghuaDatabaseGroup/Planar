@@ -1,0 +1,71 @@
+{
+  "task_id": "legal_contracts-050",
+  "answer": [
+    {
+      "document_id": "1010471_0000950134-97-006281_document_5.txt",
+      "agreement_type": "Non-Competition and Non-Disclosure Agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 60
+    },
+    {
+      "document_id": "1021086_0000950162-99-000581_document_3.txt",
+      "agreement_type": "Non-Competition, Referral and Non-Disclosure Agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "26820_0000936392-03-001111_a92217exv10w5.txt",
+      "agreement_type": "Non-Competition and Non-Disclosure Agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 29
+    },
+    {
+      "document_id": "736291_0000930661-99-001320_document_3.txt",
+      "agreement_type": "Non-Competition, Referral and Non-Disclosure Agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 12
+    },
+    {
+      "document_id": "817516_0001014909-05-000102_exh99_4sept2005.txt",
+      "agreement_type": "Confidentiality, Non-Disclosure and Restrictive Covenant Agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 48
+    },
+    {
+      "document_id": "918541_0001193125-14-328980_d785003dex105.htm",
+      "agreement_type": "Noncompetition and Nondisclosure Agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 36
+    },
+    {
+      "document_id": "ea020170401ex10-4_natures.htm",
+      "agreement_type": "Non-Competition and Non-Solicitation Agreement",
+      "matched_covenant_types": [
+        "customer_non_solicitation",
+        "employee_non_solicitation"
+      ],
+      "longest_period_months": 24
+    }
+  ],
+  "elapsed_seconds": 74.056,
+  "cost_usd": 0.21520992,
+  "total_tokens": 367846
+}

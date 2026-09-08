@@ -1,0 +1,26 @@
+{
+  "task_id": "finance-026",
+  "answer": [
+    {
+      "growth_strategy": "hybrid",
+      "filing_count": 13,
+      "median_employee_count": 74.0,
+      "median_risk_factor_count": 24.0
+    },
+    {
+      "growth_strategy": "market expansion",
+      "filing_count": 13,
+      "median_employee_count": 24.0,
+      "median_risk_factor_count": 18.0
+    },
+    {
+      "growth_strategy": "acquisition-driven",
+      "filing_count": 12,
+      "median_employee_count": 33.0,
+      "median_risk_factor_count": 24.0
+    }
+  ],
+  "elapsed_seconds": 7546.421,
+  "cost_usd": 75.8951901,
+  "total_tokens": 194255798
+}

@@ -1,0 +1,117 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_nda_status_documents
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it has NDA status.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {has_nda_status: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: filter_restrictive_ndas
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it states a finite non-compete duration and
+      contains a customer or employee non-solicitation clause.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_restrictive_nda: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_restrictive_nda_fields
+    type: map
+    optimize: true
+    prompt: |
+      Return the input NDA document ID, canonical key for a stated corporate
+      party, and non-compete duration normalized to years.
+
+      Input document ID: {{ input.doc_id }}
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema: {nda_document_id: string, company_key: string, non_compete_duration_years: float}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: project_restrictiveness
+    type: code_map
+    code: |
+      def transform(doc):
+          return {"nda_document_id": doc.get("nda_document_id"), "company_key": doc.get("company_key"), "highly_restrictive": float(doc.get("non_compete_duration_years") or 0) > 3}
+
+  - name: filter_ex19_policies
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is an EX-19 insider-trading policy.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_ex19_policy: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_policy_features
+    type: map
+    optimize: true
+    prompt: |
+      Return the canonical policy-company key and whether the policy includes a
+      blackout period, pre-clearance, and a Rule 10b5-1 provision.
+
+      Policy:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema: {company_key: string, has_blackout: boolean, has_preclearance: boolean, has_10b5_1: boolean}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: project_comprehensive_policy
+    type: code_map
+    code: |
+      def transform(doc):
+          return {"company_key": doc.get("company_key"), "comprehensive_policy": doc.get("has_blackout") is True and doc.get("has_preclearance") is True and doc.get("has_10b5_1") is True}
+  - name: deduplicate_policy_profiles
+    type: code_reduce
+    reduce_key: [company_key, comprehensive_policy]
+    code: |
+      def transform(items):
+          return {}
+
+  - name: join_nda_and_policy_companies
+    type: equijoin
+    deterministic: true
+    blocking_conditions:
+      - left["company_key"] == right["company_key"]
+  - name: aggregate_pair_profiles
+    type: code_reduce
+    reduce_key: [highly_restrictive, comprehensive_policy]
+    code: |
+      def transform(items):
+          pairs = {(str(item.get("nda_document_id") or ""), str(item.get("company_key_left") or "")) for item in items}
+          companies = {company for _, company in pairs if company}
+          return {"matched_nda_company_pair_count": len(pairs), "distinct_company_count": len(companies)}
+pipeline:
+  steps:
+    - name: restrictive_nda_records
+      input: contract_exhibits
+      operations: [filter_nda_status_documents, filter_restrictive_ndas, extract_restrictive_nda_fields, project_restrictiveness]
+    - name: policy_records
+      input: contract_exhibits
+      operations: [filter_ex19_policies, extract_policy_features, project_comprehensive_policy, deduplicate_policy_profiles]
+    - name: matched_records
+      operations:
+        - join_nda_and_policy_companies: {left: restrictive_nda_records, right: policy_records}
+    - name: answer
+      input: matched_records
+      operations: [aggregate_pair_profiles]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-104.json

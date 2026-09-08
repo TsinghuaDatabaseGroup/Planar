@@ -1,0 +1,10 @@
+[
+  {
+    "node": 1,
+    "path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-045/moar-search/pipeline_aviation_safety-045_input_sample_openai_Qwen3.5-397B-A17B.yaml",
+    "cost": 0.11013872999999995,
+    "accuracy": 1.0,
+    "value": -1.0,
+    "is_frontier": true
+  }
+]

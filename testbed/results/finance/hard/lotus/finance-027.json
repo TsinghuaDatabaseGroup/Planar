@@ -1,0 +1,43 @@
+{
+  "task_id": "finance-027",
+  "answer": [
+    {
+      "revenue_model": "mixed",
+      "competitive_position": "market_leader",
+      "filing_count": 105,
+      "esg_mention_rate_percent": 100.0,
+      "median_risk_factor_count": 32.0
+    },
+    {
+      "revenue_model": "subscription",
+      "competitive_position": "market_leader",
+      "filing_count": 47,
+      "esg_mention_rate_percent": 93.6,
+      "median_risk_factor_count": 34.0
+    },
+    {
+      "revenue_model": "mixed",
+      "competitive_position": "challenger",
+      "filing_count": 44,
+      "esg_mention_rate_percent": 100.0,
+      "median_risk_factor_count": 34.0
+    },
+    {
+      "revenue_model": "interest_income",
+      "competitive_position": "emerging",
+      "filing_count": 36,
+      "esg_mention_rate_percent": 52.8,
+      "median_risk_factor_count": 36.0
+    },
+    {
+      "revenue_model": "mixed",
+      "competitive_position": "major_player",
+      "filing_count": 34,
+      "esg_mention_rate_percent": 100.0,
+      "median_risk_factor_count": 28.0
+    }
+  ],
+  "elapsed_seconds": 12275.05,
+  "cost_usd": 214.228432,
+  "total_tokens": 555162933
+}

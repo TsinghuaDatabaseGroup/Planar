@@ -1,0 +1,36 @@
+{
+  "task_id": "legal_contracts-065",
+  "answer": [
+    {
+      "execution_decade": "1990s",
+      "agreement_count": 29,
+      "avg_exception_count": 3.31,
+      "most_common_governing_law": "Massachusetts",
+      "perpetual_term_rate": 0.3103
+    },
+    {
+      "execution_decade": "2000s",
+      "agreement_count": 62,
+      "avg_exception_count": 3.37,
+      "most_common_governing_law": "California",
+      "perpetual_term_rate": 0.4032
+    },
+    {
+      "execution_decade": "2010s",
+      "agreement_count": 113,
+      "avg_exception_count": 2.62,
+      "most_common_governing_law": "Delaware",
+      "perpetual_term_rate": 0.3186
+    },
+    {
+      "execution_decade": "2020s",
+      "agreement_count": 8,
+      "avg_exception_count": 1.5,
+      "most_common_governing_law": "Republic of South Africa",
+      "perpetual_term_rate": 0.375
+    }
+  ],
+  "elapsed_seconds": 198.769,
+  "cost_usd": 0.44912664,
+  "total_tokens": 777075
+}

@@ -1,0 +1,26 @@
+{
+  "task_id": "legal_contracts-014",
+  "answer": [
+    {
+      "has_internal_controls_clause": false,
+      "has_fraud_disclosure_clause": false,
+      "has_material_changes_clause": false,
+      "certification_count": 488
+    },
+    {
+      "has_internal_controls_clause": true,
+      "has_fraud_disclosure_clause": false,
+      "has_material_changes_clause": true,
+      "certification_count": 2
+    },
+    {
+      "has_internal_controls_clause": true,
+      "has_fraud_disclosure_clause": true,
+      "has_material_changes_clause": true,
+      "certification_count": 243
+    }
+  ],
+  "elapsed_seconds": 109.151,
+  "cost_usd": 0.29568147,
+  "total_tokens": 595455
+}

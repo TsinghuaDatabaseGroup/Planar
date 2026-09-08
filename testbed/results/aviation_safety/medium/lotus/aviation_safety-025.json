@@ -1,0 +1,28 @@
+{
+  "task_id": "aviation_safety-025",
+  "answer": [
+    {
+      "confusion_mechanism": "data_entry_or_programming",
+      "incident_count": 78
+    },
+    {
+      "confusion_mechanism": "alert_interpretation",
+      "incident_count": 33
+    },
+    {
+      "confusion_mechanism": "automation_disengagement",
+      "incident_count": 18
+    },
+    {
+      "confusion_mechanism": "unexpected_capture_or_leveloff",
+      "incident_count": 6
+    },
+    {
+      "confusion_mechanism": "mode_awareness",
+      "incident_count": 106
+    }
+  ],
+  "elapsed_seconds": 113.68,
+  "cost_usd": 1.063491,
+  "total_tokens": 2674636
+}

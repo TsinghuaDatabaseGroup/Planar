@@ -1,0 +1,32 @@
+{
+  "task_id": "aviation_safety-039",
+  "answer": [
+    {
+      "rank": 1,
+      "documentation_issue_type": "incomplete_or_inaccurate_logbook",
+      "records_complete": "Y",
+      "correct_document_on_board": "Y",
+      "incident_count": 3,
+      "canonical_affected_item": "cessna maintenance manual"
+    },
+    {
+      "rank": 2,
+      "documentation_issue_type": "incorrect_or_incomplete_mel_procedure",
+      "records_complete": "Y",
+      "correct_document_on_board": "Y",
+      "incident_count": 2,
+      "canonical_affected_item": "functional check flight requirement"
+    },
+    {
+      "rank": 3,
+      "documentation_issue_type": "incomplete_or_inaccurate_logbook",
+      "records_complete": "N",
+      "correct_document_on_board": "N",
+      "incident_count": 1,
+      "canonical_affected_item": "maintenance logbook"
+    }
+  ],
+  "elapsed_seconds": 2.24,
+  "cost_usd": 0.016305,
+  "total_tokens": 38380
+}

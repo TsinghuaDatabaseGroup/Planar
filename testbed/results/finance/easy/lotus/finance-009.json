@@ -1,0 +1,16 @@
+{
+  "task_id": "finance-009",
+  "answer": {
+    "high_advantage_group": {
+      "filing_count": 1598,
+      "market_leader_rate_percent": 37.4
+    },
+    "low_advantage_group": {
+      "filing_count": 5129,
+      "market_leader_rate_percent": 13.8
+    }
+  },
+  "elapsed_seconds": 3314.18,
+  "cost_usd": 12.808942,
+  "total_tokens": 27531102
+}

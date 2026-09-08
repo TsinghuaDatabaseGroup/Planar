@@ -1,0 +1,11 @@
+{
+  "task_id": "legal_contracts-030",
+  "answer": [
+    {"document_id": "1010552_0000912057-01-520246_a2051644zex-99_20.htm", "governing_law": "Massachusetts", "missing_exception": "independent_development"},
+    {"document_id": "1020416_0001193125-16-701566_d250247dex99d2.htm", "governing_law": "New York", "missing_exception": "prior_knowledge"},
+    {"document_id": "1049210_0001047469-13-009461_a2216846zex-99_d3.htm", "governing_law": "California", "missing_exception": "consent"}
+  ],
+  "elapsed_seconds": 4552.81,
+  "cost_usd": 8.689388,
+  "total_tokens": 16444751
+}

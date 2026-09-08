@@ -1,0 +1,375 @@
+{
+  "node_id": 6,
+  "sample_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-044/moar-search/pipeline_aviation_safety-044_input_sample_openai_Qwen3.5-397B-A17B.yaml",
+  "sample_output_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-044/moar-search/pipeline_aviation_safety-044_input_sample_openai_Qwen3.5-397B-A17B.json",
+  "semantic_fidelity": 1.0,
+  "sample_execution_cost_usd": 0.23063469000000003,
+  "fidelity_threshold": 0.9,
+  "selection_reason": "lowest_cost_meeting_fidelity_threshold",
+  "optimization_path": "ROOT → change to Qwen3.5-397B-A17B(filter_aircraft_primary_incidents)",
+  "sample_execution_metrics_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-044/moar-search/candidate-metrics/execution_0001_node-6.json",
+  "full_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/aviation_safety-044/selected-plan/pipeline_aviation_safety-044_optimized_full.yaml",
+  "input_plan_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/pipeline-all/pipeline_aviation_safety-044.yaml",
+  "input_plan_kind": "reference-plan translation used as the MOAR input plan",
+  "operator_execution_policy": {
+    "policy": "structural_rewrite_fixed_operator_execution",
+    "nested_v1_optimizer_invoked": false,
+    "fixed_default_model": "Qwen3.5-397B-A17B",
+    "unchanged_operations": [
+      "filter_aircraft_primary_incidents",
+      "load_asrs_narrative",
+      "filter_single_primary_event_cause",
+      "filter_operational_consequence",
+      "extract_event_causal_record",
+      "classify_primary_cause",
+      "attach_component_records",
+      "inner_join_component_records",
+      "attach_event_labels",
+      "inner_join_event_labels",
+      "collect_causal_records_by_cause",
+      "summarize_cause_category",
+      "project_answer_fields"
+    ],
+    "new_or_replaced_operations": [],
+    "restored_fields": {},
+    "unchanged_operation_count": 13,
+    "new_or_replaced_operation_count": 0
+  },
+  "input_plan_signature": {
+    "definitions": {
+      "filter_aircraft_primary_incidents": "code_filter",
+      "load_asrs_narrative": "code_map",
+      "filter_single_primary_event_cause": "filter",
+      "filter_operational_consequence": "filter",
+      "extract_event_causal_record": "map",
+      "classify_primary_cause": "map",
+      "attach_component_records": "code_map",
+      "inner_join_component_records": "code_filter",
+      "attach_event_labels": "code_map",
+      "inner_join_event_labels": "code_filter",
+      "collect_causal_records_by_cause": "code_reduce",
+      "summarize_cause_category": "reduce",
+      "project_answer_fields": "map"
+    },
+    "logical_operations": [
+      {
+        "name": "filter_aircraft_primary_incidents",
+        "type": "code_filter",
+        "logical_config_sha256": "96dabc5431d3303c390f2724b994c6078bb919045fd1f64ed9ab96e0b139ba6c"
+      },
+      {
+        "name": "load_asrs_narrative",
+        "type": "code_map",
+        "logical_config_sha256": "22704ad225c76497658f97dc72d7fd2e6af23d702a4068895817ea53c0f3aa87"
+      },
+      {
+        "name": "filter_single_primary_event_cause",
+        "type": "filter",
+        "logical_config_sha256": "4a9afbd26c2ee585ed0a65175baf4370dbfc57b9f0f6d7f51983432a2234df32"
+      },
+      {
+        "name": "filter_operational_consequence",
+        "type": "filter",
+        "logical_config_sha256": "508385eac5333ba05774ee8891a3f7ba38ca6de742c43dafcef05ecf6ff7927b"
+      },
+      {
+        "name": "extract_event_causal_record",
+        "type": "map",
+        "logical_config_sha256": "8e5dc6c3a309ba34ace134020fb98ea2e244ff58dc439a5f31094b25e9b0ceb7"
+      },
+      {
+        "name": "classify_primary_cause",
+        "type": "map",
+        "logical_config_sha256": "4a171981d0dbebe216b3ccf5f4c9b0e85904f52ff999114c9e77aba2c60747c7"
+      },
+      {
+        "name": "attach_component_records",
+        "type": "code_map",
+        "logical_config_sha256": "509da7b280855093994982d6c49778c3e31fa0d23d0a1f3d4f296b07e75609aa"
+      },
+      {
+        "name": "inner_join_component_records",
+        "type": "code_filter",
+        "logical_config_sha256": "ca8124b354e617ae78b9957e8271d9790b21bba62bd2afb7e1cd2119c53c312a"
+      },
+      {
+        "name": "attach_event_labels",
+        "type": "code_map",
+        "logical_config_sha256": "6280bd85b95c2743b593a277b90a81a1becc19579337890ee8d2c07aeb616427"
+      },
+      {
+        "name": "inner_join_event_labels",
+        "type": "code_filter",
+        "logical_config_sha256": "26034231f1d806528bb402da42418656ff62099f8f17bd002866504c87f89b29"
+      },
+      {
+        "name": "collect_causal_records_by_cause",
+        "type": "code_reduce",
+        "logical_config_sha256": "9c54bdd6d3278ee43563f7aa6b599f36c3957a320f57ce9cb4db63d576e8b224"
+      },
+      {
+        "name": "summarize_cause_category",
+        "type": "reduce",
+        "logical_config_sha256": "8a5446c9611a80258887db16f4b4b47b80a0363806a1e9c589b6c2c0db2be3ea"
+      },
+      {
+        "name": "project_answer_fields",
+        "type": "map",
+        "logical_config_sha256": "6634c8a2ab7adcd6ded114f52ca4fe8c9cd76c62deb82f97413002bd724b4f14"
+      }
+    ],
+    "steps": [
+      {
+        "name": "causal_records",
+        "input": "asrs_incidents",
+        "operations": [
+          {
+            "name": "filter_aircraft_primary_incidents",
+            "type": "code_filter"
+          },
+          {
+            "name": "load_asrs_narrative",
+            "type": "code_map"
+          },
+          {
+            "name": "filter_single_primary_event_cause",
+            "type": "filter"
+          },
+          {
+            "name": "filter_operational_consequence",
+            "type": "filter"
+          },
+          {
+            "name": "extract_event_causal_record",
+            "type": "map"
+          },
+          {
+            "name": "classify_primary_cause",
+            "type": "map"
+          }
+        ]
+      },
+      {
+        "name": "causes_with_components",
+        "input": "causal_records",
+        "operations": [
+          {
+            "name": "attach_component_records",
+            "type": "code_map"
+          },
+          {
+            "name": "inner_join_component_records",
+            "type": "code_filter"
+          }
+        ]
+      },
+      {
+        "name": "joined_causal_records",
+        "input": "causes_with_components",
+        "operations": [
+          {
+            "name": "attach_event_labels",
+            "type": "code_map"
+          },
+          {
+            "name": "inner_join_event_labels",
+            "type": "code_filter"
+          }
+        ]
+      },
+      {
+        "name": "grouped_causal_records",
+        "input": "joined_causal_records",
+        "operations": [
+          {
+            "name": "collect_causal_records_by_cause",
+            "type": "code_reduce"
+          }
+        ]
+      },
+      {
+        "name": "cause_summary",
+        "input": "grouped_causal_records",
+        "operations": [
+          {
+            "name": "summarize_cause_category",
+            "type": "reduce"
+          },
+          {
+            "name": "project_answer_fields",
+            "type": "map"
+          }
+        ]
+      }
+    ]
+  },
+  "selected_plan_signature": {
+    "definitions": {
+      "filter_aircraft_primary_incidents": "code_filter",
+      "load_asrs_narrative": "code_map",
+      "filter_single_primary_event_cause": "filter",
+      "filter_operational_consequence": "filter",
+      "extract_event_causal_record": "map",
+      "classify_primary_cause": "map",
+      "attach_component_records": "code_map",
+      "inner_join_component_records": "code_filter",
+      "attach_event_labels": "code_map",
+      "inner_join_event_labels": "code_filter",
+      "collect_causal_records_by_cause": "code_reduce",
+      "summarize_cause_category": "reduce",
+      "project_answer_fields": "map"
+    },
+    "logical_operations": [
+      {
+        "name": "filter_aircraft_primary_incidents",
+        "type": "code_filter",
+        "logical_config_sha256": "96dabc5431d3303c390f2724b994c6078bb919045fd1f64ed9ab96e0b139ba6c"
+      },
+      {
+        "name": "load_asrs_narrative",
+        "type": "code_map",
+        "logical_config_sha256": "22704ad225c76497658f97dc72d7fd2e6af23d702a4068895817ea53c0f3aa87"
+      },
+      {
+        "name": "filter_single_primary_event_cause",
+        "type": "filter",
+        "logical_config_sha256": "4a9afbd26c2ee585ed0a65175baf4370dbfc57b9f0f6d7f51983432a2234df32"
+      },
+      {
+        "name": "filter_operational_consequence",
+        "type": "filter",
+        "logical_config_sha256": "508385eac5333ba05774ee8891a3f7ba38ca6de742c43dafcef05ecf6ff7927b"
+      },
+      {
+        "name": "extract_event_causal_record",
+        "type": "map",
+        "logical_config_sha256": "8e5dc6c3a309ba34ace134020fb98ea2e244ff58dc439a5f31094b25e9b0ceb7"
+      },
+      {
+        "name": "classify_primary_cause",
+        "type": "map",
+        "logical_config_sha256": "4a171981d0dbebe216b3ccf5f4c9b0e85904f52ff999114c9e77aba2c60747c7"
+      },
+      {
+        "name": "attach_component_records",
+        "type": "code_map",
+        "logical_config_sha256": "509da7b280855093994982d6c49778c3e31fa0d23d0a1f3d4f296b07e75609aa"
+      },
+      {
+        "name": "inner_join_component_records",
+        "type": "code_filter",
+        "logical_config_sha256": "ca8124b354e617ae78b9957e8271d9790b21bba62bd2afb7e1cd2119c53c312a"
+      },
+      {
+        "name": "attach_event_labels",
+        "type": "code_map",
+        "logical_config_sha256": "6280bd85b95c2743b593a277b90a81a1becc19579337890ee8d2c07aeb616427"
+      },
+      {
+        "name": "inner_join_event_labels",
+        "type": "code_filter",
+        "logical_config_sha256": "26034231f1d806528bb402da42418656ff62099f8f17bd002866504c87f89b29"
+      },
+      {
+        "name": "collect_causal_records_by_cause",
+        "type": "code_reduce",
+        "logical_config_sha256": "9c54bdd6d3278ee43563f7aa6b599f36c3957a320f57ce9cb4db63d576e8b224"
+      },
+      {
+        "name": "summarize_cause_category",
+        "type": "reduce",
+        "logical_config_sha256": "8a5446c9611a80258887db16f4b4b47b80a0363806a1e9c589b6c2c0db2be3ea"
+      },
+      {
+        "name": "project_answer_fields",
+        "type": "map",
+        "logical_config_sha256": "6634c8a2ab7adcd6ded114f52ca4fe8c9cd76c62deb82f97413002bd724b4f14"
+      }
+    ],
+    "steps": [
+      {
+        "name": "causal_records",
+        "input": "asrs_incidents",
+        "operations": [
+          {
+            "name": "filter_aircraft_primary_incidents",
+            "type": "code_filter"
+          },
+          {
+            "name": "load_asrs_narrative",
+            "type": "code_map"
+          },
+          {
+            "name": "filter_single_primary_event_cause",
+            "type": "filter"
+          },
+          {
+            "name": "filter_operational_consequence",
+            "type": "filter"
+          },
+          {
+            "name": "extract_event_causal_record",
+            "type": "map"
+          },
+          {
+            "name": "classify_primary_cause",
+            "type": "map"
+          }
+        ]
+      },
+      {
+        "name": "causes_with_components",
+        "input": "causal_records",
+        "operations": [
+          {
+            "name": "attach_component_records",
+            "type": "code_map"
+          },
+          {
+            "name": "inner_join_component_records",
+            "type": "code_filter"
+          }
+        ]
+      },
+      {
+        "name": "joined_causal_records",
+        "input": "causes_with_components",
+        "operations": [
+          {
+            "name": "attach_event_labels",
+            "type": "code_map"
+          },
+          {
+            "name": "inner_join_event_labels",
+            "type": "code_filter"
+          }
+        ]
+      },
+      {
+        "name": "grouped_causal_records",
+        "input": "joined_causal_records",
+        "operations": [
+          {
+            "name": "collect_causal_records_by_cause",
+            "type": "code_reduce"
+          }
+        ]
+      },
+      {
+        "name": "cause_summary",
+        "input": "grouped_causal_records",
+        "operations": [
+          {
+            "name": "summarize_cause_category",
+            "type": "reduce"
+          },
+          {
+            "name": "project_answer_fields",
+            "type": "map"
+          }
+        ]
+      }
+    ]
+  },
+  "plan_changed": false
+}

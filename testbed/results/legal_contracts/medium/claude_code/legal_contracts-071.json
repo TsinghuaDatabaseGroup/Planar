@@ -1,0 +1,24 @@
+{
+  "task_id": "legal_contracts-071",
+  "answer": [
+    {
+      "document_id": "24104_0000024104-96-000010_document_3.txt",
+      "nda_direction": "unilateral_recipient",
+      "confidentiality_term_years": 10.0,
+      "noncompete_duration_years": 10.0,
+      "governing_law": "Colorado",
+      "duration_comparison": "equal"
+    },
+    {
+      "document_id": "LMS_Non_Disclosure_Agreement.pdf",
+      "nda_direction": "unilateral_discloser",
+      "confidentiality_term_years": 5.0,
+      "noncompete_duration_years": 3.0,
+      "governing_law": "the jurisdiction in which the Disclosing Party is located (or if the Disclosing Party is based in more than one country, the country in which its headquarters are located)",
+      "duration_comparison": "confidentiality_longer"
+    }
+  ],
+  "elapsed_seconds": 934.966,
+  "cost_usd": 1.69660755,
+  "total_tokens": 3891104
+}

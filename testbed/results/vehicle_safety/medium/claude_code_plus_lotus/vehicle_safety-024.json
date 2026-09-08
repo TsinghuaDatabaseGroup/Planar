@@ -1,0 +1,92 @@
+{
+  "task_id": "vehicle_safety-024",
+  "answer": [
+    {
+      "component_id": "ADAS",
+      "complaint_count": 134,
+      "towed_rate": 0.0,
+      "avg_injury": 0.1194,
+      "dominant_failure_mode": "brake failure"
+    },
+    {
+      "component_id": "AIRBAG",
+      "complaint_count": 40,
+      "towed_rate": 0.0,
+      "avg_injury": 0.825,
+      "dominant_failure_mode": "airbag deployment"
+    },
+    {
+      "component_id": "BODY",
+      "complaint_count": 36,
+      "towed_rate": 0.0,
+      "avg_injury": 0.2222,
+      "dominant_failure_mode": "structural failure"
+    },
+    {
+      "component_id": "BRAKES",
+      "complaint_count": 56,
+      "towed_rate": 0.0,
+      "avg_injury": 0.2679,
+      "dominant_failure_mode": "brake failure"
+    },
+    {
+      "component_id": "ELECTRICAL",
+      "complaint_count": 99,
+      "towed_rate": 0.0,
+      "avg_injury": 0.101,
+      "dominant_failure_mode": "stall"
+    },
+    {
+      "component_id": "ENGINE",
+      "complaint_count": 119,
+      "towed_rate": 0.0,
+      "avg_injury": 0.0504,
+      "dominant_failure_mode": "stall"
+    },
+    {
+      "component_id": "FUEL",
+      "complaint_count": 9,
+      "towed_rate": 0.0,
+      "avg_injury": 0.1111,
+      "dominant_failure_mode": "sudden acceleration"
+    },
+    {
+      "component_id": "OTHER",
+      "complaint_count": 51,
+      "towed_rate": 0.0,
+      "avg_injury": 0.2941,
+      "dominant_failure_mode": "sudden acceleration"
+    },
+    {
+      "component_id": "POWERTRAIN",
+      "complaint_count": 18,
+      "towed_rate": 0.0,
+      "avg_injury": 0.0556,
+      "dominant_failure_mode": "sudden acceleration"
+    },
+    {
+      "component_id": "SEATBELT",
+      "complaint_count": 3,
+      "towed_rate": 0.0,
+      "avg_injury": 0.0,
+      "dominant_failure_mode": "missing seat belts"
+    },
+    {
+      "component_id": "STEERING",
+      "complaint_count": 10,
+      "towed_rate": 0.0,
+      "avg_injury": 0.2,
+      "dominant_failure_mode": "loss of control"
+    },
+    {
+      "component_id": "TIRES",
+      "complaint_count": 3,
+      "towed_rate": 0.0,
+      "avg_injury": 0.6667,
+      "dominant_failure_mode": "tire blowout"
+    }
+  ],
+  "elapsed_seconds": 447.479,
+  "cost_usd": 0.69597336,
+  "total_tokens": 805793
+}

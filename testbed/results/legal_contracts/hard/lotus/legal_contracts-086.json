@@ -1,0 +1,44 @@
+{
+  "task_id": "legal_contracts-086",
+  "answer": [
+    {
+      "governing_law": "California",
+      "matching_count": 2
+    },
+    {
+      "governing_law": "North Carolina",
+      "matching_count": 2
+    },
+    {
+      "governing_law": "Washington",
+      "matching_count": 2
+    },
+    {
+      "governing_law": "Alberta",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "Delaware",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "Manitoba",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "New Hampshire",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "Ontario",
+      "matching_count": 1
+    },
+    {
+      "governing_law": "Province of Nova Scotia",
+      "matching_count": 1
+    }
+  ],
+  "elapsed_seconds": 481.83,
+  "cost_usd": 5.100530,
+  "total_tokens": 13007266
+}

@@ -1,0 +1,18 @@
+{
+  "task_id": "finance-030",
+  "answer": [
+    {"company_name": "InspireMD, Inc.", "industry_sector": "Medical Devices", "growth_strategy": "hybrid", "country_count": 59, "subsidiary_count": 1},
+    {"company_name": "Teva Pharmaceutical Industries Limited", "industry_sector": "Pharmaceuticals", "growth_strategy": "hybrid", "country_count": 55, "subsidiary_count": 15},
+    {"company_name": "Raytheon Technologies Corporation", "industry_sector": "Aerospace and Defense", "growth_strategy": "hybrid", "country_count": 52, "subsidiary_count": 12},
+    {"company_name": "Aptiv PLC", "industry_sector": "Automotive Technology and Components", "growth_strategy": "hybrid", "country_count": 47, "subsidiary_count": 10},
+    {"company_name": "Philip Morris International Inc.", "industry_sector": "Tobacco", "growth_strategy": "hybrid", "country_count": 45, "subsidiary_count": 8},
+    {"company_name": "Monster Beverage Corporation", "industry_sector": "Beverages", "growth_strategy": "hybrid", "country_count": 39, "subsidiary_count": 15},
+    {"company_name": "Jacobs Solutions Inc.", "industry_sector": "Engineering Consulting Services", "growth_strategy": "hybrid", "country_count": 39, "subsidiary_count": 12},
+    {"company_name": "Inogen, Inc.", "industry_sector": "Medical Technology", "growth_strategy": "hybrid", "country_count": 33, "subsidiary_count": 2},
+    {"company_name": "Liberty Latin America Ltd.", "industry_sector": "Telecommunications", "growth_strategy": "hybrid", "country_count": 30, "subsidiary_count": 27},
+    {"company_name": "LIONS GATE ENTERTAINMENT CORP.", "industry_sector": "Entertainment", "growth_strategy": "hybrid", "country_count": 27, "subsidiary_count": 20}
+  ],
+  "elapsed_seconds": 3792.27,
+  "cost_usd": 14.656735,
+  "total_tokens": 31526066
+}

@@ -1,0 +1,16 @@
+{
+  "task_id": "legal_contracts-013",
+  "answer": [
+    {"document_id": "1112422_0000950153-08-001257_p75864exv99wxeyx4y.htm", "agreement_type": "Nondisclosure Agreement", "standstill_duration_years": 2, "governing_law": "State of New York"},
+    {"document_id": "1334303_0001193125-10-204560_dex99e5.htm", "agreement_type": "Nondisclosure Agreement", "standstill_duration_years": 2, "governing_law": "State of New York"},
+    {"document_id": "69067_0000927016-00-002123_0010.txt", "agreement_type": "Mutual Non-Disclosure Agreement", "standstill_duration_years": 2.06, "governing_law": "State of Minnesota"},
+    {"document_id": "814457_0000950137-04-009790_c89545exv99wxdyx6y.htm", "agreement_type": "Confidentiality and Standstill Agreement", "standstill_duration_years": 2, "governing_law": "State of Illinois"},
+    {"document_id": "816955_0000899243-97-001962_document_4.txt", "agreement_type": "Confidentiality Agreement", "standstill_duration_years": 2, "governing_law": "State of Louisiana"},
+    {"document_id": "913610_0001047469-03-027395_a2116567zex-99_e3.htm", "agreement_type": "Confidentiality Agreement", "standstill_duration_years": 2, "governing_law": "State of New York"},
+    {"document_id": "925942_0001047469-98-029396_document_13.txt", "agreement_type": "Confidentiality and Standstill Agreement", "standstill_duration_years": 2, "governing_law": "State of New York"},
+    {"document_id": "96238_0000950103-97-000583_document_4.txt", "agreement_type": "Confidentiality and Standstill Agreement", "standstill_duration_years": 2, "governing_law": "State of New York"}
+  ],
+  "elapsed_seconds": 1534.67,
+  "cost_usd": 2.219839,
+  "total_tokens": 4201067
+}

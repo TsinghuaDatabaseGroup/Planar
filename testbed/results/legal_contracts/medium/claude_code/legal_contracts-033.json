@@ -1,0 +1,98 @@
+{
+  "task_id": "legal_contracts-033",
+  "answer": [
+    {
+      "document_id": "1111682_0000950123-00-003802_document_15.txt",
+      "governing_law": "state of Connecticut, U.S.A.",
+      "duration_months": 180
+    },
+    {
+      "document_id": "1288379_0000950123-07-003101_y31044exv99wdw5.htm",
+      "governing_law": "Commonwealth of Virginia",
+      "duration_months": 84
+    },
+    {
+      "document_id": "2_waycda.pdf",
+      "governing_law": "English Law",
+      "duration_months": 120
+    },
+    {
+      "document_id": "71297_0000071297-97-000059_document_6.txt",
+      "governing_law": "Commonwealth of Massachusetts",
+      "duration_months": 84
+    },
+    {
+      "document_id": "Bio-FIP-EOI-NDA.pdf",
+      "governing_law": "English law",
+      "duration_months": 84
+    },
+    {
+      "document_id": "CCS-Salt-Cavern-RfP-NDA.pdf",
+      "governing_law": "English law",
+      "duration_months": 84
+    },
+    {
+      "document_id": "ConfidentialityAgreement.pdf",
+      "governing_law": "Austrian law",
+      "duration_months": 84
+    },
+    {
+      "document_id": "Cyber Mutual Assistance NDA.pdf",
+      "governing_law": "State of New York",
+      "duration_months": 120
+    },
+    {
+      "document_id": "GSAOP0309-Non-disclosure-agreement.pdf",
+      "governing_law": "laws of Belgium",
+      "duration_months": 120
+    },
+    {
+      "document_id": "IMOA%20Molybdenum%20Consortium%20NDA%20Agreement%20amended%20Jan%2008,%20valid%20March%2009%20onwards.pdf",
+      "governing_law": "England and Wales",
+      "duration_months": 144
+    },
+    {
+      "document_id": "NDA%20UDRC%203-way%20Final.pdf",
+      "governing_law": "England",
+      "duration_months": 84
+    },
+    {
+      "document_id": "NDA-No-Reservations-Layer-8-Security.pdf",
+      "governing_law": "Queensland (and intended in conjunction with the laws of New South Wales and Victoria; when not in conflict with the laws of Queensland)",
+      "duration_months": 72
+    },
+    {
+      "document_id": "NDA-STP-Performance-Coating-revC.pdf",
+      "governing_law": "state of Arizona",
+      "duration_months": 240
+    },
+    {
+      "document_id": "NDATC.pdf",
+      "governing_law": "State of Wisconsin",
+      "duration_months": 120
+    },
+    {
+      "document_id": "NDA_English.pdf",
+      "governing_law": "Province of Quebec",
+      "duration_months": 300
+    },
+    {
+      "document_id": "NonDisclosureAgreement_1.pdf",
+      "governing_law": "Law of the Republic of Slovenia",
+      "duration_months": 120
+    },
+    {
+      "document_id": "nda_8.pdf",
+      "governing_law": "laws of England",
+      "duration_months": 120
+    },
+    {
+      "document_id": "umich_one_way_nda.pdf",
+      "governing_law": "State of Michigan",
+      "duration_months": 72
+    }
+  ],
+  "elapsed_seconds": 935.822,
+  "cost_usd": 3.74445681,
+  "total_tokens": 8520912
+}

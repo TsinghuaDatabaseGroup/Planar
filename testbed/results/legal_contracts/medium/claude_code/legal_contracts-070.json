@@ -1,0 +1,22 @@
+{
+  "task_id": "legal_contracts-070",
+  "answer": [
+    {
+      "residual_information_present": false,
+      "agreement_count": 557,
+      "most_common_governing_law": "Not Stated",
+      "return_of_materials_rate": 0.8725,
+      "injunctive_relief_rate": 0.6014
+    },
+    {
+      "residual_information_present": true,
+      "agreement_count": 30,
+      "most_common_governing_law": "Not Stated",
+      "return_of_materials_rate": 0.8333,
+      "injunctive_relief_rate": 0.6
+    }
+  ],
+  "elapsed_seconds": 1358.421,
+  "cost_usd": 2.77861824,
+  "total_tokens": 5984634
+}

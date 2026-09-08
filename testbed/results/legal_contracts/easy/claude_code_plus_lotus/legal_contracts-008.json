@@ -1,0 +1,26 @@
+{
+  "task_id": "legal_contracts-008",
+  "answer": [
+    {
+      "document_name": "ea020224801ex10-24_gryphon.htm",
+      "non_compete_months": 6.0,
+      "geographic_scope": "any geographic area in which the Company is then conducting such business",
+      "governing_law": "State of Delaware"
+    },
+    {
+      "document_name": "exhibit1025-amisraemployme.htm",
+      "non_compete_months": 3.0,
+      "geographic_scope": "None",
+      "governing_law": "India"
+    },
+    {
+      "document_name": "wu-ex10_36.htm",
+      "non_compete_months": 6.0,
+      "geographic_scope": "Italy",
+      "governing_law": "Italy"
+    }
+  ],
+  "elapsed_seconds": 191.561,
+  "cost_usd": 0.48315525,
+  "total_tokens": 693575
+}

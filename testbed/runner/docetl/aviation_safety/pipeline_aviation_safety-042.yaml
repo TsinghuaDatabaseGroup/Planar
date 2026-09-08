@@ -1,0 +1,319 @@
+datasets:
+  asrs_events:
+    type: file
+    path: data/asrs/events.csv
+  asrs_incidents:
+    type: file
+    path: data/asrs/incidents.csv
+  asrs_components:
+    type: file
+    path: data/asrs/components.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+default_embedding_api_base: ${EMBEDDING_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_aircraft_equipment_problem_events
+    type: code_filter
+    code: |
+      def transform(doc):
+          return "Aircraft Equipment Problem" in str(doc.get("label", ""))
+
+  - name: deduplicate_equipment_incidents
+    type: code_reduce
+    reduce_key: incident_id
+    code: |
+      def transform(items):
+          return {"has_equipment_problem_event": bool(items)}
+
+  - name: attach_incident_text_file
+    type: code_map
+    code: |
+      import csv
+      import os
+      import threading
+
+      _incident_text_index = None
+      _incident_text_lock = threading.Lock()
+
+      def load_incident_text_index():
+          global _incident_text_index
+          if _incident_text_index is None:
+              with _incident_text_lock:
+                  if _incident_text_index is None:
+                      index = {}
+                      path = os.path.abspath(
+                          os.path.join("data", "asrs", "incidents.csv")
+                      )
+                      with open(
+                          path, "r", encoding="utf-8", errors="replace", newline=""
+                      ) as handle:
+                          for row in csv.DictReader(handle):
+                              incident_id = str(row.get("incident_id", ""))
+                              text_file = str(row.get("text_file", ""))
+                              if incident_id and text_file:
+                                  index.setdefault(incident_id, text_file)
+                      _incident_text_index = index
+          return _incident_text_index
+
+      def transform(doc):
+          return {
+              "text_file": load_incident_text_index().get(
+                  str(doc.get("incident_id", ""))
+              )
+          }
+
+  - name: inner_join_incidents
+    type: code_filter
+    code: |
+      def transform(doc):
+          return bool(doc.get("text_file"))
+
+  - name: load_asrs_narrative
+    type: code_map
+    code: |
+      def transform(doc):
+          import os
+
+          base_dir = os.path.abspath(os.path.join("data", "asrs"))
+          text_path = os.path.abspath(
+              os.path.join(base_dir, str(doc.get("text_file", "")))
+          )
+          if os.path.commonpath([base_dir, text_path]) != base_dir:
+              raise ValueError("ASRS text path escapes data/asrs")
+          with open(text_path, "r", encoding="utf-8", errors="replace") as handle:
+              text = handle.read()
+          return {"text": text}
+
+  - name: extract_narrative_components
+    type: map
+    optimize: true
+    prompt: |
+      Identify every aircraft component actually involved in the reported equipment
+      problem in this NASA ASRS narrative. Do not include components mentioned only
+      as background, comparison, unaffected equipment, maintenance inventory, or a
+      speculative possibility that was ruled out.
+
+      For each involved component return:
+      - narrative_component_term: the concise component term as used in the report,
+        retaining its meaningful wording rather than replacing it with a canonical
+        label;
+      - first_detection_cue: a phrase of at most six words describing the earliest
+        indication, symptom, alert, observation, or cue by which the problem was
+        detected.
+
+      Return one compact JSON object with a narrative_components array. Each item
+      must contain narrative_component_term and first_detection_cue for one output
+      row. Emit each actually involved component term at most once. Return an empty
+      array if no component can be identified with a clear first detection cue.
+
+      Narrative:
+      {{ input.text }}
+    output:
+      mode: structured_output
+      schema:
+        narrative_components: "list[{narrative_component_term: string, first_detection_cue: string}]"
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 1024
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: build_narrative_component_rows
+    type: code_map
+    code: |
+      def transform(doc):
+          rows = []
+          seen_terms = set()
+          for component in doc.get("narrative_components") or []:
+              if not isinstance(component, dict):
+                  continue
+              term = str(component.get("narrative_component_term", "")).strip()
+              cue = " ".join(
+                  str(component.get("first_detection_cue", "")).strip().split()[:6]
+              )
+              normalized_term = term.casefold()
+              if not term or not cue or normalized_term in seen_terms:
+                  continue
+              seen_terms.add(normalized_term)
+              rows.append(
+                  {
+                      "narrative_component_term": term,
+                      "first_detection_cue": cue,
+                  }
+              )
+          return {"narrative_component_rows": rows}
+
+  - name: unnest_narrative_component_rows
+    type: unnest
+    unnest_key: narrative_component_rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - narrative_component_term
+      - first_detection_cue
+
+  - name: filter_canonical_component_values
+    type: code_filter
+    code: |
+      def transform(doc):
+          return (
+              doc.get("attribute") == "aircraft_component"
+              and bool(str(doc.get("value", "")).strip())
+          )
+
+  - name: deduplicate_canonical_components
+    type: code_reduce
+    reduce_key: value
+    code: |
+      def transform(items):
+          return {"canonical_component": str(items[0].get("value", "")).strip()}
+
+  - name: semantic_component_join
+    type: equijoin
+    optimize: true
+    comparison_prompt: |
+      Determine whether this narrative component term and canonical aircraft-
+      component label denote the same component or have a clear part-to-system
+      relationship.
+
+      Return is_match=true for direct synonyms, abbreviations, common aviation
+      naming variants, and a specific part clearly belonging to the named canonical
+      system/component. Exact spelling is not required. Return false for generic
+      topical similarity, components that merely interact, two different parts of
+      the aircraft, or a relationship that is only speculative.
+
+      NARRATIVE COMPONENT: {{ left.narrative_component_term }}
+      FIRST DETECTION CUE: {{ left.first_detection_cue }}
+      CANONICAL COMPONENT: {{ right.canonical_component }}
+    blocking_keys:
+      left:
+        - narrative_component_term
+        - first_detection_cue
+      right:
+        - canonical_component
+    blocking_target_recall: 0.95
+    embedding_model: Qwen3-Embedding-8B
+    comparison_model: Qwen3.5-397B-A17B
+    timeout: 120
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 64
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: aggregate_ranked_component_mappings
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          from collections import Counter
+
+          grouped = {}
+          for item in items:
+              key = (
+                  item.get("canonical_component"),
+                  item.get("narrative_component_term"),
+              )
+              incident_id = str(item.get("incident_id", ""))
+              cue = item.get("first_detection_cue")
+              if not incident_id or not all(key) or not cue:
+                  continue
+              record = grouped.setdefault(
+                  key,
+                  {"incident_ids": set(), "cue_counts": Counter()},
+              )
+              if incident_id in record["incident_ids"]:
+                  continue
+              record["incident_ids"].add(incident_id)
+              record["cue_counts"][cue] += 1
+
+          rows = []
+          for (canonical, term), values in grouped.items():
+              mode_cue = sorted(
+                  values["cue_counts"],
+                  key=lambda cue: (-values["cue_counts"][cue], str(cue)),
+              )[0]
+              rows.append(
+                  {
+                      "canonical_component": canonical,
+                      "narrative_component_term": term,
+                      "incident_count": len(values["incident_ids"]),
+                      "most_common_detection_cue": mode_cue,
+                  }
+              )
+
+          rows.sort(
+              key=lambda row: (
+                  -row["incident_count"],
+                  row["canonical_component"],
+                  row["narrative_component_term"],
+              )
+          )
+          for rank, row in enumerate(rows[:20], start=1):
+              row["rank"] = rank
+          return {"rows": rows[:20]}
+
+  - name: unnest_answer_rows
+    type: unnest
+    unnest_key: rows
+    recursive: true
+    depth: 2
+    expand_fields:
+      - rank
+      - canonical_component
+      - narrative_component_term
+      - incident_count
+      - most_common_detection_cue
+
+pipeline:
+  steps:
+    - name: narrative_components
+      input: asrs_events
+      operations:
+        - filter_aircraft_equipment_problem_events
+        - deduplicate_equipment_incidents
+        - attach_incident_text_file
+        - inner_join_incidents
+        - load_asrs_narrative
+        - extract_narrative_components
+        - build_narrative_component_rows
+        - unnest_narrative_component_rows
+    - name: component_vocabulary
+      input: asrs_components
+      operations:
+        - filter_canonical_component_values
+        - deduplicate_canonical_components
+    - name: semantic_component_matches
+      operations:
+        - semantic_component_join:
+            left: narrative_components
+            right: component_vocabulary
+    - name: ranked_component_mappings
+      input: semantic_component_matches
+      operations:
+        - aggregate_ranked_component_mappings
+        - unnest_answer_rows
+  output:
+    type: file
+    path: raw_outputs/aviation_safety/output_aviation_safety-042.json

@@ -1,0 +1,176 @@
+{
+  "task_id": "legal_contracts-006",
+  "answer": [
+    {
+      "document_id": "1041550_0001104659-19-001346_a18-42231_6ex10d8.htm",
+      "governing_law": "State of Indiana",
+      "missing_exceptions": [
+        "information already known to receiving party",
+        "information approved for release"
+      ]
+    },
+    {
+      "document_id": "1108906_0000889812-00-001212_document_45.txt",
+      "governing_law": "State of Connecticut",
+      "missing_exceptions": [
+        "information required to be disclosed by law",
+        "information approved for release"
+      ]
+    },
+    {
+      "document_id": "714562_0001104659-19-001345_a18-42231_6ex10d8.htm",
+      "governing_law": "State of Indiana",
+      "missing_exceptions": [
+        "information already known to receiving party",
+        "information approved for release"
+      ]
+    },
+    {
+      "document_id": "Confidentiality%20Agreement.pdf",
+      "governing_law": "Province of Alberta",
+      "missing_exceptions": [
+        "information independently developed",
+        "information approved for release"
+      ]
+    },
+    {
+      "document_id": "Confidentiality-and-Non-Disclosure-Agreement-LSI-ABC.pdf",
+      "governing_law": "State of Florida",
+      "missing_exceptions": [
+        "information required to be disclosed by law",
+        "information approved for release"
+      ]
+    },
+    {
+      "document_id": "Florida-Non-Disclosure-Agreement-NDA-Template.pdf",
+      "governing_law": "State of Florida",
+      "missing_exceptions": [
+        "information rightfully received from third party",
+        "information required to be disclosed by law"
+      ]
+    },
+    {
+      "document_id": "FormEConfidentialityandNon.pdf",
+      "governing_law": "State of New Jersey",
+      "missing_exceptions": [
+        "information independently developed",
+        "information approved for release"
+      ]
+    },
+    {
+      "document_id": "Model%20NDA%20(recommended%20by%20SWA).pdf",
+      "governing_law": "laws of India",
+      "missing_exceptions": [
+        "information independently developed",
+        "information approved for release"
+      ]
+    },
+    {
+      "document_id": "Non-Disclosure-Agreement-FORS-Cert-Body.pdf",
+      "governing_law": "Laws of England and Wales",
+      "missing_exceptions": [
+        "information independently developed",
+        "information approved for release"
+      ]
+    },
+    {
+      "document_id": "PSGT Agreement NDA New Supplier Non Disclosure Template DC.pdf",
+      "governing_law": "State of New York",
+      "missing_exceptions": [
+        "information independently developed",
+        "information approved for release"
+      ]
+    },
+    {
+      "document_id": "RFP20171008-RFPPublishingNotice.pdf",
+      "governing_law": "laws of the Republic of Singapore",
+      "missing_exceptions": [
+        "information rightfully received from third party",
+        "information already known to receiving party"
+      ]
+    },
+    {
+      "document_id": "ea023506301_ex10-1.htm",
+      "governing_law": "Arizona",
+      "missing_exceptions": [
+        "information already known to receiving party",
+        "information approved for release"
+      ]
+    },
+    {
+      "document_id": "ea023506301_ex10-2.htm",
+      "governing_law": "Arizona",
+      "missing_exceptions": [
+        "information already known to receiving party",
+        "information approved for release"
+      ]
+    },
+    {
+      "document_id": "ea023506301_ex10-3.htm",
+      "governing_law": "Arizona",
+      "missing_exceptions": [
+        "information already known to receiving party",
+        "information approved for release"
+      ]
+    },
+    {
+      "document_id": "ea023506301_ex10-4.htm",
+      "governing_law": "Arizona",
+      "missing_exceptions": [
+        "information already known to receiving party",
+        "information approved for release"
+      ]
+    },
+    {
+      "document_id": "modelnondisclosureagreement1.pdf",
+      "governing_law": "English Law",
+      "missing_exceptions": [
+        "information required to be disclosed by law",
+        "information approved for release"
+      ]
+    },
+    {
+      "document_id": "nda_16.pdf",
+      "governing_law": "Danish law",
+      "missing_exceptions": [
+        "information already known to receiving party",
+        "information approved for release"
+      ]
+    },
+    {
+      "document_id": "nondisclosure-Engl.pdf",
+      "governing_law": "laws of France",
+      "missing_exceptions": [
+        "information independently developed",
+        "information approved for release"
+      ]
+    },
+    {
+      "document_id": "phat-ex10_3.htm",
+      "governing_law": "Commonwealth of Massachusetts",
+      "missing_exceptions": [
+        "information independently developed",
+        "information approved for release"
+      ]
+    },
+    {
+      "document_id": "silk-20231231xex10_9.htm",
+      "governing_law": "State of Minnesota or State of California",
+      "missing_exceptions": [
+        "information independently developed",
+        "information approved for release"
+      ]
+    },
+    {
+      "document_id": "trin-ex10_7.htm",
+      "governing_law": "Arizona",
+      "missing_exceptions": [
+        "information already known to receiving party",
+        "information approved for release"
+      ]
+    }
+  ],
+  "elapsed_seconds": 1158.009,
+  "cost_usd": 10.6608876,
+  "total_tokens": 26691755
+}

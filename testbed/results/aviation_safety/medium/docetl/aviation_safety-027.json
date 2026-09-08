@@ -1,0 +1,32 @@
+{
+  "task_id": "aviation_safety-027",
+  "answer": [
+    {
+      "decision_change_type": "diversion",
+      "incident_count": 41
+    },
+    {
+      "decision_change_type": "airport_change",
+      "incident_count": 8
+    },
+    {
+      "decision_change_type": "holding",
+      "incident_count": 1
+    },
+    {
+      "decision_change_type": "approach_change",
+      "incident_count": 13
+    },
+    {
+      "decision_change_type": "altitude_change",
+      "incident_count": 18
+    },
+    {
+      "decision_change_type": "route_change",
+      "incident_count": 10
+    }
+  ],
+  "elapsed_seconds": 113.4,
+  "cost_usd": 0.97464,
+  "total_tokens": 2407106
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "node": 10,
+    "path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-033/moar-search/pipeline_vehicle_safety-033_input_sample_openai_Qwen3.5-397B-A17B.yaml",
+    "cost": 0.036561720000000006,
+    "accuracy": 1.0,
+    "value": 1.0,
+    "is_frontier": false
+  },
+  {
+    "node": 11,
+    "path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-033/moar-search/pipeline_input_sample_openai_11.yaml",
+    "cost": 0.01056978,
+    "accuracy": 1.0,
+    "value": 1.0,
+    "is_frontier": true
+  }
+]

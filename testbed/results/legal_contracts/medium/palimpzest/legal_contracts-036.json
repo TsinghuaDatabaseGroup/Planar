@@ -1,0 +1,15 @@
+{
+  "task_id": "legal_contracts-036",
+  "answer": [
+    {"document_id": "1125576_0000928385-02-000738_dex991d2.txt", "governing_law": "United States and the State of California"},
+    {"document_id": "41629_1.pdf", "governing_law": "England and Wales"},
+    {"document_id": "922913_0000943440-00-000122_document_2.txt", "governing_law": "Commonwealth of Virginia"},
+    {"document_id": "922913_0000943440-00-000294_0004.txt", "governing_law": "Commonwealth of Virginia"},
+    {"document_id": "Business-Sale-Non-Disclosure-Agreement.pdf", "governing_law": "England and Wales"},
+    {"document_id": "ICTSC-NDA-General-MandA-signed.pdf", "governing_law": "New South Wales, Australia"},
+    {"document_id": "epsteen_nda.pdf", "governing_law": "California"}
+  ],
+  "elapsed_seconds": 1070.97,
+  "cost_usd": 1.332071,
+  "total_tokens": 2520957
+}

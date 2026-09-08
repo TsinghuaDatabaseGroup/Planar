@@ -1,0 +1,58 @@
+{
+  "task_id": "aviation_safety-035",
+  "answer": [
+    {
+      "light_group": "low_light",
+      "visual_factor": "reduced_visibility",
+      "incident_count": 0
+    },
+    {
+      "light_group": "daylight",
+      "visual_factor": "reduced_visibility",
+      "incident_count": 0
+    },
+    {
+      "light_group": "low_light",
+      "visual_factor": "inadequate_or_confusing_lighting",
+      "incident_count": 0
+    },
+    {
+      "light_group": "daylight",
+      "visual_factor": "inadequate_or_confusing_lighting",
+      "incident_count": 0
+    },
+    {
+      "light_group": "low_light",
+      "visual_factor": "glare",
+      "incident_count": 0
+    },
+    {
+      "light_group": "daylight",
+      "visual_factor": "glare",
+      "incident_count": 0
+    },
+    {
+      "light_group": "low_light",
+      "visual_factor": "missed_visual_scan",
+      "incident_count": 0
+    },
+    {
+      "light_group": "daylight",
+      "visual_factor": "missed_visual_scan",
+      "incident_count": 0
+    },
+    {
+      "light_group": "low_light",
+      "visual_factor": "obscured_signage_or_markings",
+      "incident_count": 0
+    },
+    {
+      "light_group": "daylight",
+      "visual_factor": "obscured_signage_or_markings",
+      "incident_count": 0
+    }
+  ],
+  "elapsed_seconds": 204.419,
+  "cost_usd": 0.26243505,
+  "total_tokens": 314567
+}

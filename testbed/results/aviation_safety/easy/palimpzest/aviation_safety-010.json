@@ -1,0 +1,44 @@
+{
+  "task_id": "aviation_safety-010",
+  "answer": [
+    {
+      "cabin_side_source": "medical_event",
+      "incident_count": 33
+    },
+    {
+      "cabin_side_source": "security_issue",
+      "incident_count": 13
+    },
+    {
+      "cabin_side_source": "policy_issue",
+      "incident_count": 36
+    },
+    {
+      "cabin_side_source": "door_issue",
+      "incident_count": 21
+    },
+    {
+      "cabin_side_source": "cabin_equipment_issue",
+      "incident_count": 47
+    },
+    {
+      "cabin_side_source": "passenger_behavior",
+      "incident_count": 23
+    },
+    {
+      "cabin_side_source": "boarding_issue",
+      "incident_count": 7
+    },
+    {
+      "cabin_side_source": "deplaning_issue",
+      "incident_count": 1
+    },
+    {
+      "cabin_side_source": "flight_attendant_communication",
+      "incident_count": 12
+    }
+  ],
+  "elapsed_seconds": 1166.94,
+  "cost_usd": 2.917574,
+  "total_tokens": 3352164
+}

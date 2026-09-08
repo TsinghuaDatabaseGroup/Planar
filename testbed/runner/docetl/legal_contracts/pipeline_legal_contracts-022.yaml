@@ -1,0 +1,117 @@
+datasets:
+  contract_exhibits:
+    type: file
+    path: contract_exhibit_full.json
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_standalone_ndas
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is a standalone non-disclosure or
+      confidentiality agreement.
+
+      Document:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        is_standalone_nda: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: filter_required_nda_terms
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this agreement only if all of these conditions hold: it provides
+      injunctive, equitable, or specific-performance relief; states a finite
+      confidentiality term no longer than 36 months; expressly states a governing
+      law; contains all six operative confidentiality carve-outs for public
+      information, prior knowledge, independent development, lawful unrestricted
+      third-party receipt, legally compelled disclosure, and consent by the
+      disclosing party; and contains neither customer nor employee
+      non-solicitation language.
+
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        has_all_required_terms: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: extract_governing_law_and_term
+    type: map
+    optimize: true
+    prompt: |
+      Extract the expressly stated governing-law jurisdiction and the finite
+      confidentiality term, normalized to months.
+
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        governing_law: string
+        term_months: float
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: project_answer_fields
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "document_id": str(doc.get("doc_id") or ""),
+              "governing_law": str(doc.get("governing_law") or ""),
+              "term_months": float(doc.get("term_months") or 0),
+          }
+
+pipeline:
+  steps:
+    - name: process
+      input: contract_exhibits
+      operations:
+        - filter_standalone_ndas
+        - filter_required_nda_terms
+        - extract_governing_law_and_term
+        - project_answer_fields
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-022.json

@@ -1,0 +1,116 @@
+{
+  "task_id": "legal_contracts-011",
+  "answer": [
+    {
+      "document_id": "ea023362801ex31-1_jackson2.htm",
+      "certifying_officers": [
+        "Richard L. Jackson"
+      ]
+    },
+    {
+      "document_id": "ea023362801ex31-2_jackson2.htm",
+      "certifying_officers": [
+        "David Lawrence"
+      ]
+    },
+    {
+      "document_id": "ex31-1_10.htm",
+      "certifying_officers": [
+        "Zhe Zhang"
+      ]
+    },
+    {
+      "document_id": "ex31-1_12.htm",
+      "certifying_officers": [
+        "Wenxi He"
+      ]
+    },
+    {
+      "document_id": "ex31-1_19.htm",
+      "certifying_officers": [
+        "Benjamin B. Tran"
+      ]
+    },
+    {
+      "document_id": "ex31-2_10.htm",
+      "certifying_officers": [
+        "Guojian Chen"
+      ]
+    },
+    {
+      "document_id": "ex31-2_12.htm",
+      "certifying_officers": [
+        "Kin Sze"
+      ]
+    },
+    {
+      "document_id": "ex31-2_18.htm",
+      "certifying_officers": [
+        "Robert J. Brilon"
+      ]
+    },
+    {
+      "document_id": "exhibit311-sox302certifica.htm",
+      "certifying_officers": [
+        "Jonathan Wilk"
+      ]
+    },
+    {
+      "document_id": "exhibit3112024.htm",
+      "certifying_officers": [
+        "Bryce Maddock"
+      ]
+    },
+    {
+      "document_id": "exhibit312-sox302certifica.htm",
+      "certifying_officers": [
+        "Timothy Fitzsimmons"
+      ]
+    },
+    {
+      "document_id": "exhibit3122024.htm",
+      "certifying_officers": [
+        "Balaji Sekar"
+      ]
+    },
+    {
+      "document_id": "lfly-ex31_1.htm",
+      "certifying_officers": [
+        "Yoko Miyashita"
+      ]
+    },
+    {
+      "document_id": "lfly-ex31_2.htm",
+      "certifying_officers": [
+        "Suresh Krishnaswamy"
+      ]
+    },
+    {
+      "document_id": "tygo-ex31_1.htm",
+      "certifying_officers": [
+        "Zvi Alon"
+      ]
+    },
+    {
+      "document_id": "tygo-ex31_2.htm",
+      "certifying_officers": [
+        "Bill Roeschlein"
+      ]
+    },
+    {
+      "document_id": "vff-ex31_3.htm",
+      "certifying_officers": [
+        "Michael A. DeGiglio"
+      ]
+    },
+    {
+      "document_id": "vff-ex31_4.htm",
+      "certifying_officers": [
+        "Stephen C. Ruffini"
+      ]
+    }
+  ],
+  "elapsed_seconds": 137.039,
+  "cost_usd": 0.28241778,
+  "total_tokens": 196527
+}

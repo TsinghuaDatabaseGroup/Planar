@@ -1,0 +1,406 @@
+{
+  "format_version": 1,
+  "purpose": "human_review_of_selected_palimpzest_physical_plan",
+  "task_id": "legal_contracts-012",
+  "optimization_status": "optimized_only",
+  "selected_plan_id": "4327f4131c",
+  "executable_plan": {
+    "file": "optimized_plan_legal_contracts-012.plan.pkl",
+    "format": "cloudpickle",
+    "version": 1,
+    "sha256": "c4b0e7e839eeaf677bd904b89ffab8d625b3064937e91affca55bd5f719147b6",
+    "size_bytes": 101440,
+    "selected_plan_id": "4327f4131c",
+    "datasources": {
+      "legal_contracts-012-semantic-input": {
+        "id": "legal_contracts-012-semantic-input",
+        "row_count": 2793,
+        "schema_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ]
+      }
+    },
+    "scan_datasource_records_included": false,
+    "sentinel_record_payloads_included": false
+  },
+  "input_plan": {
+    "task_id": "legal_contracts-012",
+    "query": "How many SOX Section 302 certifications contain the material-changes clause for internal control over financial reporting but do not describe any specific control change?",
+    "inputs": [
+      {
+        "source_id": "CONTRACTEXHIBIT_corpus",
+        "dataset": "CONTRACTEXHIBIT",
+        "source_type": "document",
+        "role": "primary"
+      }
+    ],
+    "reference_semantic_plan": [
+      {
+        "type": "operator_dag",
+        "program": "SCAN_DOCS(CONTRACTEXHIBIT, all)\n-> SEM_FILTER('Keep genuine SOX Section 302 certifications containing the material-changes disclosure clause for internal control over financial reporting', input_bindings={document: text})\n-> SEM_FILTER('Keep certifications whose clause uses only generic certification language and describes no specific control change', input_bindings={document: text})\n-> GROUP_BY(keys=[], aggs=[COUNT(*) AS certification_count])"
+      }
+    ],
+    "answer_schema": {
+      "type": "scalar",
+      "value_type": "integer"
+    }
+  },
+  "input_bad_plan": null,
+  "input_logical_plan": {
+    "root_dataset_id": "77a1a9fb03",
+    "nodes": [
+      {
+        "dataset_id": "legal_contracts-012-semantic-input",
+        "source_dataset_ids": [],
+        "logical_operator": "BaseScan",
+        "logical_op_id": "d1192c7fee",
+        "unique_logical_op_id": "0-d1192c7fee",
+        "depends_on": [],
+        "generated_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ]
+      },
+      {
+        "dataset_id": "ec61e88eb8",
+        "source_dataset_ids": [
+          "legal_contracts-012-semantic-input"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "51a2326688",
+        "unique_logical_op_id": "1-51a2326688",
+        "depends_on": [
+          "text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "filter": "Keep this document only if it is a genuine SOX Section 302 certification containing the material-changes disclosure clause for internal control over financial reporting."
+      },
+      {
+        "dataset_id": "c67a9609fe",
+        "source_dataset_ids": [
+          "ec61e88eb8"
+        ],
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "d808035b03",
+        "unique_logical_op_id": "2-d808035b03",
+        "depends_on": [
+          "text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "filter": "Keep this certification only if that clause uses generic certification language and describes no specific control change."
+      },
+      {
+        "dataset_id": "77a1a9fb03",
+        "source_dataset_ids": [
+          "c67a9609fe"
+        ],
+        "logical_operator": "Aggregate",
+        "logical_op_id": "eae5850343",
+        "unique_logical_op_id": "3-eae5850343",
+        "depends_on": [],
+        "generated_fields": [
+          "count"
+        ],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "count"
+        ],
+        "agg_func": "AggFunc.COUNT"
+      }
+    ],
+    "topological_logical_sequence": [
+      "0-d1192c7fee",
+      "1-51a2326688",
+      "2-d808035b03",
+      "3-eae5850343"
+    ]
+  },
+  "selected_physical_plan": {
+    "plan_id": "4327f4131c",
+    "plan_string": "0. Schema['document_id', 'text', 'word_count'] -> CountAggregateOp -> Schema['count']\n    (document_id, text, word_count) -> (count)\n    Function: AggFunc.COUNT\n\n  1. Schema['document_id', 'text', 'word_count'] -> LLMFilter -> Schema['document_id', 'text', 'word_count']\n    (document_id, text, word_count) -> (document_id, text, word_count)\n    Model: Qwen3.5-397B-A17B\n    Filter: Keep this certification only if that clause uses generic certification language and describes no specific control change.\n\n    2. Schema['document_id', 'text', 'word_count'] -> LLMFilter -> Schema['document_id', 'text', 'word_count']\n    (document_id, text, word_count) -> (document_id, text, word_count)\n    Model: Qwen3.5-397B-A17B\n    Filter: Keep this document only if it is a genuine SOX Section 302 certification containing the material-changes disclosure clause for internal control over financial reporting.\n\n      3. MarshalAndScanDataOp(Dataset(schema=<class 'palimpzest.core.lib.schemas.Schema['document_id', 'text', 'word_count']'>, id=legal_contracts-012-semantic-input, op_id=d1192c7fee)) -> <class 'palimpzest.core.lib.schemas.Schema['document_id', 'text', 'word_count']'>\n    (document_id, text, word_count)\n\n",
+    "root_operator_index": 3,
+    "operators": [
+      {
+        "topological_index": 0,
+        "physical_operator": "MarshalAndScanDataOp",
+        "logical_operator": "BaseScan",
+        "logical_op_id": "d1192c7fee",
+        "unique_logical_op_id": "0-d1192c7fee",
+        "full_op_id": "d1192c7fee-6628af1f77",
+        "model": null,
+        "depends_on": [],
+        "generated_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "input_fields": [],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "source_operator_indices": []
+      },
+      {
+        "topological_index": 1,
+        "physical_operator": "LLMFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "51a2326688",
+        "unique_logical_op_id": "1-51a2326688",
+        "full_op_id": "51a2326688-8aa2591d79",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-012-semantic-input.text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "source_operator_indices": [
+          0
+        ]
+      },
+      {
+        "topological_index": 2,
+        "physical_operator": "LLMFilter",
+        "logical_operator": "FilteredScan",
+        "logical_op_id": "d808035b03",
+        "unique_logical_op_id": "2-d808035b03",
+        "full_op_id": "d808035b03-c9c44e6366",
+        "model": "Qwen3.5-397B-A17B",
+        "depends_on": [
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-012-semantic-input.text"
+        ],
+        "generated_fields": [],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "source_operator_indices": [
+          1
+        ]
+      },
+      {
+        "topological_index": 3,
+        "physical_operator": "CountAggregateOp",
+        "logical_operator": "Aggregate",
+        "logical_op_id": "eae5850343",
+        "unique_logical_op_id": "3-eae5850343",
+        "full_op_id": "eae5850343-831339c386",
+        "model": null,
+        "depends_on": [
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-012-semantic-input.document_id",
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-012-semantic-input.text",
+          "Schema['document_id', 'text', 'word_count'].legal_contracts-012-semantic-input.word_count",
+          "Schema['document_id', 'text', 'word_count'].c67a9609fe.document_id",
+          "Schema['document_id', 'text', 'word_count'].c67a9609fe.text",
+          "Schema['document_id', 'text', 'word_count'].c67a9609fe.word_count",
+          "Schema['document_id', 'text', 'word_count'].ec61e88eb8.document_id",
+          "Schema['document_id', 'text', 'word_count'].ec61e88eb8.text",
+          "Schema['document_id', 'text', 'word_count'].ec61e88eb8.word_count"
+        ],
+        "generated_fields": [
+          "count"
+        ],
+        "input_fields": [
+          "document_id",
+          "text",
+          "word_count"
+        ],
+        "output_fields": [
+          "count"
+        ],
+        "source_operator_indices": [
+          2
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "source": 0,
+        "target": 1
+      },
+      {
+        "source": 1,
+        "target": 2
+      },
+      {
+        "source": 2,
+        "target": 3
+      }
+    ],
+    "estimated_plan_cost": {
+      "cost": 6.115815342000001,
+      "time": 14735.175653330793,
+      "quality": 0.95,
+      "op_estimates": {
+        "cardinality": 418.53105,
+        "time_per_record": 0.0004082520802815755,
+        "cost_per_record": 0.0,
+        "quality": 1.0,
+        "cardinality_lower_bound": 418.53105,
+        "cardinality_upper_bound": 418.53105,
+        "time_per_record_lower_bound": 0.0004082520802815755,
+        "time_per_record_upper_bound": 0.0004082520802815755,
+        "cost_per_record_lower_bound": 0.0,
+        "cost_per_record_upper_bound": 0.0,
+        "quality_lower_bound": 1.0,
+        "quality_upper_bound": 1.0
+      },
+      "cost_lower_bound": 6.115815342000001,
+      "cost_upper_bound": 6.115815342000001,
+      "time_lower_bound": 14735.175653330793,
+      "time_upper_bound": 14735.175653330793,
+      "quality_lower_bound": 0.95,
+      "quality_upper_bound": 0.95
+    },
+    "topological_logical_sequence": [
+      "0-d1192c7fee",
+      "1-51a2326688",
+      "2-d808035b03",
+      "3-eae5850343"
+    ]
+  },
+  "optimizer_configuration": {
+    "strategy": "pareto",
+    "policy": "MaxQuality",
+    "physical_implementation_candidates": {
+      "allow_bonded_query": true,
+      "allow_model_selection": false,
+      "allow_rag_reduction": false,
+      "allow_mixtures": true,
+      "allow_critic": true,
+      "allow_split_merge": false,
+      "force_rag": false,
+      "execution_strategy": "parallel",
+      "max_workers": 64,
+      "join_parallelism": 64
+    },
+    "dynamic_learning_requested": true,
+    "dynamic_learning_pipeline_supported": true,
+    "dynamic_learning": true,
+    "dynamic_learning_support": {
+      "supported": true,
+      "reason": null,
+      "terminal_only_operator_violations": []
+    },
+    "allow_unsupported_sentinel_plans": true,
+    "dynamic_learning_fallback": null,
+    "sentinel_execution_strategy": "mab",
+    "sentinel_k": 6,
+    "sentinel_j": 4,
+    "sentinel_sample_budget": 100,
+    "sentinel_seed": 42,
+    "available_models": [
+      "Qwen3.5-397B-A17B",
+      "openai/Qwen3-Embedding-8B"
+    ]
+  },
+  "optimizer_search_space": {
+    "group_count": 5,
+    "logical_expression_count": 6,
+    "physical_expression_count": 22,
+    "transformation_rules_explored": [
+      "PushDownFilter"
+    ],
+    "implementation_rules_explored": [
+      "AggregateRule",
+      "BasicSubstitutionRule",
+      "CritiqueAndRefineRule",
+      "LLMFilterRule",
+      "MixtureOfAgentsRule"
+    ]
+  },
+  "optimization_metrics": {
+    "elapsed_seconds": 178.31400323,
+    "sentinel_sampling_seconds": 178.28018498,
+    "optimizer_search_and_bookkeeping_seconds": 0.03381824,
+    "cost_usd": 0.28176447,
+    "text_llm_calls": 227,
+    "embedding_calls": 0,
+    "input_text_tokens": 461533,
+    "output_text_tokens": 43490,
+    "total_text_tokens": 505023,
+    "embedding_input_tokens": 0,
+    "cache_read_tokens": 0,
+    "cache_creation_tokens": 0,
+    "sampled_operators": {
+      "text_llm_calls": 204,
+      "embedding_calls": 0,
+      "input_text_tokens": 387349,
+      "output_text_tokens": 36859,
+      "embedding_input_tokens": 0,
+      "cost_usd": 0.23731617
+    },
+    "validator": {
+      "text_llm_calls": 23,
+      "input_text_tokens": 74184,
+      "output_text_tokens": 6631,
+      "total_text_tokens": 80815,
+      "cost_usd": 0.0444483
+    },
+    "model_usage_by_model": {
+      "Qwen3.5-397B-A17B": {
+        "roles": [
+          "text",
+          "validator"
+        ],
+        "calls": 227,
+        "input_tokens": 461533,
+        "output_tokens": 43490,
+        "total_tokens": 505023,
+        "cost_usd": 0.28176447
+      }
+    }
+  },
+  "sentinel_join_sampling": [],
+  "sentinel_sampling_exhaustion": null,
+  "recovery": null
+}

@@ -1,0 +1,168 @@
+{
+  "task_id": "legal_contracts-088",
+  "answer": [
+    {
+      "company": "Becton, Dickinson and Company",
+      "covered_person_category": "Executive Officers"
+    },
+    {
+      "company": "Voya Financial, Inc.",
+      "covered_person_category": "Executive Officers and Employees"
+    },
+    {
+      "company": "Acuity Inc.",
+      "covered_person_category": "Covered Officers and Direct Reports"
+    },
+    {
+      "company": "Cartica Acquisition Corp",
+      "covered_person_category": "Executive Officer"
+    },
+    {
+      "company": "Cavco Industries, Inc.",
+      "covered_person_category": "Executive Officer"
+    },
+    {
+      "company": "Churchill Capital Corp IX",
+      "covered_person_category": "Executive Officer"
+    },
+    {
+      "company": "AIB Acquisition Corporation",
+      "covered_person_category": "Executive Officer"
+    },
+    {
+      "company": "Clover Leaf Capital Corp.",
+      "covered_person_category": "Executive Officers"
+    },
+    {
+      "company": "Onconetix, Inc.",
+      "covered_person_category": "Executive Officers"
+    },
+    {
+      "company": "Cuentas Inc.",
+      "covered_person_category": "Executive Officer"
+    },
+    {
+      "company": "Lionheart Holdings",
+      "covered_person_category": "Executive Officers"
+    },
+    {
+      "company": "Cocrystal Pharma, Inc.",
+      "covered_person_category": "Executive Officers"
+    },
+    {
+      "company": "Alpha Star Acquisition Corporation",
+      "covered_person_category": "Executive Officers"
+    },
+    {
+      "company": "Metal Sky Star Acquisition Corporation",
+      "covered_person_category": "Executive Officers"
+    },
+    {
+      "company": "SurgePays, Inc.",
+      "covered_person_category": "Executive Officers"
+    },
+    {
+      "company": "DT Cloud Acquisition Corporation",
+      "covered_person_category": "Section 16 Officers"
+    },
+    {
+      "company": "Spyre Therapeutics, Inc.",
+      "covered_person_category": "Executive Officer"
+    },
+    {
+      "company": "Pentair plc",
+      "covered_person_category": "Section 16 Officers"
+    },
+    {
+      "company": "H.B. Fuller Company",
+      "covered_person_category": "Executive Officers and Key Managers"
+    },
+    {
+      "company": "Littelfuse Inc.",
+      "covered_person_category": "Executive Officers"
+    },
+    {
+      "company": "Zentalis Pharmaceuticals, Inc.",
+      "covered_person_category": "Current and Former Officers"
+    },
+    {
+      "company": "Skyworks Solutions, Inc.",
+      "covered_person_category": "Executive Officers"
+    },
+    {
+      "company": "Global Partners LP",
+      "covered_person_category": "Executive Officers"
+    },
+    {
+      "company": "Globalstar, Inc.",
+      "covered_person_category": "Section 16 Officers and Covered Executives"
+    },
+    {
+      "company": "Harmonic Inc.",
+      "covered_person_category": "Executive Officers"
+    },
+    {
+      "company": "International Paper Company",
+      "covered_person_category": "Executive Officers"
+    },
+    {
+      "company": "Kura Sushi USA, Inc.",
+      "covered_person_category": "Executive Officers"
+    },
+    {
+      "company": "El Pollo Loco Holdings, Inc.",
+      "covered_person_category": "Section 16 Officers"
+    },
+    {
+      "company": "Ovid Therapeutics Inc.",
+      "covered_person_category": "Executive Officers"
+    },
+    {
+      "company": "Alpine Income Property Trust, Inc.",
+      "covered_person_category": "Executive Officers"
+    },
+    {
+      "company": "Peakstone Realty Trust",
+      "covered_person_category": "Executive Officers"
+    },
+    {
+      "company": "Insulet Corporation",
+      "covered_person_category": "Executive Officer"
+    },
+    {
+      "company": "Key Tronic Corporation",
+      "covered_person_category": "Executive Officers"
+    },
+    {
+      "company": "RH",
+      "covered_person_category": "Executive Officer"
+    },
+    {
+      "company": "Silk Road Medical, Inc.",
+      "covered_person_category": "Executive Officers"
+    },
+    {
+      "company": "Strategic Education, Inc.",
+      "covered_person_category": "Executive Officers and Employees"
+    },
+    {
+      "company": "Advanced Drainage Systems, Inc.",
+      "covered_person_category": "Executive Officers"
+    },
+    {
+      "company": "WideOpenWest, Inc.",
+      "covered_person_category": "Executive Officers"
+    },
+    {
+      "company": "The Western Union Company",
+      "covered_person_category": "Executive Officers"
+    },
+    {
+      "company": "zSpace, Inc.",
+      "covered_person_category": "Executive Officers"
+    }
+  ],
+  "elapsed_seconds": 674.83,
+  "cost_usd": 7.503145,
+  "total_tokens": 18712449
+}

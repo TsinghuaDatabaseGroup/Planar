@@ -1,0 +1,44 @@
+{
+  "task_id": "aviation_safety-013",
+  "answer": [
+    {
+      "symptom_category": "thrust_loss",
+      "incident_count": 58,
+      "most_common_immediate_action": "rejected takeoff",
+      "most_common_outcome": "return"
+    },
+    {
+      "symptom_category": "oil_indication",
+      "incident_count": 42,
+      "most_common_immediate_action": "shut down the engine",
+      "most_common_outcome": "diversion"
+    },
+    {
+      "symptom_category": "vibration",
+      "incident_count": 29,
+      "most_common_immediate_action": "added carb heat and checked magnetos",
+      "most_common_outcome": "diversion"
+    },
+    {
+      "symptom_category": "flameout",
+      "incident_count": 26,
+      "most_common_immediate_action": "advanced and retarded throttle to troubleshoot",
+      "most_common_outcome": "return"
+    },
+    {
+      "symptom_category": "temperature",
+      "incident_count": 23,
+      "most_common_immediate_action": "abort the takeoff",
+      "most_common_outcome": "return"
+    },
+    {
+      "symptom_category": "other_engine_indication",
+      "incident_count": 5,
+      "most_common_immediate_action": "initiated rejected takeoff",
+      "most_common_outcome": "emergency"
+    }
+  ],
+  "elapsed_seconds": 138.18,
+  "cost_usd": 0.91023,
+  "total_tokens": 2128029
+}

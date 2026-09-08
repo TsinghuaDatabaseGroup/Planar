@@ -1,0 +1,111 @@
+datasets:
+  nhtsa_complaints:
+    type: file
+    path: data/nhtsa_vehicle_safety/complaints.csv
+
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs:
+    api_base: ${LLM_API_BASE}
+    temperature: 0
+    max_tokens: 2048
+    timeout: 120
+    extra_body:
+      chat_template_kwargs:
+        enable_thinking: false
+  map:
+    plan_types: [chunk, proj_synthesis, glean]
+  equijoin:
+    target_recall: 0.95
+
+operations:
+  - name: filter_engine_component_complaints
+    type: code_filter
+    code: |
+      def transform(doc):
+          return doc.get("component_id") == "ENGINE"
+
+  - name: classify_engine_stall_or_power_loss
+    type: filter
+    optimize: true
+    prompt: |
+      Determine whether this NHTSA complaint describes an engine stall, engine
+      shutoff, loss of engine power, or failure to accelerate caused by engine
+      operation.
+
+      The event must concern the engine ceasing, losing, or failing to produce
+      expected power. Do not qualify a complaint that only describes unrelated
+      braking, steering, transmission, electrical, or cosmetic behavior unless the
+      text explicitly connects it to engine operation.
+
+      Complaint:
+      {{ input.summary_text }}
+    output:
+      mode: structured_output
+      schema:
+        describes_engine_stall_or_power_loss: boolean
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: classify_vehicle_operating_state
+    type: map
+    optimize: true
+    prompt: |
+      Classify when the reported engine event occurred using exactly one label:
+
+      - moving_or_in_traffic: the vehicle was being driven, moving on a road,
+        traveling at speed, maneuvering, or stopped as part of active traffic.
+      - parked_idling_or_unclear: the vehicle was parked, idling outside active
+        traffic, being started, or the complaint does not clearly establish that it
+        occurred while moving or in traffic.
+
+      Use only the complaint text.
+
+      Complaint:
+      {{ input.summary_text }}
+    output:
+      mode: structured_output
+      schema:
+        operating_state: enum[moving_or_in_traffic, parked_idling_or_unclear]
+    litellm_completion_kwargs:
+      temperature: 0
+      max_tokens: 4096
+      timeout: 120
+      extra_body:
+        chat_template_kwargs:
+          enable_thinking: false
+
+  - name: calculate_moving_event_fraction
+    type: code_reduce
+    reduce_key: _all
+    code: |
+      def transform(items):
+          total = len(items)
+          moving = sum(
+              item.get("operating_state") == "moving_or_in_traffic"
+              for item in items
+          )
+          ratio = round(moving / total, 3) if total else 0.0
+          return {"ratio": ratio}
+
+pipeline:
+  steps:
+    - name: moving_engine_event_fraction
+      input: nhtsa_complaints
+      operations:
+        - filter_engine_component_complaints
+        - classify_engine_stall_or_power_loss
+        - classify_vehicle_operating_state
+        - calculate_moving_event_fraction
+  output:
+    type: file
+    path: raw_outputs/vehicle_safety/output_vehicle_safety-016.json

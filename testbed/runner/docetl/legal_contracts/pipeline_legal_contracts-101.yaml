@@ -1,0 +1,166 @@
+datasets:
+  contract_exhibits: {type: file, path: contract_exhibit_full.json}
+default_model: Qwen3.5-397B-A17B
+default_lm_api_base: ${LLM_API_BASE}
+optimizer_config:
+  rewrite_agent_model: Qwen3.5-397B-A17B
+  judge_agent_model: Qwen3.5-397B-A17B
+  litellm_kwargs: {api_base: "${LLM_API_BASE}", temperature: 0, max_tokens: 2048, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  map: {plan_types: [chunk, proj_synthesis, glean]}
+  equijoin: {target_recall: 0.95}
+operations:
+  - name: filter_finite_employee_non_solicit
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is an EX-10 employment agreement with a
+      finite stated employee non-solicitation period.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_finite_non_solicit_employment_agreement: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_employment_identity
+    type: map
+    optimize: true
+    prompt: |
+      Return the input employment document ID, stated employer name, canonical
+      employer key, employee name, normalized person key, and employee
+      non-solicitation duration normalized to years.
+
+      Input document ID: {{ input.doc_id }}
+      Agreement:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema:
+        employment_document: string
+        company_name: string
+        company_key: string
+        employee_name: string
+        person_key: string
+        non_solicitation_duration_years: float
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+
+  - name: filter_ex31_certifications
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is an EX-31 SOX Section 302 certification.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_ex31_certification: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_certifying_officer_identity
+    type: map
+    optimize: true
+    prompt: |
+      Return the canonical certified-company key, officer name, normalized
+      person key, and officer title.
+
+      Certification:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema: {company_key: string, officer_name: string, person_key: string, officer_title: string}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+
+  - name: filter_ex19_policies
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this document only if it is an EX-19 insider-trading policy.
+
+      Document:
+      {{ input.contents }}
+    output: {mode: structured_output, schema: {is_ex19_policy: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: extract_policy_scope
+    type: map
+    optimize: true
+    prompt: |
+      Return the canonical policy-company key and stated covered-person scope.
+
+      Policy:
+      {{ input.contents }}
+    output:
+      mode: structured_output
+      schema: {company_key: string, covered_person_scope: string}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+
+  - name: join_employment_and_certification
+    type: equijoin
+    deterministic: true
+    blocking_conditions:
+      - left["company_key"] == right["company_key"] and left["person_key"] == right["person_key"]
+  - name: project_employment_certification_match
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "company_key": doc.get("company_key_left"),
+              "company_name": doc.get("company_name"),
+              "officer_name": doc.get("officer_name"),
+              "officer_title": doc.get("officer_title"),
+              "employment_document": doc.get("employment_document"),
+              "non_solicitation_duration_years": doc.get("non_solicitation_duration_years"),
+          }
+  - name: join_matched_officer_to_policy
+    type: equijoin
+    deterministic: true
+    blocking_conditions:
+      - left["company_key"] == right["company_key"]
+  - name: filter_officer_in_policy_scope
+    type: filter
+    optimize: true
+    prompt: |
+      Keep this record only if the certifying officer's title falls within the
+      insider-trading policy's stated covered-person scope.
+
+      Officer title: {{ input.officer_title }}
+      Covered-person scope: {{ input.covered_person_scope }}
+    output: {mode: structured_output, schema: {officer_is_covered: boolean}}
+    litellm_completion_kwargs: {temperature: 0, max_tokens: 4096, timeout: 120, extra_body: {chat_template_kwargs: {enable_thinking: false}}}
+  - name: project_covered_individual
+    type: code_map
+    code: |
+      def transform(doc):
+          return {
+              "company": doc.get("company_name"),
+              "individual": doc.get("officer_name"),
+              "employment_document": doc.get("employment_document"),
+              "non_solicitation_duration_years": doc.get("non_solicitation_duration_years"),
+          }
+  - name: deduplicate_covered_individuals
+    type: code_reduce
+    reduce_key: [company, individual, employment_document, non_solicitation_duration_years]
+    code: |
+      def transform(items):
+          return {}
+pipeline:
+  steps:
+    - name: employment_records
+      input: contract_exhibits
+      operations: [filter_finite_employee_non_solicit, extract_employment_identity]
+    - name: certification_records
+      input: contract_exhibits
+      operations: [filter_ex31_certifications, extract_certifying_officer_identity]
+    - name: policy_records
+      input: contract_exhibits
+      operations: [filter_ex19_policies, extract_policy_scope]
+    - name: employment_certification_matches
+      operations:
+        - join_employment_and_certification: {left: employment_records, right: certification_records}
+    - name: projected_employment_certification_matches
+      input: employment_certification_matches
+      operations: [project_employment_certification_match]
+    - name: complete_policy_matches
+      operations:
+        - join_matched_officer_to_policy: {left: projected_employment_certification_matches, right: policy_records}
+    - name: answer
+      input: complete_policy_matches
+      operations: [filter_officer_in_policy_scope, project_covered_individual, deduplicate_covered_individuals]
+  output:
+    type: file
+    path: raw_outputs/legal_contracts/output_legal_contracts-101.json

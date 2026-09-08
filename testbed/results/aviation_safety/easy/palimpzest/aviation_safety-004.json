@@ -1,0 +1,28 @@
+{
+  "task_id": "aviation_safety-004",
+  "answer": [
+    {
+      "field_compared": "altitude",
+      "incident_count": 101,
+      "most_common_consequence": "altitude_deviation"
+    },
+    {
+      "field_compared": "heading",
+      "incident_count": 82,
+      "most_common_consequence": "heading_or_route_deviation"
+    },
+    {
+      "field_compared": "speed",
+      "incident_count": 10,
+      "most_common_consequence": "speed_deviation"
+    },
+    {
+      "field_compared": "runway",
+      "incident_count": 75,
+      "most_common_consequence": "runway_deviation"
+    }
+  ],
+  "elapsed_seconds": 2314.99,
+  "cost_usd": 3.61923,
+  "total_tokens": 3994662
+}

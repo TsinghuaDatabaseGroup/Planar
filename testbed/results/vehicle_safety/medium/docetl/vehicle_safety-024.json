@@ -1,0 +1,92 @@
+{
+  "task_id": "vehicle_safety-024",
+  "answer": [
+    {
+      "component_id": "AIRBAG",
+      "complaint_count": 49,
+      "towed_rate": 0.6530612244897959,
+      "avg_injury": 0.673469387755102,
+      "dominant_failure_mode": "airbags failed to deploy"
+    },
+    {
+      "component_id": "ELECTRICAL",
+      "complaint_count": 174,
+      "towed_rate": 0.05747126436781609,
+      "avg_injury": 0.05747126436781609,
+      "dominant_failure_mode": "horn stopped working"
+    },
+    {
+      "component_id": "OTHER",
+      "complaint_count": 67,
+      "towed_rate": 0.13432835820895522,
+      "avg_injury": 0.22388059701492538,
+      "dominant_failure_mode": "spontaneous sunroof glass explosion"
+    },
+    {
+      "component_id": "BODY",
+      "complaint_count": 66,
+      "towed_rate": 0.045454545454545456,
+      "avg_injury": 0.12121212121212122,
+      "dominant_failure_mode": "spontaneous windshield cracking"
+    },
+    {
+      "component_id": "TIRES",
+      "complaint_count": 7,
+      "towed_rate": 0.14285714285714285,
+      "avg_injury": 0.2857142857142857,
+      "dominant_failure_mode": "broken plastic sound deadener inside wheel rims"
+    },
+    {
+      "component_id": "BRAKES",
+      "complaint_count": 75,
+      "towed_rate": 0.21333333333333335,
+      "avg_injury": 0.2,
+      "dominant_failure_mode": "sudden unintended acceleration"
+    },
+    {
+      "component_id": "ENGINE",
+      "complaint_count": 148,
+      "towed_rate": 0.27702702702702703,
+      "avg_injury": 0.04054054054054054,
+      "dominant_failure_mode": "catastrophic engine failure"
+    },
+    {
+      "component_id": "FUEL",
+      "complaint_count": 12,
+      "towed_rate": 0.16666666666666666,
+      "avg_injury": 0.08333333333333333,
+      "dominant_failure_mode": "fuel pump failure"
+    },
+    {
+      "component_id": "ADAS",
+      "complaint_count": 249,
+      "towed_rate": 0.06827309236947791,
+      "avg_injury": 0.0642570281124498,
+      "dominant_failure_mode": "unintended automatic emergency braking activation"
+    },
+    {
+      "component_id": "POWERTRAIN",
+      "complaint_count": 27,
+      "towed_rate": 0.25925925925925924,
+      "avg_injury": 0.037037037037037035,
+      "dominant_failure_mode": "transmission valve body failure"
+    },
+    {
+      "component_id": "STEERING",
+      "complaint_count": 15,
+      "towed_rate": 0.26666666666666666,
+      "avg_injury": 0.13333333333333333,
+      "dominant_failure_mode": "defective suspension geometry causing misalignment"
+    },
+    {
+      "component_id": "SEATBELT",
+      "complaint_count": 6,
+      "towed_rate": 0.0,
+      "avg_injury": 0.16666666666666666,
+      "dominant_failure_mode": "rear seatbelt sensor false unbuckled warning"
+    }
+  ],
+  "elapsed_seconds": 104.39,
+  "cost_usd": 0.332181,
+  "total_tokens": 688230
+}

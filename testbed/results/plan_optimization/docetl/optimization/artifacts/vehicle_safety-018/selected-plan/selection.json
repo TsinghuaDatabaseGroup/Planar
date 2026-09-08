@@ -1,0 +1,138 @@
+{
+  "node_id": 89,
+  "sample_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-018/moar-search/pipeline_vehicle_safety-018_input_sample_openai_Qwen3.5-397B-A17B.yaml",
+  "sample_output_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-018/moar-search/pipeline_vehicle_safety-018_input_sample_openai_Qwen3.5-397B-A17B.json",
+  "semantic_fidelity": 1.0,
+  "sample_execution_cost_usd": 0.039357239999999995,
+  "fidelity_threshold": 0.9,
+  "selection_reason": "lowest_cost_meeting_fidelity_threshold",
+  "optimization_path": "ROOT → change to Qwen3.5-397B-A17B(classify_explicit_tesla_model_mentions)",
+  "sample_execution_metrics_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-018/moar-search/candidate-metrics/execution_0001_node-89.json",
+  "full_pipeline_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/runs/moar-all-001/vehicle_safety-018/selected-plan/pipeline_vehicle_safety-018_optimized_full.yaml",
+  "input_plan_path": "/home/macly/benchmark_v3/baseline/docetl/plan-optimization-moar/pipeline-all/pipeline_vehicle_safety-018.yaml",
+  "input_plan_kind": "reference-plan translation used as the MOAR input plan",
+  "operator_execution_policy": {
+    "policy": "structural_rewrite_fixed_operator_execution",
+    "nested_v1_optimizer_invoked": false,
+    "fixed_default_model": "Qwen3.5-397B-A17B",
+    "unchanged_operations": [
+      "classify_explicit_tesla_model_mentions",
+      "extract_normalized_recall_numbers",
+      "keep_reports_with_cited_recalls",
+      "project_report_recall_columns"
+    ],
+    "new_or_replaced_operations": [],
+    "restored_fields": {},
+    "unchanged_operation_count": 4,
+    "new_or_replaced_operation_count": 0
+  },
+  "input_plan_signature": {
+    "definitions": {
+      "classify_explicit_tesla_model_mentions": "filter",
+      "extract_normalized_recall_numbers": "map",
+      "keep_reports_with_cited_recalls": "code_filter",
+      "project_report_recall_columns": "code_map"
+    },
+    "logical_operations": [
+      {
+        "name": "classify_explicit_tesla_model_mentions",
+        "type": "filter",
+        "logical_config_sha256": "8a7a3ac11a71f9ec291e574562b813452d4c543dd1a6538684c07adce836bad6"
+      },
+      {
+        "name": "extract_normalized_recall_numbers",
+        "type": "map",
+        "logical_config_sha256": "8f6b8d1b17e0ff798c73f70716debbe0d61a8979de77af22e66a918d112a9c5b"
+      },
+      {
+        "name": "keep_reports_with_cited_recalls",
+        "type": "code_filter",
+        "logical_config_sha256": "78776ec232e877d1cea2b351925286170c6ae55d1d9cd694b67a81267b012464"
+      },
+      {
+        "name": "project_report_recall_columns",
+        "type": "code_map",
+        "logical_config_sha256": "4dc5dee75b238d4b2000d7038af49b92ab54fccba9a23179bd9d5de64f95aeac"
+      }
+    ],
+    "steps": [
+      {
+        "name": "tesla_reports_with_recall_citations",
+        "input": "nhtsa_investigation_reports",
+        "operations": [
+          {
+            "name": "classify_explicit_tesla_model_mentions",
+            "type": "filter"
+          },
+          {
+            "name": "extract_normalized_recall_numbers",
+            "type": "map"
+          },
+          {
+            "name": "keep_reports_with_cited_recalls",
+            "type": "code_filter"
+          },
+          {
+            "name": "project_report_recall_columns",
+            "type": "code_map"
+          }
+        ]
+      }
+    ]
+  },
+  "selected_plan_signature": {
+    "definitions": {
+      "classify_explicit_tesla_model_mentions": "filter",
+      "extract_normalized_recall_numbers": "map",
+      "keep_reports_with_cited_recalls": "code_filter",
+      "project_report_recall_columns": "code_map"
+    },
+    "logical_operations": [
+      {
+        "name": "classify_explicit_tesla_model_mentions",
+        "type": "filter",
+        "logical_config_sha256": "8a7a3ac11a71f9ec291e574562b813452d4c543dd1a6538684c07adce836bad6"
+      },
+      {
+        "name": "extract_normalized_recall_numbers",
+        "type": "map",
+        "logical_config_sha256": "8f6b8d1b17e0ff798c73f70716debbe0d61a8979de77af22e66a918d112a9c5b"
+      },
+      {
+        "name": "keep_reports_with_cited_recalls",
+        "type": "code_filter",
+        "logical_config_sha256": "78776ec232e877d1cea2b351925286170c6ae55d1d9cd694b67a81267b012464"
+      },
+      {
+        "name": "project_report_recall_columns",
+        "type": "code_map",
+        "logical_config_sha256": "4dc5dee75b238d4b2000d7038af49b92ab54fccba9a23179bd9d5de64f95aeac"
+      }
+    ],
+    "steps": [
+      {
+        "name": "tesla_reports_with_recall_citations",
+        "input": "nhtsa_investigation_reports",
+        "operations": [
+          {
+            "name": "classify_explicit_tesla_model_mentions",
+            "type": "filter"
+          },
+          {
+            "name": "extract_normalized_recall_numbers",
+            "type": "map"
+          },
+          {
+            "name": "keep_reports_with_cited_recalls",
+            "type": "code_filter"
+          },
+          {
+            "name": "project_report_recall_columns",
+            "type": "code_map"
+          }
+        ]
+      }
+    ]
+  },
+  "plan_changed": false
+}

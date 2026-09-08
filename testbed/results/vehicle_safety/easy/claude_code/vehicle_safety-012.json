@@ -1,0 +1,526 @@
+{
+  "task_id": "vehicle_safety-012",
+  "answer": [
+    {
+      "campaign_number": "23V652000",
+      "make": "KIA",
+      "component_id": "BRAKES",
+      "matched_complaint_count": 11,
+      "defect_summary": "Kia America, Inc. (Kia) is recalling certain 2010-2019 Borrego, 2014-2016 Cadenza, 2010-2013 Forte, Forte Koup, Sportage, 2015-2018 K900, 2011-2015 Optima, 2011-2013 Optima Hybrid, Soul, 2012-2017 Rio, 2011-2014 Sorento, and 2010-2011 Rondo vehicles. The Hydraulic Electronic Control Unit (HECU) may experience an electrical short, which can result in an engine compartment fire while parked or driving."
+    },
+    {
+      "campaign_number": "23V651000",
+      "make": "HYUNDAI",
+      "component_id": "BRAKES",
+      "matched_complaint_count": 5,
+      "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2011-2015 Elantra, Genesis Coupe, Sonata Hybrid, 2012-2015 Accent, Azera, Veloster, 2013-2015 Elantra Coupe, Santa Fe, 2014-2015 Equus, 2010-2012 Veracruz, 2010-2013 Tucson, 2015 Tucson Fuel Cell, and 2013 Santa Fe Sport vehicles. The Anti-Lock Brake System (ABS) module may leak brake fluid internally and cause an electrical short, which can result in an engine compartment fire while parked or driving."
+    },
+    {
+      "campaign_number": "23V651000",
+      "make": "HYUNDAI",
+      "component_id": "BRAKES",
+      "matched_complaint_count": 5,
+      "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2011-2015 Elantra, Genesis Coupe, Sonata Hybrid, 2012-2015 Accent, Azera, Veloster, 2013-2015 Elantra Coupe, Santa Fe, 2014-2015 Equus, 2010-2012 Veracruz, 2010-2013 Tucson, 2015 Tucson Fuel Cell, and 2013 Santa Fe Sport vehicles. The Anti-Lock Brake System (ABS) module may leak brake fluid internally and cause an electrical short, which can result in an engine compartment fire while parked or driving."
+    },
+    {
+      "campaign_number": "21V331000",
+      "make": "KIA",
+      "component_id": "BRAKES",
+      "matched_complaint_count": 11,
+      "defect_summary": "Kia Motors America (Kia) is recalling certain 2013-2015 Optima and 2014-2015 Sorento vehicles previously recalled under recall 20V-519. Brake fluid may leak inside the Hydraulic Electronic Control Unit (HECU), possibly resulting in an electrical short."
+    },
+    {
+      "campaign_number": "21V331000",
+      "make": "KIA",
+      "component_id": "BRAKES",
+      "matched_complaint_count": 11,
+      "defect_summary": "Kia Motors America (Kia) is recalling certain 2013-2015 Optima and 2014-2015 Sorento vehicles previously recalled under recall 20V-519. Brake fluid may leak inside the Hydraulic Electronic Control Unit (HECU), possibly resulting in an electrical short."
+    },
+    {
+      "campaign_number": "20V519000",
+      "make": "KIA",
+      "component_id": "BRAKES",
+      "matched_complaint_count": 11,
+      "defect_summary": "Kia Motors America (Kia) is recalling certain 2013-2015 Optima and 2014-2015 Sorento vehicles. Brake fluid may leak inside the Hydraulic Electronic Control Unit (HECU), possibly resulting in an electrical short."
+    },
+    {
+      "campaign_number": "20V519000",
+      "make": "KIA",
+      "component_id": "BRAKES",
+      "matched_complaint_count": 11,
+      "defect_summary": "Kia Motors America (Kia) is recalling certain 2013-2015 Optima and 2014-2015 Sorento vehicles. Brake fluid may leak inside the Hydraulic Electronic Control Unit (HECU), possibly resulting in an electrical short."
+    },
+    {
+      "campaign_number": "22V703000",
+      "make": "KIA",
+      "component_id": "OTHER",
+      "matched_complaint_count": 13,
+      "defect_summary": "Kia America, Inc. (Kia) is recalling certain 2016-2022 Sorento, 2021-2022 Sorento Hybrid (HEV), 2022-2023 Sorento Plug-In Hybrid (PHEV), and 2017-2022 Sportage vehicles equipped with a tow hitch harness installed as original equipment, or purchased as an accessory through a Kia dealership. Debris and moisture accumulation on the tow hitch harness module printed circuit board (PCB) may cause an electrical short, which can result in a fire."
+    },
+    {
+      "campaign_number": "22V703000",
+      "make": "KIA",
+      "component_id": "OTHER",
+      "matched_complaint_count": 13,
+      "defect_summary": "Kia America, Inc. (Kia) is recalling certain 2016-2022 Sorento, 2021-2022 Sorento Hybrid (HEV), 2022-2023 Sorento Plug-In Hybrid (PHEV), and 2017-2022 Sportage vehicles equipped with a tow hitch harness installed as original equipment, or purchased as an accessory through a Kia dealership. Debris and moisture accumulation on the tow hitch harness module printed circuit board (PCB) may cause an electrical short, which can result in a fire."
+    },
+    {
+      "campaign_number": "22V703000",
+      "make": "KIA",
+      "component_id": "OTHER",
+      "matched_complaint_count": 13,
+      "defect_summary": "Kia America, Inc. (Kia) is recalling certain 2016-2022 Sorento, 2021-2022 Sorento Hybrid (HEV), 2022-2023 Sorento Plug-In Hybrid (PHEV), and 2017-2022 Sportage vehicles equipped with a tow hitch harness installed as original equipment, or purchased as an accessory through a Kia dealership. Debris and moisture accumulation on the tow hitch harness module printed circuit board (PCB) may cause an electrical short, which can result in a fire."
+    },
+    {
+      "campaign_number": "22V703000",
+      "make": "KIA",
+      "component_id": "OTHER",
+      "matched_complaint_count": 13,
+      "defect_summary": "Kia America, Inc. (Kia) is recalling certain 2016-2022 Sorento, 2021-2022 Sorento Hybrid (HEV), 2022-2023 Sorento Plug-In Hybrid (PHEV), and 2017-2022 Sportage vehicles equipped with a tow hitch harness installed as original equipment, or purchased as an accessory through a Kia dealership. Debris and moisture accumulation on the tow hitch harness module printed circuit board (PCB) may cause an electrical short, which can result in a fire."
+    },
+    {
+      "campaign_number": "22V703000",
+      "make": "KIA",
+      "component_id": "OTHER",
+      "matched_complaint_count": 13,
+      "defect_summary": "Kia America, Inc. (Kia) is recalling certain 2016-2022 Sorento, 2021-2022 Sorento Hybrid (HEV), 2022-2023 Sorento Plug-In Hybrid (PHEV), and 2017-2022 Sportage vehicles equipped with a tow hitch harness installed as original equipment, or purchased as an accessory through a Kia dealership. Debris and moisture accumulation on the tow hitch harness module printed circuit board (PCB) may cause an electrical short, which can result in a fire."
+    },
+    {
+      "campaign_number": "23V526000",
+      "make": "HYUNDAI",
+      "component_id": "POWERTRAIN",
+      "matched_complaint_count": 0,
+      "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2023-2024 Palisade Tucson, 2023 Sonata, Elantra, and Kona vehicles. The electronic controller for the Idle Stop & Go oil pump assembly may contain damaged electrical components that can cause the pump controller to overheat."
+    },
+    {
+      "campaign_number": "17V224000",
+      "make": "KIA",
+      "component_id": "ENGINE",
+      "matched_complaint_count": 38,
+      "defect_summary": "Kia Motor Company (Kia) is recalling certain 2011-2014 Optima, 2012-2014 Sorento and 2011-2013 Sportage vehicles. Machining errors during the engine manufacturing process may cause premature bearing wear within the engine."
+    },
+    {
+      "campaign_number": "17V769000",
+      "make": "HYUNDAI",
+      "component_id": "BRAKES",
+      "matched_complaint_count": 5,
+      "defect_summary": "Hyundai Motor Company (Hyundai) is recalling certain 2013-2014 Elantra sedan, coupe and GT vehicles. The brake pedal stopper pad can deteriorate allowing the brake light switch plunger to remain extended when the brake pedal is released. This will allow the brake lights to remain illuminated continuously. It can also allow the shift lever to be moved without depressing the brake pedal, or activate the engine management brake pedal override feature."
+    },
+    {
+      "campaign_number": "22V354000",
+      "make": "HYUNDAI",
+      "component_id": "SEATBELT",
+      "matched_complaint_count": 0,
+      "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2020-2022 Accent, 2021-2022 Elantra, and 2021-2022 Elantra HEV vehicles. In the event of a crash, the front driver-side and/or passenger-side seat belt pretensioners may explode upon deployment."
+    },
+    {
+      "campaign_number": "22V354000",
+      "make": "HYUNDAI",
+      "component_id": "SEATBELT",
+      "matched_complaint_count": 0,
+      "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2020-2022 Accent, 2021-2022 Elantra, and 2021-2022 Elantra HEV vehicles. In the event of a crash, the front driver-side and/or passenger-side seat belt pretensioners may explode upon deployment."
+    },
+    {
+      "campaign_number": "24V879000",
+      "make": "HYUNDAI",
+      "component_id": "OTHER",
+      "matched_complaint_count": 5,
+      "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2021-2022 Santa Fe, Santa Fe HEV, Elantra, Elantra HEV and 2022 Elantra N and Santa Fe PHEV vehicles. Due to a damaged printed circuit board, the rearview camera image may fail to display. As such, these vehicles fail to comply with the requirements of Federal Motor Vehicle Safety Standard number 111, \"Rear Visibility.\""
+    },
+    {
+      "campaign_number": "24V879000",
+      "make": "HYUNDAI",
+      "component_id": "OTHER",
+      "matched_complaint_count": 5,
+      "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2021-2022 Santa Fe, Santa Fe HEV, Elantra, Elantra HEV and 2022 Elantra N and Santa Fe PHEV vehicles. Due to a damaged printed circuit board, the rearview camera image may fail to display. As such, these vehicles fail to comply with the requirements of Federal Motor Vehicle Safety Standard number 111, \"Rear Visibility.\""
+    },
+    {
+      "campaign_number": "24V146000",
+      "make": "HYUNDAI",
+      "component_id": "BODY",
+      "matched_complaint_count": 0,
+      "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2015-2016 Elantra vehicles. The trunk latch may become damaged, preventing the opening of the trunk from the inside. As such, these vehicles fail to comply with the requirements of Federal Motor Vehicle Safety Standard number 401, \"Internal Trunk Release.\""
+    },
+    {
+      "campaign_number": "24V146000",
+      "make": "HYUNDAI",
+      "component_id": "BODY",
+      "matched_complaint_count": 0,
+      "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2015-2016 Elantra vehicles. The trunk latch may become damaged, preventing the opening of the trunk from the inside. As such, these vehicles fail to comply with the requirements of Federal Motor Vehicle Safety Standard number 401, \"Internal Trunk Release.\""
+    },
+    {
+      "campaign_number": "21V301000",
+      "make": "HYUNDAI",
+      "component_id": "ENGINE",
+      "matched_complaint_count": 13,
+      "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2019-2020 Elantra, 2019-2021 Kona and Veloster vehicles equipped with 2.0L Nu MPI engines. The piston oil rings may not have been properly heat-treated, which could result in engine damage."
+    },
+    {
+      "campaign_number": "21V301000",
+      "make": "HYUNDAI",
+      "component_id": "ENGINE",
+      "matched_complaint_count": 13,
+      "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2019-2020 Elantra, 2019-2021 Kona and Veloster vehicles equipped with 2.0L Nu MPI engines. The piston oil rings may not have been properly heat-treated, which could result in engine damage."
+    },
+    {
+      "campaign_number": "23V610000",
+      "make": "KIA",
+      "component_id": "OTHER",
+      "matched_complaint_count": 13,
+      "defect_summary": "Kia America, Inc. (Kia) is recalling certain 2022-2023 Sorento, Sorento Hybrid, and Sorento Plug-in Hybrid (PHEV) vehicles. The mounting clips for the rearview camera may break, which can cause the rearview camera image not to appear properly on the display. As such, these vehicles fail to comply with the requirements of Federal Motor Vehicle Safety Standard number 111, \"Rear Visibility.\""
+    },
+    {
+      "campaign_number": "23V610000",
+      "make": "KIA",
+      "component_id": "OTHER",
+      "matched_complaint_count": 13,
+      "defect_summary": "Kia America, Inc. (Kia) is recalling certain 2022-2023 Sorento, Sorento Hybrid, and Sorento Plug-in Hybrid (PHEV) vehicles. The mounting clips for the rearview camera may break, which can cause the rearview camera image not to appear properly on the display. As such, these vehicles fail to comply with the requirements of Federal Motor Vehicle Safety Standard number 111, \"Rear Visibility.\""
+    },
+    {
+      "campaign_number": "23V639000",
+      "make": "KIA",
+      "component_id": "OTHER",
+      "matched_complaint_count": 13,
+      "defect_summary": "Kia America, Inc. (Kia) is recalling certain 2019 Sorento vehicles. Due to a manufacturing error, water may leak into the rearview camera, which can cause the rearview camera image not to appear on the display. As such, these vehicles fail to comply with the requirements of Federal Motor Vehicle Safety Standard number 111, \"Rear Visibility.\""
+    },
+    {
+      "campaign_number": "25V006000",
+      "make": "KIA",
+      "component_id": "ELECTRICAL",
+      "matched_complaint_count": 33,
+      "defect_summary": "Kia America, Inc. (Kia) is recalling certain 2024-2025 Sorento, 2025 Sorento Hybrid, and 2025 Sorento Plug-In Hybrid vehicles. A software error in the Body Domain Control Unit (BDC) may cause a loss of low beam headlights and taillights. As such, these vehicles fail to comply with the requirements of Federal Motor Vehicle Safety Standard (FMVSS) 108, \"Lamps, Reflective Devices, and Associated Equipment.\""
+    },
+    {
+      "campaign_number": "25V006000",
+      "make": "KIA",
+      "component_id": "ELECTRICAL",
+      "matched_complaint_count": 33,
+      "defect_summary": "Kia America, Inc. (Kia) is recalling certain 2024-2025 Sorento, 2025 Sorento Hybrid, and 2025 Sorento Plug-In Hybrid vehicles. A software error in the Body Domain Control Unit (BDC) may cause a loss of low beam headlights and taillights. As such, these vehicles fail to comply with the requirements of Federal Motor Vehicle Safety Standard (FMVSS) 108, \"Lamps, Reflective Devices, and Associated Equipment.\""
+    },
+    {
+      "campaign_number": "18V907000",
+      "make": "KIA",
+      "component_id": "FUEL",
+      "matched_complaint_count": 2,
+      "defect_summary": "Kia Motors America (Kia) is recalling certain 2011-2017 Optima, 2012-2017 Sorento and 2011-2018 Sportage vehicles that previously received an engine replacement under recall number 17V-224, warranty, or the Knock Sensor Detection System (KSDS) Product Improvement Campaign. The high pressure fuel pipe that connects to the fuel pump outlet may have been damaged, misaligned or improperly torqued during the engine replacement procedure, possibly causing a fuel leak."
+    },
+    {
+      "campaign_number": "18V907000",
+      "make": "KIA",
+      "component_id": "FUEL",
+      "matched_complaint_count": 2,
+      "defect_summary": "Kia Motors America (Kia) is recalling certain 2011-2017 Optima, 2012-2017 Sorento and 2011-2018 Sportage vehicles that previously received an engine replacement under recall number 17V-224, warranty, or the Knock Sensor Detection System (KSDS) Product Improvement Campaign. The high pressure fuel pipe that connects to the fuel pump outlet may have been damaged, misaligned or improperly torqued during the engine replacement procedure, possibly causing a fuel leak."
+    },
+    {
+      "campaign_number": "18V907000",
+      "make": "KIA",
+      "component_id": "FUEL",
+      "matched_complaint_count": 2,
+      "defect_summary": "Kia Motors America (Kia) is recalling certain 2011-2017 Optima, 2012-2017 Sorento and 2011-2018 Sportage vehicles that previously received an engine replacement under recall number 17V-224, warranty, or the Knock Sensor Detection System (KSDS) Product Improvement Campaign. The high pressure fuel pipe that connects to the fuel pump outlet may have been damaged, misaligned or improperly torqued during the engine replacement procedure, possibly causing a fuel leak."
+    },
+    {
+      "campaign_number": "18V907000",
+      "make": "KIA",
+      "component_id": "FUEL",
+      "matched_complaint_count": 2,
+      "defect_summary": "Kia Motors America (Kia) is recalling certain 2011-2017 Optima, 2012-2017 Sorento and 2011-2018 Sportage vehicles that previously received an engine replacement under recall number 17V-224, warranty, or the Knock Sensor Detection System (KSDS) Product Improvement Campaign. The high pressure fuel pipe that connects to the fuel pump outlet may have been damaged, misaligned or improperly torqued during the engine replacement procedure, possibly causing a fuel leak."
+    },
+    {
+      "campaign_number": "22V760000",
+      "make": "KIA",
+      "component_id": "POWERTRAIN",
+      "matched_complaint_count": 0,
+      "defect_summary": "Kia Motors, Inc. (Kia) is recalling certain 2021-2022 Sorento and 2021-2023 K5 vehicles. The vehicle's \"fail-safe\" limited-mobility drive mode may be impaired, when prompted by a transmission oil pump malfunction, which can result in a complete loss of drive power."
+    },
+    {
+      "campaign_number": "23V579000",
+      "make": "KIA",
+      "component_id": "OTHER",
+      "matched_complaint_count": 13,
+      "defect_summary": "Kia America, Inc. (Kia) is recalling certain 2023 Sorento vehicles. The air bag warning labels on the driver and front passenger sun visors may detach. As such, these vehicles fail to comply with the requirements of Federal Motor Vehicle Safety Standard number 208, \"Occupant Crash Protection.\""
+    },
+    {
+      "campaign_number": "26V046000",
+      "make": "KIA",
+      "component_id": "ELECTRICAL",
+      "matched_complaint_count": 33,
+      "defect_summary": "Kia America, Inc. (Kia) is recalling certain 2025 Kia K4, 2025-2026 Sorento, Sorento Hybrid, Sorento Plug-In Hybrid Electric (PHEV), 2026 Sportage, Sportage Hybrid, Sportage PHEV, K5, EV9, Carnival, and Carnival Hybrid vehicles. Due to a software error, the instrument panel display may fail. As such, these vehicles fail to comply with the requirements of Federal Motor Vehicle Safety Standard (FMVSS) numbers 101, \"Controls and Displays\" and 138, \"Tire Pressure Monitoring System.\""
+    },
+    {
+      "campaign_number": "25V649000",
+      "make": "KIA",
+      "component_id": "ELECTRICAL",
+      "matched_complaint_count": 33,
+      "defect_summary": "Kia America, Inc. (Kia) is recalling certain 2021-2023 Sorento vehicles. The heating, ventilation, and air conditioning (HVAC) blower motor wiring harness may be inadequate, which can result in a fire."
+    },
+    {
+      "campaign_number": "25V649000",
+      "make": "KIA",
+      "component_id": "ELECTRICAL",
+      "matched_complaint_count": 33,
+      "defect_summary": "Kia America, Inc. (Kia) is recalling certain 2021-2023 Sorento vehicles. The heating, ventilation, and air conditioning (HVAC) blower motor wiring harness may be inadequate, which can result in a fire."
+    },
+    {
+      "campaign_number": "17V063000",
+      "make": "HYUNDAI",
+      "component_id": "BRAKES",
+      "matched_complaint_count": 5,
+      "defect_summary": "Hyundai Motor Company (Hyundai) is recalling certain 2017 Elantra vehicles. In the affected vehicles, the brake booster may fail, resulting in a loss of power brake assist."
+    },
+    {
+      "campaign_number": "22V612000",
+      "make": "KIA",
+      "component_id": "POWERTRAIN",
+      "matched_complaint_count": 0,
+      "defect_summary": "Kia America, Inc. (Kia) is recalling certain 2016 Sedona and Sorento vehicles. The vehicles may have been manufactured with faulty automatic transmission shift lever assembly components, preventing the shift lever from locking, which can allow the vehicle to rollaway."
+    },
+    {
+      "campaign_number": "21V00M000",
+      "make": "HYUNDAI",
+      "component_id": "BODY",
+      "matched_complaint_count": 0,
+      "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2020-2021 Santa Fe, 2021 Sonata, and Elantra vehicles. During manufacturing, the windshield may not have been properly bonded to the vehicle, allowing it to detach in a crash."
+    },
+    {
+      "campaign_number": "24V308000",
+      "make": "HYUNDAI",
+      "component_id": "ENGINE",
+      "matched_complaint_count": 13,
+      "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2024 Elantra, Venue, and Kona vehicles. An electrical short circuit may occur in the exhaust gas recirculation (EGR) valve assembly, which can result in a loss of drive power."
+    },
+    {
+      "campaign_number": "15V089000",
+      "make": "KIA",
+      "component_id": "OTHER",
+      "matched_complaint_count": 13,
+      "defect_summary": "Kia Motors America (Kia) is recalling certain model year 2016 Sorento vehicles manufactured October 27, 2014, to January 29, 2015. Due to an improperly soldered component in the accelerator pedal assembly, the driver may not be able to accelerate the vehicle."
+    },
+    {
+      "campaign_number": "16V862000",
+      "make": "KIA",
+      "component_id": "OTHER",
+      "matched_complaint_count": 13,
+      "defect_summary": "Kia Motors America (Kia) is recalling certain model year 2016-2017 Sorento vehicles manufactured October 27, 2014, to August 25, 2016, and 2017 Sportage vehicles manufactured December 10, 2015, to August 26, 2016. The affected vehicles are equipped with an accessory trailer hitch wiring harness that, due to a malfunction of the tow hitch module, may result in the trailer brake lights being constantly illuminated. As such, these vehicles fail to comply with the requirements of Federal Motor Vehicle Safety Standard (FMVSS) number 108, \" Lamps, Reflective Devices, and Associated Equipment.\""
+    },
+    {
+      "campaign_number": "16V862000",
+      "make": "KIA",
+      "component_id": "OTHER",
+      "matched_complaint_count": 13,
+      "defect_summary": "Kia Motors America (Kia) is recalling certain model year 2016-2017 Sorento vehicles manufactured October 27, 2014, to August 25, 2016, and 2017 Sportage vehicles manufactured December 10, 2015, to August 26, 2016. The affected vehicles are equipped with an accessory trailer hitch wiring harness that, due to a malfunction of the tow hitch module, may result in the trailer brake lights being constantly illuminated. As such, these vehicles fail to comply with the requirements of Federal Motor Vehicle Safety Standard (FMVSS) number 108, \" Lamps, Reflective Devices, and Associated Equipment.\""
+    },
+    {
+      "campaign_number": "13V356000",
+      "make": "KIA",
+      "component_id": "POWERTRAIN",
+      "matched_complaint_count": 0,
+      "defect_summary": "Kia Motors Corp. is recalling certain model year 2014 front wheel drive Sorento vehicles manufactured January 7, 2013, through March 12, 2013; and equipped with 2.4 liter engines. Due to a manufacturing issue, the right front axle shaft may fracture."
+    },
+    {
+      "campaign_number": "16V480000",
+      "make": "KIA",
+      "component_id": "SUSPENSION",
+      "matched_complaint_count": 0,
+      "defect_summary": "Kia Motors America (Kia) is recalling certain model year 2016 Sorento vehicles. A component of the rear suspension may not be properly welded."
+    },
+    {
+      "campaign_number": "22V218000",
+      "make": "HYUNDAI",
+      "component_id": "SEATBELT",
+      "matched_complaint_count": 0,
+      "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2021-2022 Elantra and 2020 Accent vehicles. In the event of a crash, the front driver and passenger-side seat belt pretensioners may explode upon deployment."
+    },
+    {
+      "campaign_number": "22V218000",
+      "make": "HYUNDAI",
+      "component_id": "SEATBELT",
+      "matched_complaint_count": 0,
+      "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2021-2022 Elantra and 2020 Accent vehicles. In the event of a crash, the front driver and passenger-side seat belt pretensioners may explode upon deployment."
+    },
+    {
+      "campaign_number": "26V307000",
+      "make": "HYUNDAI",
+      "component_id": "AIRBAG",
+      "matched_complaint_count": 9,
+      "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2015-2016 Elantra and 2016 Elantra GT vehicles. The driver's air bag inflator may rupture during deployment."
+    },
+    {
+      "campaign_number": "26V307000",
+      "make": "HYUNDAI",
+      "component_id": "AIRBAG",
+      "matched_complaint_count": 9,
+      "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2015-2016 Elantra and 2016 Elantra GT vehicles. The driver's air bag inflator may rupture during deployment."
+    },
+    {
+      "campaign_number": "15V446000",
+      "make": "KIA",
+      "component_id": "SEATBELT",
+      "matched_complaint_count": 0,
+      "defect_summary": "Kia Motors America (Kia) is recalling certain model year 2016 Kia Sorento vehicles manufactured October 23, 2014, to December 10, 2014. The affected vehicles have a front passenger seat belt whose buckle latch assembly may prevent the front passenger from fastening the seat belt."
+    },
+    {
+      "campaign_number": "17V784000",
+      "make": "KIA",
+      "component_id": "AIRBAG",
+      "matched_complaint_count": 3,
+      "defect_summary": "Kia Motors America (Kia) is recalling certain 2018 Kia Sorento vehicles. The side curtain air bags on these vehicles have a component that may detach during deployment of the inflatable curtain air bag."
+    },
+    {
+      "campaign_number": "21V302000",
+      "make": "HYUNDAI",
+      "component_id": "OTHER",
+      "matched_complaint_count": 5,
+      "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2021 Elantra vehicles. The driver and front passenger seat back recliners may have been improperly welded."
+    },
+    {
+      "campaign_number": "16V770000",
+      "make": "KIA",
+      "component_id": "OTHER",
+      "matched_complaint_count": 13,
+      "defect_summary": "Kia Motors America (Kia) is recalling certain model year 2016 Kia Sorento vehicles manufactured March 3, 2016 to March 21, 2016. The driver's seatback frame may have been produced with inadequate weld joints and, as a result, the seatback may not function as designed in the event of a rear-end collision."
+    },
+    {
+      "campaign_number": "21V796000",
+      "make": "HYUNDAI",
+      "component_id": "SEATBELT",
+      "matched_complaint_count": 0,
+      "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2021 Elantra, Elantra HEV, Venue, Genesis GV80 and 2022 Genesis GV70 vehicles. In the event of a crash, the front driver-side and/or passenger-side seat belt pretensioner(s) may explode upon deployment."
+    },
+    {
+      "campaign_number": "19V721000",
+      "make": "HYUNDAI",
+      "component_id": "SUSPENSION",
+      "matched_complaint_count": 0,
+      "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2020 Elantra vehicles. The lower control arm ball joint fasteners may have been insufficiently tightened allowing the ball joint to detach from the lower control arm."
+    },
+    {
+      "campaign_number": "22V632000",
+      "make": "HYUNDAI",
+      "component_id": "AIRBAG",
+      "matched_complaint_count": 9,
+      "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2022 Elantra N and 2022-2023 Elantra vehicles. The emblem on the cover of the driver's front air bag may not have been welded properly, which can result in the emblem detaching upon deployment."
+    },
+    {
+      "campaign_number": "22V632000",
+      "make": "HYUNDAI",
+      "component_id": "AIRBAG",
+      "matched_complaint_count": 9,
+      "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2022 Elantra N and 2022-2023 Elantra vehicles. The emblem on the cover of the driver's front air bag may not have been welded properly, which can result in the emblem detaching upon deployment."
+    },
+    {
+      "campaign_number": "22V123000",
+      "make": "HYUNDAI",
+      "component_id": "SEATBELT",
+      "matched_complaint_count": 0,
+      "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2022 Elantra and Elantra HEV vehicles. In the event of a crash, the front passenger-side seat belt pretensioner may explode upon deployment."
+    },
+    {
+      "campaign_number": "16V956000",
+      "make": "HYUNDAI",
+      "component_id": "AIRBAG",
+      "matched_complaint_count": 9,
+      "defect_summary": "Hyundai Motor Company (Hyundai) is recalling certain model year 2017 Hyundai Elantra vehicles manufactured April 15, 2016, to September 13, 2016, and Sonata vehicles manufactured May 27, 2016 to September 16, 2016. In these vehicles, the end seal for the driver's frontal air bag inflator may not have been properly installed, possibly resulting in reduced inflation of the frontal air bag in the event of a crash."
+    },
+    {
+      "campaign_number": "17V213000",
+      "make": "HYUNDAI",
+      "component_id": "STEERING",
+      "matched_complaint_count": 2,
+      "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2017 Elantra vehicles. The affected vehicles may have a damaged Electronic Power Steering (MDPS) connector resulting in a loss of electric power steering assistance."
+    },
+    {
+      "campaign_number": "18V656000",
+      "make": "KIA",
+      "component_id": "STEERING",
+      "matched_complaint_count": 0,
+      "defect_summary": "Kia Motors America (Kia) is recalling certain 2018 Kia Sorento vehicles. The cowl crossbar that connects to the Motor Driven Power Steering (MDPS) steering column may be improperly welded, allowing the steering column to separate."
+    },
+    {
+      "campaign_number": "24V287000",
+      "make": "KIA",
+      "component_id": "ELECTRICAL",
+      "matched_complaint_count": 33,
+      "defect_summary": "Kia America, Inc. (Kia) is recalling certain 2024 Sorento vehicles. The motor driven power steering (MDPS) wiring harness may be incorrectly assembled, which can result in a loss of power steering assist."
+    },
+    {
+      "campaign_number": "17V586000",
+      "make": "KIA",
+      "component_id": "ENGINE",
+      "matched_complaint_count": 38,
+      "defect_summary": "Kia Motors America (Kia) is recalling certain 2017 Sorento vehicles equipped with 3.3L engines. The engine crankshaft may have been improperly heat treated and may fail."
+    },
+    {
+      "campaign_number": "19V720000",
+      "make": "HYUNDAI",
+      "component_id": "TIRES",
+      "matched_complaint_count": 0,
+      "defect_summary": "Hyundai Motor America (Hyundai) is recalling certain 2019 Ioniq Hybrid and 2020 Elantra vehicles. The right-side rear wheel lug nuts may have been insufficiently tightened, allowing the wheel to detach from the vehicle."
+    },
+    {
+      "campaign_number": "16V232000",
+      "make": "HYUNDAI",
+      "component_id": "AIRBAG",
+      "matched_complaint_count": 9,
+      "defect_summary": "Hyundai Motor Company (Hyundai) is recalling certain model year 2015-2016 Sonata vehicles manufactured May 29, 2014 to February 11, 2016, 2017 Elantra vehicles manufactured January 12, 2016 to February 22, 2016, and one 2016 Sonata Hybrid vehicle manufactured October 15, 2015. In these vehicles, the driver's frontal air bag may be missing a chemical enhancer required for the second stage air bag deployment, resulting in the second stage not deploying in certain crashes. The primary stage will deploy as intended."
+    },
+    {
+      "campaign_number": "25V548000",
+      "make": "KIA",
+      "component_id": "ENGINE",
+      "matched_complaint_count": 38,
+      "defect_summary": "Kia America, Inc. (Kia) is recalling certain 2025 K4 and Sorento vehicles. The connecting rod bolts in the engine may have been improperly tightened, which can cause a loss of drive power."
+    },
+    {
+      "campaign_number": "22V202000",
+      "make": "KIA",
+      "component_id": "ENGINE",
+      "matched_complaint_count": 38,
+      "defect_summary": "Kia Motor America (Kia) is recalling certain 2022 Sorento vehicles. The oil supply pipe to the turbocharger may crack, which could result in an oil leak in the engine compartment."
+    },
+    {
+      "campaign_number": "22V509000",
+      "make": "KIA",
+      "component_id": "TIRES",
+      "matched_complaint_count": 0,
+      "defect_summary": "Kia Motors America (Kia) is recalling certain 2022 Sorento and Telluride vehicles. The vehicles may be equipped with an incorrect spare tire which, when installed, can impair the anti-lock braking system (ABS) and the traction control system (TCS). As such, these vehicles fail to comply with the requirements of Federal Motor Vehicle Safety Standard number 110, \"Tire Selection and Rims.\""
+    },
+    {
+      "campaign_number": "22V760000",
+      "make": "KIA",
+      "component_id": "POWERTRAIN",
+      "matched_complaint_count": 0,
+      "defect_summary": "Kia Motors, Inc. (Kia) is recalling certain 2021-2022 Sorento and 2021-2023 K5 vehicles. The vehicle's \"fail-safe\" limited-mobility drive mode may be impaired, when prompted by a transmission oil pump malfunction, which can result in a complete loss of drive power."
+    },
+    {
+      "campaign_number": "25V649000",
+      "make": "KIA",
+      "component_id": "ELECTRICAL",
+      "matched_complaint_count": 33,
+      "defect_summary": "Kia America, Inc. (Kia) is recalling certain 2021-2023 Sorento vehicles. The heating, ventilation, and air conditioning (HVAC) blower motor wiring harness may be inadequate, which can result in a fire."
+    },
+    {
+      "campaign_number": "21V519000",
+      "make": "KIA",
+      "component_id": "FUEL",
+      "matched_complaint_count": 2,
+      "defect_summary": "Kia Motor America (Kia) is recalling certain 2021 Sorento and 2021-2022 K5 vehicles equipped with 2.5L turbocharged engines. Fuel may leak at the pipe connection between the high-pressure fuel pump and fuel rail."
+    },
+    {
+      "campaign_number": "22V703000",
+      "make": "KIA",
+      "component_id": "OTHER",
+      "matched_complaint_count": 13,
+      "defect_summary": "Kia America, Inc. (Kia) is recalling certain 2016-2022 Sorento, 2021-2022 Sorento Hybrid (HEV), 2022-2023 Sorento Plug-In Hybrid (PHEV), and 2017-2022 Sportage vehicles equipped with a tow hitch harness installed as original equipment, or purchased as an accessory through a Kia dealership. Debris and moisture accumulation on the tow hitch harness module printed circuit board (PCB) may cause an electrical short, which can result in a fire."
+    },
+    {
+      "campaign_number": "22V703000",
+      "make": "KIA",
+      "component_id": "OTHER",
+      "matched_complaint_count": 13,
+      "defect_summary": "Kia America, Inc. (Kia) is recalling certain 2016-2022 Sorento, 2021-2022 Sorento Hybrid (HEV), 2022-2023 Sorento Plug-In Hybrid (PHEV), and 2017-2022 Sportage vehicles equipped with a tow hitch harness installed as original equipment, or purchased as an accessory through a Kia dealership. Debris and moisture accumulation on the tow hitch harness module printed circuit board (PCB) may cause an electrical short, which can result in a fire."
+    }
+  ],
+  "elapsed_seconds": 31.009,
+  "cost_usd": 0.0424497,
+  "total_tokens": 25534
+}
