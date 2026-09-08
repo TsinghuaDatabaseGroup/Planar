@@ -1,8 +1,8 @@
 # Planar
 
-Planar is a benchmark for evaluating semantic query processing engines over heterogeneous structured and unstructured data. 
+Planar is a benchmark for semantic query processing over heterogeneous data. It provides real-world workloads with gold answers, reference plans, and optimization opportunities. These enable unified evaluation of SQPEs, agents, and hybrid systems, with analysis of planning, optimization, and operator execution.
 
-The benchmark contains **243 queries** across four real-world domains and three difficulty levels (`easy`, `medium`, and `hard`).
+The benchmark contains **243 queries** across four real-world domains and three complexity levels (`easy`, `medium`, and `hard`).
 
 ## Community
 
@@ -15,7 +15,7 @@ We deeply appreciate the invaluable effort contributed by our dedicated team of 
 ## Benchmark Data
 
 - **Datasets:** [Download from Google Drive](https://drive.google.com/drive/folders/1wMy6zqkUfnq8VQP28U09H8GeW85qHh22?usp=sharing). The included [data guide](data/README.md) describes the additional inputs shipped with this repository.
-- **Queries:** [`testbed/queries/`](testbed/queries/) contains the public task ID, difficulty, and natural-language query for each domain.
+- **Queries:** [`testbed/queries/`](testbed/queries/) contains the public task ID, complexity, and natural-language query for each domain.
 - **Ground Truth & Annotated Semantic Plans:** [`testbed/gold/`](testbed/gold/) contains gold answers, annotated semantic plans.
 
 | Domain | Queries |
